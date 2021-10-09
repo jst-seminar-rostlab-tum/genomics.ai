@@ -1,16 +1,14 @@
 services:
   database:
     image: mongo
-    ports: 
-      - 27017:27017
   
   redis:
     image: redis
-    ports:
-      - 6379:6379
 
   server:
     build: .
     depends_on:
       - database
       - redis
+    ports:
+      - 443:443
