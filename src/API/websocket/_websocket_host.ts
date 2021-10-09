@@ -13,13 +13,6 @@ export default class Websocket_Host {
 
     // interval for periodically pinging all connections (instantiated through setInterval in setup_ws_ping_interval)
     protected ws_ping_interval : NodeJS.Timeout | null = null;
-
-    // holds information about channel subscriptions per channel
-    protected subscriptions : {
-        [channel:string] : {
-            subscribers: WebSocket[]
-        }
-    } = {};
     // ------------
 
     // ---- methods ----
