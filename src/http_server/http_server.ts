@@ -3,7 +3,6 @@ import https from 'https';
 import fs from 'fs/promises';
 
 export class HTTP_Server {
-
     server : http.Server | undefined = undefined;
 
     // setup the http(s)-server which hosts the websocket-server and REST-APIs
@@ -30,5 +29,4 @@ export class HTTP_Server {
         this.server.listen({ port: parseInt("" + process.env.PORT) },
             ()=>console.log('Server listening on port ' + process.env.PORT));
     }
-
 }

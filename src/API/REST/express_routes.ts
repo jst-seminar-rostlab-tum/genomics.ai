@@ -5,6 +5,7 @@ import express, {Router} from "express";
 export function express_routes(this:REST_Host) : Router {
     let router = express.Router();
 
+    // TODO handle our REST routes
     this.expressApp.use((req, res) => res.status(404).send("Not found."));
 
     return router;

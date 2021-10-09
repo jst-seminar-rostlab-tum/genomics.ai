@@ -1,18 +1,12 @@
 export enum WsMessageType {
-    // from client - request to subscribe to a data channel
-    WS_SUBSCRIBE = "subscribe",
+    // from client - request to authenticate client with JWT
+    WS_AUTH = "authenticate",
 
-    // from server - confirms subscription
-    WS_SUBSCRIBED = "subscribed",
+    // from server - confirms authentication
+    WS_AUTHED = "authenticated",
 
-    // from client - request to unsubscribe from a data channel
-    WS_UNSUBSCRIBE = "unsubscribe",
-
-    // from server - confirms unsubscription
-    WS_UNSUBSCRIBED = "unsubscribed",
-
-    // from server - new data for subscribed data channel
-    WS_DATA = "data",
+    // authentication was denied after WS_AUTH received
+    WS_DENIED = "auth_denied",
 
     // from any - an error has occurred
     WS_ERROR = "error",

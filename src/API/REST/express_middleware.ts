@@ -13,6 +13,7 @@ export function express_middleware(this:REST_Host) : Router {
         message: "Limit exceeded. Try again in 3 hours."
     }))
     router.use(bodyParser.json());
+    // TODO router.use(OUR_AUTH());
 
     return router;
 }
