@@ -1,6 +1,8 @@
 services:
   database:
     image: mongo
+    ports:
+      - 27017:27017
   
   redis:
     image: redis
@@ -11,4 +13,6 @@ services:
       - database
       - redis
     ports:
-      - 443:443
+      - 8050:8050
+    environment:
+      DATABASE_URI: 'mongodb://database:27017/dev'

@@ -1,7 +1,8 @@
 export function init_env_vars (){
     // check for required env-vars
     const required_env_vars = [
-        "test_env_var"
+        "test_env_var",
+        "DATABASE_URI"
     ];
     required_env_vars.forEach((required_env_var)=>{
         if(!(required_env_var in process.env))
@@ -15,4 +16,5 @@ export function init_env_vars (){
     }
 
     setStdEnvValue("PORT", "8050");
+    setStdEnvValue("DATABASE_URI", "mongodb://localhost:27017/dev");
 }
