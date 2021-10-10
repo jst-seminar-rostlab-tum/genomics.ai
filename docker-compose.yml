@@ -11,6 +11,6 @@ services:
       - database
       - redis
     ports:
-      - 443:443
+      - 8050:8050
     environment:
       DATABASE_URI: 'mongodb://database:27017/dev'
