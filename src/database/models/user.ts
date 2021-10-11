@@ -6,6 +6,7 @@ interface IUser extends Document {
     email: string;
     password: string;
     token: string;
+    isVerified: boolean; // Only for e-mail, not for academic affiliation
 }
 
 const userSchema = new Schema<IUser>({
@@ -13,7 +14,8 @@ const userSchema = new Schema<IUser>({
     lastName: {type: String, default: ""},
     email: {type: String, unique: true, require: true},
     password: {type: String, require: true},
-    token: {type: String}
+    token: {type: String},
+    isVerified: {type: Boolean, default: false}
 });
 
 export const userModel = model<IUser>("User", userSchema);
