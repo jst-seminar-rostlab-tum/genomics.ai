@@ -18,18 +18,22 @@ export default function register_route(): Router {
 
             const encryptedPassword = await bcrypt.hash(password, 15);
             const institutionName = await Verifier.getInstitutionName(email);
+            const isAcademic = institutionName !== "";
             
             const user = await userModel.create({
                 firstName, lastName, email, 
                 password: encryptedPassword,
                 academicAffiliation: institutionName,
-                isAcademic: institutionName !== ''
+                isAcademic: isAcademic
             });
 
-            const token = await tokenModel.create({ _userId: user._id });
+            if (isAcademic) {
+                const token = await tokenModel.create({ _userId: user._id });
+                send_verification_mail(email, token.token);
+                return res.status(201).json(user);
+            }
 
-            send_verification_mail(email, token.token);
-            res.status(201).json(user);
+            return res.status(403).send("The e-mail address does not seem to belong to an academic institution. Wait for an administrator to manually approve you.");
         }))
 
     return router;

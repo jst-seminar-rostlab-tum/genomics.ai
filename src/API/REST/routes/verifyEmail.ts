@@ -22,6 +22,9 @@ export default function verify_email(): Router {
                 return tokenObj.delete();
             }
 
+            if (!user.isAcademic)
+                return res.status(403).send("User must belong to an academic institution in order to be verified!");
+
             user.isVerified = true;
             await user.save();
             res.status(200).send("User has been verified");
