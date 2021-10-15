@@ -12,7 +12,7 @@ const userSchema = new Schema<IUser>({
     firstName: {type: String, default: ""},
     lastName: {type: String, default: ""},
     email: {type: String, unique: true, require: true},
-    password: {type: String, require: true},
+    password: {type: String, require: true, select: false},
     token: {type: String}
 });
 

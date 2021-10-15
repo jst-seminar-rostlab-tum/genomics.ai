@@ -1,6 +1,7 @@
 import express, {Router} from "express";
-import {userModel} from "../../../database/models/user";
 import bcrypt from "bcrypt";
+
+import {userModel} from "../../../database/models/user";
 
 export default function register_route(): Router {
     let router = express.Router();
@@ -8,6 +9,7 @@ export default function register_route(): Router {
     router
         .post("/register")
         .use((async (req, res) => {
+            // TODO input validation
             const {firstName, lastName, email, password} = req.body;
 
             if (await userModel.findOne({email})) {
