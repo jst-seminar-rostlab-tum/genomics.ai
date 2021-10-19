@@ -3,12 +3,11 @@ import bcrypt from "bcrypt";
 
 import {userModel} from "../../../database/models/user";
 
-export default function register_route(): Router {
+export default function register_route() : Router {
     let router = express.Router();
 
     router
-        .post("/register")
-        .use((async (req, res) => {
+        .post("/register", (async (req, res) => {
             // TODO input validation
             const {firstName, lastName, email, password} = req.body;
 

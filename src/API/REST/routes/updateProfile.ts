@@ -6,9 +6,9 @@ export default function update_profile_route(){
     let router = express.Router();
 
     router
-        .post("/update_profile")
-        .use(verify_authenticated_user())
-        .use((req : ExtRequest, res) => {
+        .post(  "/update_profile",
+                verify_authenticated_user(),
+                (req : ExtRequest, res) => {
             console.log(`${req.user_id} has updated their profile`);
             res.send("Your profile has been updated")
         })
