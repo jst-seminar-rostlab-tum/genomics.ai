@@ -4,7 +4,9 @@
   "description": "Javascript Seminar TUM 2021 (Single Cell Sequencing) - Backend",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./build/server.js",
+    "gcp-build": "tsc -p ."
   },
   "repository": {
     "type": "git",
