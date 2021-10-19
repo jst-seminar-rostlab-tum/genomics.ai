@@ -6,8 +6,7 @@ export default function register_route(): Router {
     let router = express.Router();
 
     router
-        .post("/register")
-        .use(async (req: any, res) => {
+        .post("/register", async (req: any, res) => {
             // TODO input-validation
             const {first_name, last_name, email, password, note} = req.body;
 
@@ -21,19 +20,19 @@ export default function register_route(): Router {
 
             let user : (IUser | undefined) = undefined;
             try{
-                user = await userModel.create({
+                await userModel.create({
                     firstName: first_name, lastName: last_name, email, password: saltHashedPassword, note
                 });
+
+                return res
+                    .status(201)
+                    .json({
+                        msg: "User has been registered"
+                    })
             }catch(err){
                 console.error(err);
                 return res.status(500).send("Unable to create user. (DB-error)");
             }
-
-            return res
-                .status(201)
-                .json({
-                    msg: "User has been registered"
-                })
         })
 
     return router;

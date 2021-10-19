@@ -21,6 +21,7 @@ export function express_routes(this:REST_Host) : Router {
     this.expressApp.use(hello_route());
     this.expressApp.use(hello_auth_route());
 
+    this.expressApp.use(/^.*_ah.*$/, (req, res)=>res.status(200).send()) // always tell google everything is fine
     this.expressApp.use((req, res) => res.status(404).send("Not found."));
 
     return router;

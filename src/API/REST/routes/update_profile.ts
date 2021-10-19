@@ -1,6 +1,6 @@
 import express from "express";
 import {ExtRequest} from "../../../definitions/ext_request";
-import {IUser, userModel} from "../../../database/models/user";
+import {userModel} from "../../../database/models/user";
 import bcrypt from "bcrypt";
 import check_auth from "../middleware/check_auth";
 
@@ -19,7 +19,6 @@ export default function update_profile_route(){
                 if (!await userModel.findOne({email}))
                     return res.status(404).send("User not found");
 
-                let user : (IUser | undefined) = undefined;
                 try{
                     let update_object : any = {};
                     if(first_name)
