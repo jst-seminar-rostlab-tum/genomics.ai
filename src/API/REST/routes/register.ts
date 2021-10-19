@@ -7,7 +7,7 @@ export default function register_route(): Router {
 
     router
         .post("/register")
-        .use((async (req: any, res) => {
+        .use(async (req: any, res) => {
             // TODO input-validation
             const {first_name, last_name, email, password, note} = req.body;
 
@@ -34,7 +34,7 @@ export default function register_route(): Router {
                 .json({
                     msg: "User has been registered"
                 })
-        }))
+        })
 
     return router;
 }
