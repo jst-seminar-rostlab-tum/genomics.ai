@@ -1,5 +1,5 @@
 runtime: nodejs14
-instance_class: F1
+instance_class: B1
 env: standard
 basic_scaling:
   max_instances: 4
