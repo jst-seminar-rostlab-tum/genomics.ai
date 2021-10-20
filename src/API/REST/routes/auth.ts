@@ -8,7 +8,7 @@ export default function auth_route(){
 
     router.post("/auth", (req, res, next) => {
         const {email, password} = req.body;
-        userModel.findOne({email: email}).exec().then(user =>{
+        userModel.findOne({email: email}).select('+password').exec().then(user =>{
             if(!user)
                 return res.status(401).send("User not found");
 
