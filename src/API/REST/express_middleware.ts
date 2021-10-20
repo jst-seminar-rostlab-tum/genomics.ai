@@ -12,8 +12,9 @@ export function express_middleware(this:REST_Host) : Router {
         max: 1000, // limit each IP to 1000 requests per windowMs
         message: "Limit exceeded. Try again in 3 hours."
     }))
+
     router.use(bodyParser.json());
-    // TODO router.use(OUR_AUTH());
+    router.use(bodyParser.urlencoded({ extended: true }));
 
     return router;
 }
