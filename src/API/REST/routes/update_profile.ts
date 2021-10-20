@@ -16,7 +16,7 @@ export default function update_profile_route(){
                 if (!(first_name || last_name || email || password || note))
                     return res.status(400).send("Missing parameters");
 
-                if (!await userModel.findOne({email}))
+                if (!await userModel.findOne({_id: req.user_id}))
                     return res.status(404).send("User not found");
 
                 try{
@@ -33,6 +33,8 @@ export default function update_profile_route(){
                         update_object.password = await bcrypt.hash(password, 15);
 
                     await userModel.updateOne({_id: req.user_id}, update_object, );
+
+                    res.status(200).send({msg: "User updated."})
                 }catch(err){
                     console.error(err);
                     return res.status(500).send("Unable to create user. (DB-error)");
