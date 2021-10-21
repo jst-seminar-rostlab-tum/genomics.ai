@@ -1,9 +1,9 @@
-import { NodeMailgun } from "ts-mailgun";
+
 
 export function send_mail(recipient: string, subject: string, body: string) {
     const API_KEY = process.env.MAIL_API_KEY;
     const DOMAIN = process.env.MAIL_DOMAIN;
-    const mailer = new NodeMailgun(API_KEY, DOMAIN);
+    /*const mailer = new NodeMailgun(API_KEY, DOMAIN);
 
     mailer.fromEmail = "noreply@genecruncher.io";
     mailer.fromTitle = subject;
@@ -11,8 +11,8 @@ export function send_mail(recipient: string, subject: string, body: string) {
     mailer
         .init()
         .send(recipient, subject, body)
-        .then((_) => console.log(`Mail sent to ${recipient}`))
-        .catch((error) => console.error(error));
+        .then((_:any) => console.log(`Mail sent to ${recipient}`))
+        .catch((error) => console.error(error));*/
 }
 
 export function send_verification_mail(recipient: string, token: string) {

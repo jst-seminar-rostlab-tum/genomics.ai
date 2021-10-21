@@ -9,7 +9,7 @@ export default function approve_user(): Router {
     // This should be protected in the future so that only admins can invoke this.
     router
         .post("/approve", (async (req, res) => {
-            const { academicAffiliation, email } = req.body;
+            /*const { academicAffiliation, email } = req.body;
 
             if (!email)
                 return res.status(400).send('Please provide an e-mail address.');
@@ -34,6 +34,7 @@ export default function approve_user(): Router {
             );
 
             res.status(200).send('User has been approved and verification e-mail has been sent.');
+            */
         }));
 
     return router;

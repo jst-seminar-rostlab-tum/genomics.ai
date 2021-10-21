@@ -18,7 +18,7 @@ export default function resend_verification_link(): Router {
             if (!user)
                 return res.status(404).send("Could not find user with this e-mail. Please register.");
 
-            if (user.isVerified)
+            if (user.isEmailVerified)
                 return res.status(200).send("User has already been verified.");
 
             let token = await tokenModel.findOne({_userId: user._id});

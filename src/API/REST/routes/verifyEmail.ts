@@ -17,17 +17,14 @@ export default function verify_email(): Router {
             if (!user)
                 return res.status(404).send("User for this token could not be found.");
 
-            if (user.isVerified) {
+            if (user.isEmailVerified) {
                 res.status(200).send("User has already been verified.");
                 return tokenObj.delete();
             }
 
-            if (!user.isAcademic)
-                return res.status(403).send("User must belong to an academic institution in order to be verified!");
-
-            user.isVerified = true;
+            user.isEmailVerified = true;
             await user.save();
-            res.status(200).send("User has been verified");
+            res.status(200).send("User Email has been verified");
             tokenObj.delete();
         }))
 
