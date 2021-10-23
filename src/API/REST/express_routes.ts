@@ -5,6 +5,7 @@ import auth_route from "./routes/auth";
 import hello_route from "./routes/hello";
 import hello_auth_route from "./routes/hello_auth";
 import update_profile_route from "./routes/update_profile";
+import cloud_run from "./routes/cloud_run";
 
 // setup the websocket-server on top of the http_server
 export function express_routes(this:REST_Host) : Router {
@@ -20,6 +21,7 @@ export function express_routes(this:REST_Host) : Router {
     // debugging / testing routes
     this.expressApp.use(hello_route());
     this.expressApp.use(hello_auth_route());
+    this.expressApp.use(cloud_run());
 
     this.expressApp.use(/^.*_ah.*$/, (req, res)=>res.status(200).send()) // always tell google everything is fine
     this.expressApp.use((req, res) => res.status(404).send("Not found."));

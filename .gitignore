@@ -1,5 +1,6 @@
 # Jetbrains
 .idea
+.vscode/
 
 # Compiled files
 build
