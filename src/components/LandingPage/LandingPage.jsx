@@ -1,6 +1,10 @@
+import NavBar from '../NavBar/NavBar'
 function LandingPage() {
     return (
-        <h1>Page One</h1>
+        <NavBar/>
+        
+
+
     );
 }
 
