@@ -1,0 +1,22 @@
+.appbar{
+    display: flex;
+    /* justify-content : space-between; */
+}
+.logo {
+    fill: white;
+    stroke: white;
+}
+
+ul{
+    display: flex;
+    list-style:none;
+    align-items: center;
+}
+
+.navbarcontent{
+    text-decoration: none;
+    font-size: 1.2rem ;
+    color: white;
+    margin-left: 3rem;
+
+}
