@@ -1,7 +1,7 @@
-function PageTwo() {
+function Dashboard() {
     return (
         <h1>Page Two</h1>
     );
 }
 
-export default PageTwo;
+export default Dashboard;

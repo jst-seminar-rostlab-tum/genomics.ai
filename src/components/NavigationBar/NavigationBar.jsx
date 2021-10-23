@@ -1,8 +1,8 @@
 import {Box, Button} from "@mui/material";
-import styles from "./topbar.module.css"
+import styles from "./navigationbar.module.css"
 import {Link} from "react-router-dom";
 
-function TopBar() {
+function NavigationBar() {
     return (
         <div className={styles.container}>
             <Box mx={1}>
@@ -20,4 +20,4 @@ function TopBar() {
     );
 }
 
-export default TopBar;
+export default NavigationBar;

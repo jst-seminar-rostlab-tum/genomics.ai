@@ -1,9 +1,9 @@
-import logo from './logo.svg';
+import logo from './assets/logo.svg';
 import './app.module.css';
-import TopBar from "./components/TopBar/TopBar";
+import NavigationBar from "./components/NavigationBar/NavigationBar";
 import {Route, BrowserRouter as Router, Switch} from "react-router-dom";
-import PageTwo from "./components/PageTwo/PageTwo";
-import PageOne from "./components/PageOne/PageOne";
+import Dashboard from "./components/Dashboard/Dashboard";
+import LandingPage from "./components/LandingPage/LandingPage";
 import styles from "./app.module.css"
 
 function App() {
@@ -11,11 +11,11 @@ function App() {
         <div className={styles.App}>
             <header className={styles.AppHeader}>
                 <Router>
-                    <TopBar/>
+                    <NavigationBar/>
                     <img src={logo} className={styles.AppLogo} alt="logo"/>
                     <Switch>
-                        <Route exact path="/" component={PageOne}/>
-                        <Route path="/page-two" component={PageTwo}/>
+                        <Route exact path="/" component={LandingPage}/>
+                        <Route path="/page-two" component={Dashboard}/>
                     </Switch>
                 </Router>
             </header>
