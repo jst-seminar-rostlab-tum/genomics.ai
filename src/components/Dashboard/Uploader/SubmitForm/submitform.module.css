@@ -1,0 +1,8 @@
+.flexContainer{
+    display: flex;
+    justify-content: center;
+}
+
+.progressTitleUpdate{
+    font-size: 14px;
+}

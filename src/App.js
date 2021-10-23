@@ -12,7 +12,6 @@ function App() {
             <header className={styles.AppHeader}>
                 <Router>
                     <NavigationBar/>
-                    <img src={logo} className={styles.AppLogo} alt="logo"/>
                     <Switch>
                         <Route exact path="/" component={LandingPage}/>
                         <Route path="/page-two" component={Dashboard}/>
