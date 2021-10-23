@@ -9,10 +9,13 @@ export default function cloud_run(): Router {
     router
         .post("/cloud_run", async (req: any, res) => {
             const {bucket_id} = req.body;
-            const url = <string>process.env.CLOUD_RUN_URL;
+
+            if (!bucket_id)
+                return res.status(400).send("Please provide a bucket ID!");
+
+            const url = `${process.env.CLOUD_RUN_URL}/?bucket_id=${bucket_id}`;
 
             const auth = new GoogleAuth();
-            const targetAudience = new URL(url);
 
             const client = await auth.getIdTokenClient(url);
             const response = await client.request({url});
