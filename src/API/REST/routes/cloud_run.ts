@@ -13,7 +13,7 @@ export default function cloud_run(): Router {
             if (!bucket_id)
                 return res.status(400).send("Please provide a bucket ID!");
 
-            const url = `${process.env.CLOUD_RUN_URL}/?bucket_id=${bucket_id}`;
+            const url = `${process.env.CLOUD_RUN_URL}?bucket_id=${bucket_id}`;
 
             const auth = new GoogleAuth();
 
