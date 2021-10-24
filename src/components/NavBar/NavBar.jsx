@@ -13,7 +13,7 @@ const Logo = () => (
     </svg>
 )
 
-const NavBar = () => {
+const NavBar = (props) => {
   return (
     <AppBar  elevation={1}  className={styles.appbar} >
       <Toolbar>
@@ -26,7 +26,7 @@ const NavBar = () => {
         <Typography variant="h6">GeneCruncher</Typography>
       </IconButton>
 
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}> 
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <ul >
                 <Box>
                     <li><a href="#section" className={styles.navbarcontent}>Home</a></li>
@@ -35,10 +35,10 @@ const NavBar = () => {
                 <li><a href="#section" className={styles.navbarcontent}>References</a></li>
                 <li><a href="#section" className={styles.navbarcontent}>Contact</a></li>
             </ul>
-        </Typography> 
-        
-        <Button variant='outlined' color="inherit" sx={{ m: 1 }} >Login</Button>
-        <Button variant='contained' color="primary"  >Signup</Button>
+        </Typography>
+
+        <Button variant='outlined' color="inherit" sx={{ m: 1 }} onClick={props.onLoginClicked} >Login</Button>
+        <Button variant='contained' color="light"  >Signup</Button>
       </Toolbar>
     </AppBar>
   );
