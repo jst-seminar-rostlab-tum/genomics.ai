@@ -42,6 +42,8 @@ function LoginForm(props) {
         }
         setLoading(true);
         alert(`${loginDetails.email} ${loginDetails.password} ${loginDetails.remember}`);
+        //server communication 
+        
     }
 
     const boxStyle = {
@@ -121,7 +123,7 @@ function LoginForm(props) {
                                        onClick={doLogin}>Sign in
                         </LoadingButton>
                         <Typography mt={1}>
-                            <a href="#" className={styles.pwReminderLink}>
+                            <a href="/" className={styles.pwReminderLink}>
                                 Forgot password?
                             </a>
                         </Typography>

@@ -1,5 +1,6 @@
 .appbar{
     display: flex;
+    /* font-family: Nunito; */
     /* justify-content : space-between; */
 }
 .logo {
