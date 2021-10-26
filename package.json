@@ -21,10 +21,18 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "lint": "eslint \"src/**/*.js?(x)\"",
+    "lint-fix": "eslint \"src/**/*.js?(x)\" --fix",
     "build": "react-scripts build",
     "deploy-manual": "gh-pages -d build -b master -o pages",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   },
   "browserslist": {
     "production": [
@@ -39,7 +47,12 @@
     ]
   },
   "devDependencies": {
-    "eslint": "^8.1.0",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.26.1",
+    "eslint-plugin-react-hooks": "^4.2.0",
     "gh-pages": "^3.2.3"
   }
 }
