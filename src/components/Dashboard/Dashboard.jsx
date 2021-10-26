@@ -1,3 +1,5 @@
+import React from 'react';
+
 function Dashboard() {
   return (
     <h1>Page Two</h1>

@@ -1,35 +1,37 @@
-import NavBar from '../NavBar/NavBar'
-import {useState} from "react";
-import LoginForm from "./LoginForm/LoginForm";
-import RegistrationForm from "./RegistrationForm/RegistrationForm";
+import React, { useCallback, useState } from 'react';
+import NavBar from '../NavBar/NavBar';
+import LoginForm from './LoginForm/LoginForm';
+import RegistrationForm from './RegistrationForm/RegistrationForm';
 
 function LandingPage() {
-
   const [isLoginFormVisible, setLoginFormVisible] = useState(false);
   const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
 
-  function onLoginClicked() {
+  const onLoginClicked = useCallback(() => {
     setLoginFormVisible(true);
-  }
+  }, [setLoginFormVisible]);
 
-  function onLoginFormClosed() {
+  const onLoginFormClosed = useCallback(() => {
     setLoginFormVisible(false);
-  }
+  }, [setLoginFormVisible]);
 
-  function onSignUpClicked() {
+  const onSignUpClicked = useCallback(() => {
     setRegistrationFormVisible(true);
-  }
+  }, [setRegistrationFormVisible]);
 
-  function onRegistrationFormClosed() {
+  const onRegistrationFormClosed = useCallback(() => {
     setRegistrationFormVisible(false);
-  }
+  }, [setRegistrationFormVisible]);
 
   return (
     <div>
-      <NavBar onLoginClicked={onLoginClicked} onSignUpClicked={onSignUpClicked}/>
-      <LoginForm visible={isLoginFormVisible} onClose={onLoginFormClosed}/>
-      <RegistrationForm visible={isRegistrationFormVisible} onClose={onRegistrationFormClosed}
-                        onSuccessfulRegistration={onLoginClicked}/>
+      <NavBar onLoginClicked={onLoginClicked} onSignUpClicked={onSignUpClicked} />
+      <LoginForm visible={isLoginFormVisible} onClose={onLoginFormClosed} />
+      <RegistrationForm
+        visible={isRegistrationFormVisible}
+        onClose={onRegistrationFormClosed}
+        onSuccessfulRegistration={onLoginClicked}
+      />
     </div>
   );
 }
