@@ -70,7 +70,7 @@ function RegistrationForm(props) {
         if (response.status === 201) {
           onSuccessfulRegistration();
         } else {
-          onFailedRegistration(response.status)
+          onFailedRegistration(response)
         }
         setSnackbarVisible(true);
       });
@@ -107,8 +107,8 @@ function RegistrationForm(props) {
     props.onSuccessfulRegistration();
   }
 
-  function onFailedRegistration(code) {
-    switch (code) {
+  function onFailedRegistration(response) {
+    switch (response.status) {
       case 400:
         setErrors(prevState => ({...prevState, response: "Please check your input!"}));
         break;
@@ -116,6 +116,7 @@ function RegistrationForm(props) {
         setErrors(prevState => ({...prevState, response: "Account already exists!"}));
         break;
       default:
+        console.log(response);
         setErrors(prevState => ({...prevState, response: "Unknown error, please try again later!"}));
         break;
     }
