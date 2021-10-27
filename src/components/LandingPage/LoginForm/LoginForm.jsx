@@ -1,4 +1,4 @@
-import {Avatar, Box, Checkbox, FormControlLabel, Grid, Modal, TextField, Typography} from "@mui/material";
+import {Alert, Avatar, Box, Checkbox, FormControlLabel, Grid, Modal, Snackbar, TextField, Typography} from "@mui/material";
 import LoadingButton from '@mui/lab/LoadingButton';
 import logo from "../../../assets/logo.svg"
 import {useState} from "react";
@@ -16,6 +16,7 @@ function LoginForm(props) {
 
     const [errors, setErrors] = useState({})
     const [loading, setLoading] = useState(false)
+    const [isSnackbarVisible, setSnackbarVisible] = useState(false);
     const [jwt , setJwt] = useState("")
     
 
@@ -45,7 +46,6 @@ function LoginForm(props) {
         }
         setLoading(true);
         //server communication 
-
         const loginRequest = {
             method: 'POST',
             headers: {
@@ -63,18 +63,17 @@ function LoginForm(props) {
                 if (response.status === 200) {
                 onSuccessfulLogin();
                 } else {
-                    onFailedLogin(response.status);
-                    return;
+                onFailedLogin(response.status);
                 }
+                setSnackbarVisible(true);
                 return response.json();
             })
             .then(data => { 
                 if(data != null){
                     setJwt(data.jwt);
                     localStorage.jwt = data.jwt;
-                    console.log(data.msg);
                 }
-                
+                return;
             })
     }
 
@@ -87,10 +86,10 @@ function LoginForm(props) {
     function onFailedLogin(code){
         switch (code) {
             case 401:
-              setErrors(prevState => ({...prevState, response: "wrong credentials"}));
+              setErrors(prevState => ({...prevState, response: "wrong credentials!"}));
               break;
             case 404:
-              setErrors(prevState => ({...prevState, response: "user not found"}));
+              setErrors(prevState => ({...prevState, response: "user not found!"}));
               break;
             default:
               setErrors(prevState => ({...prevState, response: "Unknown error, please try again later!"}));
@@ -182,9 +181,12 @@ function LoginForm(props) {
                     </Grid>
                 </Box>
             </Modal>
-            
-
-
+            <Snackbar open={isSnackbarVisible} autoHideDuration={10000} onClose={() => setSnackbarVisible(false)}>
+            <Alert severity={!!errors['response'] ? 'error' : 'success'} sx={{width: '100%'}}
+                onClose={() => setSnackbarVisible(false)}>
+            {!!errors['response'] ? errors['response'] : 'User authenticated! Now redirect to the Dashboard...'}
+            </Alert>
+            </Snackbar>       
 
         </div>
     );
