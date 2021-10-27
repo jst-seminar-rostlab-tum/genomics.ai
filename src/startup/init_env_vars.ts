@@ -1,20 +1,24 @@
-export function init_env_vars (){
+export function init_env_vars() {
     // check for required env-vars
     const required_env_vars = [
         "test_env_var",
-        "DATABASE_URI"
+        "DATABASE_URI",
+        "S3_OPTIONS",
+        "S3_BUCKET_NAME"
     ];
-    required_env_vars.forEach((required_env_var)=>{
-        if(!(required_env_var in process.env))
+    required_env_vars.forEach((required_env_var) => {
+        if (!(required_env_var in process.env))
             console.warn("WARNING: the environment variable '" + required_env_var + "' is not defined!");
     })
 
     // set default values for missing env vars
-    function setStdEnvValue(env:string, value:any){
-        if(!process.env.hasOwnProperty(env))
+    function setStdEnvValue(env: string, value: any) {
+        if (!process.env.hasOwnProperty(env))
             process.env[env] = value;
     }
 
     setStdEnvValue("PORT", "8050");
     setStdEnvValue("DATABASE_URI", "mongodb://localhost:27017/dev");
+    setStdEnvValue("", "");
+    setStdEnvValue("", "");
 }
