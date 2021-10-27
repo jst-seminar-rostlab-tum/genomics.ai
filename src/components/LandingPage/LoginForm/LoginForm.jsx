@@ -5,6 +5,7 @@ import {useState} from "react";
 import validator from 'validator'
 import styles from './loginform.module.css'
 import CloseIcon from '@mui/icons-material/Close';
+import { BACKEND_ADDRESS } from "../../common/constants";
 
 function LoginForm(props) {
     const [loginDetails, setLoginDetails] = useState({
@@ -15,6 +16,8 @@ function LoginForm(props) {
 
     const [errors, setErrors] = useState({})
     const [loading, setLoading] = useState(false)
+    const [jwt , setJwt] = useState("")
+    
 
     function handleTextChange(e) {
         setLoginDetails(prevState => ({...prevState, [e.target.id]: e.target.value}));
@@ -41,9 +44,58 @@ function LoginForm(props) {
             return;
         }
         setLoading(true);
-        alert(`${loginDetails.email} ${loginDetails.password} ${loginDetails.remember}`);
         //server communication 
-        
+
+        const loginRequest = {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer',
+            },
+            body: JSON.stringify({
+                email: loginDetails.email,
+                password: loginDetails.password,
+            })
+        };
+        fetch(BACKEND_ADDRESS + "/auth", loginRequest)
+            .then(response => {
+                setLoading(false);
+                if (response.status === 200) {
+                onSuccessfulLogin();
+                } else {
+                    onFailedLogin(response.status);
+                    return;
+                }
+                return response.json();
+            })
+            .then(data => { 
+                if(data != null){
+                    setJwt(data.jwt);
+                    localStorage.jwt = data.jwt;
+                    console.log(data.msg);
+                }
+                
+            })
+    }
+
+
+    function onSuccessfulLogin(){
+        onClose();
+        /////TODO:switch to dashboard////
+    }
+
+    function onFailedLogin(code){
+        switch (code) {
+            case 401:
+              setErrors(prevState => ({...prevState, response: "wrong credentials"}));
+              break;
+            case 404:
+              setErrors(prevState => ({...prevState, response: "user not found"}));
+              break;
+            default:
+              setErrors(prevState => ({...prevState, response: "Unknown error, please try again later!"}));
+              break;
+          }
     }
 
     const boxStyle = {
@@ -130,6 +182,10 @@ function LoginForm(props) {
                     </Grid>
                 </Box>
             </Modal>
+            
+
+
+
         </div>
     );
 }

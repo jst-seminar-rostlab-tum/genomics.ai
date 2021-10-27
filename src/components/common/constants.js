@@ -1,1 +1,1 @@
-export const BACKEND_ADDRESS = "https://cors-anywhere.herokuapp.com/https://custom-helix-329116.ey.r.appspot.com";
+export const BACKEND_ADDRESS = "https://custom-helix-329116.ey.r.appspot.com";
