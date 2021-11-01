@@ -3,6 +3,9 @@ import BluebirdPromise from "bluebird";
 import AWS from "aws-sdk";
 import bodyParser from "body-parser";
 import check_auth from "../middleware/check_auth";
+import {IProject, projectModel} from "../../../database/models/project";
+import {ExtRequest} from "../../../definitions/ext_request";
+
 
 const app = express()
 app.use(bodyParser.json())
@@ -28,11 +31,17 @@ app.get('/', check_auth(), (req, res, next) => {
     res.send('Hello World!');
 })
 
-app.get('/start-upload', check_auth(), async (req, res, next) => {
+app.get('/start_upload', check_auth(), async (req: ExtRequest, res, next) => {
     try {
+        let project: IProject = await projectModel.create({
+            owner: req.user_id,
+            fileName: req.query.fileName,
+            uploadDate: new Date(),
+            status: "UPLOAD_PENDING"
+        });
         let params = {
             Bucket: BUCKET_NAME,
-            Key: req.query.fileName,
+            Key: project._id,
             ContentType: req.query.fileType
         }
         let createUploadPromised = BluebirdPromise.promisify(s3.createMultipartUpload.bind(s3));
@@ -43,7 +52,7 @@ app.get('/start-upload', check_auth(), async (req, res, next) => {
     }
 })
 
-app.get('/get-upload-url', check_auth(), async (req, res, next) => {
+app.get('/get_upload_url', check_auth(), async (req, res, next) => {
     try {
         let params = {
             Bucket: BUCKET_NAME,
@@ -60,7 +69,7 @@ app.get('/get-upload-url', check_auth(), async (req, res, next) => {
     }
 })
 
-app.post('/complete-upload', check_auth(), async (req, res, next) => {
+app.post('/complete_upload', check_auth(), async (req, res, next) => {
     try {
         console.log(req.body, ': body')
         let params = {
