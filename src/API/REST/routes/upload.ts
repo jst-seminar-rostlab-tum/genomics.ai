@@ -1,6 +1,6 @@
 import express from "express";
 import BluebirdPromise from "bluebird";
-import AWS from "aws-sdk";
+import AWS, {S3} from "aws-sdk";
 import bodyParser from "body-parser";
 import check_auth from "../middleware/check_auth";
 import {IProject, projectModel} from "../../../database/models/project";
@@ -33,20 +33,27 @@ app.get('/', check_auth(), (req, res, next) => {
 
 app.get('/start_upload', check_auth(), async (req: ExtRequest, res, next) => {
     try {
-        let project: IProject = await projectModel.create({
-            owner: req.user_id,
-            fileName: req.query.fileName,
-            uploadDate: new Date(),
-            status: "UPLOAD_PENDING"
-        });
-        let params = {
-            Bucket: BUCKET_NAME,
-            Key: project._id,
-            ContentType: req.query.fileType
+        if (BUCKET_NAME !== undefined) {
+            let project: IProject = await projectModel.create({
+                owner: req.user_id,
+                fileName: req.query.fileName,
+                uploadDate: new Date(),
+                status: "UPLOAD_PENDING"
+            });
+            let params: S3.CreateMultipartUploadRequest = {
+                Bucket: BUCKET_NAME,
+                Key: project._id
+            }
+            s3.createMultipartUpload(params, (err, uploadData) => {
+                if (err)
+                    console.error(err, err.stack || "Error when requesting uploadId");
+                else
+                    res.send({uploadId: uploadData.UploadId});
+            });
+            /* let createUploadPromised = BluebirdPromise.promisify(s3.createMultipartUpload.bind(s3));
+             let uploadData = await createUploadPromised(params);
+             */
         }
-        let createUploadPromised = BluebirdPromise.promisify(s3.createMultipartUpload.bind(s3));
-        let uploadData = await createUploadPromised(params);
-        res.send({uploadId: uploadData.UploadId});
     } catch (err) {
         console.log(err);
     }
