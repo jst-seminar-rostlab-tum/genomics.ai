@@ -5,7 +5,7 @@ import check_auth from "../middleware/check_auth";
 import { mongo } from "mongoose";
 
 // Tests the Cloud Run connection
-export default function initiate_processing(): Router {
+export default function initiate_processing_route(): Router {
     let router = express.Router();
 
     router

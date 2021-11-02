@@ -4,7 +4,7 @@ import { projectModel, ProjectJobStatus } from "../../../database/models/project
 import check_auth from "../middleware/check_auth";
 
 // Tests the Cloud Run connection
-export default function abort_processing(): Router {
+export default function abort_processing_route(): Router {
     let router = express.Router();
 
     router

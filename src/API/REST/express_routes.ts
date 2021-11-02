@@ -5,8 +5,8 @@ import auth_route from "./routes/auth";
 import hello_route from "./routes/hello";
 import hello_auth_route from "./routes/hello_auth";
 import update_profile_route from "./routes/update_profile";
-import initiate_processing from "./routes/initiate_processing";
-import abort_processing from "./routes/abort_processing";
+import initiate_processing_route from "./routes/initiate_processing";
+import abort_processing_route from "./routes/abort_processing";
 
 // setup the websocket-server on top of the http_server
 export function express_routes(this:REST_Host) : Router {
@@ -22,8 +22,8 @@ export function express_routes(this:REST_Host) : Router {
     // debugging / testing routes
     this.expressApp.use(hello_route());
     this.expressApp.use(hello_auth_route());
-    this.expressApp.use(initiate_processing());
-    this.expressApp.use(abort_processing());
+    this.expressApp.use(initiate_processing_route());
+    this.expressApp.use(abort_processing_route());
 
     this.expressApp.use(/^.*_ah.*$/, (req, res)=>res.status(200).send()) // always tell google everything is fine
     this.expressApp.use((req, res) => res.status(404).send("Not found."));
