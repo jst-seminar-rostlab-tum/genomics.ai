@@ -12,7 +12,7 @@ app.use(bodyParser.json())
 
 const port = 4000
 const BUCKET_NAME = process.env.S3_BUCKET_NAME;
-const S3_OPTIONS = {
+const S3_OPTIONS: S3.Types.ClientConfiguration = {
     accessKeyId: process.env.S3_ACCESS_KEY_ID,
     secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
     endpoint: process.env.S3_ENDPOINT,
@@ -30,7 +30,7 @@ app.use(function (req, res, next) {
 
 app.get('/start_upload', check_auth(), async (req: ExtRequest, res) => {
     try {
-        if (BUCKET_NAME !== undefined) {
+        if (BUCKET_NAME !== undefined && req.query.fileName !== undefined) {
             let project: IProject = await projectModel.create({
                 owner: req.user_id,
                 fileName: req.query.fileName,
@@ -94,8 +94,14 @@ app.post('/complete_upload', check_auth(), async (req: ExtRequest, res) => {
                 if (err) console.error(err, err.stack || "Error when completing multipart upload");
                 if (data.Key !== undefined && data.Bucket !== undefined) {
                     let request: S3.HeadObjectRequest = {Key: data.Key, Bucket: data.Bucket};
-                    s3.headObject(request).promise().then(result => projectModel.updateOne({uploadId: params.UploadId}, {fileSize: result.ContentLength}));
+                    s3.headObject(request)
+                        .promise()
+                        .then(result => projectModel.updateOne({uploadId: params.UploadId},
+                            {fileSize: result.ContentLength}));
                 }
+                if (data.Location !== undefined)
+                    projectModel.updateOne({uploadId: params.UploadId},
+                        {location: data.Location});
                 res.send({data});
             });
         } else res.status(500).send("S3-BucketName is not set");
