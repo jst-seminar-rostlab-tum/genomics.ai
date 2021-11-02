@@ -1,6 +1,6 @@
 import {Document, model, Schema} from "mongoose";
 
-enum ProjectJobStatus {
+export enum ProjectJobStatus {
     "UPLOAD_PENDING",
     "UPLOAD_COMPLETE",
     "PROCESSING_PENDING",

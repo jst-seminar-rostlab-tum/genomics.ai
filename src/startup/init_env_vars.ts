@@ -17,4 +17,5 @@ export function init_env_vars (){
     }
 
     setStdEnvValue("PORT", "443");
+    setStdEnvValue("DATABASE_URI", "mongodb://localhost:27017/dev");
 }

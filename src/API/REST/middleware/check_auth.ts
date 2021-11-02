@@ -34,6 +34,9 @@ export default function check_auth(){
                 return console.error(e); // abort on error;
             }
         }
+        else {
+            return res.status(403).send("JWT missing.");
+        }
     })
 
     return router;
