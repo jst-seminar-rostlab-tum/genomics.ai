@@ -1,11 +1,10 @@
 import express from "express";
-import BluebirdPromise from "bluebird";
-import AWS, {S3} from "aws-sdk";
+import AWS, {AWSError, S3} from "aws-sdk";
 import bodyParser from "body-parser";
 import check_auth from "../middleware/check_auth";
 import {IProject, projectModel} from "../../../database/models/project";
 import {ExtRequest} from "../../../definitions/ext_request";
-import {UploadPartRequest} from "aws-sdk/clients/s3";
+import {CompleteMultipartUploadOutput, CompleteMultipartUploadRequest, UploadPartRequest} from "aws-sdk/clients/s3";
 
 
 const app = express()
@@ -28,11 +27,8 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.get('/', check_auth(), (req, res, next) => {
-    res.send('Hello World!');
-})
 
-app.get('/start_upload', check_auth(), async (req: ExtRequest, res, next) => {
+app.get('/start_upload', check_auth(), async (req: ExtRequest, res) => {
     try {
         if (BUCKET_NAME !== undefined) {
             let project: IProject = await projectModel.create({
@@ -57,34 +53,35 @@ app.get('/start_upload', check_auth(), async (req: ExtRequest, res, next) => {
     }
 })
 
-app.get('/get_upload_url', check_auth(), async (req: ExtRequest, res, next) => {
+app.get('/get_upload_url', check_auth(), async (req: ExtRequest, res) => {
     try {
         if (BUCKET_NAME !== undefined && req.query.uploadId !== undefined) {
-                let project = await projectModel.findOne({
-                    owner: req.user_id,
-                    uploadId: req.query.uploadId
-                }).exec();
-            let params: UploadPartRequest = {
-                Bucket: BUCKET_NAME,
-                Key: req.query.fileName,
-                PartNumber: Number(req.query.partNumber),
-                UploadId: req.query.uploadId
-            }
-            console.log(params);
-            let presignedUrl = await s3.getSignedUrlPromise('uploadPart', params);
-            res.send({presignedUrl});
-
+            let project = await projectModel.findOne({
+                owner: req.user_id,
+                uploadId: String(req.query.uploadId)
+            }).exec();
+            if (project) {
+                let params: UploadPartRequest = {
+                    Bucket: BUCKET_NAME,
+                    Key: project._id,
+                    PartNumber: Number(req.query.partNumber),
+                    UploadId: String(req.query.uploadId)
+                }
+                console.log(params);
+                let presignedUrl = await s3.getSignedUrlPromise('uploadPart', params);
+                res.send({presignedUrl});
+            } else res.status(400).send("Upload was not started");
         } else res.status(500).send("S3-BucketName is not set");
     } catch (err) {
         console.log(err);
     }
 })
 
-app.post('/complete_upload', check_auth(), async (req, res, next) => {
+app.post('/complete_upload', check_auth(), async (req: ExtRequest, res) => {
     try {
         if (BUCKET_NAME !== undefined) {
             console.log(req.body, ': body')
-            let params = {
+            let params: CompleteMultipartUploadRequest = {
                 Bucket: BUCKET_NAME,
                 Key: req.body.params.fileName,
                 MultipartUpload: {
@@ -93,9 +90,13 @@ app.post('/complete_upload', check_auth(), async (req, res, next) => {
                 UploadId: req.body.params.uploadId
             }
             console.log(params)
-            let completeUploadPromised = BluebirdPromise.promisify(s3.completeMultipartUpload.bind(s3));
-            let data = await completeUploadPromised(params);
-            res.send({data});
+            s3.completeMultipartUpload(params, (err: AWSError, data: CompleteMultipartUploadOutput) => {
+                if (err) console.error(err, err.stack || "Error when completing multipart upload");
+                res.send({data});
+            });
+            /*let completeUploadPromised = BluebirdPromise.promisify(s3.completeMultipartUpload.bind(s3));
+             let data = await completeUploadPromised(params);
+             */
         } else res.status(500).send("S3-BucketName is not set");
     } catch (err) {
         console.log(err);
