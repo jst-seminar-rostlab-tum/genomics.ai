@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 import check_auth from "../middleware/check_auth";
 import {IProject, projectModel} from "../../../database/models/project";
 import {ExtRequest} from "../../../definitions/ext_request";
+import {UploadPartRequest} from "aws-sdk/clients/s3";
 
 
 const app = express()
@@ -50,27 +51,30 @@ app.get('/start_upload', check_auth(), async (req: ExtRequest, res, next) => {
                 else
                     res.send({uploadId: uploadData.UploadId});
             });
-            /* let createUploadPromised = BluebirdPromise.promisify(s3.createMultipartUpload.bind(s3));
-             let uploadData = await createUploadPromised(params);
-             */
-        }
+        } else res.status(500).send("S3-BucketName is not set");
     } catch (err) {
         console.log(err);
     }
 })
 
-app.get('/get_upload_url', check_auth(), async (req, res, next) => {
+app.get('/get_upload_url', check_auth(), async (req: ExtRequest, res, next) => {
     try {
-        let params = {
-            Bucket: BUCKET_NAME,
-            Key: req.query.fileName,
-            PartNumber: req.query.partNumber,
-            UploadId: req.query.uploadId
-        }
-        console.log(params)
-        let uploadPartPromised = BluebirdPromise.promisify(s3.getSignedUrl.bind(s3));
-        let presignedUrl = await uploadPartPromised('uploadPart', params);
-        res.send({presignedUrl});
+        if (BUCKET_NAME !== undefined && req.query.uploadId !== undefined) {
+                let project = await projectModel.findOne({
+                    owner: req.user_id,
+                    uploadId: req.query.uploadId
+                }).exec();
+            let params: UploadPartRequest = {
+                Bucket: BUCKET_NAME,
+                Key: req.query.fileName,
+                PartNumber: Number(req.query.partNumber),
+                UploadId: req.query.uploadId
+            }
+            console.log(params);
+            let presignedUrl = await s3.getSignedUrlPromise('uploadPart', params);
+            res.send({presignedUrl});
+
+        } else res.status(500).send("S3-BucketName is not set");
     } catch (err) {
         console.log(err);
     }
@@ -78,19 +82,21 @@ app.get('/get_upload_url', check_auth(), async (req, res, next) => {
 
 app.post('/complete_upload', check_auth(), async (req, res, next) => {
     try {
-        console.log(req.body, ': body')
-        let params = {
-            Bucket: BUCKET_NAME,
-            Key: req.body.params.fileName,
-            MultipartUpload: {
-                Parts: req.body.params.parts
-            },
-            UploadId: req.body.params.uploadId
-        }
-        console.log(params)
-        let completeUploadPromised = BluebirdPromise.promisify(s3.completeMultipartUpload.bind(s3));
-        let data = await completeUploadPromised(params);
-        res.send({data});
+        if (BUCKET_NAME !== undefined) {
+            console.log(req.body, ': body')
+            let params = {
+                Bucket: BUCKET_NAME,
+                Key: req.body.params.fileName,
+                MultipartUpload: {
+                    Parts: req.body.params.parts
+                },
+                UploadId: req.body.params.uploadId
+            }
+            console.log(params)
+            let completeUploadPromised = BluebirdPromise.promisify(s3.completeMultipartUpload.bind(s3));
+            let data = await completeUploadPromised(params);
+            res.send({data});
+        } else res.status(500).send("S3-BucketName is not set");
     } catch (err) {
         console.log(err);
     }
