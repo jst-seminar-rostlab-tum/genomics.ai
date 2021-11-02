@@ -92,11 +92,12 @@ app.post('/complete_upload', check_auth(), async (req: ExtRequest, res) => {
             console.log(params)
             s3.completeMultipartUpload(params, (err: AWSError, data: CompleteMultipartUploadOutput) => {
                 if (err) console.error(err, err.stack || "Error when completing multipart upload");
+                if (data.Key !== undefined && data.Bucket !== undefined) {
+                    let request: S3.HeadObjectRequest = {Key: data.Key, Bucket: data.Bucket};
+                    s3.headObject(request).promise().then(result => projectModel.updateOne({uploadId: params.UploadId}, {fileSize: result.ContentLength}));
+                }
                 res.send({data});
             });
-            /*let completeUploadPromised = BluebirdPromise.promisify(s3.completeMultipartUpload.bind(s3));
-             let data = await completeUploadPromised(params);
-             */
         } else res.status(500).send("S3-BucketName is not set");
     } catch (err) {
         console.log(err);
