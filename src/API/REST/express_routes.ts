@@ -5,9 +5,10 @@ import auth_route from "./routes/auth";
 import hello_route from "./routes/hello";
 import hello_auth_route from "./routes/hello_auth";
 import update_profile_route from "./routes/update_profile";
+import upload_route from "./routes/upload";
 
 // setup the websocket-server on top of the http_server
-export function express_routes(this:REST_Host) : Router {
+export function express_routes(this: REST_Host): Router {
     let router = express.Router();
 
     // unauthenticated routes
@@ -21,7 +22,10 @@ export function express_routes(this:REST_Host) : Router {
     this.expressApp.use(hello_route());
     this.expressApp.use(hello_auth_route());
 
-    this.expressApp.use(/^.*_ah.*$/, (req, res)=>res.status(200).send()) // always tell google everything is fine
+    // upload route
+    this.expressApp.use(upload_route);
+
+    this.expressApp.use(/^.*_ah.*$/, (req, res) => res.status(200).send()) // always tell google everything is fine
     this.expressApp.use((req, res) => res.status(404).send("Not found."));
 
     return router;

@@ -6,7 +6,7 @@ import {IProject, projectModel} from "../../../database/models/project";
 import {ExtRequest} from "../../../definitions/ext_request";
 import {CompleteMultipartUploadOutput, CompleteMultipartUploadRequest, UploadPartRequest} from "aws-sdk/clients/s3";
 
-export default function upload_router() {
+export default function upload_route() {
     const router = express.Router();
     router.use(bodyParser.json());
 
