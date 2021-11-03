@@ -38,13 +38,18 @@ export default function upload_router() {
                 });
                 let params: S3.CreateMultipartUploadRequest = {
                     Bucket: BUCKET_NAME,
-                    Key: project._id
+                    Key: String(project._id)
                 }
                 s3.createMultipartUpload(params, (err, uploadData) => {
                     if (err)
                         console.error(err, err.stack || "Error when requesting uploadId");
-                    else
+                    else {
+                        projectModel.updateOne(
+                            {_id: project._id},
+                            {uploadId: uploadData.UploadId}
+                        )
                         res.send({uploadId: uploadData.UploadId});
+                    }
                 });
             } else res.status(500).send("S3-BucketName is not set");
         } catch (err) {
@@ -58,15 +63,14 @@ export default function upload_router() {
                 let project = await projectModel.findOne({
                     owner: req.user_id,
                     uploadId: String(req.query.uploadId)
-                }).exec();
+                });
                 if (project) {
                     let params: UploadPartRequest = {
                         Bucket: BUCKET_NAME,
-                        Key: project._id,
+                        Key: String(project._id),
                         PartNumber: Number(req.query.partNumber),
                         UploadId: String(req.query.uploadId)
                     }
-                    console.log(params);
                     let presignedUrl = await s3.getSignedUrlPromise('uploadPart', params);
                     res.send({presignedUrl});
                 } else res.status(400).send("Upload was not started");
@@ -79,31 +83,41 @@ export default function upload_router() {
     router.post('/complete_upload', check_auth(), async (req: ExtRequest, res) => {
         try {
             if (BUCKET_NAME) {
-                console.log(req.body, ': body')
-                let params: CompleteMultipartUploadRequest = {
-                    Bucket: BUCKET_NAME,
-                    Key: req.body.params.fileName,
-                    MultipartUpload: {
-                        Parts: req.body.params.parts
-                    },
-                    UploadId: req.body.params.uploadId
-                }
-                console.log(params)
-                s3.completeMultipartUpload(params, (err: AWSError, data: CompleteMultipartUploadOutput) => {
-                    if (err) console.error(err, err.stack || "Error when completing multipart upload");
-                    if (data.Key && data.Bucket) {
-                        let request: S3.HeadObjectRequest = {Key: data.Key, Bucket: data.Bucket};
-                        s3.headObject(request)
-                            .promise()
-                            .then(result => projectModel.updateOne({uploadId: params.UploadId},
-                                {fileSize: result.ContentLength}));
+                let project = await
+                    projectModel.findOne({
+                        owner: req.user_id,
+                        uploadId: String(req.body.params.uploadId)
+                    });
+                if (project) {
+                    //console.log(req.body, ': body')
+                    let params: CompleteMultipartUploadRequest = {
+                        Bucket: BUCKET_NAME,
+                        Key: String(project._id),
+                        MultipartUpload: {
+                            Parts: req.body.params.parts
+                        },
+                        UploadId: req.body.params.uploadId
                     }
-                    if (data.Location)
-                        projectModel.updateOne({uploadId: params.UploadId},
-                            {location: data.Location});
-                    res.send({data});
-                });
-            } else res.status(500).send("S3-BucketName is not set");
+                    //console.log(params)
+                    s3.completeMultipartUpload(params, (err: AWSError, data: CompleteMultipartUploadOutput) => {
+                        if (err) console.error(err, err.stack || "Error when completing multipart upload");
+                        if (data.Key && data.Bucket) {
+                            let request: S3.HeadObjectRequest = {Key: data.Key, Bucket: data.Bucket};
+                            s3.headObject(request)
+                                .promise()
+                                .then(result => projectModel.updateOne({uploadId: params.UploadId},
+                                    {fileSize: result.ContentLength}).exec());
+                        }
+                        if (data && data.Location && project) {
+                            projectModel.updateOne(
+                                {_id: project._id},
+                                {location: data.Location}).exec();
+                        }
+                        res.send({data});
+                    });
+
+                } else res.status(500).send("S3-BucketName is not set");
+            }
         } catch (err) {
             console.log(err);
         }
