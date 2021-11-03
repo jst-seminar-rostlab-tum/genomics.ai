@@ -6,7 +6,9 @@ import hello_route from "./routes/hello";
 import hello_auth_route from "./routes/hello_auth";
 import update_profile_route from "./routes/update_profile";
 import get_profile_route from "./routes/get_profile";
-
+import get_job_route from "./routes/get_job";
+import get_jobs_route from "./routes/get_jobs";
+ 
 // setup the websocket-server on top of the http_server
 export function express_routes(this:REST_Host) : Router {
     let router = express.Router();
@@ -18,6 +20,8 @@ export function express_routes(this:REST_Host) : Router {
     // authenticated routes
     this.expressApp.use(update_profile_route());
     this.expressApp.use(get_profile_route());
+    this.expressApp.use(get_job_route());
+    this.expressApp.use(get_jobs_route());
 
     // debugging / testing routes
     this.expressApp.use(hello_route());

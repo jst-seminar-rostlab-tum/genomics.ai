@@ -1,6 +1,6 @@
 import express from "express";
 import {ExtRequest} from "../../../definitions/ext_request";
-import {IUser, userModel} from "../../../database/models/user";
+import {userModel} from "../../../database/models/user";
 import check_auth from "../middleware/check_auth";
 
 export default function get_profile_route() {
@@ -16,8 +16,6 @@ export default function get_profile_route() {
       } catch (e) {
         return res.status(500);
       }
-
-
     });
   return router;
 }
