@@ -125,4 +125,5 @@ export default function upload_route() {
             console.log(err);
         }
     })
+    return router;
 }
