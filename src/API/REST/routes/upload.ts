@@ -47,7 +47,7 @@ export default function upload_route() {
                         projectModel.updateOne(
                             {_id: project._id},
                             {uploadId: uploadData.UploadId}
-                        )
+                        ).exec();
                         res.send({uploadId: uploadData.UploadId});
                     }
                 });
@@ -63,7 +63,7 @@ export default function upload_route() {
                 let project = await projectModel.findOne({
                     owner: req.user_id,
                     uploadId: String(req.query.uploadId)
-                });
+                }).exec();
                 if (project) {
                     let params: UploadPartRequest = {
                         Bucket: BUCKET_NAME,
@@ -87,7 +87,7 @@ export default function upload_route() {
                     projectModel.findOne({
                         owner: req.user_id,
                         uploadId: String(req.body.params.uploadId)
-                    });
+                    }).exec();
                 if (project) {
                     //console.log(req.body, ': body')
                     let params: CompleteMultipartUploadRequest = {
