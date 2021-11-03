@@ -111,7 +111,10 @@ export default function upload_router() {
                         if (data && data.Location && project) {
                             projectModel.updateOne(
                                 {_id: project._id},
-                                {location: data.Location}).exec();
+                                {
+                                    location: data.Location
+                                    , status: "UPLOAD_COMPLETE"
+                                }).exec();
                         }
                         res.send({data});
                     });
