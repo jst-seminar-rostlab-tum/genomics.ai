@@ -30,7 +30,7 @@ app.use(function (req, res, next) {
 
 app.get('/start_upload', check_auth(), async (req: ExtRequest, res) => {
     try {
-        if (BUCKET_NAME !== undefined && req.query.fileName !== undefined) {
+        if (BUCKET_NAME  && req.query.fileName) {
             let project: IProject = await projectModel.create({
                 owner: req.user_id,
                 fileName: req.query.fileName,
@@ -55,7 +55,7 @@ app.get('/start_upload', check_auth(), async (req: ExtRequest, res) => {
 
 app.get('/get_upload_url', check_auth(), async (req: ExtRequest, res) => {
     try {
-        if (BUCKET_NAME !== undefined && req.query.uploadId !== undefined) {
+        if (BUCKET_NAME  && req.query.uploadId ) {
             let project = await projectModel.findOne({
                 owner: req.user_id,
                 uploadId: String(req.query.uploadId)
@@ -79,7 +79,7 @@ app.get('/get_upload_url', check_auth(), async (req: ExtRequest, res) => {
 
 app.post('/complete_upload', check_auth(), async (req: ExtRequest, res) => {
     try {
-        if (BUCKET_NAME !== undefined) {
+        if (BUCKET_NAME ) {
             console.log(req.body, ': body')
             let params: CompleteMultipartUploadRequest = {
                 Bucket: BUCKET_NAME,
@@ -92,14 +92,14 @@ app.post('/complete_upload', check_auth(), async (req: ExtRequest, res) => {
             console.log(params)
             s3.completeMultipartUpload(params, (err: AWSError, data: CompleteMultipartUploadOutput) => {
                 if (err) console.error(err, err.stack || "Error when completing multipart upload");
-                if (data.Key !== undefined && data.Bucket !== undefined) {
+                if (data.Key  && data.Bucket ) {
                     let request: S3.HeadObjectRequest = {Key: data.Key, Bucket: data.Bucket};
                     s3.headObject(request)
                         .promise()
                         .then(result => projectModel.updateOne({uploadId: params.UploadId},
                             {fileSize: result.ContentLength}));
                 }
-                if (data.Location !== undefined)
+                if (data.Location)
                     projectModel.updateOne({uploadId: params.UploadId},
                         {location: data.Location});
                 res.send({data});
