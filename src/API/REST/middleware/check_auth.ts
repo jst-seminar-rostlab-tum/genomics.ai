@@ -27,6 +27,7 @@ export default function check_auth(){
                         req.is_authenticated = true;
                         req.user_id = decoded.id;
                         req.email = result!.email;
+                        req.administrator = result!.administrator;
                         next();
                     })
                 });

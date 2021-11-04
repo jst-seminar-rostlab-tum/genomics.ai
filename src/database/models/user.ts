@@ -7,6 +7,7 @@ export interface IUser extends Document {
     password: string;
     note: string;
     authorized: boolean;
+    administrator: boolean;
     token: string
 }
 
@@ -16,7 +17,8 @@ const userSchema = new Schema<IUser>({
     email: {type: String, unique: true, require: true},
     password: {type: String, require: true, select: false},
     note: {type: String, require: false},
-    authorized: {type: Boolean, required: true, default: false}
+    authorized: {type: Boolean, required: true, default: false},
+    administrator: {type: Boolean, required: true, default: false}
 });
 
 export const userModel = model<IUser>("User", userSchema);
