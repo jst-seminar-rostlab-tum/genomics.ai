@@ -1,6 +1,7 @@
 import { Box, Container } from '@mui/material';
 import React from 'react';
 import Uploader from './Uploader/Uploader';
+import StatusQueue from './StatusQueue/StatusQueue';
 import styles from './dashboard.module.css';
 
 function Dashboard() {
@@ -22,7 +23,7 @@ function Dashboard() {
       </Container>
 
       <Container className={styles.fileQueue}>
-        <h1>Queue of files</h1>
+        <StatusQueue />
       </Container>
     </Box>
   );

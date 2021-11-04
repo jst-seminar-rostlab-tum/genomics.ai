@@ -1,7 +1,7 @@
 import './app.module.css';
 import React from 'react';
 import { createTheme, ThemeProvider } from '@mui/material';
-import LandingPage from './components/LandingPage/LandingPage';
+import Dashboard from './components/Dashboard/Dashboard';
 
 function App() {
   const theme = createTheme({
@@ -18,7 +18,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <div>
-        <LandingPage />
+        <Dashboard />
       </div>
     </ThemeProvider>
   );
