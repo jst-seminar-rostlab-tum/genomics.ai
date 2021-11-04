@@ -15,7 +15,6 @@ export default function verify_email_route() {
       }
 
       try {
-        //await userModel.findByIdAndUpdate(userId, {isVerified: true});
         const user = await userModel.findById(userId);
 
         if (user!.emailVerificationToken !== verificationToken) {
