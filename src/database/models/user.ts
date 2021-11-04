@@ -19,7 +19,7 @@ const userSchema = new Schema<IUser>({
     email: {type: String, unique: true, required: true},
     password: {type: String, required: true, select: false},
     note: {type: String, required: false},
-    emailVerificationToken: {type: String, unique: true, required: true},
+    emailVerificationToken: {type: String, required: true},
     isVerified: {type: Boolean, required: true, default: false},
     isAuthorized: {type: Boolean, required: true, default: false},
     isAdministrator: {type: Boolean, required: true, default: false}

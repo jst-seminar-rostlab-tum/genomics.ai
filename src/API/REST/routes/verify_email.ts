@@ -6,11 +6,24 @@ export default function verify_email_route() {
   let router = express.Router();
 
   router
-    .get("/verify_email/:token", async (req: ExtRequest, res: any) => {
-      const verificationToken = req.params.token;
+    .get("/verify_email/:id", async (req: ExtRequest, res: any) => {
+      const userId = req.params.id;
+      const verificationToken = req.query.token;
+
+      if (verificationToken == null) {
+        return res.status(400).send("Missing token query parameter");
+      }
 
       try {
-        await userModel.findOneAndUpdate({emailVerificationToken: verificationToken}, {isVerified: true});
+        //await userModel.findByIdAndUpdate(userId, {isVerified: true});
+        const user = await userModel.findById(userId);
+
+        if (user!.emailVerificationToken !== verificationToken) {
+          return res.status(400).send("Wrong token");
+        }
+
+        user!.isVerified = true;
+        await user!.save();
 
         return res
           .set("Content-Type", "text/html")
