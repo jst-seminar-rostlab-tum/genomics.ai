@@ -1,13 +1,14 @@
 import express from "express";
 import { userModel } from "../../../database/models/user";
 import { ExtRequest } from "../../../definitions/ext_request";
+import check_auth from "../middleware/check_auth";
 
 export default function authorize_user_route() {
   let router = express.Router();
 
   router
-    .post("/authorize_user/:id", async (req: ExtRequest, res: any) => {
-      if (!req.administrator) {
+    .post("/authorize_user/:id", check_auth(), async (req: ExtRequest, res: any) => {
+      if (!req.is_administrator) {
         return res.status(403).send("Unauthorized");
       }
 
@@ -20,4 +21,5 @@ export default function authorize_user_route() {
         return res.status(500).send(err);
       }
     });
+  return router;
 }

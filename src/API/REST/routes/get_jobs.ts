@@ -7,7 +7,7 @@ export default function get_job_route() {
   let router = express.Router();
 
   router
-    .get("/get_jobs", check_auth(), async (req: ExtRequest, res: any) => {
+    .get("/jobs", check_auth(), async (req: ExtRequest, res: any) => {
       try {
         const jobs = await projectModel.find({owner: req.user_id});
         return res.status(200).json(jobs!);

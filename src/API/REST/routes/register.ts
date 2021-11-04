@@ -1,5 +1,6 @@
 import express, {Router} from "express";
 import bcrypt from "bcrypt";
+import {createHash} from "crypto";
 import {IUser, userModel} from "../../../database/models/user";
 
 export default function register_route(): Router {
@@ -17,11 +18,12 @@ export default function register_route(): Router {
                 return res.status(409).send("User with the given email already exists");
 
             const saltHashedPassword = await bcrypt.hash(password, 15);
+            const emailVerificationToken = await createHash("sha256").update(email).digest("hex");
 
             let user : (IUser | undefined) = undefined;
             try{
                 await userModel.create({
-                    firstName: first_name, lastName: last_name, email, password: saltHashedPassword, note
+                    firstName: first_name, lastName: last_name, email, password: saltHashedPassword, note, emailVerificationToken
                 });
 
                 return res

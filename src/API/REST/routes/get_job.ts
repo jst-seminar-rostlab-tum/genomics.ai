@@ -7,7 +7,7 @@ export default function get_job_route() {
   let router = express.Router();
 
   router
-    .get("/get_job/:id", check_auth(), async (req: ExtRequest, res: any) => {
+    .get("/job/:id", check_auth(), async (req: ExtRequest, res: any) => {
       const jobId = req.params.id;
 
       try {

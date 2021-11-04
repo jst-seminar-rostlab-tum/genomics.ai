@@ -7,7 +7,7 @@ export default function get_profile_route() {
   let router = express.Router();
 
   router
-    .get("/get_profile/:id", check_auth(), async (req: ExtRequest, res: any) => {
+    .get("/profile/:id", check_auth(), async (req: ExtRequest, res: any) => {
       const userId = req.params.id;
 
       try {
