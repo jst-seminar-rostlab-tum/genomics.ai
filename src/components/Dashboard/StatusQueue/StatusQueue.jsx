@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
-import { List, ListItem, Box, Collapse, IconButton } from '@mui/material';
+import { List, Box, Collapse, IconButton } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import StatusCard from './StatusCard/StatusCard';
 import styles from './statusqueue.module.css';
 
 function StatusQueue() {
-  let arr1 = [1, 2, 3];
+  let arr1 = [12342432, 2, 3];
   const [expandList, setExpandList] = useState(false);
 
   return (
@@ -17,12 +17,10 @@ function StatusQueue() {
         </IconButton>
       </div>
       <Box className={styles.flexContainer}>
-        <Collapse in={expandList}>
-          <List>
+        <Collapse in={expandList} sx={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+          <List sx={{ width: '100%', alignItems: 'center', justifyContent: 'center' }}>
             {arr1.map((index) => (
-              <StatusCard 
-              index={index}
-              ></StatusCard>
+              <StatusCard id={index} sx={{ alignItems: 'center' }} />
             ))}
           </List>
         </Collapse>

@@ -1,0 +1,23 @@
+.cardContainer{
+    padding: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+    width: 100%;
+}
+
+.headerContainer{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    align-items: center;
+    padding-bottom: 0px;
+}
+
+h4{
+    margin: 0px;
+    padding: 0px;
+    text-align: center;
+    font-size: 14px;
+
+}
+
