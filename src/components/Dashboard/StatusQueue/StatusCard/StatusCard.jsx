@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Card,
   Box,
@@ -24,18 +24,20 @@ completed - state after all stages are completed
 unknown - the unknown state happens when the status can't be updated
 */
 
-function StatusCard({ id, status }) {
+function StatusCard({ id }) {
+  const [status, setStatus] = useState('unknown');
   const statusColor = {
-    completed: green[300],
-    error: red[300],
     pending: yellow[600],
     processing: blue[300],
+    error: red[300],
+    completed: green[300],
     unknown: grey[500],
   };
 
   // setting status to known for testing
   const testStatusColor = statusColor.pending;
-  status = 'pending';
+  //The status is not passed down as a prop, but received from backend
+  setStatus('pending');
 
   return (
     <Box className={styles.cardContainer}>
