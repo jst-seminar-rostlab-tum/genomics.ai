@@ -14,22 +14,22 @@ export default function verify_email_route() {
         return res.status(400).send("Missing token query parameter");
       }
 
-      try {
-        const user = await userModel.findById(userId);
+      const user = await userModel.findById(userId);
 
-        if (user!.emailVerificationToken !== verificationToken) {
-          return res.status(400).send("Wrong token");
-        }
-
-        user!.isVerified = true;
-        await user!.save();
-
-        return res
-          .set("Content-Type", "text/html")
-          .send(Buffer.from("<h1>Email verified</h2><p>Congratulations, you have successfully verified your email address!</p>"));
-      } catch (err) {
-        return res.status(500).send(err);
+      if (!user) {
+        return res.status(404).send(`User ${userId} not found`);
       }
+
+      if (user.emailVerificationToken !== verificationToken) {
+        return res.status(400).send("Wrong token");
+      }
+
+      user.isVerified = true;
+      await user.save();
+
+      return res
+        .set("Content-Type", "text/html")
+        .send(Buffer.from("<h1>Email verified</h2><p>Congratulations, you have successfully verified your email address!</p>"));
     });
   return router;
 }

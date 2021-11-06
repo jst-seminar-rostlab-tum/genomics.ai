@@ -10,12 +10,13 @@ export default function get_profile_route() {
     .get("/profile/:id", check_auth(), async (req: ExtRequest, res: any) => {
       const userId = req.params.id;
 
-      try {
-        const user = await userModel.findOne({_id: userId});
-        return res.status(200).json(user!.toJSON());
-      } catch (e) {
-        return res.status(500);
+      const user = await userModel.findById(userId);
+
+      if (!user) {
+        res.status(404).send(`User ${userId} not found`);
       }
+
+      return res.status(200).json(user);
     });
   return router;
 }

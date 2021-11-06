@@ -14,12 +14,16 @@ export default function authorize_user_route() {
 
       const userId = req.params.id;
 
-      try {
-        await userModel.findByIdAndUpdate(userId, {authorized: true});
-        return res.status(200).send("User has been authorized");
-      } catch (err) {
-        return res.status(500).send(err);
+      const user = await userModel.findById(userId);
+
+      if (!user) {
+        return res.status(404).send(`User ${userId} not found`);
       }
+      
+      user.isAuthorized = true;
+      await user.save();
+
+      return res.status(200).send(`User ${userId} has been authorized`);
     });
   return router;
 }
