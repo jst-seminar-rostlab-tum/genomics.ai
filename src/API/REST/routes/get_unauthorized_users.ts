@@ -13,7 +13,7 @@ export default function get_unauthorized_users_route() {
       }
 
       try {
-        const unauthorizedUsers = await userModel.find({authorized: false});
+        const unauthorizedUsers = await userModel.find({isAuthorized: false});
         return res.status(200).json(unauthorizedUsers!);
       } catch (err) {
         return res.status(500).send(err);
