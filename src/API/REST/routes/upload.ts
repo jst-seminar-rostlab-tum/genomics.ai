@@ -7,7 +7,7 @@ import {ExtRequest} from "../../../definitions/ext_request";
 import {CompleteMultipartUploadOutput, CompleteMultipartUploadRequest, UploadPartRequest} from "aws-sdk/clients/s3";
 
 export default function upload_route() {
-    const router = express.Router();
+    let router = express.Router();
     router.use(bodyParser.json());
 
     const BUCKET_NAME = process.env.S3_BUCKET_NAME;
@@ -22,14 +22,15 @@ export default function upload_route() {
 
     router.use(function (req, res, next) {
         res.header("Access-Control-Allow-Origin", "*");
-        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE');
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, auth");
         next();
     });
 
 
     router.get('/start_upload', check_auth(), async (req: ExtRequest, res) => {
         try {
-            if (BUCKET_NAME && req.query.fileName) {
+            if (BUCKET_NAME && req.user_id && req.query.fileName) {
                 let project: IProject = await projectModel.create({
                     owner: req.user_id,
                     fileName: req.query.fileName,
@@ -59,7 +60,7 @@ export default function upload_route() {
 
     router.get('/get_upload_url', check_auth(), async (req: ExtRequest, res) => {
         try {
-            if (BUCKET_NAME && req.query.uploadId) {
+            if (BUCKET_NAME && req.user_id && req.query.uploadId) {
                 let project = await projectModel.findOne({
                     owner: req.user_id,
                     uploadId: String(req.query.uploadId)
@@ -82,7 +83,7 @@ export default function upload_route() {
 
     router.post('/complete_upload', check_auth(), async (req: ExtRequest, res) => {
         try {
-            if (BUCKET_NAME) {
+            if (BUCKET_NAME && req.user_id) {
                 let project = await
                     projectModel.findOne({
                         owner: req.user_id,
@@ -119,7 +120,9 @@ export default function upload_route() {
                         res.send({data});
                     });
 
-                } else res.status(500).send("S3-BucketName is not set");
+                } else res.status(400).send("Project could not be found");
+            } else {
+                res.status(500).send("Server was not set up correctly")
             }
         } catch (err) {
             console.log(err);
