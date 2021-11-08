@@ -18,8 +18,7 @@ def hello_world():
         if project is None:
             return f"There exists no project with upload ID {upload_id}"
 
-        thread = Thread(target= do_work, args=(upload_id, ))
-        thread.start()
+        do_work(upload_id)
 
         return f"Started working on {upload_id}..."
     except:
@@ -31,11 +30,11 @@ def do_work(upload_id: str) -> None:
 
         if project is None:
             print("Project does not exist anymore. Terminating")
-            exit()
+            return
 
-        if project.status == 3:
+        if int(project['status']) == 3:
             print("Project has been aborted. Terminating.")
-            exit()
+            return
 
         sleep(3)
 
