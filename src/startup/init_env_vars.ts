@@ -3,7 +3,7 @@ export function init_env_vars (){
     const required_env_vars = [
         "test_env_var",
         "DATABASE_URI",
-        "MAIL_API_KEY",
+        "MAILGUN_API_KEY",
         "MAIL_DOMAIN"
     ];
     required_env_vars.forEach((required_env_var)=>{

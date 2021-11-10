@@ -1,24 +1,39 @@
+import path from "path";
 
+import nodemailer from "nodemailer";
+import mailgunTransport from "nodemailer-mailgun-transport";
+import fs from "fs/promises";
+import handlebars from "handlebars";
 
-export function send_mail(recipient: string, subject: string, body: string) {
-    const API_KEY = process.env.MAIL_API_KEY;
-    const DOMAIN = process.env.MAIL_DOMAIN;
-    /*const mailer = new NodeMailgun(API_KEY, DOMAIN);
+module.exports = new class {
+    transport : nodemailer.Transporter;
 
-    mailer.fromEmail = "noreply@genecruncher.io";
-    mailer.fromTitle = subject;
+    constructor(){
+        this.transport = nodemailer.createTransport(mailgunTransport({
+            auth: {
+                api_key: process.env.MAILGUN_API_KEY!,
+                domain: process.env.MAIL_DOMAIN
+            }
+        }));
+    }
 
-    mailer
-        .init()
-        .send(recipient, subject, body)
-        .then((_:any) => console.log(`Mail sent to ${recipient}`))
-        .catch((error) => console.error(error));*/
-}
+    async send(to : string, subject : string, template_name : string, data : any) {
+        let self = this;
+        let texttemplate = await fs.readFile(path.join(__dirname, "./../views/mails", template_name, "text.txt"), 'utf-8')
+        let htmltemplate = await fs.readFile(path.join(__dirname, "./../views/mails", template_name, "html.html"), 'utf-8');
 
-export function send_verification_mail(recipient: string, token: string) {
-    send_mail(
-        recipient, 
-        "Verification",
-        `Thank you for signing up! Please verify your e-mail address using this link: http://localhost:8050/verify/${token}.\nThank you!`
-    );
-}
+        let rendered_txt = handlebars.compile(texttemplate)(data);
+        let rendered_html = handlebars.compile(htmltemplate)(data);
+        return self.transport.sendMail({
+            from: `GeneCruncher <info@${process.env.MAIL_DOMAIN}>`,
+            to: to,
+            subject: subject,
+            text: rendered_txt,
+            html: rendered_html
+        });
+    }
+
+    async send_verification_mail(firstname: string, recipient: string, token: string) {
+        return this.send(recipient, "Verify Email", "signup_confirm_email", {link: `http://localhost:8050/verify/${token}`, firstname:firstname})
+    }
+};
