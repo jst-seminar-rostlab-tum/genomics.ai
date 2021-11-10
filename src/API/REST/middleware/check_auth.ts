@@ -14,7 +14,7 @@ export default function check_auth(){
                 jwt.verify(req.header("auth")!, "SECRET", async function(err, decoded){
                     if(err || !decoded || !decoded.email){
                         if(err?.name == "TokenExpiredError")
-                            return res.status(440).send("JWT authentication token expired. Please log in again")
+                           return res.status(440).send("JWT authentication token expired. Please log in again")
 
                         return res.status(401).send("Invalid authentication");
                     }
@@ -29,7 +29,7 @@ export default function check_auth(){
                         req.email = result!.email;
                         req.is_administrator = result!.isAdministrator;
                         req.is_authorized = result!.isAuthorized;
-                        req.is_verified = result!.isVerified;
+                        req.is_verified = result!.isEmailVerified;
                         next();
                     })
                 });
