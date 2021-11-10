@@ -1,9 +1,8 @@
 import express, {Router} from "express";
 import bcrypt from "bcrypt";
-import crypto from "crypto";
 import {IUser, userModel} from "../../../database/models/user";
 import {Verifier} from "academic-email-verifier";
-import {send_verification_mail} from "../../../util/mailer";
+import {mailer} from "../../../util/mailer";
 import {tokenModel} from "../../../database/models/token";
 
 export default function register_route() : Router {
@@ -23,7 +22,6 @@ export default function register_route() : Router {
             const institutionName = await Verifier.getInstitutionName(email);
             const isAcademic = institutionName !== "";
             const saltHashedPassword = await bcrypt.hash(password, 15);
-            const emailVerificationToken = await crypto.randomBytes(16).toString("hex");
 
             let user : (IUser | undefined) = undefined;
             try{
@@ -38,17 +36,12 @@ export default function register_route() : Router {
 
                 if (isAcademic) {
                     const token = await tokenModel.create({ _userId: user._id });
-                    send_verification_mail(email, token.token);
+                    await mailer.send_verification_mail(first_name, email, token.token);
                     return res.status(201).json(user);
                 }else{
+                    // TODO: maybe have users verify their email even if account isn't auto-approved?
                     return res.status(200).send("The e-mail address does not seem to belong to an academic institution. Wait for an administrator to manually approve you.");
                 }
-
-                return res
-                    .status(201)
-                    .json({
-                        msg: "User has been registered"
-                    })
             }catch(err){
                 console.error(err);
                 return res.status(500).send("Unable to create user. (DB-error)");

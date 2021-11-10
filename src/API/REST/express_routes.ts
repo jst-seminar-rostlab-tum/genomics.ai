@@ -12,7 +12,7 @@ import get_unauthorized_users_route from "./routes/get_unauthorized_users";
 import authorize_user_route from "./routes/authorize_user";
 import verify_email_route from "./routes/verify_email";
  
-import resend_verification_link from "./routes/resendVerificationLink";
+import resend_verification_link from "./routes/resend_verification_link";
 // setup the websocket-server on top of the http_server
 export function express_routes(this:REST_Host) : Router {
     let router = express.Router();

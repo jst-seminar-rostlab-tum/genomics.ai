@@ -8,7 +8,7 @@ export interface IUser extends Document {
     note: string;
     token: string;
     emailVerificationToken: string;
-    isVerified: boolean; // email has been verified
+    isEmailVerified: boolean; // email has been verified
     isAuthorized: boolean; // user has been authorized by an administrator
     isAdministrator: boolean;
 }
@@ -19,8 +19,7 @@ const userSchema = new Schema<IUser>({
     email: {type: String, unique: true, required: true},
     password: {type: String, required: true, select: false},
     note: {type: String, required: false},
-    emailVerificationToken: {type: String, required: true},
-    isVerified: {type: Boolean, required: true, default: false},
+    isEmailVerified: {type: Boolean, required: true, default: false},
     isAuthorized: {type: Boolean, required: true, default: false},
     isAdministrator: {type: Boolean, required: true, default: false}
 });

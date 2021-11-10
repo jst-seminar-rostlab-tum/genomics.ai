@@ -9,12 +9,10 @@ export default function get_job_route() {
   router
     .get("/job/:id", check_auth(), async (req: ExtRequest, res: any) => {
       const jobId = req.params.id;
-
       const job = await projectModel.findById(jobId);
 
-      if (!job) {
+      if (!job)
         return res.status(404).send(`Job ${jobId} not found`);
-      }
 
       return res.status(200).json(job);
     });

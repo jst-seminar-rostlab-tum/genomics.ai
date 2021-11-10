@@ -3,23 +3,23 @@ import { userModel } from "../../../database/models/user";
 import { ExtRequest } from "../../../definitions/ext_request";
 import check_auth from "../middleware/check_auth";
 
+// TODO: This route requires JWT in cookies to be set (for the browser to send it with any GET-request automatically)
+
 export default function authorize_user_route() {
   let router = express.Router();
 
   router
     .post("/authorize_user/:id", check_auth(), async (req: ExtRequest, res: any) => {
-      if (!req.is_administrator) {
-        return res.status(403).send("Unauthorized");
-      }
+      if (!req.is_administrator)
+          return res.status(403).send("Unauthorized");
 
       const userId = req.params.id;
-
       const user = await userModel.findById(userId);
 
-      if (!user) {
+      if (!user)
         return res.status(404).send(`User ${userId} not found`);
-      }
-      
+
+      // set authorized to true
       user.isAuthorized = true;
       await user.save();
 
