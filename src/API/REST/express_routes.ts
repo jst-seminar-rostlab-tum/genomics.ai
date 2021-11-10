@@ -5,6 +5,9 @@ import auth_route from "./routes/auth";
 import hello_route from "./routes/hello";
 import hello_auth_route from "./routes/hello_auth";
 import update_profile_route from "./routes/update_profile";
+import verify_email from "./routes/verifyEmail";
+import resend_verification_link from "./routes/resendVerificationLink";
+import approve_user from "./routes/approveUser";
 
 // setup the websocket-server on top of the http_server
 export function express_routes(this:REST_Host) : Router {
@@ -13,6 +16,9 @@ export function express_routes(this:REST_Host) : Router {
     // unauthenticated routes
     this.expressApp.use(auth_route());
     this.expressApp.use(register_route());
+    this.expressApp.use(verify_email());
+    this.expressApp.use(resend_verification_link());
+    this.expressApp.use(approve_user());
 
     // authenticated routes
     this.expressApp.use(update_profile_route());
