@@ -12,6 +12,7 @@ import get_unauthorized_users_route from "./routes/get_unauthorized_users";
 import authorize_user_route from "./routes/authorize_user";
 import verify_email_route from "./routes/verify_email";
  
+import resend_verification_link from "./routes/resendVerificationLink";
 // setup the websocket-server on top of the http_server
 export function express_routes(this:REST_Host) : Router {
     let router = express.Router();
@@ -19,7 +20,7 @@ export function express_routes(this:REST_Host) : Router {
     // unauthenticated routes
     this.expressApp.use(auth_route());
     this.expressApp.use(register_route());
-    this.expressApp.use(verify_email_route());
+    this.expressApp.use(resend_verification_link());
 
     // authenticated routes
     this.expressApp.use(update_profile_route());

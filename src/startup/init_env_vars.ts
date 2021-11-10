@@ -2,7 +2,9 @@ export function init_env_vars (){
     // check for required env-vars
     const required_env_vars = [
         "test_env_var",
-        "DATABASE_URI"
+        "DATABASE_URI",
+        "MAILGUN_API_KEY",
+        "MAIL_DOMAIN"
     ];
     required_env_vars.forEach((required_env_var)=>{
         if(!(required_env_var in process.env))
