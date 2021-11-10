@@ -5,7 +5,7 @@ import mailgunTransport from "nodemailer-mailgun-transport";
 import fs from "fs/promises";
 import handlebars from "handlebars";
 
-module.exports = new class {
+class Mailer {
     transport : nodemailer.Transporter;
 
     constructor(){
@@ -36,4 +36,6 @@ module.exports = new class {
     async send_verification_mail(firstname: string, recipient: string, token: string) {
         return this.send(recipient, "Verify Email", "signup_confirm_email", {link: `http://localhost:8050/verify/${token}`, firstname:firstname})
     }
-};
+}
+
+export const mailer = new Mailer();
