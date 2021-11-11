@@ -49,7 +49,7 @@ export default function upload_route() {
                             {_id: project._id},
                             {uploadId: uploadData.UploadId}
                         ).exec();
-                        res.send({uploadId: uploadData.UploadId});
+                        res.status(200).send({uploadId: uploadData.UploadId});
                     }
                 });
             } else res.status(500).send("S3-BucketName is not set");
@@ -73,7 +73,7 @@ export default function upload_route() {
                         UploadId: String(req.query.uploadId)
                     }
                     let presignedUrl = await s3.getSignedUrlPromise('uploadPart', params);
-                    res.send({presignedUrl});
+                    res.status(200).send({presignedUrl});
                 } else res.status(400).send("Upload was not started");
             } else res.status(500).send("S3-BucketName is not set");
         } catch (err) {
@@ -117,7 +117,7 @@ export default function upload_route() {
                                     , status: "UPLOAD_COMPLETE"
                                 }).exec();
                         }
-                        res.send({data});
+                        res.status(200).send({data});
                     });
 
                 } else res.status(400).send("Project could not be found");
