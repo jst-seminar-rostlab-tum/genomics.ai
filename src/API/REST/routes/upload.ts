@@ -42,7 +42,7 @@ export default function upload_route() {
                     Key: String(req.query.fileName)
                 }
                 s3.createMultipartUpload(params, (err, uploadData) => {
-                    if (err)
+                    if (err){
                         console.error(err, err.stack || "Error when requesting uploadId");
                         res.status(500).send(err);
                     } else {
