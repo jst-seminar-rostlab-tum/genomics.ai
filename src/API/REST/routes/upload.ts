@@ -39,12 +39,13 @@ export default function upload_route() {
                 });
                 let params: S3.CreateMultipartUploadRequest = {
                     Bucket: BUCKET_NAME,
-                    Key: String(project._id)
+                    Key: String(req.query.fileName)
                 }
                 s3.createMultipartUpload(params, (err, uploadData) => {
                     if (err)
                         console.error(err, err.stack || "Error when requesting uploadId");
-                    else {
+                        res.status(500).send(err);
+                    } else {
                         projectModel.updateOne(
                             {_id: project._id},
                             {uploadId: uploadData.UploadId}
@@ -55,6 +56,7 @@ export default function upload_route() {
             } else res.status(500).send("S3-BucketName is not set");
         } catch (err) {
             console.log(err);
+            res.status(500).send(err);
         }
     })
 
@@ -68,7 +70,7 @@ export default function upload_route() {
                 if (project) {
                     let params: UploadPartRequest = {
                         Bucket: BUCKET_NAME,
-                        Key: String(project._id),
+                        Key: String(req.query.fileName),
                         PartNumber: Number(req.query.partNumber),
                         UploadId: String(req.query.uploadId)
                     }
@@ -78,6 +80,7 @@ export default function upload_route() {
             } else res.status(500).send("S3-BucketName is not set");
         } catch (err) {
             console.log(err);
+            res.status(500).send(err);
         }
     })
 
@@ -93,7 +96,7 @@ export default function upload_route() {
                     //console.log(req.body, ': body')
                     let params: CompleteMultipartUploadRequest = {
                         Bucket: BUCKET_NAME,
-                        Key: String(project._id),
+                        Key: String(req.body.params.fileName),
                         MultipartUpload: {
                             Parts: req.body.params.parts
                         },
@@ -101,7 +104,10 @@ export default function upload_route() {
                     }
                     //console.log(params)
                     s3.completeMultipartUpload(params, (err: AWSError, data: CompleteMultipartUploadOutput) => {
-                        if (err) console.error(err, err.stack || "Error when completing multipart upload");
+                        if (err) {
+                            console.error(err, err.stack || "Error when completing multipart upload");
+                            res.status(500).send(err);
+                        }
                         if (data.Key && data.Bucket) {
                             let request: S3.HeadObjectRequest = {Key: data.Key, Bucket: data.Bucket};
                             s3.headObject(request)
@@ -126,6 +132,7 @@ export default function upload_route() {
             }
         } catch (err) {
             console.log(err);
+            res.status(500).send(err);
         }
     })
     return router;
