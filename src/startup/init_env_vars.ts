@@ -6,7 +6,7 @@ export function init_env_vars() {
         "S3_ACCESS_KEY_ID",
         "S3_SECRET_ACCESS_KEY",
         "S3_ENDPOINT",
-        "S3_BUCKET_NAME"
+        "S3_BUCKET_NAME",
         "MAILGUN_API_KEY",
         "MAIL_DOMAIN"
     ];

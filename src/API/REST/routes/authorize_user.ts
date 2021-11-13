@@ -9,7 +9,7 @@ export default function authorize_user_route() {
   let router = express.Router();
 
   router
-    .post("/authorize_user/:id", check_auth(), async (req: ExtRequest, res: any) => {
+    .get("/authorize_user/:id", check_auth(), async (req: ExtRequest, res: any) => {
       if (!req.is_administrator)
           return res.status(403).send("Unauthorized");
 
