@@ -13,14 +13,19 @@ import authorize_user_route from "./routes/authorize_user";
 import verify_email_route from "./routes/verify_email";
  
 import resend_verification_link from "./routes/resend_verification_link";
+import upload_complete_upload_route from "./routes/file_upload/complete_upload";
+import upload_get_url_route from "./routes/file_upload/get_upload_url";
+import upload_start_upload_route from "./routes/file_upload/start_upload";
+import upload_get_upload_url_route from "./routes/file_upload/get_upload_url";
 // setup the websocket-server on top of the http_server
-export function express_routes(this:REST_Host) : Router {
+export function express_routes(this: REST_Host): Router {
     let router = express.Router();
 
     // unauthenticated routes
     this.expressApp.use(auth_route());
     this.expressApp.use(register_route());
     this.expressApp.use(resend_verification_link());
+    this.expressApp.use(verify_email_route());
 
     // authenticated routes
     this.expressApp.use(update_profile_route());
@@ -36,7 +41,12 @@ export function express_routes(this:REST_Host) : Router {
     this.expressApp.use(hello_route());
     this.expressApp.use(hello_auth_route());
 
-    this.expressApp.use(/^.*_ah.*$/, (req, res)=>res.status(200).send()) // always tell google everything is fine
+    // upload route
+    this.expressApp.use(upload_get_upload_url_route());
+    this.expressApp.use(upload_start_upload_route());
+    this.expressApp.use(upload_complete_upload_route());
+
+    this.expressApp.use(/^.*_ah.*$/, (req, res) => res.status(200).send()) // always tell google everything is fine
     this.expressApp.use((req, res) => res.status(404).send("Not found."));
 
     return router;
