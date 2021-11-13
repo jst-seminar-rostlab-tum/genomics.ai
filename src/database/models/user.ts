@@ -6,15 +6,22 @@ export interface IUser extends Document {
     email: string;
     password: string;
     note: string;
-    token: string
+    token: string;
+    emailVerificationToken: string;
+    isEmailVerified: boolean; // email has been verified
+    isAuthorized: boolean; // user has been authorized by an administrator
+    isAdministrator: boolean;
 }
 
 const userSchema = new Schema<IUser>({
-    firstName: {type: String, require: true},   // needed for contact-emails
+    firstName: {type: String, required: true},   // needed for contact-emails
     lastName: {type: String, default: ""},
-    email: {type: String, unique: true, require: true},
-    password: {type: String, require: true, select: false},
-    note: {type: String, require: false}
+    email: {type: String, unique: true, required: true},
+    password: {type: String, required: true, select: false},
+    note: {type: String, required: false},
+    isEmailVerified: {type: Boolean, required: true, default: false},
+    isAuthorized: {type: Boolean, required: true, default: false},
+    isAdministrator: {type: Boolean, required: true, default: false}
 });
 
 export const userModel = model<IUser>("User", userSchema);

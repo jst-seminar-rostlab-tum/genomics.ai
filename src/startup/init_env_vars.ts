@@ -7,6 +7,8 @@ export function init_env_vars() {
         "S3_SECRET_ACCESS_KEY",
         "S3_ENDPOINT",
         "S3_BUCKET_NAME"
+        "MAILGUN_API_KEY",
+        "MAIL_DOMAIN"
     ];
     required_env_vars.forEach((required_env_var) => {
         if (!(required_env_var in process.env))

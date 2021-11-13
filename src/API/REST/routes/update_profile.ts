@@ -27,12 +27,12 @@ export default function update_profile_route(){
                         update_object.lastName = last_name;
                     if(note)
                         update_object.note = note;
-                    if(email)
+                    if(email) // TODO implement changing email addresses
                         return res.status(501).send("Changing email-address is not implemented yet.");
                     if(password)
                         update_object.password = await bcrypt.hash(password, 15);
 
-                    await userModel.updateOne({_id: req.user_id}, update_object, );
+                    await userModel.updateOne({_id: req.user_id}, update_object);
 
                     res.status(200).send({msg: "User updated."})
                 }catch(err){
