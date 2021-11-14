@@ -1,19 +1,20 @@
 import React, {useState} from 'react';
 import { List, Box, Collapse, IconButton } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import StatusCard from './StatusCard/StatusCard';
 import styles from './statusqueue.module.css';
 
 function StatusQueue() {
   let arr1 = [12342432, 2, 3];
-  const [expandList, setExpandList] = useState(false);
+  const [expandList, setExpandList] = useState(true);
 
   return (
     <div>
       <div className={styles.listTitle}>
         <h1>Processing Queue</h1>
         <IconButton onClick={() => setExpandList(!expandList)}>
-          <ExpandMoreIcon />
+          {expandList ? <ExpandLessIcon /> : <ExpandMoreIcon /> }
         </IconButton>
       </div>
       <Box className={styles.flexContainer}>

@@ -16,16 +16,27 @@ import styles from './statuscard.module.css';
 
 /*
 The status card includes the status of the job.
+
 Status types that the status card can include are:
-pending - state during the upload of the file and during verification
-processing - state during the processing of the file for the ML model
-error - can occure in all steps including verification
-completed - state after all stages are completed
-unknown - the unknown state happens when the status can't be updated
+
+1. pending - state during the upload of the file and during verification
+
+2. processing - state during the processing of the file for the ML model
+
+3. error - can occure in all steps including verification
+
+4. completed - state after all stages are completed
+
+5. unknown - the unknown state happens when the status can't be updated
 */
 
 function StatusCard({ id }) {
-  const [status, setStatus] = useState('unknown');
+  const [response, setResponse] = useState({
+    status: 'unknown',
+    log: '',
+  })
+
+  // object of colors for the statuses
   const statusColor = {
     pending: yellow[600],
     processing: blue[300],
@@ -36,8 +47,8 @@ function StatusCard({ id }) {
 
   // setting status to known for testing
   const testStatusColor = statusColor.pending;
-  //The status is not passed down as a prop, but received from backend
-  setStatus('pending');
+  // The status is not passed down as a prop, but received from backend
+  //setResponse({ ...response }) // check dom's code to understand how it is done
 
   return (
     <Box className={styles.cardContainer}>
@@ -68,10 +79,10 @@ function StatusCard({ id }) {
               padding: '0',
               textAlign: 'center',
               display: 'inline',
-              color: testStatusColor,
+              color: statusColor[response.status],
             }}
           >
-            {` ${status}`}
+            {` ${response.status}`}
           </Typography>
         </Typography>
       </Card>
