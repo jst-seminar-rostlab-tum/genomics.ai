@@ -66,7 +66,7 @@ function StatusCard({ id }) {
           >
             {`Job ${id}`}
           </Typography>
-          <CircleIcon sx={{ color: testStatusColor, paddingLeft: '5px' }} />
+          <CircleIcon sx={{ color: statusColor[response.status], paddingLeft: '5px' }} />
         </div>
         <Typography variant="h4" sx={{ fontWeight: 'light', fontSize: '16px' }}>
           Status:
