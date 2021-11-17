@@ -11,6 +11,7 @@ import get_jobs_route from "./routes/get_jobs";
 import get_unauthorized_users_route from "./routes/get_unauthorized_users";
 import authorize_user_route from "./routes/authorize_user";
 import verify_email_route from "./routes/verify_email";
+import password_reset_route from "./routes/password_reset";
  
 import resend_verification_link from "./routes/resend_verification_link";
 import upload_complete_upload_route from "./routes/file_upload/complete_upload";
@@ -26,6 +27,7 @@ export function express_routes(this: REST_Host): Router {
     this.expressApp.use(register_route());
     this.expressApp.use(resend_verification_link());
     this.expressApp.use(verify_email_route());
+    this.expressApp.use(password_reset_route());
 
     // authenticated routes
     this.expressApp.use(update_profile_route());
