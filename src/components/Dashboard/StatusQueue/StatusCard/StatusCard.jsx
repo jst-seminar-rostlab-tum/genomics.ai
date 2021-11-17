@@ -19,7 +19,6 @@ import {
 import CircleIcon from '@mui/icons-material/Circle';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import LogAccordion from '../LogAccordion/LogAccordion';
 import styles from './statuscard.module.css';
 
 
@@ -89,7 +88,7 @@ function StatusCard({ id }) {
             <CircleIcon sx={{ color: statusColor[response.status], paddingLeft: '5px' }} />
           </div>
         </AccordionSummary>
-        <AccordionDetails className={{ styles.fileStatusLog }}>
+        <AccordionDetails className={styles.fileStatusLog}>
           <Typography>{response.log}</Typography>
         </AccordionDetails>
       </Accordion>
