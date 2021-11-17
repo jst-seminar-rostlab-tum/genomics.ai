@@ -3,6 +3,11 @@ import {
   Card,
   Box,
   Typography,
+  Collapse,
+  IconButton,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
 } from '@mui/material';
 import {
   red,
@@ -12,7 +17,11 @@ import {
   blue,
 } from '@mui/material/colors';
 import CircleIcon from '@mui/icons-material/Circle';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import LogAccordion from '../LogAccordion/LogAccordion';
 import styles from './statuscard.module.css';
+
 
 /*
 The status card includes the status of the job.
@@ -33,8 +42,10 @@ Status types that the status card can include are:
 function StatusCard({ id }) {
   const [response, setResponse] = useState({
     status: 'unknown',
-    log: '',
+    log: "The file's status is currently unknown.",
   })
+
+  const [moreInfo, setMoreInfo] = useState(false);
 
   // object of colors for the statuses
   const statusColor = {
@@ -45,14 +56,99 @@ function StatusCard({ id }) {
     unknown: grey[500],
   };
 
-  // setting status to known for testing
-  const testStatusColor = statusColor.pending;
   // The status is not passed down as a prop, but received from backend
-  //setResponse({ ...response }) // check dom's code to understand how it is done
+  const [changeResCount, setChangeResCount] = useState(0);
+  if (changeResCount < 1) {
+    setResponse({ ...response, status: 'processing' });
+    setChangeResCount(changeResCount + 1);
+  } // check dom's code to understand how it is done
 
   return (
     <Box className={styles.cardContainer}>
-      <Card variant="outlined">
+
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+        >
+          <div className={styles.summaryContainer}>
+            <Typography
+              className={styles.headerContainer}
+              variant="h4"
+              sx={{
+                fontWeight: 'bold',
+                fontSize: '16px',
+                margin: '0',
+                padding: '0',
+                textAlign: 'center',
+              }}
+            >
+              {`Job ${id}`}
+            </Typography>
+            <CircleIcon sx={{ color: statusColor[response.status], paddingLeft: '5px' }} />
+          </div>
+        </AccordionSummary>
+        <AccordionDetails className={{ styles.fileStatusLog }}>
+          <Typography>{response.log}</Typography>
+        </AccordionDetails>
+      </Accordion>
+    </Box>
+  );
+}
+
+export default StatusCard;
+
+//using accordion instead of current implementation
+
+/*
+<div className="infoContainer">
+          <Typography variant="h4" sx={{ fontWeight: 'light', fontSize: '16px' }}>
+            Status:
+            <Typography
+              variant="h4"
+              sx={{
+                fontSize: '16px',
+                fontWeight: 'light',
+                margin: '0',
+                padding: '0',
+                textAlign: 'center',
+                display: 'inline',
+                color: statusColor[response.status],
+              }}
+            >
+              {` ${response.status.toUpperCase()}`}
+            </Typography>
+          </Typography>
+          <Typography>hello</Typography>
+          <IconButton onClick={() => setMoreInfo(!moreInfo)}>
+            {moreInfo ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+          </IconButton>
+        </div>
+*/
+
+
+/*
+<Accordion>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
+            <Typography>Accordion 1</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+              malesuada lacus ex, sit amet blandit leo lobortis eget.
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+*/
+
+/**
+ *
+ * <Card variant="outlined" sx={{ padding: '10px' }}>
         <div className={styles.headerContainer}>
           <Typography
             variant="h4"
@@ -68,26 +164,21 @@ function StatusCard({ id }) {
           </Typography>
           <CircleIcon sx={{ color: statusColor[response.status], paddingLeft: '5px' }} />
         </div>
-        <Typography variant="h4" sx={{ fontWeight: 'light', fontSize: '16px' }}>
-          Status:
-          <Typography
-            variant="h4"
-            sx={{
-              fontSize: '16px',
-              fontWeight: 'light',
-              margin: '0',
-              padding: '0',
-              textAlign: 'center',
-              display: 'inline',
-              color: statusColor[response.status],
-            }}
+        <LogAccordion expand={moreInfo} />
+        <Accordion>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
           >
-            {` ${response.status}`}
-          </Typography>
-        </Typography>
+            <Typography>Accordion 1</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+              malesuada lacus ex, sit amet blandit leo lobortis eget.
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
       </Card>
-    </Box>
-  );
-}
-
-export default StatusCard;
+ * / */

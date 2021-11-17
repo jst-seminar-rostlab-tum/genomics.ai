@@ -3,6 +3,7 @@
     width: 100%;
     justify-content: center;
     background-color: rgba(0, 60, 255, 0.05);
+    border-radius: 0px 0px 10px 10px;
 }
 
 .listTitle{

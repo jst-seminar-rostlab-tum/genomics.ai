@@ -3,14 +3,15 @@
     padding-left: 20px;
     padding-right: 20px;
     width: 100%;
+    margin-top: 10px;
 }
 
 .headerContainer{
     display: flex;
-    justify-content: center;
+    justify-content: left;
     width: 100%;
     align-items: center;
-    padding-bottom: 0px;
+    padding-bottom: 10px;
 }
 
 h4{
@@ -19,5 +20,18 @@ h4{
     text-align: center;
     font-size: 14px;
 
+}
+
+.infoContainer{
+    display: flex;
+}
+
+.statusLog{
+    background-color: red;
+}
+
+.summaryContainer{
+    display: flex;
+    
 }
 
