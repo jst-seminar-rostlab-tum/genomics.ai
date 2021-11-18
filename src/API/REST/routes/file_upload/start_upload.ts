@@ -9,16 +9,16 @@ export default function upload_start_upload_route() {
     let router = express.Router();
     router.post('/file_upload/start_upload', check_auth(), async (req: ExtRequest, res) => {
         try {
-            if (process.env.S3_BUCKET_NAME && req.user_id && req.query.fileName) {
+            if (process.env.S3_BUCKET_NAME && req.user_id && req.body.params.fileName) {
                 let project: IProject = await projectModel.create({
                     owner: req.user_id,
-                    fileName: req.query.fileName,
+                    fileName: req.body.params.fileName,
                     uploadDate: new Date(),
                     status: "UPLOAD_PENDING"
                 });
                 let params: S3.CreateMultipartUploadRequest = {
                     Bucket: process.env.S3_BUCKET_NAME,
-                    Key: String(req.query.fileName)
+                    Key: String(req.body.params.fileName)
                 }
                 s3.createMultipartUpload(params, (err, uploadData) => {
                     if (err) {
