@@ -58,7 +58,7 @@ function StatusCard({ id }) {
   // The status is not passed down as a prop, but received from backend
   const [changeResCount, setChangeResCount] = useState(0);
   if (changeResCount < 1) {
-    setResponse({ ...response, status: 'processing' });
+    setResponse({ ...response, status: 'completed' });
     setChangeResCount(changeResCount + 1);
   } // check dom's code to understand how it is done
 
@@ -89,6 +89,25 @@ function StatusCard({ id }) {
           </div>
         </AccordionSummary>
         <AccordionDetails className={styles.fileStatusLog}>
+          <div className={styles.statusContainer}>
+            <Typography variant="h4" sx={{ fontWeight: 'light', fontSize: '16px' }}>
+              Status:
+              <Typography
+                variant="h4"
+                sx={{
+                  fontSize: '16px',
+                  fontWeight: 'light',
+                  margin: '0',
+                  padding: '0',
+                  textAlign: 'center',
+                  display: 'inline',
+                  color: statusColor[response.status],
+                }}
+              >
+                {` ${response.status.toUpperCase()}`}
+              </Typography>
+            </Typography>
+          </div>
           <Typography>{response.log}</Typography>
         </AccordionDetails>
       </Accordion>
