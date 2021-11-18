@@ -1,0 +1,11 @@
+Please reset your password
+
+Hey {{firstname}},
+we heard that you lost your GeneCruncher password. Sorry about that!
+
+But don't worry! You can use the following link to reset your password: {{link}}
+
+If you don't use this link within 3 hours, it will expire. To get a new password reset link, visit: https://genecruncher.com/password_reset
+
+Thanks,
+The GeneCruncher Team
