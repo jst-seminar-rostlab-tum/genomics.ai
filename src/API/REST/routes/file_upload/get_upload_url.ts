@@ -4,37 +4,36 @@ import {projectModel} from "../../../../database/models/project";
 import {UploadPartRequest} from "aws-sdk/clients/s3";
 import s3 from "./s3";
 import express from "express";
-import bodyParser from "body-parser";
 
 export default function upload_get_upload_url_route() {
     let router = express.Router();
-    router.use(bodyParser.json());
+
     router.get('/file_upload/get_upload_url', check_auth(), async (req: ExtRequest, res) => {
-        let {fileName, partNumber, uploadId} = req.query;
-        if(!fileName)
-            return res.status(400).send("Missing fileName parameter.");
+        let {partNumber, uploadId} = req.query;
         if(!partNumber)
             return res.status(400).send("Missing partNumber parameter.");
         if(!uploadId)
             return res.status(400).send("Missing uploadId parameter.");
 
         try {
-            if (process.env.S3_BUCKET_NAME && req.user_id && req.query.uploadId) {
-                let project = await projectModel.findOne({
-                    owner: req.user_id,
-                    uploadId: String(req.query.uploadId)
-                }).exec();
-                if (project) {
-                    let params: UploadPartRequest = {
-                        Bucket: process.env.S3_BUCKET_NAME,
-                        Key: String(fileName),
-                        PartNumber: Number(partNumber),
-                        UploadId: String(uploadId)
-                    }
-                    let presignedUrl = await s3.getSignedUrlPromise('uploadPart', params);
-                    res.status(200).send({presignedUrl});
-                } else res.status(400).send("Upload was not started");
-            } else res.status(500).send("S3-BucketName is not set");
+            if (!process.env.S3_BUCKET_NAME && req.user_id)
+                return res.status(500).send("S3-BucketName is not set");
+
+            let project = await projectModel.findOne({
+                owner: req.user_id,
+                uploadId: String(uploadId)
+            }).exec();
+            if (!project)
+                return res.status(400).send("Upload not found");
+
+            let params: UploadPartRequest = {
+                Bucket: process.env.S3_BUCKET_NAME!,
+                Key: String(project.fileName),
+                PartNumber: Number(partNumber),
+                UploadId: String(uploadId)
+            }
+            let presignedUrl = await s3.getSignedUrlPromise('uploadPart', params);
+            res.status(200).send({presignedUrl});
         } catch (err) {
             console.log(err);
             res.status(500).send(err);
