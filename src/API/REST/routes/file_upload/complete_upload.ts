@@ -10,15 +10,13 @@ import s3 from "./s3";
 export default function upload_complete_upload_route() {
     let router = express.Router();
     router.post('/file_upload/complete_upload', check_auth(), async (req: ExtRequest, res) => {
-        let {fileName, parts, uploadId} = req.body;
-        if(!fileName)
-            return res.status(400).send("Missing fileName parameter.");
+        let {parts, uploadId} = req.body;
         if(!parts)
             return res.status(400).send("Missing parts parameter.");
         if(!uploadId)
             return res.status(400).send("Missing uploadId parameter.");
 
-        try { // todo: all routes should be try-catched by default
+        try { // todo: all routes should be try-caught by default
             if (!process.env.S3_BUCKET_NAME || !req.user_id)
                 return res.status(500).send("Server was not set up correctly");
 
@@ -31,7 +29,7 @@ export default function upload_complete_upload_route() {
 
             let params: CompleteMultipartUploadRequest = {
                 Bucket: process.env.S3_BUCKET_NAME,
-                Key: String(fileName),
+                Key: String(project.fileName),
                 MultipartUpload: { Parts: parts },
                 UploadId: String(uploadId)
             }
