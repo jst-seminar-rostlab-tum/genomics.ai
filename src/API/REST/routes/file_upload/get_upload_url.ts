@@ -10,6 +10,14 @@ export default function upload_get_upload_url_route() {
     let router = express.Router();
     router.use(bodyParser.json());
     router.get('/file_upload/get_upload_url', check_auth(), async (req: ExtRequest, res) => {
+        let {fileName, partNumber, uploadId} = req.query;
+        if(!fileName)
+            return res.status(400).send("Missing fileName parameter.");
+        if(!partNumber)
+            return res.status(400).send("Missing partNumber parameter.");
+        if(!uploadId)
+            return res.status(400).send("Missing uploadId parameter.");
+
         try {
             if (process.env.S3_BUCKET_NAME && req.user_id && req.query.uploadId) {
                 let project = await projectModel.findOne({
@@ -19,9 +27,9 @@ export default function upload_get_upload_url_route() {
                 if (project) {
                     let params: UploadPartRequest = {
                         Bucket: process.env.S3_BUCKET_NAME,
-                        Key: String(req.query.fileName),
-                        PartNumber: Number(req.query.partNumber),
-                        UploadId: String(req.query.uploadId)
+                        Key: String(fileName),
+                        PartNumber: Number(partNumber),
+                        UploadId: String(uploadId)
                     }
                     let presignedUrl = await s3.getSignedUrlPromise('uploadPart', params);
                     res.status(200).send({presignedUrl});

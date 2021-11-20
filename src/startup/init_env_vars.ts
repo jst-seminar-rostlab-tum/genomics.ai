@@ -1,7 +1,6 @@
 export function init_env_vars() {
     // check for required env-vars
     const required_env_vars = [
-        "test_env_var",
         "DATABASE_URI",
         "S3_ACCESS_KEY_ID",
         "S3_SECRET_ACCESS_KEY",
@@ -24,8 +23,6 @@ export function init_env_vars() {
     setStdEnvValue("PORT", "8050");
     setStdEnvValue("DATABASE_URI", "mongodb://localhost:27017/dev");
 
-    setStdEnvValue("S3_ACCESS_KEY_ID", '<ACCESS_KEY_ID>');
-    setStdEnvValue("S3_SECRET_ACCESS_KEY", "<SECRET_ACCESS_KEY>");
     setStdEnvValue("S3_ENDPOINT", "http://127.0.0.1:9000");
     setStdEnvValue("S3_BUCKET_NAME", "vaultgovsg");
 }
