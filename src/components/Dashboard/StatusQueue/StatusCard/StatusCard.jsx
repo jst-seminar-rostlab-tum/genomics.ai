@@ -8,6 +8,7 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  Button
 } from '@mui/material';
 import {
   red,
@@ -109,6 +110,9 @@ function StatusCard({ id }) {
             </Typography>
           </div>
           <Typography>{response.log}</Typography>
+          <Box sx={{ textAlign: 'center', paddingTop: '20px' }}>
+            { response.status === 'completed' ? <Button href="#">View results</Button> : null }
+          </Box>
         </AccordionDetails>
       </Accordion>
     </Box>
