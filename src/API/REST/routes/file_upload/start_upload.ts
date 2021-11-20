@@ -13,7 +13,7 @@ export default function upload_start_upload_route() {
             return res.status(400).send("Missing fileName parameter.");
 
         try {
-            if (process.env.S3_BUCKET_NAME && req.user_id && req.body.params.fileName) {
+            if (process.env.S3_BUCKET_NAME && req.user_id) {
                 let project: IProject = await projectModel.create({
                     owner: req.user_id,
                     fileName: String(fileName),
