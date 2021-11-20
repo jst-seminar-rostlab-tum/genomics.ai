@@ -2,6 +2,7 @@ import express, {Router} from "express";
 import {userModel} from "../../../database/models/user";
 import {passwordResetTokenModel} from "../../../database/models/password_reset_token";
 import bcrypt from "bcrypt";
+import {mailer} from "../../../util/mailer";
 
 export default function password_reset_route() : Router {
     let router = express.Router();
@@ -16,11 +17,11 @@ export default function password_reset_route() : Router {
       const user = await userModel.findOne({email});
 
       if (user) {
-        await passwordResetTokenModel.create({
+        const token = await passwordResetTokenModel.create({
           _userId: user._id,
         });
+        mailer.send(user.email, "[GeneCruncher] Please reset your password", "password_reset_request_email", {firstname: user.firstName, link: `https://genecruncher.com/password_reset/${token.token}`})
       }
-    
       return res.status(200).send('An email has been sent to your email address with instructions to reset your password');
     });
     
@@ -34,7 +35,6 @@ export default function password_reset_route() : Router {
       if (!token) {
         return res.status(404).send("Token could not be found. It may have been expired or used already");
       }
-      
       token.deleteOne();
 
       const user = await userModel.findById(token._userId);
@@ -43,7 +43,7 @@ export default function password_reset_route() : Router {
       }
       user.password = await bcrypt.hash(password, 15);
       user.save();
-
+      mailer.send(user.email, "[GeneCruncher] Your password was reset", "password_reset_confirmation_email", {firstname: user.firstName, email: user.email});
       return res.status(200).send("Password has been changed");
     });
     
