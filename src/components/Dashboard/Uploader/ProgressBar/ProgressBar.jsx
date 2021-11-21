@@ -32,21 +32,12 @@ LinearProgressWithLabel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 
-export default function ProgressBar() {
-  const [progress, setProgress] = React.useState(10);
-
-  React.useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((prevProgress) => (prevProgress >= 100 ? 10 : prevProgress + 10));
-    }, 800);
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
+export default function ProgressBar(props) {
+  const { value } = props;
 
   return (
     <Box sx={{ width: '90%' }}>
-      <LinearProgressWithLabel value={progress} />
+      <LinearProgressWithLabel value={value} />
     </Box>
   );
 }

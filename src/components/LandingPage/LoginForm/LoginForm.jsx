@@ -6,6 +6,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import React, { useCallback, useState } from 'react';
 import validator from 'validator';
 import CloseIcon from '@mui/icons-material/Close';
+import { useHistory } from 'react-router-dom';
 import logo from '../../../assets/logo.svg';
 import styles from './loginform.module.css';
 import { BACKEND_ADDRESS } from '../../common/constants';
@@ -20,6 +21,8 @@ function LoginForm(props) {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [isSnackbarVisible, setSnackbarVisible] = useState(false);
+
+  const history = useHistory();
 
   const handleTextChange = useCallback((e) => {
     setLoginDetails((prevState) => ({ ...prevState, [e.target.id]: e.target.value }));
@@ -54,16 +57,16 @@ function LoginForm(props) {
 
   function onSuccessfulLogin() {
     onClose();
-    /// //TODO:switch to dashboard////
+    history.push('/dashboard');
   }
 
   function onFailedLogin(code) {
     switch (code) {
       case 401:
-        setErrors((prevState) => ({ ...prevState, response: 'wrong credentials!' }));
+        setErrors((prevState) => ({ ...prevState, response: 'Wrong credentials!' }));
         break;
       case 404:
-        setErrors((prevState) => ({ ...prevState, response: 'user not found!' }));
+        setErrors((prevState) => ({ ...prevState, response: 'User not found!' }));
         break;
       default:
         setErrors((prevState) => ({ ...prevState, response: 'Unknown error, please try again later!' }));
@@ -201,7 +204,7 @@ function LoginForm(props) {
           sx={{ width: '100%' }}
           onClose={() => setSnackbarVisible(false)}
         >
-          {errors.response ? errors.response : 'User authenticated! Now redirect to the Dashboard...'}
+          {errors.response ? errors.response : 'Login successful!'}
         </Alert>
       </Snackbar>
     </div>

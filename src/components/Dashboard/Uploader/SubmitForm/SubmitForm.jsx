@@ -1,108 +1,85 @@
 import React, { useState } from 'react';
-import { Button } from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton';
+import UploadIcon from '@mui/icons-material/Upload';
+import ReplayIcon from '@mui/icons-material/Replay';
+import { Typography } from '@mui/material';
 import styles from './submitform.module.css';
 import UploadField from '../UploadField/UploadField';
 import ProgressBar from '../ProgressBar/ProgressBar';
+import { getSubmissionProgressPercentage, startOrContinueUpload } from './UploadLogic';
+import { MULTIPART_UPLOAD_STATUS as Status, statusIsError, statusIsUpload } from '../../../common/constants';
 
 function SubmitForm() {
-  const [fileAvailable, setFileAvailable] = useState(false);
   const [selectedFile, setSelectedFile] = useState();
-  const [fileBeingUploaded, setFileBeingUploaded] = useState(false);
-  const [fileBeingVerified, setFileBeingVerified] = useState(false);
-  const [uploadFieldDisabled, setUploadFieldDisabled] = useState(false);
-  const backendUrl = 'https://custom-helix-329116.ey.r.appspot.com/hello';
+  const [submissionProgress, setSubmissionProgress] = useState({
+    status: Status.IDLE,
+    uploadId: '',
+    chunks: 0,
+    uploaded: 0,
+    remaining: [],
+    uploadedParts: [],
+  });
 
-  let button;
-  // type of submit button, calls the submission handler when available
-
-  // uploads the file upon submission of the file
-  const handleSubmission = () => {
-    // example fetch
-    fetch(backendUrl, {
-      method: 'POST',
-      body: selectedFile,
-    });
-    // call the multipart upload here
-  };
-
-  if (fileAvailable && !fileBeingUploaded) {
-    button = (
-      <Button
-        onClick={() => {
-          setFileBeingUploaded(true);
-          handleSubmission();
-        }}
-      >
-        Submit
-      </Button>
-    );
-  } else {
-    button = <Button disabled>Submit</Button>;
-  }
-
-  // button status during file verification
-  if (fileBeingVerified) {
-    button = <Button disabled>Verifying</Button>;
-  }
-
-  // handling of the selected file for upload
   const changeHandler = (event) => {
-    // this function returns true if the file is valid for submission
-    function inputValidation() {
-      const validFile = true;
-      // todo: call api for input validation
-      // block the sequence until the verification is done
-
-      return validFile;
-    }
-
-    setFileBeingVerified(true);
-    setUploadFieldDisabled(true);
-    setSelectedFile(event.target.files[0]);
-    // setFileBeingVerified(false);
-
-    if (inputValidation()) {
-      setFileAvailable(true);
-      setFileBeingVerified(false);
-    } else {
-      setFileAvailable(false);
-      setFileBeingVerified(false);
-      setUploadFieldDisabled(false);
-      // todo, return error message
+    if (event.target.files[0]) {
+      setSubmissionProgress({
+        status: Status.SELECTED,
+        uploadId: '',
+        chunks: 0,
+        uploaded: 0,
+        remaining: [],
+        uploadedParts: [],
+      });
+      setSelectedFile(event.target.files[0]);
     }
   };
 
-  // not yet available in the progress bar as a prop
-  const submissionProgress = 0;
+  const {
+    status, uploaded, chunks, remaining,
+  } = submissionProgress;
 
   return (
     <div className={styles.SubmitForm}>
       <UploadField
-        disabled={uploadFieldDisabled}
+        disabled={statusIsUpload(status)}
         selectedFile={selectedFile}
         onChange={changeHandler}
       />
-      <div className={styles.progressTitleUpdate}>
-        { fileBeingUploaded ? 'uploading...' : null}
-      </div>
+      <Typography>
+        {
+          {
+            idle: 'Select a file to upload!',
+            selected: 'Press Upload to start uploading!',
+            upload_starting: 'Starting upload...',
+            error_start: 'Couldn\'t start upload :/',
+            upload_progress: `Uploading chunks... (${uploaded} of ${chunks})`,
+            error_progress: `${remaining.length} chunks couldn't be uploaded!`,
+            upload_finishing: 'Finishing upload...',
+            error_finish: 'Couldn\'t finish upload :/',
+            complete: 'Upload complete!',
+          }[status]
+        }
+      </Typography>
       <div className={styles.flexContainer}>
-        {fileBeingUploaded ? <ProgressBar value={() => submissionProgress} /> : null}
+        {(status !== 'idle' && status !== 'selected') ? <ProgressBar value={getSubmissionProgressPercentage(submissionProgress)} /> : null}
       </div>
-      {/* <div>
-                <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-                    <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-                    This is a success message!
-                    </Alert>
-                </Snackbar>
-            </div> */}
       <div>
-        {button}
+        <LoadingButton
+          disabled={status === Status.IDLE || status === Status.COMPLETE}
+          loading={statusIsUpload(status)}
+          color={statusIsError(status) ? 'error' : 'primary'}
+          startIcon={statusIsError(status) ? <ReplayIcon /> : <UploadIcon />}
+          onClick={() => {
+            setSubmissionProgress((prevState) => (
+              { ...prevState, status: Status.UPLOAD_STARTING }));
+            return startOrContinueUpload(selectedFile, submissionProgress, setSubmissionProgress);
+          }}
+        >
+          {statusIsError(status) ? 'Retry' : 'Upload'}
+        </LoadingButton>
       </div>
     </div>
   );
-
-  // upload field
-  // submit button
 }
 
 export default SubmitForm;

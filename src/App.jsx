@@ -1,7 +1,9 @@
 import './app.module.css';
 import React from 'react';
 import { createTheme, ThemeProvider } from '@mui/material';
+import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import LandingPage from './components/LandingPage/LandingPage';
+import Dashboard from './components/Dashboard/Dashboard';
 
 function App() {
   const theme = createTheme({
@@ -17,9 +19,12 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <div>
-        <LandingPage />
-      </div>
+      <Router>
+        <Switch>
+          <Route exact path="/" component={LandingPage} />
+          <Route path="/dashboard" component={Dashboard} />
+        </Switch>
+      </Router>
     </ThemeProvider>
   );
 }
