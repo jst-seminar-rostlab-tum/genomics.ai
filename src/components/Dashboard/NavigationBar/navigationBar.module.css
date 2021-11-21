@@ -1,0 +1,136 @@
+.navbar {
+    background: #003560;
+    height: 80px;
+    display: flex;
+    padding-inline: 1rem;
+    width: 100%;
+    position: fixed;
+    z-index: 1000;
+}
+
+.navbarLogo {
+    color: #fff;
+    justify-self: start;
+    margin-left: 40px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 2rem;
+}
+
+.navMenu {
+    display: grid;
+    grid-template-columns: repeat(5, auto);
+    grid-gap: 50px;
+    list-style: none;
+    text-align: center;
+    justify-content: end;
+    margin-right: 2rem;
+}
+
+.navItem {
+    display: flex;
+    align-items: center;
+    height: 80px;
+    font-size: 17px;
+}
+
+.profileSettings {
+    color: white;
+    text-decoration: none;
+    margin-right: 20px;
+}
+
+.profileSettings:hover {
+    transition: all 0.2s ease-out;
+}
+
+.navLinks {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+}
+
+.navLinks:hover {
+    background-color: #1888ff;
+    border-radius: 10px;
+    transition: all 0.2s ease-out;
+}
+
+.navLinksMobile {
+    display: none;
+}
+
+.menuIcon {
+    display: none;
+}
+
+@media screen and (max-width: 960px) {
+    .NavbarItems {
+        position: relative;
+    }
+
+    .navMenu {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 90vh;
+        position: absolute;
+        top: 80px;
+        left: -100%;
+        opacity: 1;
+        transition: all 0.5s ease;
+    }
+
+    .navLinks {
+        text-align: center;
+        padding: 2rem;
+        width: 100%;
+        display: table;
+    }
+
+    .navLinks:active {
+        background-color: black;
+        border-radius: 0;
+    }
+
+    .navbarLogo {
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform: translate(25%, 50%);
+    }
+
+    .menuIcon {
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        transform: translate(-100%, 60%);
+        font-size: 1.8rem;
+        cursor: pointer;
+    }
+
+    .navLinksMobile {
+        display: block;
+        text-align: center;
+        padding: 1.5rem;
+        margin: 2rem auto;
+        border-radius: 4px;
+        width: 80%;
+        background: #1888ff;
+        text-decoration: none;
+        color: #fff;
+        font-size: 1.5rem;
+    }
+
+    .navLinksMobile:hover {
+        background: #fff;
+        color: #1888ff;
+        transition: 250ms;
+    }
+
+    button {
+        display: none;
+    }
+}

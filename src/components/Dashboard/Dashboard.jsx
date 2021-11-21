@@ -14,11 +14,7 @@ function Dashboard() {
         justifyContent: 'center',
       }}
     >
-      <Container className={styles.sideBar}>
-        <div><h1>Project Bar</h1></div>
-      </Container>
-
-      <Container className={styles.FileUpload}>
+      <Container className={styles.fileUpload}>
         <Uploader />
       </Container>
 
@@ -28,7 +24,5 @@ function Dashboard() {
     </Box>
   );
 }
-
-//
 
 export default Dashboard;

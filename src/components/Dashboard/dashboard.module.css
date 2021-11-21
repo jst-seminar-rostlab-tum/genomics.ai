@@ -1,4 +1,9 @@
-.sideBar{
+.sideBar {
     flex-basis: 20%;
     background-color: rebeccapurple;
+}
+
+.fileUpload {
+    top: 100px;
+    position: relative;
 }
