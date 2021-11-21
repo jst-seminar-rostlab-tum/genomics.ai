@@ -6,7 +6,7 @@ import StatusCard from './StatusCard/StatusCard';
 import styles from './statusqueue.module.css';
 
 function StatusQueue() {
-  let arr1 = [12342432, 2, 3];
+  let arr1 = [12342432, 2, 3, 4, 56, 56, 4];
   const [expandList, setExpandList] = useState(true);
 
   return (
