@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import Stack from '@mui/material/Stack';
 import styles from './settingsDropdown.module.css';

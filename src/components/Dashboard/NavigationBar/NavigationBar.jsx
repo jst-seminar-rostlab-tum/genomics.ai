@@ -2,16 +2,11 @@ import React, { useState } from 'react';
 import { Link as NavLink } from 'react-router-dom';
 import { SettingsDropdown } from './SettingsDropdown/SettingsDropdown';
 import styles from './navigationBar.module.css';
-import geneIcon from '/Users/aminbensaad/GeneCruncher-Front/src/assets/logo-white.png';
-import profiledefault from '/Users/aminbensaad/GeneCruncher-Front/src/assets/profiledefault.png';
-
+import geneIcon from '../../../assets/logo-white.png';
+import profiledefault from '../../../assets/profiledefault.png';
 
 function NavigationBar() {
-  const [click, setClick] = useState(false);
   const [dropDown, setDropDown] = useState(false);
-
-  const handleClick = () => setClick(!click);
-  const closeMobileMenu = () => setClick(false);
 
   const onMouseEnter = () => {
     if (window.innerWidth < 960) setDropDown(false);
@@ -43,7 +38,6 @@ function NavigationBar() {
             <NavLink
               className={styles.navLinks}
               to="/dashboard"
-              onClick={closeMobileMenu}
             >
               Dashboard
             </NavLink>
@@ -53,7 +47,6 @@ function NavigationBar() {
             <NavLink
               className={styles.navLinks}
               to="/documentation"
-              onClick={closeMobileMenu}
             >
               Documentation
             </NavLink>
@@ -63,7 +56,6 @@ function NavigationBar() {
             <NavLink
               className={styles.navLinks}
               to="/help"
-              onClick={closeMobileMenu}
             >
               Help
             </NavLink>
@@ -78,7 +70,6 @@ function NavigationBar() {
           <NavLink
             className={styles.profileSettings}
             to="/settings"
-            onClick={closeMobileMenu}
           >
             John Doe
             <img

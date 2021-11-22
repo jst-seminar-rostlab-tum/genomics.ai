@@ -27,7 +27,7 @@ function App() {
         </Switch>
       </Stack>
 
-      <PopUp/>
+      <PopUp />
     </Router>
   );
 }

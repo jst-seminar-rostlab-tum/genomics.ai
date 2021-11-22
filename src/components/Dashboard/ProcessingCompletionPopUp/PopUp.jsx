@@ -44,6 +44,7 @@ function PopUpContent(props) {
   const [projectList, setProjects] = useState(projects);
 
   // Booleans
+  // eslint-disable-next-line no-unused-vars
   const [newProject, setNewProject] = useState(false);
 
   // Annotation
@@ -57,20 +58,9 @@ function PopUpContent(props) {
     setAnnotationDetails((prevState) => ({ ...prevState, [e.target.id]: e.target.value }));
   }, [annotationDetails]);
 
-  // Button: Add Annotation
-  const addNewCelltypeAnnotation = useCallback(() => {
-    const projName = newProject && annotationDetails.newProjectName !== ''
-      ? annotationDetails.newProjectName : annotationDetails.projectName;
-
-    if (projectList.filter((e) => e.name === projName).length === 0) {
-      addProject(projName);
-    }
-    addAnnotation(projName);
-    props.setShowPopup(false);
-  }, [projectList]);
-
   function addProject(pName) {
-  // create new project
+    // create new project
+    console.log('PNAME: ');
     const newProj = {
       name: pName,
       path: `/${pName}`,
@@ -94,10 +84,17 @@ function PopUpContent(props) {
     }
   }
 
-  // Button: Cancel
-  function executeCancel() {
+  // Button: Add Annotation
+  const addNewCelltypeAnnotation = useCallback(() => {
+    const projName = newProject && annotationDetails.newProjectName !== ''
+      ? annotationDetails.newProjectName : annotationDetails.projectName;
 
-  }
+    if (projectList.filter((e) => e.name === projName).length === 0) {
+      addProject(projName);
+    }
+    addAnnotation(projName);
+    props.setShowPopup(false);
+  }, [projectList]);
 
   return (
     <div className={styles.popUpBase}>
@@ -198,7 +195,7 @@ function PopUpContent(props) {
               style={{ width: '185px', borderRadius: '10px', fontWeight: 'bold' }}
               disabled={annotationDetails.annotationName === ''
                      || ((annotationDetails.newProjectName === '' && !newProject)
-                     || annotationDetails.projectName === '' && newProject)}
+                     || (annotationDetails.projectName === '' && newProject))}
               onClick={addNewCelltypeAnnotation}
             >
               Add Annotation

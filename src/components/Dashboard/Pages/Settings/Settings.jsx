@@ -5,8 +5,8 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import Switch from '@mui/material/Switch';
-import { FormControlLabel } from '@material-ui/core';
 import validator from 'validator';
+import { FormControlLabel } from '@mui/material';
 import styles from './settings.module.css';
 import profileDefault from '../../../../assets/profiledefault.png';
 
@@ -22,6 +22,7 @@ const myTheme = createTheme({
 });
 
 const IOSSwitch = styled((props) => (
+  // eslint-disable-next-line react/jsx-props-no-spreading
   <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
 ))(({ theme }) => ({
   width: 42,
@@ -73,7 +74,8 @@ const IOSSwitch = styled((props) => (
 }));
 
 function PasswordSection(props) {
-  if (props.changePassword) {
+  const { changePassword } = props;
+  if (changePassword) {
     return (
       <Stack
         spacing={5}
@@ -171,10 +173,10 @@ function Settings() {
   }
 
   const save = useCallback(() => {
-      if (!validateInput()) {
-        return;
-      }
-    }, []);
+    if (!isValidInput()) {
+      console.log(errors);
+    }
+  }, []);
 
   return (
     <>
@@ -188,10 +190,10 @@ function Settings() {
         <div style={{ paddingBlock: '25px', paddingLeft: '80px', marginBottom: '50px' }}>
           <Link
             className={styles.profilePicture}
-            to="#"
+            to="https://www.neurosciencemarketing.com/wp-content/uploads/2016/08/mona-lisa.jpg"
           >
             <img
-              alt="profile-picture"
+              alt="profile"
               src={profileDefault}
               style={{ height: '150px' }}
             />
@@ -310,6 +312,7 @@ function Settings() {
             <Button
               variant="contained"
               color="primary"
+              onClick={save}
               style={{ width: '185px', borderRadius: '10px', fontWeight: 'bold' }}
             >
               Save

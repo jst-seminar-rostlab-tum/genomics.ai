@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
 import {
-  Card,
   Box,
   Typography,
-  Collapse,
-  IconButton,
   Accordion,
   AccordionSummary,
   AccordionDetails,
-  Button
+  Button,
 } from '@mui/material';
 import {
   red,
@@ -19,9 +16,7 @@ import {
 } from '@mui/material/colors';
 import CircleIcon from '@mui/icons-material/Circle';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import styles from './statuscard.module.css';
-
 
 /*
 The status card includes the status of the job.
@@ -43,9 +38,7 @@ function StatusCard({ id }) {
   const [response, setResponse] = useState({
     status: 'unknown',
     log: "The file's status is currently unknown.",
-  })
-
-  const [moreInfo, setMoreInfo] = useState(false);
+  });
 
   // object of colors for the statuses
   const statusColor = {
