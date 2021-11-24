@@ -29,17 +29,14 @@ const Logo = () => (
 const NavBar = (props) => {
   const { onLoginClicked, onSignUpClicked } = props;
   return (
-    <AppBar elevation={1} className={styles.appbar}>
+    <AppBar className={styles.appbar}>
       <Toolbar>
         <IconButton color="inherit" aria-label="open drawer">
           <a href="#section">
             <Logo className={styles.logo} />
           </a>
         </IconButton>
-        <IconButton color="inherit" aria-label="open drawer">
-          <Typography variant="h6">GeneCruncher</Typography>
-        </IconButton>
-
+          <h6 className={styles.logoName}>GeneCruncher</h6>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           <ul>
             <Box>

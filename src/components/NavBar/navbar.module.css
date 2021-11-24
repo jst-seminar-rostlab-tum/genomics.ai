@@ -1,7 +1,21 @@
+/*adding the font for the landing page here*/
+*{
+    font-family:'Poppins';
+    
+}
+
+.logoName{
+    font-family: 'Poppins';
+    font-size: 24px;
+    font-weight: 100;
+    
+}
+
 .appbar{
     display: flex;
-    /* font-family: Nunito; */
+    font-family: 'Poppins'; 
     /* justify-content : space-between; */
+
 }
 .logo {
     fill: white;
