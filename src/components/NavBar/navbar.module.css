@@ -1,7 +1,7 @@
 /*adding the font for the landing page here*/
 *{
     font-family:'Poppins';
-    
+    color: black;   
 }
 
 .logoName{
@@ -9,17 +9,17 @@
     font-size: 24px;
     font-weight: 100;
     
+    
 }
 
 .appbar{
     display: flex;
     font-family: 'Poppins'; 
     /* justify-content : space-between; */
-
 }
 .logo {
-    fill: white;
-    stroke: white;
+    fill: black;
+    stroke: black;
 }
 
 ul{
@@ -31,7 +31,7 @@ ul{
 .navbarcontent{
     text-decoration: none;
     font-size: 1.2rem ;
-    color: white;
+    color: black;
     margin-left: 3rem;
-
 }
+

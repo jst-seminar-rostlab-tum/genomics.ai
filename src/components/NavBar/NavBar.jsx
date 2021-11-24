@@ -29,9 +29,9 @@ const Logo = () => (
 const NavBar = (props) => {
   const { onLoginClicked, onSignUpClicked } = props;
   return (
-    <AppBar className={styles.appbar}>
+    <div className={styles.AppBar}>
       <Toolbar>
-        <IconButton color="inherit" aria-label="open drawer">
+        <IconButton color="success" aria-label="open drawer">
           <a href="#section">
             <Logo className={styles.logo} />
           </a>
@@ -48,11 +48,15 @@ const NavBar = (props) => {
           </ul>
         </Typography>
 
-        <Button variant="outlined" color="inherit" sx={{ m: 1 }} onClick={onLoginClicked}>Login</Button>
-        <Button variant="contained" color="light" onClick={onSignUpClicked}>Signup</Button>
+
+        <Button variant="text" color="inherit" sx={{ m: 2 }} onClick={onLoginClicked}>Login</Button>
+        <Button variant="outlined" color="info" onClick={onSignUpClicked}>Signup</Button>
       </Toolbar>
-    </AppBar>
+      </div>
   );
 };
 
 export default NavBar;
+
+
+//<AppBar className={styles.appbar}> removed this from the above line before the beginning of the app
