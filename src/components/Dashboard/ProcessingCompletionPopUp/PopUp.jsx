@@ -3,12 +3,12 @@ import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Select from '@mui/material/Select';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
+import Switch from '@mui/material/Switch';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import * as IoIcons from 'react-icons/io';
-import * as CGIcons from 'react-icons/cg';
 import completeImg from '../../../assets/complete.png';
 import styles from './popup.module.css';
 import projects from '../Sidebar/SidebarData';
@@ -47,6 +47,9 @@ function PopUpContent(props) {
   // eslint-disable-next-line no-unused-vars
   const [newProject, setNewProject] = useState(false);
 
+  const [isNewProject, addAsNewProject] = useState(false);
+  const handleNewProject = () => addAsNewProject(!isNewProject);
+
   // Annotation
   const [annotationDetails, setAnnotationDetails] = useState({
     annotationName: '',
@@ -58,43 +61,54 @@ function PopUpContent(props) {
     setAnnotationDetails((prevState) => ({ ...prevState, [e.target.id]: e.target.value }));
   }, [annotationDetails]);
 
-  function addProject(pName) {
+  function addProjectWithAnnotation(pName, newAnnot) {
     // create new project
     console.log('PNAME: ');
     const newProj = {
       name: pName,
       path: `/${pName}`,
-      iconClosed: <IoIcons.IoIosArrowForward />,
-      iconOpened: <IoIcons.IoIosArrowDown />,
-      subNav: [],
+      subNav: [newAnnot],
     };
     // add new project
-    setProjects([...projectList, newProj]);
+    setProjects((oldProjectList) => [...oldProjectList, newProj]);
   }
 
-  function addAnnotation(pName) {
-    const newAnnot = {
-      name: annotationDetails.annotationName,
-      path: `/overview/${annotationDetails.annotationName}`,
-      icon: <CGIcons.CgFileDocument />,
-    };
+  function addAnnotation(pName, newAnnot) {
     const idx = projectList.findIndex((e) => e.name === pName);
     if (idx >= 0) {
-      setProjects(projectList[idx].subNav.concat({ newAnnot }));
+      setProjects(projectList[idx].subNav.push(newAnnot));
     }
   }
 
   // Button: Add Annotation
   const addNewCelltypeAnnotation = useCallback(() => {
-    const projName = newProject && annotationDetails.newProjectName !== ''
+    console.log(annotationDetails.projectName);
+    // choose project name depending on switch
+    const projName = !newProject && annotationDetails.newProjectName !== ''
       ? annotationDetails.newProjectName : annotationDetails.projectName;
 
+    // newly created annotation
+    const newAnnotName = annotationDetails.annotationName;
+    const newAnnot = {
+      name: newAnnotName,
+      path: `/overview/${newAnnotName}`,
+    };
+
+    // add new annot. to existing project or create new project with new annot. as first element
     if (projectList.filter((e) => e.name === projName).length === 0) {
-      addProject(projName);
+      addProjectWithAnnotation(projName, newAnnot);
+    } else {
+      addAnnotation(projName, newAnnot);
     }
-    addAnnotation(projName);
+    // TODO: Delete corresponding element in Queue
+    // TODO: update profile info with new annot. (and project)
+    // close pop up
     props.setShowPopup(false);
   }, [projectList]);
+
+  const cancelPressed = useCallback(() => {
+    props.setShowPopup(false);
+  }, []);
 
   return (
     <div className={styles.popUpBase}>
@@ -117,7 +131,6 @@ function PopUpContent(props) {
         className={styles.inputComponentList}
         style={{ left: '50px' }}
       >
-
         <div className={styles.inputComponent}>
           <div className={styles.popUpInputText}>
             New Cell Type Annotation
@@ -133,47 +146,66 @@ function PopUpContent(props) {
           />
         </div>
 
-        <div className={styles.inputComponent}>
+        <Stack
+          spacing={0}
+          className={styles.inputComponent}
+        >
           <div className={styles.popUpInputText}>
             Associated Project
           </div>
 
-          <TextField
-            required
-            id="newProjectName"
-            label="New Project Name"
-            type="text"
-            style={{ width: '350px' }}
-            onChange={handleTextChange}
+          {
+          isNewProject
+            ? (
+              <TextField
+                required
+                id="newProjectName"
+                label="New Project Name"
+                type="text"
+                style={{ width: '350px' }}
+                onChange={handleTextChange}
+              />
+            ) : (
+              <div>
+                <FormControl sx={{ width: 350 }}>
+                  <InputLabel
+                    id="demo-simple-select-autowidth-label"
+                    style={{ textAlign: 'left' }}
+                  >
+                    Project Name*
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-autowidth-label"
+                    id="projectName"
+                    autoWidth
+                    label="Project Name*"
+                    onChange={handleTextChange}
+                  >
+                    {/* Elements to choose from */}
+                    <div style={{ width: '350px' }} />
+                    { projectList.map((item, index) => (
+                      <MenuItem value={index}>
+                        {item.name}
+                      </MenuItem>
+                    ))}
+
+                  </Select>
+                </FormControl>
+              </div>
+            )
+          }
+          <FormControlLabel
+            label="Add new Project Name"
+            sx={{ marginTop: '20px' }}
+            control={(
+              <Switch
+                check={isNewProject}
+                onClick={handleNewProject}
+              />
+            )}
           />
-        </div>
 
-        <div>
-          <FormControl sx={{ width: 350 }}>
-            <InputLabel
-              id="demo-simple-select-autowidth-label"
-              style={{ textAlign: 'left' }}
-            >
-              Project Name*
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-autowidth-label"
-              id="projectName"
-              autoWidth
-              label="Project Name*"
-              onChange={handleTextChange}
-            >
-              {/* Elements to choose from */}
-              <div style={{ width: '350px' }} />
-              { projectList.map((item, index) => (
-                <MenuItem value={index}>
-                  {item.name}
-                </MenuItem>
-              ))}
-
-            </Select>
-          </FormControl>
-        </div>
+        </Stack>
 
         <ThemeProvider theme={theme}>
           <Stack
@@ -185,6 +217,7 @@ function PopUpContent(props) {
               variant="outlined"
               color="secondary"
               style={{ width: '150px', borderRadius: '10px' }}
+              onClick={cancelPressed}
             >
               Cancel
             </Button>
@@ -195,7 +228,7 @@ function PopUpContent(props) {
               style={{ width: '185px', borderRadius: '10px', fontWeight: 'bold' }}
               disabled={annotationDetails.annotationName === ''
                      || ((annotationDetails.newProjectName === '' && !newProject)
-                     || (annotationDetails.projectName === '' && newProject))}
+                     && (annotationDetails.projectName === '' && newProject))}
               onClick={addNewCelltypeAnnotation}
             >
               Add Annotation
