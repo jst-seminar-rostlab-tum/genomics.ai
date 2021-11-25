@@ -3,10 +3,10 @@ import Stack from '@mui/material/Stack';
 import { Link } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import Switch from '@mui/material/Switch';
 import validator from 'validator';
-import { FormControlLabel } from '@mui/material';
 import styles from './settings.module.css';
 import profileDefault from '../../../../assets/profiledefault.png';
 
@@ -21,61 +21,8 @@ const myTheme = createTheme({
   },
 });
 
-const IOSSwitch = styled((props) => (
-  // eslint-disable-next-line react/jsx-props-no-spreading
-  <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
-))(({ theme }) => ({
-  width: 42,
-  height: 26,
-  padding: 0,
-  '& .MuiSwitch-switchBase': {
-    padding: 0,
-    margin: 2,
-    transitionDuration: '300ms',
-    '&.Mui-checked': {
-      transform: 'translateX(16px)',
-      color: '#fff',
-      '& + .MuiSwitch-track': {
-        backgroundColor: theme.palette.mode === 'dark' ? '#1888ff' : '#1888ff',
-        opacity: 1,
-        border: 0,
-      },
-      '&.Mui-disabled + .MuiSwitch-track': {
-        opacity: 0.5,
-      },
-    },
-    '&.Mui-focusVisible .MuiSwitch-thumb': {
-      color: '#1888ff',
-      border: '6px solid #fff',
-    },
-    '&.Mui-disabled .MuiSwitch-thumb': {
-      color:
-                theme.palette.mode === 'light'
-                  ? theme.palette.grey[100]
-                  : theme.palette.grey[600],
-    },
-    '&.Mui-disabled + .MuiSwitch-track': {
-      opacity: theme.palette.mode === 'light' ? 0.7 : 0.3,
-    },
-  },
-  '& .MuiSwitch-thumb': {
-    boxSizing: 'border-box',
-    width: 22,
-    height: 22,
-  },
-  '& .MuiSwitch-track': {
-    borderRadius: 26 / 2,
-    backgroundColor: theme.palette.mode === 'light' ? 'darkgray' : 'darkgray',
-    opacity: 1,
-    transition: theme.transitions.create(['background-color'], {
-      duration: 500,
-    }),
-  },
-}));
-
 function PasswordSection(props) {
-  const { changePassword } = props;
-  if (changePassword) {
+  if (props.changePassword) {
     return (
       <Stack
         spacing={5}
@@ -91,6 +38,8 @@ function PasswordSection(props) {
             type="password"
             style={{ width: '600px', background: 'white' }}
             onChange={props.onPasswordInfoChange}
+            error={!!props.errors.currentPassword}
+            helperText={props.errors.currentPassword}
           />
         </div>
 
@@ -103,6 +52,8 @@ function PasswordSection(props) {
             type="password"
             style={{ width: '600px', background: 'white' }}
             onChange={props.onPasswordInfoChange}
+            error={!!props.errors.newPassword}
+            helperText={props.errors.newPassword}
           />
         </div>
 
@@ -115,6 +66,8 @@ function PasswordSection(props) {
             type="password"
             style={{ width: '600px', background: 'white' }}
             onChange={props.onPasswordInfoChange}
+            error={!!props.errors.newPasswordRepeated}
+            helperText={props.errors.newPasswordRepeated}
           />
         </div>
       </Stack>
@@ -156,25 +109,75 @@ function Settings() {
     setPasswordInfo((prevState) => ({ ...prevState, [e.target.id]: e.target.value }));
   }, [passwordInfo]);
 
+  function passwordIsSafe(minLength) {
+    // minimum length
+    if (userInfo.newPassword.length < minLength) {
+      return 'Password must be at least 8 characters long!';
+    }
+    // password should contain these
+    let lowerCase = false;
+    let upperCase = false;
+    let numbers = false;
+
+    userInfo.newPassword.split('').forEach((c) => {
+      if (c === c.toUpperCase()) {
+        upperCase = true;
+      } else if (c === c.toLowerCase()) {
+        lowerCase = true;
+      } else if (!Number.isNaN(c)) {
+        numbers = true;
+      }
+    });
+
+    if (!lowerCase || !upperCase || !numbers) {
+      return 'Use numbers, upper & lower case letters!';
+    }
+    return '';
+  }
+
   /* Input Validation */
   function isValidInput() {
     let currentErrors = {};
     if (!validator.isEmail(userInfo.email)) {
-      currentErrors = { ...currentErrors, email: 'Please provide a valid email' };
+      currentErrors = { ...currentErrors, emailAddress: 'Please provide a valid email' };
     }
-    if (userInfo.firstname === '') {
+    if (userInfo.firstName === '') {
       currentErrors = { ...currentErrors, firstname: 'Please enter your first name!' };
     }
-    if (userInfo.lastname === '') {
+    if (userInfo.lastName === '') {
       currentErrors = { ...currentErrors, lastname: 'Please enter your last name!' };
     }
     setErrors(currentErrors);
     return !Object.keys(currentErrors).length;
   }
 
-  const save = useCallback(() => {
-    if (!isValidInput()) {
-      console.log(errors);
+  function currentPasswordIsCorrect() {
+    // validate password
+    return true;
+  }
+
+  function isValidPasswordInfo() {
+    let newErrors = {};
+    // current password correct?
+    if (!currentPasswordIsCorrect()) {
+      newErrors = { ...newErrors, currentPassword: 'Please enter your last name!' };
+    }
+    // password correctly repeated?
+    if (userInfo.newPassword === userInfo.newPasswordRepeated) {
+      newErrors = { ...newErrors, newPasswordRepeated: 'The passwords must match!' };
+    }
+    // new password save enough?
+    const safetyErr = passwordIsSafe(8);
+    if (safetyErr !== '') {
+      newErrors = { ...newErrors, newPassword: safetyErr };
+    }
+    setErrors((currentErrors) => [...currentErrors, ...newErrors]);
+    return !Object.keys(newErrors).length;
+  }
+
+  const saveUserData = useCallback(() => {
+    if (isValidInput() && isValidPasswordInfo()) {
+
     }
   }, []);
 
@@ -190,7 +193,7 @@ function Settings() {
         <div style={{ paddingBlock: '25px', paddingLeft: '80px', marginBottom: '50px' }}>
           <Link
             className={styles.profilePicture}
-            to="https://www.neurosciencemarketing.com/wp-content/uploads/2016/08/mona-lisa.jpg"
+            to="#"
           >
             <img
               alt="profile"
@@ -214,6 +217,8 @@ function Settings() {
               type="text"
               style={{ width: '290px', background: 'white' }}
               onChange={onUserInfoChange}
+              error={!!errors.firstName}
+              helperText={errors.firstName}
             />
           </div>
 
@@ -226,6 +231,8 @@ function Settings() {
               type="text"
               style={{ width: '290px', background: 'white' }}
               onChange={onUserInfoChange}
+              error={!!errors.lastName}
+              helperText={errors.lastName}
             />
           </div>
         </Stack>
@@ -239,6 +246,8 @@ function Settings() {
             type="text"
             style={{ width: '600px', background: 'white' }}
             onChange={onUserInfoChange}
+            error={!!errors.emailAddress}
+            helperText={errors.emailAddress}
           />
         </div>
 
@@ -262,8 +271,7 @@ function Settings() {
             rows="5"
             type="text"
             style={{
-              width: '600'
-                                + 'px',
+              width: '600px',
               background: 'white',
             }}
             onChange={onUserInfoChange}
@@ -283,16 +291,17 @@ function Settings() {
           <FormControlLabel
             label="Change Password"
             control={(
-              <IOSSwitch
+              <Switch
                 sx={{ m: 1 }}
                 check={changePassword}
                 onClick={handleChangePassword}
               />
-                            )}
+            )}
           />
         </Stack>
 
         <PasswordSection
+          errors={errors}
           changePassword={changePassword}
           passwordInfo={passwordInfo}
           onPasswordInfoChange={onPasswordInfoChange}
@@ -312,8 +321,8 @@ function Settings() {
             <Button
               variant="contained"
               color="primary"
-              onClick={save}
               style={{ width: '185px', borderRadius: '10px', fontWeight: 'bold' }}
+              onClick={saveUserData}
             >
               Save
             </Button>
