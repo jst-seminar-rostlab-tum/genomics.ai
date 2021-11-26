@@ -1,8 +1,6 @@
 .Container{
     background-color: rgba(0, 60, 255, 0.05);
-    border: red;
-    border-style: solid;
-    border-width: 1px;
+    border: 1px solid red;
     border-radius: 10px;
     text-align: center;
     width: 100%;
@@ -14,7 +12,6 @@
     width: 100%;
     margin:0 auto;
     justify-content: center;
-    
 }
 
 .title h1{

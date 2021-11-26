@@ -1,15 +1,29 @@
 .navbar {
-    background: #003560;
-    height: 80px;
+    background: white;
+    height: 100px;
     display: flex;
     padding-inline: 1rem;
+    padding-left: 360px;
     width: 100%;
     position: fixed;
     z-index: 1000;
+    box-shadow: 1px 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* TODO: remove Duplicate Code */
+.navbarWithCollapsedSidebar {
+    background: white;
+    height: 100px;
+    display: flex;
+    padding-inline: 1rem;
+    padding-left: 120px;
+    width: 100%;
+    position: fixed;
+    z-index: 1000;
+    box-shadow: 1px 3px 10px rgba(0, 0, 0, 0.1);
 }
 
 .navbarLogo {
-    color: #fff;
     justify-self: start;
     margin-left: 40px;
     cursor: pointer;
@@ -30,12 +44,12 @@
 .navItem {
     display: flex;
     align-items: center;
-    height: 80px;
+    height: 100px;
     font-size: 17px;
 }
 
 .profileSettings {
-    color: white;
+    color: #595B60;
     text-decoration: none;
     margin-right: 20px;
 }
@@ -45,13 +59,14 @@
 }
 
 .navLinks {
-    color: white;
+    color: #595B60;
     text-decoration: none;
     padding: 0.5rem 1rem;
     border-radius: 10px;
 }
 
 .navLinks:hover {
+    color: white;
     background-color: #1888ff;
     border-radius: 10px;
     transition: all 0.2s ease-out;

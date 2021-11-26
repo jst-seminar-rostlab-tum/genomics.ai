@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { Link as NavLink } from 'react-router-dom';
 import { SettingsDropdown } from './SettingsDropdown/SettingsDropdown';
 import styles from './navigationBar.module.css';
-import geneIcon from '../../../assets/logo-white.png';
-import profiledefault from '../../../assets/profiledefault.png';
+import geneIcon from '../../../assets/logo-blue.png';
+import profiledefault from '../../../assets/user.png';
 
-function NavigationBar() {
+function NavigationBar({ sidebarShown }) {
   const [dropDown, setDropDown] = useState(false);
 
   const onMouseEnter = () => {
@@ -19,15 +19,14 @@ function NavigationBar() {
 
   return (
     <>
-      <nav className={styles.navbar}>
+      <nav className={sidebarShown ? styles.navbarWithCollapsedSidebar : styles.navbar}>
         <li className={styles.navItem}>
-          <NavLink to="/dashboard">
-            <img
-              alt="gene-icon"
-              src={geneIcon}
-              style={{ height: '40px', paddingLeft: '15px' }}
-            />
-          </NavLink>
+          <img
+            alt="gene-icon"
+            src={geneIcon}
+            style={{ height: '45px', paddingLeft: '15px' }}
+            hover={sidebarShown}
+          />
         </li>
 
         <ul
@@ -71,7 +70,7 @@ function NavigationBar() {
             className={styles.profileSettings}
             to="/settings"
           >
-            John Doe
+            Amin Ben Saad
             <img
               alt="profiledefault"
               src={profiledefault}

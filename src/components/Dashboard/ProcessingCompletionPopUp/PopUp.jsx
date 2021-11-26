@@ -195,7 +195,7 @@ function PopUpContent(props) {
             )
           }
           <FormControlLabel
-            label="Add new Project Name"
+            label="Add New Project"
             sx={{ marginTop: '20px' }}
             control={(
               <Switch

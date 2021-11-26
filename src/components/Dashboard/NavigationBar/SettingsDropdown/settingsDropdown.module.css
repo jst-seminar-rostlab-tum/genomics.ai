@@ -2,12 +2,12 @@
 .dropdownMenu {
     position: absolute;
     right: 30px;
-    top: 75px;
+    top: 90px;
     text-align: start;
     background: white;
     padding: 20px;
     border-radius: 15px;
-    box-shadow: 1px 3px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 1px 3px 10px rgba(0, 0, 0, 0.2);
     z-index: 10001;
 }
 
