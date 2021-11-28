@@ -27,7 +27,7 @@ const Logo = () => (
   </svg>
 );
 
-const NavBar = (props) => {
+const NavBar = () => {
   //inserting the logic from the landing page here
   const [isLoginFormVisible, setLoginFormVisible] = useState(false);
   const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
@@ -74,12 +74,12 @@ const NavBar = (props) => {
           <Box className={styles.buttonContainer}>
             <Button variant="text" color="inherit" sx={{ m: 2 }} onClick={onLoginClicked}>
               <Typography sx={{ color: 'black', fontWeight: '500' }}>
-                Login
+                Signup
               </Typography>
             </Button>
             <Button variant="outlined" color="info" onClick={onSignUpClicked}>
               <Typography sx={{ color: '#4F83CC', fontWeight: '500' }}>
-                Signup
+                Login
               </Typography>
             </Button>
           </Box>

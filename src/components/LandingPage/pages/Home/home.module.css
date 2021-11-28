@@ -1,0 +1,54 @@
+.container{
+    text-align: center;
+    justify-content: center;
+}
+
+.backgroundImage{
+    width: 100%;
+    height: 45vh;
+}
+
+
+.infoContainer{
+   padding: 50px; 
+   text-align: center;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+.explanationRight{
+    padding-left: 50px;
+}
+
+.explanationLeft{
+    padding-right: 50px;
+}
+
+.illustration1{
+    height: 250px;
+    padding-right: 50px;
+}
+
+.illustration2{
+    width: 350px;
+    padding-left: 50px;
+}
+
+.illustration3{
+    height: 200px;
+    padding-right: 50px;
+}
+
+.illustration4{
+    height: 230px;
+    padding-left: 50px;
+}
+
+.illustrationTitle{
+    padding-bottom: 30px;
+}
+
+
+
+
