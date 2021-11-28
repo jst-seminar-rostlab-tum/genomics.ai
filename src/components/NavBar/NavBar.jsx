@@ -1,9 +1,10 @@
 import {
   AppBar, Button, Toolbar, Typography, IconButton, Box,
 } from '@mui/material';
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import styles from './navbar.module.css';
-
+import LoginForm from '../LandingPage/LoginForm/LoginForm';
+import RegistrationForm from '../LandingPage/RegistrationForm/RegistrationForm';
 // change logo to white
 const Logo = () => (
   <svg width="56" height="56" viewBox="0 0 56 56" fill="white" xmlns="http://www.w3.org/2000/svg">
@@ -27,17 +28,77 @@ const Logo = () => (
 );
 
 const NavBar = (props) => {
-  const { onLoginClicked, onSignUpClicked } = props;
+  //inserting the logic from the landing page here
+  const [isLoginFormVisible, setLoginFormVisible] = useState(false);
+  const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
+
+  const onLoginClicked = useCallback(() => {
+    setLoginFormVisible(true);
+  }, [setLoginFormVisible]);
+
+  const onLoginFormClosed = useCallback(() => {
+    setLoginFormVisible(false);
+  }, [setLoginFormVisible]);
+
+  const onSignUpClicked = useCallback(() => {
+    setRegistrationFormVisible(true);
+  }, [setRegistrationFormVisible]);
+
+  const onRegistrationFormClosed = useCallback(() => {
+    setRegistrationFormVisible(false);
+  }, [setRegistrationFormVisible]);
+
+  //const { onLoginClicked, onSignUpClicked } = props;
   return (
-    <div className={styles.AppBar}>
+    <div>
+      <div className={styles.AppBar}>
       <Toolbar>
         <IconButton color="success" aria-label="open drawer">
           <a href="#section">
             <Logo className={styles.logo} />
           </a>
         </IconButton>
-          <h6 className={styles.logoName}>GeneCruncher</h6>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+        <Typography className={styles.logoName}>GeneCruncher</Typography>
+        <Box sx={{ flexGrow: 1 }}>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            <ul>
+              <Box>
+                <li><a href="/" className={styles.navbarcontent}>Home</a></li>
+              </Box>
+              <li><a href="about" className={styles.navbarcontent}>About us</a></li>
+              <li><a href="docs" className={styles.navbarcontent}>Docs</a></li>
+              <li><a href="contact" className={styles.navbarcontent}>Contact</a></li>
+            </ul>
+          </Typography>
+        </Box>
+
+        <Button variant="text" color="inherit" sx={{ m: 2 }} onClick={onLoginClicked}>
+          <Typography sx={{ color: 'black' }}>
+            Login
+          </Typography>
+        </Button>
+        <Button variant="outlined" color="info" onClick={onSignUpClicked}>Signup</Button>
+      </Toolbar>
+    </div>
+    <div>
+    <LoginForm visible={isLoginFormVisible} onClose={onLoginFormClosed} />
+      <RegistrationForm
+        visible={isRegistrationFormVisible}
+        onClose={onRegistrationFormClosed}
+        onSuccessfulRegistration={onLoginClicked}
+      />
+    </div>
+    </div>
+  );
+};
+
+export default NavBar;
+
+
+//<AppBar className={styles.appbar}> removed this from the above line before the beginning of the app
+
+/*
+<Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           <ul>
             <Box>
               <li><a href="#section" className={styles.navbarcontent}>Home</a></li>
@@ -48,15 +109,4 @@ const NavBar = (props) => {
           </ul>
         </Typography>
 
-
-        <Button variant="text" color="inherit" sx={{ m: 2 }} onClick={onLoginClicked}>Login</Button>
-        <Button variant="outlined" color="info" onClick={onSignUpClicked}>Signup</Button>
-      </Toolbar>
-      </div>
-  );
-};
-
-export default NavBar;
-
-
-//<AppBar className={styles.appbar}> removed this from the above line before the beginning of the app
+*/
