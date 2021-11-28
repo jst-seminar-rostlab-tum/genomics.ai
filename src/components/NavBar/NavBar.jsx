@@ -27,7 +27,7 @@ const Logo = () => (
   </svg>
 );
 
-const NavBar = (props) => {
+const NavBar = () => {
   //inserting the logic from the landing page here
   const [isLoginFormVisible, setLoginFormVisible] = useState(false);
   const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
