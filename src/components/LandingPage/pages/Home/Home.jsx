@@ -39,7 +39,8 @@ function Home() {
         <img className={styles.illustration3} src={logo3} alt="explanation" />
         <div className={styles.explanationRight}>
           <Typography className={styles.illustrationTitle} sx={{ fontSize: '24px' }}>Create a project</Typography>
-          <Typography>Create and access all of your projects in the dashboard</Typography>
+          <Typography>Create and access all of your projects</Typography>
+          <Typography>in the dashboard</Typography>
         </div>
       </div>
       <div className={styles.infoContainer}>
