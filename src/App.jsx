@@ -2,10 +2,10 @@ import './app.module.css';
 import React from 'react';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
-import LandingPage from './components/LandingPage/LandingPage';
 import HomePage from './components/LandingPage/pages/HomePage/HomePage';
 import About from './components/LandingPage/pages/About/About';
 import Docs from './components/LandingPage/pages/Docs/Docs';
+import Contact from './components/LandingPage/pages/Contact/Contact';
 
 function App() {
   const theme = createTheme({
@@ -26,6 +26,7 @@ function App() {
           <Route exact path="/" component={HomePage} />
           <Route path="/about" component={About} />
           <Route path="/docs" component={Docs} />
+          <Route path="/contact" component={Contact} />
         </Switch>
       </Router>
     </ThemeProvider>
