@@ -52,42 +52,47 @@ const NavBar = (props) => {
   return (
     <div>
       <div className={styles.AppBar}>
-      <Toolbar>
-        <IconButton color="success" aria-label="open drawer">
-          <a href="#section">
-            <Logo className={styles.logo} />
-          </a>
-        </IconButton>
-        <Typography sx={{fontSize:'24px', fontWeight: '500' }}>GeneCruncher</Typography>
-        <Box sx={{ flexGrow: 1 }}>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <ul>
-              <Box>
-                <li><a href="/" className={styles.navbarcontent}>Home</a></li>
-              </Box>
-              <li><a href="about" className={styles.navbarcontent}>About us</a></li>
-              <li><a href="docs" className={styles.navbarcontent}>Docs</a></li>
-              <li><a href="contact" className={styles.navbarcontent}>Contact</a></li>
-            </ul>
-          </Typography>
-        </Box>
-
-        <Button variant="text" color="inherit" sx={{ m: 2 }} onClick={onLoginClicked}>
-          <Typography sx={{ color: 'black' }}>
-            Login
-          </Typography>
-        </Button>
-        <Button variant="outlined" color="info" onClick={onSignUpClicked}>Signup</Button>
-      </Toolbar>
-    </div>
-    <div>
-    <LoginForm visible={isLoginFormVisible} onClose={onLoginFormClosed} />
-      <RegistrationForm
-        visible={isRegistrationFormVisible}
-        onClose={onRegistrationFormClosed}
-        onSuccessfulRegistration={onLoginClicked}
-      />
-    </div>
+        <Toolbar>
+          <IconButton color="success" aria-label="open drawer">
+            <a href="#section">
+              <Logo className={styles.logo} />
+            </a>
+          </IconButton>
+          <Typography sx={{ fontSize: '24px', fontWeight: '500' }}>GeneCruncher</Typography>
+          <Box sx={{ flexGrow: 1 }}>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              <ul>
+                <Box>
+                  <li><a href="/" className={styles.navbarcontent}>Home</a></li>
+                </Box>
+                <li><a href="about" className={styles.navbarcontent}>About us</a></li>
+                <li><a href="docs" className={styles.navbarcontent}>Docs</a></li>
+                <li><a href="contact" className={styles.navbarcontent}>Contact</a></li>
+              </ul>
+            </Typography>
+          </Box>
+          <Box className={styles.buttonContainer}>
+            <Button variant="text" color="inherit" sx={{ m: 2 }} onClick={onLoginClicked}>
+              <Typography sx={{ color: 'black', fontWeight: '500' }}>
+                Login
+              </Typography>
+            </Button>
+            <Button variant="outlined" color="info" onClick={onSignUpClicked}>
+              <Typography sx={{ color: '#4F83CC', fontWeight: '500' }}>
+                Signup
+              </Typography>
+            </Button>
+          </Box>
+        </Toolbar>
+      </div>
+      <div>
+        <LoginForm visible={isLoginFormVisible} onClose={onLoginFormClosed} />
+        <RegistrationForm
+          visible={isRegistrationFormVisible}
+          onClose={onRegistrationFormClosed}
+          onSuccessfulRegistration={onLoginClicked}
+        />
+      </div>
     </div>
   );
 };
