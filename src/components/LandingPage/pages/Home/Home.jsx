@@ -6,6 +6,7 @@ import logo1 from '../../../../assets/landing-illustrations/science.png';
 import logo2 from '../../../../assets/landing-illustrations/files.png';
 import logo3 from '../../../../assets/landing-illustrations/dashboard.png';
 import logo4 from '../../../../assets/landing-illustrations/visual.png';
+import Footer from '../../../LandingPage/Footer/Footer';
 import dnaImage from '../../../../assets/dna.png';
 
 
@@ -49,8 +50,10 @@ function Home() {
         </div>
         <img className={styles.illustration4} src={logo4} alt="explanation" />
       </div>
+      <Footer />
     </div>
     //TODO: add footer for the website across all pages that are not the dashboard
+    
   )
 }
 
