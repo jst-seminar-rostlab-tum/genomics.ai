@@ -1,6 +1,7 @@
 import React from 'react';
 import NavBar from '../../../NavBar/NavBar';
 import styles from './contact.module.css';
+import Footer from '../../Footer/Footer';
 import { TextField, Typography , Grid, Button , Box} from '@mui/material';
 import { useCallback, useState } from 'react';
 
@@ -173,8 +174,18 @@ function Contact() {
 
               </Grid>
             </Box>
-
-          
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            
+          <Footer/>
       </div>
   )
 }

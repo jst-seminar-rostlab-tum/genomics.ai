@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './about.module.css';
 import { Typography ,Card,CardMedia,CardContent ,Grid, Button,Link,IconButton} from '@mui/material';
 import NavBar from '../../../NavBar/NavBar';
+import Footer from '../../Footer/Footer';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import GitHubIcon from '@mui/icons-material/GitHub';
@@ -216,7 +217,7 @@ function About() {
       
       <MediaCards />
 
-
+      <Footer />
     </div>
   );
 }
