@@ -1,3 +1,10 @@
 .headerContainer{
     text-align: center;
 }
+.formContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+    width: 1000px;
+}
