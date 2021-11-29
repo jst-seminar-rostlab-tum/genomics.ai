@@ -38,7 +38,7 @@ const NavBar = () => {
           <IconButton color="success" aria-label="open drawer" href="/">
             <img src={logo}/>
           </IconButton>
-          <Typography sx={{ fontSize: '24px', fontWeight: '500' }}>GeneCruncher</Typography>
+          <Typography sx={{ fontSize: '24px', fontWeight: '500' }}>genomics.ai</Typography>
           <Box sx={{ flexGrow: 1 }}>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               <ul>
