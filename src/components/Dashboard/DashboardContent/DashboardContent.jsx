@@ -6,7 +6,6 @@ import NavigationBar from '../NavigationBar/NavigationBar';
 import Documentation from '../Pages/Documentation/Documentation';
 import Settings from '../Pages/Settings/Settings';
 import Help from '../Pages/Help/Help';
-import PopUp from '../ProcessingCompletionPopUp/PopUp';
 import styles from './dashboardContent.module.css';
 
 const DashboardContent = () => {
