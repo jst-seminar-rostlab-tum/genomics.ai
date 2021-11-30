@@ -60,8 +60,8 @@ function StatusCard({ id }) {
     unknown: grey[500],
   };
 
-  //Change of state for testing
-  // The status is not passed down as a prop, but received from backend, 
+  // Change of state for testing
+  // The status is not passed down as a prop, but received from backend,
   const [changeResCount, setChangeResCount] = useState(0);
   if (changeResCount < 1) {
     setResponse({ ...response, status: 'error' });
@@ -116,7 +116,7 @@ function StatusCard({ id }) {
           <AccordionDetails className={styles.fileStatusLog}>
             <div className={styles.statusContainer}>
               <Typography variant="h4" sx={{ fontWeight: 'light', fontSize: '16px' }}>
-                Status: 
+                Status:
                 <Typography
                   sx={{
                     fontSize: '16px',

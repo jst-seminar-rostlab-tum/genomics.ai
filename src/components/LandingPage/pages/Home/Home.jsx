@@ -6,17 +6,16 @@ import logo1 from '../../../../assets/landing-illustrations/science.png';
 import logo2 from '../../../../assets/landing-illustrations/files.png';
 import logo3 from '../../../../assets/landing-illustrations/dashboard.png';
 import logo4 from '../../../../assets/landing-illustrations/visual.png';
-import Footer from '../../../LandingPage/Footer/Footer';
+import Footer from '../../Footer/Footer';
 import dnaImage from '../../../../assets/dna.png';
-
 
 function Home() {
   return (
     <div className={styles.container}>
       <NavBar />
       <img className={styles.backgroundImage} src={dnaImage} src={dnaImage} alt="picture of DNA" />
-      {/*If genomics visualized stays in the middle, then it needs to be properly aligned.
-      Right now it is using padding as the way to align the items*/}
+      {/* If genomics visualized stays in the middle, then it needs to be properly aligned.
+      Right now it is using padding as the way to align the items */}
       <Box sx={{ paddingBottom: '50px', paddingTop: '250px' }}>
         <Typography sx={{ fontSize: '24px', fontWeight: 'bold' }}>Genomics visualized</Typography>
       </Box>
@@ -53,9 +52,9 @@ function Home() {
       </div>
       <Footer />
     </div>
-    //TODO: add footer for the website across all pages that are not the dashboard
-    
-  )
+    // TODO: add footer for the website across all pages that are not the dashboard
+
+  );
 }
 
 export default Home;

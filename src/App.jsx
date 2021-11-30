@@ -6,8 +6,8 @@ import HomePage from './components/LandingPage/pages/Home/Home.jsx';
 import About from './components/LandingPage/pages/About/About';
 import Docs from './components/LandingPage/pages/Docs/Docs';
 import Contact from './components/LandingPage/pages/Contact/Contact';
-import Dashboard from "./components/Dashboard/Dashboard";
-import DashboardContent from "./components/Dashboard/DashboardContent/DashboardContent";
+import Dashboard from './components/Dashboard/Dashboard';
+import DashboardContent from './components/Dashboard/DashboardContent/DashboardContent';
 
 function App() {
   const theme = createTheme({
@@ -38,6 +38,6 @@ function App() {
 
 export default App;
 
-//removed the dashboar from the router
-//<Route path="/dashboard" component={Dashboard} />
-//<Route exact path="/" component={LandingPage} />
+// removed the dashboar from the router
+// <Route path="/dashboard" component={Dashboard} />
+// <Route exact path="/" component={LandingPage} />

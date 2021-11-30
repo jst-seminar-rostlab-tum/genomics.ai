@@ -60,7 +60,7 @@ function PopUpContent(props) {
     console.log('PNAME: ');
     const newProj = {
       name: pName,
-      //path: `/${pName}`,   --commented out the line to the left in order to get rid of the error
+      // path: `/${pName}`,   --commented out the line to the left in order to get rid of the error
       subNav: [newAnnot],
     };
     // add new project
@@ -85,7 +85,7 @@ function PopUpContent(props) {
     const newAnnotName = annotationDetails.annotationName;
     const newAnnot = {
       name: newAnnotName,
-      //path: `/overview/${newAnnotName}`,   --commented out the line to the left in order to get rid of the error
+      // path: `/overview/${newAnnotName}`,   --commented out the line to the left in order to get rid of the error
     };
 
     // add new annot. to existing project or create new project with new annot. as first element
