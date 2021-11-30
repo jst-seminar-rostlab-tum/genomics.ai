@@ -1,6 +1,6 @@
 .Container{
     background-color: rgba(0, 60, 255, 0.05);
-    border: 1px solid red;
+    /*for testing: border: 1px solid red;*/
     border-radius: 10px;
     text-align: center;
     width: 100%;

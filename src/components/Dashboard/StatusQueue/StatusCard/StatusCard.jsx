@@ -60,12 +60,13 @@ function StatusCard({ id }) {
     unknown: grey[500],
   };
 
-  // The status is not passed down as a prop, but received from backend
+  //Change of state for testing
+  // The status is not passed down as a prop, but received from backend, 
   const [changeResCount, setChangeResCount] = useState(0);
   if (changeResCount < 1) {
-    setResponse({ ...response, status: 'completed' });
+    setResponse({ ...response, status: 'error' });
     setChangeResCount(changeResCount + 1);
-  } // check dom's code to understand how it is done
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -115,7 +116,20 @@ function StatusCard({ id }) {
           <AccordionDetails className={styles.fileStatusLog}>
             <div className={styles.statusContainer}>
               <Typography variant="h4" sx={{ fontWeight: 'light', fontSize: '16px' }}>
-                Status:
+                Status: 
+                <Typography
+                  sx={{
+                    fontSize: '16px',
+                    fontWeight: 'light',
+                    margin: '0',
+                    padding: '0',
+                    textAlign: 'center',
+                    display: 'inline',
+                    color: statusColor[response.status],
+                  }}
+                >
+                  {` ${response.status.toUpperCase()}`}
+                </Typography>
               </Typography>
             </div>
             <Typography>{response.log}</Typography>

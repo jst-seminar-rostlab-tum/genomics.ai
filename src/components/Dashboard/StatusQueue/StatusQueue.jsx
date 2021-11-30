@@ -37,5 +37,3 @@ export default StatusQueue;
 /*
 map jobs to list items containing the status cards
 */
-
-// TODO:  there is a bug when expanding the list.
