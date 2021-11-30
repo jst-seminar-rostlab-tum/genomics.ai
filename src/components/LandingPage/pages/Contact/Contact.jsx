@@ -169,7 +169,7 @@ function Contact() {
                   />
                 </Grid>
                 <Grid item >
-                    <Button type="submit" variant="contained" color="primary" fullwidth onClick={formSubmit}> submit</Button>
+                    <Button type="submit" variant="outlined" color="primary" fullwidth onClick={formSubmit}> submit</Button>
                 </Grid>
 
               </Grid>

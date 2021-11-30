@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './about.module.css';
-import { Typography ,Card,CardMedia,CardContent ,Grid, Button,Link,IconButton} from '@mui/material';
+import { Typography ,Card,CardMedia,CardContent ,Grid, Button,Link,IconButton, Divider} from '@mui/material';
 import NavBar from '../../../NavBar/NavBar';
 import Footer from '../../Footer/Footer';
 import FacebookIcon from '@mui/icons-material/Facebook';
@@ -8,140 +8,15 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
-function MediaCards(props) {
-    const { classes } = props;
-    const cardWidth = 3.5;
-    return(
-      <Grid
-      container
-      spacing={2}
-      direction="row"
-      justifyContent="center"
-      // justifyContent="space-between"
-      alignItems="center"
-      justify="center"
-      style={{ minHeight: '20vh', maxWidth: '500vh' }}
-      sx={{paddingTop:'50px'}}
-      >
-    
-        <Grid item xs={cardWidth}>
-          <Namecard 
-          name="Paella dish" 
-          role="CEO, Co-founder" 
-          img='https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg' 
-          dscp='BlablaggQWQEQWadweqweqwdqwd123 ajhwlkellkcnl adq'
-          socialFB='#!'
-          socialLinkedIn='#!'
-          socialGithub='#!'
-          socialTwitter='#!'
-          />
-        </Grid>  
-        <Grid item xs={cardWidth}>
-          <Namecard 
-          name="Paella dish" 
-          role="CEO, Co-founder" 
-          img='https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg' 
-          dscp='BlablaggQWQEQWadweqweqwdqwd123 ajhwlkellkcnl adq'
-          socialFB='#!'
-          socialLinkedIn='#!'
-          socialGithub='#!'
-          socialTwitter='#!'
-          />
-        </Grid>  
-        <Grid item xs={cardWidth}>
-          <Namecard 
-          name="Paella dish" 
-          role="CEO, Co-founder" 
-          img='https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg' 
-          dscp='BlablaggQWQEQWadweqweqwdqwd123 ajhwlkellkcnl adq'
-          socialFB='#!'
-          socialLinkedIn='#!'
-          socialGithub='#!'
-          socialTwitter='#!'
-          />
-        </Grid>  
-        <Grid item xs={cardWidth}>
-          <Namecard 
-          name="Paella dish" 
-          role="CEO, Co-founder" 
-          img='https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg' 
-          dscp='BlablaggQWQEQWadweqweqwdqwd123 ajhwlkellkcnl adq'
-          socialFB='#!'
-          socialLinkedIn='#!'
-          socialGithub='#!'
-          socialTwitter='#!'
-          />
-        </Grid>  
-        <Grid item xs={cardWidth}>
-          <Namecard 
-          name="Paella dish" 
-          role="CEO, Co-founder" 
-          img='https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg' 
-          dscp='BlablaggQWQEQWadweqweqwdqwd123 ajhwlkellkcnl adq'
-          socialFB='#!'
-          socialLinkedIn='#!'
-          socialGithub='#!'
-          socialTwitter='#!'
-          />
-        </Grid>  
-        <Grid item xs={cardWidth}>
-          <Namecard 
-          name="Paella dish" 
-          role="CEO, Co-founder" 
-          img='https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg' 
-          dscp='BlablaggQWQEQWadweqweqwdqwd123 ajhwlkellkcnl adq'
-          socialFB='#!'
-          socialLinkedIn='#!'
-          socialGithub='#!'
-          socialTwitter='#!'
-          />
-        </Grid>  
-        <Grid item xs={cardWidth}>
-          <Namecard 
-          name="Paella dish" 
-          role="CEO, Co-founder" 
-          img='https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg' 
-          dscp='BlablaggQWQEQWadweqweqwdqwd123 ajhwlkellkcnl adq'
-          socialFB='#!'
-          socialLinkedIn='#!'
-          socialGithub='#!'
-          socialTwitter='#!'
-          />
-        </Grid>  
-        <Grid item xs={cardWidth}>
-          <Namecard 
-          name="Paella dish" 
-          role="CEO, Co-founder" 
-          img='https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg' 
-          dscp='BlablaggQWQEQWadweqweqwdqwd123 ajhwlkellkcnl adq'
-          socialFB='#!'
-          socialLinkedIn='#!'
-          socialGithub='#!'
-          socialTwitter='#!'
-          />
-        </Grid>  <Grid item xs={cardWidth}>
-          <Namecard 
-          name="Paella dish" 
-          role="CEO, Co-founder" 
-          img='https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg' 
-          dscp='BlablaggQWQEQWadweqweqwdqwd123 ajhwlkellkcnl adq'
-          socialFB='#!'
-          socialLinkedIn='#!'
-          socialGithub='#!'
-          socialTwitter='#!'
-          />
-        </Grid>  
-        
-      </Grid>
-    )
- }
+
 
 function Namecard(props) {
   return(
     <Card sx={{ maxWidth: 500,
       display: 'flex',
       paddingLeft:'20px',
-      paddingright:'20px'
+      paddingright:'20px',
+      boxShadow: "none"
       }}>
     <CardMedia
       component="img"
@@ -156,8 +31,8 @@ function Namecard(props) {
         border:'4px solid #ff',
         display: 'flex',
       }}
-      
     />
+
     <CardContent style={{ maxWidth: "200px"}}>
       <Typography variant = "h5">{props.name}</Typography>
       <Typography variant="body2" color="text.secondary">{props.role}</Typography>
@@ -175,30 +50,30 @@ function Namecard(props) {
           justifyContent: 'center',
         }}
       >
-        <Grid item>
-        <IconButton href={props.socialFB}>
-          <FacebookIcon/>
-        </IconButton>
-        </Grid>
+        
+      {
+        props.socialFB != ''
+        ? FbItem(props.socialFB)
+        : <Grid item/>
+      }
 
-        <Grid item>
-        <IconButton href={props.socialGithub}>
-          <GitHubIcon/>
-        </IconButton>
-        </Grid>
+      {
+        props.socialGithub != ''
+        ? GithubItem(props.socialGithub)
+        : <Grid item/>
+      }
+      
+      {
+        props.socialLinkedIn != ''
+        ? LinkedInItem(props.socialLinkedIn)
+        : <Grid item/>
+      }
 
-        <Grid item>
-        <IconButton href={props.socialLinkedIn}>
-          <LinkedInIcon/>
-        </IconButton>
-        </Grid>
-
-        <Grid item>
-        <IconButton href={props.socialTwitter}>
-          <TwitterIcon/>
-        </IconButton>
-        </Grid>
-
+      {
+        props.socialTwitter != ''
+        ? TwitterItem(props.socialTwitter)
+        : <Grid item/>
+      }
 
       </Grid>
 
@@ -206,16 +81,189 @@ function Namecard(props) {
   </Card>
 
   );
+}
+
+function FbItem(fblink){
+    return (
+      <Grid item>
+        <IconButton href={fblink}>
+          <FacebookIcon style={{fill : '#3B8EED'}}/>
+        </IconButton>
+        </Grid>
+    )
+}
+
+function GithubItem(ghlink){
+  return (
+    <Grid item>
+      <IconButton href={ghlink}>
+        <GitHubIcon style={{fill : '#171B22'}}/>
+      </IconButton>
+      </Grid>
+  )
+}
+
+function LinkedInItem(lilink){
+  return (
+    <Grid item>
+      <IconButton href={lilink}>
+        <LinkedInIcon style={{fill : '#2D69BF'}}/>
+      </IconButton>
+      </Grid>
+  )
+}
+
+function TwitterItem(ttlink){
+  return (
+    <Grid item>
+      <IconButton href={ttlink}>
+        <TwitterIcon style={{fill : '#66AFEC'}}/>
+      </IconButton>
+      </Grid>
+  )
+}
+
+const SubteamSection = ((props) => {
+  const cardWidth = 3.5;
+  const teamlead = props.data.shift();
+  return(
+    <div>
+
+    <Grid
+      container
+      spacing={2}
+      direction="row"
+      justifyContent="center"
+      // justifyContent="space-between"
+      alignItems="center"
+      justify="center"
+      style={{ minHeight: '20vh', maxWidth: '500vh' }}
+      sx={{paddingTop:'50px'}}
+      >
+        <Grid item xs={cardWidth}>
+          <Namecard 
+          name = {teamlead.name}
+          role={teamlead.role}
+          img={teamlead.img}
+          dscp={teamlead.dscp}
+          socialFB={teamlead.socialFB}
+          socialLinkedIn={teamlead.socialLinkedIn}
+          socialGithub={teamlead.socialGithub}
+          socialTwitter={teamlead.socialTwitter}
+          />
+        </Grid>  
+
+    </Grid>
+    
+    <Grid
+    container
+    spacing={2}
+    direction="row"
+    justifyContent="center"
+    // justifyContent="space-between"
+    alignItems="center"
+    justify="center"
+    style={{ minHeight: '20vh', maxWidth: '500vh' }}
+    sx={{paddingTop:'50px'}}
+    >
+    
+      {
+        props.data.map(elem =>(
+          <Grid item xs={cardWidth}>
+            <Namecard
+            name = {elem.name}
+            role={elem.role}
+            img={elem.img}
+            dscp={elem.dscp}
+            socialFB={elem.socialFB}
+            socialLinkedIn={elem.socialLinkedIn}
+            socialGithub={elem.socialGithub}
+            socialTwitter={elem.socialTwitter}
+            />
+
+          </Grid>
+        ))
+        
+        }
+
+    </Grid>
+    </div>
+  )
 
 }
+)
+
 function About() {
+  const cardWidth = 3.5;
+  const frontEndData = [
+    {name: 'Amin Ben Saad', role : 'Frontend Lead & Developer' , img : 'https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg' , dscp: 'B.Sc. Informatics at TUM ' ,socialFB:'',socialGithub:'https://github.com/aminbensaad',socialTwitter:'',socialLinkedIn:'https://www.linkedin.com/in/amin-ben-saad369/?originalSubdomain=de'},
+    {name: 'Dominik Jámbor', role : 'Frontend Developer' , img : 'https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg' , dscp: 'Full-stack web developer and M.Sc. student at ELTE Budapest. ' ,socialFB:'',socialGithub:'https://github.com/dominikjambor',socialTwitter:'',socialLinkedIn:''},
+    {name: 'Ronald Skorobogat', role : 'Frontend Developer' , img : 'https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg' , dscp: 'B.Sc. Informatics at TUM ' ,socialFB:'',socialGithub:'https://github.com/ronskoro',socialTwitter:'',socialLinkedIn:''},
+    {name: 'Liudongnan Yang', role : 'Frontend Developer' , img : 'https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg' , dscp: " Master's student in Informatics at TUM" ,socialFB:'',socialGithub:'https://github.com/yldn',socialTwitter:'',socialLinkedIn:'https://www.linkedin.com/in/liudongnan-yang-683a3b163/'}
+  ];
+
+  const backEndData = [
+    {name: 'Lars Frölich', role : 'Backend Lead & Developer' , img : 'https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg' , dscp: 'B.Sc. Informatics at TUM ' ,socialFB:'',socialGithub:'',socialTwitter:'',socialLinkedIn:''},
+    {name: 'Matthias Michailow' , role : 'Backend Developer' , img : 'https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg' , dscp: "Master's student in Informatics at TUM " ,socialFB:'',socialGithub:'',socialTwitter:'',socialLinkedIn:''},
+    {name: 'Yi Rui Cui', role : 'Backend Developer' , img : 'https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg' , dscp: 'B.Sc. Informatics: Games Engineering at TUM' ,socialFB:'',socialGithub:'',socialTwitter:'',socialLinkedIn:''},
+    {name: 'Manuel Brandstetter', role : 'Backend Developer' , img : 'https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg' , dscp: " Full-stack web developer and Master's student in Informatics at TUM" ,socialFB:'',socialGithub:'',socialTwitter:'',socialLinkedIn:''}
+  ];
+
+  const visData = [
+    {name: 'Vivian Haller', role : 'Visualisation Team lead, d3.js developer' , img : 'https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg' , dscp: 'M.Sc. Math/CS at TUM' ,socialFB:'',socialGithub:'',socialTwitter:'',socialLinkedIn:''},
+    {name: 'Yashica Saun' , role : 'Visualisation/d3.js Developer' , img : 'https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg' , dscp: "Master's student in Informatics at TUM" ,socialFB:'',socialGithub:'',socialTwitter:'',socialLinkedIn:''},
+    {name: 'Carl Neumann', role : 'Visualisation/d3.js Developer' , img : 'https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg' , dscp: 'B.Sc. Information Systems at TUM ' ,socialFB:'',socialGithub:'',socialTwitter:'',socialLinkedIn:''},
+    {name: 'Mohan Prabhakaran', role : 'Visualisation/d3.js Developer' , img : 'https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg' , dscp: "Master's student in Informatics at TUM" ,socialFB:'',socialGithub:'',socialTwitter:'',socialLinkedIn:''}
+  ];
+
+
   return (
     <div className={styles.headerContainer}>
       <NavBar />
-      <Typography sx={{ fontWeight: '400', fontSize: '24px' }}>About us</Typography>
-      <text>GeneCruncher was developed by the following team</text>
+      <Typography sx={{ fontWeight: '400', fontSize: '24px' }}>Team</Typography>
       
-      <MediaCards />
+      
+{/* For Guy */}
+          <Divider variant="middle" textAlign = "center" sx={{padding: '20px'}}>Funder</Divider>
+
+          <Grid
+            container
+            spacing={0}
+            direction="column"
+            alignItems="center"
+            justifyContent="center"
+            // style={{ minHeight: '100vh' }}
+          >
+            <Grid item xs={3}>
+              <Namecard 
+              name="Guy Yachdav" 
+              role="Supervisor & Initiator" 
+              img='https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg' 
+              dscp='Good looking guy with a lot of experience'
+              socialFB=''
+              socialLinkedIn='https://www.linkedin.com/in/gyachdav/?originalSubdomain=il'
+              socialGithub=''
+              socialTwitter=''
+              />
+            </Grid>
+
+          </Grid>
+
+          <text>GeneCruncher was developed by the following team</text>
+          <br />
+          <Divider variant="middle" textAlign = "left" sx={{padding: '20px'}}>Frontend Team</Divider>
+          
+          <SubteamSection data={frontEndData} />
+
+
+          <Divider variant="middle" textAlign = "left" sx={{padding: '20px'}}>Backend Team</Divider>
+
+          <SubteamSection data={backEndData} />
+
+
+          <Divider variant="middle" textAlign = "left" sx={{padding: '20px'}}>Visualization Team</Divider>
+
+          <SubteamSection data={visData} />
 
       <Footer />
     </div>
