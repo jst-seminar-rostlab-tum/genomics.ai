@@ -2,7 +2,7 @@ import './app.module.css';
 import React from 'react';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
-import HomePage from './components/LandingPage/pages/Home/Home.jsx';
+import HomePage from './components/LandingPage/pages/Home/Home';
 import About from './components/LandingPage/pages/About/About';
 import Docs from './components/LandingPage/pages/Docs/Docs';
 import Contact from './components/LandingPage/pages/Contact/Contact';

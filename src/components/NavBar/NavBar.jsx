@@ -52,12 +52,12 @@ const NavBar = () => {
             </Typography>
           </Box>
           <Box className={styles.buttonContainer}>
-            <Button variant="text" color="inherit" sx={{ m: 2 }} onClick={onLoginClicked}>
+            <Button variant="text" color="inherit" sx={{ m: 2 }} onClick={onSignUpClicked}>
               <Typography sx={{ color: 'black', fontWeight: '500' }}>
                 Signup
               </Typography>
             </Button>
-            <Button variant="outlined" color="info" onClick={onSignUpClicked}>
+            <Button variant="outlined" color="info" onClick={onLoginClicked}>
               <Typography sx={{ color: '#4F83CC', fontWeight: '500' }}>
                 Login
               </Typography>
