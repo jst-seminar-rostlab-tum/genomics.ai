@@ -24,8 +24,8 @@ function Namecard(props) {
       alt={props.name}
       sx={{
         borderRadius: '50%',
-        height: '150px',
-        width: '150px',
+        height: '120px',
+        width: '120px',
         margin: '28px',
         objectFit: 'cover',
         border:'4px solid #ff',
@@ -126,12 +126,13 @@ function TwitterItem(ttlink){
 const SubteamSection = ((props) => {
   const cardWidth = 3.5;
   const teamlead = props.data.shift();
+  console.log(teamlead.img);
   return(
     <div>
 
     <Grid
       container
-      spacing={2}
+      spacing={1}
       direction="row"
       justifyContent="center"
       // justifyContent="space-between"
@@ -196,17 +197,17 @@ const SubteamSection = ((props) => {
 function About() {
   const cardWidth = 3.5;
   const frontEndData = [
-    {name: 'Amin Ben Saad', role : 'Frontend Lead & Developer' , img : 'https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg' , dscp: 'B.Sc. Informatics at TUM ' ,socialFB:'',socialGithub:'https://github.com/aminbensaad',socialTwitter:'',socialLinkedIn:'https://www.linkedin.com/in/amin-ben-saad369/?originalSubdomain=de'},
-    {name: 'Dominik Jámbor', role : 'Frontend Developer' , img : 'https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg' , dscp: 'Full-stack web developer and M.Sc. student at ELTE Budapest. ' ,socialFB:'',socialGithub:'https://github.com/dominikjambor',socialTwitter:'',socialLinkedIn:''},
-    {name: 'Ronald Skorobogat', role : 'Frontend Developer' , img : 'https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg' , dscp: 'B.Sc. Informatics at TUM ' ,socialFB:'',socialGithub:'https://github.com/ronskoro',socialTwitter:'',socialLinkedIn:''},
-    {name: 'Liudongnan Yang', role : 'Frontend Developer' , img : 'https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg' , dscp: " Master's student in Informatics at TUM" ,socialFB:'',socialGithub:'https://github.com/yldn',socialTwitter:'',socialLinkedIn:'https://www.linkedin.com/in/liudongnan-yang-683a3b163/'}
+    {name: 'Amin Ben Saad', role : 'Frontend Lead & Developer' , img : 'memberphotos/Frontend_Amin Ben Saad.png' , dscp: 'B.Sc. Informatics at TUM ' ,socialFB:'',socialGithub:'',socialTwitter:'',socialLinkedIn:'https://www.linkedin.com/in/amin-ben-saad369/?originalSubdomain=de'},
+    {name: 'Dominik Jámbor', role : 'Frontend Developer' , img : 'memberphotos/Dominik.jpg' , dscp: 'Full-stack web developer and M.Sc. student at ELTE Budapest. ' ,socialFB:'',socialGithub:'',socialTwitter:'',socialLinkedIn:''},
+    {name: 'Ronald Skorobogat', role : 'Frontend Developer' , img : 'memberphotos/Frontend-RonaldSkorobogat.jpg' , dscp: 'B.Sc. Informatics at TUM ' ,socialFB:'',socialGithub:'https://github.com/ronskoro',socialTwitter:'',socialLinkedIn:''},
+    {name: 'Liudongnan Yang', role : 'Frontend Developer' , img : 'memberphotos/Yang.jpg' , dscp: " Master's student in Informatics at TUM" ,socialFB:'',socialGithub:'https://github.com/yldn',socialTwitter:'',socialLinkedIn:'https://www.linkedin.com/in/liudongnan-yang-683a3b163/'}
   ];
 
   const backEndData = [
-    {name: 'Lars Frölich', role : 'Backend Lead & Developer' , img : 'https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg' , dscp: 'B.Sc. Informatics at TUM ' ,socialFB:'',socialGithub:'',socialTwitter:'',socialLinkedIn:''},
-    {name: 'Matthias Michailow' , role : 'Backend Developer' , img : 'https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg' , dscp: "Master's student in Informatics at TUM " ,socialFB:'',socialGithub:'',socialTwitter:'',socialLinkedIn:''},
-    {name: 'Yi Rui Cui', role : 'Backend Developer' , img : 'https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg' , dscp: 'B.Sc. Informatics: Games Engineering at TUM' ,socialFB:'',socialGithub:'',socialTwitter:'',socialLinkedIn:''},
-    {name: 'Manuel Brandstetter', role : 'Backend Developer' , img : 'https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg' , dscp: " Full-stack web developer and Master's student in Informatics at TUM" ,socialFB:'',socialGithub:'',socialTwitter:'',socialLinkedIn:''}
+    {name: 'Lars Frölich', role : 'Backend Lead & Developer' , img : '' , dscp: 'B.Sc. Informatics at TUM ' ,socialFB:'',socialGithub:'',socialTwitter:'',socialLinkedIn:''},
+    {name: 'Matthias Michailow' , role : 'Backend Developer' , img : 'memberphotos/Backend_Matthias Michailow.jpg' , dscp: "Master's student in Informatics at TUM " ,socialFB:'',socialGithub:'',socialTwitter:'',socialLinkedIn:''},
+    {name: 'Yi Rui Cui', role : 'Backend Developer' , img : '' , dscp: 'B.Sc. Informatics: Games Engineering at TUM' ,socialFB:'',socialGithub:'',socialTwitter:'',socialLinkedIn:''},
+    {name: 'Manuel Brandstetter', role : 'Backend Developer' , img : '' , dscp: " Full-stack web developer and Master's student in Informatics at TUM" ,socialFB:'',socialGithub:'',socialTwitter:'',socialLinkedIn:''}
   ];
 
   const visData = [
@@ -216,10 +217,10 @@ function About() {
     {name: 'Mohan Prabhakaran', role : 'Visualisation/d3.js Developer' , img : 'https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg' , dscp: "Master's student in Informatics at TUM" ,socialFB:'',socialGithub:'',socialTwitter:'',socialLinkedIn:''}
   ];
 
-
   return (
     <div className={styles.headerContainer}>
       <NavBar />
+
       <Typography sx={{ fontWeight: '400', fontSize: '24px' }}>Team</Typography>
       
       
@@ -238,7 +239,7 @@ function About() {
               <Namecard 
               name="Guy Yachdav" 
               role="Supervisor & Initiator" 
-              img='https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg' 
+              img='https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=UoUkGhUAAAAJ&citpid=2' 
               dscp='Good looking guy with a lot of experience'
               socialFB=''
               socialLinkedIn='https://www.linkedin.com/in/gyachdav/?originalSubdomain=il'
