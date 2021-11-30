@@ -7,6 +7,7 @@ import Documentation from '../Pages/Documentation/Documentation';
 import Settings from '../Pages/Settings/Settings';
 import Help from '../Pages/Help/Help';
 import PopUp from '../ProcessingCompletionPopUp/PopUp';
+import styles from './dashboardContent.module.css';
 
 const DashboardContent = () => {
   const [sidebarShown, setSidebarShown] = useState(true);
@@ -34,7 +35,10 @@ const DashboardContent = () => {
         </Route>
 
         <Route path="/settings">
-          <Settings sidebarShown={sidebarShown} />
+          <Settings
+            className={sidebarShown ? styles.subpage : styles.subpageSidebarCollapsed}
+            sidebarShown={sidebarShown}
+          />
         </Route>
 
       </Switch>

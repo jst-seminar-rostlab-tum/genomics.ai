@@ -1,13 +1,7 @@
 import React, { useCallback, useState } from 'react';
-import TextField from '@mui/material/TextField';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import Select from '@mui/material/Select';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import Switch from '@mui/material/Switch';
-import MenuItem from '@mui/material/MenuItem';
-import InputLabel from '@mui/material/InputLabel';
+import {
+  Stack, Button, Select, FormControl, Switch, MenuItem, InputLabel, FormControlLabel, TextField,
+} from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import completeImg from '../../../assets/complete.png';
 import styles from './popup.module.css';

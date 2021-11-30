@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { IconContext } from 'react-icons/lib';
+import * as IoIcons from 'react-icons/io';
+import * as CGIcons from 'react-icons/cg';
 import styles from './subMenu.module.css';
 
 function SubMenu({ item }) {
@@ -10,45 +13,44 @@ function SubMenu({ item }) {
     if (item.subNav && subnav) {
       return (
         <>
-          {item.iconOpened}
+          <IoIcons.IoIosArrowDown />
         </>
       );
     }
     return (
       <>
-        {item.subNav ? item.iconClosed : null}
+        <IoIcons.IoIosArrowForward />
       </>
     );
   }
 
   return (
-    <>
+    <IconContext.Provider value={{ color: '#fff' }}>
       <div className={styles.divider} />
-      <Link
+      <div
         className={styles.sidebarLink}
-        to={item.path}
         onClick={item.subNav && showSubnav}
       >
         <span className={styles.sidebarLabel}>{item.name}</span>
         <div>
           {getDropdownStatusIcon()}
         </div>
-      </Link>
+      </div>
       {
-        subnav && item.subNav.map((subItem) => (
-          <Link
-            className={styles.dropdownLink}
-            to={subItem.path}
-            key={subItem.id}
-          >
-            {subItem.icon}
-            <span className={styles.sidebarLabel}>
-              {subItem.name}
-            </span>
-          </Link>
-        ))
-      }
-    </>
+            subnav && item.subNav.map((subItem) => (
+              <Link
+                className={styles.dropdownLink}
+                to={subItem.path}
+                key={subItem.id}
+              >
+                <CGIcons.CgFileDocument />
+                <span className={styles.sidebarLabel}>
+                  {subItem.name}
+                </span>
+              </Link>
+            ))
+          }
+    </IconContext.Provider>
   );
 }
 

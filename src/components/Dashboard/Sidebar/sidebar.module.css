@@ -5,9 +5,8 @@
     display: flex;
     justify-content: center;
     position: fixed;
-    top: 80px;
     box-shadow: 1px 10px 15px rgba(0, 0, 0, 0.1);
-    z-index: 999;
+    z-index: 1001;
 }
 
 .sidebarWrap {
@@ -45,23 +44,24 @@
     display: flex;
     justify-content: center;
     position: fixed;
-    top: 80px;
     box-shadow: 1px 10px 15px rgba(0, 0, 0, 0.1);
-    z-index: 999;
+    z-index: 1001;
 }
 
 .projectsBannerCollapsed {
     background: #f5f5f5;
-    justify-content: flex-start;
-    padding-inline: 2rem;
-    padding-block: 1.2rem;
+    margin-left: 13px;
+    padding-inline: 28px;
+    padding-block: 20px;
+    margin-top: 100px;
+    height: 70px;
     font-size: 18px;
     font-weight: bold;
-    color: #003560;
     border-radius: 10px;
+    align-items: center;
 }
 
 .projectsBannerCollapsed:hover {
     cursor: pointer;
-    background: #f1f1f1;
+    background: #E5E5E5;
 }

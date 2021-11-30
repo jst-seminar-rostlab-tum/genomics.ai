@@ -21,12 +21,14 @@ function NavigationBar({ sidebarShown }) {
     <>
       <nav className={sidebarShown ? styles.navbarWithCollapsedSidebar : styles.navbar}>
         <li className={styles.navItem}>
-          <img
-            alt="gene-icon"
-            src={geneIcon}
-            style={{ height: '45px', paddingLeft: '15px' }}
-            hover={sidebarShown}
-          />
+          <NavLink to="/dashboard">
+            <img
+              alt="gene-icon"
+              src={geneIcon}
+              style={{ height: '45px', paddingLeft: '15px' }}
+              hover={sidebarShown}
+            />
+          </NavLink>
         </li>
 
         <ul

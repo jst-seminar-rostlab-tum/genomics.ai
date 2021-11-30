@@ -4,11 +4,11 @@ import { Link } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import Switch from '@mui/material/Switch';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import validator from 'validator';
 import styles from './settings.module.css';
-import profileDefault from '../../../../assets/profiledefault.png';
+import profileDefault from '../../../../assets/user.png';
 
 const myTheme = createTheme({
   palette: {
@@ -21,8 +21,8 @@ const myTheme = createTheme({
   },
 });
 
-function PasswordSection(props) {
-  if (props.changePassword) {
+function PasswordSection({ onPasswordInfoChange, errors, changePassword }) {
+  if (changePassword) {
     return (
       <Stack
         spacing={5}
@@ -37,9 +37,9 @@ function PasswordSection(props) {
             label="Current Password"
             type="password"
             style={{ width: '600px', background: 'white' }}
-            onChange={props.onPasswordInfoChange}
-            error={!!props.errors.currentPassword}
-            helperText={props.errors.currentPassword}
+            onChange={onPasswordInfoChange}
+            error={!!errors.currentPassword}
+            helperText={errors.currentPassword}
           />
         </div>
 
@@ -51,9 +51,9 @@ function PasswordSection(props) {
             label="New Password"
             type="password"
             style={{ width: '600px', background: 'white' }}
-            onChange={props.onPasswordInfoChange}
-            error={!!props.errors.newPassword}
-            helperText={props.errors.newPassword}
+            onChange={onPasswordInfoChange}
+            error={!!errors.newPassword}
+            helperText={errors.newPassword}
           />
         </div>
 
@@ -65,9 +65,9 @@ function PasswordSection(props) {
             label="Repeat old password"
             type="password"
             style={{ width: '600px', background: 'white' }}
-            onChange={props.onPasswordInfoChange}
-            error={!!props.errors.newPasswordRepeated}
-            helperText={props.errors.newPasswordRepeated}
+            onChange={onPasswordInfoChange}
+            error={!!errors.newPasswordRepeated}
+            helperText={errors.newPasswordRepeated}
           />
         </div>
       </Stack>
@@ -177,7 +177,6 @@ function Settings() {
 
   const saveUserData = useCallback(() => {
     if (isValidInput() && isValidPasswordInfo()) {
-
     }
   }, []);
 
@@ -290,9 +289,9 @@ function Settings() {
           <div className={styles.headline}> Password </div>
           <FormControlLabel
             label="Change Password"
+            sx={{ m: 1 }}
             control={(
               <Switch
-                sx={{ m: 1 }}
                 check={changePassword}
                 onClick={handleChangePassword}
               />
