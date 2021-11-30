@@ -14,7 +14,7 @@ function Home() {
   return (
     <div className={styles.container}>
       <NavBar />
-      {/*<img className={styles.backgroundImage} src={dnaImage} src={dnaImage} alt="picture of DNA" />*/}
+      <img className={styles.backgroundImage} src={dnaImage} src={dnaImage} alt="picture of DNA" />
       {/*If genomics visualized stays in the middle, then it needs to be properly aligned.
       Right now it is using padding as the way to align the items*/}
       <Box sx={{ paddingBottom: '50px', paddingTop: '250px' }}>
@@ -23,31 +23,31 @@ function Home() {
       <div className={styles.infoContainer}>
         <img className={styles.illustration1} src={logo1} alt="science-guy" />
         <div className={styles.explanationRight}>
-          <Typography>Visualize all of your single-cell sequencing data</Typography>
-          <Typography>in a fast and easy way</Typography>
+          <Typography sx={{ fontSize: '24px' }}>Visualize all of your single-cell sequencing data</Typography>
+          <Typography sx={{ fontSize: '24px' }}>in a fast and easy way</Typography>
         </div>
       </div>
       <div className={styles.infoContainer}>
         <div className={styles.explanationLeft}>
-          <Typography className={styles.illustrationTitle} sx={{ fontSize: '24px' }}>Upload</Typography>
-          <Typography>Upload your files containing the single-cell</Typography>
-          <Typography>sequencing data</Typography>
+          <Typography className={styles.illustrationTitle} sx={{ fontSize: '24px', fontWeight: 'bold' }}>Upload</Typography>
+          <Typography sx={{ fontSize: '24px' }}>Upload your files containing the single-cell</Typography>
+          <Typography sx={{ fontSize: '24px' }}>sequencing data</Typography>
         </div>
         <img className={styles.illustration2} src={logo2} alt="explanation" />
       </div>
       <div className={styles.infoContainer}>
         <img className={styles.illustration3} src={logo3} alt="explanation" />
         <div className={styles.explanationRight}>
-          <Typography className={styles.illustrationTitle} sx={{ fontSize: '24px' }}>Create a project</Typography>
-          <Typography>Create and access all of your projects</Typography>
-          <Typography>in the dashboard</Typography>
+          <Typography className={styles.illustrationTitle} sx={{ fontSize: '24px', fontWeight: 'bold' }}>Create a project</Typography>
+          <Typography sx={{ fontSize: '24px' }}>Create and access all of your projects</Typography>
+          <Typography sx={{ fontSize: '24px' }}>in the dashboard</Typography>
         </div>
       </div>
       <div className={styles.infoContainer}>
         <div className={styles.explanationLeft}>
-          <Typography className={styles.illustrationTitle} sx={{ fontSize: '24px' }}>See results</Typography>
-          <Typography>See your results after the algorithm</Typography>
-          <Typography>has processed the data</Typography>
+          <Typography className={styles.illustrationTitle} sx={{ fontSize: '24px', fontWeight: 'bold' }}>See results</Typography>
+          <Typography sx={{ fontSize: '24px' }}>See your results after the algorithm</Typography>
+          <Typography sx={{ fontSize: '24px' }}>has processed the data</Typography>
         </div>
         <img className={styles.illustration4} src={logo4} alt="explanation" />
       </div>
