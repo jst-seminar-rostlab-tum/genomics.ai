@@ -40,13 +40,8 @@ const DashboardContent = () => {
             sidebarShown={sidebarShown}
           />
         </Route>
-
       </Switch>
-
-      <PopUp />
-
     </Router>
-
   );
 };
 
