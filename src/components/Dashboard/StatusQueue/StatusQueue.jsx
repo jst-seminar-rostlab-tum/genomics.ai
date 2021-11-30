@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { List, Box, Collapse, IconButton } from '@mui/material';
+import {
+  List, Box, Collapse, IconButton,
+} from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import StatusCard from './StatusCard/StatusCard';
 import styles from './statusqueue.module.css';
 
 function StatusQueue() {
-  let arr1 = [12342432, 2, 3, 4, 56, 56, 4];
+  const arr1 = [1, 2, 3, 4];
   const [expandList, setExpandList] = useState(true);
 
   return (
@@ -35,6 +37,3 @@ export default StatusQueue;
 /*
 map jobs to list items containing the status cards
 */
-
-//TODO:  there is a bug when expanding the list. 
-

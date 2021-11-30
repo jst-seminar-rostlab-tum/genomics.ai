@@ -1,4 +1,18 @@
-.sideBar{
-    flex-basis: 20%;
-    background-color: rebeccapurple;
+
+.fileUpload {
+    flex-basis: 100%;
+    position: relative;
+    height: 100%;
+}
+
+.fileQueue {
+    flex-basis: 100%;
+    position: relative;
+    height: 100%;
+}
+
+.title h1 {
+    font-size: 30px;
+    color: #003560;
+    margin-left: 30px;
 }
