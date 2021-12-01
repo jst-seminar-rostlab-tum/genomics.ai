@@ -6,11 +6,17 @@ import NavigationBar from '../NavigationBar/NavigationBar';
 import Documentation from '../Pages/Documentation/Documentation';
 import Settings from '../Pages/Settings/Settings';
 import Help from '../Pages/Help/Help';
+import VisualizationPage from '../Pages/VisualizationPage/VisualizationPage';
 import styles from './dashboardContent.module.css';
 
 const DashboardContent = () => {
   const [sidebarShown, setSidebarShown] = useState(true);
   const toggleSidebar = () => setSidebarShown(!sidebarShown);
+  const [visualizationResults, setVisualizationResults] = useState([1]);
+
+  //concatenate the visualization result project id with the route for it
+
+  //testing the visualization results
 
   return (
     <Router>
@@ -39,6 +45,17 @@ const DashboardContent = () => {
             sidebarShown={sidebarShown}
           />
         </Route>
+
+        {/*Looping over all visualization projects
+        Check backend specification to determine how to creat the path for it
+        */}
+        {
+          visualizationResults.map((id) => {
+            return (<Route path={"/result:" + id}>
+              <VisualizationPage />
+            </Route>)
+          })
+        }
       </Switch>
     </Router>
   );

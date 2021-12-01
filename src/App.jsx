@@ -8,7 +8,6 @@ import Docs from './components/LandingPage/pages/Docs/Docs';
 import Contact from './components/LandingPage/pages/Contact/Contact';
 import Dashboard from './components/Dashboard/Dashboard';
 import DashboardContent from './components/Dashboard/DashboardContent/DashboardContent';
-import Visualization from './components/Dashboard/Visualization/src/Visualization';
 
 function App() {
   const theme = createTheme({
@@ -31,7 +30,6 @@ function App() {
           <Route path="/about" component={About} />
           <Route path="/docs" component={Docs} />
           <Route path="/contact" component={Contact} />
-          <Route path="/visualization" component={Visualization} />
         </Switch>
       </Router>
     </ThemeProvider>

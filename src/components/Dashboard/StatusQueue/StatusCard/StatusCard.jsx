@@ -140,13 +140,13 @@ function StatusCard({ id }) {
             </Box>
             {/*Results button*/}
             <Box sx={{ textAlign: 'center', paddingTop: '30px' }}>
-              { response.status === 'completed' ? (
-                <Button variant="outlined" color="info" onClick={showResults}>
+              {response.status === 'completed' ? (
+                <Button variant="outlined" color="info" href="result1">
                   <Typography sx={{ color: '#4F83CC', fontWeight: '500' }}>
                     See results
                   </Typography>
                 </Button>
-              ) : null }
+              ) : null}
             </Box>
           </AccordionDetails>
         </Accordion>
