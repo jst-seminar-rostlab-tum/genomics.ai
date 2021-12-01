@@ -47,11 +47,11 @@ const DashboardContent = () => {
         </Route>
 
         {/*Looping over all visualization projects
-        Check backend specification to determine how to creat the path for it
+        Check backend specification to determine how to create the route for it
         */}
         {
           visualizationResults.map((id) => {
-            return (<Route path={"/result:" + id}>
+            return (<Route path={"/result" + id}>
               <VisualizationPage />
             </Route>)
           })

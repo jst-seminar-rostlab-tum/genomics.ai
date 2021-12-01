@@ -141,7 +141,7 @@ function StatusCard({ id }) {
             {/*Results button*/}
             <Box sx={{ textAlign: 'center', paddingTop: '30px' }}>
               {response.status === 'completed' ? (
-                <Button variant="outlined" color="info" href="result1">
+                <Button variant="outlined" color="info" href={"result" + id}> {/*The id is given as a prop */}
                   <Typography sx={{ color: '#4F83CC', fontWeight: '500' }}>
                     See results
                   </Typography>
