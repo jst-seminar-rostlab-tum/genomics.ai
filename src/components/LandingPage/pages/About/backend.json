@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Lars Frölich",
+    "role": "Backend Lead & Developer",
+    "img": "",
+    "dscp": "B.Sc. Informatics at TUM ",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Matthias Michailow",
+    "role": "Backend Developer",
+    "img": "memberphotos/Backend_Matthias Michailow.jpg",
+    "dscp": "Master's student in Informatics at TUM ",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Yi Rui Cui",
+    "role": "Backend Developer",
+    "img": "",
+    "dscp": "B.Sc. Informatics: Games Engineering at TUM",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Manuel Brandstetter",
+    "role": "Backend Developer",
+    "img": "",
+    "dscp": " Full-stack web developer and Master's student in Informatics at TUM",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  }
+]

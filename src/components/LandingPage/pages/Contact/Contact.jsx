@@ -18,15 +18,6 @@ function Contact() {
     setContactDetails((prevState) => ({ ...prevState, [e.target.id]: e.target.value }));
   }, [setContactDetails]);
 
-  const resetForm = useCallback(() => {
-    setContactDetails({
-      email: '',
-      firstname: '',
-      lastname: '',
-      message: '',
-    });
-  }, [setContactDetails]);
-
   const formSubmit = async (e) => {
     e.preventDefault();
 
@@ -36,6 +27,7 @@ function Contact() {
       email: contactDetails.email,
       message: contactDetails.message,
     };
+    console.log(data);
 
     try {
       // send POST to the server
@@ -50,13 +42,6 @@ function Contact() {
       console.log(error);
     }
   };
-
-  function onSuccessfulSubmit() {
-    resetForm();
-  }
-  function onFailSubmit() {
-
-  }
 
   return (
     <div className={styles.headerContainer}>

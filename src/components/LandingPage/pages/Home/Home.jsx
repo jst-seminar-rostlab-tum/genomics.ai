@@ -9,11 +9,12 @@ import logo4 from '../../../../assets/landing-illustrations/visual.png';
 import Footer from '../../Footer/Footer';
 import dnaImage from '../../../../assets/dna.png';
 
-function Home() {
+function Home(props) {
+  const { setUser } = props;
   return (
     <div className={styles.container}>
-      <NavBar />
-      <img className={styles.backgroundImage} src={dnaImage} src={dnaImage} alt="picture of DNA" />
+      <NavBar setUser={setUser} />
+      <img className={styles.backgroundImage} src={dnaImage} alt="background" />
       {/* If genomics visualized stays in the middle, then it needs to be properly aligned.
       Right now it is using padding as the way to align the items */}
       <Box sx={{ paddingBottom: '50px', paddingTop: '250px' }}>

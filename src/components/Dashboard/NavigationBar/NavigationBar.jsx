@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Link as NavLink } from 'react-router-dom';
+import { Link as NavLink, useRouteMatch } from 'react-router-dom';
 import { SettingsDropdown } from './SettingsDropdown/SettingsDropdown';
 import styles from './navigationBar.module.css';
 import geneIcon from '../../../assets/logo-blue.png';
 import profiledefault from '../../../assets/user.png';
 
-function NavigationBar({ sidebarShown }) {
+function NavigationBar({ sidebarShown, user, setUser }) {
   const [dropDown, setDropDown] = useState(false);
 
   const onMouseEnter = () => {
@@ -17,11 +17,13 @@ function NavigationBar({ sidebarShown }) {
     else setDropDown(false);
   };
 
+  const { url } = useRouteMatch();
+
   return (
     <>
       <nav className={sidebarShown ? styles.navbarWithCollapsedSidebar : styles.navbar}>
         <li className={styles.navItem}>
-          <NavLink to="/dashboard">
+          <NavLink to={`${url}/dashboard`}>
             <img
               alt="gene-icon"
               src={geneIcon}
@@ -38,7 +40,7 @@ function NavigationBar({ sidebarShown }) {
           <li className={styles.navItem}>
             <NavLink
               className={styles.navLinks}
-              to="/dashboard"
+              to={`${url}/dashboard`}
             >
               Dashboard
             </NavLink>
@@ -47,7 +49,7 @@ function NavigationBar({ sidebarShown }) {
           <li className={styles.navItem}>
             <NavLink
               className={styles.navLinks}
-              to="/documentation"
+              to={`${url}/documentation`}
             >
               Documentation
             </NavLink>
@@ -56,7 +58,7 @@ function NavigationBar({ sidebarShown }) {
           <li className={styles.navItem}>
             <NavLink
               className={styles.navLinks}
-              to="/help"
+              to={`${url}/help`}
             >
               Help
             </NavLink>
@@ -70,16 +72,16 @@ function NavigationBar({ sidebarShown }) {
         >
           <NavLink
             className={styles.profileSettings}
-            to="/settings"
+            to={`${url}/settings`}
           >
-            Amin Ben Saad
+            {`Hi, ${user.firstName} ${user.lastName}!`}
             <img
               alt="profiledefault"
               src={profiledefault}
               style={{ height: '40px', paddingLeft: '15px' }}
             />
           </NavLink>
-          { dropDown && <SettingsDropdown /> }
+          { dropDown && <SettingsDropdown setUser={setUser} /> }
         </li>
 
       </nav>

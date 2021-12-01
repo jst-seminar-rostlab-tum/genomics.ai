@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {
   Box,
@@ -45,32 +45,14 @@ const theme = createTheme({
   },
 });
 
-function StatusCard({ id }) {
-  const [response, setResponse] = useState({
-    status: 'unknown',
-    log: "The file's status is currently unknown.",
-  });
-
+function StatusCard({ id, status, log }) {
   // object of colors for the statuses
   const statusColor = {
-    pending: yellow[600],
-    processing: blue[300],
-    error: red[300],
-    completed: green[300],
+    UPLOAD_PENDING: yellow[600],
+    PROCESSING_PENDING: blue[300],
+    ABORTED: red[300],
+    DONE: green[300],
     unknown: grey[500],
-  };
-
-  // Change of state for testing
-  // The status is not passed down as a prop, but received from backend,
-  const [changeResCount, setChangeResCount] = useState(0);
-  if (changeResCount < 1) {
-    setResponse({ ...response, status: 'completed' });
-    setChangeResCount(changeResCount + 1);
-  }
-
-  //showing the results of the visualization
-  const showResults = () => {
-    alert('showing results');
   };
 
   return (
@@ -100,7 +82,7 @@ function StatusCard({ id }) {
                 >
                   {`Job ${id}`}
                 </Typography>
-                <CircleIcon sx={{ color: statusColor[response.status], height: '20px' }} />
+                <CircleIcon sx={{ color: statusColor[status], height: '20px' }} />
                 <Typography
                   sx={{
                     fontSize: '16px',
@@ -109,10 +91,10 @@ function StatusCard({ id }) {
                     padding: '0',
                     textAlign: 'center',
                     display: 'inline',
-                    color: statusColor[response.status],
+                    color: statusColor[status],
                   }}
                 >
-                  {` ${response.status.toUpperCase()}`}
+                  {` ${status.toUpperCase()}`}
                 </Typography>
               </Stack>
 
@@ -130,18 +112,20 @@ function StatusCard({ id }) {
                     padding: '0',
                     textAlign: 'center',
                     display: 'inline',
-                    color: statusColor[response.status],
+                    color: statusColor[status],
                   }}
                 >
-                  {` ${response.status.toUpperCase()}`}
+                  {` ${status.toUpperCase()}`}
                 </Typography>
               </Typography>
-              <Typography>{response.log}</Typography>
+              <Typography>{log}</Typography>
             </Box>
-            {/*Results button*/}
+            {/* Results button */}
             <Box sx={{ textAlign: 'center', paddingTop: '30px' }}>
-              {response.status === 'completed' ? (
-                <Button variant="outlined" color="info" href={"result" + id}> {/*The id is given as a prop */}
+              {status === 'completed' ? (
+                <Button variant="outlined" color="info" href={`result${id}`}>
+                  {' '}
+                  {/* The id is given as a prop */}
                   <Typography sx={{ color: '#4F83CC', fontWeight: '500' }}>
                     See results
                   </Typography>

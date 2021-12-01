@@ -1,6 +1,7 @@
+/* eslint-disable jsx-a11y/aria-role */
 import React from 'react';
 import {
-  Typography, Card, CardMedia, CardContent, Grid, Button, Link, IconButton, Divider,
+  Typography, Card, CardMedia, CardContent, Grid, IconButton, Divider,
 } from '@mui/material';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
@@ -9,87 +10,9 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import Footer from '../../Footer/Footer';
 import NavBar from '../../../NavBar/NavBar';
 import styles from './about.module.css';
-
-function Namecard(props) {
-  return (
-    <Card sx={{
-      maxWidth: 500,
-      display: 'flex',
-      paddingLeft: '20px',
-      paddingright: '20px',
-      boxShadow: 'none',
-    }}
-    >
-      <CardMedia
-        component="img"
-        image={props.img}
-        alt={props.name}
-        sx={{
-          borderRadius: '50%',
-          height: '120px',
-          width: '120px',
-          margin: '28px',
-          objectFit: 'cover',
-          border: '4px solid #ff',
-          display: 'flex',
-        }}
-      />
-
-      <CardContent style={{ maxWidth: '200px' }}>
-        <Typography variant="h5">{props.name}</Typography>
-        <Typography variant="body2" color="text.secondary">{props.role}</Typography>
-        <br />
-        <Typography
-          variant="body2"
-          style={{
-            maxWidth: '200px',
-            alignItems: 'center',
-            wordWrap: 'break-word',
-          }}
-        >
-          {props.dscp}
-        </Typography>
-
-        <Grid
-          container
-          spacing={0}
-          sx={{
-            marginTop: '0px',
-            justifyContent: 'center',
-          }}
-        >
-
-          {
-        props.socialFB != ''
-          ? FbItem(props.socialFB)
-          : <Grid item />
-      }
-
-          {
-        props.socialGithub != ''
-          ? GithubItem(props.socialGithub)
-          : <Grid item />
-      }
-
-          {
-        props.socialLinkedIn != ''
-          ? LinkedInItem(props.socialLinkedIn)
-          : <Grid item />
-      }
-
-          {
-        props.socialTwitter != ''
-          ? TwitterItem(props.socialTwitter)
-          : <Grid item />
-      }
-
-        </Grid>
-
-      </CardContent>
-    </Card>
-
-  );
-}
+import frontendData from './frontend.json';
+import backendData from './backend.json';
+import visualizationData from './visualization.json';
 
 function FbItem(fblink) {
   return (
@@ -131,9 +54,95 @@ function TwitterItem(ttlink) {
   );
 }
 
+function NameCard(props) {
+  const {
+    img, name, role, socialFB, socialGithub, socialLinkedIn,
+    socialTwitter, dscp,
+  } = props;
+  return (
+    <Card sx={{
+      maxWidth: 500,
+      display: 'flex',
+      paddingLeft: '20px',
+      paddingright: '20px',
+      boxShadow: 'none',
+    }}
+    >
+      <CardMedia
+        component="img"
+        image={img}
+        alt={name}
+        sx={{
+          borderRadius: '50%',
+          height: '120px',
+          width: '120px',
+          margin: '28px',
+          objectFit: 'cover',
+          border: '4px solid #ff',
+          display: 'flex',
+        }}
+      />
+
+      <CardContent style={{ maxWidth: '200px' }}>
+        <Typography variant="h5">{name}</Typography>
+        <Typography variant="body2" color="text.secondary">{role}</Typography>
+        <br />
+        <Typography
+          variant="body2"
+          style={{
+            maxWidth: '200px',
+            alignItems: 'center',
+            wordWrap: 'break-word',
+          }}
+        >
+          {dscp}
+        </Typography>
+
+        <Grid
+          container
+          spacing={0}
+          sx={{
+            marginTop: '0px',
+            justifyContent: 'center',
+          }}
+        >
+
+          {
+        socialFB !== ''
+          ? FbItem(socialFB)
+          : <Grid item />
+      }
+
+          {
+        socialGithub !== ''
+          ? GithubItem(socialGithub)
+          : <Grid item />
+      }
+
+          {
+        socialLinkedIn !== ''
+          ? LinkedInItem(socialLinkedIn)
+          : <Grid item />
+      }
+
+          {
+        socialTwitter !== ''
+          ? TwitterItem(socialTwitter)
+          : <Grid item />
+      }
+
+        </Grid>
+
+      </CardContent>
+    </Card>
+
+  );
+}
+
 const SubteamSection = ((props) => {
+  const { data } = props;
   const cardWidth = 3.5;
-  const teamlead = props.data.shift();
+  const teamlead = data.shift();
   console.log(teamlead.img);
   return (
     <div>
@@ -150,7 +159,7 @@ const SubteamSection = ((props) => {
         sx={{ paddingTop: '50px' }}
       >
         <Grid item xs={cardWidth}>
-          <Namecard
+          <NameCard
             name={teamlead.name}
             role={teamlead.role}
             img={teamlead.img}
@@ -177,9 +186,9 @@ const SubteamSection = ((props) => {
       >
 
         {
-        props.data.map((elem) => (
+        data.map((elem) => (
           <Grid item xs={cardWidth}>
-            <Namecard
+            <NameCard
               name={elem.name}
               role={elem.role}
               img={elem.img}
@@ -202,52 +211,6 @@ const SubteamSection = ((props) => {
 );
 
 function About() {
-  const cardWidth = 3.5;
-  const frontEndData = [
-    {
-      name: 'Amin Ben Saad', role: 'Frontend Lead & Developer', img: 'memberphotos/Frontend_Amin Ben Saad.png', dscp: 'B.Sc. Informatics at TUM ', socialFB: '', socialGithub: '', socialTwitter: '', socialLinkedIn: 'https://www.linkedin.com/in/amin-ben-saad369/?originalSubdomain=de',
-    },
-    {
-      name: 'Dominik Jámbor', role: 'Frontend Developer', img: 'memberphotos/Dominik.jpg', dscp: 'Full-stack web developer and M.Sc. student at ELTE Budapest. ', socialFB: '', socialGithub: '', socialTwitter: '', socialLinkedIn: '',
-    },
-    {
-      name: 'Ronald Skorobogat', role: 'Frontend Developer', img: 'memberphotos/Frontend-RonaldSkorobogat.jpg', dscp: 'B.Sc. Informatics at TUM ', socialFB: '', socialGithub: 'https://github.com/ronskoro', socialTwitter: '', socialLinkedIn: '',
-    },
-    {
-      name: 'Liudongnan Yang', role: 'Frontend Developer', img: 'memberphotos/Yang.jpg', dscp: " Master's student in Informatics at TUM", socialFB: '', socialGithub: 'https://github.com/yldn', socialTwitter: '', socialLinkedIn: 'https://www.linkedin.com/in/liudongnan-yang-683a3b163/',
-    },
-  ];
-
-  const backEndData = [
-    {
-      name: 'Lars Frölich', role: 'Backend Lead & Developer', img: '', dscp: 'B.Sc. Informatics at TUM ', socialFB: '', socialGithub: '', socialTwitter: '', socialLinkedIn: '',
-    },
-    {
-      name: 'Matthias Michailow', role: 'Backend Developer', img: 'memberphotos/Backend_Matthias Michailow.jpg', dscp: "Master's student in Informatics at TUM ", socialFB: '', socialGithub: '', socialTwitter: '', socialLinkedIn: '',
-    },
-    {
-      name: 'Yi Rui Cui', role: 'Backend Developer', img: '', dscp: 'B.Sc. Informatics: Games Engineering at TUM', socialFB: '', socialGithub: '', socialTwitter: '', socialLinkedIn: '',
-    },
-    {
-      name: 'Manuel Brandstetter', role: 'Backend Developer', img: '', dscp: " Full-stack web developer and Master's student in Informatics at TUM", socialFB: '', socialGithub: '', socialTwitter: '', socialLinkedIn: '',
-    },
-  ];
-
-  const visData = [
-    {
-      name: 'Vivian Haller', role: 'Visualisation Team lead, d3.js developer', img: 'https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg', dscp: 'M.Sc. Math/CS at TUM', socialFB: '', socialGithub: '', socialTwitter: '', socialLinkedIn: '',
-    },
-    {
-      name: 'Yashica Saun', role: 'Visualisation/d3.js Developer', img: 'https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg', dscp: "Master's student in Informatics at TUM", socialFB: '', socialGithub: '', socialTwitter: '', socialLinkedIn: '',
-    },
-    {
-      name: 'Carl Neumann', role: 'Visualisation/d3.js Developer', img: 'https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg', dscp: 'B.Sc. Information Systems at TUM ', socialFB: '', socialGithub: '', socialTwitter: '', socialLinkedIn: '',
-    },
-    {
-      name: 'Mohan Prabhakaran', role: 'Visualisation/d3.js Developer', img: 'https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg', dscp: "Master's student in Informatics at TUM", socialFB: '', socialGithub: '', socialTwitter: '', socialLinkedIn: '',
-    },
-  ];
-
   return (
     <div className={styles.headerContainer}>
       <NavBar />
@@ -265,7 +228,7 @@ function About() {
         justifyContent="center"
       >
         <Grid item xs={3}>
-          <Namecard
+          <NameCard
             name="Guy Yachdav"
             role="Supervisor & Initiator"
             img="https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=UoUkGhUAAAAJ&citpid=2"
@@ -283,15 +246,15 @@ function About() {
       <br />
       <Divider variant="middle" textAlign="left" sx={{ padding: '20px' }}>Frontend Team</Divider>
 
-      <SubteamSection data={frontEndData} />
+      <SubteamSection data={frontendData} />
 
       <Divider variant="middle" textAlign="left" sx={{ padding: '20px' }}>Backend Team</Divider>
 
-      <SubteamSection data={backEndData} />
+      <SubteamSection data={backendData} />
 
       <Divider variant="middle" textAlign="left" sx={{ padding: '20px' }}>Visualization Team</Divider>
 
-      <SubteamSection data={visData} />
+      <SubteamSection data={visualizationData} />
 
       <Footer />
     </div>

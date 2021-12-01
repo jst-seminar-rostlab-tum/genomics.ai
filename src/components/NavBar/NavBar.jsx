@@ -1,5 +1,5 @@
 import {
-  AppBar, Button, Toolbar, Typography, IconButton, Box,
+  Button, Toolbar, Typography, IconButton, Box,
 } from '@mui/material';
 import React, { useState, useCallback } from 'react';
 import styles from './navbar.module.css';
@@ -8,7 +8,8 @@ import RegistrationForm from '../LandingPage/RegistrationForm/RegistrationForm';
 
 import logo from '../../assets/logo.svg';
 
-const NavBar = () => {
+const NavBar = (props) => {
+  const { setUser } = props;
   // inserting the logic from the landing page here
   const [isLoginFormVisible, setLoginFormVisible] = useState(false);
   const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
@@ -35,7 +36,7 @@ const NavBar = () => {
       <div className={styles.AppBar}>
         <Toolbar>
           <IconButton color="success" aria-label="open drawer" href="/">
-            <img src={logo} />
+            <img alt="logo" src={logo} />
           </IconButton>
           <Typography sx={{ fontSize: '24px', fontWeight: '500' }}>genomics.ai</Typography>
           <Box sx={{ flexGrow: 1 }}>
@@ -65,7 +66,7 @@ const NavBar = () => {
         </Toolbar>
       </div>
       <div>
-        <LoginForm visible={isLoginFormVisible} onClose={onLoginFormClosed} />
+        <LoginForm visible={isLoginFormVisible} onClose={onLoginFormClosed} setUser={setUser} />
         <RegistrationForm
           visible={isRegistrationFormVisible}
           onClose={onRegistrationFormClosed}
@@ -78,7 +79,8 @@ const NavBar = () => {
 
 export default NavBar;
 
-// <AppBar className={styles.appbar}> removed this from the above line before the beginning of the app
+// <AppBar className={styles.appbar}>
+// removed this from the above line before the beginning of the app
 
 /*
 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>

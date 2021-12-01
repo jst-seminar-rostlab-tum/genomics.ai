@@ -1,5 +1,5 @@
 import { BACKEND_ADDRESS, MULTIPART_UPLOAD_STATUS as Status, UPLOAD_CHUNK_SIZE } from '../../../common/constants';
-import removeItemFromArray from '../../../common/utils';
+import removeItemFromArray, { getAuthAndJsonHeader, getAuthHeader } from '../../../common/utils';
 
 export function getSubmissionProgressPercentage(progress) {
   if (progress.chunks === 0) {
@@ -13,19 +13,6 @@ function expectStatus(response, requestName, code) {
     throw new Error(`Invalid status for request "${requestName}" (${response.status})`);
   }
   return response;
-}
-
-function getAuthHeader() {
-  return {
-    auth: localStorage.getItem('jwt'),
-  };
-}
-
-function getAuthAndJsonHeader() {
-  return {
-    auth: localStorage.getItem('jwt'),
-    'content-type': 'application/json',
-  };
 }
 
 function uploadChunks(chunkCount, remaining, selectedFile, uploadId,

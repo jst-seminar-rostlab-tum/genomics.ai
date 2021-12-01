@@ -1,0 +1,41 @@
+[
+  {
+    "name": "Vivian Haller",
+    "role": "Visualisation Team lead, d3.js developer",
+    "img": "https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg",
+    "dscp": "M.Sc. Math/CS at TUM",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Yashica Saun",
+    "role": "Visualisation/d3.js Developer",
+    "img": "https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg",
+    "dscp": "Master's student in Informatics at TUM",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Carl Neumann",
+    "role": "Visualisation/d3.js Developer",
+    "img": "https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg",
+    "dscp": "B.Sc. Information Systems at TUM ",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Mohan Prabhakaran",
+    "role": "Visualisation/d3.js Developer",
+    "img": "https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg",
+    "dscp": "Master's student in Informatics at TUM",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "", "socialLinkedIn": ""
+  }
+]

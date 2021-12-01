@@ -1,7 +1,6 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 import CopyrightIcon from '@mui/icons-material/Copyright';
-import { fontWeight } from '@mui/system';
 import styles from './footer.module.css';
 import tumLogo from '../../../assets/tum-logo.png';
 

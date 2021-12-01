@@ -1,13 +1,15 @@
 import './app.module.css';
-import React from 'react';
+import React, { useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material';
-import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
-import HomePage from './components/LandingPage/pages/Home/Home.jsx';
+import {
+  Route, BrowserRouter as Router, Switch, Redirect,
+} from 'react-router-dom';
+import HomePage from './components/LandingPage/pages/Home/Home';
 import About from './components/LandingPage/pages/About/About';
 import Docs from './components/LandingPage/pages/Docs/Docs';
 import Contact from './components/LandingPage/pages/Contact/Contact';
-import Dashboard from './components/Dashboard/Dashboard';
 import DashboardContent from './components/Dashboard/DashboardContent/DashboardContent';
+import { guardedPage } from './components/common/utils';
 
 function App() {
   const theme = createTheme({
@@ -21,15 +23,17 @@ function App() {
     },
   });
 
+  const [user, setUser] = useState(localStorage.user ? JSON.parse(localStorage.user) : null);
+
   return (
     <ThemeProvider theme={theme}>
       <Router>
         <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route path="/dashboard" component={DashboardContent} />
-          <Route path="/about" component={About} />
-          <Route path="/docs" component={Docs} />
-          <Route path="/contact" component={Contact} />
+          <Route exact path="/" render={() => (user ? <Redirect to="/sequencer" /> : <HomePage setUser={setUser} />)} />
+          <Route path="/sequencer" render={() => guardedPage(<DashboardContent user={user} setUser={setUser} />)} />
+          <Route path="/about" render={() => <About setUser={setUser} />} />
+          <Route path="/docs" render={() => <Docs setUser={setUser} />} />
+          <Route path="/contact" render={() => <Contact setUser={setUser} />} />
         </Switch>
       </Router>
     </ThemeProvider>

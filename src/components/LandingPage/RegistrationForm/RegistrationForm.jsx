@@ -251,5 +251,4 @@ function RegistrationForm(props) {
 
 export default RegistrationForm;
 
-
-//TODO: make the popup more modern and nice
+// TODO: make the popup more modern and nice

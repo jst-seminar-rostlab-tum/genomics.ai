@@ -27,6 +27,9 @@ function SubMenu({ item }) {
     <IconContext.Provider value={{ color: '#fff' }}>
       <div className={styles.divider} />
       <div
+        tabIndex={0}
+        onKeyPress={() => {}}
+        role="button"
         className={styles.sidebarLink}
         onClick={item.subNav && showSubnav}
       >

@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from 'react';
 import Stack from '@mui/material/Stack';
-import { Link } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -177,6 +176,7 @@ function Settings() {
 
   const saveUserData = useCallback(() => {
     if (isValidInput() && isValidPasswordInfo()) {
+      console.log('something');
     }
   }, []);
 
@@ -190,16 +190,11 @@ function Settings() {
       >
 
         <div style={{ paddingBlock: '25px', paddingLeft: '80px', marginBottom: '50px' }}>
-          <Link
-            className={styles.profilePicture}
-            to="#"
-          >
-            <img
-              alt="profile"
-              src={profileDefault}
-              style={{ height: '150px' }}
-            />
-          </Link>
+          <img
+            alt="profile"
+            src={profileDefault}
+            style={{ height: '150px' }}
+          />
         </div>
 
         <Stack

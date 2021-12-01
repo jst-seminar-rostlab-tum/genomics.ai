@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   List, Box, Collapse, IconButton,
 } from '@mui/material';
@@ -6,10 +6,19 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import StatusCard from './StatusCard/StatusCard';
 import styles from './statusqueue.module.css';
+import queryJobs from './StatusQueueLogic';
 
 function StatusQueue() {
-  const arr1 = [1, 2, 3, 4, 5, 6];
   const [expandList, setExpandList] = useState(true);
+  const [jobs, setJobs] = useState([]);
+
+  useEffect(() => {
+    const updateJobs = () => queryJobs().then((newJobs) => setJobs(newJobs))
+      .catch((ignored) => { console.log(ignored); });
+    updateJobs();
+    const intervalId = setInterval(updateJobs, 5000);
+    return (() => clearInterval(intervalId));
+  }, [setJobs]);
 
   return (
     <div className={styles.StatusQueue}>
@@ -22,24 +31,23 @@ function StatusQueue() {
         fontEeight: 'bold',
         display: 'flex',
         justifyContent: 'center',
-        fontSize: '8px'
-      }}>
+        fontSize: '8px',
+      }}
+      >
         <h1>Processing Queue</h1>
         <IconButton onClick={() => setExpandList(!expandList)}>
           {expandList ? <ExpandLessIcon /> : <ExpandMoreIcon />}
         </IconButton>
       </Box>
 
-
-
       <Box className={styles.flexContainer}>
         <Collapse in={expandList} sx={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
           <List sx={{
-            width: '100%', alignItems: 'center', justifyContent: 'center', flexDirection: 'column'
+            width: '100%', alignItems: 'center', justifyContent: 'center', flexDirection: 'column',
           }}
           >
-            {arr1.map((index) => (
-              <StatusCard id={index} sx={{ alignItems: 'center' }} />
+            {jobs.map((job) => (
+              <StatusCard key={job._id} id={job._id} status={job.status} log={job.fileName} sx={{ alignItems: 'center' }} />
             ))}
           </List>
         </Collapse>
