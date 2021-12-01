@@ -21,7 +21,10 @@ function StatusQueue() {
       </div>
       <Box className={styles.flexContainer}>
         <Collapse in={expandList} sx={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-          <List sx={{ width: '100%', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+          <List sx={{
+            width: '100%', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' 
+          }}
+          >
             {arr1.map((index) => (
               <StatusCard id={index} sx={{ alignItems: 'center' }} />
             ))}

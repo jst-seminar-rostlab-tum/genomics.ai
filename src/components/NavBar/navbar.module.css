@@ -1,7 +1,6 @@
 /*adding the font for the landing page here*/
 *{
-    font-family:'Poppins';
-    color: black;   
+    font-family:'Poppins';   
 }
 
 .logoName{
@@ -16,10 +15,6 @@
     display: flex;
     font-family: 'Poppins'; 
     /* justify-content : space-between; */
-}
-.logo {
-    fill: black;
-    stroke: black;
 }
 
 ul{

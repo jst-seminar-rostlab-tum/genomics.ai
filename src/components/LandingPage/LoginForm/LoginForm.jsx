@@ -212,3 +212,5 @@ function LoginForm(props) {
 }
 
 export default LoginForm;
+
+//TODO: make the pop-up more modern and nice

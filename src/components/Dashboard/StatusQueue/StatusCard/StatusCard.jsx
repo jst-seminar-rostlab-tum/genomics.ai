@@ -64,7 +64,7 @@ function StatusCard({ id }) {
   // The status is not passed down as a prop, but received from backend,
   const [changeResCount, setChangeResCount] = useState(0);
   if (changeResCount < 1) {
-    setResponse({ ...response, status: 'error' });
+    setResponse({ ...response, status: 'completed' });
     setChangeResCount(changeResCount + 1);
   }
 
