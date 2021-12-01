@@ -68,6 +68,11 @@ function StatusCard({ id }) {
     setChangeResCount(changeResCount + 1);
   }
 
+  //showing the results of the visualization
+  const showResults = () => {
+    alert('showing results');
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <Box className={styles.cardContainer}>
@@ -114,7 +119,7 @@ function StatusCard({ id }) {
             </div>
           </AccordionSummary>
           <AccordionDetails className={styles.fileStatusLog}>
-            <div className={styles.statusContainer}>
+            <Box sx={{ textAlign: 'center' }}>
               <Typography variant="h4" sx={{ fontWeight: 'light', fontSize: '16px' }}>
                 Status:
                 <Typography
@@ -131,47 +136,18 @@ function StatusCard({ id }) {
                   {` ${response.status.toUpperCase()}`}
                 </Typography>
               </Typography>
-            </div>
-            <Typography>{response.log}</Typography>
-
-            <Box sx={{ textAlign: 'left', paddingTop: '30px' }}>
-              { response.status === 'completed' ? (
-                <Stack
-                  spacing={2}
-                  direction="row"
-                >
-                  <Button
-                    href="#"
-                    variant="outlined"
-                    color="secondary"
-                    style={{ borderRadius: '10px' }}
-                  >
-                    Delete
-                  </Button>
-
-                  <Button
-                    href="#"
-                    variant="contained"
-                    color="primary"
-                    style={{ borderRadius: '10px' }}
-                  >
-                    View Result
-                  </Button>
-
-                </Stack>
-              )
-                : (
-                  <Button
-                    href="#"
-                    variant="outlined"
-                    color="secondary"
-                    style={{ borderRadius: '10px' }}
-                  >
-                    Cancel
-                  </Button>
-                )}
+              <Typography>{response.log}</Typography>
             </Box>
-
+            {/*Results button*/}
+            <Box sx={{ textAlign: 'center', paddingTop: '30px' }}>
+              { response.status === 'completed' ? (
+                <Button variant="outlined" color="info" onClick={showResults}>
+                  <Typography sx={{ color: '#4F83CC', fontWeight: '500' }}>
+                    See results
+                  </Typography>
+                </Button>
+              ) : null }
+            </Box>
           </AccordionDetails>
         </Accordion>
       </Box>

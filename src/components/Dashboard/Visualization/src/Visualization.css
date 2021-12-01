@@ -1,0 +1,60 @@
+.tick line {
+  stroke: lightgrey;
+}
+
+line {
+  stroke-width: 1px;
+}
+
+div.tooltip {
+  margin-top: 0.3em;
+  margin-left: 0.7em;
+  position: absolute;
+  text-align: left;
+  padding: .3rem;
+  background-color: #CCCCCC;
+  border: 0px;
+  border-radius: 7px;
+  font-size: 8pt;
+  max-width: 250px;
+  white-space: pre-line;
+}
+
+span {
+  white-space: pre-line;
+}
+
+#buttons {
+  align-content: flex-start;
+  margin-left: 30px;
+  display: flex;
+  column-gap: 5px;
+}
+
+button {
+  display: inline-block;
+  padding: 0.2em 1.45em;
+  margin: 0.1em;
+  border: 0.15em solid #CCCCCC;
+  border-radius: 7px;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-weight: 400;
+  color: #000000;
+  background-color: #CCCCCC;
+  text-align: center;
+  position: relative;
+}
+
+button:hover {
+  border-color:#7a7a7a;
+}
+
+button:active {
+  background-color:#999999;
+}
+
+.axislabel {
+  font-size: 12pt;
+  text-anchor: middle;
+}

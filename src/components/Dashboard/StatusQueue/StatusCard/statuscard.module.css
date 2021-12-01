@@ -24,11 +24,6 @@ h4{
     display: flex;
 }
 
-.statusContainer{
-    justify-content: left;
-    display: flex;
-}
-
 .summaryContainer{
     display: flex;
     
