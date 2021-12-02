@@ -198,8 +198,8 @@ function About() {
   const cardWidth = 3.5;
   const frontEndData = [
     {name: 'Amin Ben Saad', role : 'Frontend Lead & Developer' , img : 'memberphotos/Frontend_Amin Ben Saad.png' , dscp: 'B.Sc. Informatics at TUM ' ,socialFB:'',socialGithub:'',socialTwitter:'',socialLinkedIn:'https://www.linkedin.com/in/amin-ben-saad369/?originalSubdomain=de'},
-    {name: 'Dominik Jámbor', role : 'Frontend Developer' , img : 'memberphotos/Dominik.jpg' , dscp: 'Full-stack web developer and M.Sc. student at ELTE Budapest. ' ,socialFB:'',socialGithub:'',socialTwitter:'',socialLinkedIn:''},
-    {name: 'Ronald Skorobogat', role : 'Frontend Developer' , img : 'memberphotos/Frontend-RonaldSkorobogat.jpg' , dscp: 'B.Sc. Informatics at TUM ' ,socialFB:'',socialGithub:'https://github.com/ronskoro',socialTwitter:'',socialLinkedIn:''},
+    {name: 'Dominik Jámbor', role : 'Frontend Developer' , img : 'memberphotos/Dominik.jpg' , dscp: 'Full-stack web developer and M.Sc. student at ELTE Budapest. ' ,socialFB:'',socialGithub:'https://github.com/dominikjambor',socialTwitter:'',socialLinkedIn:''},
+    {name: 'Ronald Skorobogat', role : 'Frontend Developer' , img : 'memberphotos/Frontend-RonaldSkorobogat.jpg' , dscp: 'B.Sc. Informatics at TUM ' ,socialFB:'',socialGithub:'https://github.com/ronskoro',socialTwitter:'',socialLinkedIn:'https://www.linkedin.com/in/ronald-skorobogat-a1348b1a3/'},
     {name: 'Liudongnan Yang', role : 'Frontend Developer' , img : 'memberphotos/Yang.jpg' , dscp: " Master's student in Informatics at TUM" ,socialFB:'',socialGithub:'https://github.com/yldn',socialTwitter:'',socialLinkedIn:'https://www.linkedin.com/in/liudongnan-yang-683a3b163/'}
   ];
 
@@ -225,7 +225,7 @@ function About() {
       
       
 {/* For Guy */}
-          <Divider variant="middle" textAlign = "center" sx={{padding: '20px'}}>Funder</Divider>
+          <Divider variant="middle" textAlign = "center" sx={{padding: '20px'}}></Divider>
 
           <Grid
             container
