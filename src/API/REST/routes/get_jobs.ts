@@ -9,7 +9,7 @@ export default function get_job_route() {
     router
     .get("/jobs", check_auth(), async (req: ExtRequest, res: any) => {
         try {
-            const jobs = await projectModel.find({owner: req.user_id});
+            const jobs = await projectModel.find({owner: req.user_id}).sort({uploadDate: -1});
             return res.status(200).json(jobs!);
         } catch (e) {
             return res.status(500);

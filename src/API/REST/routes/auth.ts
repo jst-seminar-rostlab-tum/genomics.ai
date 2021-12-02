@@ -20,6 +20,7 @@ export default function auth_route(){
 
                 if (match) {
                     // TODO: Secret => REDIS
+                    user.password = "none of your business";
                     const token = jwt.sign(
                         {id: user._id, email: user.email},
                         "SECRET",
@@ -27,6 +28,7 @@ export default function auth_route(){
 
                     return res.status(200).json({
                         msg: "Login success",
+                        user,
                         jwt: token
                     })
                 } else {
