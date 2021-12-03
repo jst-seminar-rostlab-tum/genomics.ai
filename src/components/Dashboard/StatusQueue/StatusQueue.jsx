@@ -10,8 +10,7 @@ import queryJobs from './StatusQueueLogic';
 
 function StatusQueue() {
   const [expandList, setExpandList] = useState(true);
-  //setting the jobs to a static constant for internal testing, set the state to an empty array
-  const [jobs, setJobs] = useState([1,2,3,5,6]);
+  const [jobs, setJobs] = useState([]);
 
   useEffect(() => {
     const updateJobs = () => queryJobs().then((newJobs) => setJobs(newJobs))
@@ -47,9 +46,9 @@ function StatusQueue() {
             width: '100%', alignItems: 'center', justifyContent: 'center', flexDirection: 'column',
           }}
           >
-            {jobs.map((job, index) => (
-              <StatusCard key={job._id} id={job._id} index={index+1} status={job.status} log={job.fileName} sx={{ alignItems: 'center' }} />
-            )).reverse()}
+            {jobs.map((job) => (
+              <StatusCard key={job._id} id={job._id} status={job.status} log={job.fileName} sx={{ alignItems: 'center' }} />
+            ))}
           </List>
         </Collapse>
       </Box>

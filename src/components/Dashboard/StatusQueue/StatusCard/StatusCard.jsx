@@ -45,7 +45,9 @@ const theme = createTheme({
   },
 });
 
-function StatusCard({ index, id, status, log }) {
+function StatusCard({
+  id, status, log,
+}) {
   // object of colors for the statuses
   const statusColor = {
     UPLOAD_PENDING: yellow[600],
@@ -61,22 +63,13 @@ function StatusCard({ index, id, status, log }) {
     ABORTED: 'CANCELLED',
     DONE: 'COMPLETED',
     unknown: 'UNKNOWN',
-  }
-
-  
-
-  //setting the status to a constant for testing
-  //replace all instances of "statusForTesting" to "status" afterwards
-  const statusForTesting = 'DONE';
-  //replace all instances of idForTesting aftwerwards with the id
-  const idForTesting = '113nf0911 fj1f';
-
-  const cancelJob = () => {
-    //TODO: cancel the job here
   };
 
-  //make the id map to the index from the status queue where it start incrementing it
-  //change the index to the id afterwards
+  // TODO: talk to Dom to check with prepending the path to the results page is necessary
+
+  const cancelJob = () => {
+    // TODO: cancel the job here
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -103,9 +96,9 @@ function StatusCard({ index, id, status, log }) {
                     textAlign: 'center',
                   }}
                 >
-                  {`Job ${index}`}
+                  {`Job ${id.substr(id.length - 4)}`}
                 </Typography>
-                <CircleIcon sx={{ color: statusColor[statusForTesting], height: '20px' }} />
+                <CircleIcon sx={{ color: statusColor[status], height: '20px' }} />
                 <Typography
                   sx={{
                     fontSize: '16px',
@@ -114,10 +107,10 @@ function StatusCard({ index, id, status, log }) {
                     padding: '0',
                     textAlign: 'center',
                     display: 'inline',
-                    color: statusColor[statusForTesting],
+                    color: statusColor[status],
                   }}
                 >
-                  {` ${statusTitle[statusForTesting]}`}
+                  {` ${statusTitle[status]}`}
                 </Typography>
               </Stack>
 
@@ -135,32 +128,38 @@ function StatusCard({ index, id, status, log }) {
                     padding: '0',
                     textAlign: 'center',
                     display: 'inline',
-                    color: statusColor[statusForTesting],
+                    color: statusColor[status],
                   }}
                 >
-                  {` ${statusTitle[statusForTesting]}`}
+                  {` ${statusTitle[status]}`}
                 </Typography>
               </Typography>
               <Typography sx={{ paddingBottom: '10px' }}>
-                id: {idForTesting}
+                id:
+                {' '}
+                {id}
               </Typography>
               <Typography>{log}</Typography>
             </Box>
-            {/* Results and Cancel buttons */}
+            {/* Results button
+            //TODO: the href="" in the button should point to the right visualization result
+            setting currently to "result" + id number, i.e. : "result11s2ef2"
+            */}
             <Box sx={{ textAlign: 'center', paddingTop: '30px' }}>
-              {statusForTesting === 'DONE' ? (
-                <Button variant="outlined" color="info" href={`visualization`}>
+              {status === 'DONE' ? (
+                <Button variant="outlined" color="info" href={`result${id}`}>
                   {/* The id is given as a prop */}
                   <Typography sx={{ color: '#4F83CC', fontWeight: '500' }}>
                     See results
                   </Typography>
                 </Button>
-              ) : statusForTesting !=='ABORTED' ? (
-                  <Button variant="outlined" color="error" onClick={cancelJob}>
+              ) : null}
+              {/* cancel button */}
+              {status !== 'ABORTED' ? (
+                <Button variant="outlined" color="error" onClick={cancelJob}>
                   cancel
-                  </Button>
-                ): null
-                }
+                </Button>
+              ) : null}
             </Box>
           </AccordionDetails>
         </Accordion>
@@ -171,7 +170,3 @@ function StatusCard({ index, id, status, log }) {
 }
 
 export default StatusCard;
-
-// add the bottom line back instead of the line on line 152
-// <Button variant="outlined" color="info" href={`result${idForTesting}`}>
-
