@@ -17,6 +17,8 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "bootstrap-icons": "^1.6.1",
+    "d3": "7.1.1",
+    "dateformat": "^5.0.2",
     "material-ui-dropzone": "^3.5.0",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
@@ -25,8 +27,7 @@
     "react-router-dom": "^5.3.0",
     "react-scripts": "4.0.3",
     "validator": "^13.6.0",
-    "web-vitals": "^1.0.1",
-    "d3": "7.1.1"
+    "web-vitals": "^1.0.1"
   },
   "scripts": {
     "start": "react-scripts start",

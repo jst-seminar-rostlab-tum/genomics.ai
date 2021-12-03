@@ -28,7 +28,6 @@ function NavigationBar({ sidebarShown, user, setUser }) {
               alt="gene-icon"
               src={geneIcon}
               style={{ height: '45px', paddingLeft: '15px' }}
-              hover={sidebarShown}
             />
           </NavLink>
         </li>
@@ -74,7 +73,7 @@ function NavigationBar({ sidebarShown, user, setUser }) {
             className={styles.profileSettings}
             to={`${url}/settings`}
           >
-            {`Hi, ${user.firstName} ${user.lastName}!`}
+            {`Hi, ${user.firstName}!`}
             <img
               alt="profiledefault"
               src={profiledefault}

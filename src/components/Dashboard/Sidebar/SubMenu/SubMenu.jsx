@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { IconContext } from 'react-icons/lib';
-import { IoIosArrowDown, IoIosArrowForward, CgFileDocument } from 'react-icons/all';
+import { IoIosArrowDown, IoIosArrowForward } from 'react-icons/all';
 import styles from './subMenu.module.css';
 
 function SubMenu({ item }) {
@@ -38,20 +37,6 @@ function SubMenu({ item }) {
           {getDropdownStatusIcon()}
         </div>
       </div>
-      {
-        subnav && item.subNav.map((subItem) => (
-          <Link
-            className={styles.dropdownLink}
-            to={subItem.path}
-            key={subItem.id}
-          >
-            <CgFileDocument />
-            <span className={styles.sidebarLabel}>
-              {subItem.name}
-            </span>
-          </Link>
-        ))
-      }
     </IconContext.Provider>
   );
 }

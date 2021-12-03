@@ -8,7 +8,6 @@ import NavigationBar from '../NavigationBar/NavigationBar';
 import Documentation from '../Pages/Documentation/Documentation';
 import Settings from '../Pages/Settings/Settings';
 import Help from '../Pages/Help/Help';
-import PopUp from '../ProcessingCompletionPopUp/PopUp';
 import styles from './dashboardContent.module.css';
 import VisualizationPage from '../Pages/VisualizationPage/VisualizationPage';
 
@@ -48,6 +47,8 @@ const DashboardContent = (props) => {
           <Settings
             className={sidebarShown ? styles.subpage : styles.subpageSidebarCollapsed}
             sidebarShown={sidebarShown}
+            user={user}
+            setUser={setUser}
           />
         </Route>
 
@@ -56,14 +57,12 @@ const DashboardContent = (props) => {
         */}
         {
           visualizationResults.map((id) => (
-            <Route path={`/result${id}`}>
+            <Route path={`/result${id}`} key={id}>
               <VisualizationPage />
             </Route>
           ))
         }
       </Switch>
-
-      <PopUp />
 
     </div>
 

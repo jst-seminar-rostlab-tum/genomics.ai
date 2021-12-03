@@ -13,17 +13,10 @@ export function SettingsDropdown(props) {
     >
       <Link
         className={styles.dropdownLink}
-        to="/settings"
+        to="/sequencer/settings"
         style={{ paddingTop: '10px' }}
       >
         Profile Settings
-      </Link>
-
-      <Link
-        className={styles.dropdownLink}
-        to="/marketing"
-      >
-        View Profile
       </Link>
 
       <div className={styles.divider} />

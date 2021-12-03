@@ -1,13 +1,15 @@
 import React, { useCallback, useState } from 'react';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import validator from 'validator';
+import { LoadingButton } from '@mui/lab';
+import { Alert, Snackbar } from '@mui/material';
 import styles from './settings.module.css';
 import profileDefault from '../../../../assets/user.png';
+import updateProfile from './SettingsLogic';
 
 const myTheme = createTheme({
   palette: {
@@ -27,21 +29,6 @@ function PasswordSection({ onPasswordInfoChange, errors, changePassword }) {
         spacing={5}
         direction="column"
       >
-
-        <div className={styles.inputComponent}>
-          <div className={styles.inputText}> Current Password </div>
-          <TextField
-            id="currentPassword"
-            required
-            label="Current Password"
-            type="password"
-            style={{ width: '600px', background: 'white' }}
-            onChange={onPasswordInfoChange}
-            error={!!errors.currentPassword}
-            helperText={errors.currentPassword}
-          />
-        </div>
-
         <div className={styles.inputComponent}>
           <div className={styles.inputText}> New password </div>
           <TextField
@@ -75,22 +62,25 @@ function PasswordSection({ onPasswordInfoChange, errors, changePassword }) {
   return null;
 }
 
-function Settings() {
+function Settings(props) {
   /* Booleans */
   // Password Change
   const [changePassword, setChangePassword] = React.useState(false);
   const handleChangePassword = () => setChangePassword(!changePassword);
   // Errors
   const [errors, setErrors] = useState({});
+  const [saveInProgress, setSaveInProgress] = useState(false);
+  const [isSnackbarVisible, setSnackbarVisible] = useState(false);
+
+  const { user, setUser } = props;
 
   /* Input Text Fields */
   // General Information
   const [userInfo, setUserInfo] = useState({
-    firstName: '',
-    lastName: '',
-    emailAddress: '',
-    academicAffiliation: '',
-    aboutMe: '',
+    firstName: user.firstName,
+    lastName: user.lastName,
+    emailAddress: user.email,
+    academicAffiliation: user.note,
   });
 
   const onUserInfoChange = useCallback((e) => {
@@ -99,45 +89,18 @@ function Settings() {
 
   // Password
   const [passwordInfo, setPasswordInfo] = useState({
-    currentPassword: '',
     newPassword: '',
     newPasswordRepeated: '',
   });
 
-  const onPasswordInfoChange = useCallback((e) => {
+  const onPasswordInfoChange = (e) => {
     setPasswordInfo((prevState) => ({ ...prevState, [e.target.id]: e.target.value }));
-  }, [passwordInfo]);
-
-  function passwordIsSafe(minLength) {
-    // minimum length
-    if (userInfo.newPassword.length < minLength) {
-      return 'Password must be at least 8 characters long!';
-    }
-    // password should contain these
-    let lowerCase = false;
-    let upperCase = false;
-    let numbers = false;
-
-    userInfo.newPassword.split('').forEach((c) => {
-      if (c === c.toUpperCase()) {
-        upperCase = true;
-      } else if (c === c.toLowerCase()) {
-        lowerCase = true;
-      } else if (!Number.isNaN(c)) {
-        numbers = true;
-      }
-    });
-
-    if (!lowerCase || !upperCase || !numbers) {
-      return 'Use numbers, upper & lower case letters!';
-    }
-    return '';
-  }
+  };
 
   /* Input Validation */
   function isValidInput() {
     let currentErrors = {};
-    if (!validator.isEmail(userInfo.email)) {
+    if (!validator.isEmail(userInfo.emailAddress)) {
       currentErrors = { ...currentErrors, emailAddress: 'Please provide a valid email' };
     }
     if (userInfo.firstName === '') {
@@ -150,35 +113,30 @@ function Settings() {
     return !Object.keys(currentErrors).length;
   }
 
-  function currentPasswordIsCorrect() {
-    // validate password
-    return true;
-  }
-
   function isValidPasswordInfo() {
     let newErrors = {};
-    // current password correct?
-    if (!currentPasswordIsCorrect()) {
-      newErrors = { ...newErrors, currentPassword: 'Please enter your last name!' };
-    }
     // password correctly repeated?
-    if (userInfo.newPassword === userInfo.newPasswordRepeated) {
+    if (passwordInfo.newPassword !== passwordInfo.newPasswordRepeated) {
       newErrors = { ...newErrors, newPasswordRepeated: 'The passwords must match!' };
     }
-    // new password save enough?
-    const safetyErr = passwordIsSafe(8);
-    if (safetyErr !== '') {
-      newErrors = { ...newErrors, newPassword: safetyErr };
-    }
-    setErrors((currentErrors) => [...currentErrors, ...newErrors]);
+    setErrors((currentErrors) => ({ ...currentErrors, ...newErrors }));
+    console.log(`${passwordInfo.newPassword} ${passwordInfo.newPasswordRepeated}`);
     return !Object.keys(newErrors).length;
   }
 
-  const saveUserData = useCallback(() => {
+  const saveUserData = () => {
     if (isValidInput() && isValidPasswordInfo()) {
-      console.log('something');
+      setSaveInProgress(true);
+      updateProfile(userInfo, changePassword ? passwordInfo.newPassword : null, setUser)
+        .catch((err) => {
+          setErrors((prevState) => ({ ...prevState, response: "Couldn't save changes :/" }));
+          console.log(err);
+        }).finally(() => {
+          setSaveInProgress(false);
+          setSnackbarVisible(true);
+        });
     }
-  }, []);
+  };
 
   return (
     <>
@@ -206,6 +164,7 @@ function Settings() {
             <div className={styles.inputText}> First Name </div>
             <TextField
               id="firstName"
+              value={userInfo.firstName}
               required
               label="First Name"
               type="text"
@@ -220,6 +179,7 @@ function Settings() {
             <div className={styles.inputText}> Last Name</div>
             <TextField
               id="lastName"
+              value={userInfo.lastName}
               required
               label="Last Name"
               type="text"
@@ -235,6 +195,8 @@ function Settings() {
           <div className={styles.inputText}> Email Address </div>
           <TextField
             id="emailAddress"
+            disabled
+            value={userInfo.emailAddress}
             required
             label="Email"
             type="text"
@@ -249,25 +211,10 @@ function Settings() {
           <div className={styles.inputText}> Academic Affiliation </div>
           <TextField
             id="academicAffiliation"
+            value={userInfo.academicAffiliation}
             label="Academic Affiliation (e.g. University)"
             type="text"
             style={{ width: '600px', background: 'white' }}
-            onChange={onUserInfoChange}
-          />
-        </div>
-
-        <div className={styles.inputComponent}>
-          <div className={styles.inputText}> About Me </div>
-          <TextField
-            id="aboutMe"
-            label="Tell us something about you"
-            multiline
-            rows="5"
-            type="text"
-            style={{
-              width: '600px',
-              background: 'white',
-            }}
             onChange={onUserInfoChange}
           />
         </div>
@@ -312,17 +259,31 @@ function Settings() {
             direction="row"
             style={{ height: '55px', width: '400px' }}
           >
-            <Button
+            <LoadingButton
               variant="contained"
               color="primary"
+              loading={saveInProgress}
               style={{ width: '185px', borderRadius: '10px', fontWeight: 'bold' }}
               onClick={saveUserData}
             >
               Save
-            </Button>
+            </LoadingButton>
           </Stack>
         </ThemeProvider>
       </Stack>
+      <Snackbar
+        open={isSnackbarVisible}
+        autoHideDuration={10000}
+        onClose={() => setSnackbarVisible(false)}
+      >
+        <Alert
+          severity={errors.response ? 'error' : 'success'}
+          sx={{ width: '100%' }}
+          onClose={() => setSnackbarVisible(false)}
+        >
+          {errors.response ? errors.response : 'Changes saved.'}
+        </Alert>
+      </Snackbar>
     </>
   );
 }

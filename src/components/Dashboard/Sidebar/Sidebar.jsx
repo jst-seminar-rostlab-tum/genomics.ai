@@ -1,9 +1,12 @@
-import React from 'react';
-import { SidebarData } from './SidebarData';
-import SubMenu from './SubMenu/SubMenu';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { CgFileDocument } from 'react-icons/all';
+import dateFormat from 'dateformat';
 import styles from './sidebar.module.css';
 import arrowClose from '../../../assets/arrow-close.png';
 import geneIcon from '../../../assets/gene.png';
+import { filterInProgress, queryJobs } from '../StatusQueue/StatusQueueLogic';
+import { PROJECTS_UPDATE_INTERVAL } from '../../common/constants';
 
 const Sidebar = ({ sidebarShown, toggleSidebar }) => {
   // COLLAPSED
@@ -24,6 +27,16 @@ const Sidebar = ({ sidebarShown, toggleSidebar }) => {
       </div>
     );
   }
+
+  const [jobs, setJobs] = useState([]);
+
+  useEffect(() => {
+    const updateJobs = () => queryJobs().then((newJobs) => setJobs(filterInProgress(newJobs)))
+      .catch((ignored) => { console.log(ignored); });
+    updateJobs();
+    const intervalId = setInterval(updateJobs, PROJECTS_UPDATE_INTERVAL);
+    return (() => clearInterval(intervalId));
+  }, [setJobs]);
 
   // NOT COLLAPSED
   return (
@@ -51,7 +64,18 @@ const Sidebar = ({ sidebarShown, toggleSidebar }) => {
           />
           Projects
         </div>
-        { SidebarData.map((item) => <SubMenu item={item} key={item.id} />)}
+        { jobs.map((job) => (
+          <Link
+            className={styles.dropdownLink}
+            to={`/overview/${job._id}`}
+            key={job.id}
+          >
+            <CgFileDocument style={{ color: 'white' }} />
+            <span className={styles.sidebarLabel}>
+              {dateFormat(new Date(job.uploadDate), 'dd/mm/yyyy hh:MM')}
+            </span>
+          </Link>
+        ))}
       </div>
     </div>
   );
