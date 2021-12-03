@@ -194,7 +194,7 @@ function PopUpContent(props) {
             sx={{ marginTop: '20px' }}
             control={(
               <Switch
-                check={isNewProject}
+                checked={isNewProject}
                 onClick={handleNewProject}
               />
             )}

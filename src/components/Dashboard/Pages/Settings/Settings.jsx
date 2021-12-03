@@ -234,7 +234,7 @@ function Settings(props) {
             sx={{ m: 1 }}
             control={(
               <Switch
-                check={changePassword}
+                checked={changePassword}
                 onClick={handleChangePassword}
               />
             )}

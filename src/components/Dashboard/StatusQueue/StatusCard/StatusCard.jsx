@@ -59,6 +59,7 @@ function StatusCard({
 
   const statusTitle = {
     UPLOAD_PENDING: 'UPLOADING',
+    UPLOAD_COMPLETE: 'UPLOADED',
     PROCESSING_PENDING: 'PROCESSING',
     ABORTED: 'CANCELLED',
     DONE: 'COMPLETED',
@@ -147,7 +148,7 @@ function StatusCard({
             */}
             <Box sx={{ textAlign: 'center', paddingTop: '30px' }}>
               {status === 'DONE' ? (
-                <Button variant="outlined" color="info" href={`result${id}`}>
+                <Button variant="outlined" color="info" href={`result/${id}`}>
                   {/* The id is given as a prop */}
                   <Typography sx={{ color: '#4F83CC', fontWeight: '500' }}>
                     See results
@@ -155,11 +156,11 @@ function StatusCard({
                 </Button>
               ) : null}
               {/* cancel button */}
-              {status !== 'ABORTED' ? (
+              {status !== 'ABORTED' && status !== 'DONE' && (
                 <Button variant="outlined" color="error" onClick={cancelJob}>
                   cancel
                 </Button>
-              ) : null}
+              ) }
             </Box>
           </AccordionDetails>
         </Accordion>
