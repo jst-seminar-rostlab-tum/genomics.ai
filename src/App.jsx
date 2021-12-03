@@ -2,7 +2,7 @@ import './app.module.css';
 import React, { useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material';
 import {
-  Route, BrowserRouter as Router, Switch, Redirect,
+  Route, HashRouter as Router, Switch, Redirect,
 } from 'react-router-dom';
 import HomePage from './components/LandingPage/pages/Home/Home';
 import About from './components/LandingPage/pages/About/About';
@@ -27,7 +27,7 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Router basename="https://www.genecruncher.com">
+      <Router>
         <Switch>
           <Route exact path="/" render={() => (user ? <Redirect to="/sequencer" /> : <HomePage setUser={setUser} />)} />
           <Route path="/sequencer" render={() => guardedPage(<DashboardContent user={user} setUser={setUser} />)} />
