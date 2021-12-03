@@ -45,7 +45,7 @@ const theme = createTheme({
   },
 });
 
-function StatusCard({ id, status, log }) {
+function StatusCard({ index, id, status, log }) {
   // object of colors for the statuses
   const statusColor = {
     UPLOAD_PENDING: yellow[600],
@@ -54,6 +54,29 @@ function StatusCard({ id, status, log }) {
     DONE: green[300],
     unknown: grey[500],
   };
+
+  const statusTitle = {
+    UPLOAD_PENDING: 'UPLOADING',
+    PROCESSING_PENDING: 'PROCESSING',
+    ABORTED: 'CANCELLED',
+    DONE: 'COMPLETED',
+    unknown: 'UNKNOWN',
+  }
+
+  
+
+  //setting the status to a constant for testing
+  //replace all instances of "statusForTesting" to "status" afterwards
+  const statusForTesting = 'DONE';
+  //replace all instances of idForTesting aftwerwards with the id
+  const idForTesting = '113nf0911 fj1f';
+
+  const cancelJob = () => {
+    //TODO: cancel the job here
+  };
+
+  //make the id map to the index from the status queue where it start incrementing it
+  //change the index to the id afterwards
 
   return (
     <ThemeProvider theme={theme}>
@@ -80,21 +103,21 @@ function StatusCard({ id, status, log }) {
                     textAlign: 'center',
                   }}
                 >
-                  {`Job ${id}`}
+                  {`Job ${index}`}
                 </Typography>
-                <CircleIcon sx={{ color: statusColor[status], height: '20px' }} />
+                <CircleIcon sx={{ color: statusColor[statusForTesting], height: '20px' }} />
                 <Typography
                   sx={{
                     fontSize: '16px',
-                    fontWeight: 'light',
+                    fontWeight: 'bold',
                     margin: '0',
                     padding: '0',
                     textAlign: 'center',
                     display: 'inline',
-                    color: statusColor[status],
+                    color: statusColor[statusForTesting],
                   }}
                 >
-                  {` ${status.toUpperCase()}`}
+                  {` ${statusTitle[statusForTesting]}`}
                 </Typography>
               </Stack>
 
@@ -102,35 +125,42 @@ function StatusCard({ id, status, log }) {
           </AccordionSummary>
           <AccordionDetails className={styles.fileStatusLog}>
             <Box sx={{ textAlign: 'center' }}>
-              <Typography variant="h4" sx={{ fontWeight: 'light', fontSize: '16px' }}>
+              <Typography variant="h4" sx={{ fontWeight: '500', fontSize: '16px' }}>
                 Status:
                 <Typography
                   sx={{
                     fontSize: '16px',
-                    fontWeight: 'light',
+                    fontWeight: 'bold',
                     margin: '0',
                     padding: '0',
                     textAlign: 'center',
                     display: 'inline',
-                    color: statusColor[status],
+                    color: statusColor[statusForTesting],
                   }}
                 >
-                  {` ${status.toUpperCase()}`}
+                  {` ${statusTitle[statusForTesting]}`}
                 </Typography>
+              </Typography>
+              <Typography sx={{ paddingBottom: '10px' }}>
+                id: {idForTesting}
               </Typography>
               <Typography>{log}</Typography>
             </Box>
-            {/* Results button */}
+            {/* Results and Cancel buttons */}
             <Box sx={{ textAlign: 'center', paddingTop: '30px' }}>
-              {status === 'completed' ? (
-                <Button variant="outlined" color="info" href={`result${id}`}>
-                  {' '}
+              {statusForTesting === 'DONE' ? (
+                <Button variant="outlined" color="info" href={`visualization`}>
                   {/* The id is given as a prop */}
                   <Typography sx={{ color: '#4F83CC', fontWeight: '500' }}>
                     See results
                   </Typography>
                 </Button>
-              ) : null}
+              ) : statusForTesting !=='ABORTED' ? (
+                  <Button variant="outlined" color="error" onClick={cancelJob}>
+                  cancel
+                  </Button>
+                ): null
+                }
             </Box>
           </AccordionDetails>
         </Accordion>
@@ -141,3 +171,7 @@ function StatusCard({ id, status, log }) {
 }
 
 export default StatusCard;
+
+// add the bottom line back instead of the line on line 152
+// <Button variant="outlined" color="info" href={`result${idForTesting}`}>
+

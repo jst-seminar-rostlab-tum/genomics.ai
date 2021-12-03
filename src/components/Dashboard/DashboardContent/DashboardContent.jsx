@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Switch, Route, Redirect, useRouteMatch,
 } from 'react-router-dom';
@@ -8,7 +8,6 @@ import NavigationBar from '../NavigationBar/NavigationBar';
 import Documentation from '../Pages/Documentation/Documentation';
 import Settings from '../Pages/Settings/Settings';
 import Help from '../Pages/Help/Help';
-import PopUp from '../ProcessingCompletionPopUp/PopUp';
 import styles from './dashboardContent.module.css';
 import VisualizationPage from '../Pages/VisualizationPage/VisualizationPage';
 
@@ -18,17 +17,18 @@ const DashboardContent = (props) => {
   const { user, setUser } = props;
 
   const { path, url } = useRouteMatch();
+
+  // TODO: fetch the visualization results here, currently setting the results to a static array: [1]
   const visualizationResults = [1];
 
   return (
-    <div>
-      <NavigationBar sidebarShown={sidebarShown} user={user} setUser={setUser} />
-      <Sidebar
-        toggleSidebar={toggleSidebar}
-        sidebarShown={sidebarShown}
-      />
-
-      <Switch>
+    <Switch>
+      <div>
+        <NavigationBar sidebarShown={sidebarShown} user={user} setUser={setUser} />
+        <Sidebar
+          toggleSidebar={toggleSidebar}
+          sidebarShown={sidebarShown}
+        />
         <Route exact path={`${path}/`}>
           <Redirect to={`${url}/dashboard`} />
         </Route>
@@ -50,23 +50,23 @@ const DashboardContent = (props) => {
             sidebarShown={sidebarShown}
           />
         </Route>
-
-        {/* Looping over all visualization projects
-        Check backend specification to determine how to create the route for it
+         {/* TODO: Looping over all visualization projects
+          Check backend specification to determine how to create the route for it
+        TODO: add the id to the visualization page
         */}
         {
           visualizationResults.map((id) => (
-            <Route path={`/result${id}`}>
-              <VisualizationPage />
+            <Route path={`${path}/result${id}`}>
+              <VisualizationPage id={id} />
             </Route>
           ))
         }
-      </Switch>
-
-      <PopUp />
-
-    </div>
-
+        {/*The lines below are for testing*/}
+        {/* <Route path={`${path}/visualization`}>
+          <VisualizationPage id={id} />
+        </Route> */}
+      </div>
+    </Switch>
   );
 };
 

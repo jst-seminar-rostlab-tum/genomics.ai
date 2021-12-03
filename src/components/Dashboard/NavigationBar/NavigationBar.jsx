@@ -74,7 +74,8 @@ function NavigationBar({ sidebarShown, user, setUser }) {
             className={styles.profileSettings}
             to={`${url}/settings`}
           >
-            {`Hi, ${user.firstName} ${user.lastName}!`}
+          //TODO: uncomment the commented line below: Commented it for testin
+            {/*{`Hi, ${user.firstName} ${user.lastName}!`}*/}
             <img
               alt="profiledefault"
               src={profiledefault}

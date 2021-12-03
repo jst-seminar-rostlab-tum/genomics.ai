@@ -31,6 +31,7 @@ function App() {
         <Switch>
           <Route exact path="/" render={() => (user ? <Redirect to="/sequencer" /> : <HomePage setUser={setUser} />)} />
           <Route path="/sequencer" render={() => guardedPage(<DashboardContent user={user} setUser={setUser} />)} />
+          <Route path="/dashboard" component={DashboardContent} />
           <Route path="/about" render={() => <About setUser={setUser} />} />
           <Route path="/docs" render={() => <Docs setUser={setUser} />} />
           <Route path="/contact" render={() => <Contact setUser={setUser} />} />
@@ -41,7 +42,3 @@ function App() {
 }
 
 export default App;
-
-// removed the dashboar from the router
-// <Route path="/dashboard" component={Dashboard} />
-// <Route exact path="/" component={LandingPage} />
