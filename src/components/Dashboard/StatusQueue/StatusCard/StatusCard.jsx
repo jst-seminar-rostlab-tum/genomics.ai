@@ -45,7 +45,9 @@ const theme = createTheme({
   },
 });
 
-function StatusCard({ id, status, log }) {
+function StatusCard({
+  id, status, log,
+}) {
   // object of colors for the statuses
   const statusColor = {
     UPLOAD_PENDING: yellow[600],
@@ -53,6 +55,20 @@ function StatusCard({ id, status, log }) {
     ABORTED: red[300],
     DONE: green[300],
     unknown: grey[500],
+  };
+
+  const statusTitle = {
+    UPLOAD_PENDING: 'UPLOADING',
+    PROCESSING_PENDING: 'PROCESSING',
+    ABORTED: 'CANCELLED',
+    DONE: 'COMPLETED',
+    unknown: 'UNKNOWN',
+  };
+
+  // TODO: talk to Dom to check with prepending the path to the results page is necessary
+
+  const cancelJob = () => {
+    // TODO: cancel the job here
   };
 
   return (
@@ -80,13 +96,13 @@ function StatusCard({ id, status, log }) {
                     textAlign: 'center',
                   }}
                 >
-                  {`Job ${id}`}
+                  {`Job ${id.substr(id.length - 4)}`}
                 </Typography>
                 <CircleIcon sx={{ color: statusColor[status], height: '20px' }} />
                 <Typography
                   sx={{
                     fontSize: '16px',
-                    fontWeight: 'light',
+                    fontWeight: 'bold',
                     margin: '0',
                     padding: '0',
                     textAlign: 'center',
@@ -94,7 +110,7 @@ function StatusCard({ id, status, log }) {
                     color: statusColor[status],
                   }}
                 >
-                  {` ${status.toUpperCase()}`}
+                  {` ${statusTitle[status]}`}
                 </Typography>
               </Stack>
 
@@ -102,12 +118,12 @@ function StatusCard({ id, status, log }) {
           </AccordionSummary>
           <AccordionDetails className={styles.fileStatusLog}>
             <Box sx={{ textAlign: 'center' }}>
-              <Typography variant="h4" sx={{ fontWeight: 'light', fontSize: '16px' }}>
+              <Typography variant="h4" sx={{ fontWeight: '500', fontSize: '16px' }}>
                 Status:
                 <Typography
                   sx={{
                     fontSize: '16px',
-                    fontWeight: 'light',
+                    fontWeight: 'bold',
                     margin: '0',
                     padding: '0',
                     textAlign: 'center',
@@ -115,20 +131,33 @@ function StatusCard({ id, status, log }) {
                     color: statusColor[status],
                   }}
                 >
-                  {` ${status.toUpperCase()}`}
+                  {` ${statusTitle[status]}`}
                 </Typography>
+              </Typography>
+              <Typography sx={{ paddingBottom: '10px' }}>
+                id:
+                {' '}
+                {id}
               </Typography>
               <Typography>{log}</Typography>
             </Box>
-            {/* Results button */}
+            {/* Results button
+            //TODO: the href="" in the button should point to the right visualization result
+            setting currently to "result" + id number, i.e. : "result11s2ef2"
+            */}
             <Box sx={{ textAlign: 'center', paddingTop: '30px' }}>
-              {status === 'completed' ? (
+              {status === 'DONE' ? (
                 <Button variant="outlined" color="info" href={`result${id}`}>
-                  {' '}
                   {/* The id is given as a prop */}
                   <Typography sx={{ color: '#4F83CC', fontWeight: '500' }}>
                     See results
                   </Typography>
+                </Button>
+              ) : null}
+              {/* cancel button */}
+              {status !== 'ABORTED' ? (
+                <Button variant="outlined" color="error" onClick={cancelJob}>
+                  cancel
                 </Button>
               ) : null}
             </Box>

@@ -8,7 +8,7 @@ import { getDomains, prepareData } from './data';
 import { addAxes, addAxisLabel } from './axis';
 import addTooltip from './tooltip';
 import addZoom from './zoom';
-import './Visualization.css';
+import styles from './Visualization.css';
 import addLegend from './legend';
 
 class Visualization extends React.Component {
@@ -68,21 +68,21 @@ class Visualization extends React.Component {
       const setZoom = addZoom(svgDots, handleZoom);
 
       buttons.append('button')
-        .text('Zoom in')
+        .text('ZOOM IN')
         .on('click', () => setZoom(zoomStep));
 
       buttons.append('button')
-        .text('Zoom out')
+        .text('Zoom ouT'.toUpperCase())
         .on('click', () => setZoom(1 / zoomStep));
 
       buttons.append('button')
-        .text('Reset zoom')
+        .text('Reset zoom'.toUpperCase())
         .on('click', () => setZoom(1 / zoomFactor));
     });
   }
 
   render() {
-    return (<div ref={this.myRef} />);
+    return <div ref={this.myRef} className={styles.container} />;
   }
 }
 

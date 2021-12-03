@@ -15,9 +15,7 @@ function Home(props) {
     <div className={styles.container}>
       <NavBar setUser={setUser} />
       <img className={styles.backgroundImage} src={dnaImage} alt="background" />
-      {/* If genomics visualized stays in the middle, then it needs to be properly aligned.
-      Right now it is using padding as the way to align the items */}
-      <Box sx={{ paddingBottom: '50px', paddingTop: '250px' }}>
+      <Box sx={{ paddingBottom: '50px', paddingTop: '150px' }}>
         <Typography sx={{ fontSize: '24px', fontWeight: 'bold' }}>Genomics visualized</Typography>
       </Box>
       <div className={styles.infoContainer}>
@@ -53,8 +51,6 @@ function Home(props) {
       </div>
       <Footer />
     </div>
-    // TODO: add footer for the website across all pages that are not the dashboard
-
   );
 }
 

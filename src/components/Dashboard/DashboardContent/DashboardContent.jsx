@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Switch, Route, Redirect, useRouteMatch,
 } from 'react-router-dom';
@@ -20,14 +20,13 @@ const DashboardContent = (props) => {
   const visualizationResults = [1];
 
   return (
-    <div>
-      <NavigationBar sidebarShown={sidebarShown} user={user} setUser={setUser} />
-      <Sidebar
-        toggleSidebar={toggleSidebar}
-        sidebarShown={sidebarShown}
-      />
-
-      <Switch>
+    <Switch>
+      <div>
+        <NavigationBar sidebarShown={sidebarShown} user={user} setUser={setUser} />
+        <Sidebar
+          toggleSidebar={toggleSidebar}
+          sidebarShown={sidebarShown}
+        />
         <Route exact path={`${path}/`}>
           <Redirect to={`${url}/dashboard`} />
         </Route>
@@ -51,21 +50,23 @@ const DashboardContent = (props) => {
             setUser={setUser}
           />
         </Route>
-
-        {/* Looping over all visualization projects
-        Check backend specification to determine how to create the route for it
+         {/* TODO: Looping over all visualization projects
+          Check backend specification to determine how to create the route for it
+        TODO: add the id to the visualization page
         */}
         {
           visualizationResults.map((id) => (
-            <Route path={`/result${id}`} key={id}>
-              <VisualizationPage />
+            <Route path={`${path}/result${id}`} key={id}>
+              <VisualizationPage id={id} />
             </Route>
           ))
         }
-      </Switch>
-
-    </div>
-
+        {/*The lines below are for testing*/}
+        {/* <Route path={`${path}/visualization`}>
+          <VisualizationPage id={id} />
+        </Route> */}
+      </div>
+    </Switch>
   );
 };
 
