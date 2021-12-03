@@ -2,6 +2,7 @@ import {
   Button, Toolbar, Typography, IconButton, Box,
 } from '@mui/material';
 import React, { useState, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import styles from './navbar.module.css';
 import LoginForm from '../LandingPage/LoginForm/LoginForm';
 import RegistrationForm from '../LandingPage/RegistrationForm/RegistrationForm';
@@ -45,9 +46,9 @@ const NavBar = (props) => {
                 <Box>
                   <li><a href="/" className={styles.navbarcontent}>Home</a></li>
                 </Box>
-                <li><a href="about" className={styles.navbarcontent}>Team</a></li>
-                <li><a href="docs" className={styles.navbarcontent}>Docs</a></li>
-                <li><a href="contact" className={styles.navbarcontent}>Contact</a></li>
+                <li><Link to="about" className={styles.navbarcontent}>Team</Link></li>
+                <li><Link to="docs" className={styles.navbarcontent}>Docs</Link></li>
+                <li><Link to="contact" className={styles.navbarcontent}>Contact</Link></li>
               </ul>
             </Typography>
           </Box>
