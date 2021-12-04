@@ -12,14 +12,15 @@ export default function auth_route(){
             if(!user)
                 return res.status(401).send("User not found");
 
-            bcrypt.compare(password, user.password, (err, match) => {
+            bcrypt.compare(password, <string>user.password, (err, match) => {
                 if (err) {
                     console.error(err);
                     return res.status(500).send("Error while verifying credentials");
                 }
 
                 if (match) {
-                    // TODO: Secret => REDIS
+                    // TODO: Secret!
+                    delete user.password;
                     const token = jwt.sign(
                         {id: user._id, email: user.email},
                         "SECRET",
@@ -27,6 +28,7 @@ export default function auth_route(){
 
                     return res.status(200).json({
                         msg: "Login success",
+                        user,
                         jwt: token
                     })
                 } else {

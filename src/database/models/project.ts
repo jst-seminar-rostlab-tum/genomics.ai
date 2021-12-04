@@ -1,3 +1,4 @@
+
 import {Document, model, Schema} from "mongoose";
 
 export enum ProjectJobStatus {
@@ -37,3 +38,4 @@ const projectSchema = new Schema<IProject>({
 });
 
 export const projectModel = model<IProject>("Project", projectSchema);
+
