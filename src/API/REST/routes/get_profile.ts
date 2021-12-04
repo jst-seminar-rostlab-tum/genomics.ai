@@ -6,12 +6,8 @@ import check_auth from "../middleware/check_auth";
 export default function get_profile_route() {
     let router = express.Router();
 
-    router.get("/profile/:id", check_auth(), async (req: ExtRequest, res: any) => {
-        const userId = req.params.id;
-        const user = await userModel.findById(userId);
-
-        if (!user)
-            return res.status(404).send(`User ${userId} not found`);
+    router.get("/profile", check_auth(), async (req: ExtRequest, res: any) => {
+        const user = await userModel.findById(req.user_id);
 
         return res.status(200).json(user);
     });
