@@ -6,6 +6,7 @@ import HomePage from './components/LandingPage/pages/Home/Home';
 import About from './components/LandingPage/pages/About/About';
 import Docs from './components/LandingPage/pages/Docs/Docs';
 import Contact from './components/LandingPage/pages/Contact/Contact';
+import PasswordResetPage from './components/LandingPage/PasswordReset/PasswordResetPage';
 
 function App() {
   const theme = createTheme({
@@ -27,6 +28,7 @@ function App() {
           <Route path="/about" component={About} />
           <Route path="/docs" component={Docs} />
           <Route path="/contact" component={Contact} />
+          <Route path="/passwordreset" component={PasswordResetPage} />
         </Switch>
       </Router>
     </ThemeProvider>

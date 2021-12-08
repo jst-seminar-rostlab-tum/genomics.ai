@@ -1,6 +1,6 @@
 import {
   Alert,
-  Avatar, Box, Checkbox, FormControlLabel, Grid, Modal, Snackbar, TextField, Typography,
+  Avatar, Box, Checkbox, FormControlLabel, Grid, Modal, Snackbar, TextField, Typography, Link
 } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import React, { useCallback, useState } from 'react';
@@ -10,6 +10,8 @@ import { useHistory } from 'react-router-dom';
 import logo from '../../../assets/logo.svg';
 import styles from './loginform.module.css';
 import { BACKEND_ADDRESS } from '../../common/constants';
+import PasswordForgetForm from '../PasswordReset/PasswordForgetForm'
+
 
 function LoginForm(props) {
   const [loginDetails, setLoginDetails] = useState({
@@ -18,6 +20,7 @@ function LoginForm(props) {
     remember: false,
   });
 
+  const [forgotPassword,setForgotPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [isSnackbarVisible, setSnackbarVisible] = useState(false);
@@ -31,6 +34,11 @@ function LoginForm(props) {
   const handleCheckedChange = useCallback((e) => {
     setLoginDetails((prevState) => ({ ...prevState, [e.target.id]: e.target.checked }));
   }, [setLoginDetails]);
+
+  const handlepasswordForget = useCallback((e) => {
+    onClose();
+    setForgotPassword(true);
+  },[setForgotPassword]);
 
   function validateInput() {
     let currentErrors = {};
@@ -187,9 +195,7 @@ function LoginForm(props) {
               Sign in
             </LoadingButton>
             <Typography mt={1}>
-              <a href="https://google.com" className={styles.pwReminderLink}>
-                Forgot password?
-              </a>
+                <Link href="#" onClick={handlepasswordForget} className={styles.pwReminderLink}>Forgot password?</Link>
             </Typography>
           </Grid>
         </Box>
@@ -207,6 +213,7 @@ function LoginForm(props) {
           {errors.response ? errors.response : 'Login successful!'}
         </Alert>
       </Snackbar>
+      <PasswordForgetForm visible={forgotPassword} onClose={() => setForgotPassword(false)}/>
     </div>
   );
 }

@@ -72,6 +72,7 @@ const NavBar = () => {
           onClose={onRegistrationFormClosed}
           onSuccessfulRegistration={onLoginClicked}
         />
+
       </div>
     </div>
   );
