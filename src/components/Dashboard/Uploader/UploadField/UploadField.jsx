@@ -10,7 +10,11 @@ function UploadField({ onChange, disabled, selectedFile }) {
   return (
     <div className={styles.flexContainer}>
       <div className={styles.uploadButtonContainer}>
-        <UploadButton onChange={onChange} selectedFile={selectedFile} disabled={disabled} />
+        <UploadButton
+          onChange={onChange}
+          selectedFile={selectedFile}
+          disabled={disabled}
+        />
       </div>
     </div>
   );

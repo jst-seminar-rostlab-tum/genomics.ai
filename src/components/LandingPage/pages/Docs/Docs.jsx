@@ -7,8 +7,8 @@ function Docs() {
       <NavBar />
       <h1>This is the docs page</h1>
     </div>
-    
-);
+
+  );
 }
 
 export default Docs;

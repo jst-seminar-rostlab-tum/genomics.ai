@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {
-  Card,
   Box,
   Typography,
-  Collapse,
-  IconButton,
   Accordion,
   AccordionSummary,
   AccordionDetails,
-  Button
+  Button,
+  Stack,
 } from '@mui/material';
 import {
   red,
@@ -19,13 +18,10 @@ import {
 } from '@mui/material/colors';
 import CircleIcon from '@mui/icons-material/Circle';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import styles from './statuscard.module.css';
-
 
 /*
 The status card includes the status of the job.
-
 Status types that the status card can include are:
 
 1. pending - state during the upload of the file and during verification
@@ -38,84 +34,139 @@ Status types that the status card can include are:
 
 5. unknown - the unknown state happens when the status can't be updated
 */
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#1888ff',
+    },
+    secondary: {
+      main: '#6B7379',
+    },
+  },
+});
 
-function StatusCard({ id }) {
-  const [response, setResponse] = useState({
-    status: 'unknown',
-    log: "The file's status is currently unknown.",
-  })
-
-  const [moreInfo, setMoreInfo] = useState(false);
-
+function StatusCard({
+  id, status, log,
+}) {
   // object of colors for the statuses
   const statusColor = {
-    pending: yellow[600],
-    processing: blue[300],
-    error: red[300],
-    completed: green[300],
+    UPLOAD_PENDING: yellow[600],
+    PROCESSING_PENDING: blue[300],
+    ABORTED: red[300],
+    DONE: green[300],
     unknown: grey[500],
   };
 
-  // The status is not passed down as a prop, but received from backend
-  const [changeResCount, setChangeResCount] = useState(0);
-  if (changeResCount < 1) {
-    setResponse({ ...response, status: 'completed' });
-    setChangeResCount(changeResCount + 1);
-  } // check dom's code to understand how it is done
+  const statusTitle = {
+    UPLOAD_PENDING: 'UPLOADING',
+    UPLOAD_COMPLETE: 'UPLOADED',
+    PROCESSING_PENDING: 'PROCESSING',
+    ABORTED: 'CANCELLED',
+    DONE: 'COMPLETED',
+    unknown: 'UNKNOWN',
+  };
+
+  // TODO: talk to Dom to check with prepending the path to the results page is necessary
+
+  const cancelJob = () => {
+    // TODO: cancel the job here
+  };
 
   return (
-    <Box className={styles.cardContainer}>
-
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
-          <div className={styles.summaryContainer}>
-            <Typography
-              className={styles.headerContainer}
-              variant="h4"
-              sx={{
-                fontWeight: 'bold',
-                fontSize: '16px',
-                margin: '0',
-                padding: '0',
-                textAlign: 'center',
-              }}
-            >
-              {`Job ${id}`}
-            </Typography>
-            <CircleIcon sx={{ color: statusColor[response.status], paddingLeft: '5px' }} />
-          </div>
-        </AccordionSummary>
-        <AccordionDetails className={styles.fileStatusLog}>
-          <div className={styles.statusContainer}>
-            <Typography variant="h4" sx={{ fontWeight: 'light', fontSize: '16px' }}>
-              Status:
-              <Typography
-                variant="h4"
-                sx={{
-                  fontSize: '16px',
-                  fontWeight: 'light',
-                  margin: '0',
-                  padding: '0',
-                  textAlign: 'center',
-                  display: 'inline',
-                  color: statusColor[response.status],
-                }}
+    <ThemeProvider theme={theme}>
+      <Box className={styles.cardContainer}>
+        <Accordion>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
+            <div className={styles.summaryContainer}>
+              <Stack
+                spacing={2}
+                direction="row"
               >
-                {` ${response.status.toUpperCase()}`}
+                <Typography
+                  className={styles.headerContainer}
+                  variant="h4"
+                  sx={{
+                    fontWeight: 'bold',
+                    fontSize: '16px',
+                    margin: '0',
+                    padding: '0',
+                    textAlign: 'center',
+                  }}
+                >
+                  {`Job ${id.substr(id.length - 4)}`}
+                </Typography>
+                <CircleIcon sx={{ color: statusColor[status], height: '20px' }} />
+                <Typography
+                  sx={{
+                    fontSize: '16px',
+                    fontWeight: 'bold',
+                    margin: '0',
+                    padding: '0',
+                    textAlign: 'center',
+                    display: 'inline',
+                    color: statusColor[status],
+                  }}
+                >
+                  {` ${statusTitle[status]}`}
+                </Typography>
+              </Stack>
+
+            </div>
+          </AccordionSummary>
+          <AccordionDetails className={styles.fileStatusLog}>
+            <Box sx={{ textAlign: 'center' }}>
+              <Typography variant="h4" sx={{ fontWeight: '500', fontSize: '16px' }}>
+                Status:
+                <Typography
+                  sx={{
+                    fontSize: '16px',
+                    fontWeight: 'bold',
+                    margin: '0',
+                    padding: '0',
+                    textAlign: 'center',
+                    display: 'inline',
+                    color: statusColor[status],
+                  }}
+                >
+                  {` ${statusTitle[status]}`}
+                </Typography>
               </Typography>
-            </Typography>
-          </div>
-          <Typography>{response.log}</Typography>
-          <Box sx={{ textAlign: 'center', paddingTop: '20px' }}>
-            { response.status === 'completed' ? <Button href="#">View results</Button> : null }
-          </Box>
-        </AccordionDetails>
-      </Accordion>
-    </Box>
+              <Typography sx={{ paddingBottom: '10px' }}>
+                id:
+                {' '}
+                {id}
+              </Typography>
+              <Typography>{log}</Typography>
+            </Box>
+            {/* Results button
+            //TODO: the href="" in the button should point to the right visualization result
+            setting currently to "result" + id number, i.e. : "result11s2ef2"
+            */}
+            <Box sx={{ textAlign: 'center', paddingTop: '30px' }}>
+              {status === 'DONE' ? (
+                <Button variant="outlined" color="info" href={`result/${id}`}>
+                  {/* The id is given as a prop */}
+                  <Typography sx={{ color: '#4F83CC', fontWeight: '500' }}>
+                    See results
+                  </Typography>
+                </Button>
+              ) : null}
+              {/* cancel button */}
+              {status !== 'ABORTED' && status !== 'DONE' && (
+                <Button variant="outlined" color="error" onClick={cancelJob}>
+                  cancel
+                </Button>
+              ) }
+            </Box>
+          </AccordionDetails>
+        </Accordion>
+      </Box>
+    </ThemeProvider>
+
   );
 }
 

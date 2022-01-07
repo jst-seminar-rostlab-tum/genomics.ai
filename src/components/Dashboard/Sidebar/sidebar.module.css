@@ -1,0 +1,111 @@
+.sidebarNav {
+    background: #002644;
+    width: 350px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    box-shadow: 1px 10px 15px rgba(0, 0, 0, 0.1);
+    z-index: 1001;
+}
+
+.sidebarWrap {
+    width: 100%;
+    color: #f5f5f5;
+}
+
+.projectsBanner {
+    background: #f5f5f5;
+    justify-content: flex-start;
+    padding-inline: 2rem;
+    padding-block: 1.2rem;
+    font-size: 18px;
+    font-weight: bold;
+    color: #003560;
+}
+
+.toggleButton {
+    margin-left: 2rem;
+    font-size: 2rem;
+    height: 30px;
+    width: 30px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    border-radius: 50px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* COLLAPSED */
+.sidebarNavCollapsed {
+    background: #002644;
+    width: 100px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    box-shadow: 1px 10px 15px rgba(0, 0, 0, 0.1);
+    z-index: 1001;
+}
+
+.projectsBannerCollapsed {
+    background: #f5f5f5;
+    margin-left: 13px;
+    padding-inline: 28px;
+    padding-block: 20px;
+    margin-top: 100px;
+    height: 70px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 10px;
+    align-items: center;
+}
+
+.projectsBannerCollapsed:hover {
+    cursor: pointer;
+    background: #E5E5E5;
+}
+.sidebarLink {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-inline: 1rem;
+    padding-block: 10px;
+    list-style: none;
+    height: 60px;
+    text-decoration: none;
+    font-size: 16px;
+}
+.sidebarLink:hover {
+    background: #003560;
+}
+
+.sidebarLabel {
+    margin-left: 16px;
+    color: #FFFFFF;
+}
+
+.dropdownLink {
+    background: #001B30;
+    padding-inline: 2rem;
+    padding-block: 1rem;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.dropdownLink:hover {
+    background: #1888ff;
+    cursor: pointer;
+}
+
+.dropdownLink:active {
+    background: #1888ff;
+}
+
+.divider {
+    height: 1px;
+    opacity: 0.2;
+    background: #1888ff;
+}

@@ -10,6 +10,7 @@ const Input = styled('input')({
 function UploadButton({ onChange, disabled }) {
   let button;
 
+  // TODO: Looks sus
   if (!disabled) {
     button = (
       <Button component="span" endIcon={<UploadFileIcon />}>

@@ -14,6 +14,7 @@ import PasswordForgetForm from '../PasswordReset/PasswordForgetForm'
 
 
 function LoginForm(props) {
+  const { setUser } = props;
   const [loginDetails, setLoginDetails] = useState({
     email: '',
     password: '',
@@ -63,9 +64,12 @@ function LoginForm(props) {
     props.onClose();
   }, [setLoginDetails, setErrors, setLoading, props]);
 
-  function onSuccessfulLogin() {
+  async function onSuccessfulLogin(data) {
+    localStorage.setItem('jwt', data.jwt);
+    localStorage.setItem('user', JSON.stringify(data.user));
     onClose();
-    history.push('/dashboard');
+    await setUser(data.user);
+    history.push('/sequencer/dashboard');
   }
 
   function onFailedLogin(code) {
@@ -102,17 +106,16 @@ function LoginForm(props) {
     fetch(`${BACKEND_ADDRESS}/auth`, loginRequest)
       .then((response) => {
         setLoading(false);
-        if (response.status === 200) {
-          onSuccessfulLogin();
-        } else {
-          onFailedLogin(response.status);
-        }
         setSnackbarVisible(true);
+        if (response.status !== 200) {
+          onFailedLogin(response.status);
+          return null;
+        }
         return response.json();
       })
-      .then((data) => {
+      .then(async (data) => {
         if (data != null) {
-          localStorage.jwt = data.jwt;
+          await onSuccessfulLogin(data);
         }
       });
   }, [setLoading, loginDetails, setErrors]);
@@ -219,3 +222,5 @@ function LoginForm(props) {
 }
 
 export default LoginForm;
+
+// TODO: make the pop-up more modern and nice

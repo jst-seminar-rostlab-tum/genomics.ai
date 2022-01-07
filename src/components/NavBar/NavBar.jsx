@@ -1,16 +1,17 @@
 import {
-  AppBar, Button, Toolbar, Typography, IconButton, Box,
+  Button, Toolbar, Typography, IconButton, Box,
 } from '@mui/material';
 import React, { useState, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import styles from './navbar.module.css';
 import LoginForm from '../LandingPage/LoginForm/LoginForm';
 import RegistrationForm from '../LandingPage/RegistrationForm/RegistrationForm';
 
-import logo from './../../assets/logo.svg';
+import logo from '../../assets/logo.svg';
 
-
-const NavBar = () => {
-  //inserting the logic from the landing page here
+const NavBar = (props) => {
+  const { setUser } = props;
+  // inserting the logic from the landing page here
   const [isLoginFormVisible, setLoginFormVisible] = useState(false);
   const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
 
@@ -30,13 +31,13 @@ const NavBar = () => {
     setRegistrationFormVisible(false);
   }, [setRegistrationFormVisible]);
 
-  //const { onLoginClicked, onSignUpClicked } = props;
+  // const { onLoginClicked, onSignUpClicked } = props;
   return (
     <div>
       <div className={styles.AppBar}>
         <Toolbar>
           <IconButton color="success" aria-label="open drawer" href="/">
-            <img src={logo}/>
+            <img alt="logo" src={logo} />
           </IconButton>
           <Typography sx={{ fontSize: '24px', fontWeight: '500' }}>genomics.ai</Typography>
           <Box sx={{ flexGrow: 1 }}>
@@ -45,9 +46,9 @@ const NavBar = () => {
                 <Box>
                   <li><a href="/" className={styles.navbarcontent}>Home</a></li>
                 </Box>
-                <li><a href="about" className={styles.navbarcontent}>Team</a></li>
-                <li><a href="docs" className={styles.navbarcontent}>Docs</a></li>
-                <li><a href="contact" className={styles.navbarcontent}>Contact</a></li>
+                <li><Link to="about" className={styles.navbarcontent}>Team</Link></li>
+                <li><Link to="docs" className={styles.navbarcontent}>Docs</Link></li>
+                <li><Link to="contact" className={styles.navbarcontent}>Contact</Link></li>
               </ul>
             </Typography>
           </Box>
@@ -66,13 +67,12 @@ const NavBar = () => {
         </Toolbar>
       </div>
       <div>
-        <LoginForm visible={isLoginFormVisible} onClose={onLoginFormClosed} />
+        <LoginForm visible={isLoginFormVisible} onClose={onLoginFormClosed} setUser={setUser} />
         <RegistrationForm
           visible={isRegistrationFormVisible}
           onClose={onRegistrationFormClosed}
           onSuccessfulRegistration={onLoginClicked}
         />
-
       </div>
     </div>
   );
@@ -80,8 +80,8 @@ const NavBar = () => {
 
 export default NavBar;
 
-
-//<AppBar className={styles.appbar}> removed this from the above line before the beginning of the app
+// <AppBar className={styles.appbar}>
+// removed this from the above line before the beginning of the app
 
 /*
 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
