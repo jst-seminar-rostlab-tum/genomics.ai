@@ -6,11 +6,10 @@ import styles from './navbar.module.css';
 import LoginForm from '../LandingPage/LoginForm/LoginForm';
 import RegistrationForm from '../LandingPage/RegistrationForm/RegistrationForm';
 
-import logo from './../../assets/logo.svg';
-
+import logo from '../../assets/logo.svg';
 
 const NavBar = () => {
-  //inserting the logic from the landing page here
+  // inserting the logic from the landing page here
   const [isLoginFormVisible, setLoginFormVisible] = useState(false);
   const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
 
@@ -30,13 +29,13 @@ const NavBar = () => {
     setRegistrationFormVisible(false);
   }, [setRegistrationFormVisible]);
 
-  //const { onLoginClicked, onSignUpClicked } = props;
+  // const { onLoginClicked, onSignUpClicked } = props;
   return (
     <div>
       <div className={styles.AppBar}>
         <Toolbar>
           <IconButton color="success" aria-label="open drawer" href="/">
-            <img src={logo}/>
+            <img src={logo} />
           </IconButton>
           <Typography sx={{ fontSize: '24px', fontWeight: '500' }}>genomics.ai</Typography>
           <Box sx={{ flexGrow: 1 }}>
@@ -80,9 +79,7 @@ const NavBar = () => {
 
 export default NavBar;
 
-
-//<AppBar className={styles.appbar}> removed this from the above line before the beginning of the app
-
+// <AppBar className={styles.appbar}> removed this from the above line before the beginning of the app
 /*
 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           <ul>

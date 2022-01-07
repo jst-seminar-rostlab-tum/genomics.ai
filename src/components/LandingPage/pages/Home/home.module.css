@@ -8,47 +8,35 @@
     height: 90vh;
 }
 
-
 .infoContainer{
-   padding: 50px; 
+   padding-inline: 80px;
+   padding-block: 30px;
    text-align: center;
    display: flex;
    justify-content: center;
    align-items: center;
 }
 
-.explanationRight{
-    padding-left: 50px;
+.explanation{
+    padding: 50px;
+    width: 40%
 }
 
-.explanationLeft{
-    padding-right: 50px;
-}
-
-.illustration1{
-    height: 450px;
-    padding-right: 50px;
-}
-
-.illustration2{
-    width: 550px;
-    padding-left: 50px;
-}
-
-.illustration3{
-    height: 300px;
-    padding-right: 50px;
-}
-
-.illustration4{
-    height: 350px;
-    padding-left: 50px;
+.illustration{
+    padding: 50px;
+    width: 40%;
 }
 
 .illustrationTitle{
     padding-bottom: 30px;
 }
 
+.tumLogo {
+    height: 70px;
+}
 
+.rostlabLogo {
+    width: 230px;
+}
 
 

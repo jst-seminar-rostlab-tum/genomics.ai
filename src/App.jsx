@@ -37,6 +37,6 @@ function App() {
 
 export default App;
 
-//removed the dashboar from the router
-//<Route path="/dashboard" component={Dashboard} />
-//<Route exact path="/" component={LandingPage} />
+// removed the dashboar from the router
+// <Route path="/dashboard" component={Dashboard} />
+// <Route exact path="/" component={LandingPage} />

@@ -1,61 +1,94 @@
 import React from 'react';
-import { Typography, Box } from '@mui/material';
+import {
+  Typography, Box, Divider, Stack
+} from '@mui/material';
 import NavBar from '../../../NavBar/NavBar';
 import styles from './home.module.css';
-import logo1 from '../../../../assets/landing-illustrations/science.png';
-import logo2 from '../../../../assets/landing-illustrations/files.png';
-import logo3 from '../../../../assets/landing-illustrations/dashboard.png';
-import logo4 from '../../../../assets/landing-illustrations/visual.png';
-import Footer from '../../../LandingPage/Footer/Footer';
+import graphic1 from '../../../../assets/landing-illustrations/science.png';
+import graphic2 from '../../../../assets/landing-illustrations/upload.png';
+import graphic3 from '../../../../assets/landing-illustrations/processing.png';
+import graphic4 from '../../../../assets/landing-illustrations/results.png';
+import tum from '../../../../assets/landing-illustrations/tum-logo.png';
+import rostlab from '../../../../assets/landing-illustrations/rostlab.png';
+import helmholtz from '../../../../assets/landing-illustrations/helmholtz.png';
+import Footer from '../../Footer/Footer';
 import dnaImage from '../../../../assets/dna.png';
-
 
 function Home() {
   return (
     <div className={styles.container}>
       <NavBar />
       <img className={styles.backgroundImage} src={dnaImage} src={dnaImage} alt="picture of DNA" />
-      {/*If genomics visualized stays in the middle, then it needs to be properly aligned.
-      Right now it is using padding as the way to align the items*/}
-      <Box sx={{ paddingBottom: '50px', paddingTop: '250px' }}>
-        <Typography sx={{ fontSize: '24px', fontWeight: 'bold' }}>Genomics visualized</Typography>
-      </Box>
+      {/* If genomics visualized stays in the middle, then it needs to be properly aligned.
+      Right now it is using padding as the way to align the items */}
+      <Divider variant="middle" textAlign="center" sx={{ padding: '30px', paddingBottom: '50px', paddingTop: '100px' }}>
+        <Typography sx={{ fontSize: '35px', fontWeight: 'bold' }}>Out Partners</Typography>
+      </Divider>
+
+      <Stack
+        container
+        direction="row"
+        justifyContent="space-evenly"
+        alignItems="center"
+        padding="200px"
+        paddingTop="80px"
+      >
+        <img className={styles.tumLogo} src={tum} alt="tum-logo" />
+        <img className={styles.rostlabLogo} src={rostlab} alt="rostlab" />
+        <img className={styles.tumLogo} src={helmholtz} alt="helmholtz" />
+      </Stack>
+
+      <Divider variant="middle" textAlign="center" sx={{ padding: '30px', paddingTop: '50px' }}>
+        <Typography sx={{ fontSize: '35px', fontWeight: 'bold' }}>What we do</Typography>
+      </Divider>
+
       <div className={styles.infoContainer}>
-        <img className={styles.illustration1} src={logo1} alt="science-guy" />
-        <div className={styles.explanationRight}>
-          <Typography sx={{ fontSize: '24px' }}>Visualize all of your single-cell sequencing data</Typography>
-          <Typography sx={{ fontSize: '24px' }}>in a fast and easy way</Typography>
+        <img className={styles.illustration} src={graphic1} alt="science-guy" />
+        <div className={styles.explanation}>
+          <Typography className={styles.illustrationTitle} sx={{ fontSize: '28px', fontWeight: 'bold' }}>Genomics.ai</Typography>
+          <Typography sx={{ fontSize: '28px' }}> We help you visualize all
+            of your single-cell sequencing data in a fast and easy way with the help of neural networks.
+          </Typography>
         </div>
       </div>
+
+      <Divider variant="middle" textAlign="center" sx={{ padding: '30px', paddingBottom: '50px', paddingTop: '50px' }}>
+        <Typography sx={{ fontSize: '35px', fontWeight: 'bold' }}>How it works</Typography>
+      </Divider>
+
       <div className={styles.infoContainer}>
-        <div className={styles.explanationLeft}>
-          <Typography className={styles.illustrationTitle} sx={{ fontSize: '24px', fontWeight: 'bold' }}>Upload</Typography>
-          <Typography sx={{ fontSize: '24px' }}>Upload your files containing the single-cell</Typography>
-          <Typography sx={{ fontSize: '24px' }}>sequencing data</Typography>
+        <div className={styles.explanation}>
+          <Typography className={styles.illustrationTitle} sx={{ fontSize: '28px', fontWeight: 'bold' }}>Upload</Typography>
+          <Typography sx={{ fontSize: '28px' }}>Upload your files containing the single-cell sequencing data.</Typography>
         </div>
-        <img className={styles.illustration2} src={logo2} alt="explanation" />
+        <img className={styles.illustration} src={graphic2} alt="upload" />
       </div>
+
       <div className={styles.infoContainer}>
-        <img className={styles.illustration3} src={logo3} alt="explanation" />
-        <div className={styles.explanationRight}>
-          <Typography className={styles.illustrationTitle} sx={{ fontSize: '24px', fontWeight: 'bold' }}>Create a project</Typography>
-          <Typography sx={{ fontSize: '24px' }}>Create and access all of your projects</Typography>
-          <Typography sx={{ fontSize: '24px' }}>in the dashboard</Typography>
+        <img className={styles.illustration} src={graphic3} alt="processing" />
+        <div className={styles.explanation}>
+          <Typography className={styles.illustrationTitle} sx={{ fontSize: '28px', fontWeight: 'bold' }}>Processing</Typography>
+          <Typography sx={{ fontSize: '28px' }}>
+            Your input data is processed by our machine learning model
+            which performs the cell-type classification according to your specification.
+          </Typography>
         </div>
       </div>
+
       <div className={styles.infoContainer}>
-        <div className={styles.explanationLeft}>
-          <Typography className={styles.illustrationTitle} sx={{ fontSize: '24px', fontWeight: 'bold' }}>See results</Typography>
-          <Typography sx={{ fontSize: '24px' }}>See your results after the algorithm</Typography>
-          <Typography sx={{ fontSize: '24px' }}>has processed the data</Typography>
+        <div className={styles.explanation}>
+          <Typography className={styles.illustrationTitle} sx={{ fontSize: '28px', fontWeight: 'bold' }}>Check Results</Typography>
+          <Typography sx={{ fontSize: '28px' }}>After the algorithm has processed the data you can
+          specify the project you want your cell-type data to be associated with and view the results.</Typography>
         </div>
-        <img className={styles.illustration4} src={logo4} alt="explanation" />
+        <img className={styles.illustration} src={graphic4} alt="results" />
       </div>
+
       <Footer />
     </div>
-    //TODO: add footer for the website across all pages that are not the dashboard
-    
-  )
+    // TODO: add footer for the website across all pages that are not the dashboard
+
+  );
 }
 
 export default Home;
