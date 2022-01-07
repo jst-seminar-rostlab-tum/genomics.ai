@@ -15,13 +15,27 @@ outputLabels = ['B', 'CD4 T', 'CD8', 'DC',
                 'Mono', 'NK', 'other', 'other T']
 
 app = Flask(__name__)
+endpoint = os.getenv('ENDPOINT') 
+access_key = os.getenv('ACCESS_KEY') 
+secret_key = os.getenv(
+    'SECRET_KEY') 
+modelname=os.getenv('MODEL_NAME')
+database_uri = os.getenv(
+    'DATABASE_URI') 
+bucket=os.getenv('BUCKET')
 
+s3 = boto3.client('s3', endpoint_url=endpoint,
+                  aws_access_key_id=access_key, aws_secret_access_key=secret_key)
+print("starting download")
+s3.download_file(bucket, modelname, modelname)
+print("Download finished, loading model")
+clf = joblib.load(modelname)
+print("Model loaded, ready to dispose")
+if os.path.isfile(modelname):
+    print("file found")
+    os.remove(modelname)
 
-modelFile = 'model_small.joblib'
-# modelFile=download_file(environ["MODEL_NAME"])
-clf = joblib.load(modelFile)
-
-db = MongoClient(environ["DATABASE_URI"]).get_default_database()
+db = MongoClient(database_uri).get_default_database()
 
 
 @app.route("/")
@@ -33,36 +47,40 @@ def catch_all(path):
 @app.route("/run_classifier", methods=['POST'])
 def classify():
     data = request.get_json()
-    for key in ["_id"]:
-        if key not in data.keys():
+    for key in ["uploadId"]:
+        if key not in data.keys() :
             return "Key \"{}\" missing in request json data!\nPlease check again if the request is correct!".format(key), 400
-    try:
-        project_id = request.args.get('_id')
-        project = db.projects.find_one({"_id": project_id})
+    uploadId = data['uploadId']
+    project = db.projects.find_one({"uploadId": uploadId})
 
-        if project is None:
-            message = f"There exists no project with _id {project_id}"
-            print(message)
-            return message,400
-        if int(project['status']) == 3:
-            print("Project has been aborted. Terminating.")
-            return
+    if project is None:
+        message = f"There exists no project with upload_id {uploadId}"
+        print(message)
+        return message, 400
+    if (project['status']) == "ABORTED":
+        print("Project has been aborted. Terminating.")
+        return
+    print("Project found and not aborted")
+    fileName=project['fileName']
+    print("Starting download h5ad")
+    s3.download_file(bucket,fileName,fileName)
+    print("Ready for prediction")
+    result = predict(fileName)
+    uploadSize = upload(result)
+    if os.path.isfile(result):
+        print("file found")
+        os.remove(result)
 
-        filename = download_file(project.location)
-        result = predict(filename)
-        upload(result)
-        if os.path.isfile(result):
-            print("file found")
-            os.remove(result)
-        return "Classification has been computed", 200
-    except:
-        return f"Please provide a valid bucket ID!"
-
+    db.projects.update_one({'uploadId':uploadId }, {
+                            "$set": {"status": "Prediction Done", "resultSize": uploadSize}})
+    print("Classification has been computed")
+    return "Classification has been computed", 200
+    
 
 def upload(filename):
-    s3 = boto3.client('s3', endpoint_url=os.environ['ENDPOINT'],
-                      aws_access_key_id=os.environ['ACCESS_KEY'], aws_secret_access_key=os.environ['secret_key'])
-    s3.upload_file(filename, os.environ['bucket'], filename)
+    s3.upload_file(filename, bucket, filename)
+    response = s3.head_object(Bucket=bucket, Key=filename)
+    return response['ContentLength']
 
 
 def predict(filename):
@@ -118,6 +136,3 @@ def download_file(url):
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
-    filename = download_file(
-        "https://fastdl.mongodb.org/windows/mongodb-windows-x86_64-5.0.5-signed.msi")
-    print(filename)
