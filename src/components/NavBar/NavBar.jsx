@@ -31,8 +31,9 @@ const NavBar = () => {
 
   // const { onLoginClicked, onSignUpClicked } = props;
   return (
+
     <div>
-      <div className={styles.AppBar}>
+      <div className={styles.appbar}>
         <Toolbar>
           <IconButton color="success" aria-label="open drawer" href="/">
             <img src={logo} />

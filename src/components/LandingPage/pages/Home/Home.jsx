@@ -22,7 +22,7 @@ function Home() {
       {/* If genomics visualized stays in the middle, then it needs to be properly aligned.
       Right now it is using padding as the way to align the items */}
       <Divider variant="middle" textAlign="center" sx={{ padding: '30px', paddingBottom: '50px', paddingTop: '100px' }}>
-        <Typography sx={{ fontSize: '35px', fontWeight: 'bold' }}>Out Partners</Typography>
+        <Typography sx={{ fontSize: '35px', fontWeight: 'bold' }}>Our Partners</Typography>
       </Divider>
 
       <Stack
@@ -46,7 +46,7 @@ function Home() {
         <img className={styles.illustration} src={graphic1} alt="science-guy" />
         <div className={styles.explanation}>
           <Typography className={styles.illustrationTitle} sx={{ fontSize: '28px', fontWeight: 'bold' }}>Genomics.ai</Typography>
-          <Typography sx={{ fontSize: '28px' }}> We help you visualize all
+          <Typography sx={{ fontSize: '25px' }}> We help you visualize all
             of your single-cell sequencing data in a fast and easy way with the help of neural networks.
           </Typography>
         </div>
@@ -59,7 +59,7 @@ function Home() {
       <div className={styles.infoContainer}>
         <div className={styles.explanation}>
           <Typography className={styles.illustrationTitle} sx={{ fontSize: '28px', fontWeight: 'bold' }}>Upload</Typography>
-          <Typography sx={{ fontSize: '28px' }}>Upload your files containing the single-cell sequencing data.</Typography>
+          <Typography sx={{ fontSize: '25px' }}>Upload your files containing the single-cell sequencing data.</Typography>
         </div>
         <img className={styles.illustration} src={graphic2} alt="upload" />
       </div>
@@ -68,7 +68,7 @@ function Home() {
         <img className={styles.illustration} src={graphic3} alt="processing" />
         <div className={styles.explanation}>
           <Typography className={styles.illustrationTitle} sx={{ fontSize: '28px', fontWeight: 'bold' }}>Processing</Typography>
-          <Typography sx={{ fontSize: '28px' }}>
+          <Typography sx={{ fontSize: '25px' }}>
             Your input data is processed by our machine learning model
             which performs the cell-type classification according to your specification.
           </Typography>
@@ -78,7 +78,7 @@ function Home() {
       <div className={styles.infoContainer}>
         <div className={styles.explanation}>
           <Typography className={styles.illustrationTitle} sx={{ fontSize: '28px', fontWeight: 'bold' }}>Check Results</Typography>
-          <Typography sx={{ fontSize: '28px' }}>After the algorithm has processed the data you can
+          <Typography sx={{ fontSize: '25px' }}>After the algorithm has processed the data you can
           specify the project you want your cell-type data to be associated with and view the results.</Typography>
         </div>
         <img className={styles.illustration} src={graphic4} alt="results" />
