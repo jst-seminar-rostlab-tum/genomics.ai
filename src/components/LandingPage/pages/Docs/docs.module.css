@@ -1,0 +1,12 @@
+
+.container {
+    text-align: center;
+    justify-content: center;
+    padding-top: 200px;
+}
+
+.illustration{
+    justify-content: center;
+    object-fit: contain;
+    height: 650px;
+}
