@@ -1,10 +1,21 @@
 import React, { useCallback, useState } from 'react';
 import {
-  TextField, Typography, Grid, Button, Box, Stack,
+  TextField, Typography, Grid, Button, Box, Stack, createTheme, ThemeProvider,
 } from '@mui/material';
 import NavBar from '../../../NavBar/NavBar';
 import styles from './contact.module.css';
 import Footer from '../../Footer/Footer';
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#0075FF',
+    },
+    secondary: {
+      main: '#FFFFFF',
+    },
+  },
+});
 
 function Contact() {
   const [contactDetails, setContactDetails] = useState({
@@ -59,129 +70,141 @@ function Contact() {
   }
 
   return (
-    <div>
-      <NavBar />
 
-      <div className={styles.headerContainer}>
-        <Stack
-          spacing="30px"
-        >
-          <Typography sx={{ fontWeight: 'bold', fontSize: '30px' }}>Contact Us</Typography>
-          <Typography sx={{ fontSize: '25px', paddingInline: '350px' }}>
-            Please message us in case you have any questions,
-            feedback or collaboration-related inquiries concerning Genomics.ai.
-          </Typography>
-        </Stack>
-        <Box
-          component="span"
-          margin="auto"
-          className={styles.formContainer}
-          sx={{
-            width: '1000px',
-            height: '500px',
-            maxWidth: '100%',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <Grid
-            container
-            spacing={1}
-            direction="column"
-            justifyContent="center"
+    <ThemeProvider theme={theme}>
+      <div>
+        <NavBar />
+
+        <div className={styles.headerContainer}>
+          <Stack
+            spacing="30px"
+          >
+            <Typography sx={{ fontWeight: 'bold', fontSize: '30px' }}>Contact Us</Typography>
+            <Typography sx={{ fontSize: '25px', paddingInline: '350px' }}>
+              Please message us in case you have any questions,
+              feedback or collaboration-related inquiries concerning Genomics.ai.
+            </Typography>
+          </Stack>
+          <Box
+            component="span"
+            margin="auto"
+            className={styles.formContainer}
             sx={{
-              align: 'center',
-              display: 'flex',
+              width: '1000px',
+              height: '500px',
+              maxWidth: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
           >
+            <Grid
+              container
+              spacing={1}
+              direction="column"
+              justifyContent="center"
+              sx={{
+                align: 'center',
+                display: 'flex',
+              }}
+            >
 
-            <Grid item>
-              <TextField
-                id="email"
-                label="Email"
-                placeholder="Enter your email address"
-                variant="filled"
-                value={contactDetails.email}
-                onChange={handleTextChange}
-                required
-                fullWidth
-                type="email"
-              />
-            </Grid>
-
-            <Grid item>
-              <Grid
-                container
-                spacing={1}
-                direction="row"
-                sx={{
-                  align: 'center',
-                  display: 'flex',
-                }}
-              >
-                <Grid
-                  item
-                  xs={6}
-                >
-                  <TextField
-                    id="firstname"
-                    label="Firstname"
-                    placeholder="Enter your firstname"
-                    variant="filled"
-                    rowsMax={1}
-                    value={contactDetails.firstname}
-                    onChange={handleTextChange}
-                    required
-                    fullWidth
-                    type="text"
-                  />
-                </Grid>
-                <Grid
-                  item
-                  xs={6}
-                >
-                  <TextField
-                    id="lastname"
-                    label="Lastname"
-                    placeholder="Enter your lastname"
-                    variant="filled"
-                    rowsMax={1}
-                    value={contactDetails.lastname}
-                    onChange={handleTextChange}
-                    fullWidth
-                    required
-                    type="text"
-                  />
-                </Grid>
-
+              <Grid item>
+                <TextField
+                  id="email"
+                  label="Email"
+                  placeholder="Enter your email address"
+                  variant="filled"
+                  value={contactDetails.email}
+                  onChange={handleTextChange}
+                  required
+                  fullWidth
+                  type="email"
+                />
               </Grid>
-            </Grid>
 
-            <Grid item>
-              <TextField
-                id="message"
-                label="Message"
-                placeholder="Enter your message"
-                variant="filled"
-                multiline
-                rows={8}
-                rowsMax={20}
-                value={contactDetails.message}
-                onChange={handleTextChange}
-                fullWidth
-                required
-                type="text"
-              />
-            </Grid>
-            <Grid item>
-              <Button type="submit" variant="outlined" color="primary" fullwidth onClick={formSubmit}> submit</Button>
-            </Grid>
+              <Grid item>
+                <Grid
+                  container
+                  spacing={1}
+                  direction="row"
+                  sx={{
+                    align: 'center',
+                    display: 'flex',
+                  }}
+                >
+                  <Grid
+                    item
+                    xs={6}
+                  >
+                    <TextField
+                      id="firstname"
+                      label="Firstname"
+                      placeholder="Enter your firstname"
+                      variant="filled"
+                      rowsMax={1}
+                      value={contactDetails.firstname}
+                      onChange={handleTextChange}
+                      required
+                      fullWidth
+                      type="text"
+                    />
+                  </Grid>
+                  <Grid
+                    item
+                    xs={6}
+                  >
+                    <TextField
+                      id="lastname"
+                      label="Lastname"
+                      placeholder="Enter your lastname"
+                      variant="filled"
+                      rowsMax={1}
+                      value={contactDetails.lastname}
+                      onChange={handleTextChange}
+                      fullWidth
+                      required
+                      type="text"
+                    />
+                  </Grid>
+                </Grid>
+              </Grid>
 
-          </Grid>
-        </Box>
-        <Footer />
+              <Grid item>
+                <TextField
+                  id="message"
+                  label="Message"
+                  placeholder="Enter your message"
+                  variant="filled"
+                  multiline
+                  rows={8}
+                  rowsMax={20}
+                  value={contactDetails.message}
+                  onChange={handleTextChange}
+                  fullWidth
+                  required
+                  type="text"
+                />
+              </Grid>
+              <Grid item>
+                <Button
+                  variant="contained"
+                  style={{
+                    height: '60px', width: '180px', borderRadius: '10px', fontWeight: 'bold',
+                  }}
+                  size="large"
+                  onClick={formSubmit}
+                  color="primary"
+                >
+                  Send
+                </Button>
+              </Grid>
+
+            </Grid>
+          </Box>
+          <Footer />
+        </div>
       </div>
-    </div>
+    </ThemeProvider>
 
   );
 }
