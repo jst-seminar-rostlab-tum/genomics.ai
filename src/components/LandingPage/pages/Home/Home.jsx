@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   Typography, Divider, Stack, createTheme, ThemeProvider, Button,
 } from '@mui/material';
@@ -13,11 +13,13 @@ import rostlab from '../../../../assets/landing-illustrations/rostlab.png';
 import helmholtz from '../../../../assets/landing-illustrations/helmholtz.png';
 import Footer from '../../Footer/Footer';
 import dnaImage from '../../../../assets/dna.png';
+import RegistrationForm from '../../RegistrationForm/RegistrationForm';
+import LoginForm from '../../LoginForm/LoginForm';
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#347AE1',
+      main: '#0075FF',
     },
     secondary: {
       main: '#FFFFFF',
@@ -26,6 +28,28 @@ const theme = createTheme({
 });
 
 function Home() {
+// inserting the logic from the landing page here
+  const [isLoginFormVisible, setLoginFormVisible] = useState(false);
+  const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
+
+  const onLoginClicked = useCallback(() => {
+    setRegistrationFormVisible(false);
+    setLoginFormVisible(true);
+  }, [setLoginFormVisible]);
+
+  const onSignUpClicked = useCallback(() => {
+    setLoginFormVisible(false);
+    setRegistrationFormVisible(true);
+  }, [setRegistrationFormVisible]);
+
+  const onLoginFormClosed = useCallback(() => {
+    setLoginFormVisible(false);
+  }, [setLoginFormVisible]);
+
+  const onRegistrationFormClosed = useCallback(() => {
+    setRegistrationFormVisible(false);
+  }, [setRegistrationFormVisible]);
+
   return (
     <div className={styles.container}>
       <NavBar />
@@ -52,7 +76,7 @@ function Home() {
             fontSize: '25px', fontWeight: 'regular', color: 'white', paddingBlock: '40px', paddingInline: '300px',
           }}
         >
-          Genomics.ai helps you visualize all of yur single-cell sequencing data
+          Genomics.ai helps you visualize all of your single-cell sequencing data
           in a fast and easy way using neural networks.
         </Typography>
 
@@ -60,25 +84,43 @@ function Home() {
           <Stack
             spacing={2}
             direction="row"
-            style={{ height: '70px', marginTop: '30px' , justifyContent: "center"}}
+            style={{ height: '60px', marginTop: '30px', justifyContent: 'center' }}
             size="large"
           >
             <Button
               variant="contained"
               color="primary"
-              style={{ width: '200px', borderRadius: '12px', fontWeight: 'bold' }}
+              style={{
+                width: '200px', borderRadius: '12px', fontWeight: 'bold',
+              }}
               size="large"
+              onClick
+              onClick={onSignUpClicked}
             >
-            Sign Up (FREE)
+              Sign Up (FREE)
             </Button>
 
             <Button
               variant="outlined"
               color="secondary"
               style={{ width: '150px', borderRadius: '12px' }}
+              href="contact"
             >
               Get in Touch
             </Button>
+
+            <div>
+              <LoginForm
+                visible={isLoginFormVisible}
+                onClose={onLoginFormClosed}
+              />
+              <RegistrationForm
+                visible={isRegistrationFormVisible}
+                onClose={onRegistrationFormClosed}
+                onSuccessfulRegistration={onLoginClicked}
+              />
+
+            </div>
           </Stack>
         </ThemeProvider>
       </div>

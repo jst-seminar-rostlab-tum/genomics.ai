@@ -14,16 +14,18 @@ const NavBar = () => {
   const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
 
   const onLoginClicked = useCallback(() => {
+    setRegistrationFormVisible(false);
     setLoginFormVisible(true);
   }, [setLoginFormVisible]);
+
+  const onSignUpClicked = useCallback(() => {
+    setLoginFormVisible(false);
+    setRegistrationFormVisible(true);
+  }, [setRegistrationFormVisible]);
 
   const onLoginFormClosed = useCallback(() => {
     setLoginFormVisible(false);
   }, [setLoginFormVisible]);
-
-  const onSignUpClicked = useCallback(() => {
-    setRegistrationFormVisible(true);
-  }, [setRegistrationFormVisible]);
 
   const onRegistrationFormClosed = useCallback(() => {
     setRegistrationFormVisible(false);
@@ -66,7 +68,10 @@ const NavBar = () => {
         </Toolbar>
       </div>
       <div>
-        <LoginForm visible={isLoginFormVisible} onClose={onLoginFormClosed} />
+        <LoginForm
+          visible={isLoginFormVisible}
+          onClose={onLoginFormClosed}
+        />
         <RegistrationForm
           visible={isRegistrationFormVisible}
           onClose={onRegistrationFormClosed}
