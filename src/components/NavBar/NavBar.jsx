@@ -54,7 +54,7 @@ const NavBar = () => {
           <Box className={styles.buttonContainer}>
             <Button variant="text" color="inherit" sx={{ m: 2 }} onClick={onSignUpClicked}>
               <Typography sx={{ color: 'black', fontWeight: '500' }}>
-                Signup
+                Sign up
               </Typography>
             </Button>
             <Button variant="outlined" color="info" onClick={onLoginClicked}>
