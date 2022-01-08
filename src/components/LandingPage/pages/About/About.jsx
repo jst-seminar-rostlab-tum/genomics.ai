@@ -220,31 +220,31 @@ function About() {
 
   const backEndData = [
     {
-      name: 'Lars Frölich', role: 'Backend Lead & Developer', img: '', dscp: 'B.Sc. Informatics at TUM ', socialFB: '', socialGithub: '', socialTwitter: '', socialLinkedIn: '',
+      name: 'Lars Frölich', role: 'Backend Lead & Developer', img: 'memberphotos/Backend_Lars_Froelich.jpg', dscp: 'B.Sc. Informatics at TUM ', socialFB: '', socialGithub: '', socialTwitter: '', socialLinkedIn: '',
     },
     {
       name: 'Matthias Michailow', role: 'Backend Developer', img: 'memberphotos/Backend_Matthias Michailow.jpg', dscp: "Master's student in Informatics at TUM ", socialFB: '', socialGithub: '', socialTwitter: '', socialLinkedIn: '',
     },
     {
-      name: 'Yi Rui Cui', role: 'Backend Developer', img: '', dscp: 'B.Sc. Informatics: Games Engineering at TUM', socialFB: '', socialGithub: '', socialTwitter: '', socialLinkedIn: '',
+      name: 'Yi Rui Cui', role: 'Backend Developer', img: 'memberphotos/Backend_Yi Rui Cui.jpg', dscp: 'B.Sc. Informatics: Games Engineering at TUM', socialFB: '', socialGithub: '', socialTwitter: '', socialLinkedIn: '',
     },
     {
-      name: 'Manuel Brandstetter', role: 'Backend Developer', img: '', dscp: " Full-stack web developer and Master's student in Informatics at TUM", socialFB: '', socialGithub: '', socialTwitter: '', socialLinkedIn: '',
+      name: 'Manuel Brandstetter', role: 'Backend Developer', img: 'memberphotos/Backend_Manuel_Brandstetter.jpg', dscp: " Full-stack web developer and Master's student in Informatics at TUM", socialFB: '', socialGithub: '', socialTwitter: '', socialLinkedIn: '',
     },
   ];
 
   const visData = [
     {
-      name: 'Vivian Haller', role: 'Visualisation Team lead, d3.js developer', img: 'https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg', dscp: 'M.Sc. Math/CS at TUM', socialFB: '', socialGithub: '', socialTwitter: '', socialLinkedIn: '',
+      name: 'Vivian Haller', role: 'Visualisation Team lead, d3.js developer', img: 'memberphotos/Visualization_Vivian_Haller.jpg', dscp: 'M.Sc. Math/CS at TUM', socialFB: '', socialGithub: '', socialTwitter: '', socialLinkedIn: '',
     },
     {
-      name: 'Yashica Saun', role: 'Visualisation/d3.js Developer', img: 'https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg', dscp: "Master's student in Informatics at TUM", socialFB: '', socialGithub: '', socialTwitter: '', socialLinkedIn: '',
+      name: 'Yashica Saun', role: 'Visualisation/d3.js Developer', img: 'memberphotos/Visualization_Vivian_Haller.jpg', dscp: "Master's student in Informatics at TUM", socialFB: '', socialGithub: '', socialTwitter: '', socialLinkedIn: '',
     },
     {
-      name: 'Carl Neumann', role: 'Visualisation/d3.js Developer', img: 'https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg', dscp: 'B.Sc. Information Systems at TUM ', socialFB: '', socialGithub: '', socialTwitter: '', socialLinkedIn: '',
+      name: 'Carl Neumann', role: 'Visualisation/d3.js Developer', img: 'memberphotos/Visualization_Vivian_Haller.jpg', dscp: 'B.Sc. Information Systems at TUM ', socialFB: '', socialGithub: '', socialTwitter: '', socialLinkedIn: '',
     },
     {
-      name: 'Mohan Prabhakaran', role: 'Visualisation/d3.js Developer', img: 'https://kiranworkspace.com/demo/projects/code-snippets/team/our-team2/images/users/user1.jpg', dscp: "Master's student in Informatics at TUM", socialFB: '', socialGithub: '', socialTwitter: '', socialLinkedIn: '',
+      name: 'Mohan Prabhakaran', role: 'Visualisation/d3.js Developer', img: 'memberphotos/Visualization_MohanPrabhakaran.jpg', dscp: "Master's student in Informatics at TUM", socialFB: '', socialGithub: '', socialTwitter: '', socialLinkedIn: '',
     },
   ];
 
