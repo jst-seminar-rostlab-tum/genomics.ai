@@ -2,7 +2,7 @@ import check_auth from "../../middleware/check_auth";
 import {ExtRequest} from "../../../../definitions/ext_request";
 import {IProject, projectModel} from "../../../../database/models/project";
 import {S3} from "aws-sdk";
-import s3 from "./s3";
+import s3 from "../../../../util/s3";
 import express from "express";
 
 export default function upload_start_upload_route() {
