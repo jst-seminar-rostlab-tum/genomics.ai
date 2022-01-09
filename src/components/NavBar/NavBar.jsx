@@ -38,12 +38,16 @@ const NavBar = (props) => {
     <div>
       <div className={styles.appbar}>
         <Toolbar>
-          <IconButton color="success" aria-label="open drawer" href="/">
+          <IconButton
+            color="success"
+            aria-label="open drawer"
+            href="/"
+          >
             <img alt="logo" src={logo} />
           </IconButton>
           <Typography sx={{ fontSize: '24px', fontWeight: '500' }}>genomics.ai</Typography>
           <Box sx={{ flexGrow: 1 }}>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            <Typography variant="h6" sx={{ flexGrow: 1}}>
               <ul>
                 <Box>
                   <li><a href="/" className={styles.navbarcontent}>Home</a></li>
@@ -55,7 +59,12 @@ const NavBar = (props) => {
             </Typography>
           </Box>
           <Box className={styles.buttonContainer}>
-            <Button variant="text" color="inherit" sx={{ m: 2 }} onClick={onSignUpClicked}>
+            <Button
+              variant="text"
+              color="inherit"
+              sx={{ m: 2 }}
+              onClick={onSignUpClicked}
+            >
               <Typography sx={{ color: 'black', fontWeight: '500' }}>
                 Sign up
               </Typography>
