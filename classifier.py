@@ -72,7 +72,7 @@ def classify():
         os.remove(result)
 
     db.projects.update_one({'uploadId':uploadId }, {
-                            "$set": {"status": "DONE", "resultSize": uploadSize}})
+                            "$set": {"status": "DONE", "resultSize": uploadSize,"resultName":result}})
     print("Classification has been computed")
     return "Classification has been computed", 200
     
