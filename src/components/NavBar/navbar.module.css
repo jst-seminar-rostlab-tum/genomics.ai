@@ -1,26 +1,33 @@
 /*adding the font for the landing page here*/
 *{
-    font-family:'Poppins';   
-}
-
-.logoName{
-    font-family: 'Poppins';
-    font-size: 24px;
-    font-weight: 100;
-    
-    
-}
-
-.appbar{
-    display: flex;
-    font-family: 'Poppins'; 
-    /* justify-content : space-between; */
+    font-family:'Poppins';
+    color: black;   
 }
 
 ul{
     display: flex;
     list-style:none;
     align-items: center;
+}
+
+.logoName{
+    font-family: 'Poppins';
+    font-size: 24px;
+    font-weight: 100;
+}
+
+.appbar{
+    z-index: 20000; /* to keep it above content */
+    width: 100%;
+    font-family: 'Poppins';
+    /* justify-content : space-between; */
+    background-color: white;
+    position: fixed;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+}
+.logo {
+    fill: black;
+    stroke: black;
 }
 
 .navbarcontent{
@@ -30,7 +37,12 @@ ul{
     margin-left: 3rem;
 }
 
+.navbarcontent:hover {
+    color: #347AE1;
+}
+
 .buttonContainer{
     font-family: 'Poppins';
 }
+
 

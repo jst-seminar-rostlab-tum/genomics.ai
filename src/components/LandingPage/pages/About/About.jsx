@@ -212,52 +212,65 @@ const SubteamSection = ((props) => {
 
 function About() {
   return (
-    <div className={styles.headerContainer}>
+    <div>
       <NavBar />
+      <div className={styles.headerContainer}>
+        <Stack
+          spacing="30px"
+        >
+          <Typography sx={{ fontWeight: 'bold', fontSize: '30px' }}>Team</Typography>
+          <Typography sx={{ fontSize: '25px', paddingInline: '350px' }}>
+            Genomics.ai was developed by a team of 12 students from the Technical University of Munich (TUM) under the guidance of Dr. Guy Yachdav.
+          </Typography>
+        </Stack>
 
-      <Typography sx={{ fontWeight: '400', fontSize: '24px' }}>Team</Typography>
-
-      {/* For Guy */}
-      <Divider variant="middle" textAlign="center" sx={{ padding: '20px' }} />
+        <Divider variant="middle" textAlign="left" sx={{ paddingTop: '100px' , paddingBottom: '40px'}}>
+          <Typography sx={{ fontSize: '30px', fontWeight: 'bold' }}>Organisation</Typography>
+        </Divider>
 
       <Grid
         container
-        spacing={0}
-        direction="column"
+          direction="row"
         alignItems="center"
         justifyContent="center"
       >
         <Grid item xs={3}>
           <Namecard
-            name="Guy Yachdav"
-            role="Supervisor & Initiator"
-            img="https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=UoUkGhUAAAAJ&citpid=2"
-            dscp="Good looking guy with a lot of experience"
-            socialFB=""
-            socialLinkedIn="https://www.linkedin.com/in/gyachdav/?originalSubdomain=il"
-            socialGithub=""
-            socialTwitter=""
+              name="Dr. Guy Yachdav"
+              role="Supervisor & Initiator"
+              img="https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=UoUkGhUAAAAJ&citpid=2"
+              dscp="Technology executive with over 15 years experience in R&D and specialization in big data and machine learning"
+              socialFB=""
+              socialLinkedIn="https://www.linkedin.com/in/gyachdav/?originalSubdomain=il"
+              socialGithub=""
+              socialTwitter=""
           />
         </Grid>
 
       </Grid>
 
-      <text>GeneCruncher was developed by the following team</text>
       <br />
-      <Divider variant="middle" textAlign="left" sx={{ padding: '20px' }}>Frontend Team</Divider>
+        <Divider variant="middle" textAlign="left" sx={{ paddingTop: '40px' }}>
+          <Typography sx={{ fontSize: '30px', fontWeight: 'bold' }}>Frontend</Typography>
+        </Divider>
 
-      <SubteamSection data={frontendData} />
+        <SubteamSection data={frontEndData} />
 
-      <Divider variant="middle" textAlign="left" sx={{ padding: '20px' }}>Backend Team</Divider>
+        <Divider variant="middle" textAlign="left" sx={{ paddingTop: '100px' }}>
+          <Typography sx={{ fontSize: '30px', fontWeight: 'bold' }}>Backend</Typography>
+        </Divider>
 
-      <SubteamSection data={backendData} />
+        <SubteamSection data={backEndData} />
 
-      <Divider variant="middle" textAlign="left" sx={{ padding: '20px' }}>Visualization Team</Divider>
-
+        <Divider variant="middle" textAlign="left" sx={{ paddingTop: '100px' }}>
+          <Typography sx={{ fontSize: '30px', fontWeight: 'bold' }}>Visualization</Typography>
+        </Divider>
       <SubteamSection data={visualizationData} />
 
-      <Footer />
+        <Footer />
+      </div>
     </div>
+
   );
 }
 

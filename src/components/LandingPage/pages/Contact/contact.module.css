@@ -1,5 +1,7 @@
 .headerContainer{
     text-align: center;
+    align-items: center;
+    padding-top: 200px;
 }
 .formContainer{
     display: flex;

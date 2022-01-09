@@ -6,6 +6,17 @@ import NavBar from '../../../NavBar/NavBar';
 import styles from './contact.module.css';
 import Footer from '../../Footer/Footer';
 
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#0075FF',
+    },
+    secondary: {
+      main: '#FFFFFF',
+    },
+  },
+});
+
 function Contact() {
   const [contactDetails, setContactDetails] = useState({
     email: '',
@@ -16,6 +27,15 @@ function Contact() {
 
   const handleTextChange = useCallback((e) => {
     setContactDetails((prevState) => ({ ...prevState, [e.target.id]: e.target.value }));
+  }, [setContactDetails]);
+
+  const resetForm = useCallback(() => {
+    setContactDetails({
+      email: '',
+      firstname: '',
+      lastname: '',
+      message: '',
+    });
   }, [setContactDetails]);
 
   const formSubmit = async (e) => {
@@ -44,14 +64,21 @@ function Contact() {
   };
 
   return (
-    <div className={styles.headerContainer}>
+
+    <ThemeProvider theme={theme}>
+      <div>
       <NavBar />
-      <Typography sx={{ fontWeight: '400', fontSize: '24px' }}>Contact Us</Typography>
-      <text>
-        Write a few lines about each one and contact us about any further
-        collaboration. We will responde get back to you in a couple of
-        hours.
-      </text>
+
+        <div className={styles.headerContainer}>
+          <Stack
+            spacing="30px"
+          >
+            <Typography sx={{ fontWeight: 'bold', fontSize: '30px' }}>Contact Us</Typography>
+            <Typography sx={{ fontSize: '25px', paddingInline: '350px' }}>
+              Please message us in case you have any questions,
+              feedback or collaboration-related inquiries concerning Genomics.ai.
+            </Typography>
+          </Stack>
       <Box
         component="span"
         margin="auto"
@@ -133,7 +160,6 @@ function Contact() {
                   type="text"
                 />
               </Grid>
-
             </Grid>
           </Grid>
 
@@ -154,24 +180,26 @@ function Contact() {
             />
           </Grid>
           <Grid item>
-            <Button type="submit" variant="outlined" color="primary" fullwidth onClick={formSubmit}> submit</Button>
+                <Button
+                  variant="contained"
+                  style={{
+                    height: '60px', width: '180px', borderRadius: '10px', fontWeight: 'bold',
+                  }}
+                  size="large"
+                  onClick={formSubmit}
+                  color="primary"
+                >
+                  Send
+                </Button>
           </Grid>
 
         </Grid>
       </Box>
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-
       <Footer />
     </div>
+      </div>
+    </ThemeProvider>
+
   );
 }
 
