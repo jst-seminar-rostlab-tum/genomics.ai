@@ -1,6 +1,6 @@
 import check_auth from "../../middleware/check_auth";
 import {ExtRequest} from "../../../../definitions/ext_request";
-import {projectModel} from "../../../../database/models/project";
+import {ProjectJobStatus, projectModel} from "../../../../database/models/project";
 import s3 from "../../../../util/s3";
 import express from "express";
 
@@ -17,7 +17,7 @@ export default function download_results_route() {
                 if (!job) {
                     return res.status(404).send("Job not found.");
                 }
-                if (job.status != "DONE") {
+                if (job.status != ProjectJobStatus.DONE.toString()) {
                     return res.status(400).send("Job not completed.");
                 }
                 if (job.owner != req.user_id) {
