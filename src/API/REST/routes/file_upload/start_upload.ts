@@ -22,7 +22,7 @@ export default function upload_start_upload_route() {
                 });
                 let params: S3.CreateMultipartUploadRequest = {
                     Bucket: process.env.S3_BUCKET_NAME,
-                    Key: String(fileName)
+                    Key: String(project._id)
                 }
                 s3.createMultipartUpload(params, (err, uploadData) => {
                     if (err) {

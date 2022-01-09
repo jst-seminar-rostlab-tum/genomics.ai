@@ -29,7 +29,7 @@ export default function upload_complete_upload_route() {
 
             let params: CompleteMultipartUploadRequest = {
                 Bucket: process.env.S3_BUCKET_NAME,
-                Key: String(project.fileName),
+                Key: String(project._id),
                 MultipartUpload: { Parts: parts },
                 UploadId: String(uploadId)
             }

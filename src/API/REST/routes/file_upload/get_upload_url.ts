@@ -28,7 +28,7 @@ export default function upload_get_upload_url_route() {
 
             let params: UploadPartRequest = {
                 Bucket: process.env.S3_BUCKET_NAME!,
-                Key: String(project.fileName),
+                Key: String(project._id),
                 PartNumber: Number(partNumber),
                 UploadId: String(uploadId)
             }
