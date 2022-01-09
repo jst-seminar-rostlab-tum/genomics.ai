@@ -75,8 +75,8 @@ function Namecard(props) {
         alt={name}
         sx={{
           borderRadius: '50%',
-          height: '120px',
-          width: '120px',
+          height: '150px',
+          width: '150px',
           margin: '28px',
           objectFit: 'cover',
           border: '4px solid #ff',
@@ -87,13 +87,13 @@ function Namecard(props) {
       <CardContent style={{ maxWidth: '200px' }}>
         <Typography variant="h5">{name}</Typography>
         <Typography variant="body2" color="text.secondary">{role}</Typography>
-        <br />
         <Typography
           variant="body2"
           style={{
             maxWidth: '200px',
             alignItems: 'center',
             wordWrap: 'break-word',
+            paddingTop: '10px'
           }}
         >
           {dscp}
@@ -113,25 +113,21 @@ function Namecard(props) {
           ? FbItem(socialFB)
           : <Grid item />
       }
-
           {
         socialGithub !== ''
           ? GithubItem(socialGithub)
           : <Grid item />
       }
-
           {
         socialLinkedIn !== ''
           ? LinkedInItem(socialLinkedIn)
           : <Grid item />
       }
-
           {
         socialTwitter !== ''
           ? TwitterItem(socialTwitter)
           : <Grid item />
       }
-
         </Grid>
 
       </CardContent>
@@ -202,9 +198,7 @@ const SubteamSection = ((props) => {
 
           </Grid>
         ))
-
         }
-
       </Grid>
     </div>
   );
