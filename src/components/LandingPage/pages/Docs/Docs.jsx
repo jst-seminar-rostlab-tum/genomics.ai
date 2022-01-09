@@ -6,10 +6,11 @@ import styles from './docs.module.css';
 import NavBar from '../../../NavBar/NavBar';
 import graphic1 from '../../../../assets/landing-illustrations/working.png';
 
-function Docs() {
+const Docs = (props) => {
+  const { setUser } = props;
   return (
     <div>
-      <NavBar />
+      <NavBar setUser={setUser} />
 
       <div className={styles.container}>
         <Stack
@@ -26,6 +27,6 @@ function Docs() {
     </div>
 
   );
-}
+};
 
 export default Docs;

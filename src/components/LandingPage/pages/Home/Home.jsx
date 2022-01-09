@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 import {
   Typography, Divider, Stack, createTheme, ThemeProvider, Button,
 } from '@mui/material';
+import { Link } from 'react-router-dom';
 import NavBar from '../../../NavBar/NavBar';
 import styles from './home.module.css';
 import graphic1 from '../../../../assets/landing-illustrations/science.png';
@@ -27,8 +28,9 @@ const theme = createTheme({
   },
 });
 
-function Home() {
+const Home = (props) => {
 // inserting the logic from the landing page here
+  const { setUser } = props;
   const [isLoginFormVisible, setLoginFormVisible] = useState(false);
   const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
 
@@ -52,7 +54,7 @@ function Home() {
 
   return (
     <div className={styles.container}>
-      <NavBar />
+      <NavBar setUser={setUser} />
       {/* If genomics visualized stays in the middle, then it needs to be properly aligned.
       Right now it is using padding as the way to align the items */}
 
@@ -94,23 +96,24 @@ function Home() {
                 width: '200px', borderRadius: '12px', fontWeight: 'bold',
               }}
               size="large"
-              onClick
               onClick={onSignUpClicked}
             >
               Sign Up (FREE)
             </Button>
 
-            <Button
-              variant="outlined"
-              color="secondary"
-              style={{ width: '150px', borderRadius: '12px' }}
-              href="contact"
-            >
-              Get in Touch
-            </Button>
+            <Link to="contact">
+              <Button
+                variant="outlined"
+                color="secondary"
+                style={{ width: '150px', borderRadius: '12px' }}
+              >
+                Get in Touch
+              </Button>
+            </Link>
 
             <div>
               <LoginForm
+                setUser={setUser}
                 visible={isLoginFormVisible}
                 onClose={onLoginFormClosed}
               />
@@ -128,7 +131,7 @@ function Home() {
       <img
         className={styles.backgroundImage}
         src={dnaImage}
-        alt="picture of DNA"
+        alt="DNA"
       />
 
       <Divider
@@ -172,7 +175,8 @@ function Home() {
           <Typography sx={{ fontSize: '25px' }}>
             {' '}
             We help you visualize all
-            of your single-cell sequencing data in a fast and easy way with the help of neural networks.
+            of your single-cell sequencing data in a fast and
+            easy way with the help of neural networks.
           </Typography>
         </div>
       </div>
@@ -215,7 +219,8 @@ function Home() {
           </Typography>
           <Typography sx={{ fontSize: '25px' }}>
             After the algorithm has processed the data you can
-            specify the project you want your cell-type data to be associated with and view the results.
+            specify the project you want your cell-type data
+            to be associated with and view the results.
           </Typography>
         </div>
         <img className={styles.illustration} src={graphic4} alt="results" />
@@ -226,6 +231,6 @@ function Home() {
     // TODO: add footer for the website across all pages that are not the dashboard
 
   );
-}
+};
 
 export default Home;

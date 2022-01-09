@@ -1,7 +1,8 @@
 import React, { useCallback, useState } from 'react';
 import {
-  TextField, Typography, Grid, Button, Box,
+  TextField, Typography, Grid, Button, Box, createTheme, ThemeProvider,
 } from '@mui/material';
+import Stack from '@mui/material/Stack';
 import NavBar from '../../../NavBar/NavBar';
 import styles from './contact.module.css';
 import Footer from '../../Footer/Footer';
@@ -17,7 +18,8 @@ const theme = createTheme({
   },
 });
 
-function Contact() {
+const Contact = (props) => {
+  const { setUser } = props;
   const [contactDetails, setContactDetails] = useState({
     email: '',
     firstname: '',
@@ -27,15 +29,6 @@ function Contact() {
 
   const handleTextChange = useCallback((e) => {
     setContactDetails((prevState) => ({ ...prevState, [e.target.id]: e.target.value }));
-  }, [setContactDetails]);
-
-  const resetForm = useCallback(() => {
-    setContactDetails({
-      email: '',
-      firstname: '',
-      lastname: '',
-      message: '',
-    });
   }, [setContactDetails]);
 
   const formSubmit = async (e) => {
@@ -67,7 +60,7 @@ function Contact() {
 
     <ThemeProvider theme={theme}>
       <div>
-      <NavBar />
+        <NavBar setUer={setUser} />
 
         <div className={styles.headerContainer}>
           <Stack
@@ -79,107 +72,107 @@ function Contact() {
               feedback or collaboration-related inquiries concerning Genomics.ai.
             </Typography>
           </Stack>
-      <Box
-        component="span"
-        margin="auto"
-        className={styles.formContainer}
-        sx={{
-          width: '1000px',
-          height: '500px',
-          maxWidth: '100%',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <Grid
-          container
-          spacing={1}
-          direction="column"
-          justifyContent="center"
-          sx={{
-            align: 'center',
-            display: 'flex',
-          }}
-        >
-
-          <Grid item>
-            <TextField
-              id="email"
-              label="Email"
-              placeholder="Enter your email address"
-              variant="filled"
-              value={contactDetails.email}
-              onChange={handleTextChange}
-              required
-              fullWidth
-              type="email"
-            />
-          </Grid>
-
-          <Grid item>
+          <Box
+            component="span"
+            margin="auto"
+            className={styles.formContainer}
+            sx={{
+              width: '1000px',
+              height: '500px',
+              maxWidth: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
             <Grid
               container
               spacing={1}
-              direction="row"
+              direction="column"
+              justifyContent="center"
               sx={{
                 align: 'center',
                 display: 'flex',
               }}
             >
-              <Grid
-                item
-                xs={6}
-              >
-                <TextField
-                  id="firstname"
-                  label="Firstname"
-                  placeholder="Enter your firstname"
-                  variant="filled"
-                  rowsMax={1}
-                  value={contactDetails.firstname}
-                  onChange={handleTextChange}
-                  required
-                  fullWidth
-                  type="text"
-                />
-              </Grid>
-              <Grid
-                item
-                xs={6}
-              >
-                <TextField
-                  id="lastname"
-                  label="Lastname"
-                  placeholder="Enter your lastname"
-                  variant="filled"
-                  rowsMax={1}
-                  value={contactDetails.lastname}
-                  onChange={handleTextChange}
-                  fullWidth
-                  required
-                  type="text"
-                />
-              </Grid>
-            </Grid>
-          </Grid>
 
-          <Grid item>
-            <TextField
-              id="message"
-              label="Message"
-              placeholder="Enter your message"
-              variant="filled"
-              multiline
-              rows={8}
-              rowsMax={20}
-              value={contactDetails.message}
-              onChange={handleTextChange}
-              fullWidth
-              required
-              type="text"
-            />
-          </Grid>
-          <Grid item>
+              <Grid item>
+                <TextField
+                  id="email"
+                  label="Email"
+                  placeholder="Enter your email address"
+                  variant="filled"
+                  value={contactDetails.email}
+                  onChange={handleTextChange}
+                  required
+                  fullWidth
+                  type="email"
+                />
+              </Grid>
+
+              <Grid item>
+                <Grid
+                  container
+                  spacing={1}
+                  direction="row"
+                  sx={{
+                    align: 'center',
+                    display: 'flex',
+                  }}
+                >
+                  <Grid
+                    item
+                    xs={6}
+                  >
+                    <TextField
+                      id="firstname"
+                      label="Firstname"
+                      placeholder="Enter your firstname"
+                      variant="filled"
+                      rowsMax={1}
+                      value={contactDetails.firstname}
+                      onChange={handleTextChange}
+                      required
+                      fullWidth
+                      type="text"
+                    />
+                  </Grid>
+                  <Grid
+                    item
+                    xs={6}
+                  >
+                    <TextField
+                      id="lastname"
+                      label="Lastname"
+                      placeholder="Enter your lastname"
+                      variant="filled"
+                      rowsMax={1}
+                      value={contactDetails.lastname}
+                      onChange={handleTextChange}
+                      fullWidth
+                      required
+                      type="text"
+                    />
+                  </Grid>
+                </Grid>
+              </Grid>
+
+              <Grid item>
+                <TextField
+                  id="message"
+                  label="Message"
+                  placeholder="Enter your message"
+                  variant="filled"
+                  multiline
+                  rows={8}
+                  rowsMax={20}
+                  value={contactDetails.message}
+                  onChange={handleTextChange}
+                  fullWidth
+                  required
+                  type="text"
+                />
+              </Grid>
+              <Grid item>
                 <Button
                   variant="contained"
                   style={{
@@ -191,16 +184,16 @@ function Contact() {
                 >
                   Send
                 </Button>
-          </Grid>
+              </Grid>
 
-        </Grid>
-      </Box>
-      <Footer />
-    </div>
+            </Grid>
+          </Box>
+          <Footer />
+        </div>
       </div>
     </ThemeProvider>
 
   );
-}
+};
 
 export default Contact;

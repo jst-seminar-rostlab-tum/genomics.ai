@@ -70,6 +70,7 @@ const NavBar = (props) => {
       </div>
       <div>
         <LoginForm
+          setUser={setUser}
           visible={isLoginFormVisible}
           onClose={onLoginFormClosed}
         />
