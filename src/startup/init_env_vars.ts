@@ -2,7 +2,7 @@ export function init_env_vars() {
     // check for required env-vars
     const required_env_vars = [
         "DATABASE_URI",
-        "CLOUD_RUN_URL"
+        "CLOUD_RUN_URL",
         "S3_ACCESS_KEY_ID",
         "S3_SECRET_ACCESS_KEY",
         "S3_ENDPOINT",
