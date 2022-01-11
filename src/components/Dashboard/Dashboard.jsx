@@ -1,6 +1,5 @@
-import { Container } from '@mui/material';
+import { Container, Stack } from '@mui/material';
 import React, { useCallback } from 'react';
-import Stack from '@mui/material/Stack';
 import Uploader from './Uploader/Uploader';
 import StatusQueue from './StatusQueue/StatusQueue';
 import styles from './dashboard.module.css';

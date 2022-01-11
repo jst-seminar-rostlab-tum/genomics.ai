@@ -43,7 +43,7 @@ const Sidebar = ({ sidebarShown, toggleSidebar }) => {
     <div className={styles.sidebarNav}>
       <div className={styles.sidebarWrap}>
         <div style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-          <div style={{ paddingBlock: '35px', paddingLeft: '270px' }}>
+          <div style={{ paddingBlock: '35px', paddingLeft: '260px' }}>
             <input
               type="image"
               className={styles.toggleButton}

@@ -45,9 +45,9 @@ const DashboardContent = (props) => {
         <Route path={`${path}/settings`}>
           <Settings
             className={sidebarShown ? styles.subpage : styles.subpageSidebarCollapsed}
-            sidebarShown={sidebarShown}
             user={user}
             setUser={setUser}
+            sidebarShown={sidebarShown}
           />
         </Route>
         {

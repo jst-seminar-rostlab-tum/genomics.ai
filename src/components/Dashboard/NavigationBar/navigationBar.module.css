@@ -37,8 +37,7 @@
     grid-gap: 50px;
     list-style: none;
     text-align: center;
-    justify-content: end;
-    margin-right: 2rem;
+    justify-content: center;
 }
 
 .navItem {
@@ -67,7 +66,7 @@
 
 .navLinks:hover {
     color: white;
-    background-color: #1888ff;
+    background-color: #0075FF;
     border-radius: 10px;
     transition: all 0.2s ease-out;
 }
@@ -133,7 +132,7 @@
         margin: 2rem auto;
         border-radius: 4px;
         width: 80%;
-        background: #1888ff;
+        background: #0075FF;
         text-decoration: none;
         color: #fff;
         font-size: 1.5rem;
@@ -141,7 +140,7 @@
 
     .navLinksMobile:hover {
         background: #fff;
-        color: #1888ff;
+        color: #0075FF;
         transition: 250ms;
     }
 

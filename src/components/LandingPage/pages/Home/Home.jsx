@@ -100,7 +100,10 @@ const Home = (props) => {
               Sign Up (FREE)
             </Button>
 
-            <Link to="contact">
+            <Link
+              to="contact"
+              style={{ textDecoration: 'none' }}
+            >
               <Button
                 variant="outlined"
                 color="secondary"
