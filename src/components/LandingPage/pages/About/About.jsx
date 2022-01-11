@@ -256,7 +256,7 @@ const About = (props) => <div>
     <SubteamSection data={backendData} />
 
     <Divider variant="middle" textAlign="left" sx={{ paddingTop: '100px' }}>
-      <Typography sx={{ fontSize: '30px', fontWeight: 'bold' }}>Visualization</Typography>
+      <Typography sx={{ fontSize: '30px', fontWeight: 'bold' }}>Visualisation</Typography>
     </Divider>
   <SubteamSection data={visualizationData} />
 
