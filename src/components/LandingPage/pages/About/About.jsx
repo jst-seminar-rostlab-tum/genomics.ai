@@ -212,9 +212,16 @@ const About = (props) => <div>
       spacing="30px"
     >
       <Typography sx={{ fontWeight: 'bold', fontSize: '30px' }}>Team</Typography>
-      <Typography sx={{ fontSize: '25px', paddingInline: '350px' }}>
-        Genomics.ai was developed by a team of 12 students from the Technical University of Munich (TUM) under the guidance of Dr. Guy Yachdav.
-      </Typography>
+      <div className={styles.textContainer}>
+        <Typography
+          sx={{ fontSize: '25px', paddingInline: '350px', maxWidth: '1700px' }}
+          align="center"
+          >
+          Genomics.ai was developed by a team of 12 students from the Technical University of Munich (TUM)
+          under the guidance of Dr. Guy Yachdav.
+        </Typography>
+      </div>
+
     </Stack>
 
     <Divider variant="middle" textAlign="left" sx={{ paddingTop: '100px' , paddingBottom: '40px'}}>

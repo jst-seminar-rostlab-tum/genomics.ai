@@ -47,7 +47,7 @@ const NavBar = (props) => {
           </IconButton>
           <Typography sx={{ fontSize: '24px', fontWeight: '500' }}>genomics.ai</Typography>
           <Box sx={{ flexGrow: 1 }}>
-            <Typography variant="h6" sx={{ flexGrow: 1}}>
+            <Typography variant="h6" sx={{ flexGrow: 1 }}>
               <ul>
                 <Box>
                   <li><a href="/" className={styles.navbarcontent}>Home</a></li>

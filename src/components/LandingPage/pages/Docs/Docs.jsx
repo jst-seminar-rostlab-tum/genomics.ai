@@ -17,10 +17,15 @@ const Docs = (props) => {
           spacing="30px"
         >
           <Typography sx={{ fontWeight: 'bold', fontSize: '30px' }}>Documentation</Typography>
-          <Typography sx={{ fontSize: '25px', paddingInline: '350px' }}>
-            We are working hard on providing you with a documentation in the near future.
-            If you have any problems feel free to get in touch with us.
-          </Typography>
+          <div className={styles.textContainer}>
+            <Typography
+              sx={{ fontSize: '25px', paddingInline: '350px', maxWidth: '1700px' }}
+              align="center"
+            >
+              We are working hard on providing you with a documentation in the near future.
+              If you have any problems feel free to get in touch with us.
+            </Typography>
+          </div>
           <img className={styles.illustration} src={graphic1} alt="working" />
         </Stack>
       </div>
