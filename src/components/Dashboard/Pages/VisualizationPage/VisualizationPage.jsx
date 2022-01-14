@@ -14,7 +14,7 @@ function VisualizationPage({ id }) {
       sx={{
         display: 'flex',
         justifyContent: 'center',
-        textAlign: 'center',
+        textAlign: 'center'
       }}
       className={styles.visualizationContainer}
     >

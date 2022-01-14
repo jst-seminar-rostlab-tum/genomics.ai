@@ -10,6 +10,7 @@ import Docs from './components/LandingPage/pages/Docs/Docs';
 import Contact from './components/LandingPage/pages/Contact/Contact';
 import DashboardContent from './components/Dashboard/DashboardContent/DashboardContent';
 import { guardedPage } from './components/common/utils';
+import VisualizationPage from './components/Dashboard/Pages/VisualizationPage/VisualizationPage';
 
 function App() {
   const theme = createTheme({

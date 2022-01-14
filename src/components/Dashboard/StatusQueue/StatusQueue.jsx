@@ -29,7 +29,7 @@ function StatusQueue() {
         padding: '10px',
         borderRadius: expandList ? '10px 10px 0px 0px' : '10px 10px 10px 10px',
         textAlign: 'center',
-        fontEeight: 'bold',
+        fontWeight: 'bold',
         display: 'flex',
         justifyContent: 'center',
         fontSize: '8px',

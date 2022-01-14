@@ -17,6 +17,8 @@ const DashboardContent = (props) => {
   const { user, setUser } = props;
 
   const { path, url } = useRouteMatch();
+
+  //TODO: for some reason, there are problems with the mapping to the new urls. 
   const visualizationResults = [1];
 
   return (
@@ -50,6 +52,7 @@ const DashboardContent = (props) => {
             setUser={setUser}
           />
         </Route>
+        {/* The below block is for some reason not mapping it correctly */}
         {
           visualizationResults.map((id) => (
             <Route path={`${path}/result/${id}`} key={id}>

@@ -1,55 +1,129 @@
-import * as d3 from 'd3';
-import { width, height } from './constants';
+import { scaleLinear, scaleOrdinal, min, max, mean, sum, quadtree } from 'd3';
+import { width, height, colors, searchRadius } from './constants';
+import { Cluster } from './cluster';
 
-const displayedPoints = 2500;
+const prepare = ([metaData, umapData]) => {
 
-export const prepareData = ([metaData, umapData]) => {
   const clusterMapping = new Map();
 
   metaData
-    .filter(({ CELLTYPE }) => Number.isNaN(parseFloat(CELLTYPE, 10)))
-    .forEach((m) => clusterMapping.set(parseInt(m.CLUSTER, 10), m.CELLTYPE));
+    .filter(({ CELLTYPE }) => isNaN(parseFloat(CELLTYPE)))
+    .forEach(m => clusterMapping.set(parseInt(m.CLUSTER), m.CELLTYPE));
 
-  const pointsData = umapData
-    .slice(0, displayedPoints)
-    .map((d) => ({
+  const sampleData = umapData
+    .map(d => ({
       id: d.cellType,
-      x: d.x,
-      y: d.y,
-      cluster: parseInt(d.cluster, 10),
+      x: +d.x,
+      y: +d.y,
+      cluster: parseInt(d.cluster)
     }))
-    .filter((d) => clusterMapping.has(d.cluster));
+    .filter(d => clusterMapping.has(d.cluster));
 
-  return { clusterMapping, pointsData };
+  return { clusterMapping, sampleData };
 };
 
-const fraction = 0.1;
+const getQuadTree = sampleData => {
 
-export const getDomains = (clusterMapping, pointsData) => {
-  const clusterLabels = clusterMapping.keys();
+  const tree = quadtree()
+    .x(p => p.x)
+    .y(p => p.y);
 
-  const xMin = d3.min(pointsData, (d) => +d.x);
-  const xMax = d3.max(pointsData, (d) => +d.x);
-  const yMin = d3.min(pointsData, (d) => +d.y);
-  const yMax = d3.max(pointsData, (d) => +d.y);
+  tree.addAll(sampleData);
+  return tree;
+};
 
-  const lagX = Math.ceil(fraction * (xMax - xMin));
-  const lagY = Math.ceil(fraction * (yMax - yMin));
+const getClusters = (clusterMapping, sampleData) => {
 
-  const domX = d3
-    .scaleLinear()
-    .domain([xMin - lagX, xMax + lagX])
-    .range([0, width]);
+  const clusters = new Map();
 
-  const domY = d3
-    .scaleLinear()
-    .domain([yMin - lagY, yMax + lagY])
-    .range([height, 0]);
+  for (const p of sampleData) {
+    const clusterName = clusterMapping.get(p.cluster);
+    if (!clusters.has(clusterName))
+      clusters.set(clusterName, []);
+    clusters.get(clusterName).push([p.x, p.y]);
+  }
 
-  const colorScale = d3
-    .scaleOrdinal()
-    .domain(clusterLabels)
-    .range(d3.schemeCategory10);
+  const names = clusters.keys();
+  const colorScale = scaleOrdinal()
+    .domain(...names)
+    .range(colors);
 
-  return { domX, domY, colorScale };
+  for (const name of clusters.keys()) {
+    const points = Array.from(clusters.get(name));
+    const color = colorScale(name);
+    clusters.set(name, new Cluster(points, name, color));
+  }
+
+  return clusters;
+};
+
+const getBounds = clusters => {
+
+  const xMin = min(clusters.map(c => c.getMinX()));
+  const xMax = max(clusters.map(c => c.getMaxX()));
+  const yMin = min(clusters.map(c => c.getMinY()));
+  const yMax = max(clusters.map(c => c.getMaxY()));
+
+  return { xMin, xMax, yMin, yMax };
+};
+
+export class ClusterCollection {
+
+  constructor(data) {
+
+    const { clusterMapping, sampleData } = prepare(data);
+    this.tree = getQuadTree(sampleData);
+    this.collection = getClusters(clusterMapping, sampleData);
+    this.clusters = Array.from(this.collection.values());
+
+    const { xMin, xMax, yMin, yMax } = getBounds(this.clusters);
+    this.initialXDomain = scaleLinear()
+        .domain([xMin, xMax])
+        .range([0, width]);
+    this.initialYDomain = scaleLinear()
+        .domain([yMin, yMax])
+        .range([height, 0]);
+    this.xDomain = this.initialXDomain;
+    this.yDomain = this.initialYDomain;
+
+    this.totalCount = sum(this.clusters.map(c => c.count));
+
+    const dists = this.clusters.map(c => c.dev);
+    this.minDist = min(dists);
+    this.maxDist = max(dists);
+    this.avgDist = mean(dists);
+  };
+
+  getAll() {
+    return this.clusters;
+  };
+
+  get(name) {
+    return this.collection.get(name);
+  };
+
+  rescaleDomain(transform) {
+    this.xDomain = transform.rescaleX(this.initialXDomain);
+    this.yDomain = transform.rescaleY(this.initialYDomain);
+  };
+
+  findClosestSample([x, y]) {
+    return this.tree.find(x, y, searchRadius);
+  };
+
+  scalePoint([x, y]) {
+    const xScaled = this.xDomain(x);
+    const yScaled = this.yDomain(y);
+    return [xScaled, yScaled];
+  };
+
+  unscalePoint([xScaled, yScaled]) {
+    const x = this.xDomain.invert(xScaled);
+    const y = this.yDomain.invert(yScaled);
+    return [x, y];
+  };
+
+  scalePoints(points) {
+    return points.map(p => this.scalePoint(p));
+  };
 };
