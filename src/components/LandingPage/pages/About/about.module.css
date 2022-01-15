@@ -8,3 +8,7 @@
     padding-top: 100px;
 }
 
+.textContainer {
+    display: flex;
+    justify-content: center
+}

@@ -86,14 +86,13 @@ const Home = (props) => {
           <Stack
             spacing={2}
             direction="row"
-            style={{ height: '60px', marginTop: '30px', justifyContent: 'center' }}
-            size="large"
+            style={{ marginTop: '30px', justifyContent: 'center' }}
           >
             <Button
               variant="contained"
               color="primary"
               style={{
-                width: '200px', borderRadius: '12px', fontWeight: 'bold',
+                height: '60px', width: '200px', borderRadius: '12px', fontWeight: 'bold',
               }}
               size="large"
               onClick={onSignUpClicked}
@@ -101,11 +100,17 @@ const Home = (props) => {
               Sign Up (FREE)
             </Button>
 
-            <Link to="contact">
+            <Link
+              to="contact"
+              style={{ textDecoration: 'none' }}
+            >
               <Button
                 variant="outlined"
                 color="secondary"
-                style={{ width: '150px', borderRadius: '12px' }}
+                style={{
+                  height: '60px', width: '200px', borderRadius: '12px', fontWeight: 'normal',
+                }}
+                size="large"
               >
                 Get in Touch
               </Button>
@@ -137,9 +142,9 @@ const Home = (props) => {
       <Divider
         variant="middle"
         textAlign="center"
-        sx={{ padding: '30px', paddingBottom: '50px', paddingTop: '100px' }}
+        sx={{ paddingInline: '30px', paddingBottom: '50px', paddingTop: '100px' }}
       >
-        <Typography sx={{ fontSize: '35px', fontWeight: 'bold' }}>Our Partners</Typography>
+        <Typography sx={{ width: '220px', fontSize: '35px', fontWeight: 'bold' }}>Our Partners</Typography>
       </Divider>
 
       <Stack
@@ -158,9 +163,9 @@ const Home = (props) => {
       <Divider
         variant="middle"
         textAlign="center"
-        sx={{ padding: '30px', paddingTop: '50px' }}
+        sx={{ paddingInline: '30px', paddingTop: '50px' }}
       >
-        <Typography sx={{ fontSize: '35px', fontWeight: 'bold' }}>What we do</Typography>
+        <Typography sx={{ width: '200px', fontSize: '35px', fontWeight: 'bold' }}>What we do</Typography>
       </Divider>
 
       <div className={styles.infoContainer}>
@@ -181,8 +186,8 @@ const Home = (props) => {
         </div>
       </div>
 
-      <Divider variant="middle" textAlign="center" sx={{ padding: '30px', paddingBottom: '50px', paddingTop: '50px' }}>
-        <Typography sx={{ fontSize: '35px', fontWeight: 'bold' }}>How it works</Typography>
+      <Divider variant="middle" textAlign="center" sx={{ paddingInline: '30px', paddingBottom: '50px', paddingTop: '50px' }}>
+        <Typography sx={{ width: '220px', fontSize: '35px', fontWeight: 'bold' }}>How it works</Typography>
       </Divider>
 
       <div className={styles.infoContainer}>

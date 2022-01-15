@@ -67,10 +67,15 @@ const Contact = (props) => {
             spacing="30px"
           >
             <Typography sx={{ fontWeight: 'bold', fontSize: '30px' }}>Contact Us</Typography>
-            <Typography sx={{ fontSize: '25px', paddingInline: '350px' }}>
-              Please message us in case you have any questions,
-              feedback or collaboration-related inquiries concerning Genomics.ai.
-            </Typography>
+            <div className={styles.textContainer}>
+              <Typography
+                sx={{ fontSize: '25px', paddingInline: '350px', maxWidth: '1700px' }}
+                align="center"
+              >
+                Please message us in case you have any questions,
+                feedback or collaboration-related inquiries concerning Genomics.ai.
+              </Typography>
+            </div>
           </Stack>
           <Box
             component="span"

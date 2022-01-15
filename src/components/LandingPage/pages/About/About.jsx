@@ -75,8 +75,8 @@ function Namecard(props) {
         alt={name}
         sx={{
           borderRadius: '50%',
-          height: '120px',
-          width: '120px',
+          height: '150px',
+          width: '150px',
           margin: '28px',
           objectFit: 'cover',
           border: '4px solid #ff',
@@ -87,13 +87,13 @@ function Namecard(props) {
       <CardContent style={{ maxWidth: '200px' }}>
         <Typography variant="h5">{name}</Typography>
         <Typography variant="body2" color="text.secondary">{role}</Typography>
-        <br />
         <Typography
           variant="body2"
           style={{
             maxWidth: '200px',
             alignItems: 'center',
             wordWrap: 'break-word',
+            paddingTop: '10px'
           }}
         >
           {dscp}
@@ -113,25 +113,21 @@ function Namecard(props) {
           ? FbItem(socialFB)
           : <Grid item />
       }
-
           {
         socialGithub !== ''
           ? GithubItem(socialGithub)
           : <Grid item />
       }
-
           {
         socialLinkedIn !== ''
           ? LinkedInItem(socialLinkedIn)
           : <Grid item />
       }
-
           {
         socialTwitter !== ''
           ? TwitterItem(socialTwitter)
           : <Grid item />
       }
-
         </Grid>
 
       </CardContent>
@@ -202,9 +198,7 @@ const SubteamSection = ((props) => {
 
           </Grid>
         ))
-
         }
-
       </Grid>
     </div>
   );
@@ -218,9 +212,16 @@ const About = (props) => <div>
       spacing="30px"
     >
       <Typography sx={{ fontWeight: 'bold', fontSize: '30px' }}>Team</Typography>
-      <Typography sx={{ fontSize: '25px', paddingInline: '350px' }}>
-        Genomics.ai was developed by a team of 12 students from the Technical University of Munich (TUM) under the guidance of Dr. Guy Yachdav.
-      </Typography>
+      <div className={styles.textContainer}>
+        <Typography
+          sx={{ fontSize: '25px', paddingInline: '350px', maxWidth: '1700px' }}
+          align="center"
+          >
+          Genomics.ai was developed by a team of 12 students from the Technical University of Munich (TUM)
+          under the guidance of Dr. Guy Yachdav.
+        </Typography>
+      </div>
+
     </Stack>
 
     <Divider variant="middle" textAlign="left" sx={{ paddingTop: '100px' , paddingBottom: '40px'}}>
@@ -262,7 +263,7 @@ const About = (props) => <div>
     <SubteamSection data={backendData} />
 
     <Divider variant="middle" textAlign="left" sx={{ paddingTop: '100px' }}>
-      <Typography sx={{ fontSize: '30px', fontWeight: 'bold' }}>Visualization</Typography>
+      <Typography sx={{ fontSize: '30px', fontWeight: 'bold' }}>Visualisation</Typography>
     </Divider>
   <SubteamSection data={visualizationData} />
 

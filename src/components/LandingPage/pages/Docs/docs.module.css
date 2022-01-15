@@ -6,7 +6,11 @@
 }
 
 .illustration{
-    justify-content: center;
     object-fit: contain;
     height: 650px;
+}
+
+.textContainer {
+    display: flex;
+    justify-content: center
 }

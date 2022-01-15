@@ -14,7 +14,7 @@ import updateProfile from './SettingsLogic';
 const myTheme = createTheme({
   palette: {
     primary: {
-      main: '#1888ff',
+      main: '#0075FF',
     },
     secondary: {
       main: '#6B7379',
@@ -62,8 +62,10 @@ function PasswordSection({ onPasswordInfoChange, errors, changePassword }) {
   return null;
 }
 
-function Settings(props) {
+function Settings({ user, setUser, sidebarShown }) {
   /* Booleans */
+  const paddingL = useCallback(() => (sidebarShown ? '130px' : '380px'), [sidebarShown]);
+
   // Password Change
   const [changePassword, setChangePassword] = React.useState(false);
   const handleChangePassword = () => setChangePassword(!changePassword);
@@ -71,8 +73,6 @@ function Settings(props) {
   const [errors, setErrors] = useState({});
   const [saveInProgress, setSaveInProgress] = useState(false);
   const [isSnackbarVisible, setSnackbarVisible] = useState(false);
-
-  const { user, setUser } = props;
 
   /* Input Text Fields */
   // General Information
@@ -137,140 +137,157 @@ function Settings(props) {
         });
     }
   };
-
   return (
     <>
       <Stack
-        className={styles.background}
-        style={{ display: 'flex' }}
-        spacing={5}
         direction="column"
+        sx={{
+          paddingTop: '100px',
+          paddingLeft: paddingL,
+          display: 'flex',
+          width: '100%',
+          justifyContent: 'center',
+        }}
       >
-
-        <div style={{ paddingBlock: '25px', paddingLeft: '80px', marginBottom: '50px' }}>
-          <img
-            alt="profile"
-            src={profileDefault}
-            style={{ height: '150px' }}
-          />
+        <div className={styles.title}>
+          <h1>Settings</h1>
         </div>
 
         <Stack
-          spacing={2}
-          style={{ display: 'flex' }}
-          direction="row"
-        >
-          <div className={styles.inputComponent}>
-            <div className={styles.inputText}> First Name </div>
-            <TextField
-              id="firstName"
-              value={userInfo.firstName}
-              required
-              label="First Name"
-              type="text"
-              style={{ width: '290px', background: 'white' }}
-              onChange={onUserInfoChange}
-              error={!!errors.firstName}
-              helperText={errors.firstName}
-            />
-          </div>
-
-          <div className={styles.inputComponent}>
-            <div className={styles.inputText}> Last Name</div>
-            <TextField
-              id="lastName"
-              value={userInfo.lastName}
-              required
-              label="Last Name"
-              type="text"
-              style={{ width: '290px', background: 'white' }}
-              onChange={onUserInfoChange}
-              error={!!errors.lastName}
-              helperText={errors.lastName}
-            />
-          </div>
-        </Stack>
-
-        <div className={styles.inputComponent}>
-          <div className={styles.inputText}> Email Address </div>
-          <TextField
-            id="emailAddress"
-            disabled
-            value={userInfo.emailAddress}
-            required
-            label="Email"
-            type="text"
-            style={{ width: '600px', background: 'white' }}
-            onChange={onUserInfoChange}
-            error={!!errors.emailAddress}
-            helperText={errors.emailAddress}
-          />
-        </div>
-
-        <div className={styles.inputComponent}>
-          <div className={styles.inputText}> Academic Affiliation </div>
-          <TextField
-            id="academicAffiliation"
-            value={userInfo.academicAffiliation}
-            label="Academic Affiliation (e.g. University)"
-            type="text"
-            style={{ width: '600px', background: 'white' }}
-            onChange={onUserInfoChange}
-          />
-        </div>
-
-        <div
-          className={styles.divider}
-          style={{ marginTop: '40px' }}
-        />
-
-        <Stack
+          className={styles.background}
           spacing={5}
-          direction="row"
+          direction="column"
         >
-          <div className={styles.headline}> Password </div>
-          <FormControlLabel
-            label="Change Password"
-            sx={{ m: 1 }}
-            control={(
-              <Switch
-                checked={changePassword}
-                onClick={handleChangePassword}
-              />
-            )}
-          />
-        </Stack>
+          {/* Profile Image --------------------------------------------------------------*/}
+          <div style={{ marginBottom: '50px' }}>
+            <img
+              alt="profile"
+              src={profileDefault}
+              style={{ height: '180px' }}
+            />
+          </div>
 
-        <PasswordSection
-          errors={errors}
-          changePassword={changePassword}
-          passwordInfo={passwordInfo}
-          onPasswordInfoChange={onPasswordInfoChange}
-        />
-
-        <div
-          className={styles.divider}
-          style={{ marginTop: '40px' }}
-        />
-
-        <ThemeProvider theme={myTheme}>
+          {/* Input Fields --------------------------------------------------------------*/}
           <Stack
             spacing={2}
+            style={{ display: 'flex' }}
             direction="row"
-            style={{ height: '55px', width: '400px' }}
           >
-            <LoadingButton
-              variant="contained"
-              color="primary"
-              loading={saveInProgress}
-              style={{ width: '185px', borderRadius: '10px', fontWeight: 'bold' }}
-              onClick={saveUserData}
-            >
-              Save
-            </LoadingButton>
+            <div className={styles.inputComponent}>
+              <div className={styles.inputText}> First Name </div>
+              <TextField
+                id="firstName"
+                value={userInfo.firstName}
+                required
+                label="First Name"
+                type="text"
+                style={{ width: '290px', background: 'white' }}
+                onChange={onUserInfoChange}
+                error={!!errors.firstName}
+                helperText={errors.firstName}
+              />
+            </div>
+
+            <div className={styles.inputComponent}>
+              <div className={styles.inputText}> Last Name</div>
+              <TextField
+                id="lastName"
+                value={userInfo.lastName}
+                required
+                label="Last Name"
+                type="text"
+                style={{ width: '290px', background: 'white' }}
+                onChange={onUserInfoChange}
+                error={!!errors.lastName}
+                helperText={errors.lastName}
+              />
+            </div>
           </Stack>
-        </ThemeProvider>
+
+          <div className={styles.inputComponent}>
+            <div className={styles.inputText}> Email Address </div>
+            <TextField
+              id="emailAddress"
+              disabled
+              value={userInfo.emailAddress}
+              required
+              label="Email"
+              type="text"
+              style={{ width: '600px', background: 'white' }}
+              onChange={onUserInfoChange}
+              error={!!errors.emailAddress}
+              helperText={errors.emailAddress}
+            />
+          </div>
+
+          <div className={styles.inputComponent}>
+            <div className={styles.inputText}>Academic Affiliation</div>
+            <TextField
+              id="academicAffiliation"
+              value={userInfo.academicAffiliation}
+              label="Academic Affiliation (e.g. University)"
+              type="text"
+              style={{ width: '600px', background: 'white' }}
+              onChange={onUserInfoChange}
+            />
+          </div>
+
+          <div
+            className={styles.divider}
+            style={{ marginTop: '40px' }}
+          />
+
+          <Stack
+            spacing={5}
+            direction="row"
+          >
+            <div className={styles.headline}> Password </div>
+            <FormControlLabel
+              label="Change Password"
+              sx={{ m: 1 }}
+              control={(
+                <Switch
+                  checked={changePassword}
+                  onClick={handleChangePassword}
+                />
+                      )}
+            />
+          </Stack>
+
+          <PasswordSection
+            errors={errors}
+            changePassword={changePassword}
+            passwordInfo={passwordInfo}
+            onPasswordInfoChange={onPasswordInfoChange}
+          />
+
+          <div
+            className={styles.divider}
+            style={{ marginTop: '40px' }}
+          />
+
+          <ThemeProvider theme={myTheme}>
+            <Stack
+              spacing={2}
+              direction="row"
+              style={{ height: '55px', width: '400px' }}
+            >
+              <LoadingButton
+                variant="contained"
+                color="primary"
+                loading={saveInProgress}
+                style={{ width: '185px', borderRadius: '10px', fontWeight: 'bold' }}
+                onClick={saveUserData}
+              >
+                Save
+              </LoadingButton>
+            </Stack>
+          </ThemeProvider>
+        </Stack>
+
       </Stack>
+
+      {/* Snackbar --------------------------------------------------------------*/}
       <Snackbar
         open={isSnackbarVisible}
         autoHideDuration={10000}

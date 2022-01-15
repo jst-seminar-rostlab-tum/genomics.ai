@@ -1,0 +1,9 @@
+.title h1 {
+    font-size: 30px;
+    color: #003560;
+}
+
+.illustration{
+    object-fit: contain;
+    height: 650px;
+}
