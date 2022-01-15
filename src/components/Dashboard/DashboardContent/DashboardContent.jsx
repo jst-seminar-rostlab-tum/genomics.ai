@@ -18,7 +18,7 @@ const DashboardContent = (props) => {
 
   const { path, url } = useRouteMatch();
 
-  //TODO: for some reason, there are problems with the mapping to the new urls. 
+  // TODO: for some reason, there are problems with the mapping to the new urls.
   const visualizationResults = [1];
 
   return (
