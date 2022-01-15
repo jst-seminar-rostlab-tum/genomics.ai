@@ -9,7 +9,6 @@ import Documentation from '../Pages/Documentation/Documentation';
 import Settings from '../Pages/Settings/Settings';
 import Help from '../Pages/Help/Help';
 import styles from './dashboardContent.module.css';
-import VisualizationPage from '../Pages/VisualizationPage/VisualizationPage';
 
 const DashboardContent = (props) => {
   const [sidebarShown, setSidebarShown] = useState(true);
@@ -17,9 +16,6 @@ const DashboardContent = (props) => {
   const { user, setUser } = props;
 
   const { path, url } = useRouteMatch();
-
-  // TODO: for some reason, there are problems with the mapping to the new urls.
-  const visualizationResults = [1];
 
   return (
     <div>
@@ -52,14 +48,6 @@ const DashboardContent = (props) => {
             sidebarShown={sidebarShown}
           />
         </Route>
-        {/* The below block is for some reason not mapping it correctly */}
-        {
-          visualizationResults.map((id) => (
-            <Route path={`${path}/result/${id}`} key={id}>
-              <VisualizationPage id={id} />
-            </Route>
-          ))
-        }
       </Switch>
     </div>
   );
