@@ -24,6 +24,11 @@ database_uri = os.getenv(
     'DATABASE_URI') 
 bucket=os.getenv('BUCKET')
 
+def dispose(filename):
+    if os.path.isfile(filename):
+        print(filename+" found, will be disposed")
+        os.remove(filename)
+
 s3 = boto3.client('s3', endpoint_url=endpoint,
                   aws_access_key_id=access_key, aws_secret_access_key=secret_key)
 print("starting download")
@@ -31,9 +36,7 @@ s3.download_file(bucket, modelname, modelname)
 print("Download finished, loading model")
 clf = joblib.load(modelname)
 print("Model loaded, ready to dispose")
-if os.path.isfile(modelname):
-    print("file found")
-    os.remove(modelname)
+dispose(modelname)
 
 db = MongoClient(database_uri).get_default_database()
 
@@ -61,21 +64,20 @@ def classify():
         print("Project has been aborted. Terminating.")
         return
     print("Project found and not aborted")
-    fileName=project['fileName']
+    fileName=str(project['_id'])
     print("Starting download h5ad")
-    s3.download_file(bucket,fileName,fileName)
+    s3.download_file(bucket,fileName,fileName+'.h5ad')
     print("Ready for prediction")
-    result = predict(fileName)
+    result = predict(fileName+'.h5ad')
     uploadSize = upload(result)
-    if os.path.isfile(result):
-        print("file found")
-        os.remove(result)
+    dispose(result)
+    dispose(fileName+'.h5ad')
 
     db.projects.update_one({'uploadId':uploadId }, {
                             "$set": {"status": "DONE", "resultSize": uploadSize,"resultName":result}})
     print("Classification has been computed")
     return "Classification has been computed", 200
-    
+
 
 def upload(filename):
     s3.upload_file(filename, bucket, filename)
