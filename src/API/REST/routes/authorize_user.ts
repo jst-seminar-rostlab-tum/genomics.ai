@@ -21,6 +21,7 @@ export default function authorize_user_route() {
 
       // set authorized to true
       user.isAuthorized = true;
+      user.isEmailVerified = true;
       await user.save();
 
       return res.status(200).send(`User ${userId} has been authorized`);
