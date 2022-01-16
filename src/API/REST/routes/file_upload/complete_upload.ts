@@ -4,8 +4,9 @@ import {AWSError, S3} from "aws-sdk";
 
 import check_auth from "../../middleware/check_auth";
 import {ExtRequest} from "../../../../definitions/ext_request";
-import {projectModel} from "../../../../database/models/project";
+import {ProjectJobStatus, projectModel} from "../../../../database/models/project";
 import s3 from "../../../../util/s3";
+import {GoogleAuth} from "google-auth-library";
 
 export default function upload_complete_upload_route() {
     let router = express.Router();
@@ -53,6 +54,15 @@ export default function upload_complete_upload_route() {
                     .then(()=>res.status(200).send({data}))
                     .catch((err)=>res.status(500).send(`Error persisting Multipart-Upload object data: ${err}`));
             });
+
+            const url = `${process.env.CLOUD_RUN_URL}?upload_id=${uploadId}`;
+            const auth = new GoogleAuth();
+            const client = await auth.getIdTokenClient(url);
+            await client.request({url});
+            await projectModel.updateOne({_id: project._id }, <any>{ status: ProjectJobStatus.PROCESSING_PENDING }, );
+            project.status = ProjectJobStatus.PROCESSING_PENDING.toString();
+
+            res.status(200).json({ project: project});
         } catch (err) {
             console.log(err);
             res.status(500).send(err);
