@@ -25,13 +25,13 @@ export default function password_reset_route() : Router {
       });
       await mailer.send(user.email, "[GeneCruncher] Please reset your password", "password_reset_request_email", {
         firstname: user.firstName,
-        link: `https://api.genecruncher.com/password_reset/${token.token}`
+        link: `https://www.genecruncher.com/password_reset?token=${token.token}`
       })
 
       return res.status(200).send('An email has been sent to your email address with instructions to reset your password');
     });
     
-    router.get('/password_reset/:token', async (req, res) => {
+    router.post('/password_reset/:token', async (req, res) => {
       const {password} = req.body;
       if (!password)
         return res.status(400).send("Missing parameters");
