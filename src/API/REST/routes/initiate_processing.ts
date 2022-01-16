@@ -22,7 +22,7 @@ export default function initiate_processing_route(): Router {
                 if (project.owner != req.user_id)
                     return res.status(403).json({ msg: "A user may only initiate their own projects!" });
 
-                if (project.status != ProjectJobStatus.UPLOAD_COMPLETE.toString())
+                if (project.status != ProjectJobStatus[ProjectJobStatus.UPLOAD_COMPLETE])
                     return res.status(400).json({ msg: "Processing cannot be initiated. The upload has to be finished uploading and can only be initiated once."});
 
                 const url = `${process.env.CLOUD_RUN_URL}/run_classifier?uploadId=${uploadId}`;
@@ -32,8 +32,8 @@ export default function initiate_processing_route(): Router {
                 const client = await auth.getIdTokenClient(url);
                 await client.request({url});
 
-                await projectModel.updateOne({_id: project._id }, <any>{ status: ProjectJobStatus.PROCESSING_PENDING }, );
-                project.status = ProjectJobStatus.PROCESSING_PENDING.toString();
+                await projectModel.updateOne({_id: project._id }, <any>{ status: ProjectJobStatus[ProjectJobStatus.PROCESSING_PENDING] }, );
+                project.status = ProjectJobStatus[ProjectJobStatus.PROCESSING_PENDING];
                 
                 res.status(200).json({ project: project});
         });

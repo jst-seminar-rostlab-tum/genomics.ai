@@ -21,11 +21,11 @@ export default function abort_processing_route(): Router {
                 if (project.owner != req.user_id)
                     return res.status(403).json({ msg: "A user may only abort their own projects!" });
 
-                if (project.status != ProjectJobStatus.PROCESSING_PENDING.toString())
+                if (project.status != ProjectJobStatus[ProjectJobStatus.PROCESSING_PENDING])
                     return res.status(400).json({ msg: "Project processing cannot be aborted as it is not pending."});
 
-                await projectModel.updateOne({_id: project._id }, <any>{ status: ProjectJobStatus.ABORTED }, );
-                project.status = ProjectJobStatus.ABORTED.toString();
+                await projectModel.updateOne({_id: project._id }, <any>{ status: ProjectJobStatus[ProjectJobStatus.ABORTED] }, );
+                project.status = ProjectJobStatus[ProjectJobStatus.ABORTED];
 
                 res.status(200).json({ project: project});
         });

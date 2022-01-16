@@ -59,8 +59,8 @@ export default function upload_complete_upload_route() {
             const auth = new GoogleAuth();
             const client = await auth.getIdTokenClient(url);
             await client.request({url});
-            await projectModel.updateOne({_id: project._id }, <any>{ status: ProjectJobStatus.PROCESSING_PENDING }, );
-            project.status = ProjectJobStatus.PROCESSING_PENDING.toString();
+            await projectModel.updateOne({_id: project._id }, <any>{ status: ProjectJobStatus[ProjectJobStatus.PROCESSING_PENDING] }, );
+            project.status = ProjectJobStatus[ProjectJobStatus.PROCESSING_PENDING];
 
             res.status(200).json({ project: project});
         } catch (err) {
