@@ -51,18 +51,17 @@ export default function upload_complete_upload_route() {
                         {fileSize: result.ContentLength,
                                 location: data.Location,
                                 status: "UPLOAD_COMPLETE"}).exec())
-                    .then(()=>res.status(200).send({data}))
+                    .then(async ()=>{
+                        const url = `${process.env.CLOUD_RUN_URL}/run_classifier?uploadId=${uploadId}`;
+                        const auth = new GoogleAuth();
+                        const client = await auth.getIdTokenClient(url);
+                        await client.request({url});
+                        await projectModel.updateOne({_id: project!._id }, <any>{ status: ProjectJobStatus.PROCESSING_PENDING }, );
+
+                        res.status(200).json({ project: project});
+                    })
                     .catch((err)=>res.status(500).send(`Error persisting Multipart-Upload object data: ${err}`));
             });
-
-            const url = `${process.env.CLOUD_RUN_URL}/run_classifier?uploadId=${uploadId}`;
-            const auth = new GoogleAuth();
-            const client = await auth.getIdTokenClient(url);
-            await client.request({url});
-            await projectModel.updateOne({_id: project._id }, <any>{ status: ProjectJobStatus[ProjectJobStatus.PROCESSING_PENDING] }, );
-            project.status = ProjectJobStatus[ProjectJobStatus.PROCESSING_PENDING];
-
-            res.status(200).json({ project: project});
         } catch (err) {
             console.log(err);
             res.status(500).send(err);
