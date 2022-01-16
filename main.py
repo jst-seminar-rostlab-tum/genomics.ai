@@ -49,7 +49,7 @@ def catch_all(path):
 
 @app.route("/run_classifier")
 def classify():
-    data = request.get_json()
+    data = request.args()
     for key in ["uploadId"]:
         if key not in data.keys() :
             return "Key \"{}\" missing in request json data!\nPlease check again if the request is correct!".format(key), 400
