@@ -11,6 +11,8 @@ export default function auth_route(){
         userModel.findOne({email: email}).select('+password').exec().then(user =>{
             if(!user)
                 return res.status(401).send("User not found");
+            if(!user.isEmailVerified)
+                return res.status(401).send("User not verified");
 
             bcrypt.compare(password, <string>user.password, (err, match) => {
                 if (err) {
