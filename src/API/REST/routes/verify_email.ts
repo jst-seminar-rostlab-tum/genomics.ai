@@ -14,8 +14,6 @@ export default function verify_email(): Router {
             const user = await userModel.findById(tokenObj._userId);
             if (!user)
                 return res.status(404).send("Invalid token: User for this token could not be found.");
-            if (user._id)
-                return res.status(404).send("User for this token could not be found.");
 
             if (user.isEmailVerified) {
                 res.status(200).send("User has already been verified.");
@@ -24,7 +22,7 @@ export default function verify_email(): Router {
 
             user.isEmailVerified = true;
             await user.save();
-            res.status(200).send("User Email has been verified");
+            res.status(200).send("<h2>User Email has been verified successfully. click <a href='https://www.genecruncher.com/'>here</a> to return</h2>");
             tokenObj.delete();
         }))
 
