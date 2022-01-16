@@ -47,7 +47,7 @@ def catch_all(path):
     return 'You want path: %s, which is not yet implemented or does not exist' % path
 
 
-@app.route("/run_classifier", methods=['POST'])
+@app.route("/run_classifier")
 def classify():
     data = request.get_json()
     for key in ["uploadId"]:
