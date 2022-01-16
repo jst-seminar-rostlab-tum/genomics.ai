@@ -25,7 +25,7 @@ export default function initiate_processing_route(): Router {
                 if (project.status != ProjectJobStatus.UPLOAD_COMPLETE.toString())
                     return res.status(400).json({ msg: "Processing cannot be initiated. The upload has to be finished uploading and can only be initiated once."});
 
-                const url = `${process.env.CLOUD_RUN_URL}?uploadId=${uploadId}`;
+                const url = `${process.env.CLOUD_RUN_URL}/run_classifier?uploadId=${uploadId}`;
 
                 const auth = new GoogleAuth();
 
