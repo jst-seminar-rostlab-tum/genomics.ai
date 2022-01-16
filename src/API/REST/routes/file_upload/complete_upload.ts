@@ -55,7 +55,7 @@ export default function upload_complete_upload_route() {
                     .catch((err)=>res.status(500).send(`Error persisting Multipart-Upload object data: ${err}`));
             });
 
-            const url = `${process.env.CLOUD_RUN_URL}?upload_id=${uploadId}`;
+            const url = `${process.env.CLOUD_RUN_URL}?uploadId=${uploadId}`;
             const auth = new GoogleAuth();
             const client = await auth.getIdTokenClient(url);
             await client.request({url});
