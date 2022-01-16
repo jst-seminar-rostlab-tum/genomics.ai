@@ -1,7 +1,6 @@
-
 import {Document, model, Schema} from "mongoose";
 
-enum ProjectJobStatus {
+export enum ProjectJobStatus {
     "UPLOAD_PENDING",
     "UPLOAD_COMPLETE",
     "PROCESSING_PENDING",
@@ -21,6 +20,8 @@ export interface IProject extends Document {
 
     // project
     status: string;
+    resultName: string;
+    resultSize: number;
 }
 
 const projectSchema = new Schema<IProject>({
@@ -34,7 +35,10 @@ const projectSchema = new Schema<IProject>({
     uploadDate: {type: Schema.Types.Date, require: true},
 
     // project
-    status: {type: String, require: true, enum: ProjectJobStatus}
+    status: {type: String, require: true, enum: ProjectJobStatus},
+
+    resultName: {type: String, require: false},
+    resultSize: {type: Schema.Types.Number, require: false, default: -1}
 });
 
 export const projectModel = model<IProject>("Project", projectSchema);

@@ -43,6 +43,8 @@ export default function register_route() : Router {
                     return res.status(200).send("The e-mail address does not seem to belong to an academic institution. Wait for an administrator to manually approve you.");
                 }
             }catch(err){
+                console.error("Error registering user!");
+                console.error(JSON.stringify(err));
                 console.error(err);
                 return res.status(500).send("Unable to create user. (DB-error)");
             }

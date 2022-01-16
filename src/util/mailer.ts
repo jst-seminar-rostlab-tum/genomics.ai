@@ -19,8 +19,8 @@ class Mailer {
 
     async send(to : string, subject : string, template_name : string, data : any) {
         let self = this;
-        let texttemplate = await fs.readFile(path.join(__dirname, "./../views/mails", template_name, "text.txt"), 'utf-8')
-        let htmltemplate = await fs.readFile(path.join(__dirname, "./../views/mails", template_name, "html.html"), 'utf-8');
+        let texttemplate = await fs.readFile(path.join(__dirname, "./../../src/views/mails", template_name, "text.txt"), 'utf-8')
+        let htmltemplate = await fs.readFile(path.join(__dirname, "./../../src/views/mails", template_name, "html.html"), 'utf-8');
 
         let rendered_txt = handlebars.compile(texttemplate)(data);
         let rendered_html = handlebars.compile(htmltemplate)(data);

@@ -2,6 +2,7 @@ export function init_env_vars() {
     // check for required env-vars
     const required_env_vars = [
         "DATABASE_URI",
+        "CLOUD_RUN_URL",
         "S3_ACCESS_KEY_ID",
         "S3_SECRET_ACCESS_KEY",
         "S3_ENDPOINT",
@@ -20,7 +21,7 @@ export function init_env_vars() {
             process.env[env] = value;
     }
 
-    setStdEnvValue("PORT", "8050");
+    setStdEnvValue("PORT", "443");
     setStdEnvValue("DATABASE_URI", "mongodb://localhost:27017/dev");
 
     setStdEnvValue("S3_ENDPOINT", "http://127.0.0.1:9000");

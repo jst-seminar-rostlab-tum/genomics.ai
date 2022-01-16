@@ -4,3 +4,5 @@ env: standard
 basic_scaling:
   max_instances: 4
   idle_timeout: 10m
+env_variables:
+  CLOUD_RUN_URL: "https://helloworld-4obuqt4kuq-ew.a.run.app/"

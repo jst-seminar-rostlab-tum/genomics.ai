@@ -5,7 +5,7 @@ import {AWSError, S3} from "aws-sdk";
 import check_auth from "../../middleware/check_auth";
 import {ExtRequest} from "../../../../definitions/ext_request";
 import {projectModel} from "../../../../database/models/project";
-import s3 from "./s3";
+import s3 from "../../../../util/s3";
 
 export default function upload_complete_upload_route() {
     let router = express.Router();
@@ -29,7 +29,7 @@ export default function upload_complete_upload_route() {
 
             let params: CompleteMultipartUploadRequest = {
                 Bucket: process.env.S3_BUCKET_NAME,
-                Key: String(project.fileName),
+                Key: String(project._id),
                 MultipartUpload: { Parts: parts },
                 UploadId: String(uploadId)
             }

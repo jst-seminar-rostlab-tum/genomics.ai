@@ -5,6 +5,9 @@ import auth_route from "./routes/auth";
 import hello_route from "./routes/hello";
 import hello_auth_route from "./routes/hello_auth";
 import update_profile_route from "./routes/update_profile";
+import initiate_processing_route from "./routes/initiate_processing";
+import abort_processing_route from "./routes/abort_processing";
+
 import get_profile_route from "./routes/get_profile";
 import get_job_route from "./routes/get_job";
 import get_jobs_route from "./routes/get_jobs";
@@ -18,6 +21,8 @@ import upload_complete_upload_route from "./routes/file_upload/complete_upload";
 import upload_get_url_route from "./routes/file_upload/get_upload_url";
 import upload_start_upload_route from "./routes/file_upload/start_upload";
 import upload_get_upload_url_route from "./routes/file_upload/get_upload_url";
+import download_results_route from "./routes/file_download/results";
+
 // setup the websocket-server on top of the http_server
 export function express_routes(this: REST_Host): Router {
     let router = express.Router();
@@ -42,11 +47,16 @@ export function express_routes(this: REST_Host): Router {
     // debugging / testing routes
     this.expressApp.use(hello_route());
     this.expressApp.use(hello_auth_route());
+    this.expressApp.use(initiate_processing_route());
+    this.expressApp.use(abort_processing_route());
 
-    // upload route
+    // upload routes
     this.expressApp.use(upload_get_upload_url_route());
     this.expressApp.use(upload_start_upload_route());
     this.expressApp.use(upload_complete_upload_route());
+
+    // download routes
+    this.expressApp.use(download_results_route());
 
     this.expressApp.use(/^.*_ah.*$/, (req, res) => res.status(200).send()) // always tell google everything is fine
     this.expressApp.use((req, res) => res.status(404).send("Not found."));

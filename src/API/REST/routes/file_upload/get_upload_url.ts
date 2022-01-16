@@ -2,7 +2,7 @@ import check_auth from "../../middleware/check_auth";
 import {ExtRequest} from "../../../../definitions/ext_request";
 import {projectModel} from "../../../../database/models/project";
 import {UploadPartRequest} from "aws-sdk/clients/s3";
-import s3 from "./s3";
+import s3 from "../../../../util/s3";
 import express from "express";
 
 export default function upload_get_upload_url_route() {
@@ -28,7 +28,7 @@ export default function upload_get_upload_url_route() {
 
             let params: UploadPartRequest = {
                 Bucket: process.env.S3_BUCKET_NAME!,
-                Key: String(project.fileName),
+                Key: String(project._id),
                 PartNumber: Number(partNumber),
                 UploadId: String(uploadId)
             }
