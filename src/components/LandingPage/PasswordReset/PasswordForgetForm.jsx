@@ -1,9 +1,11 @@
 import React, { useCallback, useState } from 'react';
 import {
-  Modal, Box, Grid, TextField, Button, Avatar,
+  Modal, Box, Grid, TextField, Button, Avatar, Snackbar,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useHistory } from 'react-router-dom';
+import { Alert } from '@mui/lab';
+import validator from 'validator';
 import styles from './passwordreset.module.css';
 import logo from '../../../assets/logo.svg';
 
@@ -12,6 +14,7 @@ function PasswordForgetForm(props) {
   const [errors, setErrors] = useState({});
   // eslint-disable-next-line no-unused-vars
   const [email, setEmail] = useState();
+  const [isSnackbarVisible, setSnackbarVisible] = useState(false);
 
   const history = useHistory();
 
@@ -32,6 +35,24 @@ function PasswordForgetForm(props) {
     setErrors({});
     props.onClose();
   }, [setEmail, setErrors, props]);
+
+  function onSendClick () {
+    setSnackbarVisible(true);
+    if(!validateInput()){
+      return;
+    }
+    
+    history.push('/passwordreset');
+  }
+
+  function validateInput() {
+    if (!validator.isEmail(email)) {
+      setErrors({ ...errors,email : 'A valid e-mail is required!' });
+      return false;
+    }
+    else return true;
+  }
+
 
   return (
 
@@ -64,7 +85,7 @@ function PasswordForgetForm(props) {
               margin="dense"
               required
               fullWidth
-              onChange={setEmail}
+              onChange={() => setEmail()}
             />
             <Button
               type="submit"
@@ -73,7 +94,7 @@ function PasswordForgetForm(props) {
               sx={{
                 pt: 1,
               }}
-              onClick={() => { history.push('/passwordreset'); }}
+              onClick={onSendClick}
             >
               send confirm
             </Button>
@@ -82,6 +103,21 @@ function PasswordForgetForm(props) {
         </Box>
 
       </Modal>
+
+      <Snackbar
+        open={isSnackbarVisible}
+        autoHideDuration={10000}
+        onClose={() => setSnackbarVisible(false)}
+      >
+        <Alert
+          severity={errors.response ? 'error' : 'success'}
+          sx={{ width: '100%' }}
+          onClose={() => setSnackbarVisible(false)}
+        >
+          {errors.response ? errors.response : 'Password reset email has been sent'}
+        </Alert>
+      </Snackbar>        
+
     </div>
   );
 }
