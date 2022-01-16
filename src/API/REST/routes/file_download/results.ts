@@ -17,7 +17,7 @@ export default function download_results_route() {
                 if (!job) {
                     return res.status(404).send("Job not found.");
                 }
-                if (job.status != ProjectJobStatus.DONE.toString()) {
+                if (job.status != ProjectJobStatus[ProjectJobStatus.DONE]) {
                     return res.status(400).send("Job not completed.");
                 }
                 if (job.owner != req.user_id) {

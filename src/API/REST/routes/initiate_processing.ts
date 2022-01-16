@@ -31,9 +31,6 @@ export default function initiate_processing_route(): Router {
 
                 const client = await auth.getIdTokenClient(url);
                 await client.request({url});
-
-                await projectModel.updateOne({_id: project._id }, <any>{ status: ProjectJobStatus[ProjectJobStatus.PROCESSING_PENDING] }, );
-                project.status = ProjectJobStatus[ProjectJobStatus.PROCESSING_PENDING];
                 
                 res.status(200).json({ project: project});
         });
