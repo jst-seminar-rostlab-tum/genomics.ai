@@ -37,7 +37,7 @@ function App() {
           <Route path="/about" render={() => <About setUser={setUser} />} />
           <Route path="/docs" render={() => <Docs setUser={setUser} />} />
           <Route path="/contact" render={() => <Contact setUser={setUser} />} />
-          <Route path="/passwordreset" render={() => <PasswordResetPage/>} />
+          <Route path="/password_reset" render={() => <PasswordResetPage/>} />
         </Switch>
       </Router>
     </ThemeProvider>

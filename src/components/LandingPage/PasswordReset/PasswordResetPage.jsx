@@ -1,18 +1,25 @@
 /* eslint-disable no-unused-vars */
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState ,useEffect} from 'react';
 import {
-  Box, Grid, TextField, Button, Avatar,
+  Box, Grid, TextField, Button, Avatar,Snackbar,Alert
 } from '@mui/material';
-import { useHistory } from 'react-router-dom';
+import { useHistory ,useLocation} from 'react-router-dom';
 import NavBar from '../../NavBar/NavBar';
 import Footer from '../Footer/Footer';
 import styles from './passwordreset.module.css';
 import logo from '../../../assets/logo.svg';
+import { BACKEND_ADDRESS } from '../../common/constants';
 
 function PasswordResetPage(props) {
   const [errors, setErrors] = useState({});
-  const [newPass, setNewPass] = useState({});
-  const [confirmPass, setConfirmPass] = useState({});
+  const [isSnackbarVisible, setSnackbarVisible] = useState(false);
+  const [input, setInput] = useState({
+    password : "",
+    confirmpass : ""
+  });
+
+  const location = useLocation();
+  
 
   const boxStyle = {
     position: 'relative',
@@ -24,10 +31,63 @@ function PasswordResetPage(props) {
     borderRadius: 3,
   };
 
-  const history = useHistory();
+  function doPWReset(){
+    setErrors({});
+    if(!validateInput()){
+      setErrors({passwordconfirm : "Password mismatch!"})
+      return;
+    }
 
-  const { close, visible } = props;
+    const params = new URLSearchParams(location.search);
+    const token = params.get('token');
+    //send POST request with token and password 
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        password: input.password
+      }),
+    };
+    fetch(`${BACKEND_ADDRESS}/password_reset/${token}`, requestOptions)
+    .then(
+      (response) => {
+      if (response.status == 404) {
+        setErrors({ response : response.statusText });
+      } 
+      if (response.status == 400) {
+        setErrors({ response : response.statusText });
+      }
+      else{
+      }
+
+      }
+    );
+    setSnackbarVisible(true);
+    // history.push('/');
+  }
+
+
+  function onSnackbarClose() {
+    setSnackbarVisible(false);
+    setErrors({});
+  }
+
+  function validateInput(){
+    if(input.password != null && input.confirmpass != null)
+      if(input.password == input.confirmpass)
+        return true;
+
+    return false;
+  }
+
+
+  const handleTextChange = useCallback((e) => {
+    setInput((prevState) => ({ ...prevState, [e.target.id]: e.target.value }));
+  }, [setInput]);
+    
   return (
+
+
     <div className={styles.headerContainer}>
       <NavBar />
       <Box justifyContent="center" display="flex">
@@ -42,28 +102,29 @@ function PasswordResetPage(props) {
               <Grid xs align="right" item />
             </Grid>
             <TextField
-              id="new-password"
+              id="password"
               type="password"
-              error={!!errors.email}
-              helperText={errors.email}
+              autoFocus={true}
+              error={!!errors.password}
+              helperText={errors.password}
               label="New Password"
               placeholder="Enter New Password"
               margin="dense"
               required
               fullWidth
-              onChange={setNewPass}
+              onChange={ handleTextChange}
             />
             <TextField
-              id="confirm-password"
+              id="confirmpass"
               type="password"
-              error={!!errors.email}
-              helperText={errors.email}
+              error={!!errors.passwordconfirm}
+              helperText={errors.passwordconfirm}
               label="Confirm Password"
               placeholder="Reenter Password"
               margin="dense"
               required
               fullWidth
-              onChange={setConfirmPass}
+              onChange={handleTextChange}
             />
             <Button
               type="submit"
@@ -72,15 +133,31 @@ function PasswordResetPage(props) {
               sx={{
                 pt: 1,
               }}
-              onClick={() => { history.push('/passwordreset'); }}
+              onClick={doPWReset}
               size="large"
             >
               send confirm
             </Button>
 
+            
+
           </Grid>
         </Box>
       </Box>
+      <Snackbar
+        open={isSnackbarVisible}
+        autoHideDuration={3000}
+        onClose={onSnackbarClose}
+      >
+        <Alert
+          severity={errors.response ? 'error' : 'success'}
+          sx={{ width: '100%' }}
+          onClose={onSnackbarClose}
+        >
+          {errors.response ? errors.response : 'Password reset successfully!'}
+
+        </Alert>
+      </Snackbar>  
 
       <br />
       <br />
