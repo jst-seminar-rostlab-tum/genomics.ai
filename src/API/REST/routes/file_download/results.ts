@@ -27,6 +27,7 @@ export default function download_results_route() {
                 let params: any = {
                     Bucket: process.env.S3_BUCKET_NAME!,
                     Key: String(job.resultName),
+                    Expires: 60 * 60 * 24 * 7 - 1 // one week minus one second
                 }
                 let presignedUrl = await s3.getSignedUrlPromise('getObject', params);
                 res.status(200).send({presignedUrl});

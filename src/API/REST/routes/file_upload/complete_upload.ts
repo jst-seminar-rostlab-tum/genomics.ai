@@ -49,13 +49,22 @@ export default function upload_complete_upload_route() {
                     .then(result => projectModel.updateOne(
                         {uploadId: params.UploadId},
                         {fileSize: result.ContentLength,
-                                location: data.Location,
                                 status: "UPLOAD_COMPLETE"}).exec())
                     .then(async ()=>{
                         const url = `${process.env.CLOUD_RUN_URL}/run_classifier?uploadId=${uploadId}`;
                         const auth = new GoogleAuth();
                         const client = await auth.getIdTokenClient(url);
                         await client.request({url});
+
+                        let params: any = {
+                            Bucket: process.env.S3_BUCKET_NAME!,
+                            Key: "result_" + String(project!._id) + ".tsc",
+                            Expires: 60 * 60 * 24 * 7 - 1 // one week minus one second
+                        }
+                        let presignedUrl = await s3.getSignedUrlPromise('getObject', params);
+                        await projectModel.updateOne(
+                            {uploadId: params.UploadId},
+                            {location: presignedUrl}).exec();
 
                         res.status(200).json({ project: project});
                     })
