@@ -1,7 +1,7 @@
 [
   {
     "name": "Vivian Haller",
-    "role": "Visualization Lead, d3.js developer",
+    "role": "Visualization Lead & d3.js + ML Developer",
     "img": "memberphotos/Visualization_Vivian_Haller.jpg",
     "dscp": "M.Sc. Math/CS at TUM",
     "socialFB": "",
@@ -12,7 +12,7 @@
   {
     "name": "Yashica Saun",
     "role": "Visualisation/d3.js Developer",
-    "img": "https://cdn0.iconfinder.com/data/icons/set-ui-app-android/32/8-512.png",
+    "img": "memberphotos/Visualization_Yashica_Saun.png",
     "dscp": "Master's student in Informatics at TUM",
     "socialFB": "",
     "socialGithub": "",
@@ -21,8 +21,8 @@
   },
   {
     "name": "Carl Neumann",
-    "role": "Visualisation/d3.js Developer",
-    "img": "https://cdn0.iconfinder.com/data/icons/set-ui-app-android/32/8-512.png",
+    "role": "Visualisation/d3.js + ML Developer",
+    "img": "memberphotos/Visualization_Carl_Neumann.jpg",
     "dscp": "B.Sc. Information Systems at TUM ",
     "socialFB": "",
     "socialGithub": "",
