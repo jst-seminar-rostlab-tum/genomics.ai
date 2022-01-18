@@ -31,7 +31,7 @@ export default function register_route() : Router {
                     email,
                     password: saltHashedPassword,
                     note,
-                    isAccountApproved: isAcademic
+                    isAuthorized: isAcademic
                 });
 
                 if (isAcademic) {
