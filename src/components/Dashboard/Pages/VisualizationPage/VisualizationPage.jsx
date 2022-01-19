@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
-  Box, createTheme, ThemeProvider, Typography,
+  Box, createTheme, ThemeProvider,
 } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import Visualization from '../../Visualization/src/Visualization';
 import styles from './visualizationpage.module.css';
-import queryJob from './VisualizationPageLogic';
 import NavBar from '../../../NavBar/NavBar';
 import Footer from '../../../LandingPage/Footer/Footer';
 
@@ -27,8 +26,6 @@ function useQuery() {
 }
 
 function VisualizationPage() {
-  const [job, setJob] = useState(null);
-  const [jobId, setJobId] = useState(null);
   const query = useQuery();
   return (
     <ThemeProvider theme={theme}>

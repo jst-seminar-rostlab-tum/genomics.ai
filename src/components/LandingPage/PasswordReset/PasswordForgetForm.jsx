@@ -1,14 +1,14 @@
+/* eslint-disable */
 import React, { useCallback, useState } from 'react';
 import {
-  Modal, Box, Grid, TextField, Button, Avatar, Snackbar, Alert
+  Modal, Box, Grid, TextField, Button, Avatar, Snackbar, Alert,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useHistory } from 'react-router-dom';
-import { BACKEND_ADDRESS } from '../../common/constants';
 import validator from 'validator';
+import { BACKEND_ADDRESS } from '../../common/constants';
 import styles from './passwordreset.module.css';
 import logo from '../../../assets/logo.svg';
-
 
 function PasswordForgetForm(props) {
   const { close, visible } = props;
@@ -37,9 +37,8 @@ function PasswordForgetForm(props) {
     props.onClose();
   }, [setEmail, setErrors, props]);
 
-  function onSendClick () {
-    
-    if(!validateInput()){
+  function onSendClick() {
+    if (!validateInput()) {
       return;
     }
 
@@ -47,30 +46,25 @@ function PasswordForgetForm(props) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        email: email
+        email,
       }),
     };
     fetch(`${BACKEND_ADDRESS}/password_reset`, requestOptions)
-    .then(
-      (response) => {
-      if (response.status == 404) {
-        setErrors({ response : response.statusText });
-      } 
-      if (response.status == 400) {
-        setErrors({ response : response.statusText });
-      }
-      else{
-      }
-      setSnackbarVisible(true);
-      return;
-      }
-    );
-
-
+      .then(
+        (response) => {
+          if (response.status == 404) {
+            setErrors({ response: response.statusText });
+          }
+          if (response.status == 400) {
+            setErrors({ response: response.statusText });
+          } else {
+          }
+          setSnackbarVisible(true);
+        },
+      );
 
     // history.push('/password_reset');
   }
-
 
   function onSnackbarClose() {
     setSnackbarVisible(false);
@@ -78,18 +72,17 @@ function PasswordForgetForm(props) {
   }
 
   function validateInput() {
-    if ((email)==null) {
-      setErrors({ ...errors,email : 'Empty input!' });
+    if ((email) == null) {
+      setErrors({ ...errors, email: 'Empty input!' });
       return false;
     }
 
     if (!validator.isEmail(email)) {
-      setErrors({ ...errors,email : 'A valid e-mail is required!' });
+      setErrors({ ...errors, email: 'A valid e-mail is required!' });
       return false;
     }
-    else return true;
+    return true;
   }
-
 
   return (
 
@@ -154,7 +147,7 @@ function PasswordForgetForm(props) {
           {errors.response ? errors.response : 'Password reset email has been sent! Please check the emailbox!'}
 
         </Alert>
-      </Snackbar>        
+      </Snackbar>
 
     </div>
   );

@@ -1,9 +1,9 @@
-/* eslint-disable no-unused-vars */
-import React, { useCallback, useState ,useEffect} from 'react';
+/* eslint-disable no-unused-vars,react/jsx-no-bind */
+import React, { useCallback, useState, useEffect } from 'react';
 import {
-  Box, Grid, TextField, Button, Avatar,Snackbar,Alert
+  Box, Grid, TextField, Button, Avatar, Snackbar, Alert,
 } from '@mui/material';
-import { useHistory ,useLocation} from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import NavBar from '../../NavBar/NavBar';
 import Footer from '../Footer/Footer';
 import styles from './passwordreset.module.css';
@@ -14,12 +14,11 @@ function PasswordResetPage(props) {
   const [errors, setErrors] = useState({});
   const [isSnackbarVisible, setSnackbarVisible] = useState(false);
   const [input, setInput] = useState({
-    password : "",
-    confirmpass : ""
+    password: '',
+    confirmpass: '',
   });
 
   const location = useLocation();
-  
 
   const boxStyle = {
     position: 'relative',
@@ -31,62 +30,56 @@ function PasswordResetPage(props) {
     borderRadius: 3,
   };
 
-  function doPWReset(){
+  function validateInput() {
+    if (input.password != null && input.confirmpass != null) {
+      if (input.password === input.confirmpass) return true;
+    }
+
+    return false;
+  }
+
+  function doPWReset() {
     setErrors({});
-    if(!validateInput()){
-      setErrors({passwordconfirm : "Password mismatch!"})
+    if (!validateInput()) {
+      setErrors({ passwordconfirm: 'Password mismatch!' });
       return;
     }
 
     const params = new URLSearchParams(location.search);
     const token = params.get('token');
-    //send POST request with token and password 
+    // send POST request with token and password
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        password: input.password
+        password: input.password,
       }),
     };
     fetch(`${BACKEND_ADDRESS}/password_reset/${token}`, requestOptions)
-    .then(
-      (response) => {
-      if (response.status == 404) {
-        setErrors({ response : response.statusText });
-      } 
-      if (response.status == 400) {
-        setErrors({ response : response.statusText });
-      }
-      else{
-      }
-
-      }
-    );
+      .then(
+        (response) => {
+          if (response.status === 404) {
+            setErrors({ response: response.statusText });
+          }
+          if (response.status === 400) {
+            setErrors({ response: response.statusText });
+          }
+        },
+      );
     setSnackbarVisible(true);
     // history.push('/');
   }
-
 
   function onSnackbarClose() {
     setSnackbarVisible(false);
     setErrors({});
   }
 
-  function validateInput(){
-    if(input.password != null && input.confirmpass != null)
-      if(input.password == input.confirmpass)
-        return true;
-
-    return false;
-  }
-
-
   const handleTextChange = useCallback((e) => {
     setInput((prevState) => ({ ...prevState, [e.target.id]: e.target.value }));
   }, [setInput]);
-    
-  return (
 
+  return (
 
     <div className={styles.headerContainer}>
       <NavBar />
@@ -104,7 +97,7 @@ function PasswordResetPage(props) {
             <TextField
               id="password"
               type="password"
-              autoFocus={true}
+              autoFocus
               error={!!errors.password}
               helperText={errors.password}
               label="New Password"
@@ -112,7 +105,7 @@ function PasswordResetPage(props) {
               margin="dense"
               required
               fullWidth
-              onChange={ handleTextChange}
+              onChange={handleTextChange}
             />
             <TextField
               id="confirmpass"
@@ -139,8 +132,6 @@ function PasswordResetPage(props) {
               send confirm
             </Button>
 
-            
-
           </Grid>
         </Box>
       </Box>
@@ -157,7 +148,7 @@ function PasswordResetPage(props) {
           {errors.response ? errors.response : 'Password reset successfully!'}
 
         </Alert>
-      </Snackbar>  
+      </Snackbar>
 
       <br />
       <br />

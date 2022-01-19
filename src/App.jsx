@@ -29,6 +29,7 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
+      {/* eslint-disable-next-line no-restricted-globals */}
       <Router history={history}>
         <Switch>
           <Route exact path="/" render={() => (user ? <Redirect to="/sequencer" /> : <HomePage setUser={setUser} />)} />
@@ -37,7 +38,7 @@ function App() {
           <Route path="/about" render={() => <About setUser={setUser} />} />
           <Route path="/docs" render={() => <Docs setUser={setUser} />} />
           <Route path="/contact" render={() => <Contact setUser={setUser} />} />
-          <Route path="/password_reset" render={() => <PasswordResetPage/>} />
+          <Route path="/password_reset" render={() => <PasswordResetPage />} />
           <Route path="/result" render={() => <VisualizationPage />} />
         </Switch>
       </Router>
