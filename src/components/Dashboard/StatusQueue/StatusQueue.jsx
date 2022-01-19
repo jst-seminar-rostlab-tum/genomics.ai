@@ -11,7 +11,10 @@ import { JOB_QUEUE_UPDATE_INTERVAL } from '../../common/constants';
 
 function StatusQueue() {
   const [expandList, setExpandList] = useState(true);
-  const [jobs, setJobs] = useState([]);
+  const [jobs, setJobs] = useState([{
+  _id: 1,
+  status: 'DONE',
+  }]);
 
   useEffect(() => {
     const updateJobs = () => queryJobs().then((newJobs) => setJobs(filterDone(newJobs)))
