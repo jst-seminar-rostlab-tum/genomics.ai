@@ -175,7 +175,6 @@ const SubteamSection = ((props) => {
         spacing={2}
         direction="row"
         justifyContent="center"
-    // justifyContent="space-between"
         alignItems="center"
         justify="center"
         style={{ minHeight: '20vh', maxWidth: '500vh' }}
@@ -228,12 +227,12 @@ const About = (props) => <div>
       <Typography sx={{ fontSize: '30px', fontWeight: 'bold' }}>Organisation</Typography>
     </Divider>
 
-  <Grid
-    container
-      direction="row"
-    alignItems="center"
-    justifyContent="center"
-  >
+    <Grid
+        container
+        direction="row"
+        alignItems="center"
+        justifyContent="center"
+    >
     <Grid item xs={3}>
       <Namecard
           name="Dr. Guy Yachdav"
@@ -254,7 +253,7 @@ const About = (props) => <div>
       <Typography sx={{ fontSize: '30px', fontWeight: 'bold' }}>Frontend</Typography>
     </Divider>
 
-    <SubteamSection data={frontendData} />
+    <SubteamSection data={frontendData} className={styles.subeamSection}/>
 
     <Divider variant="middle" textAlign="left" sx={{ paddingTop: '100px' }}>
       <Typography sx={{ fontSize: '30px', fontWeight: 'bold' }}>Backend</Typography>
