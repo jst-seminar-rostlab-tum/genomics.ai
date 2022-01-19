@@ -109,14 +109,14 @@ def predict(filename):
         scanpy.tl.umap(input)
 
     cleanedDataset['celltype'] = output
-    cleanedDataset['umap_0'] = list(
+    cleanedDataset['x'] = list(
         map(lambda pair: pair[0], input.obsm['X_umap']))
 
-    cleanedDataset['umap_1'] = list(
+    cleanedDataset['y'] = list(
         map(lambda pair: pair[1], input.obsm['X_umap']))
     resultname = 'result_'+filename.rsplit(".", 1)[0]+'.tsv'
     cleanedDataset.to_csv(resultname, columns=[
-                          'celltype', 'umap_0', 'umap_1'], sep='\t')
+                           'umap_0', 'umap_1','celltype'], sep='\t')
 
     return resultname
 
