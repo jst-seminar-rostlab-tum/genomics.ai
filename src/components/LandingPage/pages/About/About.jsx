@@ -1,7 +1,7 @@
 /* eslint-disable */
 import React from 'react';
 import {
-  Typography, Card, CardMedia, CardContent, Grid, IconButton, Divider, Container,
+  Typography, Card, CardMedia, CardContent, Grid, IconButton, Divider,
 } from '@mui/material';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
@@ -69,7 +69,6 @@ function Namecard(props) {
       boxShadow: 'none',
     }}
     >
-
       <CardMedia
         component="img"
         image={img}
@@ -139,36 +138,36 @@ function Namecard(props) {
 
 const SubteamSection = ((props) => {
   const cardWidth = 3.5;
-  let { data } = JSON.parse(JSON.stringify(props));
-  let teamlead = data.shift();
+  const { data } = props;
+  const teamlead = data.shift();
+  console.log(teamlead.img);
   return (
-    <div >
+    <div>
 
       <Grid
         container
         spacing={1}
         direction="row"
         justifyContent="center"
-        // justifyContent="space-between"
-        // alignItems="center"
-        // justify="center"
+      // justifyContent="space-between"
+        alignItems="center"
+        justify="center"
         style={{ minHeight: '20vh', maxWidth: '500vh' }}
         sx={{ paddingTop: '50px' }}
       >
-        
-          <Grid item xs={cardWidth} style={{ display : 'flex' ,justifyContent: 'center' }}>
-            <Namecard
-              name={teamlead.name}
-              role={teamlead.role}
-              img={teamlead.img}
-              dscp={teamlead.dscp}
-              socialFB={teamlead.socialFB}
-              socialLinkedIn={teamlead.socialLinkedIn}
-              socialGithub={teamlead.socialGithub}
-              socialTwitter={teamlead.socialTwitter}
-            />
-          </Grid>
-          
+        <Grid item xs={cardWidth}>
+          <Namecard
+            name={teamlead.name}
+            role={teamlead.role}
+            img={teamlead.img}
+            dscp={teamlead.dscp}
+            socialFB={teamlead.socialFB}
+            socialLinkedIn={teamlead.socialLinkedIn}
+            socialGithub={teamlead.socialGithub}
+            socialTwitter={teamlead.socialTwitter}
+          />
+        </Grid>
+
       </Grid>
 
       <Grid
@@ -184,80 +183,43 @@ const SubteamSection = ((props) => {
 
         {
         data.map((elem) => (
-          <Grid item xs={cardWidth} style={{ display : 'flex' ,justifyContent: 'center' }}>
-              <Namecard
-                name={elem.name}
-                role={elem.role}
-                img={elem.img}
-                dscp={elem.dscp}
-                socialFB={elem.socialFB}
-                socialLinkedIn={elem.socialLinkedIn}
-                socialGithub={elem.socialGithub}
-                socialTwitter={elem.socialTwitter}
-              />
+          <Grid item xs={cardWidth}>
+            <Namecard
+              name={elem.name}
+              role={elem.role}
+              img={elem.img}
+              dscp={elem.dscp}
+              socialFB={elem.socialFB}
+              socialLinkedIn={elem.socialLinkedIn}
+              socialGithub={elem.socialGithub}
+              socialTwitter={elem.socialTwitter}
+            />
+
           </Grid>
         ))
         }
       </Grid>
     </div>
   );
-});
+}
+);
 
-const About = ((props) => {
-
-
-
-
-  return(
-    <div>
-      <NavBar setUser={props.setUser} />
-      <div className={styles.headerContainer}>
-        <Stack
-          spacing="30px"
-        >
-          <Typography sx={{ fontWeight: 'bold', fontSize: '30px' }}>Team</Typography>
-          <div className={styles.textContainer}>
-            <Typography
-              sx={{ fontSize: '25px', paddingInline: '350px', maxWidth: '1700px' }}
-              align="center"
-              >
-              Genomics.ai was developed by a team of 12 students from the Technical University of Munich (TUM)
-              under the guidance of Dr. Guy Yachdav.
-            </Typography>
-          </div>
-
-        </Stack>
-
-        <Divider variant="middle" textAlign="left" sx={{ paddingTop: '100px' , paddingBottom: '100px'}}>
-          <Typography sx={{ fontSize: '30px', fontWeight: 'bold' }}>Organisation</Typography>
-        </Divider>
-
-
-        <Grid
-            container
-            spacing={1}
-            direction="row"
-            justifyContent="center"
-            // justifyContent="space-between"
-            alignItems="center"
-            justify="center"
-            style={{ minHeight: '20vh', maxWidth: '500vh' }}
-            sx={{ alignItems: 'center' }}
+const About = (props) => <div>
+  <NavBar setUser={props.setUser} />
+  <div className={styles.headerContainer}>
+    <Stack
+      spacing="30px"
+    >
+      <Typography sx={{ fontWeight: 'bold', fontSize: '30px' }}>Team</Typography>
+      <div className={styles.textContainer}>
+        <Typography
+          sx={{ fontSize: '25px', paddingInline: '350px', maxWidth: '1700px' }}
+          align="center"
           >
-            
-            <Grid item xs={3.5} style={{ display : 'flex' ,justifyContent: 'center' }} >
-              
-                <Namecard
-                    name="Dr. Guy Yachdav"
-                    role="Supervisor & Initiator"
-                    img="https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=UoUkGhUAAAAJ&citpid=2"
-                    dscp="Technology executive with over 15 years experience in R&D and specialization in big data and machine learning"
-                    socialFB=""
-                    socialLinkedIn="https://www.linkedin.com/in/gyachdav/?originalSubdomain=il"
-                    socialGithub=""
-                    socialTwitter=""
-                />
-            </Grid>
+          Genomics.ai was developed by a team of 12 students from the Technical University of Munich (TUM)
+          under the guidance of Dr. Guy Yachdav.
+        </Typography>
+      </div>
 
     </Stack>
 
@@ -284,30 +246,28 @@ const About = ((props) => {
       />
     </Grid>
 
+  </Grid>
 
-      <br />
-        <Divider variant="middle" textAlign="left" sx={{ paddingTop: '100px' , paddingBottom: '100px'}} >
-          <Typography sx={{ fontSize: '30px', fontWeight: 'bold' }}>Frontend</Typography>
-        </Divider>
+  <br />
+    <Divider variant="middle" textAlign="left" sx={{ paddingTop: '40px' }}>
+      <Typography sx={{ fontSize: '30px', fontWeight: 'bold' }}>Frontend</Typography>
+    </Divider>
 
     <SubteamSection data={frontendData} className={styles.subeamSection}/>
 
-        <Divider variant="middle" textAlign="left" sx={{ paddingTop: '100px' , paddingBottom: '100px'}}>
-          <Typography sx={{ fontSize: '30px', fontWeight: 'bold' }}>Backend</Typography>
-        </Divider>
+    <Divider variant="middle" textAlign="left" sx={{ paddingTop: '100px' }}>
+      <Typography sx={{ fontSize: '30px', fontWeight: 'bold' }}>Backend</Typography>
+    </Divider>
 
-        <SubteamSection data={backendData} />
+    <SubteamSection data={backendData} />
 
-        <Divider variant="middle" textAlign="left" sx={{ paddingTop: '100px' , paddingBottom: '100px'}}>
-          <Typography sx={{ fontSize: '30px', fontWeight: 'bold' }}>Visualisation</Typography>
-        </Divider>
-      <SubteamSection data={visualizationData} />
+    <Divider variant="middle" textAlign="left" sx={{ paddingTop: '100px' }}>
+      <Typography sx={{ fontSize: '30px', fontWeight: 'bold' }}>Visualisation</Typography>
+    </Divider>
+  <SubteamSection data={visualizationData} />
 
-        <Footer />
-      </div>
-    </div>
-  );
-});
-
+    <Footer />
+  </div>
+</div>
 
 export default About;
