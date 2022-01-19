@@ -142,16 +142,16 @@ const SubteamSection = ((props) => {
   const teamlead = data.shift();
   console.log(teamlead.img);
   return (
-    <div>
+    <div >
 
       <Grid
         container
         spacing={1}
         direction="row"
         justifyContent="center"
-      // justifyContent="space-between"
-        alignItems="center"
-        justify="center"
+        // justifyContent="space-between"
+        // alignItems="center"
+        // justify="center"
         style={{ minHeight: '20vh', maxWidth: '500vh' }}
         sx={{ paddingTop: '50px' }}
       >
@@ -228,26 +228,20 @@ const About = (props) => <div>
       <Typography sx={{ fontSize: '30px', fontWeight: 'bold' }}>Organisation</Typography>
     </Divider>
 
-  <Grid
-    container
-      direction="row"
-    alignItems="center"
-    justifyContent="center"
-  >
-    <Grid item xs={3}>
-      <Namecard
-          name="Dr. Guy Yachdav"
-          role="Supervisor & Initiator"
-          img="https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=UoUkGhUAAAAJ&citpid=2"
-          dscp="Technology executive with over 15 years experience in R&D and specialization in big data and machine learning"
-          socialFB=""
-          socialLinkedIn="https://www.linkedin.com/in/gyachdav/?originalSubdomain=il"
-          socialGithub=""
-          socialTwitter=""
-      />
-    </Grid>
 
-  </Grid>
+        <div className={styles.textContainer}>
+        <Namecard
+            name="Dr. Guy Yachdav"
+            role="Supervisor & Initiator"
+            img="https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=UoUkGhUAAAAJ&citpid=2"
+            dscp="Technology executive with over 15 years experience in R&D and specialization in big data and machine learning"
+            socialFB=""
+            socialLinkedIn="https://www.linkedin.com/in/gyachdav/?originalSubdomain=il"
+            socialGithub=""
+            socialTwitter=""
+        />
+        </div>
+
 
   <br />
     <Divider variant="middle" textAlign="left" sx={{ paddingTop: '40px' }}>
