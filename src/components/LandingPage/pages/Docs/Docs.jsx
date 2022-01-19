@@ -4,7 +4,6 @@ import {
 } from '@mui/material';
 import styles from './docs.module.css';
 import NavBar from '../../../NavBar/NavBar';
-import graphic1 from '../../../../assets/landing-illustrations/working.png';
 import Footer from '../../Footer/Footer';
 import visualisation from '../../../../assets/landing-illustrations/visualisation.png';
 import zoom from '../../../../assets/landing-illustrations/zoomVisualisation.png';
@@ -110,7 +109,6 @@ const Docs = (props) => {
           </div>
           <img className={styles.csvImage} src={csvformat} alt="visualisation" />
 
-          {/* Features ---------------------------------------------------------------------------*/}
           <Divider
             variant="middle"
             textAlign="center"
@@ -125,7 +123,6 @@ const Docs = (props) => {
             direction="column"
             spacing={25}
           >
-            {/* Zoom in/out -----------------------------------------------------------------------*/}
 
             <div className={styles.infoContainer}>
               <img className={styles.verticalIllustration} src={zoom} alt="science-guy" />
@@ -156,7 +153,7 @@ const Docs = (props) => {
                 </Typography>
 
                 <Typography sx={{ fontSize: '20px' }}>
-                  By clicking the 'Reset' button in the upper right corner
+                  By clicking the &apos;Reset&apos; button in the upper right corner
                   you can reset the zoom level to the original value.
                 </Typography>
 
@@ -201,14 +198,14 @@ const Docs = (props) => {
                   </Typography>
                   <Typography sx={{ fontSize: '20px' }}>
                     {' '}
-                    To permanently display all cluster labels you need to press the 'Labels'
+                    To permanently display all cluster labels you need
+                    to press the &apos;Labels&apos;
                     button in the right upper corner.
                   </Typography>
                 </div>
               </div>
             </Stack>
 
-            {/* Cluster Details ------------------------------------------------------------------*/}
             <div className={styles.infoContainer}>
               <img
                 className={styles.horizontalIllustration}

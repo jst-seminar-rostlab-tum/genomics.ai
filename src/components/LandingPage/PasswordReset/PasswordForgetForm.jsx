@@ -99,7 +99,7 @@ function PasswordForgetForm(props) {
               <Grid xs item />
               <Grid align="center">
                 <Avatar src={logo} sx={{ width: 72, height: 72 }} />
-                <h2>Forget Password</h2>
+                <h2>Forgot Password</h2>
               </Grid>
               <Grid xs align="right" item>
                 <CloseIcon onClick={onClose} className={styles.closeImg} />
@@ -126,7 +126,7 @@ function PasswordForgetForm(props) {
               }}
               onClick={onSendClick}
             >
-              send confirm
+              confirm
             </Button>
 
           </Grid>
@@ -144,7 +144,7 @@ function PasswordForgetForm(props) {
           sx={{ width: '100%' }}
           onClose={onSnackbarClose}
         >
-          {errors.response ? errors.response : 'Password reset email has been sent! Please check the emailbox!'}
+          {errors.response ? errors.response : 'Password reset email has been sent! Please check your e-mail!'}
 
         </Alert>
       </Snackbar>

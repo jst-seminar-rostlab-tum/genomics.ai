@@ -1,9 +1,63 @@
-.title h1 {
-    font-size: 30px;
-    color: #003560;
+
+.container {
+    text-align: center;
+    justify-content: center;
+    padding-top: 200px;
 }
 
-.illustration{
+.mainIllustration{
     object-fit: contain;
-    height: 650px;
+    height: 550px;
+}
+
+.csvImage {
+    object-fit: contain;
+    height: 370px;
+}
+
+
+.textContainer {
+    display: flex;
+    justify-content: center
+}
+
+.infoContainer{
+    padding-inline: 80px;
+    padding-block: 30px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.explanationTitle{
+    padding-bottom: 30px;
+}
+
+.explanationLeft{
+    text-align: left;
+    padding: 50px;
+    width: 30%
+}
+
+.explanationRight{
+    text-align: right;
+    padding: 50px;
+    width: 30%
+}
+
+.horizontalIllustration {
+    padding-inline: 30px;
+    width: 45%;
+    max-width: 1000px;
+}
+
+.verticalIllustration {
+    padding-inline: 30px;
+    width: 30%;
+    max-Width: 700px;
+}
+
+.divider {
+    padding-block: 100px;
 }

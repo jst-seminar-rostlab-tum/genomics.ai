@@ -129,7 +129,7 @@ function PasswordResetPage(props) {
               onClick={doPWReset}
               size="large"
             >
-              send confirm
+              confirm
             </Button>
 
           </Grid>

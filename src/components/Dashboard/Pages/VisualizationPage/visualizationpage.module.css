@@ -1,10 +1,10 @@
 .visualizationContainer{
     height: 1000px;
-    transform: scale(0.7, 0.7) translate(0, -100px);
-    -ms-transform: scale(0.7, 0.7) translate(0, -100px);; /* IE 9 */
-    -webkit-transform: scale(0.7, 0.7) translate(0, -100px);; /* Safari and Chrome */
-    -o-transform: scale(0.7, 0.7) translate(0, -100px);; /* Opera */
-    -moz-transform: scale(0.7, 0.7) translate(0, -100px);; /* Firefox */
+    transform: scale(0.85, 0.85) translate(0, 30px);
+    -ms-transform: scale(0.85, 0.85) translate(0, 30px); /* IE 9 */
+    -webkit-transform: scale(0.85, 0.85) translate(0, 30px); /* Safari and Chrome */
+    -o-transform: scale(0.85, 0.85) translate(0, 30px); /* Opera */
+    -moz-transform: scale(0.85, 0.85) translate(0, 30px); /* Firefox */
 }
 .headerContainer{
     text-align: center;

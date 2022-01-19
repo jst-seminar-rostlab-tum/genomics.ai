@@ -64,18 +64,23 @@ const Sidebar = ({ sidebarShown, toggleSidebar }) => {
           />
           Projects
         </div>
-        { jobs.map((job) => (
-          <Link
-            className={styles.dropdownLink}
-            to={`/overview/${job._id}`}
-            key={job.id}
-          >
-            <CgFileDocument style={{ color: 'white' }} />
-            <span className={styles.sidebarLabel}>
-              {dateFormat(new Date(job.uploadDate), 'dd/mm/yyyy hh:MM')}
-            </span>
-          </Link>
-        ))}
+        { jobs
+          .filter((job) => job.status === 'DONE')
+          .map((job) => (
+            <Link
+              className={styles.dropdownLink}
+              to={{ pathname: '/result', search: `tsv=${encodeURIComponent(job.location)}` }}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ textDecoration: 'none' }}
+              key={job.id}
+            >
+              <CgFileDocument style={{ color: 'white' }} />
+              <span className={styles.sidebarLabel}>
+                {dateFormat(new Date(job.uploadDate), 'dd/mm/yyyy hh:MM')}
+              </span>
+            </Link>
+          ))}
       </div>
     </div>
   );

@@ -103,7 +103,7 @@ function RegistrationForm(props) {
     fetch(`${BACKEND_ADDRESS}/register`, requestOptions)
       .then((response) => {
         setLoading(false);
-        if (response.status === 200) {
+        if (response.status === 200 || response.status === 201) {
           onSuccessfulRegistration();
         } else {
           onFailedRegistration(response);
@@ -242,7 +242,7 @@ function RegistrationForm(props) {
           sx={{ width: '100%' }}
           onClose={() => setSnackbarVisible(false)}
         >
-          {errors.response ? errors.response : 'Successful registration, now you can log in!'}
+          {errors.response ? errors.response : 'Successful registration, check your e-mails for verification!'}
         </Alert>
       </Snackbar>
     </div>

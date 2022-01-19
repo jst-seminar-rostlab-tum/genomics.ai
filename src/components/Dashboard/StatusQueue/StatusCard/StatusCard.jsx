@@ -149,7 +149,12 @@ function StatusCard({
             */}
             <Box sx={{ textAlign: 'center', paddingTop: '30px' }}>
               {status === 'DONE' ? (
-                <Link to={{ pathname: '/result', search: `tsv=${location}` }} target="_blank" rel="noopener noreferrer">
+                <Link
+                  to={{ pathname: '/result', search: `tsv=${location}` }}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ textDecoration: 'none' }}
+                >
                   <Button variant="outlined" color="info">
                     {/* The id is given as a prop */}
                     <Typography sx={{ color: '#4F83CC', fontWeight: '500' }}>

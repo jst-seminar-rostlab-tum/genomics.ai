@@ -74,12 +74,12 @@ function NavigationBar({ sidebarShown, user, setUser }) {
             to={`${url}/settings`}
           >
             {`Hi, ${user.firstName}!`}
-            <img
-              alt="profiledefault"
-              src={profiledefault}
-              style={{ height: '40px', paddingLeft: '15px' }}
-            />
           </NavLink>
+          <img
+            alt="profiledefault"
+            src={profiledefault}
+            style={{ height: '40px', paddingLeft: '15px' }}
+          />
           { dropDown && <SettingsDropdown setUser={setUser} /> }
         </li>
 
