@@ -11,10 +11,7 @@ import { JOB_QUEUE_UPDATE_INTERVAL } from '../../common/constants';
 
 function StatusQueue() {
   const [expandList, setExpandList] = useState(true);
-  const [jobs, setJobs] = useState([{
-  _id: 1,
-  status: 'DONE',
-  }]);
+  const [jobs, setJobs] = useState([]);
 
   useEffect(() => {
     const updateJobs = () => queryJobs().then((newJobs) => setJobs(newJobs))
@@ -51,7 +48,7 @@ function StatusQueue() {
           }}
           >
             {jobs.map((job) => (
-              <StatusCard key={job._id} id={job._id} status={job.status} log={job.fileName} sx={{ alignItems: 'center' }} />
+              <StatusCard key={job._id} id={job._id} status={job.status} log={job.fileName} sx={{ alignItems: 'center' }} location={encodeURIComponent(job.location)} />
             ))}
           </List>
         </Collapse>

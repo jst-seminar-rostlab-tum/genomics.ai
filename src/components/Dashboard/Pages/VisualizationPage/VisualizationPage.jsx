@@ -26,39 +26,15 @@ function useQuery() {
   return React.useMemo(() => new URLSearchParams(search), [search]);
 }
 
-function loadingOrErrorOrResult(object) {
-  if (!object) {
-    return <Typography sx={{ paddingTop: '10rem' }} fontSize="5rem">Fetching result...</Typography>;
-  } if (object.error) {
-    return <Typography sx={{ paddingTop: '10rem' }} fontSize="5rem">{object.error}</Typography>;
-  }
-  return <Visualization url={object.location} />;
-}
-
 function VisualizationPage() {
   const [job, setJob] = useState(null);
   const [jobId, setJobId] = useState(null);
   const query = useQuery();
-
-  useEffect(() => {
-    const id = query.get('id');
-    setJobId(id);
-    queryJob(id).then((response) => setJob(response))
-      .catch((err) => {
-        console.log(err);
-        setJob({ error: 'Couldn\'t fetch job result.' });
-      });
-  }, [query]);
   return (
     <ThemeProvider theme={theme}>
       <div>
         <NavBar />
         <div className={styles.headerContainer}>
-          <Typography sx={{ paddingTop: '8rem' }} fontSize="3rem">
-            Job result
-            <br />
-            {jobId}
-          </Typography>
           <Box
             sx={{
               display: 'flex',
@@ -67,9 +43,7 @@ function VisualizationPage() {
             }}
             className={styles.visualizationContainer}
           >
-            {
-              loadingOrErrorOrResult(job)
-            }
+            <Visualization url={query.get('tsv')} />
           </Box>
           <Footer />
         </div>
