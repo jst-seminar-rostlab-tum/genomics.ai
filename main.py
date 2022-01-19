@@ -116,7 +116,7 @@ def predict(filename):
         map(lambda pair: pair[1], input.obsm['X_umap']))
     resultname = 'result_'+filename.rsplit(".", 1)[0]+'.tsv'
     cleanedDataset.to_csv(resultname, columns=[
-                           'umap_0', 'umap_1','celltype'], sep='\t')
+                           'x', 'y','celltype'], sep='\t')
 
     return resultname
 
