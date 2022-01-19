@@ -1,0 +1,15 @@
+.axis line {
+  stroke: lightgrey;
+}
+
+.axis path {
+  stroke: lightgrey;
+}
+
+.axis text {
+  fill: lightgrey;
+}
+
+text {
+  pointer-events: none;
+}

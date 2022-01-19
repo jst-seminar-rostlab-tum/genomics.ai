@@ -1,5 +1,5 @@
-export const width = 1800;
-export const height = 900;
+export const width = 1860;
+export const height = 965;
 export const initialPointRadius = 2;
 export const increasedPointRadius = 4;
 export const cornerRadius = 5;
@@ -19,7 +19,6 @@ export const textHeight = 20;
 export const offset = 11;
 export const searchRadius = 0.02;
 export const fill = '#292c2f';
-export const controlX = width - padding - buttonWidth;
 export const colors = [
   '#000000', '#1CE6FF', '#FF34FF', '#FF4A46', '#008941', '#006FA6', '#A30059', '#FC009C',
   '#7A4900', '#0000A6', '#63FFAC', '#B79762', '#997D87', '#92896B', '#365D25', '#866097',

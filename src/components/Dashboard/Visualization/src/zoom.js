@@ -1,10 +1,9 @@
-import { width, height } from './constants';
 import { easeCircle, zoom } from 'd3';
 
 const transitionTime = 1000;
 const maxZoomFactor = 16;
 
-export const addZoom = (svg, handleZoom) => {
+export const addZoom = (svg, [width, height], handleZoom) => {
 
   const z = zoom()
     .scaleExtent([1, maxZoomFactor])

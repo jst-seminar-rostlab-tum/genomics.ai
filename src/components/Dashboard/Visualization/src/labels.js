@@ -3,8 +3,6 @@ import { fadeIn, fadeOut } from './helpers';
 import { addBarPlot } from './barPlot';
 import { addPiePlot } from './piePlot';
 import {
-  width,
-  height,
   padding,
   fill,
   outerPieRadius,
@@ -34,7 +32,12 @@ export class LabelFactory {
 
     for (const c of collection.clusters)
       this.visibility.set(c.id, false);
-  }
+  };
+
+  setRange([width, height]) {
+    this.width = width;
+    this.height = height;
+  };
 
   showLabel(id, [px, py], text, duration = 1000) {
 
@@ -42,7 +45,7 @@ export class LabelFactory {
     const labelWidth = textLength + padding;
     const x = this.collection.xDomain(px);
     const y = this.collection.yDomain(py) - middle;
-    const flip = (width - x - extendedWidth) < 0;
+    const flip = (this.width - x - extendedWidth) < 0;
     const diff = flip ? (1 - labelWidth - offset) : (offset - 1);
 
     const label = this.container.append('g')
@@ -141,7 +144,7 @@ export class LabelFactory {
     const labelWidth = textLength + 20;
 
     const px = this.collection.scalePoint(cluster.mean)[0];
-    const shiftX = (width - px) <= extendedWidth;
+    const shiftX = (this.width - px) <= extendedWidth;
     const diffX = shiftX ? (1 - offset - labelWidth) : (offset - 1);
     const labelContainer = this.container.select(`#label-${cluster.id}-container`);
 
@@ -185,11 +188,12 @@ export class LabelFactory {
     this.extendedShown = true;
 
     const [px, py] = this.collection.scalePoint(cluster.mean);
-    const shiftX = (width - px) <= extendedWidth;
-    const shiftY = (height - py) <= extendedHeight;
+    const shiftX = (this.width - px) <= extendedWidth;
+    const shiftY = (this.height - py) <= extendedHeight;
     const diffX = shiftX ? (1 - offset - extendedWidth) : (offset - 1);
-    const diffY = shiftY ? (height - py - extendedHeight) : 0;
-    const labelContainer = this.container.select(`#label-${cluster.id}-container`);
+    const diffY = shiftY ? (this.height - py - extendedHeight) : 0;
+    const label = this.container.select(`#label-${cluster.id}`).raise();
+    const labelContainer = label.select(`#label-${cluster.id}-container`);
 
     labelContainer.transition()
       .duration(500)

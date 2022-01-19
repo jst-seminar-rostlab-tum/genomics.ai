@@ -1,47 +1,28 @@
 import { scaleLinear, scaleOrdinal, min, max, mean, sum, quadtree } from 'd3';
-import { width, height, colors, searchRadius } from './constants';
+import { colors, searchRadius } from './constants';
 import { Cluster } from './cluster';
 
-const prepare = ([metaData, umapData]) => {
-
-  const clusterMapping = new Map();
-
-  metaData
-    .filter(({ CELLTYPE }) => isNaN(parseFloat(CELLTYPE)))
-    .forEach(m => clusterMapping.set(parseInt(m.CLUSTER), m.CELLTYPE));
-
-  const sampleData = umapData
-    .map(d => ({
-      id: d.cellType,
-      x: +d.x,
-      y: +d.y,
-      cluster: parseInt(d.cluster)
-    }))
-    .filter(d => clusterMapping.has(d.cluster));
-
-  return { clusterMapping, sampleData };
-};
-
-const getQuadTree = sampleData => {
+const getQuadTree = data => {
 
   const tree = quadtree()
-    .x(p => p.x)
-    .y(p => p.y);
+    .x(p => +p.x)
+    .y(p => +p.y);
 
-  tree.addAll(sampleData);
+  tree.addAll(data);
   return tree;
 };
 
-const getClusters = (clusterMapping, sampleData) => {
+const getClusters = data => {
 
   const clusters = new Map();
-
-  for (const p of sampleData) {
-    const clusterName = clusterMapping.get(p.cluster);
-    if (!clusters.has(clusterName))
-      clusters.set(clusterName, []);
-    clusters.get(clusterName).push([p.x, p.y]);
-  }
+  data
+    .filter(({ celltype }) => isNaN(parseFloat(celltype)))
+    .forEach(p => {
+      const clusterName = p.celltype;
+      if (!clusters.has(clusterName))
+        clusters.set(clusterName, []);
+      clusters.get(clusterName).push([+p.x, +p.y]);
+    });
 
   const names = clusters.keys();
   const colorScale = scaleOrdinal()
@@ -49,7 +30,7 @@ const getClusters = (clusterMapping, sampleData) => {
     .range(colors);
 
   for (const name of clusters.keys()) {
-    const points = Array.from(clusters.get(name));
+    const points = clusters.get(name);
     const color = colorScale(name);
     clusters.set(name, new Cluster(points, name, color));
   }
@@ -71,27 +52,22 @@ export class ClusterCollection {
 
   constructor(data) {
 
-    const { clusterMapping, sampleData } = prepare(data);
-    this.tree = getQuadTree(sampleData);
-    this.collection = getClusters(clusterMapping, sampleData);
+    this.tree = getQuadTree(data);
+    this.collection = getClusters(data);
     this.clusters = Array.from(this.collection.values());
 
     const { xMin, xMax, yMin, yMax } = getBounds(this.clusters);
-    this.initialXDomain = scaleLinear()
-        .domain([xMin, xMax])
-        .range([0, width]);
-    this.initialYDomain = scaleLinear()
-        .domain([yMin, yMax])
-        .range([height, 0]);
-    this.xDomain = this.initialXDomain;
-    this.yDomain = this.initialYDomain;
-
-    this.totalCount = sum(this.clusters.map(c => c.count));
+    this.xMin = xMin;
+    this.xMax = xMax;
+    this.yMin = yMin;
+    this.yMax = yMax;
 
     const dists = this.clusters.map(c => c.dev);
     this.minDist = min(dists);
     this.maxDist = max(dists);
     this.avgDist = mean(dists);
+
+    this.totalCount = sum(this.clusters.map(c => c.count));
   };
 
   getAll() {
@@ -100,6 +76,19 @@ export class ClusterCollection {
 
   get(name) {
     return this.collection.get(name);
+  };
+
+  setRange([width, height]) {
+    this.width = width;
+    this.height = height;
+    this.initialXDomain = scaleLinear()
+        .domain([this.xMin, this.xMax])
+        .range([0, width]);
+    this.initialYDomain = scaleLinear()
+        .domain([this.yMin, this.yMax])
+        .range([height, 0]);
+    this.xDomain = this.initialXDomain;
+    this.yDomain = this.initialYDomain;
   };
 
   rescaleDomain(transform) {
