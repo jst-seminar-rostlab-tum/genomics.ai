@@ -229,14 +229,14 @@ const About = ((props) => {
 
         </Stack>
 
-        <Divider variant="middle" textAlign="left" sx={{ paddingTop: '100px' , paddingBottom: '40px'}}>
+        <Divider variant="middle" textAlign="left" sx={{ paddingTop: '100px' , paddingBottom: '100px'}}>
           <Typography sx={{ fontSize: '30px', fontWeight: 'bold' }}>Organisation</Typography>
         </Divider>
 
 
         <Grid
             container
-            spacing={0}
+            spacing={1}
             direction="row"
             justifyContent="center"
             // justifyContent="space-between"
@@ -265,19 +265,19 @@ const About = ((props) => {
 
 
       <br />
-        <Divider variant="middle" textAlign="left" sx={{ paddingTop: '40px' }}>
+        <Divider variant="middle" textAlign="left" sx={{ paddingTop: '100px' , paddingBottom: '100px'}} >
           <Typography sx={{ fontSize: '30px', fontWeight: 'bold' }}>Frontend</Typography>
         </Divider>
 
         <SubteamSection data={frontendData} />
 
-        <Divider variant="middle" textAlign="left" sx={{ paddingTop: '100px' }}>
+        <Divider variant="middle" textAlign="left" sx={{ paddingTop: '100px' , paddingBottom: '100px'}}>
           <Typography sx={{ fontSize: '30px', fontWeight: 'bold' }}>Backend</Typography>
         </Divider>
 
         <SubteamSection data={backendData} />
 
-        <Divider variant="middle" textAlign="left" sx={{ paddingTop: '100px' }}>
+        <Divider variant="middle" textAlign="left" sx={{ paddingTop: '100px' , paddingBottom: '100px'}}>
           <Typography sx={{ fontSize: '30px', fontWeight: 'bold' }}>Visualisation</Typography>
         </Divider>
       <SubteamSection data={visualizationData} />
