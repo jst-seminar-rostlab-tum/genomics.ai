@@ -5,6 +5,7 @@ import {
 import styles from './docs.module.css';
 import NavBar from '../../../NavBar/NavBar';
 import graphic1 from '../../../../assets/landing-illustrations/working.png';
+import Footer from '../../Footer/Footer';
 
 const Docs = (props) => {
   const { setUser } = props;
@@ -29,6 +30,8 @@ const Docs = (props) => {
           <img className={styles.illustration} src={graphic1} alt="working" />
         </Stack>
       </div>
+
+      <Footer />
     </div>
 
   );

@@ -1,7 +1,12 @@
-.tumLogo{
-    width:45px;
-    height: 25px;
+.tumLogo {
+    height: 30px;
 }
+
+.rostlabLogo {
+    height: 20px;
+}
+
+
 
 ul > li{
     margin: 10px;

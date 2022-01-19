@@ -1,9 +1,11 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Stack } from '@mui/material';
 import CopyrightIcon from '@mui/icons-material/Copyright';
 import { Link } from 'react-router-dom';
 import styles from './footer.module.css';
 import tumLogo from '../../../assets/tum-logo.png';
+import rostlab from '../../../assets/landing-illustrations/rostlab.png';
+import helmholtz from '../../../assets/landing-illustrations/helmholtz.png';
 
 function Footer() {
   return (
@@ -17,7 +19,11 @@ function Footer() {
         }
 }
     >
-      <img className={styles.tumLogo} src={tumLogo} alt="tum logo" />
+      <Stack spacing={4} direction="row">
+        <img className={styles.tumLogo} src={tumLogo} alt="tum logo" />
+        <img className={styles.rostlabLogo} src={rostlab} alt="rostlab logo" />
+        <img className={styles.tumLogo} src={helmholtz} alt="helmholtz logo" />
+      </Stack>
       <Typography sx={{ fontSize: '14px', padding: '10px' }}>
         <ul>
           <li><Link to="about">About us</Link></li>
