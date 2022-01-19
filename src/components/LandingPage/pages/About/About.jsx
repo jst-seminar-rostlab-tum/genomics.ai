@@ -176,7 +176,6 @@ const SubteamSection = ((props) => {
         spacing={2}
         direction="row"
         justifyContent="center"
-    // justifyContent="space-between"
         alignItems="center"
         justify="center"
         style={{ minHeight: '20vh', maxWidth: '500vh' }}
@@ -260,8 +259,30 @@ const About = ((props) => {
                 />
             </Grid>
 
-            
-        </Grid>
+    </Stack>
+
+    <Divider variant="middle" textAlign="left" sx={{ paddingTop: '100px' , paddingBottom: '40px'}}>
+      <Typography sx={{ fontSize: '30px', fontWeight: 'bold' }}>Organisation</Typography>
+    </Divider>
+
+    <Grid
+        container
+        direction="row"
+        alignItems="center"
+        justifyContent="center"
+    >
+    <Grid item xs={3}>
+      <Namecard
+          name="Dr. Guy Yachdav"
+          role="Supervisor & Initiator"
+          img="https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=UoUkGhUAAAAJ&citpid=2"
+          dscp="Technology executive with over 15 years experience in R&D and specialization in big data and machine learning"
+          socialFB=""
+          socialLinkedIn="https://www.linkedin.com/in/gyachdav/?originalSubdomain=il"
+          socialGithub=""
+          socialTwitter=""
+      />
+    </Grid>
 
 
       <br />
@@ -269,7 +290,7 @@ const About = ((props) => {
           <Typography sx={{ fontSize: '30px', fontWeight: 'bold' }}>Frontend</Typography>
         </Divider>
 
-        <SubteamSection data={frontendData} />
+    <SubteamSection data={frontendData} className={styles.subeamSection}/>
 
         <Divider variant="middle" textAlign="left" sx={{ paddingTop: '100px' , paddingBottom: '100px'}}>
           <Typography sx={{ fontSize: '30px', fontWeight: 'bold' }}>Backend</Typography>

@@ -155,9 +155,15 @@ const Home = (props) => {
         padding="200px"
         paddingTop="80px"
       >
-        <img className={styles.tumLogo} src={tum} alt="tum-logo" />
-        <img className={styles.rostlabLogo} src={rostlab} alt="rostlab" />
-        <img className={styles.tumLogo} src={helmholtz} alt="helmholtz" />
+        <div className={styles.partnerLogoContainer}>
+          <img className={styles.tumLogo} src={tum} alt="tum-logo" />
+        </div>
+        <div className={styles.partnerLogoContainer}>
+          <img className={styles.rostlabLogo} src={rostlab} alt="rostlab" />
+        </div>
+        <div className={styles.partnerLogoContainer}>
+          <img className={styles.tumLogo} src={helmholtz} alt="helmholtz" />
+        </div>
       </Stack>
 
       <Divider
