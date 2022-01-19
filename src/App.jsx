@@ -10,6 +10,8 @@ import Docs from './components/LandingPage/pages/Docs/Docs';
 import Contact from './components/LandingPage/pages/Contact/Contact';
 import DashboardContent from './components/Dashboard/DashboardContent/DashboardContent';
 import { guardedPage } from './components/common/utils';
+import VisualizationPage from './components/Dashboard/Pages/VisualizationPage/VisualizationPage';
+import PasswordResetPage from './components/LandingPage/PasswordReset/PasswordResetPage';
 
 function App() {
   const theme = createTheme({
@@ -27,7 +29,8 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Router>
+      {/* eslint-disable-next-line no-restricted-globals */}
+      <Router history={history}>
         <Switch>
           <Route exact path="/" render={() => (user ? <Redirect to="/sequencer" /> : <HomePage setUser={setUser} />)} />
           <Route path="/sequencer" render={() => guardedPage(<DashboardContent user={user} setUser={setUser} />)} />
@@ -35,6 +38,8 @@ function App() {
           <Route path="/about" render={() => <About setUser={setUser} />} />
           <Route path="/docs" render={() => <Docs setUser={setUser} />} />
           <Route path="/contact" render={() => <Contact setUser={setUser} />} />
+          <Route path="/password_reset" render={() => <PasswordResetPage />} />
+          <Route path="/result" render={() => <VisualizationPage />} />
         </Switch>
       </Router>
     </ThemeProvider>

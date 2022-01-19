@@ -23,5 +23,6 @@
     "no-alert": "off",
     "linebreak-style": "off",
     "no-underscore-dangle": "off"
-  }
+  },
+  "ignorePatterns": ["src/components/Dashboard/Visualization"]
 }

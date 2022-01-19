@@ -1,28 +1,27 @@
-import * as d3 from 'd3';
-import { width, height } from './constants';
+import { easeCircle, zoom } from 'd3';
 
 const transitionTime = 1000;
-const maxZoomFactor = 20;
+const maxZoomFactor = 16;
 
-const addZoom = (svg, handleZoom) => {
-  const zoom = d3
-    .zoom()
+export const addZoom = (svg, [width, height], handleZoom) => {
+
+  const z = zoom()
     .scaleExtent([1, maxZoomFactor])
     .translateExtent([
-      [0, 0],
-      [width, height],
+        [0, 0],
+        [width, height],
     ])
     .on('zoom', handleZoom);
 
-  svg.call(zoom);
+  svg.call(z)
+    .on('wheel.zoom', null);
 
-  const setZoom = (zoomFactor) => {
+  const setZoom = zoomFactor => {
     svg.transition()
-      .ease(d3.easeCircle)
+      .ease(easeCircle)
       .duration(transitionTime)
-      .call(zoom.scaleBy, zoomFactor);
-  };
+      .call(z.scaleBy, zoomFactor);
+  }
 
   return setZoom;
-};
-export default addZoom;
+}

@@ -58,6 +58,7 @@ const NavBar = (props) => {
               </ul>
             </Typography>
           </Box>
+          {setUser && (
           <Box className={styles.buttonContainer}>
             <Button
               variant="text"
@@ -75,6 +76,7 @@ const NavBar = (props) => {
               </Typography>
             </Button>
           </Box>
+          ) }
         </Toolbar>
       </div>
       <div>

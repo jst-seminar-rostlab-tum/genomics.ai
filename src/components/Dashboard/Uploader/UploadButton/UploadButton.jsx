@@ -28,7 +28,7 @@ function UploadButton({ onChange, disabled }) {
   return (
     <label htmlFor="contained-button-file">
       <Input
-        accept="image/*"
+        accept=".h5ad"
         id="contained-button-file"
         multiple
         type="file"

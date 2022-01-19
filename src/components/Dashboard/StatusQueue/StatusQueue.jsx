@@ -6,7 +6,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import StatusCard from './StatusCard/StatusCard';
 import styles from './statusqueue.module.css';
-import { filterDone, queryJobs } from './StatusQueueLogic';
+import { queryJobs } from './StatusQueueLogic';
 import { JOB_QUEUE_UPDATE_INTERVAL } from '../../common/constants';
 
 function StatusQueue() {
@@ -14,7 +14,7 @@ function StatusQueue() {
   const [jobs, setJobs] = useState([]);
 
   useEffect(() => {
-    const updateJobs = () => queryJobs().then((newJobs) => setJobs(filterDone(newJobs)))
+    const updateJobs = () => queryJobs().then((newJobs) => setJobs(newJobs))
       .catch((ignored) => { console.log(ignored); });
     updateJobs();
     const intervalId = setInterval(updateJobs, JOB_QUEUE_UPDATE_INTERVAL);
@@ -29,7 +29,7 @@ function StatusQueue() {
         padding: '10px',
         borderRadius: expandList ? '10px 10px 0px 0px' : '10px 10px 10px 10px',
         textAlign: 'center',
-        fontEeight: 'bold',
+        fontWeight: 'bold',
         display: 'flex',
         justifyContent: 'center',
         fontSize: '8px',
@@ -48,7 +48,7 @@ function StatusQueue() {
           }}
           >
             {jobs.map((job) => (
-              <StatusCard key={job._id} id={job._id} status={job.status} log={job.fileName} sx={{ alignItems: 'center' }} />
+              <StatusCard key={job._id} id={job._id} status={job.status} log={job.fileName} sx={{ alignItems: 'center' }} location={encodeURIComponent(job.location)} />
             ))}
           </List>
         </Collapse>

@@ -9,7 +9,6 @@ import Documentation from '../Pages/Documentation/Documentation';
 import Settings from '../Pages/Settings/Settings';
 import Help from '../Pages/Help/Help';
 import styles from './dashboardContent.module.css';
-import VisualizationPage from '../Pages/VisualizationPage/VisualizationPage';
 
 const DashboardContent = (props) => {
   const [sidebarShown, setSidebarShown] = useState(true);
@@ -17,7 +16,6 @@ const DashboardContent = (props) => {
   const { user, setUser } = props;
 
   const { path, url } = useRouteMatch();
-  const visualizationResults = [1];
 
   return (
     <div>
@@ -50,13 +48,6 @@ const DashboardContent = (props) => {
             sidebarShown={sidebarShown}
           />
         </Route>
-        {
-          visualizationResults.map((id) => (
-            <Route path={`${path}/result/${id}`} key={id}>
-              <VisualizationPage id={id} />
-            </Route>
-          ))
-        }
       </Switch>
     </div>
   );

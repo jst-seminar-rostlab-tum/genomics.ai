@@ -18,6 +18,7 @@ import {
 } from '@mui/material/colors';
 import CircleIcon from '@mui/icons-material/Circle';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Link } from 'react-router-dom';
 import styles from './statuscard.module.css';
 
 /*
@@ -46,7 +47,7 @@ const theme = createTheme({
 });
 
 function StatusCard({
-  id, status, log,
+  id, status, log, location,
 }) {
   // object of colors for the statuses
   const statusColor = {
@@ -148,12 +149,14 @@ function StatusCard({
             */}
             <Box sx={{ textAlign: 'center', paddingTop: '30px' }}>
               {status === 'DONE' ? (
-                <Button variant="outlined" color="info" href={`result/${id}`}>
-                  {/* The id is given as a prop */}
-                  <Typography sx={{ color: '#4F83CC', fontWeight: '500' }}>
-                    See results
-                  </Typography>
-                </Button>
+                <Link to={{ pathname: '/result', search: `tsv=${location}` }} target="_blank" rel="noopener noreferrer">
+                  <Button variant="outlined" color="info">
+                    {/* The id is given as a prop */}
+                    <Typography sx={{ color: '#4F83CC', fontWeight: '500' }}>
+                      See results
+                    </Typography>
+                  </Button>
+                </Link>
               ) : null}
               {/* cancel button */}
               {status !== 'ABORTED' && status !== 'DONE' && (
