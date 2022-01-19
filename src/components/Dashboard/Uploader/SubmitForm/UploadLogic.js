@@ -1,5 +1,5 @@
 import { BACKEND_ADDRESS, MULTIPART_UPLOAD_STATUS as Status, UPLOAD_CHUNK_SIZE } from '../../../common/constants';
-import removeItemFromArray, { getAuthAndJsonHeader, getAuthHeader } from '../../../common/utils';
+import removeItemFromArray from '../../../common/utils';
 
 export function getSubmissionProgressPercentage(progress) {
   if (progress.chunks === 0) {
@@ -15,9 +15,24 @@ function expectStatus(response, requestName, code) {
   return response;
 }
 
-function uploadChunks(chunkCount, remaining, selectedFile, uploadId,
+function getAuthHeader() {
+  return {
+    auth: localStorage.getItem('jwt'),
+  };
+}
+
+function getAuthAndJsonHeader() {
+  return {
+    auth: localStorage.getItem('jwt'),
+    'content-type': 'application/json',
+  };
+}
+
+async function uploadChunks(chunkCount, remaining, selectedFile, uploadId,
   submissionProgress, setSubmissionProgress, promiseArray) {
-  for (let index = 1; index < chunkCount + 1; index += 1) {
+  for (let index = 1;
+    index < chunkCount + 1 && !localStorage.getItem('cancelUpload');
+    index += 1) {
     if (!remaining.includes(index)) {
       console.log(`Skipping chunk ${index}`);
       // eslint-disable-next-line no-continue
@@ -51,6 +66,11 @@ function uploadChunks(chunkCount, remaining, selectedFile, uploadId,
           return { etag, index };
         }));
     promiseArray.push(currentPromise);
+    try {
+      // sequentializing upload
+      // eslint-disable-next-line no-await-in-loop
+      await currentPromise;
+    } catch (ignored) { /* ignored */ }
   }
 }
 
@@ -58,6 +78,18 @@ function finishUpload(chunkCount, promiseArray, submissionProgress, setSubmissio
   selectedFile, uploadId) {
   Promise.all(promiseArray.map((promise) => promise.catch((e) => e)))
     .then(async (promises) => {
+      if (localStorage.getItem('cancelUpload')) {
+        localStorage.removeItem('cancelUpload');
+        setSubmissionProgress({
+          status: Status.IDLE,
+          uploadId: '',
+          chunks: 0,
+          uploaded: 0,
+          remaining: [],
+          uploadedParts: [],
+        });
+        return;
+      }
       if (submissionProgress.remaining.length > 0) {
         setSubmissionProgress((prevState) => ({
           ...prevState,
@@ -101,7 +133,7 @@ async function uploadMultipartFile(uploadId, selectedFile,
 
   setSubmissionProgress((prevState) => ({ ...prevState, chunks: chunkCount }));
 
-  if (submissionProgress.status !== 'error_finish') {
+  if (submissionProgress.status !== Status.ERROR_FINISH) {
     const { remaining } = submissionProgress;
     if (remaining.length === 0) {
       for (let i = 1; i < chunkCount + 1; i += 1) {
@@ -110,10 +142,9 @@ async function uploadMultipartFile(uploadId, selectedFile,
       setSubmissionProgress((prevState) => ({ ...prevState, remaining }));
     }
     setSubmissionProgress((prevState) => ({ ...prevState, status: Status.UPLOAD_PROGRESS }));
-    uploadChunks(chunkCount, remaining, selectedFile,
+    await uploadChunks(chunkCount, remaining, selectedFile,
       uploadId, submissionProgress, setSubmissionProgress, promiseArray);
   }
-
   finishUpload(chunkCount, promiseArray, submissionProgress,
     setSubmissionProgress, selectedFile, uploadId);
 }
@@ -141,6 +172,7 @@ export async function startOrContinueUpload(
   submissionProgress,
   setSubmissionProgress,
 ) {
+  localStorage.removeItem('cancelUpload');
   const { status, uploadId } = submissionProgress;
   if (status === Status.ERROR_PROGRESS || status === Status.ERROR_FINISH) {
     return uploadMultipartFile(uploadId, selectedFile, submissionProgress, setSubmissionProgress);

@@ -1,8 +1,26 @@
 .visualizationContainer{
-    transform: scale(0.7, 0.7);
-    -ms-transform: scale(0.7, 0.7); /* IE 9 */
-    -webkit-transform: scale(0.7, 0.7); /* Safari and Chrome */
-    -o-transform: scale(0.7, 0.7); /* Opera */
-    -moz-transform: scale(0.7, 0.7); /* Firefox */
-    padding-top: 10px;
+    height: 1000px;
+    transform: scale(0.7, 0.7) translate(0, -100px);
+    -ms-transform: scale(0.7, 0.7) translate(0, -100px);; /* IE 9 */
+    -webkit-transform: scale(0.7, 0.7) translate(0, -100px);; /* Safari and Chrome */
+    -o-transform: scale(0.7, 0.7) translate(0, -100px);; /* Opera */
+    -moz-transform: scale(0.7, 0.7) translate(0, -100px);; /* Firefox */
+}
+.headerContainer{
+    text-align: center;
+    align-items: center;
+    padding-top: 0px;
+}
+.formContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+    width: 1000px;
+    height: 1500px;
+}
+
+.textContainer {
+    display: flex;
+    justify-content: center
 }

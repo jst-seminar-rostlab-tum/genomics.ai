@@ -1,11 +1,12 @@
-import { innerPieRadius, outerPieRadius, padding, barWidth, textHeight, textLabelHeight } from './constants';
 import { pie, interpolate, arc } from 'd3';
+import {
+  innerPieRadius, outerPieRadius, padding, barWidth, textHeight, textLabelHeight,
+} from './constants';
 
 const sampleLabel = '# Samples';
 
 export const addPiePlot = (labelContainer, cluster, clusterCollection) => {
-
-  const generator = pie().value(d => d.count);
+  const generator = pie().value((d) => d.count);
   const pieData = generator(clusterCollection.clusters);
   const angleInterpolation = interpolate(generator.startAngle()(), generator.endAngle()());
   const innerRadiusInterpolation = interpolate(0, innerPieRadius);
@@ -21,8 +22,8 @@ export const addPiePlot = (labelContainer, cluster, clusterCollection) => {
     .text(sampleLabel)
     .attr('opacity', 0)
     .transition()
-      .delay(500)
-      .attr('opacity', 1)
+    .delay(500)
+    .attr('opacity', 1);
 
   const countString = `${cluster.count}`;
 
@@ -34,10 +35,10 @@ export const addPiePlot = (labelContainer, cluster, clusterCollection) => {
     .text(`${cluster.count}`)
     .attr('opacity', 0)
     .transition()
-      .delay(1000)
-      .attr('opacity', 1)
+    .delay(1000)
+    .attr('opacity', 1);
 
-  const totalCount = clusterCollection.totalCount;
+  const { totalCount } = clusterCollection;
   const percentage = 100 * cluster.count / totalCount;
   const percentageString = `${percentage.toFixed(1)}%`;
 
@@ -49,28 +50,27 @@ export const addPiePlot = (labelContainer, cluster, clusterCollection) => {
     .text(percentageString)
     .attr('opacity', 0)
     .transition()
-      .delay(1000)
-      .attr('opacity', 1)
+    .delay(1000)
+    .attr('opacity', 1);
 
   const chart = piePlot.append('g')
-    .attr('transform', `translate(${outerPieRadius},${outerPieRadius + textLabelHeight})`)
+    .attr('transform', `translate(${outerPieRadius},${outerPieRadius + textLabelHeight})`);
 
   const arcs = chart.selectAll('path')
     .data(pieData)
     .enter()
     .append('path')
-    .attr('fill', (d, i) => clusterCollection.clusters[i].name === cluster.name ? cluster.color : 'lightgrey')
+    .attr('fill', (d, i) => (clusterCollection.clusters[i].name === cluster.name ? cluster.color : 'lightgrey'));
 
   const ar = arc();
 
   arcs.transition()
     .duration(1500)
-    .attrTween('d', d => {
+    .attrTween('d', (d) => {
       const originalEnd = d.endAngle;
-      return t => {
+      return (t) => {
         const currentAngle = angleInterpolation(t);
-        if (currentAngle < d.startAngle)
-          return '';
+        if (currentAngle < d.startAngle) return '';
         d.endAngle = Math.min(currentAngle, originalEnd);
         return ar(d);
       };
@@ -79,9 +79,7 @@ export const addPiePlot = (labelContainer, cluster, clusterCollection) => {
   chart
     .transition()
     .duration(1500)
-    .tween('arcRadii', () => {
-      return t => ar
-        .innerRadius(innerRadiusInterpolation(t))
-        .outerRadius(outerRadiusInterpolation(t));
-    });
+    .tween('arcRadii', () => (t) => ar
+      .innerRadius(innerRadiusInterpolation(t))
+      .outerRadius(outerRadiusInterpolation(t)));
 };

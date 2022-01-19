@@ -38,6 +38,7 @@ function App() {
           <Route path="/docs" render={() => <Docs setUser={setUser} />} />
           <Route path="/contact" render={() => <Contact setUser={setUser} />} />
           <Route path="/password_reset" render={() => <PasswordResetPage/>} />
+          <Route path="/result" render={() => <VisualizationPage />} />
         </Switch>
       </Router>
     </ThemeProvider>

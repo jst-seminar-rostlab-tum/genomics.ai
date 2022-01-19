@@ -15,7 +15,7 @@ function Uploader() {
           <h1>Upload your files</h1>
         </div>
         <div className={styles.tooltip}>
-          <Tooltip title="Accepted File Format: .txt" placement="bottom-end">
+          <Tooltip title="Accepted File Format: H5AD" placement="bottom-end">
             <HelpIcon />
           </Tooltip>
         </div>

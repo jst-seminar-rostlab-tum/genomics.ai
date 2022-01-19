@@ -2,13 +2,11 @@ import { mean, extent } from 'd3';
 import { euclideanDist } from './helpers';
 
 export class Cluster {
-
   constructor(points, name, color) {
-
-    const xs = points.map(p => p[0]);
-    const ys = points.map(p => p[1]);
+    const xs = points.map((p) => p[0]);
+    const ys = points.map((p) => p[1]);
     const m = [mean(xs), mean(ys)];
-    const devs = points.map(p => euclideanDist(p, m));
+    const devs = points.map((p) => euclideanDist(p, m));
 
     this.name = name;
     this.id = name.replaceAll(/[/,_, ]/g, '').toLowerCase();
@@ -17,8 +15,8 @@ export class Cluster {
     this.points = points;
     this.mean = m;
     this.dev = mean(devs);
-    this.xExtent = extent(points.map(p => +p[0]));
-    this.yExtent = extent(points.map(p => +p[1]));
+    this.xExtent = extent(points.map((p) => +p[0]));
+    this.yExtent = extent(points.map((p) => +p[1]));
   }
 
   getMinX() {

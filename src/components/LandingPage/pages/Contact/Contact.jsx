@@ -60,7 +60,7 @@ const Contact = (props) => {
 
     <ThemeProvider theme={theme}>
       <div>
-        <NavBar setUer={setUser} />
+        <NavBar setUser={setUser} />
 
         <div className={styles.headerContainer}>
           <Stack
