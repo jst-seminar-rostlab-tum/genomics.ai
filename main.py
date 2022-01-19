@@ -110,14 +110,13 @@ def predict(filename):
 
     cleanedDataset['celltype'] = output
     cleanedDataset['x'] = list(
-        map(lambda pair: pair[0], input.obsm['X_umap']))
+    map(lambda pair: pair[0], input.obsm['X_umap']))
 
     cleanedDataset['y'] = list(
-        map(lambda pair: pair[1], input.obsm['X_umap']))
+    map(lambda pair: pair[1], input.obsm['X_umap']))
     resultname = 'result_'+filename.rsplit(".", 1)[0]+'.tsv'
-    cleanedDataset.index.name='id'
-    cleanedDataset.to_csv(resultname, columns=[
-                           'x', 'y','celltype'], sep='\t')
+    cleanedDataset.index.name = 'id'
+    cleanedDataset.to_csv(resultname, columns=['x', 'y', 'celltype'], sep='\t')
 
     return resultname
 
