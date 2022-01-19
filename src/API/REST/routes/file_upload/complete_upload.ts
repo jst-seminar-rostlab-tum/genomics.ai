@@ -58,7 +58,7 @@ export default function upload_complete_upload_route() {
 
                         let params: any = {
                             Bucket: process.env.S3_BUCKET_NAME!,
-                            Key: "result_" + String(project!._id) + ".tsv",
+                            Key: "result_" + project!.id + ".tsv",
                             Expires: 60 * 60 * 24 * 7 - 1 // one week minus one second
                         }
                         let presignedUrl = await s3.getSignedUrlPromise('getObject', params);
