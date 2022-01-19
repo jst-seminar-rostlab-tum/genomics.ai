@@ -30,13 +30,12 @@ function App() {
     <ThemeProvider theme={theme}>
       <Router>
         <Switch>
-          {/* <Route exact path="/" render={() => (user ? <Redirect to="/sequencer" /> : <HomePage setUser={setUser} />)} />
+          <Route exact path="/" render={() => (user ? <Redirect to="/sequencer" /> : <HomePage setUser={setUser} />)} />
           <Route path="/sequencer" render={() => guardedPage(<DashboardContent user={user} setUser={setUser} />)} />
           <Route path="/dashboard" component={DashboardContent} />
           <Route path="/about" render={() => <About setUser={setUser} />} />
-          <Route path="/docs" render={() => <Docs setUser={setUser} />} /> */}
-          <Route path="/visualization" component={VisualizationPage} />
-          {/* <Route path="/contact" render={() => <Contact setUser={setUser} />} /> */}
+          <Route path="/docs" render={() => <Docs setUser={setUser} />} />
+          <Route path="/contact" render={() => <Contact setUser={setUser} />} />
         </Switch>
       </Router>
     </ThemeProvider>
