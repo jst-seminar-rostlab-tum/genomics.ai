@@ -103,7 +103,7 @@ function RegistrationForm(props) {
     fetch(`${BACKEND_ADDRESS}/register`, requestOptions)
       .then((response) => {
         setLoading(false);
-        if (response.status === 201) {
+        if (response.status === 200) {
           onSuccessfulRegistration();
         } else {
           onFailedRegistration(response);

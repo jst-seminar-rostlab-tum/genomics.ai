@@ -3,6 +3,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import UploadIcon from '@mui/icons-material/Upload';
 import ReplayIcon from '@mui/icons-material/Replay';
 import { Typography } from '@mui/material';
+import { Clear } from '@mui/icons-material';
 import styles from './submitform.module.css';
 import UploadField from '../UploadField/UploadField';
 import ProgressBar from '../ProgressBar/ProgressBar';
@@ -39,29 +40,30 @@ function SubmitForm() {
   } = submissionProgress;
 
   return (
-    <div className={styles.SubmitForm}>
+    <div>
       <UploadField
-        disabled={statusIsUpload(status)}
+        disabled={statusIsUpload(status) || status === Status.CANCELING}
         selectedFile={selectedFile}
         onChange={changeHandler}
       />
       <Typography>
         {
-          {
-            idle: 'Select a file to upload!',
-            selected: 'Press Upload to start uploading!',
-            upload_starting: 'Starting upload...',
-            error_start: 'Couldn\'t start upload :/',
-            upload_progress: `Uploading chunks... (${uploaded} of ${chunks})`,
-            error_progress: `${remaining.length} chunks couldn't be uploaded!`,
-            upload_finishing: 'Finishing upload...',
-            error_finish: 'Couldn\'t finish upload :/',
-            complete: 'Upload complete!',
-          }[status]
-        }
+        {
+          idle: 'Select a file to upload!',
+          selected: 'Press Upload to start uploading!',
+          upload_starting: 'Starting upload...',
+          error_start: 'Couldn\'t start upload :/',
+          upload_progress: `Uploading chunks... (${uploaded} of ${chunks})`,
+          error_progress: `${remaining.length} chunks couldn't be uploaded!`,
+          upload_finishing: 'Processing upload...',
+          error_finish: 'Couldn\'t finish upload :/',
+          canceling: 'Canceling upload...',
+          complete: 'Upload complete!',
+        }[status]
+      }
       </Typography>
       <div className={styles.flexContainer}>
-        {(status !== 'idle' && status !== 'selected') ? <ProgressBar value={getSubmissionProgressPercentage(submissionProgress)} /> : null}
+        {status !== 'idle' && status !== 'selected' ? <ProgressBar value={getSubmissionProgressPercentage(submissionProgress)} /> : null}
       </div>
       <div>
         <LoadingButton
@@ -77,6 +79,24 @@ function SubmitForm() {
         >
           {statusIsError(status) ? 'Retry' : 'Upload'}
         </LoadingButton>
+        {((statusIsUpload(status) && status !== Status.UPLOAD_FINISHING)
+        || status === Status.CANCELING)
+      && (
+      <LoadingButton
+        disabled={status === Status.CANCELING}
+        loading={status === Status.CANCELING}
+        color="error"
+        startIcon={<Clear />}
+        onClick={() => {
+          setSubmissionProgress((prevState) => (
+            { ...prevState, status: Status.CANCELING }));
+          localStorage.setItem('cancelUpload', '1'); // worst design ever
+          setSelectedFile(null);
+        }}
+      >
+        Cancel
+      </LoadingButton>
+      )}
       </div>
     </div>
   );

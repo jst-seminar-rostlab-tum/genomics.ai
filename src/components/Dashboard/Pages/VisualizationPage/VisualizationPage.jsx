@@ -32,7 +32,7 @@ function loadingOrErrorOrResult(object) {
   } if (object.error) {
     return <Typography sx={{ paddingTop: '10rem' }} fontSize="5rem">{object.error}</Typography>;
   }
-  return <Visualization />;
+  return <Visualization url={object.location} />;
 }
 
 function VisualizationPage() {
@@ -46,7 +46,6 @@ function VisualizationPage() {
     queryJob(id).then((response) => setJob(response))
       .catch((err) => {
         console.log(err);
-        console.log('WTF');
         setJob({ error: 'Couldn\'t fetch job result.' });
       });
   }, [query]);

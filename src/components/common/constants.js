@@ -15,6 +15,7 @@ export const MULTIPART_UPLOAD_STATUS = {
   UPLOAD_FINISHING: 'upload_finishing',
   ERROR_FINISH: 'error_finish',
   COMPLETE: 'complete',
+  CANCELING: 'canceling',
 };
 export const statusIsUpload = (status) => status.startsWith('upload_');
 export const statusIsError = (status) => status.startsWith('error_');

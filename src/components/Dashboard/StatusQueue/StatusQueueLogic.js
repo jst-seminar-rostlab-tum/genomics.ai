@@ -12,17 +12,6 @@ export async function queryJobs() {
   });
 }
 
-export function filterDone(jobs) {
-  return jobs.filter((job) => {
-    if (job.status !== 'DONE') {
-      return true;
-    }
-    const uploadDate = new Date(job.uploadDate);
-    const now = new Date();
-    return now.getTime() - uploadDate.getTime() < 600000; // 10 minutes
-  });
-}
-
 export function filterInProgress(jobs) {
   return jobs.filter((job) => job.status === 'DONE');
 }
