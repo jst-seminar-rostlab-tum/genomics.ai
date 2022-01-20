@@ -38,19 +38,20 @@ const NavBar = (props) => {
     <div>
       <div className={styles.appbar}>
         <Toolbar>
-          <IconButton
-            color="success"
-            aria-label="open drawer"
-            href="/"
-          >
-            <img alt="logo" src={logo} />
-          </IconButton>
+          <Link to="/">
+            <IconButton
+              color="success"
+              aria-label="open drawer"
+            >
+              <img alt="logo" src={logo} />
+            </IconButton>
+          </Link>
           <Typography sx={{ fontSize: '24px', fontWeight: '500' }}>genomics.ai</Typography>
           <Box sx={{ flexGrow: 1 }}>
             <Typography variant="h6" sx={{ flexGrow: 1 }}>
               <ul>
                 <Box>
-                  <li><a href="/" className={styles.navbarcontent}>Home</a></li>
+                  <li><Link to="/" className={styles.navbarcontent}>Home</Link></li>
                 </Box>
                 <li><Link to="about" className={styles.navbarcontent}>Team</Link></li>
                 <li><Link to="docs" className={styles.navbarcontent}>Docs</Link></li>
