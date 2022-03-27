@@ -1,0 +1,12 @@
+# Jetbrains
+.idea
+.vscode/
+
+# Visual Studio Code
+.vscode
+
+# Compiled files
+build
+
+# NPM
+node_modules/
