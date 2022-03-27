@@ -1,0 +1,44 @@
+.sidebarLink {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-inline: 1rem;
+    padding-block: 10px;
+    list-style: none;
+    height: 60px;
+    text-decoration: none;
+    font-size: 16px;
+}
+.sidebarLink:hover {
+    background: #003560;
+}
+
+.sidebarLabel {
+    margin-left: 16px;
+    color: #FFFFFF;
+}
+
+.dropdownLink {
+    background: #001B30;
+    padding-inline: 2rem;
+    padding-block: 1rem;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.dropdownLink:hover {
+    background: #1888ff;
+    cursor: pointer;
+}
+
+.dropdownLink:active {
+    background: #1888ff;
+}
+
+.divider {
+    height: 1px;
+    opacity: 0.2;
+    background: #1888ff;
+}

@@ -21,4 +21,3 @@ Main features currently implemented:
 - Access to previous projects
 - Shareable link of visualisation
 - Classification of visualisation job ranging from “uploading” to “complete”.
-

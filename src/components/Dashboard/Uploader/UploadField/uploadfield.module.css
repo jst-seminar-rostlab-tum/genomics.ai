@@ -1,0 +1,16 @@
+.flexContainer{
+    display: flex;
+    justify-content: center;
+}
+
+.uploadButtonContainer{
+    width: 30%;
+    border-width: 2px;
+    border-color: #0075FF;
+    background-color: rgba(0, 60, 255, 0.25);;
+    border-style: dotted;
+    border-radius: 10px;
+    padding: 30px 10px 30px 10px;
+    margin-top: 30px;
+    margin-bottom: 50px;
+}
