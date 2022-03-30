@@ -1,8 +1,8 @@
-General info:
+# General info
 The frontend uses React.js as the main framework. MUI is used as a UI design library. Most of the components used by the frontend are original MUI components. 
 
 
-Main features of frontend:
+# Main features of frontend
 1. Queue of processed jobs
 2. Visual shareable link of the visualisation
 3. Multipart file upload using chunks of predefined size
@@ -10,5 +10,5 @@ Main features of frontend:
 5. Editable profile settings
 
 
-Tools used:
+# Tools used
 HTML, CSS, JS, React, linter
