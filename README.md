@@ -6,14 +6,14 @@ Genomics.ai is a platform to annotate and visualise single-cell sequencing data 
 The visualisation of annotation results is realised using a UMAP. 
 
 
-Process of visualisation: 
+# Visualization Process
 1. Upload single-cell annotation data for visualisation
 2. Process data using ML model on backend
 3. Send csv file for visualisation to use
 4. visualisation of annotation is generated using D3.js
 
 
-Main features currently implemented:
+# Main features currently implemented
 - Create profile using email, (currently restricted to academic emails)
 - Multipart file upload in chunks (necessary for larger files)
 - Create multiple visualisation projects
