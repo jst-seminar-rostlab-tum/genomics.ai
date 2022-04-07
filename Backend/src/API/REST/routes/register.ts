@@ -34,10 +34,13 @@ export default function register_route() : Router {
                     isAuthorized: isAcademic
                 });
 
+                /* user without the password field */
+                const { password, ...userSecure } = user.toObject();
+
                 if (isAcademic) {
                     const token = await tokenModel.create({ _userId: user._id });
                     await mailer.send_verification_mail(first_name, email, token.token);
-                    return res.status(201).json(user);
+                    return res.status(201).json(userSecure);
                 }else{
                     // TODO: maybe have users verify their email even if account isn't auto-approved?
                     return res.status(200).send("The e-mail address does not seem to belong to an academic institution. Wait for an administrator to manually approve you.");

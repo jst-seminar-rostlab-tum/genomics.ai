@@ -28,9 +28,12 @@ export default function auth_route(){
                         "SECRET",
                         { expiresIn: '20h' });
 
+                    /* user without the password field */
+                    const { password, ...userSecure } = user.toObject();
+
                     return res.status(200).json({
                         msg: "Login success",
-                        user,
+                        user: userSecure,
                         jwt: token
                     })
                 } else {
