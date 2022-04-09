@@ -9,6 +9,7 @@ import Documentation from '../Pages/Documentation/Documentation';
 import Settings from '../Pages/Settings/Settings';
 import Help from '../Pages/Help/Help';
 import styles from './dashboardContent.module.css';
+import TemporaryDrawer from '../Drawer/Drawer';
 
 const DashboardContent = (props) => {
   const [sidebarShown, setSidebarShown] = useState(true);
@@ -19,6 +20,7 @@ const DashboardContent = (props) => {
 
   return (
     <div>
+      <TemporaryDrawer />
       <NavigationBar sidebarShown={sidebarShown} user={user} setUser={setUser} />
       <Sidebar
         toggleSidebar={toggleSidebar}
