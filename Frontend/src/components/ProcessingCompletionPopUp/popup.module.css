@@ -1,0 +1,52 @@
+.background {
+    background: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: 0;
+    overflow: hidden;
+    z-index: 1004;
+}
+
+.popUpBase {
+    text-align: center;
+    background: white;
+    padding-inline: 60px;
+    padding-block: 60px;
+    border-radius: 25px;
+    box-shadow: 1px 3px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1005;
+    /* position in middle */
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.popUpHeadline {
+    font-weight: bold;
+    font-size: 22px;
+}
+
+.popUpInputText {
+    font-weight: bold;
+    font-size: 17px;
+    margin-bottom: 20px;
+}
+
+.inputComponent {
+}
+
+.inputComponentList {
+    list-style: none;
+    text-align: left;
+    padding-block: 20px;
+    padding-inline: 50px;
+}
+
+.divider {
+    height: 1px;
+    background: lightgray;
+}

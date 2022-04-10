@@ -1,0 +1,30 @@
+.cardContainer{
+    padding: 5px 20px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.headerContainer{
+    display: flex;
+    justify-content: left;
+    width: 100%;
+    align-items: center;
+    padding-bottom: 10px;
+}
+
+h4{
+    margin: 0px;
+    padding: 0px;
+    text-align: center;
+    font-size: 14px;
+
+}
+
+.infoContainer{
+    display: flex;
+}
+
+.summaryContainer{
+    display: flex;
+    
+}
