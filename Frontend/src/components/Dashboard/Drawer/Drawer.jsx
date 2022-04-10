@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
+import { Link as NavLink, useRouteMatch } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
+import Stack from '@mui/material/Stack';
 import List from '@mui/material/List';
 import CssBaseline from '@mui/material/CssBaseline';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
@@ -16,6 +18,7 @@ import TaskIcon from '@mui/icons-material/Task';
 import { Typography } from '@mui/material';
 import profiledefault from '../../../assets/user.png';
 import logo from '../../../assets/logo.svg';
+import { SettingsDropdown } from '../NavigationBar/SettingsDropdown/SettingsDropdown';
 
 const drawerWidth = 240;
 
@@ -24,7 +27,7 @@ const openedMixin = (theme) => ({
   transition: theme
     .transitions
     .create('width', {
-      easing: theme.transitions.easing.sharp,
+      easing: theme.transitions.easing.smooth,
       duration: theme.transitions.duration.enteringScreen,
     }),
   overflowX: 'hidden',
@@ -34,7 +37,7 @@ const closedMixin = (theme) => ({
   transition: theme
     .transitions
     .create('width', {
-      easing: theme.transitions.easing.sharp,
+      easing: theme.transitions.easing.smooth,
       duration: theme.transitions.duration.leavingScreen,
     }),
   overflowX: 'hidden',
@@ -77,26 +80,71 @@ function indexIcon(index) {
   switch (index) {
     case 0:
       return (
-        <TaskIcon sx={{ color: 'white' }} fontSize="large" />
+        <TaskIcon
+          sx={{
+            color: 'white',
+          }}
+          fontSize="large"
+        />
       );
     case 1:
-      return <AccountBalanceIcon sx={{ color: 'white' }} fontSize="large" />;
+      return (
+        <AccountBalanceIcon
+          sx={{
+            color: 'white',
+          }}
+          fontSize="large"
+        />
+      );
     case 2:
-      return <MapIcon sx={{ color: 'white' }} fontSize="large" />;
+      return (
+        <MapIcon
+          sx={{
+            color: 'white',
+          }}
+          fontSize="large"
+        />
+      );
     case 3:
-      return <MenuBookIcon sx={{ color: 'white' }} fontSize="large" />;
+      return (
+        <MenuBookIcon
+          sx={{
+            color: 'white',
+          }}
+          fontSize="large"
+        />
+      );
     default:
-      return <LiveHelpIcon sx={{ color: 'white' }} fontSize="large" />;
+      return (
+        <LiveHelpIcon
+          sx={{
+            color: 'white',
+          }}
+          fontSize="large"
+        />
+      );
   }
 }
 
-export default function MiniDrawer({ user }) {
+export default function MiniDrawer({ user, setUser }) {
   const [open,
     setOpen] = useState(false);
+  const [dropDown, setDropDown] = useState(false);
 
   const toggleDrawer = (isOpen) => {
     setOpen(isOpen);
+    if (!isOpen) setDropDown(false);
   };
+
+  const onMouseEnter = () => {
+    if (window.innerWidth < 960) setDropDown(false);
+    else setDropDown(true);
+  };
+
+  const { url } = useRouteMatch();
+  // TODO: change routes after implementation
+  const routes = ['dashboard', 'dashboard', 'dashboard', 'documentation', 'help'];
+  const titles = ['Projects', 'Institutions', 'Gene Mapper', 'Documentation', 'Help'];
 
   return (
     <Box sx={{
@@ -145,46 +193,60 @@ export default function MiniDrawer({ user }) {
           display: 'grid',
         }}
         >
-          {['Projects', 'Institutions', 'Gene Mapper', 'Docs', 'Help'].map((text, index) => (
-            <ListItemButton
-              key={text}
-              sx={{
-                minHeight: 48,
-                px: 2.5,
-                py: 2,
-                '&:hover': {
-                  backgroundColor: '#01579B',
-                },
+          {titles.map((text, index) => (
+            <NavLink
+              to={`${url}/${routes[index]}`}
+              style={{
+                color: 'white',
+                textDecoration: 'none',
               }}
             >
-              <ListItemIcon
+              <ListItemButton
+                key={text}
+                onMouseOver={() => setDropDown(false)}
                 sx={{
-                  minWidth: 0,
-                  mr: open
-                    ? 2
-                    : 'auto',
-                  ml: 2,
+                  minHeight: 48,
+                  px: 2.5,
+                  py: 2,
+                  '&:hover': {
+                    backgroundColor: '#01579B',
+                  },
                 }}
               >
-                {indexIcon(index)}
-              </ListItemIcon>
-              <ListItemText
-                primary={text}
-                sx={{
-                  opacity: open
-                    ? 1
-                    : 0,
-                }}
-              />
-            </ListItemButton>
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open
+                      ? 2
+                      : 'auto',
+                    ml: 2,
+                  }}
+                >
+                  {indexIcon(index)}
+                </ListItemIcon>
+                <ListItemText
+                  primary={text}
+                  sx={{
+                    opacity: open
+                      ? 1
+                      : 0,
+                  }}
+                />
+              </ListItemButton>
+
+            </NavLink>
           ))}
         </List>
-        <Box sx={{
-          marginTop: 'auto',
-          marginBottom: '72px',
-          textAlign: 'center',
-        }}
+        <Stack
+          onMouseEnter={onMouseEnter}
+          sx={{
+            marginTop: 'auto',
+            marginBottom: '72px',
+            textAlign: 'center',
+          }}
         >
+          {dropDown
+          && <SettingsDropdown setUser={setUser} handleClose={() => setDropDown(false)} />}
           <Avatar
             alt="logo"
             src={profiledefault}
@@ -207,7 +269,7 @@ export default function MiniDrawer({ user }) {
           >
             {`Hi, ${user.firstName}!`}
           </Typography>
-        </Box>
+        </Stack>
       </Drawer>
     </Box>
   );

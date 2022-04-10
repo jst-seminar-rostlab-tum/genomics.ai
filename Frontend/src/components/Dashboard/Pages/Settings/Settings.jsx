@@ -62,10 +62,7 @@ function PasswordSection({ onPasswordInfoChange, errors, changePassword }) {
   return null;
 }
 
-function Settings({ user, setUser, sidebarShown }) {
-  /* Booleans */
-  const paddingL = useCallback(() => (sidebarShown ? '130px' : '380px'), [sidebarShown]);
-
+function Settings({ user, setUser }) {
   // Password Change
   const [changePassword, setChangePassword] = React.useState(false);
   const handleChangePassword = () => setChangePassword(!changePassword);
@@ -143,7 +140,7 @@ function Settings({ user, setUser, sidebarShown }) {
         direction="column"
         sx={{
           paddingTop: '100px',
-          paddingLeft: paddingL,
+          paddingLeft: '130px',
           display: 'flex',
           width: '100%',
           justifyContent: 'center',

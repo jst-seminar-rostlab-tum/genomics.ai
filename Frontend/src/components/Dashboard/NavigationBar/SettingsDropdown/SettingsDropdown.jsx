@@ -4,17 +4,21 @@ import Stack from '@mui/material/Stack';
 import styles from './settingsDropdown.module.css';
 
 export function SettingsDropdown(props) {
-  const { setUser } = props;
+  const { setUser, handleClose } = props;
   return (
     <Stack
       className={styles.dropdownMenu}
       spacing={3}
       direction="column"
+      keepMounted
     >
       <Link
         className={styles.dropdownLink}
         to="/sequencer/settings"
         style={{ paddingTop: '10px' }}
+        onClick={() => {
+          handleClose();
+        }}
       >
         Profile Settings
       </Link>
@@ -26,6 +30,7 @@ export function SettingsDropdown(props) {
         to="/"
         onClick={() => {
           setUser(null);
+          handleClose();
           localStorage.removeItem('user');
           localStorage.removeItem('jwt');
         }}

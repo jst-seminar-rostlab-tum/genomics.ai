@@ -1,17 +1,16 @@
 import { Container, Stack } from '@mui/material';
-import React, { useCallback } from 'react';
+import React from 'react';
 import Uploader from './Uploader/Uploader';
 import StatusQueue from './StatusQueue/StatusQueue';
 import styles from './dashboard.module.css';
 
-function Dashboard({ sidebarShown }) {
-  const paddingL = useCallback(() => (sidebarShown ? '100px' : '350px'), [sidebarShown]);
+function Dashboard() {
   return (
     <Stack
       direction="column"
       sx={{
         paddingTop: '100px',
-        paddingLeft: paddingL,
+        paddingLeft: '100px',
         display: 'flex',
         width: '100%',
         justifyContent: 'center',

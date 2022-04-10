@@ -5,7 +5,7 @@ import styles from './navigationBar.module.css';
 import geneIcon from '../../../assets/logo-blue.png';
 import profiledefault from '../../../assets/user.png';
 
-function NavigationBar({ sidebarShown, user, setUser }) {
+function NavigationBar({ user, setUser }) {
   const [dropDown, setDropDown] = useState(false);
 
   const onMouseEnter = () => {
@@ -21,7 +21,7 @@ function NavigationBar({ sidebarShown, user, setUser }) {
 
   return (
     <>
-      <nav className={sidebarShown ? styles.navbarWithCollapsedSidebar : styles.navbar}>
+      <nav className={styles.navbarWithCollapsedSidebar}>
         <li className={styles.navItem}>
           <NavLink to={`${url}/dashboard`}>
             <img

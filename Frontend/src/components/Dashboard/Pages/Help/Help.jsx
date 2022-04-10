@@ -15,9 +15,7 @@ const theme = createTheme({
   },
 });
 
-function Documentation({ sidebarShown }) {
-  const paddingL = useCallback(() => (sidebarShown ? '130px' : '380px'), [sidebarShown]);
-
+function Documentation() {
   const [contactDetails, setContactDetails] = useState({
     message: '',
   });
@@ -52,7 +50,7 @@ function Documentation({ sidebarShown }) {
         direction="column"
         sx={{
           paddingTop: '100px',
-          paddingLeft: paddingL,
+          paddingLeft: '130px',
           paddingRight: '30px',
           display: 'flex',
           width: '100%',

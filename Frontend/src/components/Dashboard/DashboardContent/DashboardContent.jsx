@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Switch, Route, Redirect, useRouteMatch,
 } from 'react-router-dom';
-import Sidebar from '../Sidebar/Sidebar';
 import Dashboard from '../Dashboard';
 import NavigationBar from '../NavigationBar/NavigationBar';
 import Documentation from '../Pages/Documentation/Documentation';
@@ -12,42 +11,35 @@ import styles from './dashboardContent.module.css';
 import MiniDrawer from '../Drawer/Drawer';
 
 const DashboardContent = (props) => {
-  const [sidebarShown, setSidebarShown] = useState(true);
-  const toggleSidebar = () => setSidebarShown(!sidebarShown);
   const { user, setUser } = props;
 
   const { path, url } = useRouteMatch();
 
   return (
     <div>
-      <MiniDrawer sidebarShown={sidebarShown} user={user} setUser={setUser} />
-      <NavigationBar sidebarShown={sidebarShown} user={user} setUser={setUser} />
-      <Sidebar
-        toggleSidebar={toggleSidebar}
-        sidebarShown={sidebarShown}
-      />
+      <MiniDrawer user={user} setUser={setUser} />
+      <NavigationBar user={user} setUser={setUser} />
       <Switch>
         <Route exact path={`${path}/`}>
           <Redirect to={`${url}/dashboard`} />
         </Route>
         <Route path={`${path}/dashboard`}>
-          <Dashboard sidebarShown={sidebarShown} />
+          <Dashboard />
         </Route>
 
         <Route path={`${path}/documentation`}>
-          <Documentation sidebarShown={sidebarShown} />
+          <Documentation />
         </Route>
 
         <Route path={`${path}/help`}>
-          <Help sidebarShown={sidebarShown} />
+          <Help />
         </Route>
 
         <Route path={`${path}/settings`}>
           <Settings
-            className={sidebarShown ? styles.subpage : styles.subpageSidebarCollapsed}
+            className={styles.subpage}
             user={user}
             setUser={setUser}
-            sidebarShown={sidebarShown}
           />
         </Route>
       </Switch>
