@@ -8,8 +8,8 @@ import validator from 'validator';
 import { LoadingButton } from '@mui/lab';
 import { Alert, Snackbar } from '@mui/material';
 import styles from './settings.module.css';
-import profileDefault from '../../assets/user.png';
-import updateProfile from '../../shared/services/SettingsLogic';
+import profileDefault from 'assets/user.png';
+import updateProfile from 'shared/services/SettingsLogic';
 
 const myTheme = createTheme({
   palette: {
@@ -250,7 +250,7 @@ function Settings({ user, setUser, sidebarShown }) {
                   checked={changePassword}
                   onClick={handleChangePassword}
                 />
-                      )}
+              )}
             />
           </Stack>
 

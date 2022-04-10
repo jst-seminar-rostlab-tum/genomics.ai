@@ -3,21 +3,21 @@ import { Box, Typography, Stack } from '@mui/material';
 import CopyrightIcon from '@mui/icons-material/Copyright';
 import { Link } from 'react-router-dom';
 import styles from './footer.module.css';
-import tumLogo from '../../assets/tum-logo.png';
-import rostlab from '../../assets/landing-illustrations/rostlab.png';
-import helmholtz from '../../assets/landing-illustrations/helmholtz.png';
+import tumLogo from 'assets/tum-logo.png';
+import rostlab from 'assets/landing-illustrations/rostlab.png';
+import helmholtz from 'assets/landing-illustrations/helmholtz.png';
 
 function Footer() {
   return (
     <Box sx={
-        {
-          padding: '25px',
-          marginTop: '250px',
-          borderTop: '1px solid black',
-          display: 'flex',
-          alignItems: 'center',
-        }
-}
+      {
+        padding: '25px',
+        marginTop: '250px',
+        borderTop: '1px solid black',
+        display: 'flex',
+        alignItems: 'center',
+      }
+    }
     >
       <Stack spacing={4} direction="row">
         <img className={styles.tumLogo} src={tumLogo} alt="tum logo" />

@@ -6,8 +6,8 @@ import React, { useCallback, useState } from 'react';
 import validator from 'validator';
 import CloseIcon from '@mui/icons-material/Close';
 import { Alert } from '@mui/lab';
-import { BACKEND_ADDRESS } from '../../shared/utils/common/constants';
-import logo from '../../assets/logo.svg';
+import { BACKEND_ADDRESS } from 'shared/utils/common/constants';
+import logo from 'assets/logo.svg';
 import styles from './registrationform.module.css';
 
 function RegistrationForm(props) {

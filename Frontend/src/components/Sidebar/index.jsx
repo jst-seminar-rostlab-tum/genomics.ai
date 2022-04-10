@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 import { CgFileDocument } from 'react-icons/all';
 import dateFormat from 'dateformat';
 import styles from './sidebar.module.css';
-import arrowClose from '../../assets/arrow-close.png';
-import geneIcon from '../../assets/gene.png';
-import { filterInProgress, queryJobs } from '../../shared/services/StatusQueueLogic';
-import { PROJECTS_UPDATE_INTERVAL } from '../../shared/utils/common/constants';
+import arrowClose from 'assets/arrow-close.png';
+import geneIcon from 'assets/gene.png';
+import { filterInProgress, queryJobs } from 'shared/services/StatusQueueLogic';
+import { PROJECTS_UPDATE_INTERVAL } from 'shared/utils/common/constants';
 
 const Sidebar = ({ sidebarShown, toggleSidebar }) => {
   // COLLAPSED
@@ -64,7 +64,7 @@ const Sidebar = ({ sidebarShown, toggleSidebar }) => {
           />
           Projects
         </div>
-        { jobs
+        {jobs
           .filter((job) => job.status === 'DONE')
           .map((job) => (
             <Link

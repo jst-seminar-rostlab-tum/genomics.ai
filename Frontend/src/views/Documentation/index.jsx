@@ -1,12 +1,12 @@
 import React from 'react';
 import { Divider, Stack, Typography } from '@mui/material';
 import styles from './documentation.module.css';
-import visualisation from '../../assets/landing-illustrations/visualisation.png';
-import csvformat from '../../assets/landing-illustrations/csvformat.png';
-import zoom from '../../assets/landing-illustrations/zoomVisualisation.png';
-import clusterLabel from '../../assets/landing-illustrations/clusterLabel.png';
-import allClusterLabels from '../../assets/landing-illustrations/allClusterLabels.png';
-import clusterDetails from '../../assets/landing-illustrations/clusterDetails.png';
+import visualisation from 'assets/landing-illustrations/visualisation.png';
+import csvformat from 'assets/landing-illustrations/csvformat.png';
+import zoom from 'assets/landing-illustrations/zoomVisualisation.png';
+import clusterLabel from 'assets/landing-illustrations/clusterLabel.png';
+import allClusterLabels from 'assets/landing-illustrations/allClusterLabels.png';
+import clusterDetails from 'assets/landing-illustrations/clusterDetails.png';
 
 function Documentation() {
   return (

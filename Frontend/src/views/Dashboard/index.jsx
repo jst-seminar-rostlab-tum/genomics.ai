@@ -1,7 +1,7 @@
 import { Container, Stack } from '@mui/material';
 import React, { useCallback } from 'react';
-import Uploader from '../../components/Uploader';
-import StatusQueue from '../../components/StatusQueue';
+import Uploader from 'components/Uploader';
+import StatusQueue from 'components/StatusQueue';
 import styles from './dashboard.module.css';
 
 function Dashboard({ sidebarShown }) {

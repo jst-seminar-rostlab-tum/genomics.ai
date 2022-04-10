@@ -3,11 +3,11 @@ import {
   Switch, Route, Redirect, useRouteMatch,
 } from 'react-router-dom';
 import Sidebar from '../Sidebar';
-import Dashboard from '../../views/Dashboard';
+import Dashboard from 'views/Dashboard';
 import NavigationBar from '../NavigationBar/NavigationBar';
-import Documentation from '../../views/Documentation';
-import Settings from '../../views/Settings';
-import Help from '../../views/Help';
+import Documentation from 'views/Documentation';
+import Settings from 'views/Settings';
+import Help from 'views/Help';
 import styles from './dashboardContent.module.css';
 
 const DashboardContent = (props) => {

@@ -3,14 +3,14 @@ import {
   Stack, Typography, Divider,
 } from '@mui/material';
 import styles from './docs.module.css';
-import NavBar from '../../components/NavBar';
-import Footer from '../../components/Footer';
-import visualisation from '../../assets/landing-illustrations/visualisation.png';
-import zoom from '../../assets/landing-illustrations/zoomVisualisation.png';
-import allClusterLabels from '../../assets/landing-illustrations/allClusterLabels.png';
-import clusterDetails from '../../assets/landing-illustrations/clusterDetails.png';
-import clusterLabel from '../../assets/landing-illustrations/clusterLabel.png';
-import csvformat from '../../assets/landing-illustrations/csvformat.png';
+import NavBar from 'components/NavBar';
+import Footer from 'components/Footer';
+import visualisation from 'assets/landing-illustrations/visualisation.png';
+import zoom from 'assets/landing-illustrations/zoomVisualisation.png';
+import allClusterLabels from 'assets/landing-illustrations/allClusterLabels.png';
+import clusterDetails from 'assets/landing-illustrations/clusterDetails.png';
+import clusterLabel from 'assets/landing-illustrations/clusterLabel.png';
+import csvformat from 'assets/landing-illustrations/csvformat.png';
 
 const Docs = (props) => {
   const { setUser } = props;

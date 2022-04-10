@@ -8,9 +8,9 @@ import React, { useCallback, useState } from 'react';
 import validator from 'validator';
 import CloseIcon from '@mui/icons-material/Close';
 import { useHistory } from 'react-router-dom';
-import logo from '../../assets/logo.svg'; 
+import logo from 'assets/logo.svg';
 import styles from './loginform.module.css';
-import { BACKEND_ADDRESS } from '../../shared/utils/common/constants';
+import { BACKEND_ADDRESS } from 'shared/utils/common/constants';
 import PasswordForgetForm from '../PasswordForgetForm';
 
 function LoginForm(props) {

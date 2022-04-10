@@ -6,8 +6,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import StatusCard from '../StatusCard';
 import styles from './statusqueue.module.css';
-import { queryJobs } from '../../shared/services/StatusQueueLogic';
-import { JOB_QUEUE_UPDATE_INTERVAL } from '../../shared/utils/common/constants';
+import { queryJobs } from 'shared/services/StatusQueueLogic';
+import { JOB_QUEUE_UPDATE_INTERVAL } from 'shared/utils/common/constants';
 
 function StatusQueue() {
   const [expandList, setExpandList] = useState(true);

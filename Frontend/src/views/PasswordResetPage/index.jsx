@@ -4,11 +4,11 @@ import {
   Box, Grid, TextField, Button, Avatar, Snackbar, Alert,
 } from '@mui/material';
 import { useHistory, useLocation } from 'react-router-dom';
-import NavBar from '../../components/NavBar';
-import Footer from '../../components/Footer';
+import NavBar from 'components/NavBar';
+import Footer from 'components/Footer';
 import styles from './passwordresetpage.module.css';
-import logo from '../../assets/logo.svg';
-import { BACKEND_ADDRESS } from '../../shared/utils/common/constants';
+import logo from 'assets/logo.svg';
+import { BACKEND_ADDRESS } from 'shared/utils/common/constants';
 
 function PasswordResetPage(props) {
   const [errors, setErrors] = useState({});
