@@ -2,6 +2,9 @@ import {HTTP_Server} from "./http_server/http_server";
 import * as Startup from "./startup/_startup";
 import API_Host from "./API/_api_host";
 import {Database} from "./database/database";
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 console.log(" *** Startup *** ");
 Startup.init_environment();

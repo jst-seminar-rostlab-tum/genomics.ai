@@ -14,5 +14,7 @@ services:
       - redis
     ports:
       - 8050:8050
+    env_file:
+      - .env  
     environment:
       DATABASE_URI: 'mongodb://database:27017/dev'

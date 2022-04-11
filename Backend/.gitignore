@@ -10,3 +10,7 @@ build
 
 # NPM
 node_modules/
+
+.env
+./.env
+./src/.env
