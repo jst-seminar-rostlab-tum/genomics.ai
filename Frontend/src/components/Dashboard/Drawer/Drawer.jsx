@@ -19,6 +19,7 @@ import { Typography } from '@mui/material';
 import profiledefault from '../../../assets/user.png';
 import logo from '../../../assets/logo.svg';
 import { SettingsDropdown } from '../NavigationBar/SettingsDropdown/SettingsDropdown';
+import styles from './drawer.module.css';
 
 const drawerWidth = 240;
 
@@ -41,14 +42,12 @@ const closedMixin = (theme) => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
   overflowX: 'hidden',
-  // width: `calc(${theme.spacing(7)} + 1px)`,
-  width: '120px !important',
   [
   theme
     .breakpoints
     .up('sm')
   ]: {
-    width: `calc(${theme.spacing(8)} + 1px)`,
+    width: `calc(${theme.spacing(10)} + 1px)`,
   },
 });
 
@@ -82,45 +81,40 @@ function indexIcon(index) {
       return (
         <TaskIcon
           sx={{
-            color: 'white',
+            color: '#00579b',
           }}
-          fontSize="large"
         />
       );
     case 1:
       return (
         <AccountBalanceIcon
           sx={{
-            color: 'white',
+            color: '#00579b',
           }}
-          fontSize="large"
         />
       );
     case 2:
       return (
         <MapIcon
           sx={{
-            color: 'white',
+            color: '#00579b',
           }}
-          fontSize="large"
         />
       );
     case 3:
       return (
         <MenuBookIcon
           sx={{
-            color: 'white',
+            color: '#00579b',
           }}
-          fontSize="large"
         />
       );
     default:
       return (
         <LiveHelpIcon
           sx={{
-            color: 'white',
+            color: '#00579b',
           }}
-          fontSize="large"
         />
       );
   }
@@ -154,117 +148,78 @@ export default function MiniDrawer({ user, setUser }) {
       <CssBaseline />
       <Drawer
         PaperProps={{
-          sx: {
-            backgroundColor: '#184060',
-            color: 'white',
-          },
+          className: styles.drawer,
         }}
         variant="permanent"
         open={open}
         onMouseOver={() => toggleDrawer(true)}
         onMouseLeave={() => toggleDrawer(false)}
-        style={{
-          width: '320px !important',
-        }}
       >
         <DrawerHeader>
           <div
-            style={{
-              width: '100%',
-              padding: '8px',
-              marginTop: '12px',
-              marginBottom: '24px',
-            }}
+            className={styles.drawerHeader}
           >
             <Avatar
               alt="logo"
               src={logo}
-              style={{
-                width: '57px',
-                height: '57px',
-                backgroundColor: 'white',
-                marginLeft: 'auto',
-                marginRight: 'auto',
-              }}
+              className={styles.avatar}
             />
           </div>
         </DrawerHeader>
-        <List style={{
-          display: 'grid',
-        }}
-        >
+        <List className={styles.drawerList}>
           {titles.map((text, index) => (
             <NavLink
               to={`${url}/${routes[index]}`}
-              style={{
-                color: 'white',
-                textDecoration: 'none',
-              }}
+              className={styles.drawerNavLink}
             >
               <ListItemButton
                 key={text}
                 onMouseOver={() => setDropDown(false)}
                 sx={{
                   minHeight: 48,
-                  px: 2.5,
-                  py: 2,
+                  padding: '10px',
                   '&:hover': {
                     backgroundColor: '#01579B',
                   },
                 }}
               >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open
-                      ? 2
-                      : 'auto',
-                    ml: 2,
-                  }}
-                >
-                  {indexIcon(index)}
-                </ListItemIcon>
+                <div className={styles.navbarItemContainer}>
+                  <ListItemIcon
+                    className={styles.drawerListItemIcon}
+                  >
+                    {indexIcon(index)}
+                  </ListItemIcon>
+                </div>
                 <ListItemText
                   primary={text}
                   sx={{
                     opacity: open
                       ? 1
                       : 0,
+                    px: 1,
                   }}
                 />
               </ListItemButton>
-
             </NavLink>
           ))}
         </List>
         <Stack
           onMouseEnter={onMouseEnter}
-          sx={{
-            marginTop: 'auto',
-            marginBottom: '72px',
-            textAlign: 'center',
-          }}
+          className={styles.profileAvatarContainer}
         >
           {dropDown
           && <SettingsDropdown setUser={setUser} handleClose={() => setDropDown(false)} />}
           <Avatar
-            alt="logo"
+            alt="profile"
             src={profiledefault}
-            style={{
-              width: '57px',
-              height: '57px',
-              backgroundColor: 'white',
-              border: '1px solid white',
-              marginBottom: '8px',
-              marginLeft: 'auto',
-              marginRight: 'auto',
-            }}
+            className={styles.profileAvatar}
           />
           <Typography
             sx={{
               opacity: open
                 ? 1
                 : 0,
+              color: 'white',
             }}
           >
             {`Hi, ${user.firstName}!`}

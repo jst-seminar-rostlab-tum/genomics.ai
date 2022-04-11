@@ -1,0 +1,65 @@
+.navbarItemContainer {
+    width: 60px;
+    height: 60px;
+    background: #184060;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.drawer {
+    background-color: #002644;
+    color: white;
+}
+
+.drawerHeader {
+    width: 100%;
+    margin-top: 4em;
+    margin-bottom: 24px;
+}
+
+.drawerList {
+    display: grid;
+}
+
+.drawerNavLink {
+   color: white;
+   text-decoration: none;
+}
+
+.avatar {
+    width: 57px;
+    height: 57px;
+    background-color: white;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.drawerListItemIcon {
+    min-width:0;
+    width: 40px;
+    height: 40px;
+    background: white;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content : center;
+}
+
+.profileAvatarContainer{
+    margin-top: auto;
+    margin-bottom: 72px;
+    text-align: center;
+}
+
+.profileAvatar{
+    width: 57px;
+    height: 57px;
+    background-color: 'white';
+    border: 1px solid white;
+    margin-bottom: 8px;
+    margin-left: auto;
+    margin-right: auto;
+    
+}

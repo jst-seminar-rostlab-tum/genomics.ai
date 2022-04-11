@@ -3,7 +3,6 @@ import {
   Switch, Route, Redirect, useRouteMatch,
 } from 'react-router-dom';
 import Dashboard from '../Dashboard';
-import NavigationBar from '../NavigationBar/NavigationBar';
 import Documentation from '../Pages/Documentation/Documentation';
 import Settings from '../Pages/Settings/Settings';
 import Help from '../Pages/Help/Help';
@@ -16,9 +15,8 @@ const DashboardContent = (props) => {
   const { path, url } = useRouteMatch();
 
   return (
-    <div>
+    <>
       <MiniDrawer user={user} setUser={setUser} />
-      <NavigationBar user={user} setUser={setUser} />
       <Switch>
         <Route exact path={`${path}/`}>
           <Redirect to={`${url}/dashboard`} />
@@ -43,7 +41,7 @@ const DashboardContent = (props) => {
           />
         </Route>
       </Switch>
-    </div>
+    </>
   );
 };
 

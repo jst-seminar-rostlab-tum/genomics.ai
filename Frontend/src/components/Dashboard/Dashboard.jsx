@@ -9,7 +9,7 @@ function Dashboard() {
     <Stack
       direction="column"
       sx={{
-        paddingTop: '100px',
+        paddingTop: '40px',
         paddingLeft: '100px',
         display: 'flex',
         width: '100%',
