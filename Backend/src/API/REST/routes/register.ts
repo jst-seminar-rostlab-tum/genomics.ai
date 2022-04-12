@@ -18,7 +18,7 @@ export default function register_route() : Router {
             if (await userModel.findOne({email}))
                 return res.status(409).send("User with the given email already exists");
 
-            const saltHashedPassword = await bcrypt.hash(password, 15);
+            const saltHashedPassword = await bcrypt.hash(password, 12);
 
             let user : (IUser | undefined) = undefined;
             try{
@@ -34,7 +34,7 @@ export default function register_route() : Router {
                 const { password, ...userSecure } = user.toObject();
 
                 const token = await tokenModel.create({ _userId: user._id });
-                await mailer.send_verification_mail(first_name, email, token.token);
+                mailer.send_verification_mail(first_name, email, token.token);
                 return res.status(201).json(userSecure);
             }catch(err){
                 console.error("Error registering user!");

@@ -30,7 +30,6 @@ export default function check_auth(){
                         req.user_id = decoded.id;
                         req.email = result!.email;
                         req.is_administrator = result!.isAdministrator;
-                        req.is_authorized = result!.isAuthorized;
                         req.is_verified = result!.isEmailVerified;
                         next();
                     })
