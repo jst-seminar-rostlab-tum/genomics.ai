@@ -1,29 +1,22 @@
 import {Document, model, Schema} from "mongoose";
 
-export enum visibilityStatus {
-    "PRIVATE",
-    "PUBLIC",
-    "BY_INSTITUTION",
-}
-export interface IProject extends Document {
-   title:string,
-   description:string,
+export interface IInstitution extends Document {
+   name:string,
+   country:string,
    profilePictureURL: string,
    backgroundPictureURL: string,
    adminIds: [Schema.Types.ObjectId],
    invitedMemberIds: [Schema.Types.ObjectId],
-   memberIds: [Schema.Types.ObjectId],
-   visibility: string,
-   projectJobs: [Schema.Types.ObjectId],
+   projects: [Schema.Types.ObjectId],
 }
 
-const projectSchema = new Schema<IProject>({
-    title: {
+const institutionSchema = new Schema<IInstitution>({
+    name: {
         type: String,
         required: true
     },
 
-    description: {
+    country: {
         type: String, 
         require: true
     },
@@ -50,21 +43,9 @@ const projectSchema = new Schema<IProject>({
         require: false
     }],
 
-    memberIds: [{
+    projects: [{
         type: Schema.Types.ObjectId, 
-        ref: 'User',
-        require: false
-    }],
-
-    visibility: {
-        type: String,
-        enum: visibilityStatus,
-        required: true
-    },
-
-    projectJobs: [{
-        type: Schema.Types.ObjectId, 
-        ref: 'ProjectJob',
+        ref: 'Project',
         require: false
     }],
     
@@ -72,5 +53,5 @@ const projectSchema = new Schema<IProject>({
     timestamps: true,
 });
 
-export const projectModel = model<IProject>("Project", projectSchema);
+export const institutionModel = model<IInstitution>("Institution", institutionSchema);
 

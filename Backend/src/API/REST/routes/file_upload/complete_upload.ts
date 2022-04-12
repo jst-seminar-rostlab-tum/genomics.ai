@@ -4,7 +4,7 @@ import {AWSError, S3} from "aws-sdk";
 
 import check_auth from "../../middleware/check_auth";
 import {ExtRequest} from "../../../../definitions/ext_request";
-import {projectModel} from "../../../../database/models/project";
+import {projectJobModel} from "../../../../database/models/projectJob";
 import s3 from "../../../../util/s3";
 import {GoogleAuth} from "google-auth-library";
 
@@ -21,7 +21,7 @@ export default function upload_complete_upload_route() {
             if (!process.env.S3_BUCKET_NAME || !req.user_id)
                 return res.status(500).send("Server was not set up correctly");
 
-            let project = await projectModel.findOne({
+            let project = await projectJobModel.findOne({
                 owner: req.user_id,
                 uploadId: String(uploadId)
             }).exec();
@@ -46,7 +46,7 @@ export default function upload_complete_upload_route() {
                 let request: S3.HeadObjectRequest = {Key: data.Key, Bucket: data.Bucket};
                 s3.headObject(request)
                     .promise()
-                    .then(result => projectModel.updateOne(
+                    .then(result => projectJobModel.updateOne(
                         {uploadId: params.UploadId},
                         {
                             fileSize: result.ContentLength,
@@ -64,7 +64,7 @@ export default function upload_complete_upload_route() {
                             Expires: 60 * 60 * 24 * 7 - 1 // one week minus one second
                         }
                         let presignedUrl = await s3.getSignedUrlPromise('getObject', params2);
-                        await projectModel.updateOne(
+                        await projectJobModel.updateOne(
                             {uploadId: params.UploadId},
                             {
                                 location: presignedUrl

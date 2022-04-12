@@ -22,6 +22,8 @@ const userSchema = new Schema<IUser>({
     isEmailVerified: {type: Boolean, required: true, default: false},
     isAuthorized: {type: Boolean, required: true, default: false},
     isAdministrator: {type: Boolean, required: true, default: false}
+}, {
+    timestamps: true,
 });
 
 export const userModel = model<IUser>("User", userSchema);

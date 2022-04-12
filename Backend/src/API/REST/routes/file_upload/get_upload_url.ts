@@ -1,6 +1,6 @@
 import check_auth from "../../middleware/check_auth";
 import {ExtRequest} from "../../../../definitions/ext_request";
-import {projectModel} from "../../../../database/models/project";
+import {projectJobModel} from "../../../../database/models/projectJob";
 import {UploadPartRequest} from "aws-sdk/clients/s3";
 import s3 from "../../../../util/s3";
 import express from "express";
@@ -19,7 +19,7 @@ export default function upload_get_upload_url_route() {
             if (!process.env.S3_BUCKET_NAME && req.user_id)
                 return res.status(500).send("S3-BucketName is not set");
 
-            let project = await projectModel.findOne({
+            let project = await projectJobModel.findOne({
                 owner: req.user_id,
                 uploadId: String(uploadId)
             }).exec();
