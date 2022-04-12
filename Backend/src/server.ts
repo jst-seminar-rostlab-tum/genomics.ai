@@ -1,14 +1,13 @@
-import {HTTP_Server} from "./http_server/http_server";
+//Setup environment first
 import * as Startup from "./startup/_startup";
-import API_Host from "./API/_api_host";
-import {Database} from "./database/database";
-import dotenv from 'dotenv';
-
-dotenv.config();
-
-console.log(" *** Startup *** ");
 Startup.init_environment();
 Startup.init_env_vars();
+
+import {HTTP_Server} from "./http_server/http_server";
+import API_Host from "./API/_api_host";
+import {Database} from "./database/database";
+
+console.log(" *** Startup *** ");
 
 let http_server = new HTTP_Server();
 let apiHost = new API_Host(http_server);
