@@ -22,7 +22,6 @@
   "homepage": "https://github.com/matthiasmichailow/Single-Cell-Sequencing-Backend#readme",
   "private": false,
   "dependencies": {
-    "academic-email-verifier": "^3.0.0",
     "aws-sdk": "^2.1015.0",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",

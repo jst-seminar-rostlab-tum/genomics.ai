@@ -3,6 +3,8 @@ import {ExtRequest} from "../../../definitions/ext_request";
 import jwt from "jsonwebtoken";
 import {userModel} from "../../../database/models/user";
 
+const JWT_SECRET = process.env.JWT_SECRET || "";
+
 export default function check_auth(){
     let router = express.Router();
 
@@ -11,7 +13,7 @@ export default function check_auth(){
         if(req.header("auth")){
             // TODO: Secret => REDIS
             try{
-                jwt.verify(req.header("auth")!, "SECRET", async function(err, decoded){
+                jwt.verify(req.header("auth")!, JWT_SECRET, async function(err, decoded){
                     if(err || !decoded || !decoded.email){
                         if(err?.name == "TokenExpiredError")
                            return res.status(440).send("JWT authentication token expired. Please log in again")
