@@ -8,8 +8,6 @@ export enum visibilityStatus {
 export interface IProject extends Document {
    title:string,
    description:string,
-   profilePictureURL: string,
-   backgroundPictureURL: string,
    adminIds: [Schema.Types.ObjectId],
    invitedMemberIds: [Schema.Types.ObjectId],
    memberIds: [Schema.Types.ObjectId],
@@ -28,20 +26,10 @@ const projectSchema = new Schema<IProject>({
         require: true
     },
 
-    profilePictureURL: {
-        type: String, 
-        require: false
-    },
-
-    backgroundPictureURL: {
-        type: String, 
-        require: false
-    },
-
     adminIds: [{
         type: Schema.Types.ObjectId, 
         ref: 'User',
-        require: false
+        require: true
     }],
 
     invitedMemberIds: [{

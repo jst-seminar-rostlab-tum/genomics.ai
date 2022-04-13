@@ -34,7 +34,7 @@ const institutionSchema = new Schema<IInstitution>({
     adminIds: [{
         type: Schema.Types.ObjectId, 
         ref: 'User',
-        require: false
+        require: true
     }],
 
     invitedMemberIds: [{
