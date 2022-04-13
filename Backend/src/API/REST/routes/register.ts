@@ -1,7 +1,6 @@
 import express, {Router} from "express";
 import bcrypt from "bcrypt";
 import {IUser, userModel} from "../../../database/models/user";
-import {Verifier} from "academic-email-verifier";
 import {mailer} from "../../../util/mailer";
 import {tokenModel} from "../../../database/models/token";
 
@@ -19,9 +18,7 @@ export default function register_route() : Router {
             if (await userModel.findOne({email}))
                 return res.status(409).send("User with the given email already exists");
 
-            const institutionName = await Verifier.getInstitutionName(email);
-            const isAcademic = institutionName !== "";
-            const saltHashedPassword = await bcrypt.hash(password, 15);
+            const saltHashedPassword = await bcrypt.hash(password, 12);
 
             let user : (IUser | undefined) = undefined;
             try{
@@ -30,21 +27,15 @@ export default function register_route() : Router {
                     lastName: last_name,
                     email,
                     password: saltHashedPassword,
-                    note,
-                    isAuthorized: isAcademic
+                    note
                 });
 
                 /* user without the password field */
                 const { password, ...userSecure } = user.toObject();
 
-                if (isAcademic) {
-                    const token = await tokenModel.create({ _userId: user._id });
-                    await mailer.send_verification_mail(first_name, email, token.token);
-                    return res.status(201).json(userSecure);
-                }else{
-                    // TODO: maybe have users verify their email even if account isn't auto-approved?
-                    return res.status(200).send("The e-mail address does not seem to belong to an academic institution. Wait for an administrator to manually approve you.");
-                }
+                const token = await tokenModel.create({ _userId: user._id });
+                mailer.send_verification_mail(first_name, email, token.token);
+                return res.status(201).json(userSecure);
             }catch(err){
                 console.error("Error registering user!");
                 console.error(JSON.stringify(err));

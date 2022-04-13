@@ -20,7 +20,6 @@ const userSchema = new Schema<IUser>({
     password: {type: String, required: true, select: false},
     note: {type: String, required: false},
     isEmailVerified: {type: Boolean, required: true, default: false},
-    isAuthorized: {type: Boolean, required: true, default: false},
     isAdministrator: {type: Boolean, required: true, default: false}
 }, {
     timestamps: true,
