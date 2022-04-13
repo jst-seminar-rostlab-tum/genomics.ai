@@ -1,6 +1,6 @@
 import check_auth from "../../middleware/check_auth";
 import {ExtRequest} from "../../../../definitions/ext_request";
-import {IProject, projectJobModel} from "../../../../database/models/projectJob";
+import {IProjectJob, projectJobModel} from "../../../../database/models/projectJob";
 import {S3} from "aws-sdk";
 import s3 from "../../../../util/s3";
 import express from "express";
@@ -14,7 +14,7 @@ export default function upload_start_upload_route() {
 
         try {
             if (process.env.S3_BUCKET_NAME && req.user_id) {
-                let project: IProject = await projectJobModel.create({
+                let project: IProjectJob = await projectJobModel.create({
                     owner: req.user_id,
                     fileName: String(fileName),
                     uploadDate: new Date(),

@@ -8,7 +8,7 @@ export enum ProjectJobStatus {
     "DONE"
 }
 
-export interface IProject extends Document {
+export interface IProjectJob extends Document {
     owner: Schema.Types.ObjectId;
 
     // file
@@ -24,7 +24,7 @@ export interface IProject extends Document {
     resultSize: number;
 }
 
-const projectSchema = new Schema<IProject>({
+const projectSchema = new Schema<IProjectJob>({
     owner: {type: Schema.Types.ObjectId, require: true},
 
     // file
@@ -41,5 +41,5 @@ const projectSchema = new Schema<IProject>({
     resultSize: {type: Schema.Types.Number, require: false, default: -1}
 });
 
-export const projectJobModel = model<IProject>("ProjectJob", projectSchema);
+export const projectJobModel = model<IProjectJob>("ProjectJob", projectSchema);
 
