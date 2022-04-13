@@ -3,6 +3,9 @@ import jwt from "jsonwebtoken";
 import {userModel} from "../../../database/models/user";
 import bcrypt from "bcrypt";
 
+const INCORRECT_CREDENTIALS =  "The email or password is incorrect"; 
+const JWT_SECRET = process.env.JWT_SECRET || ""; 
+
 export default function auth_route(){
     let router = express.Router();
 
@@ -10,22 +13,21 @@ export default function auth_route(){
         const {email, password} = req.body;
         userModel.findOne({email: email}).select('+password').exec().then(user =>{
             if(!user)
-                return res.status(401).send("User not found");
+                return res.status(401).send(INCORRECT_CREDENTIALS);
             if(!user.isEmailVerified)
                 return res.status(401).send("User not verified");
 
             bcrypt.compare(password, <string>user.password, (err, match) => {
                 if (err) {
                     console.error(err);
-                    return res.status(500).send("Error while verifying credentials");
+                    return res.status(500).send(INCORRECT_CREDENTIALS);
                 }
 
                 if (match) {
-                    // TODO: Secret!
                     delete user.password;
                     const token = jwt.sign(
                         {id: user._id, email: user.email},
-                        "SECRET",
+                        JWT_SECRET,
                         { expiresIn: '20h' });
 
                     /* user without the password field */
@@ -37,7 +39,7 @@ export default function auth_route(){
                         jwt: token
                     })
                 } else {
-                    return res.status(401).json({ msg: "Wrong password" })
+                    return res.status(401).json({ msg: INCORRECT_CREDENTIALS })
                 }
             })
         })

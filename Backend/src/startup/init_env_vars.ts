@@ -12,7 +12,8 @@ export function init_env_vars() {
         "S3_ENDPOINT",
         "S3_BUCKET_NAME",
         "MAILGUN_API_KEY",
-        "MAIL_DOMAIN"
+        "MAIL_DOMAIN",
+        "JWT_SECRET"
     ];
     required_env_vars.forEach((required_env_var) => {
         if (!(required_env_var in process.env))
@@ -27,6 +28,8 @@ export function init_env_vars() {
 
     setStdEnvValue("PORT", "8050");
     setStdEnvValue("DATABASE_URI", "mongodb://localhost:27017/dev");
+
+    setStdEnvValue("JWT_SECRET", String(Math.random()));
 
     setStdEnvValue("S3_ENDPOINT", "http://127.0.0.1:9000");
     setStdEnvValue("S3_BUCKET_NAME", "vaultgovsg");
