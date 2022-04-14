@@ -22,7 +22,10 @@
     "no-console": "off",
     "no-alert": "off",
     "linebreak-style": "off",
-    "no-underscore-dangle": "off"
+    "no-underscore-dangle": "off",
+    "import/no-unresolved": "off",
+    "import/order":"off"
+
   },
   "ignorePatterns": ["src/components/Dashboard/Visualization"]
 }
