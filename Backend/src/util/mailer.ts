@@ -6,16 +6,22 @@ import fs from "fs/promises";
 import handlebars from "handlebars";
 
 class Mailer {
-    transport : nodemailer.Transporter;
+    transport: nodemailer.Transporter | null;
 
-    constructor(){
-        this.transport = nodemailer.createTransport(mailgunTransport({
-            auth: {
-                api_key: process.env.MAILGUN_API_KEY!,
-                domain: process.env.MAIL_DOMAIN
-            },
-            host: process.env.MAILGUN_HOST
-        }));
+    constructor() {
+        if (!process.env.MAILGUN_API_KEY || process.env.MAILGUN_API_KEY == "") {
+            this.transport = null;
+        } else {
+            this.transport = nodemailer.createTransport(
+                mailgunTransport({
+                    auth: {
+                        api_key: process.env.MAILGUN_API_KEY!,
+                        domain: process.env.MAIL_DOMAIN
+                    },
+                    host: process.env.MAILGUN_HOST
+                })
+            );
+        }
     }
 
     async send(to : string, subject : string, template_name : string, data : any) {
@@ -25,13 +31,24 @@ class Mailer {
 
         let rendered_txt = handlebars.compile(texttemplate)(data);
         let rendered_html = handlebars.compile(htmltemplate)(data);
-        return self.transport.sendMail({
+
+        let mail = {
             from: `GeneCruncher <info@${process.env.MAIL_DOMAIN}>`,
             to: to,
             subject: subject,
             text: rendered_txt,
             html: rendered_html
-        });
+        };
+        if (!self.transport) {
+            console.log("No mailgun key provided: logging email here:");
+            console.log(`From: ${mail.from}`);
+            console.log(`To: ${mail.to}`);
+            console.log(`Subject: ${mail.subject}`);
+            console.log(`Text: ${mail.text}`);
+            console.log(`HTML: ${mail.html}`);
+        } else {
+            return self.transport.sendMail(mail);
+        }
     }
 
     async send_verification_mail(firstname: string, recipient: string, token: string) {
