@@ -3,7 +3,7 @@ Your password was reset
 Hey {{firstname}},
 We wanted to let you know that your GeneCruncher password was reset.
 
-If you did not perform this action, you can recover access by entering {{email}} into the form at https://www.genecruncher.com/password_reset
+If you did not perform this action, you can recover access by entering {{email}} into the form at {{link}}
 
 Thanks,
 The GeneCruncher Team

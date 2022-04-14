@@ -1,0 +1,13 @@
+services:
+  database:
+    image: mongo
+    ports:
+      - 27017:27017
+  
+  minio:
+    build:
+      context: .
+      dockerfile: minio.Dockerfile
+    ports:
+      - 9000:9000
+      - 9001:9001

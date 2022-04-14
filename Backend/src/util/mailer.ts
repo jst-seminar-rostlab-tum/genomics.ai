@@ -14,7 +14,7 @@ class Mailer {
                 api_key: process.env.MAILGUN_API_KEY!,
                 domain: process.env.MAIL_DOMAIN
             },
-            host: "api.eu.mailgun.net"
+            host: process.env.MAILGUN_HOST
         }));
     }
 
@@ -35,7 +35,8 @@ class Mailer {
     }
 
     async send_verification_mail(firstname: string, recipient: string, token: string) {
-        return this.send(recipient, "Verify Email", "signup_confirm_email", {link: `https://api.genecruncher.com/verify/${token}`, firstname:firstname})
+        // return this.send(recipient, "Verify Email", "signup_confirm_email", {link: `https://api.genecruncher.com/verify/${token}`, firstname:firstname})
+        return this.send(recipient, "Verify Email", "signup_confirm_email", {link: `${process.env.API_URL}/verify/${token}`, firstname:firstname})
     }
 }
 
