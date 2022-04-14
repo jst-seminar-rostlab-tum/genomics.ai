@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import LiveHelpIcon from '@mui/icons-material/LiveHelp';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import MapIcon from '@mui/icons-material/Map';
@@ -7,7 +7,7 @@ import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import List from '@mui/material/List';
 import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
-import { Link as NavLink, useRouteMatch } from 'react-router-dom';
+import { Link as NavLink, useRouteMatch, useLocation } from 'react-router-dom';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import LogoutIcon from '@mui/icons-material/Logout';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -39,9 +39,11 @@ function indexIcon(index) {
 
 export default function Sidebar(props) {
   const { setUser } = props;
-  const routes = ['dashboard', 'dashboard', 'dashboard', 'dashboard', 'documentation', 'help'];
+  const routes = ['dashboard', 'projects', 'institutions', 'genemapper', 'documentation', 'help'];
   const titles = ['Dashboard', 'Projects', 'Institutions', 'Gene Mapper', 'Documentation', 'Help'];
   const { url } = useRouteMatch();
+  const location = useLocation();
+  const path = location.pathname;
 
   return (
     <Box>
@@ -67,6 +69,7 @@ export default function Sidebar(props) {
                   >
                     <Box
                       className={styles.navbarItemContainer}
+                      sx={{ background: path.includes(route) ? '#5676E5' : '#184060' }}
                     >
                       <ListItemIcon className={styles.listItemIcon}>
                         {indexIcon(index)}
@@ -75,7 +78,10 @@ export default function Sidebar(props) {
                   </Tooltip>
                 </NavLink>
               ))}
-              <NavLink to="/sequencer/settings" className={`${styles.navlinkIcon} ${styles.bottomIcons} ${styles.settingsIcon}`}>
+              <NavLink
+                to="/sequencer/settings"
+                className={`${styles.navlinkIcon} ${styles.bottomIcons} ${styles.settingsIcon}`}
+              >
                 <SettingsIcon />
               </NavLink>
               <NavLink
