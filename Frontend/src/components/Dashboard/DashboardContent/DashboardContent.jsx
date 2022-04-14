@@ -7,7 +7,7 @@ import Documentation from '../Pages/Documentation/Documentation';
 import Settings from '../Pages/Settings/Settings';
 import Help from '../Pages/Help/Help';
 import styles from './dashboardContent.module.css';
-import MiniDrawer from '../Drawer/Drawer';
+import Sidebar from '../Sidebar/Sidebar';
 
 const DashboardContent = (props) => {
   const { user, setUser } = props;
@@ -16,7 +16,7 @@ const DashboardContent = (props) => {
 
   return (
     <>
-      <MiniDrawer user={user} setUser={setUser} />
+      <Sidebar setUser={setUser} />
       <Switch>
         <Route exact path={`${path}/`}>
           <Redirect to={`${url}/dashboard`} />
