@@ -4,14 +4,14 @@ import { createTheme, ThemeProvider } from '@mui/material';
 import {
   Route, HashRouter as Router, Switch, Redirect,
 } from 'react-router-dom';
-import HomePage from './components/LandingPage/pages/Home/Home';
-import About from './components/LandingPage/pages/About/About';
-import Docs from './components/LandingPage/pages/Docs/Docs';
-import Contact from './components/LandingPage/pages/Contact/Contact';
-import DashboardContent from './components/Dashboard/DashboardContent/DashboardContent';
-import { guardedPage } from './components/common/utils';
-import VisualizationPage from './components/Dashboard/Pages/VisualizationPage/VisualizationPage';
-import PasswordResetPage from './components/LandingPage/PasswordReset/PasswordResetPage';
+import HomePage from './views/Home';
+import About from './views/About';
+import Docs from './views/Docs';
+import Contact from './views/Contact';
+import DashboardContent from './components/DashboardContent';
+import { guardedPage } from './shared/utils/common/utils';
+import VisualizationPage from './views/VisualizationPage';
+import PasswordResetPage from './views/PasswordResetPage';
 
 function App() {
   const theme = createTheme({

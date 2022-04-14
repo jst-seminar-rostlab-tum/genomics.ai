@@ -1,0 +1,49 @@
+
+.profilePicture {
+    font-size: 2rem;
+    height: 150px;
+    width: 150px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    border-radius: 80px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    top: -10px;
+}
+
+.title h1 {
+    font-size: 30px;
+    color: #003560;
+}
+
+.background {
+    text-align: center;
+    padding-block: 60px;
+    top: 140px;
+    /* position in middle */
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -0%);
+}
+
+.inputComponent {
+    text-align: left;
+}
+
+.inputText {
+    font-weight: bold;
+    font-size: 17px;
+    margin-bottom: 20px;
+}
+
+.divider {
+    height: 1px;
+    background: lightgrey;
+}
+
+.headline {
+    text-align: left;
+    color: #0075FF;
+    font-size: 25px;
+    font-weight: bold;
+}
