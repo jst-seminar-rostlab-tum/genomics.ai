@@ -4,7 +4,6 @@ import {
 } from 'react-router-dom';
 import Sidebar from '../Sidebar';
 import Dashboard from 'views/Dashboard';
-import NavigationBar from '../NavigationBar';
 import Documentation from 'views/Documentation';
 import Settings from 'views/Settings';
 import Help from 'views/Help';
@@ -19,7 +18,6 @@ const DashboardContent = (props) => {
 
   return (
     <div>
-      <NavigationBar sidebarShown={sidebarShown} user={user} setUser={setUser} />
       <Sidebar
         toggleSidebar={toggleSidebar}
         sidebarShown={sidebarShown}

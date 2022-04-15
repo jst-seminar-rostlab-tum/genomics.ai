@@ -11,7 +11,7 @@ import { Link as NavLink, useRouteMatch, useLocation } from 'react-router-dom';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import LogoutIcon from '@mui/icons-material/Logout';
 import SettingsIcon from '@mui/icons-material/Settings';
-import geneIcon from '../../../assets/gene.png';
+import geneIcon from 'assets/gene.png';
 import styles from './sidebar.module.css';
 
 function indexIcon(index) {
