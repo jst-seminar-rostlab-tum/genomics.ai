@@ -13,6 +13,9 @@ export function init_env_vars() {
         "S3_BUCKET_NAME",
         "MAILGUN_API_KEY",
         "MAIL_DOMAIN",
+        "MAILGUN_HOST",
+        "API_URL",
+        "FRONTEND_URL",
         "JWT_SECRET"
     ];
     required_env_vars.forEach((required_env_var) => {
@@ -28,9 +31,13 @@ export function init_env_vars() {
 
     setStdEnvValue("PORT", "8050");
     setStdEnvValue("DATABASE_URI", "mongodb://localhost:27017/dev");
+    setStdEnvValue("API_URL","http://localhost:8050");
+    setStdEnvValue("FRONTEND_URL","http://localhost:3000");
 
     setStdEnvValue("JWT_SECRET", String(Math.random()));
 
-    setStdEnvValue("S3_ENDPOINT", "http://127.0.0.1:9000");
-    setStdEnvValue("S3_BUCKET_NAME", "vaultgovsg");
+    setStdEnvValue("S3_ENDPOINT", "http://localhost:9000");
+    setStdEnvValue("S3_BUCKET_NAME", "minio-bucket");
+    setStdEnvValue("S3_ACCESS_KEY_ID", "minioadmin");
+    setStdEnvValue("S3_SECRET_ACCESS_KEY", "minioadmin");
 }

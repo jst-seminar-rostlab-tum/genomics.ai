@@ -22,7 +22,8 @@ export default function verify_email(): Router {
 
             user.isEmailVerified = true;
             await user.save();
-            res.status(200).send("<h2>User Email has been verified successfully. click <a href='https://www.genecruncher.com/'>here</a> to return</h2>");
+            // res.status(200).send("<h2>User Email has been verified successfully. click <a href='https://www.genecruncher.com/'>here</a> to return</h2>");
+            res.status(200).send(`<h2>User Email has been verified successfully. click <a href='${process.env.FRONTEND_URL}/'>here</a> to return</h2>`);
             tokenObj.delete();
         }))
 
