@@ -8,7 +8,9 @@
     "start": "node ./build/server.js",
     "gcp-build": "tsc -p .",
     "dev:start": "npm-run-all gcp-build start",
-    "dev": "nodemon --watch src -e ts,ejs --exec npm run dev:start"
+    "dev": "nodemon --watch src -e ts,ejs --exec npm run dev:start",
+    "full-backend-local:docker": "docker-compose -f dev/docker-compose.yml up -d",
+    "full-backend-local": "npm-run-all full-backend-local:docker dev"
   },
   "repository": {
     "type": "git",
