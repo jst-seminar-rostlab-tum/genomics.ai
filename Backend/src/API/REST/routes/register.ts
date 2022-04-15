@@ -1,6 +1,7 @@
 import express, {Router} from "express";
 import bcrypt from "bcrypt";
-import {IUser, userModel} from "../../../database/models/user";
+import {IUser} from "../../../database/models/user";
+import UserService from "../../../database/services/userService";
 import {mailer} from "../../../util/mailer";
 import {tokenModel} from "../../../database/models/token";
 
@@ -9,34 +10,35 @@ export default function register_route() : Router {
 
     router
         .post("/register", async (req: any, res) => {
-            // TODO input-validation
             const {first_name, last_name, email, password, note} = req.body;
 
             if (!(first_name && email && password))
                 return res.status(400).send("Missing parameters");
 
-            if (await userModel.findOne({email}))
+            if (await UserService.getUserByEmail(email))
                 return res.status(409).send("User with the given email already exists");
 
             const saltHashedPassword = await bcrypt.hash(password, 12);
 
-            let user : (IUser | undefined) = undefined;
-            try{
-                user = await userModel.create({
-                    firstName: first_name,
-                    lastName: last_name,
-                    email,
-                    password: saltHashedPassword,
-                    note
-                });
+            let userToAdd : any = {};
+            userToAdd.firstName = first_name;
+            userToAdd.lastName = last_name;
+            userToAdd.email = email;
+            userToAdd.saltHashedPassword = saltHashedPassword;
+            userToAdd.note = note;
+
+            let userAdded: (IUser | undefined) = undefined;
+
+            try {
+                userAdded = await UserService.addUser(userToAdd);
 
                 /* user without the password field */
-                const { password, ...userSecure } = user.toObject();
+                const { password, ...userSecure } = userAdded.toObject();
 
-                const token = await tokenModel.create({ _userId: user._id });
+                const token = await tokenModel.create({ _userId: userAdded._id });
                 mailer.send_verification_mail(first_name, email, token.token);
                 return res.status(201).json(userSecure);
-            }catch(err){
+            } catch(err) {
                 console.error("Error registering user!");
                 console.error(JSON.stringify(err));
                 console.error(err);
