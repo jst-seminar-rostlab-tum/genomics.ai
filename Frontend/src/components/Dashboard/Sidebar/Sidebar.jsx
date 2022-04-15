@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import LiveHelpIcon from '@mui/icons-material/LiveHelp';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import MapIcon from '@mui/icons-material/Map';
@@ -44,59 +44,59 @@ export default function Sidebar(props) {
   const { url } = useRouteMatch();
   const location = useLocation();
   const path = location.pathname;
+  const settingsPath = '/sequencer/settings';
 
   return (
     <Box>
       <Box className={styles.sidebarNav}>
         <Box className={styles.sidebarWrap}>
-          <Box>
-            <List className={styles.iconList}>
-              {routes.map((route, index) => (
-                <NavLink
-                  className={styles.navlink}
-                  to={`${url}/${route}`}
-                >
-                  <Tooltip
-                    title={titles[index]}
-                    placement="right"
-                    componentsProps={{
-                      tooltip: {
-                        sx: {
-                          bgcolor: '#5676E4',
-                        },
+          <List className={styles.iconList}>
+            {routes.map((route, index) => (
+              <NavLink
+                className={styles.navlink}
+                to={`${url}/${route}`}
+                key={route.toString()}
+              >
+                <Tooltip
+                  title={titles[index]}
+                  placement="right"
+                  componentsProps={{
+                    tooltip: {
+                      sx: {
+                        bgcolor: '#5676E4',
                       },
-                    }}
+                    },
+                  }}
+                >
+                  <Box
+                    className={styles.navbarItemContainer}
+                    sx={{ background: path.includes(route) ? '#5676E5' : '#184060' }}
                   >
-                    <Box
-                      className={styles.navbarItemContainer}
-                      sx={{ background: path.includes(route) ? '#5676E5' : '#184060' }}
-                    >
-                      <ListItemIcon className={styles.listItemIcon}>
-                        {indexIcon(index)}
-                      </ListItemIcon>
-                    </Box>
-                  </Tooltip>
-                </NavLink>
-              ))}
-              <NavLink
-                to="/sequencer/settings"
-                className={`${styles.navlinkIcon} ${styles.bottomIcons} ${styles.settingsIcon}`}
-              >
-                <SettingsIcon />
+                    <ListItemIcon className={styles.listItemIcon}>
+                      {indexIcon(index)}
+                    </ListItemIcon>
+                  </Box>
+                </Tooltip>
               </NavLink>
-              <NavLink
-                to="/"
-                onClick={() => {
-                  setUser(null);
-                  localStorage.removeItem('user');
-                  localStorage.removeItem('jwt');
-                }}
-                className={`${styles.navlinkIcon} ${styles.bottomIcons}`}
-              >
-                <LogoutIcon />
-              </NavLink>
-            </List>
-          </Box>
+            ))}
+            <NavLink
+              to={settingsPath}
+              className={`${styles.navlinkIcon} ${styles.bottomIcons} ${styles.settingsIcon}`}
+            >
+              <SettingsIcon />
+            </NavLink>
+            <NavLink
+              to="/"
+              onClick={() => {
+                setUser(null);
+                localStorage.removeItem('user');
+                localStorage.removeItem('jwt');
+              }}
+              className={`${styles.navlinkIcon} ${styles.bottomIcons}`}
+            >
+              <LogoutIcon />
+            </NavLink>
+          </List>
         </Box>
       </Box>
     </Box>
