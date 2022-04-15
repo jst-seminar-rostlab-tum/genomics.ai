@@ -1,5 +1,5 @@
 import express, {Router} from "express";
-import { IProject, projectModel } from "../../../../database/models/project";
+import { projectModel } from "../../../../database/models/project";
 import { userModel } from "../../../../database/models/user";
 import { visibilityStatus } from "../../../../database/models/project";
 import check_auth from "../../middleware/check_auth";
@@ -15,6 +15,9 @@ export default function project_route() : Router {
 
             if (!(title && description && visibility && admin_user_id))
                 return res.status(400).send("Missing parameters");
+            
+            if(!(Object.values(visibilityStatus).includes(visibility)) )
+                return res.status(400).send("Visibility parameter is wrong format. You should type one of the followings: PRIVATE, PUBLIC, BY_INSTITUTION");
 
             if (await projectModel.findOne({title}))
                 return res.status(409).send("Project with the given name already exists!");

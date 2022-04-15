@@ -1,5 +1,5 @@
 import express, {Router} from "express";
-import {IInstitution, institutionModel} from "../../../../database/models/institution";
+import { institutionModel} from "../../../../database/models/institution";
 import { userModel } from "../../../../database/models/user";
 import check_auth from "../../middleware/check_auth";
 
