@@ -11,7 +11,7 @@ function Header({
       <h1 className={styles.title}>{title}</h1>
       <div className={styles.right}>
         {replaceRight == null
-          ? <ProfileImage sizePixels={44} /> : replaceRight}
+          ? <ProfileImage sizePixels={42} /> : replaceRight}
       </div>
     </header>
   );

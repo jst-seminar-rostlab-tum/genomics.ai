@@ -1,0 +1,6 @@
+.content {
+    width: 100%;
+    max-height: 100%;
+    overflow-y: auto;
+    padding-top: 12px;
+}
