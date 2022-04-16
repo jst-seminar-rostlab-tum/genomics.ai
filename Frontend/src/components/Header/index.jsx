@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './header.module.css';
+import { Link } from 'react-router-dom';
 import ProfileImage from 'components/ProfileImage';
 
 function Header({
@@ -11,7 +12,11 @@ function Header({
       <h1 className={styles.title}>{title}</h1>
       <div className={styles.right}>
         {replaceRight == null
-          ? <ProfileImage sizePixels={42} /> : replaceRight}
+          ? (
+            <Link to="/settings">
+              <ProfileImage sizePixels={42} />
+            </Link>
+          ) : replaceRight}
       </div>
     </header>
   );

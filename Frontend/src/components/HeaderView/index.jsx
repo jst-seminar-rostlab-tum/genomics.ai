@@ -5,7 +5,7 @@ import Header from 'components/Header';
 import styles from './headerView.module.css';
 
 function HeaderView({
-  sidebarShown, title, replaceHeaderRight, content,
+  sidebarShown, title, replaceHeaderRight, children,
 }) {
   const paddingL = useCallback(() => (sidebarShown ? '140px' : '350px'), [sidebarShown]);
   return (
@@ -24,7 +24,7 @@ function HeaderView({
         direction="row"
       >
         <div className={styles.content}>
-          {content}
+          {children}
         </div>
       </Stack>
     </Stack>
