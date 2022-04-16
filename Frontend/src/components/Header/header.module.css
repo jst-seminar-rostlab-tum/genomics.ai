@@ -1,0 +1,13 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background-color: #fff;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.title {
+    margin-top: 16px;
+    margin-bottom: 0;
+}
