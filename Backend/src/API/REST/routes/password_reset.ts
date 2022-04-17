@@ -1,19 +1,19 @@
 import express, {Router} from "express";
-import {userModel} from "../../../database/models/user";
+import UserService from "../../../database/services/user.service";
 import {passwordResetTokenModel} from "../../../database/models/password_reset_token";
 import bcrypt from "bcrypt";
 import {mailer} from "../../../util/mailer";
 
 export default function password_reset_route() : Router {
     let router = express.Router();
-    
+
     router.post('/password_reset', async (req, res) => {
       const {email} = req.body;
       if (!email)
         return res.status(400).send('Missing parameters');
 
       // check user with this email exists
-      const user = await userModel.findOne({email});
+      const user = await UserService.getUserByEmail(email);
       if (!user)
         return res.status(404).send("User not found");
 
@@ -32,7 +32,7 @@ export default function password_reset_route() : Router {
 
       return res.status(200).send('An email has been sent to your email address with instructions to reset your password');
     });
-    
+
     router.post('/password_reset/:token', async (req, res) => {
       const {password} = req.body;
       if (!password)
@@ -45,7 +45,7 @@ export default function password_reset_route() : Router {
       token.deleteOne();
 
       // find user indicated by token's user-field
-      const user = await userModel.findById(token._userId);
+      const user = await UserService.getUserById(token._userId);
       if (!user)
         return res.status(404).send("Invalid token: User for this token could not be found.");
 
@@ -62,6 +62,6 @@ export default function password_reset_route() : Router {
 
       return res.status(200).send("Password has been changed");
     });
-    
+
     return router;
 }

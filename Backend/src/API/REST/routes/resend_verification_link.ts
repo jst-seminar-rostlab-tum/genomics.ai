@@ -1,6 +1,6 @@
 import express, { Router } from "express";
 import { tokenModel } from "../../../database/models/token";
-import {userModel} from "../../../database/models/user";
+import UserService from "../../../database/services/user.service";
 import {mailer} from "../../../util/mailer";
 
 export default function resend_verification_link(): Router {
@@ -13,7 +13,7 @@ export default function resend_verification_link(): Router {
                 return res.status(400).send("Missing e-mail parameter.");
 
             // check if user needs verification
-            const user = await userModel.findOne({email});
+            const user = await UserService.getUserByEmail(email);
             if (!user)
                 return res.status(404).send("Could not find user with this e-mail. Please register.");
             if (user.isEmailVerified)
