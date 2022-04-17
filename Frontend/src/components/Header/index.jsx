@@ -13,7 +13,7 @@ function Header({
       <div className={styles.right}>
         {replaceRight == null
           ? (
-            <Link to="/settings">
+            <Link to="/sequencer/settings">
               <ProfileImage sizePixels={42} />
             </Link>
           ) : replaceRight}
