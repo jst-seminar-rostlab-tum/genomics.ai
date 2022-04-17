@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import SettingsIcon from '@mui/icons-material/Settings';
+import Button from '@mui/material/Button';
 import ListCard from 'components/ListCard';
 import styles from './institutionCard.module.css';
 
@@ -23,6 +25,19 @@ function InstitutionCard({ institution }) {
           {adminIds.indexOf(user.id) !== -1 ? 'admin' : 'member'}
         </span>
       )}
+      trailing={[
+        adminIds.indexOf(user.id) !== -1 ? (
+          <Button
+            key="settings"
+            endIcon={<SettingsIcon />}
+            variant="outlined"
+            sx={{ marginRight: '6px' }}
+          >
+            Settings
+          </Button>
+        ) : <></>,
+        <Button key="leave" variant="outlined" color="critical">Leave</Button>,
+      ]}
     />
   );
 }

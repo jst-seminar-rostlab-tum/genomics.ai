@@ -14,6 +14,10 @@ import VisualizationPage from './views/VisualizationPage';
 import PasswordResetPage from './views/PasswordResetPage';
 
 function App() {
+  // https://stackoverflow.com/a/69836010
+  const { palette } = createTheme();
+  const { augmentColor } = palette;
+  const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
   const theme = createTheme({
     palette: {
       primary: {
@@ -21,6 +25,10 @@ function App() {
       },
       light: {
         main: '#4F83CC',
+      },
+      critical: createColor('#F44336'),
+      background: {
+        paper: '#EFF7FF',
       },
     },
   });

@@ -6,14 +6,8 @@ function InstitutionCard({
   imageURL, title, description, nextToTitle, trailing,
 }) {
   return (
-    <Card sx={{ background: 'var(--card-background)' }}>
-      <div style={{
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        padding: '8px 16px',
-      }}
-      >
+    <Card sx={{ background: 'card.background' }}>
+      <div className={styles.cardContent}>
         <div className={styles.start}>
           {imageURL && (
           <img className={styles.cardImage} src={imageURL} alt="" />
