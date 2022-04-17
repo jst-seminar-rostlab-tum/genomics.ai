@@ -1,7 +1,8 @@
 import express, {Router} from "express";
 import bcrypt from "bcrypt";
 import {IUser} from "../../../database/models/user";
-import UserService from "../../../database/services/userService";
+import {AddUserDTO} from "../../../database/dtos/user.dto"
+import UserService from "../../../database/services/user.service";
 import {mailer} from "../../../util/mailer";
 import {tokenModel} from "../../../database/models/token";
 
@@ -20,12 +21,13 @@ export default function register_route() : Router {
 
             const saltHashedPassword = await bcrypt.hash(password, 12);
 
-            let userToAdd : any = {};
-            userToAdd.firstName = first_name;
-            userToAdd.lastName = last_name;
-            userToAdd.email = email;
-            userToAdd.saltHashedPassword = saltHashedPassword;
-            userToAdd.note = note;
+            let userToAdd: AddUserDTO = {
+                firstName: first_name,
+                lastName: last_name,
+                email,
+                password: saltHashedPassword,
+                note,
+            }
 
             let userAdded: (IUser | undefined) = undefined;
 
