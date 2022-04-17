@@ -30,6 +30,12 @@
     font-weight: 500;
 }
 
+.description {
+    margin: 0;
+    font-size: 14px;
+    color: gray;
+}
+
 .description>p {
     margin: 0;
 }

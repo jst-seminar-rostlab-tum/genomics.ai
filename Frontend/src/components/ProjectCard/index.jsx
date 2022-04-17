@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Button from '@mui/material/Button';
 import ListCard from 'components/ListCard';
-import InstitutionLeaveButton from 'components/InstitutionLeaveButton';
-import styles from './institutionCard.module.css';
+import ProjectLeaveButton from 'components/ProjectLeaveButton';
+import styles from './projectCard.module.css';
 
 import getUser from 'shared/services/mock/user';
 
-function InstitutionCard({ institution, onLeft }) {
+function ProjectCard({ project, onLeft }) {
   const [user, setUser] = useState({});
   useEffect(() => {
     getUser()
@@ -15,12 +15,12 @@ function InstitutionCard({ institution, onLeft }) {
   }, [setUser]);
 
   const {
-    name, profilePictureURL, adminIds,
-  } = institution;
+    name, description, adminIds,
+  } = project;
   return (
     <ListCard
       title={name}
-      imageURL={profilePictureURL}
+      description={description}
       nextToTitle={(
         <span className={styles.accessRightIndicator}>
           {adminIds.indexOf(user.id) !== -1 ? 'admin' : 'member'}
@@ -37,10 +37,10 @@ function InstitutionCard({ institution, onLeft }) {
             Settings
           </Button>
         ) : <div key="nothing" />,
-        <InstitutionLeaveButton key="leave" institution={institution} onLeft={onLeft} />,
+        <ProjectLeaveButton key="leave" project={project} onLeft={onLeft} />,
       ]}
     />
   );
 }
 
-export default InstitutionCard;
+export default ProjectCard;

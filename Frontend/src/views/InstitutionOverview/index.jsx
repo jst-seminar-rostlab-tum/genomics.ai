@@ -7,10 +7,9 @@ import queryMyInstitutions from 'shared/services/mock/institutions';
 function InstitutionOverview({ sidebarShown }) {
   const [institutions, setInstitutions] = useState([]);
   useEffect(() => {
-    const updateInstitutions = () => queryMyInstitutions()
+    queryMyInstitutions()
       .then((newInstitutions) => setInstitutions(newInstitutions))
       .catch((ignored) => { console.log(ignored); });
-    updateInstitutions();
   }, [setInstitutions]);
 
   function onLeft(institution) {
