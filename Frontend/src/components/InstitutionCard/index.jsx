@@ -9,7 +9,13 @@ function InstitutionCard({ institution }) {
   return (
     <Card raised>
       <CardContent>
-        <h2>{name}</h2>
+        <div>
+          <img src={profilePictureURL} alt="" />
+          <div>
+            <h3>{name}</h3>
+            <p>{country}</p>
+          </div>
+        </div>
       </CardContent>
     </Card>
   );
