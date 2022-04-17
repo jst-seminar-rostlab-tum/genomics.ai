@@ -18,9 +18,14 @@ function InstitutionOverview({ sidebarShown }) {
       sidebarShown={sidebarShown}
       title="My Institutions"
     >
-      {institutions.map((institution) => (
-        <InstitutionCard key={institution.id} institution={institution} />
-      ))}
+      <div className={styles.content}>
+        {institutions.map((institution) => (
+          <div key={institution.id}>
+            <InstitutionCard institution={institution} />
+            <div className={styles.cardSpacing} />
+          </div>
+        ))}
+      </div>
     </HeaderView>
   );
 }

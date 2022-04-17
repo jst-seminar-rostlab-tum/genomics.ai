@@ -1,23 +1,29 @@
-import React from 'react';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
+import React, { useState, useEffect } from 'react';
+import ListCard from 'components/ListCard';
+import styles from './institutionCard.module.css';
+
+import getUser from 'shared/services/mock/user';
 
 function InstitutionCard({ institution }) {
+  const [user, setUser] = useState({});
+  useEffect(() => {
+    getUser(institution.id)
+      .then(setUser);
+  }, [setUser]);
+
   const {
-    id, name, country, profilePictureURL, backgroundPictureURL, adminIds,
+    name, profilePictureURL, adminIds,
   } = institution;
   return (
-    <Card raised>
-      <CardContent>
-        <div>
-          <img src={profilePictureURL} alt="" />
-          <div>
-            <h3>{name}</h3>
-            <p>{country}</p>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+    <ListCard
+      title={name}
+      imageURL={profilePictureURL}
+      nextToTitle={(
+        <span className={styles.accessRightIndicator}>
+          {adminIds.indexOf(user.id) !== -1 ? 'admin' : 'member'}
+        </span>
+      )}
+    />
   );
 }
 

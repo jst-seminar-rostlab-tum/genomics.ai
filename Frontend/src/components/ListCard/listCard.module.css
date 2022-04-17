@@ -1,0 +1,39 @@
+.cardImage {
+    width: 42px;
+    height: 42px;
+    margin: 2px 0;
+    margin-right: 12px;
+    border-radius: 50%;
+}
+
+.start {
+    display: flex;
+    align-items: center;
+}
+
+.titleRow {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+}
+
+.title {
+    margin: 0;
+    font-weight: 500;
+}
+
+.description>p {
+    margin: 0;
+}
+
+.text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.trailing {
+    display: flex;
+    align-items: center;
+}
