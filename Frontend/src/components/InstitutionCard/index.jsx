@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Button from '@mui/material/Button';
 import ListCard from 'components/ListCard';
+import InstitutionLeaveButton from 'components/InstitutionLeaveButton';
 import styles from './institutionCard.module.css';
 
 import getUser from 'shared/services/mock/user';
 
-function InstitutionCard({ institution }) {
+function InstitutionCard({ institution, onLeft }) {
   const [user, setUser] = useState({});
   useEffect(() => {
     getUser(institution.id)
@@ -35,8 +36,8 @@ function InstitutionCard({ institution }) {
           >
             Settings
           </Button>
-        ) : <></>,
-        <Button key="leave" variant="outlined" color="critical">Leave</Button>,
+        ) : <div key="nothing" />,
+        <InstitutionLeaveButton key="leave" institution={institution} onLeft={onLeft} />,
       ]}
     />
   );

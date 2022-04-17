@@ -1,3 +1,9 @@
+const mockLeftIds = [];
+
+export async function leaveInstitution(institution) {
+  mockLeftIds.push(institution.id);
+}
+
 export default async function queryMyInstitutions() {
   return [
     {
@@ -24,5 +30,5 @@ export default async function queryMyInstitutions() {
       backgroundPictureURL: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjsC9c9x8ABK8CXkzrf1cAAAAASUVORK5CYII=',
       adminIds: [],
     },
-  ];
+  ].filter((institution) => !mockLeftIds.includes(institution.id));
 }
