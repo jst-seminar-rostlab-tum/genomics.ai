@@ -7,21 +7,24 @@ import styles from './headerView.module.css';
 function HeaderView({
   sidebarShown, title, replaceHeaderRight, children,
 }) {
-  const paddingL = useCallback(() => (sidebarShown ? '140px' : '350px'), [sidebarShown]);
+  const navbarPaddingLeft = useCallback(() => (sidebarShown ? '80px' : '190px'), [sidebarShown]);
   return (
     <Stack
       direction="column"
       sx={{
-        paddingLeft: paddingL,
-        paddingRight: '60px',
         width: '100%',
+        height: '100vh',
+        paddingLeft: navbarPaddingLeft,
       }}
     >
-      <Header title={title} replaceRight={replaceHeaderRight} />
+      <div style={{ paddingLeft: '60px', paddingRight: '60px' }}>
+        <Header title={title} replaceRight={replaceHeaderRight} />
+      </div>
 
       <Stack
         className="flexContainer"
         direction="row"
+        sx={{ height: '100%' }}
       >
         <div className={styles.content}>
           {children}
