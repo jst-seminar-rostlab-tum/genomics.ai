@@ -1,6 +1,6 @@
 import express, {Router} from "express";
 import { GoogleAuth } from "google-auth-library";
-import { projectModel, ProjectJobStatus } from "../../../database/models/project";
+import { projectJobModel, ProjectJobStatus } from "../../../database/models/projectJob";
 import check_auth from "../middleware/check_auth";
 
 // Tests the Cloud Run connection
@@ -13,7 +13,7 @@ export default function abort_processing_route(): Router {
             async (req: any, res) => {
                 const {uploadId} = req.body;
 
-                let project = await projectModel.findOne({ uploadId: uploadId });
+                let project = await projectJobModel.findOne({ uploadId: uploadId });
 
                 if (!project)
                     return res.status(404).json({ msg: "No project found with upload ID." });
@@ -24,7 +24,7 @@ export default function abort_processing_route(): Router {
                 if (project.status != ProjectJobStatus[ProjectJobStatus.PROCESSING_PENDING])
                     return res.status(400).json({ msg: "Project processing cannot be aborted as it is not pending."});
 
-                await projectModel.updateOne({_id: project._id }, <any>{ status: ProjectJobStatus[ProjectJobStatus.ABORTED] }, );
+                await projectJobModel.updateOne({_id: project._id }, <any>{ status: ProjectJobStatus[ProjectJobStatus.ABORTED] }, );
                 project.status = ProjectJobStatus[ProjectJobStatus.ABORTED];
 
                 res.status(200).json({ project: project});

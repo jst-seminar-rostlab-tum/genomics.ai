@@ -1,6 +1,6 @@
 import express, {Router} from "express";
 import { GoogleAuth } from "google-auth-library";
-import { projectModel, ProjectJobStatus } from "../../../database/models/project";
+import { projectJobModel, ProjectJobStatus } from "../../../database/models/projectJob";
 import check_auth from "../middleware/check_auth";
 import { mongo } from "mongoose";
 
@@ -14,7 +14,7 @@ export default function initiate_processing_route(): Router {
             async (req: any, res) => {
                 const {uploadId} = req.body;
 
-                let project = await projectModel.findOne({ uploadId: uploadId });
+                let project = await projectJobModel.findOne({ uploadId: uploadId });
 
                 if (!project)
                     return res.status(404).json({ msg: "No project found with upload ID." });
