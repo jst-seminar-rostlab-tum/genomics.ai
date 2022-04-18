@@ -1,6 +1,6 @@
 import { Stack } from '@mui/material';
 import React, { useCallback } from 'react';
-import Header from 'components/Header';
+import Header from 'components/general/Header';
 
 import styles from './headerView.module.css';
 

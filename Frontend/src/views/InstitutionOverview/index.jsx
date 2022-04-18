@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import HeaderView from 'components/HeaderView';
-import InstitutionCard from 'components/InstitutionCard';
+import HeaderView from 'components/general/HeaderView';
+import InstitutionCard from 'components/institutionOverview/InstitutionCard';
 import styles from './institutionOverview.module.css';
 import queryMyInstitutions from 'shared/services/mock/institutions';
 

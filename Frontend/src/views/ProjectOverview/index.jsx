@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import HeaderView from 'components/HeaderView';
-import ProjectCard from 'components/ProjectCard';
+import HeaderView from 'components/general/HeaderView';
+import ProjectCard from 'components/projectOverview/ProjectCard';
 import styles from './projectOverview.module.css';
 import queryMyProjects from 'shared/services/mock/projects';
 
