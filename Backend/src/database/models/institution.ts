@@ -1,5 +1,10 @@
 import {Document, model, Schema} from "mongoose";
 
+export enum visibilityInstitutionStatus {
+    "PRIVATE",
+    "PUBLIC",
+}
+
 export interface IInstitution extends Document {
    name:string,
    country:string,
@@ -7,7 +12,7 @@ export interface IInstitution extends Document {
    backgroundPictureURL: string,
    adminIds: [Schema.Types.ObjectId],
    invitedMemberIds: [Schema.Types.ObjectId],
-   projects: [Schema.Types.ObjectId],
+   visibility: string,
 }
 
 const institutionSchema = new Schema<IInstitution>({
@@ -43,11 +48,11 @@ const institutionSchema = new Schema<IInstitution>({
         require: false
     }],
 
-    projects: [{
-        type: Schema.Types.ObjectId, 
-        ref: 'Project',
-        require: false
-    }],
+    visibility: {
+        type: String,
+        enum: visibilityInstitutionStatus,
+        require: true
+    },
     
 }, {
     timestamps: true,

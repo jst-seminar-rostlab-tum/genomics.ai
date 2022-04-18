@@ -12,7 +12,7 @@ export interface IProject extends Document {
    invitedMemberIds: [Schema.Types.ObjectId],
    memberIds: [Schema.Types.ObjectId],
    visibility: string,
-   projectJobs: [Schema.Types.ObjectId],
+   institutionId: Schema.Types.ObjectId,
 }
 
 const projectSchema = new Schema<IProject>({
@@ -50,11 +50,11 @@ const projectSchema = new Schema<IProject>({
         required: true
     },
 
-    projectJobs: [{
+    institutionId: {
         type: Schema.Types.ObjectId, 
-        ref: 'ProjectJob',
+        ref: 'Institution',
         require: false
-    }],
+    }
     
 }, {
     timestamps: true,

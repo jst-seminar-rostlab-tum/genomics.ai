@@ -22,6 +22,8 @@ export interface IProjectJob extends Document {
     status: string;
     resultName: string;
     resultSize: number;
+
+    projectId: Schema.Types.ObjectId
 }
 
 const projectSchema = new Schema<IProjectJob>({
@@ -38,7 +40,12 @@ const projectSchema = new Schema<IProjectJob>({
     status: {type: String, require: true, enum: ProjectJobStatus},
 
     resultName: {type: String, require: false},
-    resultSize: {type: Schema.Types.Number, require: false, default: -1}
+    resultSize: {type: Schema.Types.Number, require: false, default: -1},
+
+    projectId: {
+        type: Schema.Types.ObjectId,
+        required: true
+    }
 });
 
 export const projectJobModel = model<IProjectJob>("ProjectJob", projectSchema);
