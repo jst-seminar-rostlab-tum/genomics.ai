@@ -2,9 +2,10 @@ import express, {Router} from "express";
 import bcrypt from "bcrypt";
 import {IUser} from "../../../database/models/user";
 import {AddUserDTO} from "../../../database/dtos/user.dto"
+import {AddTokenDTO} from "../../../database/dtos/token.dto";
 import UserService from "../../../database/services/user.service";
+import TokenService from "../../../database/services/token.service";
 import {mailer} from "../../../util/mailer";
-import {tokenModel} from "../../../database/models/token";
 
 export default function register_route() : Router {
     let router = express.Router();
@@ -27,7 +28,7 @@ export default function register_route() : Router {
                 email,
                 password: saltHashedPassword,
                 note,
-            }
+            };
 
             let userAdded: (IUser | undefined) = undefined;
 
@@ -37,7 +38,8 @@ export default function register_route() : Router {
                 /* user without the password field */
                 const { password, ...userSecure } = userAdded.toObject();
 
-                const token = await tokenModel.create({ _userId: userAdded._id });
+                const tokenToAdd: AddTokenDTO = { _userId: userAdded._id };
+                const token = await TokenService.addToken(tokenToAdd);
                 mailer.send_verification_mail(first_name, email, token.token);
                 return res.status(201).json(userSecure);
             } catch(err) {

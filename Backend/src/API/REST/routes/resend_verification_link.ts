@@ -1,5 +1,6 @@
 import express, { Router } from "express";
-import { tokenModel } from "../../../database/models/token";
+import {AddTokenDTO} from "../../../database/dtos/token.dto";
+import TokenService from "../../../database/services/token.service";
 import UserService from "../../../database/services/user.service";
 import {mailer} from "../../../util/mailer";
 
@@ -20,14 +21,15 @@ export default function resend_verification_link(): Router {
                 return res.status(200).send("User has already been verified.");
 
             // delete old token
-            let token = await tokenModel.findOne({_userId: user._id});
+            const token = await TokenService.getTokenByUserId(user._id);
             // TODO verify token is old enough (has to be at least 60 seconds old)
             if (token)
                 await token.delete();
 
             // create new token and send new verification-mail
-            token = await tokenModel.create({ _userId: user._id });
-            await mailer.send_verification_mail(user.firstName, email, token.token);
+            const tokenToAdd: AddTokenDTO = { _userId: user._id };
+            const tokenNew = await TokenService.addToken(tokenToAdd);
+            await mailer.send_verification_mail(user.firstName, email, tokenNew.token);
 
             res.status(200).send("Verification link has been resent.");
         }));

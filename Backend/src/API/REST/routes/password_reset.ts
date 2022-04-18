@@ -1,6 +1,7 @@
 import express, {Router} from "express";
 import UserService from "../../../database/services/user.service";
-import {passwordResetTokenModel} from "../../../database/models/password_reset_token";
+import PasswordResetTokenService from "../../../database/services/passwordResetToken.service";
+import {AddPasswordResetTokenDTO} from "../../../database/dtos/password_reset_token.dto";
 import bcrypt from "bcrypt";
 import {mailer} from "../../../util/mailer";
 
@@ -20,9 +21,10 @@ export default function password_reset_route() : Router {
       // TODO: check for existing tokens - don't send mail if there already is a recent token. Delete old tokens!
 
       // create a reset-token and send email
-      const token = await passwordResetTokenModel.create({
-        _userId: user._id,
-      });
+      const tokenToAdd: AddPasswordResetTokenDTO = {
+          _userId: user._id
+      };
+      const token = await PasswordResetTokenService.addToken(tokenToAdd);
       await mailer.send(user.email, "[GeneCruncher] Please reset your password", "password_reset_request_email", {
         firstname: user.firstName,
         // link: `https://www.genecruncher.com/#/password_reset?token=${token.token}`
@@ -39,7 +41,7 @@ export default function password_reset_route() : Router {
         return res.status(400).send("Missing parameters");
 
       // find token corresponding to token-id and delete it
-      const token = await passwordResetTokenModel.findOne({token: req.params.token});
+      const token = await PasswordResetTokenService.getTokenByToken(req.params.token);
       if (!token)
         return res.status(404).send("Token could not be found. It may have been expired or used already");
       token.deleteOne();

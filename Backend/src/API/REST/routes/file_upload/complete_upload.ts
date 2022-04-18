@@ -4,7 +4,8 @@ import {AWSError, S3} from "aws-sdk";
 
 import check_auth from "../../middleware/check_auth";
 import {ExtRequest} from "../../../../definitions/ext_request";
-import {projectModel} from "../../../../database/models/project";
+import ProjectService from "../../../../database/services/project.service";
+import {UpdateProjectDTO} from "../../../../database/dtos/project.dto";
 import s3 from "../../../../util/s3";
 import {GoogleAuth} from "google-auth-library";
 
@@ -21,10 +22,9 @@ export default function upload_complete_upload_route() {
             if (!process.env.S3_BUCKET_NAME || !req.user_id)
                 return res.status(500).send("Server was not set up correctly");
 
-            let project = await projectModel.findOne({
-                owner: req.user_id,
-                uploadId: String(uploadId)
-            }).exec();
+            let project = req.user_id === undefined ? null :
+              await ProjectService.getProjectByUploadId(String(uploadId), req.user_id);
+
             if (!project)
                 return res.status(400).send("Project could not be found");
 
@@ -46,12 +46,13 @@ export default function upload_complete_upload_route() {
                 let request: S3.HeadObjectRequest = {Key: data.Key, Bucket: data.Bucket};
                 s3.headObject(request)
                     .promise()
-                    .then(result => projectModel.updateOne(
-                        {uploadId: params.UploadId},
-                        {
+                    .then(async result => {
+                        const update_object: UpdateProjectDTO = {
                             fileSize: result.ContentLength,
                             status: "UPLOAD_COMPLETE"
-                        }).exec())
+                        };
+                        await ProjectService.updateProject(params.UploadId, update_object);
+                    })
                     .then(async () => {
                         const url = `${process.env.CLOUD_RUN_URL}/run_classifier?uploadId=${uploadId}`;
                         const auth = new GoogleAuth();
@@ -64,11 +65,8 @@ export default function upload_complete_upload_route() {
                             Expires: 60 * 60 * 24 * 7 - 1 // one week minus one second
                         }
                         let presignedUrl = await s3.getSignedUrlPromise('getObject', params2);
-                        await projectModel.updateOne(
-                            {uploadId: params.UploadId},
-                            {
-                                location: presignedUrl
-                            }).exec();
+                        const update_object: UpdateProjectDTO = { location: presignedUrl };
+                        await ProjectService.updateProject(params.UploadId, update_object);
 
                         res.status(200).json({project: project});
                     })

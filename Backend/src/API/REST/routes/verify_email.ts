@@ -1,5 +1,5 @@
 import express, { Router } from "express";
-import { tokenModel } from "../../../database/models/token";
+import TokenService from "../../../database/services/token.service";
 import UserService from "../../../database/services/user.service";
 
 export default function verify_email(): Router {
@@ -7,7 +7,7 @@ export default function verify_email(): Router {
 
     router
         .get("/verify/:token", (async (req, res) => {
-            const tokenObj =  await tokenModel.findOne({ token: req.params.token });
+            const tokenObj = await TokenService.getTokenByToken(req.params.token);
             if (!tokenObj)
                 return res.status(404).send("Verification token could not be found. It may have expired.");
 
