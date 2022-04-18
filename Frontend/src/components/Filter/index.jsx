@@ -30,7 +30,7 @@ export default function Filter() {
   };
 
   const addCategory = () => {
-    if (!selectedIndexes.includes(category) && category) {
+    if (!selectedIndexes.includes(category) && category !== '') {
       handleIndexesAppend(category);
     }
   };
@@ -40,20 +40,27 @@ export default function Filter() {
   };
 
   return (
-    <Box sx={{ maxWidth: 420 }}>
+    <Box className={styles.container}>
       <FormGroup>
         <Stack
-          className="flexContainer"
           direction="row"
-          sx={{ margin: 2 }}
-
+          className={styles.stack}
         >
-          <FormControlLabel control={<Checkbox />} label={<Typography sx={{ fontWeight: 'bold' }}>Referenced By Atlas</Typography>} />
+          <FormControlLabel
+            control={<Checkbox />}
+            label={(
+              <Typography
+                className={styles.checkboxLabel}
+              >
+                Referenced By Atlas
+              </Typography>
+)}
+          />
           <TextField
             autoWidth
             value={reference}
             onChange={handleReferenceChange}
-            sx={{ minWidth: '160px' }}
+            className={styles.select}
             select
             variant="standard"
           >
@@ -62,18 +69,26 @@ export default function Filter() {
             ))}
           </TextField>
         </Stack>
-        <Divider sx={{ marginX: 2 }} />
+        <Divider className={styles.divider} />
         <Stack
-          className="flexContainer"
           direction="row"
-          sx={{ margin: 2 }}
+          className={styles.stack}
         >
-          <FormControlLabel control={<Checkbox />} label={<Typography sx={{ fontWeight: 'bold' }}>Category</Typography>} />
+          <FormControlLabel
+            control={<Checkbox />}
+            label={(
+              <Typography
+                className={styles.checkboxLabel}
+              >
+                Category
+              </Typography>
+)}
+          />
           <TextField
             autoWidth
             value={category}
             onChange={handleCategoryChange}
-            sx={{ minWidth: '160px' }}
+            className={styles.select}
             select
             variant="standard"
           >
@@ -81,12 +96,11 @@ export default function Filter() {
               <MenuItem value={index}>{categoryItem}</MenuItem>
             ))}
           </TextField>
-          <Button variant="contained" sx={{ marginX: 2 }} onClick={addCategory}>Add</Button>
+          <Button variant="contained" className={styles.addButton} onClick={addCategory}>Add</Button>
         </Stack>
         <Stack
-          className="flexContainer"
           direction="row"
-          sx={{ marginX: 2, marginBottom: 4 }}
+          className={styles.tagStack}
         >
           {selectedIndexes.map((selectedIndex) => (
             <Tag text={categories[selectedIndex]} handleClick={() => removeTag(selectedIndex)} />

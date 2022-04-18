@@ -1,0 +1,28 @@
+.container {
+    max-width: 420px;
+}
+
+.stack {
+    margin: 16px;
+}
+
+.tagStack {
+    margin: 0px 16px 32px;
+}
+
+.checkboxLabel {
+    font-weight: bold !important;
+}
+
+.divider {
+    margin: 0px 16px;
+}
+
+.select {
+    min-width: 160px !important;
+}
+
+.addButton {
+    margin: 0px 16px !important;
+    background-color: #0969DA !important;
+}
