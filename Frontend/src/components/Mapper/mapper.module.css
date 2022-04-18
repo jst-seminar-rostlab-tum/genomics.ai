@@ -1,0 +1,65 @@
+.container {
+    max-width: 400px;
+    margin: 12px;
+}
+
+.borderContainer {
+    border-radius: 20px;
+    padding: 16px 32px;
+}
+
+.input {
+    display: none !important;
+}
+
+.icon {
+    color: #FF5F58;
+}
+
+.filename {
+    color: #0969DA;
+    font-weight: bold !important;
+    width: 256px;
+    height: 100%;
+    margin: auto 0px !important;
+}
+
+.title {
+    font-weight: bold !important;
+    width: 100%;
+    text-align: center;
+    margin: 4px !important;
+}
+
+.buttonBox {
+    display: flex;
+    justify-content: center;
+    margin: 16px 0 8px 0;
+}
+
+.goButton {
+    background-color: #CECECE !important;
+}
+
+.goButton:hover {
+    background-color: #0969DA !important;
+}
+
+.divider {
+    margin: 16px 0;
+}
+
+.mapIcon {
+    background-color: black !important;
+    color: white !important;
+}
+
+.mapIcon:hover {
+    background-color: #0969DA !important;
+}
+
+.mapperBox {
+    display: flex;
+    justify-content: end;
+    margin: 12px;
+}
