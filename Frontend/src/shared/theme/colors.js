@@ -16,31 +16,43 @@ export const colors = {
     "700": "#495057",
     "600": "#6C757D",
     "500": "#ADB5BD",
-    "400": "#CED4DA", // MAIN ACTION COLOR
+    "400": "#CED4DA",
     "300": "#DEE2E6",
     "200": "#E9ECEF",
     "100": "#F8F9FA",
   },
-  "secondary-1": {
+  "secondary1": {
     "900": "#1B2914",
     "800": "#2A3D24",
     "700": "#395131",
     "600": "#597856",
     "500": "#6FB269",
-    "400": "#7DD181", // MAIN ACTION COLOR
+    "400": "#7DD181", // MAIN COLOR
     "300": "#A0E69E",
     "200": "#B8F1BA",
     "100": "#DAF3DB",
   },
-  "secondary-2": {
+  "secondary2": {
     "900": "#332E1B",
     "800": "#433C20",
     "700": "#625C35",
     "600": "#8F8A54",
     "500": "#CECE6E",
-    "400": "#E3E36A", // MAIN ACTION COLOR
+    "400": "#E3E36A", // MAIN COLOR
     "300": "#F6EBB4",
     "200": "#F8F6CE",
     "100": "#FFFEE1",
-  }
+  },
+  "error": {
+    main: "#FF5F58",
+    dark: "#81504F"
+  },
+  "warning": {
+    main: "#FFBE2F",
+    dark: "#866536"
+  },
+  "success": {
+    main: "#4CAF50",
+    dark: "#4E6D4F"
+  },
 }
