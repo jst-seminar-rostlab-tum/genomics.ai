@@ -73,6 +73,8 @@
     margin-bottom: 12px;
 }
 
-.settingsIcon {
-    margin-top: 200px;
+.list {
+    height: 90%;
+    justify-content: space-between;
+    margin: 24px 0;
 }

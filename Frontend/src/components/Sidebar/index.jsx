@@ -5,6 +5,7 @@ import MapIcon from '@mui/icons-material/Map';
 import TaskIcon from '@mui/icons-material/Task';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import List from '@mui/material/List';
+import Stack from '@mui/material/Stack';
 import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
 import { Link as NavLink, useRouteMatch, useLocation } from 'react-router-dom';
@@ -50,53 +51,57 @@ export default function Sidebar(props) {
     <Box>
       <Box className={styles.sidebarNav}>
         <Box className={styles.sidebarWrap}>
-          <List className={styles.iconList}>
-            {routes.map((route, index) => (
-              <NavLink
-                className={styles.navlink}
-                to={`${url}/${route}`}
-                key={route.toString()}
-              >
-                <Tooltip
-                  title={titles[index]}
-                  placement="right"
-                  componentsProps={{
-                    tooltip: {
-                      sx: {
-                        bgcolor: '#5676E4',
-                      },
-                    },
-                  }}
+          <Stack className={styles.list} direction='column'>
+            <List className={styles.iconList}>
+              {routes.map((route, index) => (
+                <NavLink
+                  className={styles.navlink}
+                  to={`${url}/${route}`}
+                  key={route.toString()}
                 >
-                  <Box
-                    className={styles.navbarItemContainer}
-                    sx={{ background: path.includes(route) ? '#5676E5' : '#184060' }}
+                  <Tooltip
+                    title={titles[index]}
+                    placement="right"
+                    componentsProps={{
+                      tooltip: {
+                        sx: {
+                          bgcolor: '#5676E4',
+                        },
+                      },
+                    }}
                   >
-                    <ListItemIcon className={styles.listItemIcon}>
-                      {indexIcon(index)}
-                    </ListItemIcon>
-                  </Box>
-                </Tooltip>
+                    <Box
+                      className={styles.navbarItemContainer}
+                      sx={{ background: path.includes(route) ? '#5676E5' : '#184060' }}
+                    >
+                      <ListItemIcon className={styles.listItemIcon}>
+                        {indexIcon(index)}
+                      </ListItemIcon>
+                    </Box>
+                  </Tooltip>
+                </NavLink>
+              ))}
+            </List>
+            <List className={styles.iconList}>
+              <NavLink
+                to={settingsPath}
+                className={`${styles.navlinkIcon} ${styles.bottomIcons}`}
+              >
+                <SettingsIcon />
               </NavLink>
-            ))}
-            <NavLink
-              to={settingsPath}
-              className={`${styles.navlinkIcon} ${styles.bottomIcons} ${styles.settingsIcon}`}
-            >
-              <SettingsIcon />
-            </NavLink>
-            <NavLink
-              to="/"
-              onClick={() => {
-                setUser(null);
-                localStorage.removeItem('user');
-                localStorage.removeItem('jwt');
-              }}
-              className={`${styles.navlinkIcon} ${styles.bottomIcons}`}
-            >
-              <LogoutIcon />
-            </NavLink>
-          </List>
+              <NavLink
+                to="/"
+                onClick={() => {
+                  setUser(null);
+                  localStorage.removeItem('user');
+                  localStorage.removeItem('jwt');
+                }}
+                className={`${styles.navlinkIcon} ${styles.bottomIcons}`}
+              >
+                <LogoutIcon />
+              </NavLink>
+            </List>
+          </Stack>
         </Box>
       </Box>
     </Box>
