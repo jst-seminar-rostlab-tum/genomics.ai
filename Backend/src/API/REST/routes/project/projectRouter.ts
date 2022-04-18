@@ -19,8 +19,9 @@ const create_project = () : Router => {
             if(!(Object.values(visibilityStatus).includes(visibility)) )
                 return res.status(400).send("Visibility parameter is wrong format. You should type one of the followings: PRIVATE, PUBLIC, BY_INSTITUTION");
 
-            if (await projectModel.findOne({title}))
-                return res.status(409).send("Project with the given name already exists!");
+            // TODO: make this check later
+            // if (await projectModel.findOne({title}))
+            //     return res.status(409).send("Project with the given name already exists!");
 
             if (! await userModel.findOne({_id: admin_user_id}))
                 return res.status(404).send("Admin that you are trying to assign does not exists!");   

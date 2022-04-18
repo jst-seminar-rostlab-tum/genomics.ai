@@ -11,6 +11,7 @@ export interface IInstitution extends Document {
    profilePictureURL: string,
    backgroundPictureURL: string,
    adminIds: [Schema.Types.ObjectId],
+   memberIds: [Schema.Types.ObjectId],
    invitedMemberIds: [Schema.Types.ObjectId],
    visibility: string,
 }
@@ -40,6 +41,12 @@ const institutionSchema = new Schema<IInstitution>({
         type: Schema.Types.ObjectId, 
         ref: 'User',
         require: true
+    }],
+
+    memberIds: [{
+        type: Schema.Types.ObjectId, 
+        ref: 'User',
+        require: false
     }],
 
     invitedMemberIds: [{
