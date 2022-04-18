@@ -4,7 +4,7 @@ import { userModel } from "../../../../database/models/user";
 import { visibilityStatus } from "../../../../database/models/project";
 import check_auth from "../../middleware/check_auth";
 
-export default function project_route() : Router {
+const create_project = () : Router => {
     let router = express.Router();
 
     router
@@ -44,3 +44,5 @@ export default function project_route() : Router {
 
     return router;
 }
+
+export { create_project }

@@ -3,7 +3,7 @@ import { institutionModel} from "../../../../database/models/institution";
 import { userModel } from "../../../../database/models/user";
 import check_auth from "../../middleware/check_auth";
 
-export default function institution_route() : Router {
+const create_institution = () : Router => {
     let router = express.Router();
 
     router
@@ -41,3 +41,16 @@ export default function institution_route() : Router {
 
     return router;
 }
+
+const test_institution = () : Router => {
+    let router = express.Router();
+
+    router
+        .get("/institutions/test", check_auth(), async (req: any, res) => {
+            res.json("test router")
+        })
+
+    return router;
+}
+
+export { create_institution, test_institution }
