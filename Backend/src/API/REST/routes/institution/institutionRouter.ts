@@ -1,4 +1,5 @@
 import express, {Router} from "express";
+import {Schema} from "mongoose";
 import { institutionModel} from "../../../../database/models/institution";
 import { userModel } from "../../../../database/models/user";
 import check_auth from "../../middleware/check_auth";
@@ -42,6 +43,39 @@ const create_institution = () : Router => {
     return router;
 }
 
+const invite_to_institution = () : Router => {
+    let router = express.Router();
+
+    router
+        .put("/institutions/:id/invite", check_auth(), async (req: any, res) => {
+
+            const { userId }: {userId: Schema.Types.ObjectId} = req.body;
+            const institutionId_to_modify = req.params.id;
+
+            if (!(userId))
+                return res.status(400).send("Missing parameter");
+
+            if (! await userModel.findOne({_id: userId}))
+                return res.status(404).send("User that you are trying to invite does not exists!");      
+
+            const institution = await institutionModel.findOne({_id: institutionId_to_modify})
+                
+
+            if (institution) {
+
+                institution.invitedMemberIds = [...institution.invitedMemberIds, userId];
+
+                const updatedInstitution = await institution.save();
+
+                res.json(updatedInstitution);
+            } else {
+                return res.status(409).send("Institution with the given id does not exists!");
+            }
+        })
+
+    return router;
+}
+
 const test_institution = () : Router => {
     let router = express.Router();
 
@@ -53,4 +87,4 @@ const test_institution = () : Router => {
     return router;
 }
 
-export { create_institution, test_institution }
+export { create_institution, test_institution, invite_to_institution }
