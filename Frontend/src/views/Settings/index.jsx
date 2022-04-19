@@ -10,6 +10,7 @@ import { Alert, Snackbar } from '@mui/material';
 import styles from './settings.module.css';
 import profileDefault from 'assets/user.png';
 import updateProfile from 'shared/services/SettingsLogic';
+import { useAuth } from 'shared/context/authContext';
 
 const myTheme = createTheme({
   palette: {
@@ -62,7 +63,8 @@ function PasswordSection({ onPasswordInfoChange, errors, changePassword }) {
   return null;
 }
 
-function Settings({ user, setUser, sidebarShown }) {
+function Settings({ sidebarShown }) {
+  const [user, setUser] = useAuth()
   /* Booleans */
   const paddingL = useCallback(() => (sidebarShown ? '130px' : '380px'), [sidebarShown]);
 

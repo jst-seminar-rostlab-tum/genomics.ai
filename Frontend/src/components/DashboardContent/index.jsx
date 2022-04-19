@@ -13,13 +13,12 @@ import styles from './dashboardContent.module.css';
 const DashboardContent = (props) => {
   const [sidebarShown, setSidebarShown] = useState(true);
   const toggleSidebar = () => setSidebarShown(!sidebarShown);
-  const { user, setUser } = props;
 
   const { path, url } = useRouteMatch();
 
   return (
     <div>
-      <NavigationBar sidebarShown={sidebarShown} user={user} setUser={setUser} />
+      <NavigationBar sidebarShown={sidebarShown} />
       <Sidebar
         toggleSidebar={toggleSidebar}
         sidebarShown={sidebarShown}
@@ -43,8 +42,6 @@ const DashboardContent = (props) => {
         <Route path={`${path}/settings`}>
           <Settings
             className={sidebarShown ? styles.subpage : styles.subpageSidebarCollapsed}
-            user={user}
-            setUser={setUser}
             sidebarShown={sidebarShown}
           />
         </Route>
