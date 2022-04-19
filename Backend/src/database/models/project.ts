@@ -1,44 +1,63 @@
 import {Document, model, Schema} from "mongoose";
 
-export enum ProjectJobStatus {
-    "UPLOAD_PENDING",
-    "UPLOAD_COMPLETE",
-    "PROCESSING_PENDING",
-    "ABORTED",
-    "DONE"
+export enum visibilityStatus {
+    "PRIVATE",
+    "PUBLIC",
+    "BY_INSTITUTION",
 }
-
 export interface IProject extends Document {
-    owner: Schema.Types.ObjectId;
-
-    // file
-    uploadId: string;
-    location: string;
-    fileName: string;
-    fileSize: number; // (of bytes)
-    uploadDate: Date;
-
-    // project
-    status: string;
-    resultName: string;
-    resultSize: number;
+   title:string,
+   description:string,
+   adminIds: Array<Schema.Types.ObjectId>,
+   invitedMemberIds: Array<Schema.Types.ObjectId>,
+   memberIds: Array<Schema.Types.ObjectId>,
+   visibility: string,
+   institutionId: Schema.Types.ObjectId,
 }
 
 const projectSchema = new Schema<IProject>({
-    owner: {type: Schema.Types.ObjectId, require: true},
+    title: {
+        type: String,
+        required: true
+    },
 
-    // file
-    uploadId: {type: String, require: false},
-    fileName: {type: String, require: false},
-    location: {type: String, require: false},
-    fileSize: {type: Schema.Types.Number, require: false, default: -1},
-    uploadDate: {type: Schema.Types.Date, require: true},
+    description: {
+        type: String, 
+        require: true
+    },
 
-    // project
-    status: {type: String, require: true, enum: ProjectJobStatus},
+    adminIds: [{
+        type: Schema.Types.ObjectId, 
+        ref: 'User',
+        require: true
+    }],
 
-    resultName: {type: String, require: false},
-    resultSize: {type: Schema.Types.Number, require: false, default: -1}
+    invitedMemberIds: [{
+        type: Schema.Types.ObjectId, 
+        ref: 'User',
+        require: false
+    }],
+
+    memberIds: [{
+        type: Schema.Types.ObjectId, 
+        ref: 'User',
+        require: false
+    }],
+
+    visibility: {
+        type: String,
+        enum: visibilityStatus,
+        required: true
+    },
+
+    institutionId: {
+        type: Schema.Types.ObjectId, 
+        ref: 'Institution',
+        require: false
+    }
+    
+}, {
+    timestamps: true,
 });
 
 export const projectModel = model<IProject>("Project", projectSchema);

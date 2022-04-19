@@ -1,7 +1,7 @@
 import express, {Router} from "express";
 import { GoogleAuth } from "google-auth-library";
-import { ProjectJobStatus } from "../../../database/models/project";
-import ProjectService from "../../../database/services/project.service";
+import { ProjectJobStatus } from "../../../database/models/projectJob";
+import ProjectJobService from "../../../database/services/projectJob.service";
 import check_auth from "../middleware/check_auth";
 
 // Tests the Cloud Run connection
@@ -14,7 +14,7 @@ export default function initiate_processing_route(): Router {
             async (req: any, res) => {
                 const {uploadId} = req.body;
 
-                let project = await ProjectService.getProjectByUploadId(uploadId);
+                let project = await ProjectJobService.getProjectJobByUploadId(uploadId);
 
                 if (!project)
                     return res.status(404).json({ msg: "No project found with upload ID." });
