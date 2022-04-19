@@ -1,8 +1,11 @@
+import {ObjectId} from "mongoose";
+
 /**
- *  Stores the raw data to update a project.
+ *  Stores the raw data needed to add a project.
  */
-export interface UpdateProjectDTO {
-    fileSize?: number;
-    status?: string;
-    location?: string;
+export interface AddProjectDTO {
+    title: string,
+    description: string,
+    visibility: string,
+    adminIds: Array<ObjectId>,
 }

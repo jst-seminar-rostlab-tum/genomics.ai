@@ -1,5 +1,5 @@
 import {IProject, projectModel} from "../models/project";
-import {UpdateProjectDTO} from "../dtos/project.dto";
+import {AddProjectDTO} from "../dtos/project.dto";
 import {ObjectId} from "mongoose";
 
 /**
@@ -10,52 +10,25 @@ import {ObjectId} from "mongoose";
  */
 export default class ProjectService {
     /**
-     *  Search for a project with the given project id and return if found.
+     *  Adds given project to the database.
      *
-     *  @param   project_id - the project id to search for
-     *  @returns project - matched project to project_id or null
+     *  @param    project
+     *  @returns  projectAdded - the added project
      */
-    static async getProjectById(project_id: (ObjectId | string)):
-      Promise<( IProject & { _id: ObjectId } | null )> {
-        return await projectModel.findById(project_id).exec();
+    static async addProject(project: AddProjectDTO): Promise<IProject> {
+        let projectAdded : (IProject | undefined) = undefined;
+        projectAdded = await projectModel.create(project);
+        return projectAdded;
     }
 
     /**
-     *  Search for a project with the given uploadId and project owner (userId - optional)
-     *  and return if found.
+     *  Search for a project with the given title and return if found.
      *
-     *  @param   uploadId
-     *  @param   owner? - userId
+     *  @param   title
      *  @returns project or null
      */
-    static async getProjectByUploadId(uploadId: string, owner?: ObjectId):
+    static async getProjectByTitle(title: string):
       Promise<( IProject & { _id: ObjectId } | null )> {
-        return typeof(owner) === 'undefined' ?
-          await projectModel.findOne({ uploadId }).exec() :
-          await projectModel.findOne({ uploadId, owner }).exec();
-    }
-
-    /**
-     *  Search for a project with the given project owner and sort
-     *  in order of the given sort parameter.
-     *
-     *  @param   owner - userId
-     *  @param   sort - order of the sort
-     *  @returns projects or null
-     */
-    static async getProjectByOwner(user_id: ObjectId, sort: number = 0):
-      Promise<( IProject & { _id: ObjectId } | null )[]> {
-        return await projectModel.find({owner: user_id}).sort({uploadDate: sort});
-    }
-
-    /**
-     *  Updates the given project corresponding to the uploadId with the
-     *  update_object.
-     *
-     *  @param uploadId
-     *  @param update_object - includes fields to be updated
-     */
-    static async updateProject(uploadId: string, update_object: UpdateProjectDTO) {
-        await projectModel.updateOne({uploadId}, update_object).exec();
+        return await projectModel.findOne({title});
     }
 }
