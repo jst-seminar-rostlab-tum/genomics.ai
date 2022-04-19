@@ -10,9 +10,9 @@ export interface IInstitution extends Document {
    country:string,
    profilePictureURL: string,
    backgroundPictureURL: string,
-   adminIds: [Schema.Types.ObjectId],
-   memberIds: [Schema.Types.ObjectId],
-   invitedMemberIds: [Schema.Types.ObjectId],
+   adminIds: Array<Schema.Types.ObjectId>,
+   memberIds: Array<Schema.Types.ObjectId>,
+   invitedMemberIds: Array<Schema.Types.ObjectId>,
    visibility: string,
 }
 

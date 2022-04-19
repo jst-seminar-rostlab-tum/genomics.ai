@@ -8,9 +8,9 @@ export enum visibilityStatus {
 export interface IProject extends Document {
    title:string,
    description:string,
-   adminIds: [Schema.Types.ObjectId],
-   invitedMemberIds: [Schema.Types.ObjectId],
-   memberIds: [Schema.Types.ObjectId],
+   adminIds: Array<Schema.Types.ObjectId>,
+   invitedMemberIds: Array<Schema.Types.ObjectId>,
+   memberIds: Array<Schema.Types.ObjectId>,
    visibility: string,
    institutionId: Schema.Types.ObjectId,
 }
