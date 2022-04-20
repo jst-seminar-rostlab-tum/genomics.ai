@@ -1,0 +1,7 @@
+scanpy~=1.9.1
+scArches~=0.5.2
+numpy~=1.21.6
+gdown~=4.4.0
+torch~=1.11.0
+jaxlib==0.3.5
+leidenalg==0.8.9
