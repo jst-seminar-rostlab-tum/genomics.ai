@@ -12,6 +12,7 @@ import { Link as NavLink, useRouteMatch, useLocation } from 'react-router-dom';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import LogoutIcon from '@mui/icons-material/Logout';
 import SettingsIcon from '@mui/icons-material/Settings';
+import SearchIcon from '@mui/icons-material/Search';
 import geneIcon from 'assets/gene.png';
 import styles from './sidebar.module.css';
 
@@ -32,6 +33,8 @@ function indexIcon(index) {
     case 3:
       return (<MapIcon className={styles.coloredIcon} />);
     case 4:
+      return (<SearchIcon className={styles.coloredIcon} />);
+    case 5:
       return (<MenuBookIcon className={styles.coloredIcon} />);
     default:
       return (<LiveHelpIcon className={styles.coloredIcon} />);
@@ -40,8 +43,8 @@ function indexIcon(index) {
 
 export default function Sidebar(props) {
   const { setUser } = props;
-  const routes = ['dashboard', 'projects', 'institutions', 'genemapper', 'documentation', 'help'];
-  const titles = ['Dashboard', 'Projects', 'Institutions', 'Gene Mapper', 'Documentation', 'Help'];
+  const routes = ['dashboard', 'projects', 'institutions', 'genemapper', 'search', 'documentation', 'help'];
+  const titles = ['Dashboard', 'Projects', 'Institutions', 'Gene Mapper', 'Search', 'Documentation', 'Help'];
   const { url } = useRouteMatch();
   const location = useLocation();
   const path = location.pathname;
@@ -51,7 +54,7 @@ export default function Sidebar(props) {
     <Box>
       <Box className={styles.sidebarNav}>
         <Box className={styles.sidebarWrap}>
-          <Stack className={styles.list} direction='column'>
+          <Stack className={styles.list} direction="column">
             <List className={styles.iconList}>
               {routes.map((route, index) => (
                 <NavLink
