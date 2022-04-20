@@ -12,9 +12,10 @@ export default function check_auth() {
         req.is_authenticated = false;
         if(req.header("auth")) {
             // TODO: Secret => REDIS
-            try {
-                jwt.verify(req.header("auth")!, JWT_SECRET, async function(err, decoded) {
-                    if(err || !decoded || !decoded.email) {
+            try{
+                jwt.verify(req.header("auth")!, JWT_SECRET, async function(err, decoded){
+                    if(err || !decoded || !decoded.email){
+                        console.log(err?.name)
                         if(err?.name == "TokenExpiredError")
                            return res.status(440).send("JWT authentication token expired. Please log in again");
 

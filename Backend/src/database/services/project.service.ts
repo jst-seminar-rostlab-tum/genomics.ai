@@ -31,4 +31,29 @@ export default class ProjectService {
       Promise<( IProject & { _id: ObjectId } | null )> {
         return await projectModel.findOne({title});
     }
+
+    /**
+     *  Search for a project with the given project id and return if found.
+     *
+     *  @param   projectId
+     *  @returns project - matched proejct to projectId or null
+     */
+    static async getProjectById(projectId: (ObjectId | string)):
+      Promise<( IProject & { _id: ObjectId } | null )> {
+        return await projectModel.findById(projectId).exec();
+    }
+
+    /**
+     *  Add the given userId to the invitation list of the given project.
+     *
+     *  @param   projectId
+     *  @param   userId
+     *  @returns updateDocument
+     */
+    static async addInvitationMemberId(projectId: (ObjectId | string), userId: (ObjectId | string)): Promise<any> {
+        return await projectModel.updateOne(
+            { _id: projectId },
+            { $addToSet: { invitedMemberIds: userId} }
+        );
+    }
 }
