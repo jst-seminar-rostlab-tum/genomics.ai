@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Button from '@mui/material/Button';
 import ListCard from 'components/general/ListCard';
-import TeamLeaveButton from 'components/teamOverview/TeamLeaveButton';
+import TeamLeaveButton from 'components/teams/overview/TeamLeaveButton';
 import styles from './teamCard.module.css';
 
 import getUser from 'shared/services/mock/user';
