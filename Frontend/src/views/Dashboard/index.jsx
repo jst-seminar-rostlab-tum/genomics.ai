@@ -1,8 +1,10 @@
-import { Container, Stack } from '@mui/material';
+import { Container, Stack, Box } from '@mui/material';
 import React, { useCallback } from 'react';
 import Uploader from 'components/Uploader';
 import StatusQueue from 'components/StatusQueue';
 import styles from './dashboard.module.css';
+import { GeneralCard } from 'components/Cards/GeneralCard';
+import { ModelCard } from 'components/Cards/ModelCard';
 
 function Dashboard({ sidebarShown }) {
   const paddingL = useCallback(() => (sidebarShown ? '100px' : '350px'), [sidebarShown]);
@@ -28,11 +30,17 @@ function Dashboard({ sidebarShown }) {
         <Container className={styles.fileUpload}>
           <Uploader />
         </Container>
-
         <Container className={styles.fileQueue}>
           <StatusQueue />
         </Container>
       </Stack>
+ 
+      {/* <GeneralCard content="Hey"/> */}
+      <Box sx={{ width: "400px", height: "400px" }}>
+
+      <ModelCard title="Model1" description="Lorem ipsum bla bla"/>
+      </Box>
+
     </Stack>
   );
 }
