@@ -15,6 +15,7 @@ export default function check_auth(){
             try{
                 jwt.verify(req.header("auth")!, JWT_SECRET, async function(err, decoded){
                     if(err || !decoded || !decoded.email){
+                        console.log(err?.name)
                         if(err?.name == "TokenExpiredError")
                            return res.status(440).send("JWT authentication token expired. Please log in again")
 

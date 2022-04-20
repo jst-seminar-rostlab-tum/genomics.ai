@@ -1,9 +1,10 @@
 import express, {Router} from "express";
+import {Schema} from "mongoose";
 import { projectModel } from "../../../../database/models/project";
 import { userModel } from "../../../../database/models/user";
 import { visibilityStatus } from "../../../../database/models/project";
 import check_auth from "../../middleware/check_auth";
-import {institutionModel} from "../../../../database/models/institution";
+import {mailer} from "../../../../util/mailer";
 
 const create_project = () : Router => {
     let router = express.Router();
@@ -22,7 +23,8 @@ const create_project = () : Router => {
 
             // TODO: make this check later
             // if (await projectModel.findOne({title}))
-            //     return res.status(409).send("Project with the given name already exists!");
+            //     return res.status(409).send("Project with the given name already exists!"); 
+            // ======== Is it not possible that there exists projects with same names?
 
             if (! await userModel.findOne({_id: admin_user_id}))
                 return res.status(404).send("Admin that you are trying to assign does not exists!");   
@@ -40,12 +42,13 @@ const create_project = () : Router => {
                 console.error("Error registering project!");
                 console.error(JSON.stringify(err));
                 console.error(err);
-                return res.status(500).send("Unable to create project. (DB-error)");
+                return res.status(500).send("Unable to create the project.");
             }
         })
 
     return router;
 }
+
 
 const get_projects = () : Router => {
     let router = express.Router();
@@ -64,4 +67,76 @@ const get_projects = () : Router => {
 
     return router;
 }
-export { create_project, get_projects }
+
+const invite_person_to_a_project = (): Router => {
+    let router = express.Router();
+
+    router.put("/projects/:id/invite", check_auth(), async (req: any, res) => {
+        try {
+            const {userId}: {userId: Schema.Types.ObjectId}  = req.body;
+            const projectId: {projectId: Schema.Types.ObjectId} = req.params.id;
+
+            if(!(userId && projectId))
+                return res.status(400).send("Missing parameters.");
+
+            const user = await userModel.findOne({_id: userId})
+            if (! user )
+                return res.status(400).send("User to be invited does not exist.");
+
+            const project = await projectModel.findOne({_id: projectId})
+            if (! project)
+                return res.status(400).send("Project does not exist.");
+
+            var tempUserId = String(userId);
+            var tempListAdmins = project.adminIds.map(String);
+            var tempListMembers = project.memberIds.map(String);
+
+            if (tempListMembers.includes(tempUserId))
+                return res.status(409).send("User is already a member of the project")
+
+            if (tempListAdmins.includes(tempUserId))
+                return res.status(409).send("User is an admin of the project")
+
+            try {
+                const project_updated = await projectModel.updateOne(
+                    { _id: projectId },
+                    { $addToSet: { invitedMemberIds: userId} }
+                );
+
+                if (!project_updated)
+                    return res.status(400).send("Error when adding the user to members of the project.");
+
+                try {
+                    await mailer.send(user.email, "[GeneCruncher] Invitation to a project", "invitation_to_project", {
+                        firstname: user.firstName,
+                        projectname: project.title
+                        })
+                } catch (e) {
+                    console.error("Error when sending invitation of user to a project.")
+                    console.error(JSON.stringify(e));
+                    console.error(e);
+                    return res.status(500).send("Error when sending email. Invitation has been stored.");
+                }                
+
+                return res.status(200).json("Invitation has been sent successfully.");
+
+            } catch(err) {
+                console.error("Error when trying to register invitation of user to a project.")
+                console.error(JSON.stringify(err));
+                console.error(err);
+                return res.status(500).send("Unable to send invitation to the desired user.");
+            }
+        } catch(e) {
+            /* Added since a test proved that if user sends a request with incorrect parameter names, it is able to shutdown the server. */
+            console.error("Error in invite_person_to_a_project()")
+            console.error(JSON.stringify(e));
+            console.error(e);
+            return res.status(500).send("Internal error.");
+        }
+
+    })
+
+    return router;
+}
+
+export { create_project, invite_person_to_a_project, get_projects }
