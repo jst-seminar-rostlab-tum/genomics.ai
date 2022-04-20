@@ -53,4 +53,38 @@ const test_institution = () : Router => {
     return router;
 }
 
-export { create_institution, test_institution }
+const get_institutions = () : Router => {
+    let router = express.Router();
+    router
+        .get("/institutions", async (req: any, res) => {
+            try {
+                const institutions = await institutionModel.find({ "memberIds._id" : req.user_id});
+                return res.status(200).json(institutions!);
+            } catch (err) {
+                console.error(`Error getting institutions for user ${req.user_id}`);
+                console.error(JSON.stringify(err));
+                console.error(err);
+                return res.status(500).send("Unable to get institutions");
+            }
+        })
+
+    return router;
+}
+
+const get_institution = () : Router => {
+    let router = express.Router();
+    router
+        .get("/institution/:id", check_auth(), async (req: any, res) =>{
+            const institutionId = req.params.id;
+            try {
+                const institution = await institutionModel.findById(institutionId);
+                return res.status(200).json(institution);
+            } catch (err) {
+                console.error(JSON.stringify(err));
+                return res.status(404).send(`Institution ${institutionId} not found`);
+            }
+        })
+    return router;
+}
+
+export { create_institution, test_institution, get_institutions, get_institution }

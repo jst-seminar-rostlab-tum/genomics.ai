@@ -3,6 +3,7 @@ import { projectModel } from "../../../../database/models/project";
 import { userModel } from "../../../../database/models/user";
 import { visibilityStatus } from "../../../../database/models/project";
 import check_auth from "../../middleware/check_auth";
+import {institutionModel} from "../../../../database/models/institution";
 
 const create_project = () : Router => {
     let router = express.Router();
@@ -46,4 +47,21 @@ const create_project = () : Router => {
     return router;
 }
 
-export { create_project }
+const get_projects = () : Router => {
+    let router = express.Router();
+    router
+        .get("/projects", check_auth(), async (req: any, res) => {
+            try {
+                const projects = await projectModel.find({ "memberIds._id" : req.user_id});
+                return res.status(200).json(projects!);
+            } catch (err) {
+                console.error(`Error getting projects for user ${req.user_id}`);
+                console.error(JSON.stringify(err));
+                console.error(err);
+                return res.status(500).send("Unable to get projects");
+            }
+        })
+
+    return router;
+}
+export { create_project, get_projects }
