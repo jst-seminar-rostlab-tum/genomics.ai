@@ -6,18 +6,18 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-import { leaveProject } from 'shared/services/mock/projects';
+import { leaveTeam } from 'shared/services/mock/teams';
 
-function ProjectLeaveButton({ project, onLeft }) {
+function TeamLeaveButton({ team, onLeft }) {
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleOpenDialog = () => setDialogOpen(true);
   const handleCloseDialog = () => setDialogOpen(false);
 
   async function leave() {
-    await leaveProject(project);
+    await leaveTeam(team);
     handleCloseDialog();
-    onLeft(project);
+    onLeft(team);
   }
 
   return (
@@ -32,12 +32,12 @@ function ProjectLeaveButton({ project, onLeft }) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          Leave project
+          Leave
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Do you really want to leave the project &quot;
-            {project.name}
+            Do you really want to leave the team &quot;
+            {team.name}
             &quot;?
           </DialogContentText>
         </DialogContent>
@@ -52,4 +52,4 @@ function ProjectLeaveButton({ project, onLeft }) {
   );
 }
 
-export default ProjectLeaveButton;
+export default TeamLeaveButton;
