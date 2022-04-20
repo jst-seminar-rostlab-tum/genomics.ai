@@ -5,11 +5,15 @@ import ProfileImage from 'components/ProfileImage';
 
 function Header({
   title,
+  rightOfTitle,
   replaceRight,
 }) {
   return (
     <header className={styles.header}>
-      <h1 className={styles.title}>{title}</h1>
+      <div className={styles.titleRow}>
+        <h1 className={styles.title}>{title}</h1>
+        {rightOfTitle}
+      </div>
       <div className={styles.right}>
         {replaceRight == null
           ? (

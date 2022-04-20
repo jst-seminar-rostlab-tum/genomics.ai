@@ -5,7 +5,7 @@ import Header from 'components/general/Header';
 import styles from './headerView.module.css';
 
 function HeaderView({
-  sidebarShown, title, replaceHeaderRight, children,
+  sidebarShown, title, rightOfTitle, replaceHeaderRight, children,
 }) {
   const navbarPaddingLeft = useCallback(() => (sidebarShown ? '80px' : '190px'), [sidebarShown]);
   return (
@@ -18,7 +18,7 @@ function HeaderView({
       }}
     >
       <div style={{ paddingLeft: '60px', paddingRight: '60px' }}>
-        <Header title={title} replaceRight={replaceHeaderRight} />
+        <Header title={title} rightOfTitle={rightOfTitle} replaceRight={replaceHeaderRight} />
       </div>
 
       <Stack

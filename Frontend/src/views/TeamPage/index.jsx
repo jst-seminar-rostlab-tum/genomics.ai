@@ -32,8 +32,10 @@ function TeamPage({ sidebarShown }) {
     <HeaderView
       sidebarShown={sidebarShown}
       title={team.name}
+      rightOfTitle={<span>Test</span>}
     >
-      {JSON.stringify(team)}<br />
+      {JSON.stringify(team)}
+      <br />
       {isAdmin ? 'Admin' : ''}
     </HeaderView>
   );
