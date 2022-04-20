@@ -53,7 +53,7 @@ export default class UserService {
      *  @returns users - unauthorized users or null
      */
     static async getUnauthUsers():
-      Promise<( IUser & { _id: ObjectId } | null )[]> {
+      Promise<( IUser & { _id: ObjectId } )[]> {
         return await userModel.find({isAuthorized: false}).exec();
     }
 

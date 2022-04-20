@@ -59,7 +59,7 @@ const invite_person_to_a_project = (): Router => {
     router.put("/projects/:id/invite", check_auth(), async (req: any, res) => {
         try {
             const {userId}: {userId: ObjectId}  = req.body;
-            const {projectId}: {projectId: ObjectId} = req.params.id;
+            const projectId: string = req.params.id;
 
             if(!(userId && projectId))
                 return res.status(400).send("Missing parameters.");

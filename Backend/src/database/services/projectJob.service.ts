@@ -44,7 +44,7 @@ export default class ProjectJobService {
      *  @returns project jobs or null
      */
     static async getProjectJobByOwner(user_id: ObjectId, sort: number = 0):
-      Promise<( IProjectJob & { _id: ObjectId } | null )[]> {
+      Promise<( IProjectJob & { _id: ObjectId } )[]> {
         return await projectJobModel.find({owner: user_id}).sort({uploadDate: sort});
     }
 
