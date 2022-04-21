@@ -1,5 +1,12 @@
 import { Box } from "@mui/material"
 
+/**
+ * GeneralCard
+ * @param width default value 100%
+ * @param height default value 
+ * @param content text content
+ * @param component if you provide a custom component it will show below content
+ */
 export const GeneralCard = ({ width = "100%", height = "100%", content, component } ) => {
 
   return (

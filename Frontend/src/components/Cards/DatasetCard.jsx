@@ -6,10 +6,12 @@ import Tag from 'components/Tag'
 
 /**
  * Dataset Card
- * 
- * needs a title and a category for tag as parameters
+ * @param width default value 100%
+ * @param height default value 100%
+ * @param title
+ * @param category
  */
-export default function DatasetCard({ title, category, width, height }) {
+export default function DatasetCard({ title, category, width = "100%", height = "100%" }) {
 
     //store the size of the card in order to set the size of tag properly
     const [cardSize, setCardSize]=useState({width: 0, height: 0})
@@ -25,8 +27,8 @@ export default function DatasetCard({ title, category, width, height }) {
     return (
       <Box
         sx={{
-          width: width ? width : "100%",
-          height: height ? height : "100%"
+          width: width,
+          height: height
         }}
       >
         <Box ref={cardRef}

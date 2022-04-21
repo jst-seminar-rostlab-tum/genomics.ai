@@ -6,7 +6,15 @@ import {OutlinedButton} from './ModelCard'
 
 /**
  * Atlas Card 
- * needs a title, a link for the img, modalities, cells in reference, species, a link to map and learn more
+ * @param width default value is 100% of parent
+ * @param height default value is 100% of parent
+ * @param title title of AtlasCard
+ * @param imgLink thumbnail photo url
+ * @param modalities 
+ * @param cellsInReference
+ * @param species
+ * @param mapLink onHover button Map url
+ * @param learnMoreLink onHover button Learn More url
  */
 export default function AtlasCard({ 
   width = "100%", height = "100%", title, imgLink, modalities, 
@@ -14,18 +22,18 @@ export default function AtlasCard({
 }){
 
     //check if the mouse is hovering above the card
-    const [isHover, setHover]=useState(false)
+    const [isHover, setHover] = useState(false)
 
     //check if the card is flat(width > height)
-    const [isFlat, setFlat]=useState(false)
+    const [isFlat, setFlat] = useState(false)
 
     //ref to get the out most Box
-    const boxRef=useRef()
+    const boxRef = useRef()
 
-    useEffect(()=>{
+    useEffect(() => {
         //each time the card is rerendered, check if the card is flat or not
         if(boxRef.current.clientWidth > boxRef.current.clientHeight) setFlat(true)
-    })
+    }, [])
 
     return (
       <Box
