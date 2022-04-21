@@ -14,6 +14,7 @@ export async function getTeam(id) {
       invitedMemberIds: [],
       memberIds: [2],
       visibility: 'public',
+      institutionId: 2,
     };
   }
   throw Error('TeamNotFound (mock)');
@@ -29,6 +30,7 @@ export default async function queryMyTeams() {
       invitedMemberIds: [],
       memberIds: [2],
       visibility: 'public',
+      institutionId: 2,
     },
   ].filter((team) => !mockLeftIds.includes(team.id));
 }
