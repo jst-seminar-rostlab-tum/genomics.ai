@@ -1,7 +1,23 @@
 const mockLeftIds = [];
+let runningId = 1;
 
 export async function leaveTeam(team) {
   mockLeftIds.push(team.id);
+}
+
+export async function createTeam(name, description) {
+  // fake effect
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  runningId += 1;
+  return {
+    id: runningId,
+    name,
+    country: null,
+    description,
+    profilePictureURL: null,
+    backgroundPictureURL: null,
+    adminIds: [1], // TODO: make sure that the backend puts my user ID here
+  };
 }
 
 export async function getTeam(id) {

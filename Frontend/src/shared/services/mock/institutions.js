@@ -1,4 +1,20 @@
 const mockLeftIds = [];
+let runningId = 3;
+
+export async function createInstitution(name, description) {
+  // fake effect
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  runningId += 1;
+  return {
+    id: runningId,
+    name,
+    country: null,
+    description,
+    profilePictureURL: null,
+    backgroundPictureURL: null,
+    adminIds: [1], // TODO: make sure that the backend puts my user ID here
+  };
+}
 
 const testInstitutions = [
   {

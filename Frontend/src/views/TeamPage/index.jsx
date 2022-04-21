@@ -3,6 +3,7 @@ import {
   useParams,
 } from 'react-router-dom';
 import HeaderView from 'components/general/HeaderView';
+import JobList from 'components/teams/detail/JobList';
 import { getTeam } from 'shared/services/mock/teams';
 import getUser from 'shared/services/mock/user';
 import { getInstitution, queryIsAdminInstitutions } from 'shared/services/mock/institutions';
@@ -65,16 +66,24 @@ export default function TeamPage({ sidebarShown }) {
         />
       )}
     >
-      {JSON.stringify(team)}
-      {JSON.stringify(institution)}
       <br />
-      {isAdmin ? 'Admin' : ''}
+      <section>
+        <h2>Description</h2>
+        <hr />
+        TODO: implement
+      </section>
+      <section>
+        <h2>GeneMapper</h2>
+        <hr />
+        <JobList teamId={id} forPart="geneMapper" />
+      </section>
+
     </HeaderView>
   );
 }
 
 function HeaderOptions({
-  team, isAdmin, institution, isMember, availableInstitutions, setInstitution,
+  team, isAdmin, institution,
 }) {
   const handleInstitutionChange = (event) => {
     setInstitution(event.target.value);
