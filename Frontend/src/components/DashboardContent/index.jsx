@@ -8,6 +8,7 @@ import Documentation from 'views/Documentation';
 import Settings from 'views/Settings';
 import Help from 'views/Help';
 import styles from './dashboardContent.module.css';
+import Search from 'views/Search';
 
 const DashboardContent = (props) => {
   const [sidebarShown, setSidebarShown] = useState(true);
@@ -36,6 +37,10 @@ const DashboardContent = (props) => {
 
         <Route path={`${path}/help`}>
           <Help sidebarShown={sidebarShown} />
+        </Route>
+
+        <Route path={`${path}/search`}>
+          <Search sidebarShown={sidebarShown} />
         </Route>
 
         <Route path={`${path}/settings`}>
