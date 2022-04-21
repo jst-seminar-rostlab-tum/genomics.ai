@@ -10,12 +10,11 @@ import styles from './filter.module.css';
 import { Divider, Stack, TextField } from '@mui/material';
 import Tag from '../Tag';
 
-export default function Filter() {
+export default function Filter(props) {
   const [reference, setReference] = useState('');
   const [category, setCategory] = useState('');
   const [selectedIndexes, setSelectedIndexes] = useState([]);
-  const references = ['Human - PBMC', 'Human - PBMC2', 'Human - PBMC3', 'Human - PBMC4', 'Human - PBMC5'];
-  const categories = ['lung', 'lung2', 'lung3', 'lung4', 'lung5'];
+  const { references, categories } = props;
 
   const handleReferenceChange = (event) => {
     setReference(event.target.value);

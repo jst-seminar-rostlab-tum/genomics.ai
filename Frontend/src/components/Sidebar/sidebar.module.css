@@ -77,5 +77,8 @@
   /* margin-bottom: 12px; */
 }
 
-.settingsIcon {
+.list {
+    height: 90%;
+    justify-content: space-between;
+    margin: 24px 0;
 }
