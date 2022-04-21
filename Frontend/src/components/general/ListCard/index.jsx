@@ -3,8 +3,14 @@ import Card from '@mui/material/Card';
 import styles from './listCard.module.css';
 
 function InstitutionCard({
-  imageURL, title, description, nextToTitle, trailing,
+  imageComponent, imageURL, title, description, nextToTitle, trailing,
 }) {
+  if (imageURL) {
+    if (imageComponent) {
+      throw new Error('You can only have either imageComponent or imageURL.');
+    }
+    // TODO: change imageComponent
+  }
   return (
     <Card sx={{ background: 'card.background' }}>
       <div className={styles.cardContent}>

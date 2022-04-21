@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import {
   useParams,
 } from 'react-router-dom';
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
 import HeaderView from 'components/general/HeaderView';
+import JobList from 'components/teams/detail/JobList';
 import { getTeam } from 'shared/services/mock/teams';
 import getUser from 'shared/services/mock/user';
 import { getInstitution, queryIsAdminInstitutions } from 'shared/services/mock/institutions';
-import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
 
 export default function TeamPage({ sidebarShown }) {
   const { id } = useParams();
@@ -63,13 +64,16 @@ export default function TeamPage({ sidebarShown }) {
         />
       )}
     >
-      {JSON.stringify(team)}
-      {JSON.stringify(institution)}
       <br />
+      <section>
+        <h2>Description</h2>
+        <hr />
+        TODO: implement
+      </section>
       <section>
         <h2>GeneMapper</h2>
         <hr />
-        
+        <JobList teamId={id} forPart="geneMapper" />
       </section>
 
     </HeaderView>
