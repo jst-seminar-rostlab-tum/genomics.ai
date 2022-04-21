@@ -77,7 +77,11 @@ export default function TeamPage({ sidebarShown }) {
         <hr />
         <JobList teamId={id} forPart="geneMapper" />
       </section>
-
+      <section>
+        <h2>GeneCruncher</h2>
+        <hr />
+        <JobList teamId={id} forPart="geneCruncher" />
+      </section>
     </HeaderView>
   );
 }
