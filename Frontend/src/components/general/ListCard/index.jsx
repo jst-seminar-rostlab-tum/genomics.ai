@@ -10,7 +10,7 @@ function InstitutionCard({
       <div className={styles.cardContent}>
         <div className={styles.start}>
           {imageURL && (
-          <img className={styles.cardImage} src={imageURL} alt="" />
+            <img className={styles.cardImage} src={imageURL} alt="" />
           )}
           <div className={styles.text}>
             <div className={styles.titleRow}>
@@ -25,9 +25,9 @@ function InstitutionCard({
           </div>
         </div>
         {trailing && (
-        <div className={styles.trailing}>
+          <div className={styles.trailing}>
             {trailing}
-        </div>
+          </div>
         )}
       </div>
     </Card>

@@ -66,7 +66,12 @@ export default function TeamPage({ sidebarShown }) {
       {JSON.stringify(team)}
       {JSON.stringify(institution)}
       <br />
-      {isAdmin ? 'Admin' : ''}
+      <section>
+        <h2>GeneMapper</h2>
+        <hr />
+        
+      </section>
+
     </HeaderView>
   );
 }
