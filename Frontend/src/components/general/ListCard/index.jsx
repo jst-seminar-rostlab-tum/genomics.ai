@@ -6,11 +6,11 @@ function InstitutionCard({
   imageURL, title, description, nextToTitle, trailing,
 }) {
   return (
-    <Card sx={{ background: 'card.background' }}>
+    <Card sx={{ border: '1px solid #c8c8c8', boxShadow: '0 0 4px rgba(111, 111, 111, 0.25)' }} elevation={0}>
       <div className={styles.cardContent}>
         <div className={styles.start}>
           {imageURL && (
-          <img className={styles.cardImage} src={imageURL} alt="" />
+            <img className={styles.cardImage} src={imageURL} alt="" />
           )}
           <div className={styles.text}>
             <div className={styles.titleRow}>
@@ -25,9 +25,9 @@ function InstitutionCard({
           </div>
         </div>
         {trailing && (
-        <div className={styles.trailing}>
+          <div className={styles.trailing}>
             {trailing}
-        </div>
+          </div>
         )}
       </div>
     </Card>
