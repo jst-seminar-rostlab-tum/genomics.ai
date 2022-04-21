@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import { queryTeamJobs } from 'shared/services/mock/jobs';
+import styles from './jobList.module.css';
 import JobCard from '../JobCard';
 
 function JobList({ teamId, forPart }) { // forPart can be "geneMapper" or "geneCruncher"
@@ -23,7 +24,10 @@ function JobList({ teamId, forPart }) { // forPart can be "geneMapper" or "geneC
     loadingWrapper(
       jobs.length ? (
         jobs.map((job) => (
-          <JobCard key={job.id} job={job} />
+          <div key={job.id}>
+            <JobCard job={job} />
+            <div className={styles.spaceBetweenCards} />
+          </div>
         ))
       ) : (
         <span>No jobs.</span>

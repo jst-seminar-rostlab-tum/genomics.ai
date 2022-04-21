@@ -7,29 +7,32 @@ import stringColor from 'shared/utils/stringColor';
 function InstitutionCard({
   imageComponent, imageURL, title, description, nextToTitle, trailing,
 }) {
+  let imageComponentUsed = imageComponent;
   if (imageURL) {
     if (imageComponent) {
       throw new Error('You can only have either imageComponent or imageURL.');
     }
-    // TODO: change imageComponent
+    imageComponentUsed = (
+      <Avatar
+        src={imageURL}
+        alt={title}
+        sx={{ backgroundColor: stringColor(title || ''), width: 42, height: 42 }}
+      >
+        {(title || '?')[0]}
+      </Avatar>
+    );
   }
   return (
     <Card sx={{ border: '1px solid #c8c8c8', boxShadow: '0 0 4px rgba(111, 111, 111, 0.25)' }} elevation={0}>
       <div className={styles.cardContent}>
         <div className={styles.start}>
           <div className={styles.cardImageWrapper}>
-            <Avatar
-              src={imageURL}
-              alt={title}
-              sx={{ backgroundColor: stringColor(title || ''), width: 42, height: 42 }}
-            >
-              {(title || '?')[0]}
-            </Avatar>
+            {imageComponentUsed}
           </div>
           <div className={styles.text}>
             <div className={styles.titleRow}>
               <h3 className={styles.title}>{title}</h3>
-              {nextToTitle || (<></>)}
+              {nextToTitle}
             </div>
             <div className={styles.description}>
               {description && (

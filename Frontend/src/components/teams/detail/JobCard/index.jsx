@@ -14,11 +14,13 @@ function JobCard({ job }) {
   return (
     <div onClick={navigateToJob} onKeyPress={navigateToJob} role="button" tabIndex={-1}>
       <ListCard
-        title={`Job ${id.substring(id.length - 4)}`}
-        nextToTitle={(
-          <Circle sx={{ color: jobStatusColors[status], height: '20px' }} />
+        imageComponent={(
+          <Circle sx={{ color: jobStatusColors[status], width: '32px', height: '32px' }} />
         )}
-        trailing={null}
+        title={`Job ${id.substring(id.length - 4)}`}
+        trailing={(
+          <Button>See Results</Button>
+        )}
       />
     </div>
   );
