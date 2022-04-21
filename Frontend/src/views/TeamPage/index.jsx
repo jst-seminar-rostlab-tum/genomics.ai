@@ -8,6 +8,8 @@ import getUser from 'shared/services/mock/user';
 import { getInstitution, queryIsAdminInstitutions } from 'shared/services/mock/institutions';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import MenuItem from '@mui/material/MenuItem';
 
 export default function TeamPage({ sidebarShown }) {
   const { id } = useParams();
@@ -74,6 +76,10 @@ export default function TeamPage({ sidebarShown }) {
 function HeaderOptions({
   team, isAdmin, institution, isMember, availableInstitutions, setInstitution,
 }) {
+  const handleInstitutionChange = (event) => {
+    setInstitution(event.target.value);
+  };
+
   return (
     <Stack
       direction="row"
@@ -83,6 +89,27 @@ function HeaderOptions({
     >
       {(!isAdmin && institution) && <h4>{institution.name}</h4>}
       {!isAdmin && <Chip label={team.visibility} color="primary" />}
+
+      {isAdmin
+        && (
+          <TextField
+            id="select-institution"
+            select
+            label="Institution"
+            value={institution}
+            onChange={handleInstitutionChange}
+            variant="standard"
+          >
+            {availableInstitutions.map((institutionOption) => (
+              <MenuItem
+                key={institutionOption.id}
+                value={institutionOption}
+              >
+                {institutionOption.name}
+              </MenuItem>
+            ))}
+          </TextField>
+        )}
 
     </Stack>
   );
