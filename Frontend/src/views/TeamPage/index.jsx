@@ -83,7 +83,7 @@ export default function TeamPage({ sidebarShown }) {
 }
 
 function HeaderOptions({
-  team, isAdmin, institution,
+  team, isAdmin, institution, availableInstitutions, setInstitution
 }) {
   const handleInstitutionChange = (event) => {
     setInstitution(event.target.value);
