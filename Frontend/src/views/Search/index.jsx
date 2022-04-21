@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect } from "react";
-import { Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 
 import styles from "./search.module.css";
 import SearchBar from "components/Search/SearchBar";
@@ -37,12 +37,14 @@ const Search = ({ sidebarShown }) => {
       {" "}
       <div className={styles.title}>
         <h1>Search</h1>
-        <SearchBar
-          searchedKeyword={searchedKeyword}
-          searchedKeywordChangeHandler={searchedKeywordChangeHandler}
-          submitSearch={submitSearch}
-        />
-        <SearchResultList searchedData={searchedData}/>
+        <Box sx={{ margin: "auto", maxWidth: 1200 }}>
+          <SearchBar
+            searchedKeyword={searchedKeyword}
+            searchedKeywordChangeHandler={searchedKeywordChangeHandler}
+            submitSearch={submitSearch}
+          />
+          <SearchResultList searchedData={searchedData} />
+        </Box>
       </div>
     </Stack>
   );

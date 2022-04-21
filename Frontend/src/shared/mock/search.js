@@ -9,13 +9,16 @@ async function querySearch() {
             membersCount: 18,
             members: [ // not all are needed but around 3
                 {
-                    name: "Julian"
+                    name: "Julian",
+                    image:"/profileImage.jpg"
                 },
                 {
-                    name: "Ronald"
+                    name: "Ronald",
+                    image:"/profileImage.jpg"
                 },
                 {
-                    name: "Killian"
+                    name: "Killian",
+                    image:"/profileImage.jpg"
                 }
             ]
         },
@@ -28,13 +31,16 @@ async function querySearch() {
             membersCount: 9,
             members: [
                 {
-                    name: "Julian"
+                    name: "Julian",
+                    image:"/profileImage.jpg"
                 },
                 {
-                    name: "Ronald"
+                    name: "Ronald",
+                    image:"/profileImage.jpg"
                 },
                 {
-                    name: "Killian"
+                    name: "Killian",
+                    image:"/profileImage.jpg"
                 }
             ]
         },
@@ -47,13 +53,16 @@ async function querySearch() {
             membersCount: 9,
             members: [
                 {
-                    name: "Julian"
+                    name: "Julian",
+                    image:"/profileImage.jpg"
                 },
                 {
-                    name: "Ronald"
+                    name: "Ronald",
+                    image:"/profileImage.jpg"
                 },
                 {
-                    name: "Killian"
+                    name: "Killian",
+                    image:"/profileImage.jpg"
                 }
             ]
         }

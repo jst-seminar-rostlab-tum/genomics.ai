@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, FormControl, OutlinedInput, InputAdornment, InputLabel } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 
 
 const SearchBar = (props) => {

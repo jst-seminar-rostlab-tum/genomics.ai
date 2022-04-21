@@ -1,10 +1,11 @@
 import React from "react";
 
-import { ListItem, Stack } from "@mui/material";
+import { ListItem, Stack, Link, Typography, Divider } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 
 const SearchCard = (props) => {
   return (
-    <ListItem
+    <ListItem divider
       alignItems="flex-start"
       key={props.key}
       secondaryAction={props.action}
@@ -20,10 +21,21 @@ const SearchCard = (props) => {
       </ListItemAvatar> */
       }
       <Stack direction="column" spacing={0.5}>
-        <Stack direction="row" spacing={2}>
+        {/* primary */}
+        <Stack direction="row" spacing={2} alignItems="center">
+          <Link
+            sx={{ fontSize: "24px" }}
+            component={RouterLink}
+            to="about" // TODO change to Team page
+            underline="hover"
+          >
+           <b>{props.title}</b> 
+          </Link>
           {props.primary}
         </Stack>
-        <div>{props.secondary}</div>
+        {/* secondary */}
+        <Typography sx={{ color: 'text.secondary' }}>{props.secondary}</Typography>
+        {/* tertiary */}
         <Stack direction="row" alignItems="center" spacing={2}>
           {props.tertiary}
         </Stack>
