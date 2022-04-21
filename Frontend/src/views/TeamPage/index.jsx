@@ -72,7 +72,7 @@ export default function TeamPage({ sidebarShown }) {
 }
 
 function HeaderOptions({
-  team, isAdmin, institution, isMember, availableInstitutions, setInstitution,
+  team, isAdmin, institution,
 }) {
   return (
     <Stack
