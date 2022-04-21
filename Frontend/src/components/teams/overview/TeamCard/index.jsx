@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Button from '@mui/material/Button';
 import ListCard from 'components/general/ListCard';
-import ProjectLeaveButton from 'components/projectOverview/ProjectLeaveButton';
-import styles from './projectCard.module.css';
+import TeamLeaveButton from 'components/teams/overview/TeamLeaveButton';
+import styles from './teamCard.module.css';
 
 import getUser from 'shared/services/mock/user';
 
-function ProjectCard({ project, onLeft }) {
+function TeamCard({ team, onLeft }) {
   const [user, setUser] = useState({});
   useEffect(() => {
     getUser()
@@ -16,7 +16,7 @@ function ProjectCard({ project, onLeft }) {
 
   const {
     name, description, adminIds,
-  } = project;
+  } = team;
   return (
     <ListCard
       title={name}
@@ -37,10 +37,10 @@ function ProjectCard({ project, onLeft }) {
             Settings
           </Button>
         ) : <div key="nothing" />,
-        <ProjectLeaveButton key="leave" project={project} onLeft={onLeft} />,
+        <TeamLeaveButton key="leave" team={team} onLeft={onLeft} />,
       ]}
     />
   );
 }
 
-export default ProjectCard;
+export default TeamCard;
