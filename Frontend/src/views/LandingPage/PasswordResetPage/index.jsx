@@ -4,7 +4,7 @@ import {
   Box, Grid, TextField, Button, Avatar, Snackbar, Alert,
 } from '@mui/material';
 import { useHistory, useLocation } from 'react-router-dom';
-import NavBar from 'components/NavBar';
+import NavBar from 'components/Navbar/old';
 import Footer from 'components/Footer';
 import styles from './passwordresetpage.module.css';
 import logo from 'assets/logo.svg';

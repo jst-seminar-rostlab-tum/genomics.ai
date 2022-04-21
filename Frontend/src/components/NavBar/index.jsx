@@ -1,99 +1,117 @@
-import {
-  Button, Toolbar, Typography, IconButton, Box,
-} from '@mui/material';
-import React, { useState, useCallback } from 'react';
-import { Link } from 'react-router-dom';
-import styles from './navbar.module.css';
-import LoginForm from '../LoginForm';
-import RegistrationForm from '../RegistrationForm';
+import { Box, IconButton, Typography } from "@mui/material"
+import { Link } from "react-router-dom"
+import { styled } from "@mui/system";
 
-import logo from '../../assets/logo.svg';
+import logo from 'assets/logo.svg';
+import { colors } from "shared/theme/colors";
 
-const NavBar = (props) => {
-  const { setUser } = props;
-  // inserting the logic from the landing page here
-  const [isLoginFormVisible, setLoginFormVisible] = useState(false);
-  const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
+const Appbar = styled(Box)(({
+  width: "100vw",
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "space-between",
+  backgroundColor: colors.primary[800],
+  padding: "0.5em",
+  paddingLeft: "15%",
+  paddingRight: "15%"
+})) 
 
-  const onLoginClicked = useCallback(() => {
-    setRegistrationFormVisible(false);
-    setLoginFormVisible(true);
-  }, [setLoginFormVisible]);
+const Leftbar = styled(Box)(({
+  width: "70%",
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "space-between",
+  alignItems: "center"
+}))
 
-  const onSignUpClicked = useCallback(() => {
-    setLoginFormVisible(false);
-    setRegistrationFormVisible(true);
-  }, [setRegistrationFormVisible]);
+const Rightbar = styled(Box)(({
+  width: "30%",
+  display: "flex",
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "right",
+  gap: "1em"
+}))
 
-  const onLoginFormClosed = useCallback(() => {
-    setLoginFormVisible(false);
-  }, [setLoginFormVisible]);
+const Navlink = styled(Typography)(({
+  fontWeight: "bold",
+  fontSize: "1.2em",
+  color: "white",
+  ":hover": {
+    color: colors.secondary1[200]
+  }
+}))
 
-  const onRegistrationFormClosed = useCallback(() => {
-    setRegistrationFormVisible(false);
-  }, [setRegistrationFormVisible]);
+const Login = styled(Typography)(({
+  fontWeight: "bold",
+  fontSize: "1.2em",
+  borderRadius: "10px",
+  padding: "8px",
+  color: "white",
+  ":hover": {
+    textDecoration: "underline"
+  }
+}))
 
-  // const { onLoginClicked, onSignUpClicked } = props;
+const Signup = styled(Typography)(({ theme }) => ({
+  borderRadius: "10px",
+  border: '2px solid white',
+  padding: "8px",
+  fontWeight: "bold",
+  fontSize: "1.2em",
+  color: "white",
+  ":hover": {
+    border: `2px solid ${theme.palette.primary.light}`,
+    color: theme.palette.primary.light,
+    textDecoration: "underline"
+  }
+}))
+const Navbar = () => {
+
   return (
-    <div>
-      <div className={styles.appbar}>
-        <Toolbar>
-          <Link to="/">
+    <Appbar>
+      <Leftbar>
+        <Link to="/" style={{ textDecoration: "none" }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: "0.7em" }}>
             <IconButton
-              color="success"
-              aria-label="open drawer"
-            >
-              <img alt="logo" src={logo} />
+              disableRipple
+              sx={{
+                bgcolor: "white",
+                ":hover": { bgcolor: "primary.dark" }
+              }}
+              > 
+              <img width={28} alt="logo" src={logo} />
             </IconButton>
-          </Link>
-          <Typography sx={{ fontSize: '24px', fontWeight: '500' }}>genomics.ai</Typography>
-          <Box sx={{ flexGrow: 1 }}>
-            <Typography variant="h6" sx={{ flexGrow: 1 }}>
-              <ul>
-                <Box>
-                  <li><Link to="/" className={styles.navbarcontent}>Home</Link></li>
-                </Box>
-                <li><Link to="about" className={styles.navbarcontent}>Team</Link></li>
-                <li><Link to="docs" className={styles.navbarcontent}>Docs</Link></li>
-                <li><Link to="contact" className={styles.navbarcontent}>Contact</Link></li>
-              </ul>
-            </Typography>
+            <Navlink>genomics.ai</Navlink>
           </Box>
-          {setUser && (
-          <Box className={styles.buttonContainer}>
-            <Button
-              variant="text"
-              color="inherit"
-              sx={{ m: 2 }}
-              onClick={onSignUpClicked}
-            >
-              <Typography sx={{ color: 'black', fontWeight: '500' }}>
-                Sign up
-              </Typography>
-            </Button>
-            <Button variant="outlined" color="info" onClick={onLoginClicked}>
-              <Typography sx={{ color: '#4F83CC', fontWeight: '500' }}>
-                Login
-              </Typography>
-            </Button>
-          </Box>
-          ) }
-        </Toolbar>
-      </div>
-      <div>
-        <LoginForm
-          setUser={setUser}
-          visible={isLoginFormVisible}
-          onClose={onLoginFormClosed}
-        />
-        <RegistrationForm
-          visible={isRegistrationFormVisible}
-          onClose={onRegistrationFormClosed}
-          onSuccessfulRegistration={onLoginClicked}
-        />
-      </div>
-    </div>
-  );
-};
+        </Link>
+        <Link to="/about" style={{ textDecoration: "none" }}>
+          <Navlink>
+            About us
+          </Navlink>
+        </Link>
+        <Link to="/docs" style={{ textDecoration: "none" }}>
+          <Navlink>
+           Docs 
+          </Navlink>
+        </Link>
+        <Link to="/contact" style={{ textDecoration: "none" }}>
+          <Navlink>
+            Contact us
+          </Navlink>
+        </Link>
+        <Link to="/explore" style={{ textDecoration: "none" }}>
+          <Navlink>
+            Explore
+          </Navlink>
+        </Link>
+      </Leftbar>
+      <Rightbar>
+        <Link to="/login" style={{ textDecoration: "none", color: "white" }}><Login>Log In</Login></Link>
+        <Link to="/signup" style={{ textDecoration: "none", color: "white" }}><Signup>Sign Up</Signup></Link>
+      </Rightbar>
+    </Appbar>
+  )
+}
 
-export default NavBar;
+export default Navbar

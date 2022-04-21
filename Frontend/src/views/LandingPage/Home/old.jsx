@@ -3,7 +3,7 @@ import {
   Typography, Divider, Stack, createTheme, ThemeProvider, Button,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
-import NavBar from 'components/NavBar';
+import NavBar from 'components/Navbar/old';
 import styles from './home.module.css';
 import graphic1 from 'assets/landing-illustrations/science.png';
 import graphic2 from 'assets/landing-illustrations/upload.png';

@@ -3,7 +3,7 @@ import {
   TextField, Typography, Grid, Button, Box, createTheme, ThemeProvider,
 } from '@mui/material';
 import Stack from '@mui/material/Stack';
-import NavBar from 'components/NavBar';
+import NavBar from 'components/Navbar/old';
 import styles from './contact.module.css';
 import Footer from 'components/Footer';
 

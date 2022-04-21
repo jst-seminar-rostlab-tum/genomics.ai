@@ -1,3 +1,5 @@
+import { Box } from "@mui/material";
+import Navbar from "components/Navbar";
 import { useCallback, useState } from "react";
 
 const Home = ({ setUser }) => {
@@ -10,8 +12,22 @@ const Home = ({ setUser }) => {
   }, [setLoginFormVisible])
 
   const onSignUpClicked = useCallback(() => {
-    
+    setLoginFormVisible(false);
+    setRegistrationFormVisible(true);
   }, [setRegistrationFormVisible])
+  
+  const onRegistrationFormClosed = useCallback(() => {
+    setRegistrationFormVisible(false);
+  }, [setRegistrationFormVisible]);
+
+  return (
+    <Box
+    >
+      {/* NAVBAR HERE */}
+      <Navbar />
+      Hey there
+    </Box>
+  )
 }
 
 export default Home
