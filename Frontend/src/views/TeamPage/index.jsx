@@ -82,12 +82,17 @@ export default function TeamPage({ sidebarShown }) {
         <hr />
         <JobList teamId={id} forPart="geneCruncher" />
       </section>
+      <section>
+        <h2>Members</h2>
+        <hr />
+        TODO: implement
+      </section>
     </HeaderView>
   );
 }
 
 function HeaderOptions({
-  team, isAdmin, institution, availableInstitutions, setInstitution
+  team, isAdmin, institution, availableInstitutions, setInstitution,
 }) {
   const handleInstitutionChange = (event) => {
     setInstitution(event.target.value);
