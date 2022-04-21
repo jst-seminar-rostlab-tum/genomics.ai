@@ -21,7 +21,7 @@ export default function AtlasCard({title, imgLink, modalities, cellsInReference,
 
     useEffect(()=>{
         //each time the card is rerendered, check if the card is flat or not
-        if(boxRef.current.clientWidth>boxRef.current.clientHeight) setFlat(true)
+        if(boxRef.current.clientWidth > boxRef.current.clientHeight) setFlat(true)
     })
 
     return (
