@@ -26,7 +26,7 @@ const SearchResultList = (props) => {
     <List style={{ display: "flex", flexDirection: "column", maxWidth: 800 }}>
       {props.searchedData.map((searchedItem) => (
         <SearchCard
-          id={searchedItem.id}
+          key={searchedItem.id}
           action={<Button variant="contained">Join</Button>}
           primary={
             <React.Fragment>
