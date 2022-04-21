@@ -17,6 +17,11 @@ export function express_middleware(this:REST_Host) : Router {
 
     router.use(bodyParser.json());
     router.use(bodyParser.urlencoded({ extended: true }));
+    //TODO: discuss limit
+    router.use("/upload_user_avatar",bodyParser.raw({
+        limit: "1MB",
+        type: "image/*"
+    }));
 
     return router;
 }

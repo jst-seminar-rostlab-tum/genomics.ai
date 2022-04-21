@@ -33,6 +33,10 @@ export default function auth_route(){
                     /* user without the password field */
                     const { password, ...userSecure } = user.toObject();
 
+                    if(!userSecure.avatarUrl) {
+                        userSecure.avatarUrl=`${process.env.S3_ENDPOINT}/${process.env.S3_PICTURE_BUCKET_NAME}/user.png`
+                    }
+
                     return res.status(200).json({
                         msg: "Login success",
                         user: userSecure,

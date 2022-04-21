@@ -24,6 +24,7 @@ import upload_get_upload_url_route from "./routes/file_upload/get_upload_url";
 import download_results_route from "./routes/file_download/results";
 import {test_institution, create_institution} from "./routes/institution/institutionRouter";
 import {create_project} from "./routes/project/projectRouter";
+import upload_user_avatar_route from "./routes/upload_user_avatar";
 
 // setup the websocket-server on top of the http_server
 export function express_routes(this: REST_Host): Router {
@@ -41,6 +42,7 @@ export function express_routes(this: REST_Host): Router {
     this.expressApp.use(get_profile_route());
     this.expressApp.use(get_job_route());
     this.expressApp.use(get_jobs_route());
+    this.expressApp.use(upload_user_avatar_route());
 
     // administrator routes
     this.expressApp.use(get_unauthorized_users_route());

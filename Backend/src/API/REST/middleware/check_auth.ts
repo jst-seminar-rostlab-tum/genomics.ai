@@ -22,6 +22,9 @@ export default function check_auth(){
                     }
 
                     userModel.findOne({_id: decoded.id}).exec((err, result)=>{
+                        if(!result) {
+                            return res.status(401).send("JWT authentication token invalid. Please log in again");
+                        }
                         if(err){
                             console.error(err);
                             return res.status(500).send("Error during authentication: Failed to fetch user")
