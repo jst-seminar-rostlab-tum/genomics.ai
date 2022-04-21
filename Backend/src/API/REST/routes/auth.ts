@@ -1,17 +1,17 @@
 import express from "express";
 import jwt from "jsonwebtoken";
-import {userModel} from "../../../database/models/user";
+import UserService from "../../../database/services/user.service";
 import bcrypt from "bcrypt";
 
-const INCORRECT_CREDENTIALS =  "The email or password is incorrect"; 
-const JWT_SECRET = process.env.JWT_SECRET || ""; 
+const INCORRECT_CREDENTIALS =  "The email or password is incorrect";
+const JWT_SECRET = process.env.JWT_SECRET || "";
 
-export default function auth_route(){
+export default function auth_route() {
     let router = express.Router();
 
     router.post("/auth", (req, res, next) => {
         const {email, password} = req.body;
-        userModel.findOne({email: email}).select('+password').exec().then(user =>{
+        UserService.getUserByEmail(email, true).then(user => {
             if(!user)
                 return res.status(401).send(INCORRECT_CREDENTIALS);
             if(!user.isEmailVerified)
@@ -41,13 +41,13 @@ export default function auth_route(){
                         msg: "Login success",
                         user: userSecure,
                         jwt: token
-                    })
+                    });
                 } else {
-                    return res.status(401).json({ msg: INCORRECT_CREDENTIALS })
+                    return res.status(401).json({ msg: INCORRECT_CREDENTIALS });
                 }
-            })
-        })
-    })
+            });
+        });
+    });
 
     return router;
 }

@@ -1,7 +1,7 @@
 import {Document, Schema, model} from "mongoose";
 import * as crypto from "crypto";
 
-interface IToken extends Document {
+export interface IToken extends Document {
     _userId: Schema.Types.ObjectId;
     token: string;
     createdAt: Date;
