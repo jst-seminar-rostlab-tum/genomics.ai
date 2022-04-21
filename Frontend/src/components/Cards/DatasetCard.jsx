@@ -9,7 +9,7 @@ import Tag from 'components/Tag'
  * 
  * needs a title and a category for tag as parameters
  */
-export default function DatasetCard({title, category}) {
+export default function DatasetCard({ title, category, width, height }) {
 
     //store the size of the card in order to set the size of tag properly
     const [cardSize, setCardSize]=useState({width: 0, height: 0})
@@ -23,6 +23,12 @@ export default function DatasetCard({title, category}) {
     }, [])
 
     return (
+      <Box
+        sx={{
+          width: width ? width : "100%",
+          height: height ? height : "100%"
+        }}
+      >
         <Box ref={cardRef}
             sx={{
                 width: "100%",
@@ -33,11 +39,11 @@ export default function DatasetCard({title, category}) {
                 padding: "5px",
                 boxShadow: "0px 4px 6px 0px rgba(33, 37, 41, .2), 0px 0px 1px 0px rgba(33, 37, 41, .32)",
                 borderRadius: "10px"
-            }}
-        >
+              }}
+              >
             <Box
                 sx={{
-                    display: "flex",
+                  display: "flex",
                     flexDirection: "column",
                     justifyContent: "center"
                 }}
@@ -49,8 +55,8 @@ export default function DatasetCard({title, category}) {
 
             <Box
                 sx={{
-                    display: "flex",
-                    flexDirection: "column",
+                  display: "flex",
+                  flexDirection: "column",
                     justifyContent: "center"
                 }}
             >
@@ -58,11 +64,12 @@ export default function DatasetCard({title, category}) {
                     sx={{
                         width: `${0.25*cardSize.width}px`,
                         height: `${0.45*cardSize.height}px`
-                    }}
+                      }}
                 >
                     <Tag content={category} variant="secondary-default" isDeletable={false} />
                 </Box>
             </Box>
         </Box>
+      </Box>
     )
 }

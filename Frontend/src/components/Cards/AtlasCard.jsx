@@ -8,7 +8,10 @@ import {OutlinedButton} from './ModelCard'
  * Atlas Card 
  * needs a title, a link for the img, modalities, cells in reference, species, a link to map and learn more
  */
-export default function AtlasCard({title, imgLink, modalities, cellsInReference, species, mapLink, learnMoreLink}){
+export default function AtlasCard({ 
+  width = "100%", height = "100%", title, imgLink, modalities, 
+  cellsInReference, species, mapLink, learnMoreLink
+}){
 
     //check if the mouse is hovering above the card
     const [isHover, setHover]=useState(false)
@@ -25,6 +28,12 @@ export default function AtlasCard({title, imgLink, modalities, cellsInReference,
     })
 
     return (
+      <Box
+        sx={{
+          width: width,
+          height: height
+        }}
+      >
         <Box 
             ref={boxRef}
             onMouseEnter={()=>setHover(true)} 
@@ -34,12 +43,12 @@ export default function AtlasCard({title, imgLink, modalities, cellsInReference,
                 height: "100%",
                 position: "relative"
             }}
-        >
+            >
             {
-                isHover && 
+              isHover && 
                 <Box 
                     style={{
-                        background: "linear-gradient(#4F83CC, #01579B)"
+                      background: "linear-gradient(#4F83CC, #01579B)"
                     }} 
                     sx={{
                         position: "absolute",
@@ -50,8 +59,8 @@ export default function AtlasCard({title, imgLink, modalities, cellsInReference,
                         flexDirection: "column",
                         justifyContent: "center",
                         opacity: 0.95
-                    }}
-                >
+                      }}
+                      >
                     <Box
                         sx={{
                             margin: "auto",
@@ -60,8 +69,8 @@ export default function AtlasCard({title, imgLink, modalities, cellsInReference,
                             display: "flex",
                             flexDirection: isFlat ? "row" : "column",
                             justifyContent: "space-evenly",
-                        }}
-                    >
+                          }}
+                          >
                         <OutlinedButton content="Map" link={mapLink}/>
                         <OutlinedButton content="Learn More" link={learnMoreLink}/>
                     </Box>
@@ -78,12 +87,12 @@ export default function AtlasCard({title, imgLink, modalities, cellsInReference,
                     boxShadow: "0px 4px 6px 0px rgba(33, 37, 41, .2), 0px 0px 1px 0px rgba(33, 37, 41, .32)",
                     borderRadius: "1.2rem",
                     justifyContent: "center"
-                }}
+                  }}
             >
                 <Typography
                     sx={{
-                        fontSize: "1.4rem",
-                        fontWeight: "bold"
+                      fontSize: "1.4rem",
+                      fontWeight: "bold"
                     }}
                 >
                     {title}
@@ -91,7 +100,7 @@ export default function AtlasCard({title, imgLink, modalities, cellsInReference,
 
                 <Box component="img" src={imgLink} alt="Atlas preview img"
                     sx={{
-                        width: "90%",
+                      width: "90%",
                         height: "50%",
                         margin: "auto"
                     }}
@@ -99,14 +108,14 @@ export default function AtlasCard({title, imgLink, modalities, cellsInReference,
 
                 <Box
                     sx={{
-                        display: "flex",
-                        flexDirection: "row",
+                      display: "flex",
+                      flexDirection: "row",
                     }}
                 >
                     <Typography
                         sx={{
-                            fontSize: "1rem",
-                            fontWeight: "bold"
+                          fontSize: "1rem",
+                          fontWeight: "bold"
                         }}
                     >
                         Modalities: 
@@ -119,8 +128,8 @@ export default function AtlasCard({title, imgLink, modalities, cellsInReference,
                     sx={{
                         display: "flex",
                         flexDirection: "row",
-                    }}
-                >
+                      }}
+                      >
                     <Typography
                         sx={{
                             fontSize: "1rem",
@@ -135,7 +144,7 @@ export default function AtlasCard({title, imgLink, modalities, cellsInReference,
 
                 <Box
                     sx={{
-                        display: "flex",
+                      display: "flex",
                         flexDirection: "row",
                     }}
                 >
@@ -143,7 +152,7 @@ export default function AtlasCard({title, imgLink, modalities, cellsInReference,
                         sx={{
                             fontSize: "1rem",
                             fontWeight: "bold"
-                        }}
+                          }}
                     >
                         Species: 
                     </Typography>
@@ -152,5 +161,6 @@ export default function AtlasCard({title, imgLink, modalities, cellsInReference,
                 </Box>
             </Box>
         </Box>
+      </Box>
     )
 }

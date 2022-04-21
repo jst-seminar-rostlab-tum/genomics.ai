@@ -39,11 +39,9 @@ function Dashboard({ sidebarShown }) {
       </Stack>
  
       {/* <GeneralCard content="Hey"/> */}
-      <Box sx={{ width: "300px", height: "50px"}}>
       {/* <ModelCard title="Model1" description="Lorem ipsum bla bla"/> */}
       {/* <AtlasCard title="Human - PBMC" imgLink="https://img1.baidu.com/it/u=1624676498,3671459173&fm=253&fmt=auto&app=138&f=JPEG?w=667&h=500" modalities="RNA, ADT" cellsInReference="161,764" species="Human"/> */}
-      <DatasetCard title="Hao and Hao et al, bioRvix 2020" category="lung" />
-      </Box>
+      <DatasetCard width="300px" height="50px" title="Hao and Hao et al, bioRvix 2020" category="lung" />
 
     </Stack>
   );
