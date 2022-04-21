@@ -12,7 +12,7 @@ export async function getTeam(id) {
       description: 'Biotechnology Team bla bla',
       adminIds: [1],
       invitedMemberIds: [],
-      memberIds: [2],
+      memberIds: [1, 2],
       visibility: 'public',
       institutionId: 2,
     };
@@ -28,7 +28,7 @@ export default async function queryMyTeams() {
       description: 'Biotechnology Team bla bla',
       adminIds: [1],
       invitedMemberIds: [],
-      memberIds: [2],
+      memberIds: [1, 2],
       visibility: 'public',
       institutionId: 2,
     },

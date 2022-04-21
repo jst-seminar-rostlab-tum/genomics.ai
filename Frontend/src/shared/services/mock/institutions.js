@@ -35,6 +35,10 @@ export default async function queryMyInstitutions() {
   return testInstitutions.filter((institution) => !mockLeftIds.includes(institution.id));
 }
 
+export async function queryIsAdminInstitutions(userId) {
+  return testInstitutions.filter((institution) => institution.adminIds.includes(userId));
+}
+
 export async function getInstitution(id) {
   return testInstitutions.find((institution) => institution.id === id);
 }
