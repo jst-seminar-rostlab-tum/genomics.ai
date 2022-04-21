@@ -1,7 +1,7 @@
 import {Document, Schema, model} from "mongoose";
 import * as crypto from "crypto";
 
-interface IPasswordResetToken extends Document {
+export interface IPasswordResetToken extends Document {
   _userId: Schema.Types.ObjectId;
   token: string;
   createdAt: Date;

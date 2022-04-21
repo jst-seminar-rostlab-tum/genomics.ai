@@ -1,5 +1,5 @@
 import express from "express";
-import { userModel } from "../../../database/models/user";
+import UserService from "../../../database/services/user.service";
 import { ExtRequest } from "../../../definitions/ext_request";
 import check_auth from "../middleware/check_auth";
 
@@ -14,7 +14,7 @@ export default function authorize_user_route() {
           return res.status(403).send("Unauthorized");
 
       const userId = req.params.id;
-      const user = await userModel.findById(userId);
+      const user = await UserService.getUserById(userId);
 
       if (!user)
         return res.status(404).send(`User ${userId} not found`);
