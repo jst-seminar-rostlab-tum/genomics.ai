@@ -1,5 +1,5 @@
 import express from "express";
-import { userModel } from "../../../database/models/user";
+import UserService from "../../../database/services/user.service";
 import { ExtRequest } from "../../../definitions/ext_request";
 import check_auth from "../middleware/check_auth";
 
@@ -11,7 +11,7 @@ export default function get_unauthorized_users_route() {
             return res.status(403).send("Unauthorized");
 
         try {
-            const unauthorizedUsers = await userModel.find({isAuthorized: false});
+            const unauthorizedUsers = await UserService.getUnauthUsers();
             return res.status(200).json(unauthorizedUsers!);
         } catch (err) {
             return res.status(500).send(err);
