@@ -3,11 +3,6 @@ import React, { useCallback } from 'react';
 import Uploader from 'components/Uploader';
 import StatusQueue from 'components/StatusQueue';
 import styles from './dashboard.module.css';
-import { GeneralCard } from 'components/Cards/GeneralCard';
-import { ModelCard } from 'components/Cards/ModelCard';
-import AtlasCard from 'components/Cards/AtlasCard'
-import DatasetCard from 'components/Cards/DatasetCard';
-import Tag from 'components/Tag';
 
 function Dashboard({ sidebarShown }) {
   const paddingL = useCallback(() => (sidebarShown ? '100px' : '350px'), [sidebarShown]);
