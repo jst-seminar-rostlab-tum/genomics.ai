@@ -70,7 +70,7 @@ const invite_to_institution = () : Router => {
                     return res.status(404).send("User that you are trying to invite does not exists!");      
 
                 if (await InstitutionService.findMemeberById(userId,institutionId_to_modify))
-                    return res.status(404).send("User that you are trying to invite to this institution already is a member!");      
+                    return res.status(404).send("User that you are trying to invite to this institution already is an invited member or is a member!");      
 
                 const updatedInstitution = await  InstitutionService.inviteToInstitution(institutionId_to_modify, userId)
 
