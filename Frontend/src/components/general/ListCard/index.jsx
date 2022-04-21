@@ -12,14 +12,13 @@ function InstitutionCard({
       <div className={styles.cardContent}>
         <div className={styles.start}>
           <div className={styles.cardImageWrapper}>
-            {imageURL ? (
-              <img className={styles.cardImage} src={imageURL} alt="" />
-            ) : (
-              // eslint-disable-next-line react/jsx-props-no-spreading
-              <Avatar sx={{ backgroundColor: stringColor(title || ''), width: 42, height: 42 }}>
-                {(title || '?')[0]}
-              </Avatar>
-            )}
+            <Avatar
+              src={imageURL}
+              alt={title}
+              sx={{ backgroundColor: stringColor(title || ''), width: 42, height: 42 }}
+            >
+              {(title || '?')[0]}
+            </Avatar>
           </div>
           <div className={styles.text}>
             <div className={styles.titleRow}>

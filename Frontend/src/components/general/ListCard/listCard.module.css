@@ -12,11 +12,6 @@
   border-radius: 50%;
 }
 
-.cardImage {
-  width: 42px;
-  height: 42px;
-}
-
 .start {
   display: flex;
   align-items: center;
