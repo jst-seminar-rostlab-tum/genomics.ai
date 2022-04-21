@@ -9,13 +9,14 @@ export default function Tag(props) {
 
   return (
     <Box
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      onClick={handleClick}
-      className={styles.container}
+    className={styles.container}
+    onMouseEnter={() => setHover(true)}
+    onMouseLeave={() => setHover(false)}
+    sx={{ cursor: "pointer" }}
     >
       <Typography>{text}</Typography>
       <CancelIcon
+        onClick={handleClick}
         className={styles.cancelIcon}
         fontSize="smaller"
         sx={{ visibility: hover ? 'visible' : 'hidden' }}
