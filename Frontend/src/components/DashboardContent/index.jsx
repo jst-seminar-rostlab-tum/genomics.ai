@@ -21,6 +21,7 @@ const DashboardContent = (props) => {
       <Sidebar
         toggleSidebar={toggleSidebar}
         sidebarShown={sidebarShown}
+        setUser={setUser}
       />
       <Switch>
         <Route exact path={`${path}/`}>

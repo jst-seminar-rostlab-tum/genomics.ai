@@ -50,53 +50,57 @@ export default function Sidebar(props) {
     <Box>
       <Box className={styles.sidebarNav}>
         <Box className={styles.sidebarWrap}>
-          <List className={styles.iconList}>
-            {routes.map((route, index) => (
-              <NavLink
-                className={styles.navlink}
-                to={`${url}/${route}`}
-                key={route.toString()}
-              >
-                <Tooltip
-                  title={titles[index]}
-                  placement="right"
-                  componentsProps={{
-                    tooltip: {
-                      sx: {
-                        bgcolor: '#5676E4',
-                      },
-                    },
-                  }}
-                >
-                  <Box
-                    className={styles.navbarItemContainer}
-                    sx={{ background: path.includes(route) ? '#5676E5' : '#184060' }}
+          <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "98vh"}}>
+            <Box className={styles.iconList}>
+              {routes.map((route, index) => (
+                <NavLink
+                  className={styles.navlink}
+                  to={`${url}/${route}`}
+                  key={route.toString()}
                   >
-                    <ListItemIcon className={styles.listItemIcon}>
-                      {indexIcon(index)}
-                    </ListItemIcon>
-                  </Box>
-                </Tooltip>
+                  <Tooltip
+                    title={titles[index]}
+                    placement="right"
+                    componentsProps={{
+                      tooltip: {
+                        sx: {
+                          bgcolor: '#5676E4',
+                        },
+                      },
+                    }}
+                    >
+                    <Box
+                      className={styles.navbarItemContainer}
+                      sx={{ background: path.includes(route) ? '#5676E5' : '#184060' }}
+                      >
+                      <ListItemIcon className={styles.listItemIcon}>
+                        {indexIcon(index)}
+                      </ListItemIcon>
+                    </Box>
+                  </Tooltip>
+                </NavLink>
+              ))}
+            </Box>
+            <Box sx={{ display: "flex", flexDirection: "column", gap: "3" }}>
+              <NavLink
+                to={settingsPath}
+                className={`${styles.navlinkIcon} ${styles.bottomIcons} ${styles.settingsIcon}`}
+                >
+                <SettingsIcon />
               </NavLink>
-            ))}
-            <NavLink
-              to={settingsPath}
-              className={`${styles.navlinkIcon} ${styles.bottomIcons} ${styles.settingsIcon}`}
-            >
-              <SettingsIcon />
-            </NavLink>
-            <NavLink
-              to="/"
-              onClick={() => {
-                setUser(null);
-                localStorage.removeItem('user');
-                localStorage.removeItem('jwt');
-              }}
-              className={`${styles.navlinkIcon} ${styles.bottomIcons}`}
-            >
-              <LogoutIcon />
-            </NavLink>
-          </List>
+              <NavLink
+                to="/"
+                onClick={() => {
+                  setUser(null);
+                  localStorage.removeItem('user');
+                  localStorage.removeItem('jwt');
+                }}
+                className={`${styles.navlinkIcon} ${styles.bottomIcons}`}
+                >
+                <LogoutIcon />
+              </NavLink>
+            </Box>
+          </Box>
         </Box>
       </Box>
     </Box>
