@@ -48,7 +48,6 @@ export default function TeamCreationDialog({ open, handleClose, onCreated }) {
           onChange={(evt) => { setName(evt.target.value); setNameError(''); }}
         />
         <TextField
-          autoFocus
           margin="dense"
           id="description"
           label="Description"
