@@ -27,9 +27,6 @@ function App() {
         main: '#4F83CC',
       },
       critical: createColor('#F44336'),
-      background: {
-        paper: '#EFF7FF',
-      },
     },
   });
 
