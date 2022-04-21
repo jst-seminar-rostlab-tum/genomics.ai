@@ -4,7 +4,7 @@ import MenuBookIcon from '@mui/icons-material/MenuBook';
 import MapIcon from '@mui/icons-material/Map';
 import TaskIcon from '@mui/icons-material/Task';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
-import List from '@mui/material/List';
+import SearchIcon from '@mui/icons-material/Search';
 import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
 import { Link as NavLink, useRouteMatch, useLocation } from 'react-router-dom';
@@ -31,6 +31,8 @@ function indexIcon(index) {
     case 3:
       return (<MapIcon className={styles.coloredIcon} />);
     case 4:
+      return (<SearchIcon className={styles.coloredIcon} />);
+    case 5:
       return (<MenuBookIcon className={styles.coloredIcon} />);
     default:
       return (<LiveHelpIcon className={styles.coloredIcon} />);
@@ -39,8 +41,8 @@ function indexIcon(index) {
 
 export default function Sidebar(props) {
   const { setUser } = props;
-  const routes = ['dashboard', 'projects', 'institutions', 'genemapper', 'documentation', 'help'];
-  const titles = ['Dashboard', 'Projects', 'Institutions', 'Gene Mapper', 'Documentation', 'Help'];
+  const routes = ['dashboard', 'projects', 'institutions', 'genemapper', 'search', 'documentation', 'help'];
+  const titles = ['Dashboard', 'Projects', 'Institutions', 'Gene Mapper', 'Search', 'Documentation', 'Help'];
   const { url } = useRouteMatch();
   const location = useLocation();
   const path = location.pathname;
