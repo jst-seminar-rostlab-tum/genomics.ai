@@ -34,13 +34,13 @@ function TeamPage({ sidebarShown }) {
   useEffect(() => {
     getInstitution(team.institutionId)
       .then((newInstitution) => setInstitution(newInstitution));
-  }, [setInstitution]);
+  }, [team, setInstitution]);
 
   return (
     <HeaderView
       sidebarShown={sidebarShown}
       title={team.name}
-      rightOfTitle={<h4>{institution.name}</h4>}
+      rightOfTitle={<h4>{institution ? institution.name : ''}</h4>}
     >
       {JSON.stringify(team)}
       {JSON.stringify(institution)}
