@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ListItem, Stack, Link, Typography, Divider } from "@mui/material";
+import { ListItem, Stack, Link, Typography } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 
 const SearchCard = (props) => {

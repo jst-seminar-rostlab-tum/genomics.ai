@@ -5,6 +5,8 @@ import styles from "./search.module.css";
 import SearchBar from "components/Search/SearchBar";
 import SearchResultList from "components/Search/SearchResultList";
 import querySearch from "shared/mock/search";
+import TeamCard from "components/Search/SearchResultList/TeamCard";
+import InstitutionCard from "components/Search/SearchResultList/InstitutionCard";
 
 const Search = ({ sidebarShown }) => {
   /* Booleans */
@@ -13,7 +15,7 @@ const Search = ({ sidebarShown }) => {
     [sidebarShown]
   );
 
-  const [selectedTab, setSelectedTab] = useState("Teams");
+  const [selectedTab, setSelectedTab] = useState("teams");
   const [searchedKeyword, setSearchedKeyword] = useState("");
   const [searchedData, setSearchedData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -41,10 +43,13 @@ const Search = ({ sidebarShown }) => {
     fetchSearchHandler(selectedTab);
   }, [fetchSearchHandler, selectedTab]);
 
-  console.log(isLoading);
+  const listItemWrapper = {
+    teams: TeamCard,
+    institutions: InstitutionCard,
+  };
+
   return (
     <Stack direction="column" sx={{ paddingLeft: paddingL }}>
-      {" "}
       <div className={styles.title}>
         <h1>Search</h1>
         <Box sx={{ margin: "auto", maxWidth: 1200 }}>
@@ -54,8 +59,8 @@ const Search = ({ sidebarShown }) => {
             submitSearch={submitSearch}
           />
           <Tabs value={selectedTab} onChange={changedTabHandler}>
-            <Tab label="Teams" value="Teams" />
-            <Tab label="Institutions" value="Institutions" />
+            <Tab label="Teams" value="teams" />
+            <Tab label="Institutions" value="institutions" />
           </Tabs>
           {isLoading && (
             <Box sx={{ display: "flex", justifyContent: "center" }}>
@@ -63,7 +68,10 @@ const Search = ({ sidebarShown }) => {
             </Box>
           )}
           {!isLoading && (
-            <SearchResultList searchedData={searchedData} type={selectedTab} />
+            <SearchResultList
+              listItemWrapper={listItemWrapper[selectedTab]}
+              searchedData={searchedData}
+            />
           )}
         </Box>
       </div>

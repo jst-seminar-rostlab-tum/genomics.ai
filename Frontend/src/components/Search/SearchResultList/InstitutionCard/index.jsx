@@ -4,10 +4,9 @@ import { Chip } from "@mui/material";
 import SearchCard from "../SearchCard";
 import Avatars from "components/Avatars";
 
-const InstitutionCard = ({ institution }) => {
+const InstitutionCard = ({ item: institution }) => {
   return (
     <SearchCard
-      id={institution.id}
       title={institution.name}
       secondary={`updated on ${institution.updated}`}
       tertiary={

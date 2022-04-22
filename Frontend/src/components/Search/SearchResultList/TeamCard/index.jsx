@@ -4,10 +4,9 @@ import { Button, Chip } from "@mui/material";
 import SearchCard from "../SearchCard";
 import Avatars from "components/Avatars";
 
-const TeamCard = ({ team }) => {
+const TeamCard = ({ item: team }) => {
   return (
     <SearchCard
-      id={team.id}
       action={<Button variant="contained">Join</Button>}
       title={team.name}
       primary={

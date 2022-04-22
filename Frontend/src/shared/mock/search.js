@@ -142,12 +142,28 @@ const DUMMY_INSTITUTIONS = [
   },
 ];
 
+const DUMMY_USERS = [
+    {
+        name: "Max Musterman",
+        image: "/profileImage1.jpg",
+      },
+      {
+        name: "John Smith",
+        image: "/profileImage2.jpg",
+      },
+      {
+        name: "Alison Henderson",
+        image: "/profileImage3.jpg",
+      }
+]
+
 async function querySearch(type) {
   switch (type) {
-    case "Teams":
+    case "teams":
       return DUMMY_TEAMS;
-    case "Institutions":
+    case "institutions":
       return DUMMY_INSTITUTIONS;
+    case "users":
   }
 }
 
