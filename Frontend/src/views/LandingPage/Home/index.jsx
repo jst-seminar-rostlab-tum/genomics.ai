@@ -1,4 +1,4 @@
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, Stack, TextField, TextareaAutosize } from "@mui/material";
 import Navbar from "components/Navbar";
 import WindowiOS from "components/WindowiOS";
 import Footer from "components/Footer";
@@ -130,8 +130,33 @@ const Home = ({ setUser }) => {
             </Box>
           </Box>
         </Box>
+        {/* CONTACT US */}
+        <Box marginTop="4em">
+          <Typography width="100%" sx={{ textAlign: "center" }} fontSize="2em" fontWeight="bold">Contact Us</Typography>
+          <Typography marginTop="1em" width="100%" sx={{ textAlign: "center" }} fontSize="1em">Please message us in case you have any questions, feedback or collaboration-related inquiries concerning Genomics.ai.</Typography>
+          <Box sx={{
+            width: "100%",
+            margin: "auto",
+            p: "2em",
+            boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.25), 0px 0px 1px rgba(0, 0, 0, 0.32)",
+            m: "1em",
+            borderRadius: "10px"
+          }}>
+            <Stack sx={{ width: "80%", margin: "auto" }} direction="column" spacing={4}>
+              <Stack direction="row" justifyContent="space-between" spacing={2}>
+                {/* TODO replace with future textfields */}
+                <TextField fullWidth id="email" label="Email" type="email" variant="standard" required/>
+                <TextField fullWidth id="first-name" label="First Name" type="text" variant="standard" required/>
+                <TextField fullWidth id="last-name" label="Last Name" type="text" variant="standard" required/>
+              </Stack>
+              <TextareaAutosize aria-label="message" placeholder="Message" minRows={5} sx={{ width: "80%", maxWidth: "80%" }}/>
+              {/* TODO Replace with future buttons */}
+              <Button variant="contained" sx={{ borderRadius: "20px", width: "20%", alignSelf: "center", backgroundColor: colors.primary[400] }}>Send</Button>
+            </Stack>
+          </Box>
+        </Box>
       </Box>
-
+        
       {/* FOOTER */}
       <Footer />
     </Box>
