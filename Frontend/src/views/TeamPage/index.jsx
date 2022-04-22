@@ -11,6 +11,7 @@ import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
+import Button from '@mui/material/Button';
 
 export default function TeamPage({ sidebarShown }) {
   const { id } = useParams();
@@ -65,6 +66,10 @@ export default function TeamPage({ sidebarShown }) {
           setInstitution={setInstitution}
         />
       )}
+      replaceHeaderRight={
+        (isAdmin && <AdminTeamHeaderRight team={team} setTeam={setTeam} />)
+        || <UserTeamHeaderRight />
+      }
     >
       <br />
       <section>
@@ -130,5 +135,37 @@ function HeaderOptions({
         )}
 
     </Stack>
+  );
+}
+
+function AdminTeamHeaderRight({ team, setTeam }) {
+  console.log(team);
+
+  const updateVisibility = (event) => {
+    setTeam({
+      ...team,
+      visibility: event.target.value,
+    });
+  };
+
+  return (
+    <TextField
+      id="select-visibility"
+      select
+      label="Visibility"
+      value={team.visibility}
+      onChange={updateVisibility}
+      variant="standard"
+    >
+      <MenuItem value="public">public</MenuItem>
+      <MenuItem value="private">private</MenuItem>
+      <MenuItem value="by institution">by institution</MenuItem>
+    </TextField>
+  );
+}
+
+function UserTeamHeaderRight() {
+  return (
+    <Button onClick={() => true}>Join</Button>
   );
 }
