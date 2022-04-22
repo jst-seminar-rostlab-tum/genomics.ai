@@ -30,6 +30,13 @@ export default function TeamPage({ sidebarShown }) {
     setIsAdmin((team.adminIds || []).indexOf(user.id) > -1);
   }
 
+  const handleDescriptionChange = (event) => {
+    setTeam({
+      ...team,
+      description: event.target.value,
+    });
+  };
+
   useEffect(() => {
     getUser()
       .then((newUser) => { setUser(newUser); updateIsAdmin(); updateIsMember(); });
@@ -75,7 +82,19 @@ export default function TeamPage({ sidebarShown }) {
       <section>
         <h2>Description</h2>
         <hr />
-        TODO: implement
+        <TextField
+          id="description"
+          multiline
+          minRows={3}
+          maxRows={5}
+          value={team.description}
+          InputProps={{
+            readOnly: !isAdmin,
+          }}
+          fullWidth
+          onChange={handleDescriptionChange}
+          variant="standard"
+        />
       </section>
       <section>
         <h2>GeneMapper</h2>
