@@ -7,7 +7,6 @@ const SearchCard = (props) => {
   return (
     <ListItem divider
       alignItems="flex-start"
-      key={props.key}
       secondaryAction={props.action}
     >
       {

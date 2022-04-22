@@ -22,6 +22,7 @@ const Avatars = ({
     <AvatarGroup>
       {items.map((item) => (
         <Avatar
+          key={item.src}
           sx={{ bgcolor: randomColor(), width, height }}
           alt={item.alt}
           src={item.src}

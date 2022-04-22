@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect } from "react";
-import { Box, Stack } from "@mui/material";
+import { Box, Stack, Tabs, Tab, CircularProgress } from "@mui/material";
 
 import styles from "./search.module.css";
 import SearchBar from "components/Search/SearchBar";
@@ -13,25 +13,35 @@ const Search = ({ sidebarShown }) => {
     [sidebarShown]
   );
 
+  const [selectedTab, setSelectedTab] = useState("Teams");
   const [searchedKeyword, setSearchedKeyword] = useState("");
   const [searchedData, setSearchedData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const searchedKeywordChangeHandler = (event) => {
     setSearchedKeyword(event.target.value);
   };
+
+  const changedTabHandler = (event, newValue) => {
+    setSelectedTab(newValue);
+    setIsLoading(true);
+  };
+
   const submitSearch = () => {
     console.log(searchedKeyword);
   };
 
-  const fetchSearchHandler = useCallback(async () => {
-    const searchResponse = await querySearch();
+  const fetchSearchHandler = useCallback(async (type) => {
+    const searchResponse = await querySearch(type);
     setSearchedData(searchResponse);
+    setIsLoading(false);
   }, []);
 
   useEffect(() => {
-    fetchSearchHandler();
-  }, [fetchSearchHandler]);
+    fetchSearchHandler(selectedTab);
+  }, [fetchSearchHandler, selectedTab]);
 
+  console.log(isLoading);
   return (
     <Stack direction="column" sx={{ paddingLeft: paddingL }}>
       {" "}
@@ -43,7 +53,18 @@ const Search = ({ sidebarShown }) => {
             searchedKeywordChangeHandler={searchedKeywordChangeHandler}
             submitSearch={submitSearch}
           />
-          <SearchResultList searchedData={searchedData} />
+          <Tabs value={selectedTab} onChange={changedTabHandler}>
+            <Tab label="Teams" value="Teams" />
+            <Tab label="Institutions" value="Institutions" />
+          </Tabs>
+          {isLoading && (
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              <CircularProgress />
+            </Box>
+          )}
+          {!isLoading && (
+            <SearchResultList searchedData={searchedData} type={selectedTab} />
+          )}
         </Box>
       </div>
     </Stack>

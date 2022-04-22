@@ -7,7 +7,7 @@ import Avatars from "components/Avatars";
 const TeamCard = ({ team }) => {
   return (
     <SearchCard
-      key={team.id}
+      id={team.id}
       action={<Button variant="contained">Join</Button>}
       title={team.name}
       primary={
