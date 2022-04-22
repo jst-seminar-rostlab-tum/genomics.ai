@@ -27,7 +27,8 @@ config = {
     'use_layer_norm': 'both',
     'use_batch_norm': 'none',
     'unlabeled_key': 'Unknown',
-    'scanvae_max_epochs': 20,
+    'scanvi_max_epochs': 2,
+    'scvi_max_epochs': 2,
     'n_neighbors': 8,
     'max_epochs': 100,
     'unwanted_labels': ['leiden']
@@ -50,6 +51,7 @@ def parse_args():
     parser.add_argument('-t', '--train', help='train the scvi model', action='store_true')
     parser.add_argument('-q', '--query', help='execute query on reference dataset', action='store_true')
     parser.add_argument('-p', '--predict', help='predict', action='store_true')
+    parser.add_argument('-s', '--surgery', help='surgery', action='store_true')
     return parser.parse_args()
 
 
@@ -63,16 +65,18 @@ def setup_modules():
 
 
 def setup_anndata_for_scvi(anndata):
-    scarches.models.SCVI.setup_anndata(anndata, batch_key=get_from_config('condition_key'), labels_key=get_from_config('cell_type_key'))
+    scarches.models.SCVI.setup_anndata(anndata, batch_key=get_from_config('condition_key'),
+                                       labels_key=get_from_config('cell_type_key'))
 
 
 def setup_anndata_for_scanvi(anndata):
     scarches.models.SCANVI.setup_anndata(anndata, unlabeled_category='Unknown',
-                                         batch_key=get_from_config('condition_key'), labels_key=get_from_config('cell_type_key'))
+                                         batch_key=get_from_config('condition_key'),
+                                         labels_key=get_from_config('cell_type_key'))
 
 
 def get_scanvi_from_scvi_model(scvi_model):
-    return scarches.models.SCANVI.from_scvi_model(scvi_model, get_from_config('unlabeled_key'), labels_key=get_from_config('cell_type_key'))
+    return scarches.models.SCANVI.from_scvi_model(scvi_model, get_from_config('unlabeled_key'))
 
 
 def get_scvi_model(anndata):
@@ -93,12 +97,38 @@ def get_latent(model, adata):
     scanpy.pp.neighbors(reference_latent, n_neighbors=get_from_config('n_neighbors'))
     scanpy.tl.leiden(reference_latent)
     scanpy.tl.umap(reference_latent)
+    model.save(get_from_config('ref_path'), overwrite=True)
     return reference_latent
+
 
 def predict(model, latent):
     latent.obs['predictions'] = model.predict()
     print("Acc: {}".format(np.mean(latent.obs.predictions == latent.obs.cell_type)))
     return latent
+
+
+def surgery(anndata):
+    model = scarches.models.SCANVI.load_query_data(
+        anndata,
+        get_from_config('ref_path'),
+        freeze_dropout=True,
+    )
+    model._unlabeled_indices = np.arange(anndata.n_obs)
+    model._labeled_indices = []
+    print("Labelled Indices: ", len(model._labeled_indices))
+    print("Unlabelled Indices: ", len(model._unlabeled_indices))
+    model.train(
+        max_epochs=100,
+        plan_kwargs=dict(weight_decay=0.0),
+        check_val_every_n_epoch=10,
+    )
+    surgery_latent = get_latent(model, anndata)
+    utils.save_umap_as_pdf(surgery_latent, 'figures/surgery.pdf', color=['batch', 'cell_type'])
+    utils.write_latent_csv(surgery_latent, filename='/tmp/surgery.csv')
+    surgery_path = 'surgery_model'
+    model.save(surgery_path, overwrite=True)
+    return model, surgery_latent
+
 
 def query(anndata):
     model = scarches.models.SCANVI.load_query_data(
@@ -127,7 +157,8 @@ def predict_latent(latent):
     df = latent.obs.groupby(["cell_type", "predictions"]).size().unstack(fill_value=0)
     norm_df = df / df.sum(axis=0)
 
-    figure = plt.figure(figsize=(8, 8), frameon=False, show=False)
+    figure = plt.figure(figsize=(8, 8), frameon=False)
+    _ = plt.grid(False)
     _ = plt.pcolor(norm_df)
     _ = plt.xticks(np.arange(0.5, len(df.columns), 1), df.columns, rotation=90)
     _ = plt.yticks(np.arange(0.5, len(df.index), 1), df.index)
@@ -193,26 +224,26 @@ def main():
         logger.debug(target_adata)
 
     if args.train:
-        vae.train()
+        vae.train(max_epochs=get_from_config('scvi_max_epochs'))
 
     print(vae)
 
-    #setup_anndata_for_scanvi(source_adata)
+    # setup_anndata_for_scanvi(source_adata)
 
-    scanvae = get_scanvi_from_scvi_model(vae)
+    scanvi = get_scanvi_from_scvi_model(vae)
 
-    print("Labelled Indices: ", len(scanvae._labeled_indices))
-    print("Unlabelled Indices: ", len(scanvae._unlabeled_indices))
+    print("Labelled Indices: ", len(scanvi._labeled_indices))
+    print("Unlabelled Indices: ", len(scanvi._unlabeled_indices))
 
-    print(scanvae)
+    print(scanvi)
 
-    scanvae.train(max_epochs=get_from_config('scanvae_max_epochs'))
-    reference_latent = get_latent(scanvae, source_adata)
+    scanvi.train(max_epochs=get_from_config('scanvi_max_epochs'))
+    reference_latent = get_latent(scanvi, source_adata)
 
     if show:
         utils.save_umap_as_pdf(reference_latent, 'figures/reference.pdf', color=['batch', 'cell_type'])
 
-    reference_latent = predict(scanvae, reference_latent)
+    reference_latent = predict(scanvi, reference_latent)
 
     model = None
     if args.query:
@@ -220,7 +251,13 @@ def main():
         model = model_query
 
         if args.predict:
-            predict_latent(query_latent)
+            predict_latent(predict(model_query, query_latent))
+
+    if args.surgery:
+        model_surgery, surgery_latent = surgery(target_adata)
+
+        if args.predict:
+            predict_latent(predict(model_surgery, surgery_latent))
 
     full_latent = None
 
