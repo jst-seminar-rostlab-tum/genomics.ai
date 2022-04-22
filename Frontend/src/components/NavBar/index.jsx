@@ -11,7 +11,7 @@ const Appbar = styled(Box)(({
   flexDirection: "row",
   justifyContent: "space-between",
   backgroundColor: colors.primary[800],
-  padding: "0.5em",
+  padding: "0.5em" ,
   paddingLeft: "15%",
   paddingRight: "15%"
 })) 
