@@ -1,6 +1,5 @@
 import { Box, IconButton, Typography } from "@mui/material"
 import { Link } from "react-router-dom"
-import { styled } from "@mui/system";
 
 import logo from 'assets/logo.svg';
 import { colors } from "shared/theme/colors";
