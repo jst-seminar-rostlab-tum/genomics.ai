@@ -74,7 +74,7 @@ const DUMMY_INSTITUTIONS = [
   {
     id: "1",
     name: "Technische Universität München",
-    logo: "/profileImage.jpg",
+    logo: "	https://d3r623tes721q0.cloudfront.net/gIAPUlMwpW3uW_J-bf8e03e8590b237d198916dc62b1a43dce4ce066/favicon_profile.png",
     updated: "17th March", // Target to change to some date format
     membersCount: 18,
     teamsCount: 20,
@@ -97,7 +97,7 @@ const DUMMY_INSTITUTIONS = [
   {
     id: "2",
     name: "Helmholtz Institut",
-    logo: "/profileImage.jpg",
+    logo: "https://www.hzdr.de/db/Pic?pOid=55058",
     updated: "24th March", // Target to change to some date format
     membersCount: 18,
     teamsCount: 20,
@@ -120,7 +120,7 @@ const DUMMY_INSTITUTIONS = [
   {
     id: "3",
     name: "Ludwig-Maximilians-Universität München",
-    logo: "/profileImage.jpg",
+    logo: "/profileImage.png",
     updated: "24th April", // Target to change to some date format
     membersCount: 10,
     teamsCount: 22,
@@ -143,19 +143,55 @@ const DUMMY_INSTITUTIONS = [
 ];
 
 const DUMMY_USERS = [
-    {
-        name: "Max Musterman",
-        image: "/profileImage1.jpg",
-      },
-      {
-        name: "John Smith",
-        image: "/profileImage2.jpg",
-      },
-      {
-        name: "Alison Henderson",
-        image: "/profileImage3.jpg",
-      }
-]
+  {
+    name: "Max Musterman",
+    email: "max.mustermann@tum.de",
+    image: "/profileImage1.jpg",
+    affiliation: "ELTE",
+  },
+  {
+    name: "John Smith",
+    email: "john.smith@tum.de",
+    image: "/profileImage2.jpg",
+    affiliation: "ELTE",
+  },
+  {
+    name: "Alison Henderson",
+    email: "alison.henderson@tum.de",
+    image: "/profileImage3.jpg",
+    affiliation: "ELTE",
+  },
+];
+
+const DUMMY_PROJECTS = [
+  {
+    id: "1",
+    name: "Job f567",
+    type: "Gene Mapper",
+    institution: "Helmholtz Institut",
+    team: "Heinzig Lab",
+  },
+  {
+    id: "2",
+    name: "Job f568",
+    type: "Gene Mapper",
+    institution: "Technische Universität München",
+    team: "Rost Lab",
+  },
+  {
+    id: "3",
+    name: "Job f569",
+    type: "Gene Mapper",
+    institution: "Ludwig-Maximilians-Universität München",
+    team: "Med Lab",
+  },
+  {
+    id: "4",
+    name: "Job f709",
+    type: "Gene Mapper",
+    team: "Med Lab",
+  },
+];
 
 async function querySearch(type) {
   switch (type) {
@@ -164,6 +200,9 @@ async function querySearch(type) {
     case "institutions":
       return DUMMY_INSTITUTIONS;
     case "users":
+      return DUMMY_USERS;
+    case "projects":
+      return DUMMY_PROJECTS;
   }
 }
 

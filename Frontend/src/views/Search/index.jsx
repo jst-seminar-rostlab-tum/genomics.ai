@@ -7,6 +7,8 @@ import SearchResultList from "components/Search/SearchResultList";
 import querySearch from "shared/mock/search";
 import TeamCard from "components/Search/SearchResultList/TeamCard";
 import InstitutionCard from "components/Search/SearchResultList/InstitutionCard";
+import UserCard from "components/Search/SearchResultList/UserCard";
+import ProjectCard from "components/Search/SearchResultList/ProjectCard";
 
 const Search = ({ sidebarShown }) => {
   /* Booleans */
@@ -46,6 +48,8 @@ const Search = ({ sidebarShown }) => {
   const listItemWrapper = {
     teams: TeamCard,
     institutions: InstitutionCard,
+    users: UserCard,
+    projects: ProjectCard
   };
 
   return (
@@ -61,6 +65,8 @@ const Search = ({ sidebarShown }) => {
           <Tabs value={selectedTab} onChange={changedTabHandler}>
             <Tab label="Teams" value="teams" />
             <Tab label="Institutions" value="institutions" />
+            <Tab label="Users" value="users" />
+            <Tab label="Projects" value="projects" />
           </Tabs>
           {isLoading && (
             <Box sx={{ display: "flex", justifyContent: "center" }}>

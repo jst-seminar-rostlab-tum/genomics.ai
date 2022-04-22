@@ -14,8 +14,8 @@ function randomColor() {
 // A component displaying a common group of avatrs
 const Avatars = ({
   items,
-  width = 24,
-  height = 24,
+  width = 23,
+  height = 23,
   displayMoreIcon = true,
 }) => {
   return (

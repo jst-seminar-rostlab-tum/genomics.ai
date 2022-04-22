@@ -1,8 +1,10 @@
 import React from "react";
 
 import { Button, Chip } from "@mui/material";
-import SearchCard from "../SearchCard";
+
 import Avatars from "components/Avatars";
+import SearchCard from "../SearchCard";
+import LabeledLink from "../LabeledLink";
 
 const TeamCard = ({ item: team }) => {
   return (
@@ -10,9 +12,7 @@ const TeamCard = ({ item: team }) => {
       action={<Button variant="contained">Join</Button>}
       title={team.name}
       primary={
-        <React.Fragment>
           <Chip label={team.visibility} color="primary" size="small" />
-        </React.Fragment>
       }
       secondary={`updated on ${team.updated}`}
       tertiary={
@@ -28,6 +28,7 @@ const TeamCard = ({ item: team }) => {
             size="small"
             sx={{ color: "text.secondary" }}
           />
+          {team.institution && <LabeledLink label={"Institution"} content={team.institution} />}
         </React.Fragment>
       }
     />

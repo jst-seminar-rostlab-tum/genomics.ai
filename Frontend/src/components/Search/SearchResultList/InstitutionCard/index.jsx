@@ -8,6 +8,7 @@ const InstitutionCard = ({ item: institution }) => {
   return (
     <SearchCard
       title={institution.name}
+      avatar={institution.logo}
       secondary={`updated on ${institution.updated}`}
       tertiary={
         <React.Fragment>
