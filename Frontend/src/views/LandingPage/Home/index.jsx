@@ -138,7 +138,7 @@ const Home = ({ setUser }) => {
             width: "100%",
             margin: "auto",
             p: "2em",
-            boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.25), 0px 0px 1px rgba(0, 0, 0, 0.32)",
+            boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.10), 0px 0px 1px rgba(0, 0, 0, 0.20)",
             m: "1em",
             borderRadius: "10px"
           }}>
