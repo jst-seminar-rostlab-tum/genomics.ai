@@ -1,4 +1,4 @@
-import { Box, Typography, Button} from "@mui/material";
+import { Box, Typography, Button, Stack, TextField, TextareaAutosize } from "@mui/material";
 import UploadIcon from '@mui/icons-material/Upload';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
 import AssignmentIcon from '@mui/icons-material/Assignment';
@@ -14,8 +14,14 @@ import graphic3 from 'assets/landing-illustrations/processing.png';
 import graphic4 from 'assets/landing-illustrations/results.png';
 
 const Home = ({ setUser }) => {
-  const [isLoginFormVisible, setLoginFormVisible] = useState(false)
-  const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false)
+  const [isLoginFormVisible, setLoginFormVisible] = useState(false);
+  const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
+  const [windowSize, setWindowSize] = useState({height: window.innerHeight, width: window.innerWidth})
+  const [boxHeight, setBoxHeight] = useState(0)
+
+  const boxRef = useRef()
+
+  const eclipseRef = useRef()
 
   const howItWorksBoxRef = useRef()
   const [processLineInfo, setProcessLineInfo] = useState({left: 0, top: 0, length: 0})
@@ -51,23 +57,35 @@ const Home = ({ setUser }) => {
     setRegistrationFormVisible(false);
   }, [setRegistrationFormVisible]);
 
+  useEffect(()=>{
+    setBoxHeight(boxRef.current.clientHeight)
+    
+    function handleResize(){
+      setWindowSize({height: window.innerHeight, width: window.innerWidth})
+    }
+
+    window.addEventListener("resize", handleResize)
+
+    return _=>window.removeEventListener("resize", handleResize)
+  })
+
   return (
     <Box style={{ overflow: "hidden" }} sx={{ position: "relative" }}>
       {/* STARTING PAGE */}
-      <Box sx={{width: "100vw", bgcolor: colors.primary[800], position: "relative", paddingBottom: "4em"}}>
+      <Box ref={boxRef} sx={{width: window.width, bgcolor: colors.primary[800], position: "relative", paddingBottom: "4em"}}>
         {/* NAVBAR HERE */}
         <Navbar />
         {/* IOS WINDOW */}
         <WindowiOS />
       </Box>
       {/* the Eclipse */}
-      <Box
+      <Box ref={eclipseRef}
         sx={{
           position: "relative",
-          width: "140vw",
-          height: "5vw",
-          left: "-20vw", 
-          top: "-2vw",
+          width: windowSize.width*1.4,
+          height: windowSize.width/20,
+          left: -windowSize.width*0.2, 
+          top: -windowSize.width/50 ,
           backgroundColor: "white",
           borderRadius: "50%",
           zIndex: "0"
@@ -80,7 +98,7 @@ const Home = ({ setUser }) => {
           width: "100vw",
           paddingLeft: { xs: "10px", md: "15%" },
           paddingRight: { xs: "10px", md: "15%" },
-          top: "-2.5vw"
+          top: -windowSize.width/40
         }}
       >
         
@@ -158,8 +176,33 @@ const Home = ({ setUser }) => {
 
           <Box sx={{position: "absolute", top: `${processLineInfo.top}px`, left: `${processLineInfo.left-1}px`, width: "5px", width: "2px", height: `${processLineInfo.length}px`, bgcolor: colors.neutral[700]}} />
         </Box>
+        {/* CONTACT US */}
+        <Box marginTop="4em">
+          <Typography width="100%" sx={{ textAlign: "center" }} fontSize="2em" fontWeight="bold">Contact Us</Typography>
+          <Typography marginTop="1em" width="100%" sx={{ textAlign: "center" }} fontSize="1em">Please message us in case you have any questions, feedback or collaboration-related inquiries concerning Genomics.ai.</Typography>
+          <Box sx={{
+            width: "100%",
+            margin: "auto",
+            p: "2em",
+            boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.10), 0px 0px 1px rgba(0, 0, 0, 0.20)",
+            m: "1em",
+            borderRadius: "10px"
+          }}>
+            <Stack sx={{ width: "80%", margin: "auto" }} direction="column" spacing={4}>
+              <Stack direction="row" justifyContent="space-between" spacing={2}>
+                {/* TODO replace with future textfields */}
+                <TextField fullWidth id="email" label="Email" type="email" variant="standard" required/>
+                <TextField fullWidth id="first-name" label="First Name" type="text" variant="standard" required/>
+                <TextField fullWidth id="last-name" label="Last Name" type="text" variant="standard" required/>
+              </Stack>
+              <TextareaAutosize aria-label="message" placeholder="Message" minRows={5} sx={{ width: "80%", maxWidth: "80%" }}/>
+              {/* TODO Replace with future buttons */}
+              <Button variant="contained" sx={{ borderRadius: "20px", width: "20%", alignSelf: "center", backgroundColor: colors.primary[400] }}>Send</Button>
+            </Stack>
+          </Box>
+        </Box>
       </Box>
-
+        
       {/* FOOTER */}
       <Footer />
     </Box>
