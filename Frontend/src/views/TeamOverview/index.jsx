@@ -4,7 +4,7 @@ import {
 } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import HeaderView from 'components/general/HeaderView';
-import TeamCard from 'components/teams/overview/TeamCard';
+import TeamCard from 'components/teams/TeamCard';
 import TeamPage from 'views/TeamPage';
 import styles from './teamOverview.module.css';
 import queryMyTeams from 'shared/services/mock/teams';
