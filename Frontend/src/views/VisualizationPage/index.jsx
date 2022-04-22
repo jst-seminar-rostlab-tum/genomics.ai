@@ -6,7 +6,7 @@ import { useLocation } from 'react-router-dom';
 import Visualization from 'components/Visualization/src/Visualization';
 import styles from './visualizationpage.module.css';
 import NavBar from 'components/Navbar/old';
-import Footer from 'components/Footer';
+import Footer from 'components/Footer/old';
 
 const theme = createTheme({
   palette: {

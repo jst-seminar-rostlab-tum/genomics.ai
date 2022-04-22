@@ -5,7 +5,7 @@ import {
 } from '@mui/material';
 import { useHistory, useLocation } from 'react-router-dom';
 import NavBar from 'components/Navbar/old';
-import Footer from 'components/Footer';
+import Footer from 'components/Footer/old';
 import styles from './passwordresetpage.module.css';
 import logo from 'assets/logo.svg';
 import { BACKEND_ADDRESS } from 'shared/utils/common/constants';

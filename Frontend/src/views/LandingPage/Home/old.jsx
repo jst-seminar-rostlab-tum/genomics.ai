@@ -12,7 +12,7 @@ import graphic4 from 'assets/landing-illustrations/results.png';
 import tum from 'assets/landing-illustrations/tum-logo.png';
 import rostlab from 'assets/landing-illustrations/rostlab.png';
 import helmholtz from 'assets/landing-illustrations/helmholtz.png';
-import Footer from 'components/Footer';
+import Footer from 'components/Footer/old';
 import dnaImage from 'assets/dna.png';
 import RegistrationForm from 'components/RegistrationForm';
 import LoginForm from 'components/LoginForm';
