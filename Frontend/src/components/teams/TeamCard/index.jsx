@@ -46,8 +46,7 @@ function TeamCard({ team, onLeft }) {
             Settings
           </Button>
         ) : <div key="nothing" />,
-        // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-        <div key="leave" onClick={preventBubble} onKeyPress={preventBubble}>
+        <div key="leave" onClick={preventBubble} onKeyPress={preventBubble} role="button" tabIndex={0}>
           <TeamLeaveButton team={team} onLeft={onLeft} />
         </div>,
       ]}
