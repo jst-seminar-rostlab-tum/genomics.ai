@@ -176,4 +176,64 @@ const add_user_to_admin = (): Router => {
     return router;
 }
 
-export { create_project, invite_person_to_a_project, add_user_to_admin }
+const join_member = (): Router => {
+    let router = express.Router();
+
+    router.put("/projects/:id/join", check_auth(), async (req: any, res) => {
+        try {
+            const {userId}: {userId: ObjectId}  = req.body;
+            const projectId: string = req.params.id;
+
+            if(!(userId && projectId))
+                return res.status(400).send("Missing parameters.");
+
+            const user = await UserService.getUserById(userId)
+            if (! user )
+                return res.status(400).send("User does not exist.");
+            if ( !user.isEmailVerified )
+                return res.status(409).send("User has not been verified.")
+
+            const project = await ProjectService.getProjectById(projectId);
+            if (! project)
+                return res.status(400).send("Project does not exist.");
+
+            var tempUserId = String(userId);
+            var tempListAdmins = project.adminIds.map(String);
+            var tempListMembers = project.memberIds.map(String);
+
+            if (tempListAdmins.includes(tempUserId))
+                return res.status(409).send("User is an admin of the project.")
+
+            if (tempListMembers.includes(tempUserId))
+                return res.status(409).send("User is already a member of the project.")   
+                
+            //[PENDING] Consider whether is necessary to validate if a user should have been invited before it is joined. i.e. it should exist a record in invitedMemberIds
+
+            try {
+                const project_updated = await ProjectService.addNewMemberIntoProject(projectId, userId);
+
+                if (!project_updated)
+                    return res.status(400).send("Error when joining a new member into the project.");
+
+                return res.status(200).json("User has been joined.");
+
+            } catch(err) {
+                console.error("Error when trying to join a new member into a given project.")
+                console.error(JSON.stringify(err));
+                console.error(err);
+                return res.status(500).send("Unable to register new admin.");
+            }
+        } catch(e) {
+            /* Added since a test proved that if user sends a request with incorrect parameter names, it is able to shutdown the server. */
+            console.error("Error in join_member()")
+            console.error(JSON.stringify(e));
+            console.error(e);
+            return res.status(500).send("Internal error.");
+        }
+
+    })
+
+    return router;
+}
+
+export { create_project, invite_person_to_a_project, add_user_to_admin, join_member }
