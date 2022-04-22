@@ -1,118 +1,149 @@
 import { Box, IconButton, Typography } from "@mui/material"
 import { Link } from "react-router-dom"
-import { styled } from "@mui/system";
 
 import logo from 'assets/logo.svg';
 import { colors } from "shared/theme/colors";
+import { useEffect, useRef, useState } from "react";
 
-const Appbar = styled(Box)(({
-  position: "sticky",
-  top: "10px",
-  width: "61.8%",
-  display: "flex",
-  flexDirection: "row",
-  justifyContent: "space-between",
-  backgroundColor: colors.primary[800],
-  padding: "0.8em" ,
-  margin: "auto"
-})) 
+//In styled(), we cannot use different width to fix different resolution
+//we have to use sx
+function Appbar(props){
+  return (
+    <Box {...props} sx={{
+      width: {xs: "90%", sm: "90%", md: "61.8%", lg: "61.8%", xl: "61.8%"},
+      display: "flex",
+      flexDirection: {xs: "column", sm: "row", md: "row", lg: "row", xl: "row"},
+      justifyContent: "space-between",
+      alignItems: {xs: "flex-end", sm: "center", md: "center", lg: "center", xl: "center"},
+      backgroundColor: colors.primary[800],
+      padding: "0.8em" ,
+      margin: "auto",
+      position: "relative"
+    }}></Box>
+  )
+}
 
-const Leftbar = styled(Box)(({
-  width: "70%",
-  display: "flex",
-  flexDirection: "row",
-  justifyContent: "space-between",
-  alignItems: "center"
-}))
+function Leftbar(props){
+  return (
+    <Box {...props} sx={{
+      width: {xs: "100%", sm: "486px", md: "389px", lg: "519px", xl: "664px"},
+      display: "flex",
+      flexDirection: "row",
+      flexWrap: "warp",
+      justifyContent: "space-between",
+      alignItems: "center"
+    }}
+    ></Box>
+  )
+}
 
-const Rightbar = styled(Box)(({
-  width: "30%",
-  display: "flex",
-  flexDirection: "row",
-  alignItems: "center",
-  justifyContent: "right",
-  gap: "1em"
-}))
+function Rightbar(props){
+  return (
+    <Box {...props} sx={{
+      width: {xs: "50%", sm: "216px", md: "166px", lg: "222px", xl: "284px"},
+      display: "flex",
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "right",
+      gap: "1em"
+    }}
+    ></Box>
+  )
+}
 
-const Navlink = styled(Typography)(({
-  fontWeight: "bold",
-  fontSize: "1.2em",
-  color: "white",
-  ":hover": {
-    color: colors.secondary1[200]
-  }
-}))
+function Navlink(props){
+  return (
+    <Box {...props}>
+      <Typography {...props} sx={{
+        fontWeight: "bold",
+        fontSize: {xs: "0.6em", sm: "0.8em", md: "0.8em", lg: "1.2em", xl: "1.2em"},
+        color: "white",
+        ":hover": {
+          color: colors.secondary1[200]
+        }
+      }}
+      ></Typography>
+    </Box>
+  )
+}
 
-const Login = styled(Typography)(({
-  fontWeight: "bold",
-  fontSize: "1.2em",
-  borderRadius: "10px",
-  padding: "8px",
-  color: "white",
-  ":hover": {
-    textDecoration: "underline"
-  }
-}))
+function Login(props){
+  return (
+    <Box {...props} sx={{
+      borderRadius: "10px",
+      padding: "8px",
+    }}
+    >
+      <Typography {...props} sx={{
+        fontWeight: "bold",
+        fontSize: {xs: "0.6em", sm: "0.8em", md: "0.8em", lg: "1.2em", xl: "1.2em"},
+        color: "white",
+        ":hover": {
+          textDecoration: "underline"
+        }
+      }}
+      ></Typography>
+    </Box>
+  )
+}
 
-const Signup = styled(Typography)(({ theme }) => ({
-  borderRadius: "10px",
-  border: '2px solid white',
-  padding: "8px",
-  fontWeight: "bold",
-  fontSize: "1.2em",
-  color: "white",
-  ":hover": {
-    border: `2px solid ${theme.palette.primary.light}`,
-    color: theme.palette.primary.light,
-    textDecoration: "underline"
-  }
-}))
-const Navbar = () => {
+function Signup(props){
+  return (
+    <Box {...props} sx={{
+      borderRadius: "10px",
+      border: '2px solid white',
+      padding: "8px",
+      ":hover": {
+        border: "2px solid primary.light}",
+        color: "primary.light"
+      }
+    }}
+    >
+      <Typography {...props} sx={{
+        fontWeight: "bold",
+        fontSize: {xs: "0.6em", sm: "0.8em", md: "0.8em", lg: "1.2em", xl: "1.2em"},
+        color: "white",
+        ":hover": {
+          color: "primary.light",
+          textDecoration: "underline"
+        }
+      }}
+      ></Typography>
+    </Box>
+  )
+}
 
+function LinkBox(props){
+  return (
+    <Box {...props} component={Link} style={{ textDecoration: "none" }}></Box>
+  )
+}
+
+export default function Navbar() {
   return (
     <Appbar>
       <Leftbar>
-        <Link to="/" style={{ textDecoration: "none" }}>
-          <Box sx={{ display: "flex", alignItems: "center", gap: "0.7em" }}>
-            <IconButton
-              disableRipple
-              sx={{
-                bgcolor: "white",
-                ":hover": { bgcolor: "primary.dark" }
-              }}
-              > 
-              <img width={28} alt="logo" src={logo} />
-            </IconButton>
-            <Navlink>genomics.ai</Navlink>
-          </Box>
-        </Link>
-        <Link to="/about" style={{ textDecoration: "none" }}>
-          <Navlink>
-            About us
-          </Navlink>
-        </Link>
-        <Link to="/docs" style={{ textDecoration: "none" }}>
-          <Navlink>
-           Docs 
-          </Navlink>
-        </Link>
-        <Link to="/contact" style={{ textDecoration: "none" }}>
-          <Navlink>
-            Contact us
-          </Navlink>
-        </Link>
-        <Link to="/explore" style={{ textDecoration: "none" }}>
-          <Navlink>
-            Explore
-          </Navlink>
-        </Link>
+        <LinkBox to="/" sx={{ display: "flex", alignItems: "center", gap: "0.7em" }}>
+          <IconButton
+            disableRipple
+            sx={{
+              bgcolor: "white",
+              ":hover": { bgcolor: "primary.dark" }
+            }}
+            > 
+            <img width={28} alt="logo" src={logo} />
+          </IconButton>
+          <Navlink>genomics.ai</Navlink>
+        </LinkBox>
+        <LinkBox to="/about"><Navlink>About us</Navlink></LinkBox>
+        <LinkBox to="/docs"><Navlink>Docs </Navlink></LinkBox>
+        <LinkBox to="/contact"><Navlink>Contact us</Navlink></LinkBox>
+        <LinkBox to="/explore"><Navlink>Explore</Navlink></LinkBox>
       </Leftbar>
       <Rightbar>
-        <Link to="/login" style={{ textDecoration: "none", color: "white" }}><Login>Log In</Login></Link>
-        <Link to="/signup" style={{ textDecoration: "none", color: "white" }}><Signup>Sign Up</Signup></Link>
+        <LinkBox to="/login"><Login>Log In</Login></LinkBox>
+        <LinkBox to="/signup" ><Signup>Sign Up</Signup></LinkBox>
       </Rightbar>
     </Appbar>
   )
 }
-
-export default Navbar
