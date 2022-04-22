@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Button from '@mui/material/Button';
 import ListCard from 'components/general/ListCard';
@@ -13,6 +14,11 @@ function InstitutionCard({ institution, onLeft }) {
     getUser()
       .then(setUser);
   }, [setUser]);
+
+  const history = useHistory();
+  const navigateToInstitution = () => {
+    history.push(`/sequencer/institutions/${institution.id}`);
+  };
 
   const {
     name, profilePictureURL, adminIds,
@@ -39,6 +45,7 @@ function InstitutionCard({ institution, onLeft }) {
         ) : <div key="nothing" />,
         <InstitutionLeaveButton key="leave" institution={institution} onLeft={onLeft} />,
       ]}
+      onClick={navigateToInstitution}
     />
   );
 }

@@ -26,34 +26,33 @@ function TeamCard({ team, onLeft }) {
     name, description, adminIds,
   } = team;
   return (
-    <div onClick={navigateToTeam} onKeyPress={navigateToTeam} role="button" tabIndex={-1}>
-      <ListCard
-        title={name}
-        description={description}
-        nextToTitle={(
-          <span className={styles.accessRightIndicator}>
-            {adminIds.indexOf(user.id) !== -1 ? 'admin' : 'member'}
-          </span>
-        )}
-        trailing={[
-          adminIds.indexOf(user.id) !== -1 ? (
-            <Button
-              key="settings"
-              endIcon={<SettingsIcon />}
-              variant="outlined"
-              sx={{ marginRight: '6px' }}
-              onClick={navigateToTeam}
-            >
-              Settings
-            </Button>
-          ) : <div key="nothing" />,
-          // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-          <div key="leave" onClick={preventBubble} onKeyPress={preventBubble}>
-            <TeamLeaveButton team={team} onLeft={onLeft} />
-          </div>,
-        ]}
-      />
-    </div>
+    <ListCard
+      title={name}
+      description={description}
+      nextToTitle={(
+        <span className={styles.accessRightIndicator}>
+          {adminIds.indexOf(user.id) !== -1 ? 'admin' : 'member'}
+        </span>
+      )}
+      trailing={[
+        adminIds.indexOf(user.id) !== -1 ? (
+          <Button
+            key="settings"
+            endIcon={<SettingsIcon />}
+            variant="outlined"
+            sx={{ marginRight: '6px' }}
+            onClick={navigateToTeam}
+          >
+            Settings
+          </Button>
+        ) : <div key="nothing" />,
+        // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+        <div key="leave" onClick={preventBubble} onKeyPress={preventBubble}>
+          <TeamLeaveButton team={team} onLeft={onLeft} />
+        </div>,
+      ]}
+      onClick={navigateToTeam}
+    />
   );
 }
 
