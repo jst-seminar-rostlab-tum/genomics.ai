@@ -4,14 +4,13 @@ import { colors } from "shared/theme/colors"
 import tum from 'assets/landing-illustrations/tum-logo.png';
 import rostlab from 'assets/landing-illustrations/rostlab.png';
 import helmholtz from 'assets/landing-illustrations/helmholtz.png';
-import dnaImage from 'assets/dna.png';
 
 const WindowiOS = () => {
   return (
     <Box
       sx={{
         position: "relative",
-        width: { xs: "100%", md: "70%"},
+        width: {xs: "90%", sm: "90%", md: "61.8%", lg: "61.8%", xl: "61.8%"},
         margin: "auto",
         backgroundColor: "rgba(20, 20, 20, 0.6)",
         color: "white",
@@ -59,7 +58,7 @@ const WindowiOS = () => {
       <Box
         sx={{
           display: "flex",
-          flexDirection: "row",
+          flexDirection: {xs: "column", sm: "row", md: "row", lg: "row", xl: "row"},
           justifyContent: "space-between",
           alignItems: "center",
           width: "80%",
