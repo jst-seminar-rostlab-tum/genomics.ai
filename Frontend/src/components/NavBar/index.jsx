@@ -6,14 +6,13 @@ import logo from 'assets/logo.svg';
 import { colors } from "shared/theme/colors";
 
 const Appbar = styled(Box)(({
-  width: "100vw",
+  width: "61.8vw",
   display: "flex",
   flexDirection: "row",
   justifyContent: "space-between",
   backgroundColor: colors.primary[800],
-  padding: "0.5em" ,
-  paddingLeft: "15%",
-  paddingRight: "15%"
+  padding: "0.8em" ,
+  margin: "auto"
 })) 
 
 const Leftbar = styled(Box)(({

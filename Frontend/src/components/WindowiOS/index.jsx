@@ -11,16 +11,15 @@ const WindowiOS = () => {
     <Box
       sx={{
         position: "relative",
-        width: "100%",
-        height: "100%",
+        width: { xs: "100%", md: "70%"},
         margin: "auto",
         backgroundColor: "rgba(20, 20, 20, 0.6)",
         color: "white",
         p: "0.7em",
         borderRadius: "20px",
         boxShadow: "0px 0px 10px rgba(255,255,255, 0.15)",
-        marginTop: "4em",
-        marginBottom: "4em"
+        marginTop: "3%",
+        marginBottom: "2em"
       }}
     >
       <Box
@@ -37,7 +36,7 @@ const WindowiOS = () => {
         <Circle sx={{ width: "15px", color: colors.success.main }}/>
       </Box>
       <Typography textAlign="center">genomics.ai</Typography>
-      <Box sx={{ p: "1em 4em 1em 4em", marginTop: "2em" }}>
+      <Box sx={{ p: "1em 4em 1em 4em", marginTop: "4em" }}>
         <Typography fontSize="3.3rem" fontWeight="bold">
           AI-Driven Cell Type Annotation
         </Typography>
@@ -65,7 +64,7 @@ const WindowiOS = () => {
           alignItems: "center",
           width: "80%",
           margin: "auto",
-          p: "1em"
+          p: "1em 1em 2em 1em"
         }}
       >
         <Box>
