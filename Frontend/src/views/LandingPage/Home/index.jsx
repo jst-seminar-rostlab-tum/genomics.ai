@@ -1,4 +1,8 @@
 import { Box, Typography, Button, Stack, TextField, TextareaAutosize } from "@mui/material";
+import UploadIcon from '@mui/icons-material/Upload';
+import AutorenewIcon from '@mui/icons-material/Autorenew';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import Navbar from "components/Navbar";
 import WindowiOS from "components/WindowiOS";
 import Footer from "components/Footer";
@@ -8,30 +12,6 @@ import graphic1 from 'assets/landing-illustrations/science.png';
 import graphic2 from 'assets/landing-illustrations/upload.png';
 import graphic3 from 'assets/landing-illustrations/processing.png';
 import graphic4 from 'assets/landing-illustrations/results.png';
-import { CircleOutlined, CloudUpload } from "@mui/icons-material";
-import processingIcon from "assets/processingIcon.svg";
-import checkResultsIcon from "assets/checkResultsIcon.svg";
-import verifiedIcon from "assets/verifiedIcon.svg";
-
-const Walkthrough = () => {
-  return (
-    <Stack direction="column" sx={{ 
-        height: "100%", 
-        color: colors.neutral[400] 
-      }} 
-      justifyContent="space-between" alignItems="center">
-      <CircleOutlined />
-      <Box sx={{ width: "2px", height: "5%", backgroundColor: colors.neutral[600]}}/>
-      <CloudUpload />
-      <Box sx={{ width: "2px", height: "30%", backgroundColor: colors.neutral[600]}}/>
-      <img src={processingIcon} alt="Processing Icon" />
-      <Box sx={{ width: "2px", height: "25%", backgroundColor: colors.neutral[600]}}/>
-      <img src={checkResultsIcon} alt="Check Results Icon" />
-      <Box sx={{ width: "2px", height: "10%", backgroundColor: colors.neutral[600]}}/>
-      <img src={verifiedIcon} alt="Verified Icon" />
-    </Stack>
-  ) 
-}
 
 const Home = ({ setUser }) => {
   const [isLoginFormVisible, setLoginFormVisible] = useState(false);
@@ -42,6 +22,26 @@ const Home = ({ setUser }) => {
   const boxRef = useRef()
 
   const eclipseRef = useRef()
+
+  const howItWorksBoxRef = useRef()
+  const [processLineInfo, setProcessLineInfo] = useState({left: 0, top: 0, length: 0})
+
+  useEffect(()=>{
+    const iconSize = 16
+
+    const updateBox = howItWorksBoxRef.current.children[1] 
+    const startIcon = updateBox.children[0] 
+    const startLeft = updateBox.offsetLeft + startIcon.offsetLeft + iconSize / 2
+    const startTop = updateBox.offsetTop + startIcon.offsetTop + iconSize / 2
+
+    const checkReusltBox = howItWorksBoxRef.current.children[3] 
+    const endIcon = checkReusltBox.children[0] 
+    const endTop = checkReusltBox.offsetTop + endIcon.offsetTop - iconSize / 2
+
+    const newProcessLineInfo = {left: startLeft, top: startTop, length: endTop - startTop}
+
+    if(processLineInfo.left!=newProcessLineInfo.left && processLineInfo.top!=newProcessLineInfo.top && processLineInfo.length!=newProcessLineInfo.length) setProcessLineInfo(newProcessLineInfo)
+  })
 
   const onLoginClicked = useCallback(() => {
     setRegistrationFormVisible(false)
@@ -116,47 +116,65 @@ const Home = ({ setUser }) => {
           </Box>
         </Box>
         {/* HOW IT WORKS */}
-        <Box sx={{ 
-          position: "relative",
+        <Box ref={howItWorksBoxRef} sx={{ 
           width: "100%", 
           marginTop: "5em", 
           backgroundColor: colors.primary[800],
           p: "1em 1em 5em 1em",
           color: "white",
           borderRadius: "20px",
-          boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)"
+          boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
+          position: "relative"
           }}>
-          <Box sx={{ position: "absolute", height: "85%", top: "10%", left: "10%" }}>
-            <Walkthrough />
-          </Box>
-          <Typography width="100%" sx={{ textAlign: "center" }} fontSize="2em" fontWeight="bold">How it works</Typography>
-          <Box sx={{ gap: "1em", p: "1em", display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", width: "70%", margin: "auto" }}>
-            <Box sx={{ width: "50%" }}>
+          <Typography sx={{ textAlign: "center" }} fontSize="2em" fontWeight="bold">How it works</Typography>
+
+          {/* UPLOAD */}
+          <Box sx={{ position: "relative", gap: "1em", p: "1em", display: "flex", flexDirection: {xs: "column", sm: "row", md: "row", lg: "row", xl: "row"}, justifyContent: "space-between", alignItems: "center", width: "90%", margin: "auto", padding: "10% 10% 5% 10%" }}>
+            <Box sx={{zIndex: "1", width: "16px", height: "16px", position: "absolute", top: "5%", left: "0%", borderRadius: "10px", border: "2px solid white", bgcolor: colors.primary[800]}}></Box>
+            <Box sx={{zIndex: "1", width: "30px", height: "30px", position: "absolute", top: "50%", left: "0%", transform: "translate(-7px, -15px)", bgcolor: colors.primary[800]}}>
+              <UploadIcon sx={{width: "20px", height: "20px", position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)"}}/>
+            </Box>
+            <Box sx={{ width: {xs: "100%", sm: "50%", md: "50%", lg: "50%", xl: "50%"} }}>
               <Typography fontSize="1.2em" fontWeight="bold">Upload</Typography>
               <Typography color={colors.neutral[500]}>Upload your files containing the single-cell sequencing data.</Typography>
             </Box>
-            <Box sx={{ width: "50%", backgroundColor: "white", borderRadius: "20px" }}>
+            <Box sx={{ width: {xs: "100%", sm: "50%", md: "50%", lg: "50%", xl: "50%"}, backgroundColor: "white", borderRadius: "20px" }}>
               <img style={{ width: "100%" }} src={graphic2} alt="Upload" />
             </Box>
           </Box>  
-          <Box sx={{ gap: "1em", p: "1em", display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", width: "70%", margin: "auto" }}>
-            <Box sx={{ width: "50%" }}>
+
+          {/* PROCESSING */}
+          <Box sx={{ position: "relative", gap: "1em", p: "1em", display: "flex", flexDirection: {xs: "column", sm: "row", md: "row", lg: "row", xl: "row"}, justifyContent: "space-between", alignItems: "center", width: "90%", margin: "auto", padding: "5% 10%" }}>
+            <Box sx={{zIndex: "1", width: "30px", height: "30px", position: "absolute", top: "50%", left: "0%", transform: "translate(-7px, -15px)", bgcolor: colors.primary[800]}}>
+              <AutorenewIcon sx={{width: "20px", height: "20px", position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)"}}/>
+            </Box>
+            <Box sx={{ width: {xs: "100%", sm: "50%", md: "50%", lg: "50%", xl: "50%"} }}>
               <Typography fontSize="1.2em" fontWeight="bold">Processing</Typography>
               <Typography color={colors.neutral[500]}>Your input data is processed by our machine learning model which performs the cell-type classification according to your specification.</Typography>
             </Box>
-            <Box sx={{ width: "50%", backgroundColor: "white", borderRadius: "20px" }}>
+            <Box sx={{ width: {xs: "100%", sm: "50%", md: "50%", lg: "50%", xl: "50%"}, backgroundColor: "white", borderRadius: "20px" }}>
               <img style={{ width: "100%" }} src={graphic3} alt="Processing" />
             </Box>
           </Box>
-          <Box sx={{ gap: "1em", p: "1em", display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", width: "70%", margin: "auto" }}>
-            <Box sx={{ width: "50%" }}>
+
+          {/* CHECK RESULT */}
+          <Box sx={{ position: "relative", gap: "1em", p: "1em", display: "flex", flexDirection: {xs: "column", sm: "row", md: "row", lg: "row", xl: "row"}, justifyContent: "space-between", alignItems: "center", width: "90%", margin: "auto", padding: "5% 10% 10% 10%" }}>
+            <Box sx={{zIndex: "1", width: "16px", height: "16px", position: "absolute", top: "95%", left: "0%", transform: "translate(-0%, -100%)", bgcolor: colors.primary[800]}}>
+              <CheckCircleOutlineIcon sx={{width: "16px", height: "16px", color: colors.secondary1[400]}} />
+            </Box>
+            <Box sx={{zIndex: "1", width: "30px", height: "30px", position: "absolute", top: "50%", left: "0%", transform: "translate(-7px, -15px)", bgcolor: colors.primary[800]}}>
+              <AssignmentIcon sx={{width: "20px", height: "20px", position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)"}}/>
+            </Box>
+            <Box sx={{ width: {xs: "100%", sm: "50%", md: "50%", lg: "50%", xl: "50%"} }}>
               <Typography fontSize="1.2em" fontWeight="bold">Check Results</Typography>
               <Typography color={colors.neutral[500]}>Your input data is processed by our machine learning model which performs the cell-type classification according to your specification.After the algorithm has processed the data you can specify the project you want your cell-type data to be associated with and view the results.</Typography>
             </Box>
-            <Box sx={{ width: "50%", backgroundColor: "white", borderRadius: "20px" }}>
+            <Box sx={{ width: {xs: "100%", sm: "50%", md: "50%", lg: "50%", xl: "50%"}, backgroundColor: "white", borderRadius: "20px" }}>
               <img style={{ width: "100%" }} src={graphic4} alt="Check Results" />
             </Box>
           </Box>
+
+          <Box sx={{position: "absolute", top: `${processLineInfo.top}px`, left: `${processLineInfo.left-1}px`, width: "5px", width: "2px", height: `${processLineInfo.length}px`, bgcolor: colors.neutral[700]}} />
         </Box>
         {/* CONTACT US */}
         <Box marginTop="4em">
