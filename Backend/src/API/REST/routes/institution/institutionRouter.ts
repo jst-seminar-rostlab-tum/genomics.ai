@@ -1,8 +1,6 @@
 import express, {Router} from "express";
 
 import {Schema} from "mongoose";
-import { institutionModel} from "../../../../database/models/institution";
-import { userModel } from "../../../../database/models/user";
 
 import InstitutionService from "../../../../database/services/institution.service";
 import {AddInstitutionDTO} from "../../../../database/dtos/institution.dto";
