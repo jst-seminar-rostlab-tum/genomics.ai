@@ -143,8 +143,8 @@ export default function Navbar({ onLoginClicked, onSignUpClicked }) {
         <LinkBox to="/explore"><Navlink>Explore</Navlink></LinkBox>
       </Leftbar>
       <Rightbar>
-        <Login>Log In</Login>
-        <Signup>Sign Up</Signup>
+        <Login onClick={onLoginClicked}>Log In</Login>
+        <Signup onClick={onSignUpClicked}>Sign Up</Signup>
       </Rightbar>
     </Appbar>
   )
