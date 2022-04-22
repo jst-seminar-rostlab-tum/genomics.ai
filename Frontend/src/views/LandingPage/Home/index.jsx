@@ -1,6 +1,7 @@
 import { Box, Typography, Button } from "@mui/material";
 import Navbar from "components/Navbar";
 import WindowiOS from "components/WindowiOS";
+import Footer from "components/Footer";
 import { useCallback, useState, useEffect, useRef } from "react";
 import { colors } from "shared/theme/colors";
 import graphic1 from 'assets/landing-illustrations/science.png';
@@ -132,7 +133,7 @@ const Home = ({ setUser }) => {
       </Box>
 
       {/* FOOTER */}
-      
+      <Footer />
     </Box>
   )
 }

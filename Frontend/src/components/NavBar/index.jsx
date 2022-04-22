@@ -6,7 +6,9 @@ import logo from 'assets/logo.svg';
 import { colors } from "shared/theme/colors";
 
 const Appbar = styled(Box)(({
-  width: "61.8vw",
+  position: "sticky",
+  top: "10px",
+  width: "61.8%",
   display: "flex",
   flexDirection: "row",
   justifyContent: "space-between",
