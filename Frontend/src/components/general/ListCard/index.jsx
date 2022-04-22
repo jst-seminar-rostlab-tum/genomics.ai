@@ -4,8 +4,8 @@ import Avatar from '@mui/material/Avatar';
 import styles from './listCard.module.css';
 import stringColor from 'shared/utils/stringColor';
 
-function InstitutionCard({
-  imageComponent, imageURL, title, description, nextToTitle, trailing,
+function ListCard({
+  imageComponent, imageURL, title, description, nextToTitle, trailing, onClick,
 }) {
   let imageComponentUsed = imageComponent;
   if (imageURL) {
@@ -24,7 +24,7 @@ function InstitutionCard({
   }
   return (
     <Card sx={{ border: '1px solid #c8c8c8', boxShadow: '0 0 4px rgba(111, 111, 111, 0.25)' }} elevation={0}>
-      <div className={styles.cardContent}>
+      <div className={styles.cardContent} onClick={onClick} onKeyPress={onClick} role="button" tabIndex={0}>
         <div className={styles.start}>
           <div className={styles.cardImageWrapper}>
             {imageComponentUsed}
@@ -51,4 +51,4 @@ function InstitutionCard({
   );
 }
 
-export default InstitutionCard;
+export default ListCard;
