@@ -8,6 +8,30 @@ import graphic1 from 'assets/landing-illustrations/science.png';
 import graphic2 from 'assets/landing-illustrations/upload.png';
 import graphic3 from 'assets/landing-illustrations/processing.png';
 import graphic4 from 'assets/landing-illustrations/results.png';
+import { CircleOutlined, CloudUpload } from "@mui/icons-material";
+import processingIcon from "assets/processingIcon.svg";
+import checkResultsIcon from "assets/checkResultsIcon.svg";
+import verifiedIcon from "assets/verifiedIcon.svg";
+
+const Walkthrough = () => {
+  return (
+    <Stack direction="column" sx={{ 
+        height: "100%", 
+        color: colors.neutral[400] 
+      }} 
+      justifyContent="space-between" alignItems="center">
+      <CircleOutlined />
+      <Box sx={{ width: "2px", height: "5%", backgroundColor: colors.neutral[600]}}/>
+      <CloudUpload />
+      <Box sx={{ width: "2px", height: "30%", backgroundColor: colors.neutral[600]}}/>
+      <img src={processingIcon} alt="Processing Icon" />
+      <Box sx={{ width: "2px", height: "25%", backgroundColor: colors.neutral[600]}}/>
+      <img src={checkResultsIcon} alt="Check Results Icon" />
+      <Box sx={{ width: "2px", height: "10%", backgroundColor: colors.neutral[600]}}/>
+      <img src={verifiedIcon} alt="Verified Icon" />
+    </Stack>
+  ) 
+}
 
 const Home = ({ setUser }) => {
   const [isLoginFormVisible, setLoginFormVisible] = useState(false);
@@ -93,14 +117,18 @@ const Home = ({ setUser }) => {
         </Box>
         {/* HOW IT WORKS */}
         <Box sx={{ 
+          position: "relative",
           width: "100%", 
           marginTop: "5em", 
           backgroundColor: colors.primary[800],
-          p: "1em",
+          p: "1em 1em 5em 1em",
           color: "white",
           borderRadius: "20px",
           boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)"
           }}>
+          <Box sx={{ position: "absolute", height: "85%", top: "10%", left: "10%" }}>
+            <Walkthrough />
+          </Box>
           <Typography width="100%" sx={{ textAlign: "center" }} fontSize="2em" fontWeight="bold">How it works</Typography>
           <Box sx={{ gap: "1em", p: "1em", display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", width: "70%", margin: "auto" }}>
             <Box sx={{ width: "50%" }}>
