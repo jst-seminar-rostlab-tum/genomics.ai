@@ -27,8 +27,8 @@ config = {
     'use_layer_norm': 'both',
     'use_batch_norm': 'none',
     'unlabeled_key': 'Unknown',
-    'scanvi_max_epochs': 2,
-    'scvi_max_epochs': 2,
+    'scanvi_max_epochs': 20,
+    'scvi_max_epochs': 400,
     'n_neighbors': 8,
     'max_epochs': 100,
     'unwanted_labels': ['leiden']
