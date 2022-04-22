@@ -3,7 +3,7 @@ import {
   useParams,
 } from 'react-router-dom';
 import HeaderView from 'components/general/HeaderView';
-import JobList from 'components/teams/detail/JobList';
+import JobList from 'components/teams/detail/TeamJobList';
 import { getTeam } from 'shared/services/mock/teams';
 import getUser from 'shared/services/mock/user';
 import { getInstitution, queryIsAdminInstitutions } from 'shared/services/mock/institutions';

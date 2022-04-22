@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Button from '@mui/material/Button';
 import ListCard from 'components/general/ListCard';
-import InstitutionLeaveButton from 'components/institutionOverview/InstitutionLeaveButton';
+import InstitutionLeaveButton from 'components/institutions/InstitutionLeaveButton';
 import styles from './institutionCard.module.css';
 
 import getUser from 'shared/services/mock/user';
