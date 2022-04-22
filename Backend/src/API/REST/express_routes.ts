@@ -18,11 +18,11 @@ import password_reset_route from "./routes/password_reset";
  
 import resend_verification_link from "./routes/resend_verification_link";
 import upload_complete_upload_route from "./routes/file_upload/complete_upload";
-import upload_get_url_route from "./routes/file_upload/get_upload_url";
 import upload_start_upload_route from "./routes/file_upload/start_upload";
 import upload_get_upload_url_route from "./routes/file_upload/get_upload_url";
 import download_results_route from "./routes/file_download/results";
-import {test_institution, create_institution} from "./routes/institution/institutionRouter";
+
+import {test_institution, create_institution, invite_to_institution} from "./routes/institution/institutionRouter";
 import {create_project, invite_person_to_a_project} from "./routes/project/projectRouter";
 
 // setup the websocket-server on top of the http_server
@@ -62,6 +62,7 @@ export function express_routes(this: REST_Host): Router {
 
     // institution routes
     this.expressApp.use(create_institution());
+    this.expressApp.use(invite_to_institution());
     this.expressApp.use(test_institution());
 
     // project routes
