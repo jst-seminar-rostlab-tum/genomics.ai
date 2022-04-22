@@ -74,7 +74,7 @@ const Home = ({ setUser }) => {
       {/* STARTING PAGE */}
       <Box ref={boxRef} sx={{width: window.width, bgcolor: colors.primary[800], position: "relative", paddingBottom: "4em"}}>
         {/* NAVBAR HERE */}
-        <Navbar />
+        <Navbar onLoginClicked={onLoginClicked} onSignUpClicked={onSignUpClicked}/>
         {/* IOS WINDOW */}
         <WindowiOS />
       </Box>
