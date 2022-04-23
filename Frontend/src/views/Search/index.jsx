@@ -31,25 +31,25 @@ const Search = ({ sidebarShown }) => {
     setIsLoading(true);
   };
 
-  const submitSearch = () => {
-    console.log(searchedKeyword);
-  };
-
-  const fetchSearchHandler = useCallback(async (type) => {
-    const searchResponse = await querySearch(type);
+  const fetchSearchHandler = useCallback(async (type, keyword) => {
+    const searchResponse = await querySearch(type, keyword);
     setSearchedData(searchResponse);
     setIsLoading(false);
   }, []);
 
   useEffect(() => {
-    fetchSearchHandler(selectedTab);
+    fetchSearchHandler(selectedTab, "");
   }, [fetchSearchHandler, selectedTab]);
+
+  const submitSearch = () => {
+    fetchSearchHandler(selectedTab, searchedKeyword);
+  };
 
   const listItemWrapper = {
     teams: TeamCard,
     institutions: InstitutionCard,
     users: UserCard,
-    projects: ProjectCard
+    projects: ProjectCard,
   };
 
   return (

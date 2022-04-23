@@ -193,17 +193,25 @@ const DUMMY_PROJECTS = [
   },
 ];
 
-async function querySearch(type) {
+async function querySearch(type, keyword) {
+  let requestedData = [];
   switch (type) {
     case "teams":
-      return DUMMY_TEAMS;
+      requestedData = DUMMY_TEAMS;
+      break;
     case "institutions":
-      return DUMMY_INSTITUTIONS;
+      requestedData = DUMMY_INSTITUTIONS;
+      break;
     case "users":
-      return DUMMY_USERS;
+      requestedData = DUMMY_USERS;
+      break;
     case "projects":
-      return DUMMY_PROJECTS;
+      requestedData = DUMMY_PROJECTS;
+      break;
   }
+  return requestedData.filter((item) =>
+    item.name.toLowerCase().includes(keyword)
+  );
 }
 
 export default querySearch;
