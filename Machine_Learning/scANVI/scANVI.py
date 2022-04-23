@@ -191,7 +191,7 @@ def compare_adata(model, source_adata, target_adata, latent):
     utils.write_latent_csv(latent, filename='/tmp/compare.csv')
 
 
-def main():
+def compute_scANVI():
     args = parse_args()
     logger = logging.getLogger(__name__)
     logger.setLevel(logging.DEBUG if args.debug else logging.INFO)
