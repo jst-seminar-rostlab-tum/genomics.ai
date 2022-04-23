@@ -35,11 +35,11 @@ const WindowiOS = () => {
         <Circle sx={{ width: "15px", color: colors.success.main }}/>
       </Box>
       <Typography textAlign="center">genomics.ai</Typography>
-      <Box sx={{ p: "1em 4em 1em 4em", marginTop: "4em" }}>
-        <Typography fontSize="3.3rem" fontWeight="bold">
+      <Box sx={{ p: {xs: "1em 1em", sm: "1em 4em", md: "1em 4em", lg: "1em 4em", xl: "1em 4em"}, marginTop: "4em" }}>
+        <Typography fontSize={{xs: "1.7rem", sm: "2.3rem", md: "2.1rem", lg: "3.1rem", xl: "3.1rem"}} fontWeight="bold">
           AI-Driven Cell Type Annotation
         </Typography>
-        <Typography fontSize="2.2rem" fontWeight="semibold">
+        <Typography fontSize={{xs: "1.4rem", sm: "1.6rem", md: "1.4rem", lg: "2rem", xl: "2rem"}} fontWeight="semibold">
           No Code. Just Results.
         </Typography>
         <Typography fontSize="1.2rem" fontWeight="light" color="#8193B2">
