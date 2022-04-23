@@ -1,3 +1,4 @@
+# for scarches
 scanpy~=1.9.1
 scArches~=0.5.2
 scvi-tools==0.16.0
@@ -6,3 +7,8 @@ gdown~=4.4.0
 torch~=1.11.0
 jaxlib==0.3.5
 leidenalg==0.8.9
+
+# for the api
+Flask==2.1.1
+uWSGI==2.0.20
+gunicorn==20.1.0
