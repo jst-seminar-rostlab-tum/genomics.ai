@@ -5,29 +5,24 @@ import {
 import HeaderView from 'components/general/HeaderView';
 import TeamJobList from 'components/teams/detail/TeamJobList';
 import TeamMemberList from 'components/teams/detail/TeamMemberList';
-import TeamLeaveButton from 'components/teams/overview/TeamLeaveButton';
+import TeamAdminHeaderRight from 'components/teams/detail/TeamAdminHeaderRight';
+import TeamUserHeaderRight from 'components/teams/detail/TeamUserHeaderRight';
+import TeamHeaderOptions from 'components/teams/detail/TeamHeaderOptions';
 import { getTeam } from 'shared/services/mock/teams';
 import getUser from 'shared/services/mock/user';
 import { getInstitution, queryIsAdminInstitutions } from 'shared/services/mock/institutions';
-import {
-  Chip, Stack, TextField, MenuItem, Button,
-} from '@mui/material';
+import TextField from '@mui/material/TextField';
 
 export default function TeamPage({ sidebarShown }) {
   const { id } = useParams();
   const [team, setTeam] = useState({});
   const [user, setUser] = useState({});
   const [institution, setInstitution] = useState({});
-  const [isMember, setIsMember] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [adminInstitutions, setAdminInstitutions] = useState([]);
 
-  function updateIsMember() {
-    setIsMember((team.memberIds || []).indexOf(user.id) > -1);
-  }
-
   function updateIsAdmin() {
-    setIsAdmin((team.adminIds || []).indexOf(user.id) > -1);
+    setIsAdmin((team.adminIds || []).includes(user.id));
   }
 
   const handleDescriptionChange = (event) => {
@@ -37,20 +32,16 @@ export default function TeamPage({ sidebarShown }) {
     });
   };
 
-  const onLeft = () => {
-    setIsMember(false);
-  };
-
   useEffect(() => {
     getUser()
-      .then((newUser) => { setUser(newUser); updateIsAdmin(); updateIsMember(); });
-  }, [setUser, isAdmin, isMember]);
+      .then((newUser) => { setUser(newUser); updateIsAdmin(); });
+  }, [setUser, isAdmin]);
 
   useEffect(() => {
     getTeam(id)
-      .then((newTeam) => { setTeam(newTeam); updateIsAdmin(); updateIsMember(); })
+      .then((newTeam) => { setTeam(newTeam); updateIsAdmin(); })
       .catch((ignored) => { console.error(ignored); });
-  }, [setTeam, isAdmin, isMember]);
+  }, [setTeam, isAdmin]);
 
   // Institution may be undefined
   useEffect(() => {
@@ -68,18 +59,17 @@ export default function TeamPage({ sidebarShown }) {
       sidebarShown={sidebarShown}
       title={team.name}
       rightOfTitle={(
-        <HeaderOptions
+        <TeamHeaderOptions
           team={team}
           isAdmin={isAdmin}
           institution={institution}
-          isMember={isMember}
           availableInstitutions={adminInstitutions}
           setInstitution={setInstitution}
         />
       )}
       replaceHeaderRight={
-        (isAdmin && <AdminTeamHeaderRight team={team} setTeam={setTeam} />)
-        || <UserTeamHeaderRight isMember={isMember} team={team} onLeft={onLeft} />
+        (isAdmin && <TeamAdminHeaderRight team={team} setTeam={setTeam} />)
+        || <TeamUserHeaderRight team={team} user={user} />
       }
     >
       <br />
@@ -116,82 +106,5 @@ export default function TeamPage({ sidebarShown }) {
         <TeamMemberList team={team} />
       </section>
     </HeaderView>
-  );
-}
-
-function HeaderOptions({
-  team, isAdmin, institution, availableInstitutions, setInstitution,
-}) {
-  const handleInstitutionChange = (event) => {
-    setInstitution(event.target.value);
-  };
-
-  return (
-    <Stack
-      direction="row"
-      alignItems="flex-end"
-      spacing={2}
-      sx={{ paddingLeft: '20px' }}
-    >
-      {(!isAdmin && institution) && <h4>{institution.name}</h4>}
-      {!isAdmin && <Chip label={team.visibility} color="primary" />}
-
-      {isAdmin
-        && (
-          <TextField
-            id="select-institution"
-            select
-            label="Institution"
-            value={institution}
-            onChange={handleInstitutionChange}
-            variant="standard"
-          >
-            {availableInstitutions.map((institutionOption) => (
-              <MenuItem
-                key={institutionOption.id}
-                value={institutionOption}
-              >
-                {institutionOption.name}
-              </MenuItem>
-            ))}
-          </TextField>
-        )}
-
-    </Stack>
-  );
-}
-
-function AdminTeamHeaderRight({ team, setTeam }) {
-  const updateVisibility = (event) => {
-    setTeam({
-      ...team,
-      visibility: event.target.value,
-    });
-  };
-
-  return (
-    <TextField
-      id="select-visibility"
-      select
-      label="Visibility"
-      value={team.visibility}
-      onChange={updateVisibility}
-      variant="standard"
-    >
-      <MenuItem value="public">public</MenuItem>
-      <MenuItem value="private">private</MenuItem>
-      <MenuItem value="by institution">by institution</MenuItem>
-    </TextField>
-  );
-}
-
-function UserTeamHeaderRight({ isMember, team, onLeft }) {
-  if (isMember) {
-    return (
-      <TeamLeaveButton team={team} onLeft={onLeft} />
-    );
-  }
-  return (
-    <Button onClick={() => true}>Join</Button>
   );
 }
