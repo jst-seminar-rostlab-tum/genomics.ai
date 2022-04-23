@@ -11,7 +11,7 @@ import React, { useCallback } from 'react';
  * @param sidebarShown set true if sidebar is open, false otherwise
  */
 function GeneMapperResultView({ sidebarShown }) {
-  const paddingL = useCallback(() => (sidebarShown ? '100px' : '350px'), [sidebarShown]);
+  const paddingL = useCallback(() => (sidebarShown ? '350px' : '100px'), [sidebarShown]);
 
   return (
     <Box sx={{ pl: paddingL, pr: '20px' }}>
