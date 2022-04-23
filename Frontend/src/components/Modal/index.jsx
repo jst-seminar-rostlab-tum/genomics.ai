@@ -3,6 +3,13 @@ import { Box } from "@mui/system"
 import ReactDOM from "react-dom"
 import { colors } from "shared/theme/colors"
 
+/**
+ * Modal
+ * @param message the Modal bold title message 
+ * @param isOpen boolean state passed as prop, if false returns null
+ * @param onClose function for Close button onClick event
+ * @param children react children component
+ */
 const Modal = ({ 
   message, isOpen, onClose, children
 }) => {
