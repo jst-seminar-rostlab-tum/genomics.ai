@@ -5,14 +5,13 @@ import {
 import HeaderView from 'components/general/HeaderView';
 import TeamJobList from 'components/teams/detail/TeamJobList';
 import TeamMemberList from 'components/teams/detail/TeamMemberList';
+import TeamLeaveButton from 'components/teams/overview/TeamLeaveButton';
 import { getTeam } from 'shared/services/mock/teams';
 import getUser from 'shared/services/mock/user';
 import { getInstitution, queryIsAdminInstitutions } from 'shared/services/mock/institutions';
-import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
-import Button from '@mui/material/Button';
+import {
+  Chip, Stack, TextField, MenuItem, Button,
+} from '@mui/material';
 
 export default function TeamPage({ sidebarShown }) {
   const { id } = useParams();
@@ -36,6 +35,10 @@ export default function TeamPage({ sidebarShown }) {
       ...team,
       description: event.target.value,
     });
+  };
+
+  const onLeft = () => {
+    setIsMember(false);
   };
 
   useEffect(() => {
@@ -76,7 +79,7 @@ export default function TeamPage({ sidebarShown }) {
       )}
       replaceHeaderRight={
         (isAdmin && <AdminTeamHeaderRight team={team} setTeam={setTeam} />)
-        || <UserTeamHeaderRight />
+        || <UserTeamHeaderRight isMember={isMember} team={team} onLeft={onLeft} />
       }
     >
       <br />
@@ -182,7 +185,12 @@ function AdminTeamHeaderRight({ team, setTeam }) {
   );
 }
 
-function UserTeamHeaderRight() {
+function UserTeamHeaderRight({ isMember, team, onLeft }) {
+  if (isMember) {
+    return (
+      <TeamLeaveButton team={team} onLeft={onLeft} />
+    );
+  }
   return (
     <Button onClick={() => true}>Join</Button>
   );
