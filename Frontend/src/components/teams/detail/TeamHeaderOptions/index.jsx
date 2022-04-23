@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {
-  Chip, Stack, TextField, MenuItem, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle
+  Chip, Stack, TextField, MenuItem, Button, Dialog, DialogActions, DialogContent,
+  DialogContentText, DialogTitle,
 } from '@mui/material';
 
 function TeamHeaderOptions({
