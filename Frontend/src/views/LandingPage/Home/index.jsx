@@ -31,12 +31,15 @@ const Home = ({ setUser }) => {
     setRegistrationFormVisible(false);
   }, [setRegistrationFormVisible]);
 
+  const contactUsBoxRef = useRef()
+  const executeScroll = ()=>contactUsBoxRef.current.scrollIntoView()
+
   return (
     <Box style={{ overflow: "hidden" }} sx={{ position: "relative" }}>
       {/* STARTING PAGE */}
       <Box sx={{width: window.width, bgcolor: colors.primary[800], position: "relative", paddingBottom: "4em"}}>
         {/* NAVBAR HERE */}
-        <Navbar onLoginClicked={onLoginClicked} onSignUpClicked={onSignUpClicked}/>
+        <Navbar onLoginClicked={onLoginClicked} onSignUpClicked={onSignUpClicked} executeScroll={executeScroll} />
         {/* IOS WINDOW */}
         <WindowiOS />
       </Box>
@@ -59,7 +62,7 @@ const Home = ({ setUser }) => {
           position: "relative",
           width: "100vw",
           padding: {xs: "0% 5%", sm: "0% 5%", md: "0% 15%", lg: "0% 15%", xl: "0% 15%"},
-          top: "-2.5vw"
+          top: "-2.5vw" 
         }}
       >
         
@@ -141,7 +144,7 @@ const Home = ({ setUser }) => {
           </Box>
         </Box>
         {/* CONTACT US */}
-        <Box sx={{position: "relative", margin: "4em auto", position: "relative", width: "100%"}} >
+        <Box ref={contactUsBoxRef} sx={{position: "relative", margin: "4em auto", position: "relative", width: "100%"}} >
           <Typography sx={{ textAlign: "center" }} fontSize="2em" fontWeight="bold">Contact Us</Typography>
           <Typography marginTop="1em" sx={{ textAlign: "center" }} fontSize="1em">Please message us in case you have any questions, feedback or collaboration-related inquiries concerning Genomics.ai.</Typography>
           <Box sx={{

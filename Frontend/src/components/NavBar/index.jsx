@@ -138,7 +138,7 @@ function LinkBox(props){
   )
 }
 
-function DrawerBar({ open, setOpen }){
+function DrawerBar({ open, setOpen, executeScroll }){
   return (
       <Box 
         sx={{
@@ -183,7 +183,7 @@ function DrawerBar({ open, setOpen }){
           >
             <LinkBox to="/about"><Navlink>About us</Navlink></LinkBox>
             <LinkBox to="/docs"><Navlink>Docs </Navlink></LinkBox>
-            <LinkBox to="/contact"><Navlink>Contact us</Navlink></LinkBox>
+            <Box onClick={executeScroll} sx={{cursor: "pointer"}}><Navlink>Contact us</Navlink></Box>
             <LinkBox to="/explore"><Navlink>Explore</Navlink></LinkBox>
           </Box>
         </Box>
@@ -191,13 +191,13 @@ function DrawerBar({ open, setOpen }){
   )
 }
 
-export default function Navbar({ onLoginClicked, onSignUpClicked }) {
+export default function Navbar({ onLoginClicked, onSignUpClicked, executeScroll }) {
 
   const [drawerOpen, setDrawerOpen]=useState(false)
 
   return (
     <Appbar>
-      <DrawerBar open={drawerOpen} setOpen={setDrawerOpen}/>
+      <DrawerBar open={drawerOpen} setOpen={setDrawerOpen} executeScroll={executeScroll} />
       <Leftbar>
         <LinkBox to="/" sx={{ display: "flex", alignItems: "center", gap: "0.7em" }}>
           <IconButton
@@ -213,7 +213,7 @@ export default function Navbar({ onLoginClicked, onSignUpClicked }) {
         </LinkBox>
         <LinkBox to="/about"><NavlinkDark>About us</NavlinkDark></LinkBox>
         <LinkBox to="/docs"><NavlinkDark>Docs </NavlinkDark></LinkBox>
-        <LinkBox to="/contact"><NavlinkDark>Contact us</NavlinkDark></LinkBox>
+        <Box sx={{cursor: "pointer"}} onClick={executeScroll}><NavlinkDark>Contact us</NavlinkDark></Box>
         <LinkBox to="/explore"><NavlinkDark>Explore</NavlinkDark></LinkBox>
       </Leftbar>
       <Rightbar>

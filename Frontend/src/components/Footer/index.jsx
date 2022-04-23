@@ -71,7 +71,6 @@ export default function Footer() {
                 </LinkBox>
                 <LinkBox to="/about"><Navlink>About us</Navlink></LinkBox>
                 <LinkBox to="/docs"><Navlink>Docs </Navlink></LinkBox>
-                <LinkBox to="/contact"><Navlink>Contact us</Navlink></LinkBox>
                 <LinkBox to="/explore"><Navlink>Explore</Navlink></LinkBox>
             </Footbar>
 
