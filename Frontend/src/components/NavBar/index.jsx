@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"
 
 import logo from 'assets/logo.svg';
 import { colors } from "shared/theme/colors";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 //In styled(), we cannot use different width to fix different resolution
 //we have to use sx
@@ -191,7 +191,7 @@ function DrawerBar({ open, setOpen, executeScroll }){
   )
 }
 
-export default function Navbar({ onLoginClicked, onSignUpClicked, executeScroll }) {
+export default function Navbar({ onLoginClicked, onSignUpClicked, executeScroll, setNavbarHegiht }) {
 
   const [drawerOpen, setDrawerOpen]=useState(false)
 
@@ -202,31 +202,40 @@ export default function Navbar({ onLoginClicked, onSignUpClicked, executeScroll 
     executeScroll()
   }
 
+  const boxRef = useRef()
+
+  useEffect(()=>{
+    console.log(boxRef.current.clientHeight)
+    setNavbarHegiht(boxRef.current.clientHeight)
+  })
+
   return (
-    <Appbar>
-      <DrawerBar open={drawerOpen} setOpen={setDrawerOpen} executeScroll={handleClickContactUsInDrawer} />
-      <Leftbar>
-        <LinkBox to="/" sx={{ display: "flex", alignItems: "center", gap: "0.7em" }}>
-          <IconButton
-            disableRipple
-            sx={{
-              bgcolor: "white",
-              ":hover": { bgcolor: "primary.dark" }
-            }}
-            > 
-            <img width={28} alt="logo" src={logo} />
-          </IconButton>
-          <NavlinkDark>genomics.ai</NavlinkDark>
-        </LinkBox>
-        <LinkBox to="/about"><NavlinkDark>About us</NavlinkDark></LinkBox>
-        <LinkBox to="/docs"><NavlinkDark>Docs </NavlinkDark></LinkBox>
-        <Box sx={{cursor: "pointer"}} onClick={executeScroll}><NavlinkDark>Contact us</NavlinkDark></Box>
-        <LinkBox to="/explore"><NavlinkDark>Explore</NavlinkDark></LinkBox>
-      </Leftbar>
-      <Rightbar>
-        <Login>Log In</Login>
-        <Signup>Sign Up</Signup>
-      </Rightbar>
-    </Appbar>
+    <Box ref={boxRef} sx={{width: "100%", bgcolor: colors.primary[800], position: "fixed", zIndex: "3"}}>
+      <Appbar>
+        <DrawerBar open={drawerOpen} setOpen={setDrawerOpen} executeScroll={handleClickContactUsInDrawer} />
+        <Leftbar>
+          <LinkBox to="/" sx={{ display: "flex", alignItems: "center", gap: "0.7em" }}>
+            <IconButton
+              disableRipple
+              sx={{
+                bgcolor: "white",
+                ":hover": { bgcolor: "primary.dark" }
+              }}
+              > 
+              <img width={28} alt="logo" src={logo} />
+            </IconButton>
+            <NavlinkDark>genomics.ai</NavlinkDark>
+          </LinkBox>
+          <LinkBox to="/about"><NavlinkDark>About us</NavlinkDark></LinkBox>
+          <LinkBox to="/docs"><NavlinkDark>Docs </NavlinkDark></LinkBox>
+          <Box sx={{cursor: "pointer"}} onClick={executeScroll}><NavlinkDark>Contact us</NavlinkDark></Box>
+          <LinkBox to="/explore"><NavlinkDark>Explore</NavlinkDark></LinkBox>
+        </Leftbar>
+        <Rightbar>
+          <Login>Log In</Login>
+          <Signup>Sign Up</Signup>
+        </Rightbar>
+      </Appbar>
+    </Box>
   )
 }

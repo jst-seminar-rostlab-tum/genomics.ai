@@ -34,12 +34,16 @@ const Home = ({ setUser }) => {
   const contactUsBoxRef = useRef()
   const executeScroll = ()=>contactUsBoxRef.current.scrollIntoView()
 
+  const [navbarHeight, setNavbarHegiht] = useState(0)
+
   return (
     <Box style={{ overflow: "hidden" }} sx={{ position: "relative" }}>
       {/* STARTING PAGE */}
       <Box sx={{width: window.width, bgcolor: colors.primary[800], position: "relative", paddingBottom: "4em"}}>
         {/* NAVBAR HERE */}
-        <Navbar onLoginClicked={onLoginClicked} onSignUpClicked={onSignUpClicked} executeScroll={executeScroll} />
+        <Box sx={{height: navbarHeight, position: "relative"}}>
+          <Navbar setNavbarHegiht={setNavbarHegiht} onLoginClicked={onLoginClicked} onSignUpClicked={onSignUpClicked} executeScroll={executeScroll} />
+        </Box>
         {/* IOS WINDOW */}
         <WindowiOS />
       </Box>
