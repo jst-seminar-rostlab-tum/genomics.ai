@@ -49,9 +49,9 @@ const WindowiOS = () => {
         
         {/* DIVIDER */}
         <Box sx={{ marginTop: "3em", display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-          <Box sx={{ height: "1px", width: {xs: "30%", sm: "37%", md: "35%", lg: "40%", xl: "40%"}, backgroundColor: "rgba(255,255,255, 0.5)" }} />
-          <Typography >Our partners</Typography>
-          <Box sx={{ height: "1px", width: {xs: "30%", sm: "37%", md: "35%", lg: "40%", xl: "40%"}, backgroundColor: "rgba(255,255,255, 0.5)" }} />
+          <Box sx={{ height: "1px", width: {xs: "25%", sm: "37%", md: "35%", lg: "40%", xl: "40%"}, backgroundColor: "rgba(255,255,255, 0.5)" }} />
+          <Typography fontSize={{xs: "0.6em", sm: "1em", md: "1em", lg: "1em", xl: "1em"}} >Our partners</Typography>
+          <Box sx={{ height: "1px", width: {xs: "25%", sm: "37%", md: "35%", lg: "40%", xl: "40%"}, backgroundColor: "rgba(255,255,255, 0.5)" }} />
         </Box>
       </Box>
       {/* BUTTON PLACEHOLDER UNTIL WE HAVE A BUTTON DESIGN */}

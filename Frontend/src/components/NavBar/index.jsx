@@ -1,8 +1,10 @@
 import { Box, IconButton, Typography } from "@mui/material"
+import ListIcon from '@mui/icons-material/List';
 import { Link } from "react-router-dom"
 
 import logo from 'assets/logo.svg';
 import { colors } from "shared/theme/colors";
+import { useState } from "react";
 
 //In styled(), we cannot use different width to fix different resolution
 //we have to use sx
@@ -11,9 +13,9 @@ function Appbar(props){
     <Box {...props} sx={{
       width: {xs: "90%", sm: "90%", md: "61.8%", lg: "61.8%", xl: "61.8%"},
       display: "flex",
-      flexDirection: {xs: "column", sm: "row", md: "row", lg: "row", xl: "row"},
+      flexDirection: "row",
       justifyContent: "space-between",
-      alignItems: {xs: "flex-end", sm: "center", md: "center", lg: "center", xl: "center"},
+      alignItems: "center",
       backgroundColor: colors.primary[800],
       padding: "0.8em" ,
       margin: "auto",
@@ -26,7 +28,7 @@ function Leftbar(props){
   return (
     <Box {...props} sx={{
       width: {xs: "100%", sm: "486px", md: "389px", lg: "519px", xl: "664px"},
-      display: "flex",
+      display: {xs: "none", sm: "flex", md: "flex", lg: "flex", xl: "flex"},
       flexDirection: "row",
       flexWrap: "warp",
       justifyContent: "space-between",
@@ -50,13 +52,29 @@ function Rightbar(props){
   )
 }
 
-function Navlink(props){
+function NavlinkDark(props){
   return (
     <Box {...props}>
       <Typography {...props} sx={{
         fontWeight: "bold",
         fontSize: {xs: "0.6em", sm: "0.8em", md: "0.8em", lg: "1.2em", xl: "1.2em"},
         color: "white",
+        ":hover": {
+          color: colors.secondary1[200]
+        }
+      }}
+      ></Typography>
+    </Box>
+  )
+}
+
+function Navlink(props){
+  return (
+    <Box {...props}>
+      <Typography {...props} sx={{
+        fontWeight: "bold",
+        fontSize: {xs: "0.6em", sm: "0.8em", md: "0.8em", lg: "1.2em", xl: "1.2em"},
+        color: "black",
         ":hover": {
           color: colors.secondary1[200]
         }
@@ -120,9 +138,66 @@ function LinkBox(props){
   )
 }
 
+function DrawerBar({ open, setOpen }){
+  return (
+      <Box 
+        sx={{
+          zIndex: "1",
+          width: "40%", 
+          display: {xs: "flex", sm: "none", md: "none", lg: "none", xl: "none"},
+          flexDirection: "row",
+          flexWrap: "warp",
+          justifyContent: "left",
+          alignItems: "center",
+          gap: "7%"
+        }} 
+      >
+        <LinkBox to="/" sx={{ display: "flex", alignItems: "center", gap: "0.7em" }}>
+          <IconButton
+            disableRipple
+            sx={{
+              bgcolor: "white",
+              ":hover": { bgcolor: "primary.dark" }
+            }}
+            > 
+            <img width={28} alt="logo" src={logo} />
+          </IconButton>
+        </LinkBox>
+
+        <Box sx={{position: "relative", width: "24px", height: "24px", borderRadius: "5px", bgcolor: colors.primary[400]}}>
+          <ListIcon onClick={()=>setOpen(!open)} sx={{position: "absolute", top: "4px", left: "4px", width: "16px", height: "16px", color: "white"}} />
+
+          <Box 
+            sx={{
+              position: "absolute", 
+              top: "30px", 
+              width: "150px", 
+              display: open ? "flex" : "none", 
+              flexDirection: "column", 
+              padding: "5px", 
+              bgcolor: "white", 
+              borderRadius: "5px", 
+              gap: "5px", 
+              justifyContent: "space-evenly"
+            }}
+          >
+            <LinkBox to="/about"><Navlink>About us</Navlink></LinkBox>
+            <LinkBox to="/docs"><Navlink>Docs </Navlink></LinkBox>
+            <LinkBox to="/contact"><Navlink>Contact us</Navlink></LinkBox>
+            <LinkBox to="/explore"><Navlink>Explore</Navlink></LinkBox>
+          </Box>
+        </Box>
+      </Box>
+  )
+}
+
 export default function Navbar({ onLoginClicked, onSignUpClicked }) {
+
+  const [drawerOpen, setDrawerOpen]=useState(false)
+
   return (
     <Appbar>
+      <DrawerBar open={drawerOpen} setOpen={setDrawerOpen}/>
       <Leftbar>
         <LinkBox to="/" sx={{ display: "flex", alignItems: "center", gap: "0.7em" }}>
           <IconButton
@@ -134,12 +209,12 @@ export default function Navbar({ onLoginClicked, onSignUpClicked }) {
             > 
             <img width={28} alt="logo" src={logo} />
           </IconButton>
-          <Navlink>genomics.ai</Navlink>
+          <NavlinkDark>genomics.ai</NavlinkDark>
         </LinkBox>
-        <LinkBox to="/about"><Navlink>About us</Navlink></LinkBox>
-        <LinkBox to="/docs"><Navlink>Docs </Navlink></LinkBox>
-        <LinkBox to="/contact"><Navlink>Contact us</Navlink></LinkBox>
-        <LinkBox to="/explore"><Navlink>Explore</Navlink></LinkBox>
+        <LinkBox to="/about"><NavlinkDark>About us</NavlinkDark></LinkBox>
+        <LinkBox to="/docs"><NavlinkDark>Docs </NavlinkDark></LinkBox>
+        <LinkBox to="/contact"><NavlinkDark>Contact us</NavlinkDark></LinkBox>
+        <LinkBox to="/explore"><NavlinkDark>Explore</NavlinkDark></LinkBox>
       </Leftbar>
       <Rightbar>
         <Login>Log In</Login>
