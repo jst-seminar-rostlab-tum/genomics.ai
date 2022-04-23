@@ -72,6 +72,7 @@ function Login(props){
     <Box {...props} sx={{
       borderRadius: "10px",
       padding: "8px",
+      cursor: "pointer"
     }}
     >
       <Typography {...props} sx={{
@@ -90,12 +91,13 @@ function Login(props){
 function Signup(props){
   return (
     <Box {...props} sx={{
+      cursor: "pointer",
       borderRadius: "10px",
       border: '2px solid white',
       padding: "8px",
       ":hover": {
-        border: "2px solid primary.light}",
-        color: "primary.light"
+        border: `2px solid ${colors.primary[400]}`,
+        color: colors.primary[400]
       }
     }}
     >
@@ -104,7 +106,7 @@ function Signup(props){
         fontSize: {xs: "0.6em", sm: "0.8em", md: "0.8em", lg: "1.2em", xl: "1.2em"},
         color: "white",
         ":hover": {
-          color: "primary.light",
+          color: colors.primary[400],
           textDecoration: "underline"
         }
       }}
@@ -119,7 +121,7 @@ function LinkBox(props){
   )
 }
 
-export default function Navbar() {
+export default function Navbar({ onLoginClicked, onSignUpClicked }) {
   return (
     <Appbar>
       <Leftbar>
@@ -141,8 +143,8 @@ export default function Navbar() {
         <LinkBox to="/explore"><Navlink>Explore</Navlink></LinkBox>
       </Leftbar>
       <Rightbar>
-        <LinkBox to="/login"><Login>Log In</Login></LinkBox>
-        <LinkBox to="/signup" ><Signup>Sign Up</Signup></LinkBox>
+        <Login>Log In</Login>
+        <Signup>Sign Up</Signup>
       </Rightbar>
     </Appbar>
   )
