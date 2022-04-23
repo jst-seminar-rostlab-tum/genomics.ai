@@ -1,4 +1,4 @@
-import { Box, IconButton, Typography } from "@mui/material"
+import { Box, IconButton, Typography, Drawer, List } from "@mui/material"
 import ListIcon from '@mui/icons-material/List';
 import { Link } from "react-router-dom"
 
@@ -52,7 +52,7 @@ function Rightbar(props){
   )
 }
 
-function NavlinkDark(props){
+function Navlink(props){
   return (
     <Box {...props}>
       <Typography {...props} sx={{
@@ -68,12 +68,12 @@ function NavlinkDark(props){
   )
 }
 
-function Navlink(props){
+function DrawerNavlink(props){
   return (
     <Box {...props}>
-      <Typography {...props} sx={{
+      <Typography textAlign="center" {...props} sx={{
         fontWeight: "bold",
-        fontSize: {xs: "0.6em", sm: "0.8em", md: "0.8em", lg: "1.2em", xl: "1.2em"},
+        fontSize: "1em",
         color: "black",
         ":hover": {
           color: colors.secondary1[200]
@@ -167,25 +167,14 @@ function DrawerBar({ open, setOpen, executeScroll }){
         <Box sx={{position: "relative", width: "24px", height: "24px", borderRadius: "5px", bgcolor: colors.primary[400]}}>
           <ListIcon onClick={()=>setOpen(!open)} sx={{position: "absolute", top: "4px", left: "4px", width: "16px", height: "16px", color: "white"}} />
 
-          <Box 
-            sx={{
-              position: "absolute", 
-              top: "30px", 
-              width: "150px", 
-              display: open ? "flex" : "none", 
-              flexDirection: "column", 
-              padding: "5px", 
-              bgcolor: "white", 
-              borderRadius: "5px", 
-              gap: "5px", 
-              justifyContent: "space-evenly"
-            }}
-          >
-            <LinkBox to="/about"><Navlink>About us</Navlink></LinkBox>
-            <LinkBox to="/docs"><Navlink>Docs </Navlink></LinkBox>
-            <Box onClick={executeScroll} sx={{cursor: "pointer"}}><Navlink>Contact us</Navlink></Box>
-            <LinkBox to="/explore"><Navlink>Explore</Navlink></LinkBox>
-          </Box>
+          <Drawer open={open} anchor="bottom" onClose={()=>setOpen(false)}>
+            <Box sx={{width: "100vw", height: "25vh", bgcolor: "white", display: "flex", flexDirection: "column", justifyContent: "space-evenly", alignItems: "center"}}>
+              <LinkBox to="/about"><DrawerNavlink>About us</DrawerNavlink></LinkBox>
+              <LinkBox to="/docs"><DrawerNavlink>Docs</DrawerNavlink></LinkBox>
+              <Box onClick={executeScroll} sx={{cursor: "pointer"}}><DrawerNavlink>Contact us</DrawerNavlink></Box>
+              <LinkBox to="/explore"><DrawerNavlink>Explore</DrawerNavlink></LinkBox>
+            </Box>
+          </Drawer>
         </Box>
       </Box>
   )
@@ -224,12 +213,12 @@ export default function Navbar({ onLoginClicked, onSignUpClicked, executeScroll,
               > 
               <img width={28} alt="logo" src={logo} />
             </IconButton>
-            <NavlinkDark>genomics.ai</NavlinkDark>
+            <Navlink>genomics.ai</Navlink>
           </LinkBox>
-          <LinkBox to="/about"><NavlinkDark>About us</NavlinkDark></LinkBox>
-          <LinkBox to="/docs"><NavlinkDark>Docs </NavlinkDark></LinkBox>
-          <Box sx={{cursor: "pointer"}} onClick={executeScroll}><NavlinkDark>Contact us</NavlinkDark></Box>
-          <LinkBox to="/explore"><NavlinkDark>Explore</NavlinkDark></LinkBox>
+          <LinkBox to="/about"><Navlink>About us</Navlink></LinkBox>
+          <LinkBox to="/docs"><Navlink>Docs </Navlink></LinkBox>
+          <Box sx={{cursor: "pointer"}} onClick={executeScroll}><Navlink>Contact us</Navlink></Box>
+          <LinkBox to="/explore"><Navlink>Explore</Navlink></LinkBox>
         </Leftbar>
         <Rightbar>
           <Login>Log In</Login>
