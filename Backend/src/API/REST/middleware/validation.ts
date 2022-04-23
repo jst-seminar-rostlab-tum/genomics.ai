@@ -1,18 +1,33 @@
-import Ajv, { JSONSchemaType } from "ajv";
-export const ajv = new Ajv();
+import Ajv from "ajv";
+import { Request, Response, NextFunction } from "express";
+import * as swaggerDocument from "../../../swagger.json";
 
-interface Auth {
-  email: string;
-  password: string;
+const ajv = new Ajv();
+
+for (const [path, pathObj] of Object.entries(swaggerDocument.paths)) {
+  for (const [method, methodObj] of Object.entries(pathObj)) {
+    const schemaName = constructSchemaName(path, method);
+    const schema = methodObj.requestBody.content["application/json"].schema;
+    ajv.addSchema(schema, schemaName).getSchema(schemaName);
+  }
 }
-const authSchema: JSONSchemaType<Auth> = {
-  type: "object",
-  properties: {
-    email: { type: "string" },
-    password: { type: "string" },
-  },
-  required: ["email", "password"],
-  additionalProperties: false,
-};
 
-ajv.addSchema(authSchema, "auth").getSchema("auth");
+export function validationMdw(req: Request, res: Response, next: NextFunction) {
+  const schemaName = constructSchemaName(req.path, req.method);
+
+  const validate = ajv.getSchema(schemaName);
+
+  if (!validate) console.warn("Schema not defined for", schemaName);
+
+  if (validate && !validate(req.body)) {
+    console.error(validate?.errors);
+    return res.status(400).send({
+      errors: validate?.errors,
+    });
+  }
+  next();
+}
+
+function constructSchemaName(path: string, method: string) {
+  return `${path}_${method}`.toLowerCase();
+}
