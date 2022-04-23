@@ -58,8 +58,6 @@ const Home = ({ setUser }) => {
         sx={{
           position: "relative",
           width: "100vw",
-          paddingLeft: { xs: "10px", md: "15%" },
-          paddingRight: { xs: "10px", md: "15%" },
           padding: {xs: "0% 5%", sm: "0% 5%", md: "0% 15%", lg: "0% 15%", xl: "0% 15%"},
           top: "-2.5vw"
         }}
@@ -143,7 +141,7 @@ const Home = ({ setUser }) => {
           </Box>
         </Box>
         {/* CONTACT US */}
-        <Box sx={{position: "relative", margin: "4em auto", position: "relative", width: {xs: "90%", sm: "90%", md: "61.8%", lg: "61.8%", xl: "61.8%"}}} >
+        <Box sx={{position: "relative", margin: "4em auto", position: "relative", width: "100%"}} >
           <Typography sx={{ textAlign: "center" }} fontSize="2em" fontWeight="bold">Contact Us</Typography>
           <Typography marginTop="1em" sx={{ textAlign: "center" }} fontSize="1em">Please message us in case you have any questions, feedback or collaboration-related inquiries concerning Genomics.ai.</Typography>
           <Box sx={{
