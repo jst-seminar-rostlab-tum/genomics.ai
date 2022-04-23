@@ -48,7 +48,7 @@ export default function Footer() {
             sx={{
                 bgcolor: colors.neutral[200], 
                 width: "100vw", 
-                height: "10vh",
+                height: "18vh",
                 display: "flex", 
                 flexDirection: "column", 
                 alignItems: "center", 
