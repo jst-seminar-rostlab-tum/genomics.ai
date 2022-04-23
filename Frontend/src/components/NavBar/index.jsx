@@ -3,7 +3,6 @@ import { Link } from "react-router-dom"
 
 import logo from 'assets/logo.svg';
 import { colors } from "shared/theme/colors";
-import { useEffect, useRef, useState } from "react";
 
 //In styled(), we cannot use different width to fix different resolution
 //we have to use sx
