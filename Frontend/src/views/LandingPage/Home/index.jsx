@@ -19,41 +19,6 @@ const Home = ({ setUser }) => {
   const [windowSize, setWindowSize] = useState({height: window.innerHeight, width: window.innerWidth})
   const [boxHeight, setBoxHeight] = useState(0)
 
-  const boxRef = useRef()
-
-  const eclipseRef = useRef()
-
-  // const howItWorksBoxRef = useRef()
-  // const [processLineInfo, setProcessLineInfo] = useState({left: 0, top: 0, length: 0})
-
-  // function updateProcessLineInfo(){
-  //   console.log(howItWorksBoxRef)
-
-  //   const iconSize = 16
-
-  //   const updateBox = howItWorksBoxRef.current.children[1] 
-  //   const startIcon = updateBox.children[0] 
-  //   const startLeft = updateBox.offsetLeft + startIcon.offsetLeft + iconSize / 2
-  //   const startTop = updateBox.offsetTop + startIcon.offsetTop + iconSize / 2
-
-  //   const checkReusltBox = howItWorksBoxRef.current.children[3] 
-  //   const endIcon = checkReusltBox.children[0] 
-  //   const endTop = checkReusltBox.offsetTop + endIcon.offsetTop - iconSize / 2
-
-  //   const newProcessLineInfo = {left: startLeft, top: startTop, length: endTop - startTop}
-
-  //   console.log(newProcessLineInfo.left, newProcessLineInfo.top, newProcessLineInfo.length)
-
-  //   if(processLineInfo.left!=newProcessLineInfo.left && processLineInfo.top!=newProcessLineInfo.top && processLineInfo.length!=newProcessLineInfo.length) setProcessLineInfo(newProcessLineInfo)
-  // }
-
-  // useEffect(()=>{
-  //   // updateProcessLineInfo()
-
-  //   window.addEventListener("resize", updateProcessLineInfo)
-  //   return _=>window.removeEventListener("resize", updateProcessLineInfo)
-  // })
-
   const onLoginClicked = useCallback(() => {
     setRegistrationFormVisible(false)
     setLoginFormVisible(true)
@@ -68,29 +33,17 @@ const Home = ({ setUser }) => {
     setRegistrationFormVisible(false);
   }, [setRegistrationFormVisible]);
 
-  useEffect(()=>{
-    setBoxHeight(boxRef.current.clientHeight)
-    
-    function handleResize(){
-      setWindowSize({height: window.innerHeight, width: window.innerWidth})
-    }
-
-    window.addEventListener("resize", handleResize)
-
-    return _=>window.removeEventListener("resize", handleResize)
-  })
-
   return (
     <Box style={{ overflow: "hidden" }} sx={{ position: "relative" }}>
       {/* STARTING PAGE */}
-      <Box ref={boxRef} sx={{width: window.width, bgcolor: colors.primary[800], position: "relative", paddingBottom: "4em"}}>
+      <Box sx={{width: window.width, bgcolor: colors.primary[800], position: "relative", paddingBottom: "4em"}}>
         {/* NAVBAR HERE */}
         <Navbar onLoginClicked={onLoginClicked} onSignUpClicked={onSignUpClicked}/>
         {/* IOS WINDOW */}
         <WindowiOS />
       </Box>
       {/* the Eclipse */}
-      <Box ref={eclipseRef}
+      <Box
         sx={{
           position: "relative",
           width: windowSize.width*1.4,
