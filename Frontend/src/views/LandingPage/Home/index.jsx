@@ -60,16 +60,19 @@ const Home = ({ setUser }) => {
           width: "100vw",
           paddingLeft: { xs: "10px", md: "15%" },
           paddingRight: { xs: "10px", md: "15%" },
+          padding: {xs: "0% 5%", sm: "0% 5%", md: "0% 15%", lg: "0% 15%", xl: "0% 15%"},
           top: "-2.5vw"
         }}
       >
         
         {/* WHAT WE DO */}
-        <Box sx={{ width: "100%" }}>
-          <Typography width="100%" sx={{ textAlign: "center" }} fontSize="2em" fontWeight="bold">What we do</Typography>
-          <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", width: "80%", margin: "auto" }}>
-            <img style={{ width: "25em" }} src={graphic1} alt="Science" />
-            <Box sx={{ width: "40%", p: "1em"  }}>
+        <Box sx={{ width: "100%", position: "relative", margin: "auto" }}>
+          <Typography sx={{ textAlign: "center" }} fontSize="2em" fontWeight="bold">What we do</Typography>
+          <Box sx={{ display: "flex", flexDirection: {xs: "column", sm: "row", md: "row", lg: "row", xl: "row"}, justifyContent: "space-between", alignItems: "center", width: "80%", gap: "1em", margin: "auto" }}>
+            <Box sx={{ width: {xs: "100%", sm: "50%", md: "50%", lg: "50%", xl: "50%"}, backgroundColor: "white", borderRadius: "20px" }}>
+              <img style={{ width: "100%" }} src={graphic1} alt="Science" />
+            </Box>
+            <Box sx={{ width: {xs: "100%", sm: "50%", md: "50%", lg: "50%", xl: "50%"}  }}>
               <Typography fontSize="1.2em" fontWeight="bold">genomics.ai</Typography>
               <Typography margin="2em 0 2em 0">We help you visualize all of your single-cell sequencing data in a fast and easy way with the help of neural networks.</Typography>
               {/* WILL BE REPLACED BY FUTURE BUTTONS */}
@@ -140,15 +143,14 @@ const Home = ({ setUser }) => {
           </Box>
         </Box>
         {/* CONTACT US */}
-        <Box marginTop="4em">
-          <Typography width="100%" sx={{ textAlign: "center" }} fontSize="2em" fontWeight="bold">Contact Us</Typography>
-          <Typography marginTop="1em" width="100%" sx={{ textAlign: "center" }} fontSize="1em">Please message us in case you have any questions, feedback or collaboration-related inquiries concerning Genomics.ai.</Typography>
+        <Box sx={{position: "relative", margin: "4em auto", position: "relative", width: {xs: "90%", sm: "90%", md: "61.8%", lg: "61.8%", xl: "61.8%"}}} >
+          <Typography sx={{ textAlign: "center" }} fontSize="2em" fontWeight="bold">Contact Us</Typography>
+          <Typography marginTop="1em" sx={{ textAlign: "center" }} fontSize="1em">Please message us in case you have any questions, feedback or collaboration-related inquiries concerning Genomics.ai.</Typography>
           <Box sx={{
             width: "100%",
-            margin: "auto",
-            p: "2em",
+            margin: "2em auto 0em auto",
+            padding: "2em 0em",
             boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.10), 0px 0px 1px rgba(0, 0, 0, 0.20)",
-            m: "1em",
             borderRadius: "10px"
           }}>
             <Stack sx={{ width: "80%", margin: "auto" }} direction="column" spacing={4}>
