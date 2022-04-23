@@ -27,6 +27,7 @@ function InstitutionCard({ institution, onLeft }) {
     <ListCard
       title={name}
       imageURL={profilePictureURL}
+      enforceImage
       nextToTitle={(
         <span className={styles.accessRightIndicator}>
           {adminIds.indexOf(user.id) !== -1 ? 'admin' : 'member'}

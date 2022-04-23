@@ -3,7 +3,8 @@ import {
   useParams,
 } from 'react-router-dom';
 import HeaderView from 'components/general/HeaderView';
-import JobList from 'components/teams/detail/TeamJobList';
+import TeamJobList from 'components/teams/detail/TeamJobList';
+import TeamMemberList from 'components/teams/detail/TeamMemberList';
 import { getTeam } from 'shared/services/mock/teams';
 import getUser from 'shared/services/mock/user';
 import { getInstitution, queryIsAdminInstitutions } from 'shared/services/mock/institutions';
@@ -99,17 +100,17 @@ export default function TeamPage({ sidebarShown }) {
       <section>
         <h2>GeneMapper</h2>
         <hr />
-        <JobList teamId={id} forPart="geneMapper" />
+        <TeamJobList team={team} forPart="geneMapper" />
       </section>
       <section>
         <h2>GeneCruncher</h2>
         <hr />
-        <JobList teamId={id} forPart="geneCruncher" />
+        <TeamJobList team={team} forPart="geneCruncher" />
       </section>
       <section>
         <h2>Members</h2>
         <hr />
-        TODO: implement
+        <TeamMemberList team={team} />
       </section>
     </HeaderView>
   );
@@ -158,8 +159,6 @@ function HeaderOptions({
 }
 
 function AdminTeamHeaderRight({ team, setTeam }) {
-  console.log(team);
-
   const updateVisibility = (event) => {
     setTeam({
       ...team,

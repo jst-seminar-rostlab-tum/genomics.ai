@@ -5,10 +5,10 @@ import styles from './listCard.module.css';
 import stringColor from 'shared/utils/stringColor';
 
 function ListCard({
-  imageComponent, imageURL, title, description, nextToTitle, trailing, onClick,
+  imageComponent, imageURL, enforceImage, title, description, nextToTitle, trailing, onClick,
 }) {
   let imageComponentUsed = imageComponent;
-  if (imageURL) {
+  if (imageURL || enforceImage) {
     if (imageComponent) {
       throw new Error('You can only have either imageComponent or imageURL.');
     }
