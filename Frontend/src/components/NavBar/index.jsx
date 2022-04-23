@@ -195,9 +195,16 @@ export default function Navbar({ onLoginClicked, onSignUpClicked, executeScroll 
 
   const [drawerOpen, setDrawerOpen]=useState(false)
 
+  function handleClickContactUsInDrawer(){
+    console.log("clicked", drawerOpen)
+    setDrawerOpen(false)
+    console.log("after set", drawerOpen)
+    executeScroll()
+  }
+
   return (
     <Appbar>
-      <DrawerBar open={drawerOpen} setOpen={setDrawerOpen} executeScroll={executeScroll} />
+      <DrawerBar open={drawerOpen} setOpen={setDrawerOpen} executeScroll={handleClickContactUsInDrawer} />
       <Leftbar>
         <LinkBox to="/" sx={{ display: "flex", alignItems: "center", gap: "0.7em" }}>
           <IconButton
