@@ -1,5 +1,5 @@
 import { Circle } from "@mui/icons-material"
-import { Box, Button, Divider, Typography } from "@mui/material"
+import { Box, Button, Typography } from "@mui/material"
 import { colors } from "shared/theme/colors"
 import tum from 'assets/landing-illustrations/tum-logo.png';
 import rostlab from 'assets/landing-illustrations/rostlab.png';
@@ -49,9 +49,9 @@ const WindowiOS = () => {
         
         {/* DIVIDER */}
         <Box sx={{ marginTop: "3em", display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-          <Box sx={{ height: "1px", width: "40%", backgroundColor: "rgba(255,255,255, 0.5)" }} />
-          <Typography>Our partners</Typography>
-          <Box sx={{ height: "1px", width: "40%", backgroundColor: "rgba(255,255,255, 0.5)" }} />
+          <Box sx={{ height: "1px", width: {xs: "30%", sm: "37%", md: "35%", lg: "40%", xl: "40%"}, backgroundColor: "rgba(255,255,255, 0.5)" }} />
+          <Typography >Our partners</Typography>
+          <Box sx={{ height: "1px", width: {xs: "30%", sm: "37%", md: "35%", lg: "40%", xl: "40%"}, backgroundColor: "rgba(255,255,255, 0.5)" }} />
         </Box>
       </Box>
       {/* BUTTON PLACEHOLDER UNTIL WE HAVE A BUTTON DESIGN */}
@@ -66,13 +66,13 @@ const WindowiOS = () => {
           p: "1em 1em 2em 1em"
         }}
       >
-        <Box>
+        <Box sx={{margin: {xs: "2em 2em", sm: "0em", md: "0em", lg: "0em", xl: "0em"}}} >
           <img src={tum} alt="TUM" style={{ width: "6em", height: "auto" }}/> 
         </Box>
-        <Box>
+        <Box sx={{margin: {xs: "2em 2em", sm: "0em", md: "0em", lg: "0em", xl: "0em"}}} >
           <img src={rostlab} alt="ROSTLAB" style={{ width: "10em", height: "auto" }}/> 
         </Box>
-        <Box>
+        <Box sx={{margin: {xs: "2em 2em", sm: "0em", md: "0em", lg: "0em", xl: "0em"}}} >
           <img src={helmholtz} alt="HELMHOLTZ" style={{ width: "6em", height: "auto" }}/> 
         </Box>
       </Box>
