@@ -31,9 +31,13 @@ const Home = ({ setUser }) => {
     setRegistrationFormVisible(false);
   }, [setRegistrationFormVisible]);
 
+  //here we get the ref of the contact us, in order to be able to scroll to it
   const contactUsBoxRef = useRef()
   const executeScroll = ()=>contactUsBoxRef.current.scrollIntoView()
 
+  //we store the actual height of the Navbar, since we set the Navbar's position to fixed
+  //it jumps out from the document flow => the height collapse
+  //we need to reset it
   const [navbarHeight, setNavbarHegiht] = useState(0)
 
   return (
@@ -41,6 +45,7 @@ const Home = ({ setUser }) => {
       {/* STARTING PAGE */}
       <Box sx={{width: window.width, bgcolor: colors.primary[800], position: "relative", paddingBottom: "4em"}}>
         {/* NAVBAR HERE */}
+        {/* the Box that contains the Navbar will collapse, so we reset the height */}
         <Box sx={{height: navbarHeight, position: "relative"}}>
           <Navbar setNavbarHegiht={setNavbarHegiht} onLoginClicked={onLoginClicked} onSignUpClicked={onSignUpClicked} executeScroll={executeScroll} />
         </Box>

@@ -38,6 +38,49 @@ function Leftbar(props){
   )
 }
 
+//the DrawerBar will be displayed, if the screen is small, otherwise the Leftbar will be displayed
+function DrawerBar({ open, setOpen, executeScroll }){
+  return (
+      <Box 
+        sx={{
+          zIndex: "1",
+          width: "40%", 
+          display: {xs: "flex", sm: "none", md: "none", lg: "none", xl: "none"},
+          flexDirection: "row",
+          flexWrap: "warp",
+          justifyContent: "left",
+          alignItems: "center",
+          gap: "7%"
+        }} 
+      >
+        <LinkBox to="/" sx={{ display: "flex", alignItems: "center", gap: "0.7em" }}>
+          <IconButton
+            disableRipple
+            sx={{
+              bgcolor: "white",
+              ":hover": { bgcolor: "primary.dark" }
+            }}
+            > 
+            <img width={28} alt="logo" src={logo} />
+          </IconButton>
+        </LinkBox>
+
+        <Box sx={{position: "relative", width: "24px", height: "24px", borderRadius: "5px", bgcolor: colors.primary[400]}}>
+          <ListIcon onClick={()=>setOpen(!open)} sx={{position: "absolute", top: "4px", left: "4px", width: "16px", height: "16px", color: "white"}} />
+
+          <Drawer open={open} anchor="bottom" onClose={()=>setOpen(false)}>
+            <Box sx={{width: "100vw", height: "25vh", bgcolor: "white", display: "flex", flexDirection: "column", justifyContent: "space-evenly", alignItems: "center"}}>
+              <LinkBox to="/about"><DrawerNavlink>About us</DrawerNavlink></LinkBox>
+              <LinkBox to="/docs"><DrawerNavlink>Docs</DrawerNavlink></LinkBox>
+              <Box onClick={executeScroll} sx={{cursor: "pointer"}}><DrawerNavlink>Contact us</DrawerNavlink></Box>
+              <LinkBox to="/explore"><DrawerNavlink>Explore</DrawerNavlink></LinkBox>
+            </Box>
+          </Drawer>
+        </Box>
+      </Box>
+  )
+}
+
 function Rightbar(props){
   return (
     <Box {...props} sx={{
@@ -138,48 +181,6 @@ function LinkBox(props){
   )
 }
 
-function DrawerBar({ open, setOpen, executeScroll }){
-  return (
-      <Box 
-        sx={{
-          zIndex: "1",
-          width: "40%", 
-          display: {xs: "flex", sm: "none", md: "none", lg: "none", xl: "none"},
-          flexDirection: "row",
-          flexWrap: "warp",
-          justifyContent: "left",
-          alignItems: "center",
-          gap: "7%"
-        }} 
-      >
-        <LinkBox to="/" sx={{ display: "flex", alignItems: "center", gap: "0.7em" }}>
-          <IconButton
-            disableRipple
-            sx={{
-              bgcolor: "white",
-              ":hover": { bgcolor: "primary.dark" }
-            }}
-            > 
-            <img width={28} alt="logo" src={logo} />
-          </IconButton>
-        </LinkBox>
-
-        <Box sx={{position: "relative", width: "24px", height: "24px", borderRadius: "5px", bgcolor: colors.primary[400]}}>
-          <ListIcon onClick={()=>setOpen(!open)} sx={{position: "absolute", top: "4px", left: "4px", width: "16px", height: "16px", color: "white"}} />
-
-          <Drawer open={open} anchor="bottom" onClose={()=>setOpen(false)}>
-            <Box sx={{width: "100vw", height: "25vh", bgcolor: "white", display: "flex", flexDirection: "column", justifyContent: "space-evenly", alignItems: "center"}}>
-              <LinkBox to="/about"><DrawerNavlink>About us</DrawerNavlink></LinkBox>
-              <LinkBox to="/docs"><DrawerNavlink>Docs</DrawerNavlink></LinkBox>
-              <Box onClick={executeScroll} sx={{cursor: "pointer"}}><DrawerNavlink>Contact us</DrawerNavlink></Box>
-              <LinkBox to="/explore"><DrawerNavlink>Explore</DrawerNavlink></LinkBox>
-            </Box>
-          </Drawer>
-        </Box>
-      </Box>
-  )
-}
-
 export default function Navbar({ onLoginClicked, onSignUpClicked, executeScroll, setNavbarHegiht }) {
 
   const [drawerOpen, setDrawerOpen]=useState(false)
@@ -191,10 +192,11 @@ export default function Navbar({ onLoginClicked, onSignUpClicked, executeScroll,
     executeScroll()
   }
 
+  //we get the ref of the box that contains the Navbar here
   const boxRef = useRef()
 
   useEffect(()=>{
-    console.log(boxRef.current.clientHeight)
+    //use the set function from Home page to set the height, so that we can use it later
     setNavbarHegiht(boxRef.current.clientHeight)
   })
 
