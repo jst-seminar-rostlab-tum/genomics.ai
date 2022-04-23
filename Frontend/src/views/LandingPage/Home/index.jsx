@@ -17,25 +17,36 @@ const Home = ({ setUser }) => {
   const [isLoginFormVisible, setLoginFormVisible] = useState(false)
   const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false)
 
-  const howItWorksBoxRef = useRef()
-  const [processLineInfo, setProcessLineInfo] = useState({left: 0, top: 0, length: 0})
+  // const howItWorksBoxRef = useRef()
+  // const [processLineInfo, setProcessLineInfo] = useState({left: 0, top: 0, length: 0})
 
-  useEffect(()=>{
-    const iconSize = 16
+  // function updateProcessLineInfo(){
+  //   console.log(howItWorksBoxRef)
 
-    const updateBox = howItWorksBoxRef.current.children[1] 
-    const startIcon = updateBox.children[0] 
-    const startLeft = updateBox.offsetLeft + startIcon.offsetLeft + iconSize / 2
-    const startTop = updateBox.offsetTop + startIcon.offsetTop + iconSize / 2
+  //   const iconSize = 16
 
-    const checkReusltBox = howItWorksBoxRef.current.children[3] 
-    const endIcon = checkReusltBox.children[0] 
-    const endTop = checkReusltBox.offsetTop + endIcon.offsetTop - iconSize / 2
+  //   const updateBox = howItWorksBoxRef.current.children[1] 
+  //   const startIcon = updateBox.children[0] 
+  //   const startLeft = updateBox.offsetLeft + startIcon.offsetLeft + iconSize / 2
+  //   const startTop = updateBox.offsetTop + startIcon.offsetTop + iconSize / 2
 
-    const newProcessLineInfo = {left: startLeft, top: startTop, length: endTop - startTop}
+  //   const checkReusltBox = howItWorksBoxRef.current.children[3] 
+  //   const endIcon = checkReusltBox.children[0] 
+  //   const endTop = checkReusltBox.offsetTop + endIcon.offsetTop - iconSize / 2
 
-    if(processLineInfo.left!=newProcessLineInfo.left && processLineInfo.top!=newProcessLineInfo.top && processLineInfo.length!=newProcessLineInfo.length) setProcessLineInfo(newProcessLineInfo)
-  })
+  //   const newProcessLineInfo = {left: startLeft, top: startTop, length: endTop - startTop}
+
+  //   console.log(newProcessLineInfo.left, newProcessLineInfo.top, newProcessLineInfo.length)
+
+  //   if(processLineInfo.left!=newProcessLineInfo.left && processLineInfo.top!=newProcessLineInfo.top && processLineInfo.length!=newProcessLineInfo.length) setProcessLineInfo(newProcessLineInfo)
+  // }
+
+  // useEffect(()=>{
+  //   // updateProcessLineInfo()
+
+  //   window.addEventListener("resize", updateProcessLineInfo)
+  //   return _=>window.removeEventListener("resize", updateProcessLineInfo)
+  // })
 
   const onLoginClicked = useCallback(() => {
     setRegistrationFormVisible(false)
@@ -98,7 +109,7 @@ const Home = ({ setUser }) => {
           </Box>
         </Box>
         {/* HOW IT WORKS */}
-        <Box ref={howItWorksBoxRef} sx={{ 
+        <Box sx={{ 
           width: "100%", 
           marginTop: "5em", 
           backgroundColor: colors.primary[800],
@@ -111,9 +122,10 @@ const Home = ({ setUser }) => {
           <Typography sx={{ textAlign: "center" }} fontSize="2em" fontWeight="bold">How it works</Typography>
 
           {/* UPLOAD */}
-          <Box sx={{ position: "relative", gap: "1em", p: "1em", display: "flex", flexDirection: {xs: "column", sm: "row", md: "row", lg: "row", xl: "row"}, justifyContent: "space-between", alignItems: "center", width: "90%", margin: "auto", padding: "10% 10% 5% 10%" }}>
-            <Box sx={{zIndex: "1", width: "16px", height: "16px", position: "absolute", top: "5%", left: "0%", borderRadius: "10px", border: "2px solid white", bgcolor: colors.primary[800]}}></Box>
-            <Box sx={{zIndex: "1", width: "30px", height: "30px", position: "absolute", top: "50%", left: "0%", transform: "translate(-7px, -15px)", bgcolor: colors.primary[800]}}>
+          <Box sx={{ position: "relative", gap: "1em", display: "flex", flexDirection: {xs: "column", sm: "row", md: "row", lg: "row", xl: "row"}, justifyContent: "space-between", alignItems: "center", width: "90%", margin: "auto", padding: "10% 10% 5% 10%" }}>
+            <Box sx={{position: "absolute", top: "calc(5% + 8px)", left: "7px", width: "2px", height: "calc(95% - 8px)", bgcolor: colors.neutral[700]}} />
+            <Box sx={{width: "16px", height: "16px", position: "absolute", top: "5%", left: "0%", borderRadius: "10px", border: "2px solid white", bgcolor: colors.primary[800]}}></Box>
+            <Box sx={{width: "30px", height: "30px", position: "absolute", top: "50%", left: "0%", transform: "translate(-7px, -15px)", bgcolor: colors.primary[800]}}>
               <UploadIcon sx={{width: "20px", height: "20px", position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)"}}/>
             </Box>
             <Box sx={{ width: {xs: "100%", sm: "50%", md: "50%", lg: "50%", xl: "50%"} }}>
@@ -126,7 +138,8 @@ const Home = ({ setUser }) => {
           </Box>  
 
           {/* PROCESSING */}
-          <Box sx={{ position: "relative", gap: "1em", p: "1em", display: "flex", flexDirection: {xs: "column", sm: "row", md: "row", lg: "row", xl: "row"}, justifyContent: "space-between", alignItems: "center", width: "90%", margin: "auto", padding: "5% 10%" }}>
+          <Box sx={{ position: "relative", gap: "1em", display: "flex", flexDirection: {xs: "column", sm: "row", md: "row", lg: "row", xl: "row"}, justifyContent: "space-between", alignItems: "center", width: "90%", margin: "auto", padding: "5% 10%" }}>
+            <Box sx={{position: "absolute", top: "0%", left: "7px", width: "2px", height: "100%", bgcolor: colors.neutral[700]}} />
             <Box sx={{zIndex: "1", width: "30px", height: "30px", position: "absolute", top: "50%", left: "0%", transform: "translate(-7px, -15px)", bgcolor: colors.primary[800]}}>
               <AutorenewIcon sx={{width: "20px", height: "20px", position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)"}}/>
             </Box>
@@ -140,7 +153,8 @@ const Home = ({ setUser }) => {
           </Box>
 
           {/* CHECK RESULT */}
-          <Box sx={{ position: "relative", gap: "1em", p: "1em", display: "flex", flexDirection: {xs: "column", sm: "row", md: "row", lg: "row", xl: "row"}, justifyContent: "space-between", alignItems: "center", width: "90%", margin: "auto", padding: "5% 10% 10% 10%" }}>
+          <Box sx={{ position: "relative", gap: "1em", display: "flex", flexDirection: {xs: "column", sm: "row", md: "row", lg: "row", xl: "row"}, justifyContent: "space-between", alignItems: "center", width: "90%", margin: "auto", padding: "5% 10% 10% 10%" }}>
+            <Box sx={{position: "absolute", top: "0%", left: "7px", width: "2px", height: "calc(95% - 8px)", bgcolor: colors.neutral[700]}} />
             <Box sx={{zIndex: "1", width: "16px", height: "16px", position: "absolute", top: "95%", left: "0%", transform: "translate(-0%, -100%)", bgcolor: colors.primary[800]}}>
               <CheckCircleOutlineIcon sx={{width: "16px", height: "16px", color: colors.secondary1[400]}} />
             </Box>
@@ -155,8 +169,6 @@ const Home = ({ setUser }) => {
               <img style={{ width: "100%" }} src={graphic4} alt="Check Results" />
             </Box>
           </Box>
-
-          <Box sx={{position: "absolute", top: `${processLineInfo.top}px`, left: `${processLineInfo.left-1}px`, width: "5px", width: "2px", height: `${processLineInfo.length}px`, bgcolor: colors.neutral[700]}} />
         </Box>
       </Box>
 
