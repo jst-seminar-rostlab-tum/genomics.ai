@@ -16,8 +16,6 @@ import graphic4 from 'assets/landing-illustrations/results.png';
 const Home = ({ setUser }) => {
   const [isLoginFormVisible, setLoginFormVisible] = useState(false);
   const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
-  const [windowSize, setWindowSize] = useState({height: window.innerHeight, width: window.innerWidth})
-  const [boxHeight, setBoxHeight] = useState(0)
 
   const onLoginClicked = useCallback(() => {
     setRegistrationFormVisible(false)
@@ -46,10 +44,10 @@ const Home = ({ setUser }) => {
       <Box
         sx={{
           position: "relative",
-          width: windowSize.width*1.4,
-          height: windowSize.width/20,
-          left: -windowSize.width*0.2, 
-          top: -windowSize.width/50 ,
+          width: "140vw",
+          height: "5vw",
+          left: "-20vw", 
+          top: "-2vw",
           backgroundColor: "white",
           borderRadius: "50%",
           zIndex: "0"
@@ -62,7 +60,7 @@ const Home = ({ setUser }) => {
           width: "100vw",
           paddingLeft: { xs: "10px", md: "15%" },
           paddingRight: { xs: "10px", md: "15%" },
-          top: -windowSize.width/40
+          top: "-2.5vw"
         }}
       >
         
