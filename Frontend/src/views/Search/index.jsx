@@ -9,6 +9,7 @@ import TeamCard from "components/Search/SearchResultList/TeamCard";
 import InstitutionCard from "components/Search/SearchResultList/InstitutionCard";
 import UserCard from "components/Search/SearchResultList/UserCard";
 import ProjectCard from "components/Search/SearchResultList/ProjectCard";
+import ResultStatus from "components/Search/ResultStatus";
 
 const Search = ({ sidebarShown }) => {
   /* Booleans */
@@ -19,6 +20,7 @@ const Search = ({ sidebarShown }) => {
 
   const [selectedTab, setSelectedTab] = useState("teams");
   const [searchedKeyword, setSearchedKeyword] = useState("");
+  const [submittedKeyword, setSubmittedKeyword] = useState("");
   const [searchedData, setSearchedData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -32,13 +34,14 @@ const Search = ({ sidebarShown }) => {
   };
 
   const fetchSearchHandler = useCallback(async (type, keyword) => {
-    const searchResponse = await querySearch(type, keyword);
+    setSubmittedKeyword(keyword);
+    const searchResponse = await querySearch(type, keyword.toLowerCase());
     setSearchedData(searchResponse);
     setIsLoading(false);
   }, []);
 
   useEffect(() => {
-    fetchSearchHandler(selectedTab, "");
+    fetchSearchHandler(selectedTab, searchedKeyword);
   }, [fetchSearchHandler, selectedTab]);
 
   const submitSearch = () => {
@@ -74,10 +77,17 @@ const Search = ({ sidebarShown }) => {
             </Box>
           )}
           {!isLoading && (
-            <SearchResultList
-              listItemWrapper={listItemWrapper[selectedTab]}
-              searchedData={searchedData}
-            />
+            <React.Fragment>
+              <ResultStatus
+                count={searchedData.length}
+                searchedEntity={selectedTab}
+                searchedKeyword={submittedKeyword}
+              />
+              <SearchResultList
+                listItemWrapper={listItemWrapper[selectedTab]}
+                searchedData={searchedData}
+              />
+            </React.Fragment>
           )}
         </Box>
       </div>

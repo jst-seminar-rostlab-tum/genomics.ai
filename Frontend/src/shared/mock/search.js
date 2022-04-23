@@ -144,18 +144,21 @@ const DUMMY_INSTITUTIONS = [
 
 const DUMMY_USERS = [
   {
+    id: "1",
     name: "Max Musterman",
     email: "max.mustermann@tum.de",
     image: "/profileImage1.jpg",
     affiliation: "ELTE",
   },
   {
+    id: "2",
     name: "John Smith",
     email: "john.smith@tum.de",
     image: "/profileImage2.jpg",
     affiliation: "ELTE",
   },
   {
+    id: "3",
     name: "Alison Henderson",
     email: "alison.henderson@tum.de",
     image: "/profileImage3.jpg",
