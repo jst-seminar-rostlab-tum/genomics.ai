@@ -30,7 +30,7 @@ function GeneMapperResultHeader({ projectName }) {
           <ShareIcon />
         </IconButton>
       </Toolbar>
-      <Divider />
+      <Divider sx={{ mb: 1 }} />
     </>
   );
 }
