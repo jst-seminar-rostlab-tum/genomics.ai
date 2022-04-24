@@ -1,33 +1,26 @@
-import os
 import warnings
-from os import path
 from scVI.scVI import create_scVI_model, set_config
 
-import matplotlib
 import scanpy
 import scarches
 from scarches.dataset.trvae.data_handling import remove_sparsity
 from matplotlib import pyplot as plt
 import numpy as np
-import gdown
-import sys
-import getopt
 import torch
-import tempfile
 import utils
-import logging, sys
-import argparse
+import logging
 
 config = None
 
+
 def get_from_config(key):
     return config[key]
+
 
 # url = 'https://drive.google.com/uc?id=1ehxgfHTsMZXy6YzlFKGJOsBKQ5rrvMnd'
 # gdown.download(url, output, quiet=False)
 
 def setup_modules():
-
     warnings.simplefilter(action='ignore', category=FutureWarning)
     warnings.simplefilter(action='ignore', category=UserWarning)
 
@@ -39,7 +32,6 @@ def setup_modules():
 
 
 def pre_process_data():
-
     source_adata = scanpy.read(get_from_config('reference_dataset'))
     target_adata = scanpy.read(get_from_config('query_dataset'))
     source_adata = remove_sparsity(source_adata)
@@ -70,7 +62,6 @@ def get_scanvi_from_scvi_model(scvi_model):
 
 
 def get_latent(model, adata):
-
     reference_latent = scanpy.AnnData(model.get_latent_representation())
     reference_latent.obs["cell_type"] = adata.obs[get_from_config('cell_type_key')].tolist()
     reference_latent.obs["batch"] = adata.obs[get_from_config('condition_key')].tolist()
@@ -79,23 +70,21 @@ def get_latent(model, adata):
     scanpy.tl.leiden(reference_latent)
     scanpy.tl.umap(reference_latent)
 
-    #model.save(get_from_config('ref_path'), overwrite=True)     # würde das speichern wo anders machen, muss ja an verschiedenen Orten gespeichert werden
+    # model.save(get_from_config('ref_path'), overwrite=True)     # würde das speichern wo anders machen, muss ja an verschiedenen Orten gespeichert werden
 
     return reference_latent
 
 
 def predict(model, latent):
-
     latent.obs['predictions'] = model.predict()
     print("Acc: {}".format(np.mean(latent.obs.predictions == latent.obs.cell_type)))
     return latent
 
 
 def surgery(anndata):
-
     model = scarches.models.SCANVI.load_query_data(
         anndata,
-        get_from_config('model_path'),        # ist das der richtige Pfad? Ist doch dann schon einmal trainiert?
+        get_from_config('model_path'),  # ist das der richtige Pfad? Ist doch dann schon einmal trainiert?
         freeze_dropout=True,
     )
 
@@ -123,11 +112,12 @@ def surgery(anndata):
 
 
 def query(anndata):
-
     model = scarches.models.SCANVI.load_query_data(
         anndata,
-        get_from_config('model_path'),      # ist das der richtige Pfad? Das wäre ja dann das gerade von scVI convertierte, hier gabs nen Fehler von wegen falsche Klasse (also weil das convertierte scanVI wahrscheinlich nicht gespeichert wurde)
-        freeze_dropout=True,                # habs jetzt mal unten gespeichert bevor query aufgerufen wird, schau es dir aber nochmal an
+        get_from_config('model_path'),
+        # ist das der richtige Pfad? Das wäre ja dann das gerade von scVI convertierte, hier gabs nen Fehler von wegen falsche Klasse (also weil das convertierte scanVI wahrscheinlich nicht gespeichert wurde)
+        freeze_dropout=True,
+        # habs jetzt mal unten gespeichert bevor query aufgerufen wird, schau es dir aber nochmal an
     )
 
     model._unlabeled_indices = np.arange(anndata.n_obs)
@@ -155,7 +145,6 @@ def query(anndata):
 
 
 def predict_latent(latent):
-
     df = latent.obs.groupby(["cell_type", "predictions"]).size().unstack(fill_value=0)
     norm_df = df / df.sum(axis=0)
 
@@ -170,7 +159,6 @@ def predict_latent(latent):
 
 
 def both_adata(source_adata, target_adata):
-
     adata_full = source_adata.concatenate(target_adata)
     full_latent = scanpy.AnnData(scarches.models.SCANVI.get_latent_representation(adata=adata_full))
     full_latent.obs['cell_type'] = adata_full.obs[get_from_config('cell_type_key')].tolist()
@@ -188,7 +176,6 @@ def both_adata(source_adata, target_adata):
 
 
 def compare_adata(model, source_adata, target_adata, latent):
-
     adata_full = source_adata.concatenate(target_adata)
     latent.obs['predictions'] = model.predict(adata=adata_full)
 
@@ -203,7 +190,6 @@ def compare_adata(model, source_adata, target_adata, latent):
 
 
 def compute_scANVI(configP):
-
     global config
     config = configP
 
@@ -215,21 +201,21 @@ def compute_scANVI(configP):
 
     source_adata, target_adata = pre_process_data()
     #                                                   if not get_from_config('pre_trained_scANVI'): bin mir bei dir nicht sicher, was alles zu was gehöhrt
-    set_config(configP) # sets the config in scVI
+    set_config(configP)  # sets the config in scVI
 
     if get_from_config('debug'):
         logger.debug(source_adata)
         logger.debug(target_adata)
 
-    vae = create_scVI_model(source_adata, target_adata) # kann man sehen ob es schon ein scVI oder ein scANVI model gibt?
+    vae = create_scVI_model(source_adata,
+                            target_adata)  # kann man sehen ob es schon ein scVI oder ein scANVI model gibt?
 
     if get_from_config('debug'):
         logger.debug(source_adata)
         logger.debug(target_adata)
 
-    #if args.train:
+    # if args.train:
     # vae.train(max_epochs=get_from_config('scvi_max_epochs'))
-
 
     # setup_anndata_for_scanvi(source_adata)
 
@@ -241,7 +227,6 @@ def compute_scANVI(configP):
 
     scanvi.train(max_epochs=get_from_config('scanvi_max_epochs'))
 
-
     reference_latent = get_latent(scanvi, source_adata)
 
     if get_from_config('debug'):
@@ -249,8 +234,8 @@ def compute_scANVI(configP):
 
     reference_latent = predict(scanvi, reference_latent)
 
-    scanvi.save(get_from_config('ref_path'), overwrite=True)    # ich bin mir nicht sicher, wann dein Model in welchem Stadium ist
-
+    scanvi.save(get_from_config('ref_path'),
+                overwrite=True)  # ich bin mir nicht sicher, wann dein Model in welchem Stadium ist
 
     model_query, query_latent = query(target_adata)
     model = model_query
@@ -275,4 +260,3 @@ def compute_scANVI(configP):
             model_query, query_latent = query(target_adata)
             model = model_query
         compare_adata(model, source_adata, target_adata, full_latent)
-

@@ -1,17 +1,19 @@
 from flask import Flask, request
 import os
-
+import init as scarches
 app = Flask(__name__)
 
 
 @app.route('/query', methods=['POST'])
 def query():
     config = request.get_json(force=True)
+    scarches.query(config)
+    return "computed", 200
 
 
-@app.route("/hello")
+@app.route("/liveness")
 def hello():
-    return "Hello World!"
+    return "up"
 
 
 if __name__ == "__main__":

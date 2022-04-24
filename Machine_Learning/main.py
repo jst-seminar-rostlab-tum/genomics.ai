@@ -1,4 +1,3 @@
-
 from __future__ import annotations
 import os
 from os import environ
@@ -8,6 +7,7 @@ import joblib
 import pandas as pd
 from pymongo import MongoClient
 import boto3
+
 requiredKeysDefault = {
     'nCount_ADT': 0, 'nFeature_ADT': 0, 'nCount_RNA': 0, 'nFeature_RNA': 0,
     'nCount_SCT': 0, 'nFeature_SCT': 0, 'Phase_G1': 0, 'Phase_G2M': 0, 'Phase_S': 1}
@@ -15,19 +15,21 @@ outputLabels = ['B', 'CD4 T', 'CD8', 'DC',
                 'Mono', 'NK', 'other', 'other T']
 
 app = Flask(__name__)
-endpoint = os.getenv('ENDPOINT') 
-access_key = os.getenv('ACCESS_KEY') 
+endpoint = os.getenv('ENDPOINT')
+access_key = os.getenv('ACCESS_KEY')
 secret_key = os.getenv(
-    'SECRET_KEY') 
-modelname=os.getenv('MODEL_NAME')
+    'SECRET_KEY')
+modelname = os.getenv('MODEL_NAME')
 database_uri = os.getenv(
-    'DATABASE_URI') 
-bucket=os.getenv('BUCKET')
+    'DATABASE_URI')
+bucket = os.getenv('BUCKET')
+
 
 def dispose(filename):
     if os.path.isfile(filename):
-        print(filename+" found, will be disposed")
+        print(filename + " found, will be disposed")
         os.remove(filename)
+
 
 s3 = boto3.client('s3', endpoint_url=endpoint,
                   aws_access_key_id=access_key, aws_secret_access_key=secret_key)
@@ -51,8 +53,9 @@ def catch_all(path):
 def classify():
     data = request.args
     for key in ["uploadId"]:
-        if key not in data.keys() :
-            return "Key \"{}\" missing in request json data!\nPlease check again if the request is correct!".format(key), 400
+        if key not in data.keys():
+            return "Key \"{}\" missing in request json data!\nPlease check again if the request is correct!".format(
+                key), 400
     uploadId = data['uploadId']
     project = db.projects.find_one({"uploadId": uploadId})
 
@@ -64,17 +67,17 @@ def classify():
         print("Project has been aborted. Terminating.")
         return
     print("Project found and not aborted")
-    fileName=str(project['_id'])
+    fileName = str(project['_id'])
     print("Starting download h5ad")
-    s3.download_file(bucket,fileName,fileName+'.h5ad')
+    s3.download_file(bucket, fileName, fileName + '.h5ad')
     print("Ready for prediction")
-    result = predict(fileName+'.h5ad')
+    result = predict(fileName + '.h5ad')
     uploadSize = upload(result)
     dispose(result)
-    dispose(fileName+'.h5ad')
+    dispose(fileName + '.h5ad')
 
-    db.projects.update_one({'uploadId':uploadId }, {
-                            "$set": {"status": "DONE", "resultSize": uploadSize,"resultName":result}})
+    db.projects.update_one({'uploadId': uploadId}, {
+        "$set": {"status": "DONE", "resultSize": uploadSize, "resultName": result}})
     print("Classification has been computed")
     return "Classification has been computed", 200
 
@@ -110,11 +113,11 @@ def predict(filename):
 
     cleanedDataset['celltype'] = output
     cleanedDataset['x'] = list(
-    map(lambda pair: pair[0], input.obsm['X_umap']))
+        map(lambda pair: pair[0], input.obsm['X_umap']))
 
     cleanedDataset['y'] = list(
-    map(lambda pair: pair[1], input.obsm['X_umap']))
-    resultname = 'result_'+filename.rsplit(".", 1)[0]+'.tsv'
+        map(lambda pair: pair[1], input.obsm['X_umap']))
+    resultname = 'result_' + filename.rsplit(".", 1)[0] + '.tsv'
     cleanedDataset.index.name = 'id'
     cleanedDataset.to_csv(resultname, columns=['x', 'y', 'celltype'], sep='\t')
 
