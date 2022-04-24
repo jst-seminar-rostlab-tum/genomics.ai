@@ -13,6 +13,7 @@ export async function createInstitution(name, description) {
     profilePictureURL: null,
     backgroundPictureURL: null,
     adminIds: [1], // TODO: make sure that the backend puts my user ID here
+    memberIds: [],
   };
 }
 
@@ -24,6 +25,7 @@ const testInstitutions = [
     profilePictureURL: 'https://www.hzdr.de/db/Pic?pOid=55058',
     backgroundPictureURL: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjsC9c9x8ABK8CXkzrf1cAAAAASUVORK5CYII=',
     adminIds: [],
+    memberIds: [],
   },
   {
     id: 2,
@@ -32,6 +34,7 @@ const testInstitutions = [
     profilePictureURL: 'https://scalings.eu/wp-content/uploads/2019/11/tum-logo.png',
     backgroundPictureURL: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjsC9c9x8ABK8CXkzrf1cAAAAASUVORK5CYII=',
     adminIds: [1],
+    memberIds: [2, 3, 4, 5],
   },
   {
     id: 3,
@@ -40,6 +43,7 @@ const testInstitutions = [
     profilePictureURL: 'https://avatars.githubusercontent.com/u/4093405?s=200&v=4',
     backgroundPictureURL: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjsC9c9x8ABK8CXkzrf1cAAAAASUVORK5CYII=',
     adminIds: [1],
+    memberIds: [2, 3, 4, 5],
   },
 ];
 

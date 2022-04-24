@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import Button from '@mui/material/Button';
 import TeamLeaveButton from 'components/teams/overview/TeamLeaveButton';
+import TeamJoinButton from 'components/teams/detail/TeamJoinButton';
 
-function TeamUserHeaderRight({ team, user }) {
+function TeamUserHeaderRight({ institution, team, user }) {
   const [isMember, setIsMember] = useState(false);
 
   function updateIsMember() {
@@ -11,6 +11,10 @@ function TeamUserHeaderRight({ team, user }) {
 
   const onLeft = () => {
     setIsMember(false);
+  };
+
+  const onJoin = () => {
+    setIsMember(true);
   };
 
   useEffect(() => {
@@ -22,8 +26,14 @@ function TeamUserHeaderRight({ team, user }) {
       <TeamLeaveButton team={team} onLeft={onLeft} />
     );
   }
+
   return (
-    <Button onClick={() => true}>Join</Button>
+    <TeamJoinButton
+      isDisabled={(team.visibility === 'private' && (!team.invitedMemberIds.includes(user.id)))
+      || (team.visibility === 'by institution' && (!institution.memberIds.includes(user.id) && !institution.adminIds.includes(user.id)))}
+      team={team}
+      onJoin={onJoin}
+    />
   );
 }
 

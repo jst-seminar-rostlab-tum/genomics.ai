@@ -69,7 +69,7 @@ export default function TeamPage({ sidebarShown }) {
       )}
       replaceHeaderRight={
         (isAdmin && <TeamAdminHeaderRight team={team} setTeam={setTeam} />)
-        || <TeamUserHeaderRight team={team} user={user} />
+        || <TeamUserHeaderRight institution={institution} team={team} user={user} />
       }
     >
       <br />
