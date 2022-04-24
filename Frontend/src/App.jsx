@@ -13,7 +13,7 @@ import { guardedPage } from './shared/utils/common/utils';
 import VisualizationPage from './views/VisualizationPage';
 import PasswordResetPage from './views/PasswordResetPage';
 import { theme } from "./shared/theme/theme"
-import Explore from "./views/Explore"
+import Explore from "./views/Explore/index.jsx"
 
 function App() {
 
