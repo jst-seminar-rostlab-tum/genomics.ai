@@ -1,59 +1,83 @@
 import {IProject, projectModel} from "../models/project";
-import {AddProjectDTO} from "../dtos/project.dto";
+import {AddProjectDTO, UpdateProjectDTO} from "../dtos/project.dto";
 import {ObjectId} from "mongoose";
 
 /**
  *  @class ProjectService
  *
- *  Provides useful methods to access the database and modify projects,
+ *  Provides useful methods to access the database and modify team jobs,
  *  which can be used by the route-controllers.
  */
 export default class ProjectService {
     /**
-     *  Adds given project to the database.
+     *  Search for a team job with the given team id and return if found.
      *
-     *  @param    project
-     *  @returns  projectAdded - the added project
+     *  @param   project_id - the team id to search for
+     *  @returns project job - matched team job to project_id or null
      */
-    static async addProject(project: AddProjectDTO): Promise<IProject> {
-        let projectAdded : (IProject | undefined) = undefined;
-        projectAdded = await projectModel.create(project);
-        return projectAdded;
-    }
-
-    /**
-     *  Search for a project with the given title and return if found.
-     *
-     *  @param   title
-     *  @returns project or null
-     */
-    static async getProjectByTitle(title: string):
+    static async getProjectById(project_id: (ObjectId | string)):
       Promise<( IProject & { _id: ObjectId } | null )> {
-        return await projectModel.findOne({title});
+        return await projectModel.findById(project_id).exec();
     }
 
     /**
-     *  Search for a project with the given project id and return if found.
+     *  Search for a team job with the given uploadId and team owner (userId - optional)
+     *  and return if found.
      *
-     *  @param   projectId
-     *  @returns project - matched proejct to projectId or null
+     *  @param   uploadId
+     *  @param   owner? - userId
+     *  @returns project job or null
      */
-    static async getProjectById(projectId: (ObjectId | string)):
+    static async getProjectByUploadId(uploadId: string, owner?: ObjectId):
       Promise<( IProject & { _id: ObjectId } | null )> {
-        return await projectModel.findById(projectId).exec();
+        return typeof(owner) === 'undefined' ?
+          await projectModel.findOne({ uploadId }).exec() :
+          await projectModel.findOne({ uploadId, owner }).exec();
     }
 
     /**
-     *  Add the given userId to the invitation list of the given project.
+     *  Search for a team job with the given team owner and sort
+     *  in order of the given sort parameter.
      *
-     *  @param   projectId
-     *  @param   userId
-     *  @returns updateDocument
+     *  @param   owner - userId
+     *  @param   sort - order of the sort
+     *  @returns project jobs or null
      */
-    static async addInvitationMemberId(projectId: (ObjectId | string), userId: (ObjectId | string)): Promise<any> {
-        return await projectModel.updateOne(
-            { _id: projectId },
-            { $addToSet: { invitedMemberIds: userId} }
-        );
+    static async getProjectByOwner(user_id: ObjectId, sort: number = 0):
+      Promise<( IProject & { _id: ObjectId } )[]> {
+        return await projectModel.find({owner: user_id}).sort({uploadDate: sort});
+    }
+
+    /**
+     *  Adds given team job to the database.
+     *
+     *  @param    team job
+     *  @returns  projectJobAdded - the added team job
+     */
+    static async addProject(projectJob: AddProjectDTO): Promise<IProject> {
+        let projectJobAdded : (IProject | undefined) = undefined;
+        projectJobAdded = await projectModel.create(projectJob);
+        return projectJobAdded;
+    }
+
+    /**
+     *  Updates the given team job corresponding to the uploadId with the
+     *  update_object.
+     *
+     *  @param uploadId
+     *  @param update_object - includes fields to be updated
+     */
+    static async updateProject(uploadId: string, update_object: UpdateProjectDTO) {
+        await projectModel.updateOne({uploadId}, update_object).exec();
+    }
+
+    /**
+     *  Updates the upload id of the given team job.
+     *
+     *  @param _id
+     *  @param uploadId
+     */
+    static async updateUploadId(_id: ObjectId, uploadId: string) {
+        await projectModel.updateOne({_id}, {uploadId}).exec();
     }
 }

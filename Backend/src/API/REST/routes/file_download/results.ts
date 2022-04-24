@@ -1,7 +1,7 @@
 import check_auth from "../../middleware/check_auth";
 import {ExtRequest} from "../../../../definitions/ext_request";
-import {ProjectJobStatus} from "../../../../database/models/projectJob";
-import ProjectJobService from "../../../../database/services/projectJob.service";
+import {ProjectStatus} from "../../../../database/models/project";
+import ProjectService from "../../../../database/services/project.service";
 import s3 from "../../../../util/s3";
 import express from "express";
 
@@ -14,11 +14,11 @@ export default function download_results_route() {
 
         try {
             if (process.env.S3_BUCKET_NAME && req.user_id) {
-                const job = await ProjectJobService.getProjectJobById(id);
+                const job = await ProjectService.getProjectById(id);
                 if (!job) {
                     return res.status(404).send("Job not found.");
                 }
-                if (job.status != ProjectJobStatus[ProjectJobStatus.DONE]) {
+                if (job.status != ProjectStatus[ProjectStatus.DONE]) {
                     return res.status(400).send("Job not completed.");
                 }
                 if (job.owner != req.user_id) {
