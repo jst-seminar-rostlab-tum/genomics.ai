@@ -1,4 +1,5 @@
 import { Box } from '@mui/material';
+import GeneMapperCategories from 'components/GeneMapper/Categories';
 import GeneMapperResultHeader from 'components/GeneMapper/ResultHeader';
 import React, { useCallback } from 'react';
 
@@ -12,6 +13,7 @@ function GeneMapperResultView({ sidebarShown }) {
   return (
     <Box sx={{ pl: paddingL, pr: '20px' }}>
       <GeneMapperResultHeader projectName="Demo Projectname" />
+      <GeneMapperCategories categories={['Cell type', 'Batch']} />
     </Box>
   );
 }
