@@ -1,5 +1,5 @@
 import {IInstitution, institutionModel} from "../models/institution";
-import {AddInstitutionDTO} from "../dtos/institution.dto";
+import {AddInstitutionDTO, UpdateInstitutionDTO} from "../dtos/institution.dto";
 import {ObjectId} from "mongoose";
 
 /**
@@ -30,5 +30,26 @@ export default class InstitutionService {
     static async getInstitutionByName(name: string):
       Promise<( IInstitution & { _id: ObjectId } | null )> {
         return await institutionModel.findOne({name});
+    }
+
+    /**
+     *  Search for an institution with the given id and return if found.
+     *
+     *  @param   id - the institution id to search for
+     *  @returns institution - matching institution for id or null
+     */
+    static async getInstitutionById(id: (ObjectId | string)): Promise<(IInstitution & {_id:ObjectId}) | null> {
+        return await institutionModel.findById({id});
+    }
+
+    /**
+     *  Updates the given institution corresponding to the id with the
+     *  update_object.
+     *
+     *  @param institution_id
+     *  @param update_object - includes fields to be updated
+     */
+    static async updateInstitution(institution_id: (ObjectId | string), update_object: UpdateInstitutionDTO) {
+        await institutionModel.updateOne({_id: institution_id}, update_object);
     }
 }

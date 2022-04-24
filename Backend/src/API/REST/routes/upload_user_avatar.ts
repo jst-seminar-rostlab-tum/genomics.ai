@@ -32,7 +32,7 @@ export default function upload_user_avatar_route() {
                         console.error(e);
                     }
                 } else {
-                    res.status(401).send("Unauthorized");
+                    res.status(401).send("Not authenticated");
                 }
             } else res.status(500).send("S3-BucketName is not set");
         } catch (err) {
