@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect } from "react";
-import { Box, Stack, Tabs, Tab, CircularProgress } from "@mui/material";
+import { Box, Stack, CircularProgress } from "@mui/material";
 import {
   useHistory,
   useLocation,
@@ -9,15 +9,10 @@ import {
 
 import styles from "./search.module.css";
 import SearchBar from "components/Search/SearchBar";
-import SearchResultList from "components/Search/SearchResultList";
+import SearchTabs from "components/Search/SearchTabs";
+import SearchContent from "components/Search/SearchContent";
+import { setTypeInUrl } from "shared/utils/common/utils";
 import querySearch from "shared/mock/search";
-import TeamCard from "components/Search/SearchResultList/TeamCard";
-import InstitutionCard from "components/Search/SearchResultList/InstitutionCard";
-import UserCard from "components/Search/SearchResultList/UserCard";
-import ProjectCard from "components/Search/SearchResultList/ProjectCard";
-import ResultStatus from "components/Search/ResultStatus";
-import { Switch } from "react-router-dom";
-import { Route } from "react-router-dom";
 
 const Search = ({ sidebarShown }) => {
   /* Booleans */
@@ -64,14 +59,6 @@ const Search = ({ sidebarShown }) => {
     fetchSearchHandler(type, searchedKeyword);
   };
 
-  const renderSearchResultsList = (listItemWrapper) => {
-    return (
-      <SearchResultList
-        listItemWrapper={listItemWrapper}
-        searchedData={searchedData}
-      />
-    );
-  };
 
   return (
     <Stack direction="column" sx={{ paddingLeft: paddingL }}>
@@ -83,39 +70,18 @@ const Search = ({ sidebarShown }) => {
             searchedKeywordChangeHandler={searchedKeywordChangeHandler}
             submitSearch={submitSearch}
           />
-          <Tabs value={type} onChange={changedTabHandler}>
-            <Tab label="Teams" value="teams" />
-            <Tab label="Institutions" value="institutions" />
-            <Tab label="Users" value="users" />
-            <Tab label="Projects" value="projects" />
-          </Tabs>
+          <SearchTabs value={type} onChange={changedTabHandler} />
           {isLoading && (
             <Box sx={{ display: "flex", justifyContent: "center" }}>
               <CircularProgress />
             </Box>
           )}
           {!isLoading && (
-            <React.Fragment>
-              <ResultStatus
-                count={searchedData.length}
-                searchedEntity={type}
-                searchedKeyword={submittedKeyword}
-              />
-              <Switch>
-                <Route path={setTypeInUrl(path, "teams")}>
-                  {renderSearchResultsList(TeamCard)}
-                </Route>
-                <Route path={setTypeInUrl(path, "institutions")}>
-                  {renderSearchResultsList(InstitutionCard)}
-                </Route>
-                <Route path={setTypeInUrl(path, "users")}>
-                  {renderSearchResultsList(UserCard)}
-                </Route>
-                <Route path={setTypeInUrl(path, "projects")}>
-                  {renderSearchResultsList(ProjectCard)}
-                </Route>
-              </Switch>
-            </React.Fragment>
+            <SearchContent
+              searchedData={searchedData}
+              type={type}
+              submittedKeyword={submittedKeyword}
+            />
           )}
         </Box>
       </div>
@@ -123,12 +89,5 @@ const Search = ({ sidebarShown }) => {
   );
 };
 
-function createUrl(path, pathParam, value) {
-  return path.replace(`:${pathParam}`, value);
-}
-
-function setTypeInUrl(path, value) {
-  return createUrl(path, "type", value);
-}
 
 export default Search;

@@ -28,3 +28,12 @@ export function getAuthAndJsonHeader() {
     'content-type': 'application/json',
   };
 }
+
+
+export function createUrl(path, pathParam, value) {
+  return path.replace(`:${pathParam}`, value);
+}
+
+export function setTypeInUrl(path, value) {
+  return createUrl(path, "type", value);
+}
