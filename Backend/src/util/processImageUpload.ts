@@ -12,17 +12,38 @@ export default async function processImageUpload(
 ): Promise<ImageUploadResult> {
     let contentType = req.is(["image/png", "image/jpeg"]);
     if (!contentType) {
-        return { success: false, status: 400, message: "Invalid image format, only PNG and JPG are supported", error: new Error(`Invalid image format: ${req.headers["content-type"]}`) };
+        return {
+            success: false,
+            status: 400,
+            message: "Invalid image format, only PNG and JPG are supported",
+            error: new Error(`Invalid image format: ${req.headers["content-type"]}`)
+        };
     }
     let croppedImage: Buffer, format: string;
     try {
-        const result = await sharp(req.body)
-            .resize(width, height, {
+        const image = sharp(req.body);
+        const metadata = await image.metadata();
+        const targetRatio = width / height;
+        const maxWidth = width;
+        const maxHeight = height;
+        let targetWidth = targetRatio * metadata.height!;
+        let targetHeight = metadata.height!;
+        let borderX = (metadata.width! - targetWidth) / 2;
+        let borderY = 0;
+        if (metadata.width! < targetWidth) {
+            targetWidth = metadata.width!;
+            targetHeight = metadata.width! / targetRatio;
+            borderX = 0;
+            borderY = (metadata.height! - targetHeight) / 2;
+        }
+        let result = await image
+            .extract({ left: Math.floor(borderX), top: Math.floor(borderY), width: Math.ceil(targetWidth), height: Math.ceil(targetHeight) })
+            .resize(maxWidth, maxHeight, {
                 fit: "cover",
                 withoutEnlargement: true
             })
             .toBuffer({ resolveWithObject: true });
-        
+
         croppedImage = result.data;
         format = result.info.format;
     } catch (e) {

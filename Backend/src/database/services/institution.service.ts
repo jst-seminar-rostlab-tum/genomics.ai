@@ -39,7 +39,7 @@ export default class InstitutionService {
      *  @returns institution - matching institution for id or null
      */
     static async getInstitutionById(id: (ObjectId | string)): Promise<(IInstitution & {_id:ObjectId}) | null> {
-        return await institutionModel.findById({id});
+        return await institutionModel.findById(id);
     }
 
     /**
