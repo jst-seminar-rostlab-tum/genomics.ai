@@ -1,13 +1,9 @@
-import { ArrowBackIos, InfoOutlined } from '@mui/icons-material';
-import ShareIcon from '@mui/icons-material/Share';
-import {
-  Button, Toolbar, Typography,
-  Box,
-  IconButton,
-  Divider,
-} from '@mui/material';
+import { Box } from '@mui/material';
+import GeneMapperResultHeader from 'components/GeneMapper/ResultHeader';
 import React, { useCallback } from 'react';
+
 /**
+ * Shows the UMAP visualization for a given project.
  * @param sidebarShown set true if sidebar is open, false otherwise
  */
 function GeneMapperResultView({ sidebarShown }) {
@@ -15,21 +11,7 @@ function GeneMapperResultView({ sidebarShown }) {
 
   return (
     <Box sx={{ pl: paddingL, pr: '20px' }}>
-      <Toolbar disableGutters>
-        <Button startIcon={<ArrowBackIos fontSize="small" />} size="small" sx={{ mr: 2 }}>
-          <Typography variant="caption" disableGutters>Back to projects</Typography>
-        </Button>
-        <Typography variant="h6">
-          Projectname
-        </Typography>
-        <IconButton aria-label="learn more" size="small">
-          <InfoOutlined fontSize="small" />
-        </IconButton>
-        <IconButton aria-label="share">
-          <ShareIcon />
-        </IconButton>
-      </Toolbar>
-      <Divider />
+      <GeneMapperResultHeader projectName="Demo Projectname" />
     </Box>
   );
 }
