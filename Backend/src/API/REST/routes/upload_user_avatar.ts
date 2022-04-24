@@ -5,37 +5,32 @@ import s3 from "../../../util/s3";
 import express from "express";
 import UserService from "../../../database/services/user.service";
 import { UpdateUserDTO } from "../../../database/dtos/user.dto";
+import sharp from "sharp";
+import processImageUpload from "../../../util/processImageUpload";
 
 export default function upload_user_avatar_route() {
     let router = express.Router();
     router.post("/upload_user_avatar", check_auth(), async (req: ExtRequest, res) => {
-        let data = req.body;
         try {
-            //TODO: check if data is valid image
-            //TODO: handle different image files
             if (process.env.S3_PICTURE_BUCKET_NAME) {
                 if (req.user_id) {
-                    const params = {
-                        Bucket: process.env.S3_PICTURE_BUCKET_NAME,
-                        Key: `user_${req.user_id}.png`,
-                        Body: data,
-                        ContentType: "image/png"
-                    };
-                    let objectUrl = await new Promise<string>(function (resolve, reject) {
-                        s3.upload(params, undefined, function (err, uploadData) {
-                            if (err) {
-                                console.error(err, err.stack || "Error while saving avatar");
-                                reject(err);
-                            } else {
-                                resolve(uploadData.Location);
-                            }
-                        });
-                    });
-                    const userUpdate: UpdateUserDTO= {
-                        avatarUrl: objectUrl
-                    };
-                    await UserService.updateUser(req.user_id,userUpdate)
-                    res.status(200).send(objectUrl);
+                    try {
+                        let result = await processImageUpload(req, 400, 400, process.env.S3_PICTURE_BUCKET_NAME,`user_${req.user_id}`);
+                        if (result.success === true) {
+                            const userUpdate: UpdateUserDTO = {
+                                avatarUrl: result.objectUrl
+                            };
+                            await UserService.updateUser(req.user_id, userUpdate);
+                            res.status(200).send(result.objectUrl);
+                        } else {
+                            const {status,message,error} = result;
+                            res.status(status).send(message);
+                            if(error)
+                                throw error;
+                        }
+                    } catch (e) {
+                        console.error(e);
+                    }
                 } else {
                     res.status(401).send("Unauthorized");
                 }
