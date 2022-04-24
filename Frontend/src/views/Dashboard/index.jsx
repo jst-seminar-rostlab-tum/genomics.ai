@@ -28,11 +28,11 @@ function Dashboard({ sidebarShown }) {
         <Container className={styles.fileUpload}>
           <Uploader />
         </Container>
-
         <Container className={styles.fileQueue}>
           <StatusQueue />
         </Container>
       </Stack>
+ 
     </Stack>
   );
 }
