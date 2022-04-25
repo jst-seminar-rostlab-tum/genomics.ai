@@ -1,4 +1,5 @@
 import express, {Router} from "express";
+import ProjectService from "../../../../database/services/project.service";
 import TeamService from "../../../../database/services/team.service";
 import { AddTeamDTO } from "../../../../database/dtos/team.dto";
 import UserService from "../../../../database/services/user.service";
@@ -120,4 +121,47 @@ const invite_person_to_a_team = (): Router => {
     return router;
 }
 
-export { create_team, invite_person_to_a_team }
+const add_project_to_team = (): Router => {
+    let router = express.Router();
+
+    router.put("/teams/:id/add_project", check_auth(), async (req: any, res) => {
+        try {
+            const {projectId}: {projectId: ObjectId}  = req.body;
+            const teamId: string = req.params.id;
+
+            if(!(projectId && teamId))
+                return res.status(400).send("Missing parameters.");
+
+            const project = await ProjectService.getProjectById(projectId);
+            if (! project )
+                return res.status(400).send("Project to be added does not exist.");
+
+            const team = await TeamService.getTeamById(teamId);
+            if (! team)
+                return res.status(400).send("Team does not exist.");
+
+            try {
+                const team_updated = await TeamService.addProject(teamId, projectId);
+
+                if (!team_updated)
+                    return res.status(400).send("Error when adding the project to project list of the team.");
+
+                return res.status(200).json("The project is successfully added.");
+            } catch(err) {
+                console.error("Error when trying to add the project to a team.")
+                console.error(JSON.stringify(err));
+                console.error(err);
+                return res.status(500).send("Unable to add the project to the team.");
+            }
+        } catch(e) {
+            /* Added since a test proved that if user sends a request with incorrect parameter names, it is able to shutdown the server. */
+            console.error("Error in invite_person_to_a_project()")
+            console.error(JSON.stringify(e));
+            console.error(e);
+            return res.status(500).send("Internal error.");
+        }
+    })
+    return router;
+}
+
+export { create_team, invite_person_to_a_team, add_project_to_team };

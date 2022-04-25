@@ -56,4 +56,18 @@ export default class TeamService {
             { $addToSet: { invitedMemberIds: userId} }
         );
     }
+
+    /**
+     *  Add the given projectId to the project list of the given team.
+     *
+     *  @param   teamId
+     *  @param   projectId
+     *  @returns updateDocument
+     */
+    static async addProject(teamId: (ObjectId | string), projectId: (ObjectId | string)): Promise<any> {
+        return await teamModel.updateOne(
+            { _id: teamId },
+            { $addToSet: { projects: projectId} }
+        );
+    }
 }
