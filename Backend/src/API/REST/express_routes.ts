@@ -9,8 +9,8 @@ import initiate_processing_route from "./routes/initiate_processing";
 import abort_processing_route from "./routes/abort_processing";
 
 import get_profile_route from "./routes/get_profile";
-import get_job_route from "./routes/get_job";
-import get_jobs_route from "./routes/get_jobs";
+import get_project_route from "./routes/get_project";
+import get_projects_route from "./routes/get_projects";
 import get_unauthorized_users_route from "./routes/get_unauthorized_users";
 import authorize_user_route from "./routes/authorize_user";
 import verify_email_route from "./routes/verify_email";
@@ -21,9 +21,11 @@ import upload_complete_upload_route from "./routes/file_upload/complete_upload";
 import upload_start_upload_route from "./routes/file_upload/start_upload";
 import upload_get_upload_url_route from "./routes/file_upload/get_upload_url";
 import download_results_route from "./routes/file_download/results";
-import {test_institution, create_institution} from "./routes/institution/institutionRouter";
 import upload_user_avatar_route from "./routes/upload_user_avatar";
-import {create_project, invite_person_to_a_project} from "./routes/project/projectRouter";
+
+import {test_institution, create_institution, invite_to_institution} from "./routes/institution/institutionRouter";
+import {create_team, invite_person_to_a_team} from "./routes/team/teamRouter";
+
 import { upload_institution_backgroundpicture_route, upload_institution_profilepicture_route } from "./routes/upload_institution_pictures";
 
 // setup the websocket-server on top of the http_server
@@ -40,8 +42,8 @@ export function express_routes(this: REST_Host): Router {
     // authenticated routes
     this.expressApp.use(update_profile_route());
     this.expressApp.use(get_profile_route());
-    this.expressApp.use(get_job_route());
-    this.expressApp.use(get_jobs_route());
+    this.expressApp.use(get_project_route());
+    this.expressApp.use(get_projects_route());
     this.expressApp.use(upload_user_avatar_route());
 
     // administrator routes
@@ -64,13 +66,14 @@ export function express_routes(this: REST_Host): Router {
 
     // institution routes
     this.expressApp.use(create_institution());
+    this.expressApp.use(invite_to_institution());
     this.expressApp.use(test_institution());
     this.expressApp.use(upload_institution_profilepicture_route());
     this.expressApp.use(upload_institution_backgroundpicture_route());
 
-    // project routes
-    this.expressApp.use(create_project());
-    this.expressApp.use(invite_person_to_a_project());
+    // team routes
+    this.expressApp.use(create_team());
+    this.expressApp.use(invite_person_to_a_team());
 
     this.expressApp.use(/^.*_ah.*$/, (req, res) => res.status(200).send()) // always tell google everything is fine
     this.expressApp.use((req, res) => res.status(404).send("Not found."));

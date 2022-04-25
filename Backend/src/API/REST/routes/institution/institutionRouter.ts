@@ -1,7 +1,11 @@
 import express, {Router} from "express";
+
+import {Schema} from "mongoose";
+
 import InstitutionService from "../../../../database/services/institution.service";
 import {AddInstitutionDTO} from "../../../../database/dtos/institution.dto";
 import UserService from "../../../../database/services/user.service";
+
 import check_auth from "../../middleware/check_auth";
 
 const create_institution = () : Router => {
@@ -46,6 +50,43 @@ const create_institution = () : Router => {
     return router;
 }
 
+const invite_to_institution = () : Router => {
+    let router = express.Router();
+
+    router
+        .put("/institutions/:id/invite", check_auth(), async (req: any, res) => {
+
+            const { userId }: {userId: Schema.Types.ObjectId} = req.body;
+            const institutionId_to_modify = req.params.id;
+
+            try {
+
+                if (!(userId))
+                return res.status(400).send("Missing parameter");
+
+                if (! await UserService.getUserById(userId))
+                    return res.status(404).send("User that you are trying to invite does not exists!");      
+
+                if (await InstitutionService.findMemeberById(userId,institutionId_to_modify))
+                    return res.status(404).send("User that you are trying to invite to this institution already is an invited member or is a member!");      
+
+                const updatedInstitution = await  InstitutionService.inviteToInstitution(institutionId_to_modify, userId)
+
+                if(updatedInstitution) {
+                    res.json(updatedInstitution);
+                } else {
+                    return res.status(409).send("Could not invite person to institution!");
+                }
+
+            } catch (error) {
+                return res.status(500).send("Something went wrong: "+ error)
+            }
+
+        })
+
+    return router;
+}
+
 const test_institution = () : Router => {
     let router = express.Router();
 
@@ -57,4 +98,4 @@ const test_institution = () : Router => {
     return router;
 }
 
-export { create_institution, test_institution }
+export { create_institution, test_institution, invite_to_institution }
