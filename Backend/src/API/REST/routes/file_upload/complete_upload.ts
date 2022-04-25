@@ -4,8 +4,8 @@ import {AWSError, S3} from "aws-sdk";
 
 import check_auth from "../../middleware/check_auth";
 import {ExtRequest} from "../../../../definitions/ext_request";
-import ProjectJobService from "../../../../database/services/projectJob.service";
-import {UpdateProjectJobDTO} from "../../../../database/dtos/projectJob.dto";
+import ProjectService from "../../../../database/services/project.service";
+import {UpdateProjectDTO} from "../../../../database/dtos/project.dto";
 import s3 from "../../../../util/s3";
 import {GoogleAuth} from "google-auth-library";
 
@@ -23,7 +23,7 @@ export default function upload_complete_upload_route() {
                 return res.status(500).send("Server was not set up correctly");
 
             let project = req.user_id === undefined ? null :
-              await ProjectJobService.getProjectJobByUploadId(String(uploadId), req.user_id);
+              await ProjectService.getProjectByUploadId(String(uploadId), req.user_id);
 
             if (!project)
                 return res.status(400).send("Project could not be found");
@@ -47,11 +47,11 @@ export default function upload_complete_upload_route() {
                 s3.headObject(request)
                     .promise()
                     .then(async result => {
-                        const update_object: UpdateProjectJobDTO = {
+                        const update_object: UpdateProjectDTO = {
                             fileSize: result.ContentLength,
                             status: "UPLOAD_COMPLETE"
                         };
-                        await ProjectJobService.updateProjectJob(params.UploadId, update_object);
+                        await ProjectService.updateProject(params.UploadId, update_object);
                     })
                     .then(async () => {
                         const url = `${process.env.CLOUD_RUN_URL}/run_classifier?uploadId=${uploadId}`;
@@ -65,8 +65,8 @@ export default function upload_complete_upload_route() {
                             Expires: 60 * 60 * 24 * 7 - 1 // one week minus one second
                         }
                         let presignedUrl = await s3.getSignedUrlPromise('getObject', params2);
-                        const update_object: UpdateProjectJobDTO = { location: presignedUrl };
-                        await ProjectJobService.updateProjectJob(params.UploadId, update_object);
+                        const update_object: UpdateProjectDTO = { location: presignedUrl };
+                        await ProjectService.updateProject(params.UploadId, update_object);
 
                         res.status(200).json({project: project});
                     })
