@@ -55,15 +55,15 @@ function PopUpContent(props) {
     setAnnotationDetails((prevState) => ({ ...prevState, [e.target.id]: e.target.value }));
   }, [annotationDetails]);
 
-  function addTeamWithAnnotation(pName, newAnnot) {
-    // create new team
+  function addProjectWithAnnotation(pName, newAnnot) {
+    // create new project
     console.log('PNAME: ');
     const newProj = {
       name: pName,
       // path: `/${pName}`,   --commented out the line to the left in order to get rid of the error
       subNav: [newAnnot],
     };
-    // add new team
+    // add new project
     setProjects((oldProjectList) => [...oldProjectList, newProj]);
   }
 
@@ -77,7 +77,7 @@ function PopUpContent(props) {
   // Button: Add Annotation
   const addNewCelltypeAnnotation = useCallback(() => {
     console.log(annotationDetails.projectName);
-    // choose team name depending on switch
+    // choose project name depending on switch
     const projName = !newProject && annotationDetails.newProjectName !== ''
       ? annotationDetails.newProjectName : annotationDetails.projectName;
 
@@ -89,14 +89,14 @@ function PopUpContent(props) {
       // --commented out the line to the left in order to get rid of the error
     };
 
-    // add new annot. to existing team or create new team with new annot. as first element
+    // add new annot. to existing project or create new project with new annot. as first element
     if (projectList.filter((e) => e.name === projName).length === 0) {
-      addTeamWithAnnotation(projName, newAnnot);
+      addProjectWithAnnotation(projName, newAnnot);
     } else {
       addAnnotation(projName, newAnnot);
     }
     // TODO: Delete corresponding element in Queue
-    // TODO: update profile info with new annot. (and team)
+    // TODO: update profile info with new annot. (and project)
     // close pop up
     props.setShowPopup(false);
   }, [projectList]);
