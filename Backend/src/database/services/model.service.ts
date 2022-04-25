@@ -3,7 +3,7 @@ import {ObjectId} from "mongoose";
 
 export default class ModelService {
     /**
-     *  Search for a team with the given team id and return if found.
+     *  Search for a model with the given model id and return if found.
      *
      *  @param   modelId
      *  @returns model - matched model to modelId or null
