@@ -10,13 +10,15 @@ import sys
 import getopt
 import torch
 import tempfile
-import utils
 import logging, sys
 import argparse
 import scanpy as sc
 import scarches as sca
 from scarches.dataset.trvae.data_handling import remove_sparsity
 import matplotlib.pyplot as plt
+import sys
+sys.path.append('../utils/')
+import utils
 
 config = {}
 
@@ -33,15 +35,19 @@ def get_from_config(key):
 # python3.9 scVI.py --input data/pancreas_normalized.h5ad -t -q
 
 
-def setup():  # Set up the warnings filter an the figure parameters
-
+def setup():
+    """
+    Set up the warnings filter and the figure parameters
+    :return:
+    """
     warnings.simplefilter(action='ignore', category=FutureWarning)
     warnings.simplefilter(action='ignore', category=UserWarning)
-    sc.settings.set_figure_params(dpi=200, frameon=False)  # Set resolution/size, styling and format of figures.
-    sc.set_figure_params(dpi=200, figsize=(
-        4, 4))  # https://scanpy.readthedocs.io/en/stable/generated/scanpy.set_figure_params.html
-    torch.set_printoptions(precision=3, sci_mode=False,
-                           edgeitems=7)  # https://pytorch.org/docs/stable/generated/torch.set_printoptions.html
+    #  Set resolution/size, styling and format of figures.
+    sc.settings.set_figure_params(dpi=200, frameon=False)
+    # https://scanpy.readthedocs.io/en/stable/generated/scanpy.set_figure_params.html
+    sc.set_figure_params(dpi=200, figsize=(4, 4))
+    # https://pytorch.org/docs/stable/generated/torch.set_printoptions.html
+    torch.set_printoptions(precision=3, sci_mode=False, edgeitems=7)
 
 
 def pre_process_data():
@@ -53,9 +59,13 @@ def pre_process_data():
     return source_adata, target_adata
 
 
-def create_scVI_model(source_adata,
-                      target_adata):  # if there is already a pretrained model, nothing happens otherwise a new one will be trained
-
+def create_scVI_model(source_adata, target_adata):
+    """
+    if there is already a pretrained model, nothing happens otherwise a new one will be trained
+    :param source_adata:
+    :param target_adata:
+    :return:
+    """
     if get_from_config('pre_trained_scVI'):
         return sca.models.SCVI.load_query_data(
             target_adata,
@@ -63,27 +73,30 @@ def create_scVI_model(source_adata,
             freeze_dropout=True,
         )
     else:
-
         setup_anndata(source_adata)
-
         vae = get_model(source_adata)
-
         vae.train(max_epochs=get_from_config('scvi_max_epochs'))
-
         compute_latent(vae, source_adata)
-
         vae.save(get_from_config('model_path'), overwrite=True)
-
         return vae
 
 
-def setup_anndata(anndata):  # Just because it's prettier that way
+def setup_anndata(anndata):
+    """
+    Just because it's prettier that way
+    :param anndata:
+    :return:
+    """
     sca.models.SCVI.setup_anndata(anndata, batch_key=get_from_config('condition_key'),
                                   labels_key=get_from_config('cell_type_key'))
 
 
-def get_model(anndata):  # Just because it's prettier that way
-
+def get_model(anndata):
+    """
+    Just because it's prettier that way
+    :param anndata:
+    :return:
+    """
     return sca.models.SCVI(
         anndata,
         n_layers=get_from_config('n_layers'),
@@ -94,8 +107,13 @@ def get_model(anndata):  # Just because it's prettier that way
     )
 
 
-def compute_latent(model, adata):  # computes the latent of a model with specific adata
-
+def compute_latent(model, adata):
+    """
+    computes the latent of a model with specific adata
+    :param model:
+    :param adata:
+    :return:
+    """
     reference_latent = sc.AnnData(model.get_latent_representation(adata=adata))
     reference_latent.obs["cell_type"] = adata.obs[get_from_config('cell_type_key')].tolist()
     reference_latent.obs["batch"] = adata.obs[get_from_config('condition_key')].tolist()
@@ -111,8 +129,12 @@ def compute_latent(model, adata):  # computes the latent of a model with specifi
     return reference_latent
 
 
-def compute_query(anndata):  # trains the model on a query and saves the result
-
+def compute_query(anndata):
+    """
+    trains the model on a query and saves the result
+    :param anndata:
+    :return:
+    """
     model = sca.models.SCVI.load_query_data(
         anndata,
         get_from_config('model_path'),
@@ -133,9 +155,14 @@ def compute_query(anndata):  # trains the model on a query and saves the result
     return model
 
 
-def compute_full_latent(source_adata, target_adata,
-                        model):  # basically just takes to datasets, concatenates them and then computes the latent and saves the result
-
+def compute_full_latent(source_adata, target_adata, model):
+    """
+    basically just takes to datasets, concatenates them and then computes the latent and saves the result
+    :param source_adata:
+    :param target_adata:
+    :param model:
+    :return:
+    """
     full_latent = compute_latent(model, source_adata.concatenate(target_adata))
 
     if get_from_config('debug'):
@@ -147,15 +174,9 @@ def compute_full_latent(source_adata, target_adata,
 
 def compute_scVI(new_config):
     set_config(new_config)
-
     setup()
-
     source_adata, target_adata = pre_process_data()
-
     create_scVI_model(source_adata, target_adata)
-
     model = compute_query(target_adata)
-
     compute_full_latent(source_adata, target_adata, model)
-
     model.save(get_from_config('surgery_path'), overwrite=True)

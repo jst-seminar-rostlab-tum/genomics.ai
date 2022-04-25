@@ -7,14 +7,19 @@ from scarches.dataset.trvae.data_handling import remove_sparsity
 from matplotlib import pyplot as plt
 import numpy as np
 import torch
+import sys
+
+sys.path.append('../utils/')
 import utils
 import logging
 
-config = None
+config = {}
 
 
 def get_from_config(key):
-    return config[key]
+    if key in config:
+        return config[key]
+    return None
 
 
 # url = 'https://drive.google.com/uc?id=1ehxgfHTsMZXy6YzlFKGJOsBKQ5rrvMnd'
@@ -203,16 +208,8 @@ def compute_scANVI(configP):
     #                                                   if not get_from_config('pre_trained_scANVI'): bin mir bei dir nicht sicher, was alles zu was gehöhrt
     set_config(configP)  # sets the config in scVI
 
-    if get_from_config('debug'):
-        logger.debug(source_adata)
-        logger.debug(target_adata)
-
     vae = create_scVI_model(source_adata,
                             target_adata)  # kann man sehen ob es schon ein scVI oder ein scANVI model gibt?
-
-    if get_from_config('debug'):
-        logger.debug(source_adata)
-        logger.debug(target_adata)
 
     # if args.train:
     # vae.train(max_epochs=get_from_config('scvi_max_epochs'))

@@ -29,7 +29,7 @@ expect paths that we can access to store the output, an example request body loo
 ```
 The given configuration is then merged with our default configuration and given to the 
 models. The models then store the computed results under `generated_output_path` and 
-our REST API returns the HTTP status code 200.
+our REST API returns the used configuration and computes the results asynchronously.
 
 ### Deployment
 The Dockerfile in this directory can be used to build a deployable API image containing

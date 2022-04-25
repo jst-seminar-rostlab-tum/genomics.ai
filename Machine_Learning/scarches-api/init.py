@@ -1,4 +1,3 @@
-from distutils.command.config import config
 from scANVI.scANVI import query
 from scVI.scVI import compute_scVI
 from scANVI.scANVI import compute_scANVI
@@ -45,8 +44,10 @@ def default_config():
     }
 
 
-def get_from_config(key):
-    return config[key]
+def get_from_config(configuration, key):
+    if key in configuration:
+        return configuration[key]
+    return None
 
 
 def merge_configs(user_config):
@@ -61,7 +62,7 @@ def merge_configs(user_config):
 # def query(reference_dataset, query_dataset, model_path, surgery_path,  model_type):
 def query(user_config):
     configuration = merge_configs(user_config)
-    model = get_from_config('model')
+    model = get_from_config(configuration, 'model')
     if model == 'scVI':
         compute_scVI(configuration)
     elif model == 'scANVI':
@@ -70,8 +71,7 @@ def query(user_config):
         # compute_totalVI()
         print("not supported yet")
     else:
-        raise ValueError(get_from_config('model') + ' is not one of the supported models')
-
+        raise ValueError(model + ' is not one of the supported models')
 
 # query('data/ref/source_data.h5ad', 'data/query/target_data.h5ad', 'data/model', 'data/surgery/', 'scVI')
-#query(None)
+# query(None)

@@ -1,14 +1,18 @@
 from flask import Flask, request
 import os
 import init as scarches
+from threading import Thread
 app = Flask(__name__)
 
 
 @app.route('/query', methods=['POST'])
 def query():
     config = request.get_json(force=True)
-    scarches.query(config)
-    return "computed", 200
+    actual_config = scarches.merge_configs(config)
+    print("returning")
+    thread = Thread(target=scarches.query, args=(config,))
+    thread.start()
+    return scarches.merge_configs(config), 200
 
 
 @app.route("/liveness")
