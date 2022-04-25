@@ -22,6 +22,8 @@ export interface IProject extends Document {
     status: string;
     resultName: string;
     resultSize: number;
+    atlasId: Schema.Types.ObjectId;
+    modelId: Schema.Types.ObjectId;
 
     teamId: Schema.Types.ObjectId
 }

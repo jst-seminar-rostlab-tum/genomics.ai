@@ -25,6 +25,8 @@ import download_results_route from "./routes/file_download/results";
 import {test_institution, create_institution, invite_to_institution} from "./routes/institution/institutionRouter";
 import {create_team, invite_person_to_a_team, add_project_to_team} from "./routes/team/teamRouter";
 import {get_teams_of_user} from "./routes/user/userRouter";
+import {get_userProjects} from "./routes/projects/projectRouter"
+import {get_model_details} from "./routes/model/modelRouter"
 
 // setup the websocket-server on top of the http_server
 export function express_routes(this: REST_Host): Router {
@@ -73,6 +75,12 @@ export function express_routes(this: REST_Host): Router {
 
     // user routes
     this.expressApp.use(get_teams_of_user());
+
+    // project routes
+    this.expressApp.use(get_userProjects());
+
+    // model routes
+    this.expressApp.use(get_model_details());
 
     this.expressApp.use(/^.*_ah.*$/, (req, res) => res.status(200).send()) // always tell google everything is fine
     this.expressApp.use((req, res) => res.status(404).send("Not found."));
