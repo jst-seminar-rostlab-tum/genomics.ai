@@ -12,6 +12,8 @@ import { getTeam } from 'shared/services/mock/teams';
 import getUser from 'shared/services/mock/user';
 import { getInstitution, queryIsAdminInstitutions } from 'shared/services/mock/institutions';
 import TextField from '@mui/material/TextField';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import Fab from '@mui/material/Fab';
 
 export default function TeamPage({ sidebarShown }) {
   const { id } = useParams();
@@ -105,6 +107,20 @@ export default function TeamPage({ sidebarShown }) {
         <hr />
         <TeamMemberList team={team} />
       </section>
+      <Fab
+        onClick={() => {
+          alert('invite member');
+        }}
+        color="primary"
+        aria-label="add"
+        sx={{
+          position: 'fixed',
+          bottom: '3%',
+          right: '2%',
+        }}
+      >
+        <PersonAddIcon />
+      </Fab>
     </HeaderView>
   );
 }
