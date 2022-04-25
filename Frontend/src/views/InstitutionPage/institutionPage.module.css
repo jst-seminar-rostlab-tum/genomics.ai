@@ -5,3 +5,8 @@
 .cardSpacing {
     margin-bottom: 16px;
 }
+
+.container {
+    text-align: center;
+    justify-content: center;
+}

@@ -13,7 +13,7 @@ export async function createInstitution(name, description) {
     profilePictureURL: null,
     backgroundPictureURL: null,
     adminIds: [1], // TODO: make sure that the backend puts my user ID here
-    memberIds: [2,3],
+    memberIds: [],
   };
 }
 
@@ -24,7 +24,7 @@ const testInstitutions = [
     country: 'Germany',
     description: 'Test',
     profilePictureURL: 'https://www.hzdr.de/db/Pic?pOid=55058',
-    backgroundPictureURL: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjsC9c9x8ABK8CXkzrf1cAAAAASUVORK5CYII=',
+    backgroundPictureURL: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Helmholtz_Zentrum_M%C3%BCnchen.jpg/1200px-Helmholtz_Zentrum_M%C3%BCnchen.jpg',
     adminIds: [1],
     memberIds: [2, 3],
   },
@@ -32,8 +32,8 @@ const testInstitutions = [
     id: 2,
     name: 'Technische Universität München',
     country: 'Germany',
-    profilePictureURL: 'https://scalings.eu/wp-content/uploads/2019/11/tum-logo.png',
-    backgroundPictureURL: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjsC9c9x8ABK8CXkzrf1cAAAAASUVORK5CYII=',
+    profilePictureURL: 'https://upload.wikimedia.org/wikipedia/commons/b/ba/Tum_logo.gif',
+    backgroundPictureURL: 'https://www.in.tum.de/fileadmin/_processed_/5/5/csm_2006_1015Bild0136_9dc504e910.jpg',
     adminIds: [1],
     memberIds: [2, 3, 4, 5],
   },
