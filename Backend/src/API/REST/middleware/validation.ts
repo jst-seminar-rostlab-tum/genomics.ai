@@ -7,8 +7,13 @@ const ajv = new Ajv();
 for (const [path, pathObj] of Object.entries(swaggerDocument.paths)) {
   for (const [method, methodObj] of Object.entries(pathObj)) {
     const schemaName = constructSchemaName(path, method);
-    const schema = methodObj.requestBody.content["application/json"].schema;
-    ajv.addSchema(schema, schemaName).getSchema(schemaName);
+
+    const reqBody = (methodObj as any).requestBody;
+
+    if (!reqBody) continue;
+
+    const schema = reqBody.content["application/json"].schema;
+    if (schema) ajv.addSchema(schema, schemaName).getSchema(schemaName);
   }
 }
 

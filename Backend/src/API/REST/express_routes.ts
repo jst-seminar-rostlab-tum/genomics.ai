@@ -22,6 +22,10 @@ import upload_start_upload_route from "./routes/file_upload/start_upload";
 import upload_get_upload_url_route from "./routes/file_upload/get_upload_url";
 import download_results_route from "./routes/file_download/results";
 
+import * as swaggerDocument from "../../swagger.json";
+import * as swaggerUi from "swagger-ui-express";
+import { validationMdw } from "./middleware/validation";
+
 import {
   test_institution,
   create_institution,
@@ -32,6 +36,10 @@ import { create_team, invite_person_to_a_team } from "./routes/team/teamRouter";
 // setup the websocket-server on top of the http_server
 export function express_routes(this: REST_Host): Router {
   let router = express.Router();
+
+  this.expressApp.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+  this.expressApp.use(validationMdw);
 
   // unauthenticated routes
   this.expressApp.use(auth_route());
