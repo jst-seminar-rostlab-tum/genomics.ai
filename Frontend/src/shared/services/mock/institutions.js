@@ -13,7 +13,7 @@ export async function createInstitution(name, description) {
     profilePictureURL: null,
     backgroundPictureURL: null,
     adminIds: [1], // TODO: make sure that the backend puts my user ID here
-    memberIds: [],
+    memberIds: [2,3],
   };
 }
 
@@ -22,10 +22,11 @@ const testInstitutions = [
     id: 1,
     name: 'Helmholtz Institute',
     country: 'Germany',
+    description: 'Test',
     profilePictureURL: 'https://www.hzdr.de/db/Pic?pOid=55058',
     backgroundPictureURL: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjsC9c9x8ABK8CXkzrf1cAAAAASUVORK5CYII=',
-    adminIds: [],
-    memberIds: [],
+    adminIds: [1],
+    memberIds: [2, 3],
   },
   {
     id: 2,
@@ -61,4 +62,12 @@ export async function queryIsAdminInstitutions(userId) {
 
 export async function getInstitution(id) {
   return testInstitutions.find((institution) => institution.id === id);
+}
+
+export async function removeMemberFromInstitution(institutionId, memberId) {
+  const institution = testInstitutions.find((i) => i.id === institutionId);
+  if (!institution) {
+    throw new Error('Institution not found');
+  }
+  institution.memberIds = institution.memberIds.filter((id) => id !== memberId);
 }

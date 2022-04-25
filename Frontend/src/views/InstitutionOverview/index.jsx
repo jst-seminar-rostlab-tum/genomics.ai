@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import {
+  Switch, Route, useRouteMatch,
+} from 'react-router-dom';
 import Button from '@mui/material/Button';
 import HeaderView from 'components/general/HeaderView';
+import InstitutionPage from 'views/InstitutionPage';
 import styles from './institutionOverview.module.css';
 import queryMyInstitutions from 'shared/services/mock/institutions';
 import InstitutionCreationDialog from 'components/institutions/InstitutionCreationDialog';
@@ -22,7 +26,11 @@ function InstitutionOverview({ sidebarShown }) {
 
   const [createOpen, setCreateOpen] = useState(false);
 
+  const { path } = useRouteMatch();
+
   return (
+    <Switch>
+      <Route exact path={`${path}/`}>
     <>
       <HeaderView
         sidebarShown={sidebarShown}
@@ -45,6 +53,12 @@ function InstitutionOverview({ sidebarShown }) {
         onCreated={(newInstitution) => setInstitutions([...institutions, newInstitution])}
       />
     </>
+    </Route>
+
+    <Route path={`${path}/:id`}>
+      <InstitutionPage sidebarShown={sidebarShown} />
+    </Route>
+    </Switch>
   );
 }
 

@@ -93,12 +93,12 @@ export default function TeamPage({ sidebarShown }) {
       <section>
         <h2>GeneMapper</h2>
         <hr />
-        <TeamJobList team={team} forPart="geneMapper" />
+        {/*<TeamJobList team={team} forPart="geneMapper" /> */}
       </section>
       <section>
         <h2>GeneCruncher</h2>
         <hr />
-        <TeamJobList team={team} forPart="geneCruncher" />
+        {/*<TeamJobList team={team} forPart="geneCruncher" />*/}
       </section>
       <section>
         <h2>Members</h2>
