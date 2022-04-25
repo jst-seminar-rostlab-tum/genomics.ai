@@ -1,11 +1,11 @@
-type ImageUploadResult = ImageUploadResultOk|ImageUploadResultError
+export type ImageUploadResult = ImageUploadResultOk|ImageUploadResultError
 
-interface ImageUploadResultOk{
+export interface ImageUploadResultOk{
     success:true
     objectUrl:string
 }
 
-interface ImageUploadResultError {
+export interface ImageUploadResultError {
     success: false,
     status: number,
     message: string,

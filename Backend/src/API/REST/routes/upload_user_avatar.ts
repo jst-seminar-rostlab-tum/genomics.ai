@@ -10,7 +10,7 @@ import processImageUpload from "../../../util/processImageUpload";
 
 export default function upload_user_avatar_route() {
     let router = express.Router();
-    router.post("/upload_user_avatar", check_auth(), async (req: ExtRequest, res) => {
+    router.post("/upload-user-avatar", check_auth(), async (req: ExtRequest, res) => {
         try {
             if (process.env.S3_PICTURE_BUCKET_NAME) {
                 if (req.user_id) {

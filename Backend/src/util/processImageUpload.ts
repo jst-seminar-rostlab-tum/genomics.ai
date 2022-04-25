@@ -2,6 +2,7 @@ import e, { Response } from "express";
 import { ExtRequest } from "../definitions/ext_request";
 import sharp from "sharp";
 import s3 from "./s3";
+import {ImageUploadResult} from "../definitions/image_upload_result";
 
 export default async function processImageUpload(
     req: ExtRequest,
@@ -10,6 +11,7 @@ export default async function processImageUpload(
     bucketName: string,
     resultFilename: string
 ): Promise<ImageUploadResult> {
+    //If yes, the actual Content-Type is returned
     let contentType = req.is(["image/png", "image/jpeg"]);
     if (!contentType) {
         return {
@@ -26,18 +28,28 @@ export default async function processImageUpload(
         const targetRatio = width / height;
         const maxWidth = width;
         const maxHeight = height;
-        let targetWidth = targetRatio * metadata.height!;
-        let targetHeight = metadata.height!;
-        let borderX = (metadata.width! - targetWidth) / 2;
-        let borderY = 0;
-        if (metadata.width! < targetWidth) {
-            targetWidth = metadata.width!;
-            targetHeight = metadata.width! / targetRatio;
-            borderX = 0;
-            borderY = (metadata.height! - targetHeight) / 2;
+        const sourceWidth = metadata.width!;
+        const sourceHeight = metadata.height!;
+
+
+        //Calculate target width and height, so the resulting picture is cropped to the requested aspect ratio
+        //Afterwards, if the image is still to large it will be scaled down to the requested width and height
+        //If the image is smaller, it will thus only be cropped to the requested aspect ratio.
+        let targetWidth = targetRatio * sourceHeight;
+        let targetHeight = sourceHeight;
+        //Crop this amount left and right
+        let cropX = (sourceWidth - targetWidth) / 2;
+        let cropY = 0;
+
+        if (sourceWidth < targetWidth) {
+            targetWidth = sourceWidth;
+            targetHeight = sourceWidth / targetRatio;
+            cropX = 0;
+            cropY = (sourceHeight - targetHeight) / 2;
         }
+
         let result = await image
-            .extract({ left: Math.floor(borderX), top: Math.floor(borderY), width: Math.ceil(targetWidth), height: Math.ceil(targetHeight) })
+            .extract({ left: Math.floor(cropX), top: Math.floor(cropY), width: Math.ceil(targetWidth), height: Math.ceil(targetHeight) })
             .resize(maxWidth, maxHeight, {
                 fit: "cover",
                 withoutEnlargement: true
