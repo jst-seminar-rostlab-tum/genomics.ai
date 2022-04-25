@@ -36,7 +36,7 @@ const projectSchema = new Schema<IProject>({
     fileSize: {type: Schema.Types.Number, require: false, default: -1},
     uploadDate: {type: Schema.Types.Date, require: true},
 
-    // team
+    // project
     status: {type: String, require: true, enum: ProjectStatus},
 
     resultName: {type: String, require: false},
