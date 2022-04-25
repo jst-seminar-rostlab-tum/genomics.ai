@@ -27,7 +27,11 @@ export interface IProject extends Document {
 }
 
 const projectSchema = new Schema<IProject>({
-    owner: {type: Schema.Types.ObjectId, require: true},
+    owner: {
+        type: Schema.Types.ObjectId, 
+        ref: 'User',
+        require: true
+    },
 
     // file
     uploadId: {type: String, require: false},
@@ -44,7 +48,8 @@ const projectSchema = new Schema<IProject>({
 
     teamId: {
         type: Schema.Types.ObjectId,
-        required: true
+        ref: 'Team',
+        required: false
     }
 });
 
