@@ -1,8 +1,3 @@
-/*adding the font for the landing page here*/
-*{
-    font-family:'Poppins';
-}
-
 ul{
     display: flex;
     list-style:none;
@@ -10,7 +5,6 @@ ul{
 }
 
 .logoName{
-    font-family: 'Poppins';
     font-size: 24px;
     font-weight: 100;
 }
@@ -18,7 +12,6 @@ ul{
 .appbar{
     z-index: 20000; /* to keep it above content */
     width: 100%;
-    font-family: 'Poppins';
     /* justify-content : space-between; */
     background-color: white;
     position: fixed;
@@ -39,9 +32,3 @@ ul{
 .navbarcontent:hover {
     color: #347AE1;
 }
-
-.buttonContainer{
-    font-family: 'Poppins';
-}
-
-

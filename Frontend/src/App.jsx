@@ -2,7 +2,7 @@ import './app.module.css';
 import React, { useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material';
 import {
-  Route, HashRouter as Router, Switch, Redirect,
+  Route, HashRouter, Switch, Redirect,
 } from 'react-router-dom';
 import HomePage from './views/Home';
 import About from './views/About';
@@ -15,6 +15,10 @@ import PasswordResetPage from './views/PasswordResetPage';
 import { useAuth } from 'shared/context/authContext';
 
 function App() {
+  // https://stackoverflow.com/a/69836010
+  const { palette } = createTheme();
+  const { augmentColor } = palette;
+  const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
   const theme = createTheme({
     palette: {
       primary: {
@@ -23,6 +27,7 @@ function App() {
       light: {
         main: '#4F83CC',
       },
+      critical: createColor('#F44336'),
     },
   });
 
@@ -31,7 +36,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       {/* eslint-disable-next-line no-restricted-globals */}
-      <Router history={history}>
+      <HashRouter>
         <Switch>
           <Route exact path="/" render={() => (user ? <Redirect to="/sequencer" /> : <HomePage />)} />
           <Route path="/sequencer" render={() => guardedPage(<DashboardContent />)} />
@@ -42,7 +47,7 @@ function App() {
           <Route path="/password_reset" render={() => <PasswordResetPage />} />
           <Route path="/result" render={() => <VisualizationPage />} />
         </Switch>
-      </Router>
+      </HashRouter>
     </ThemeProvider>
   );
 }

@@ -24,8 +24,9 @@
     "linebreak-style": "off",
     "no-underscore-dangle": "off",
     "import/no-unresolved": "off",
-    "import/order":"off"
-
+    "import/order": "off"
   },
-  "ignorePatterns": ["src/components/Dashboard/Visualization"]
+  "ignorePatterns": [
+    "src/components/Visualization"
+  ]
 }

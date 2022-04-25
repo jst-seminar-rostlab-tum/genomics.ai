@@ -1,89 +1,104 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { CgFileDocument } from 'react-icons/all';
-import dateFormat from 'dateformat';
-import styles from './sidebar.module.css';
-import arrowClose from 'assets/arrow-close.png';
+import React from 'react';
+import LiveHelpIcon from '@mui/icons-material/LiveHelp';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
+import MapIcon from '@mui/icons-material/Map';
+import TaskIcon from '@mui/icons-material/Task';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import List from '@mui/material/List';
+import Tooltip from '@mui/material/Tooltip';
+import Box from '@mui/material/Box';
+import { Link as NavLink, useRouteMatch, useLocation } from 'react-router-dom';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import LogoutIcon from '@mui/icons-material/Logout';
+import SettingsIcon from '@mui/icons-material/Settings';
 import geneIcon from 'assets/gene.png';
-import { filterInProgress, queryJobs } from 'shared/services/StatusQueueLogic';
-import { PROJECTS_UPDATE_INTERVAL } from 'shared/utils/common/constants';
+import styles from './sidebar.module.css';
 
-const Sidebar = ({ sidebarShown, toggleSidebar }) => {
-  // COLLAPSED
-  if (sidebarShown) {
-    return (
-      <div className={styles.sidebarNavCollapsed}>
-        <div className={styles.sidebarWrap}>
-          <div>
-            <input
-              className={styles.projectsBannerCollapsed}
-              type="image"
-              alt="toggle sidebar"
-              src={geneIcon}
-              onClick={toggleSidebar}
-            />
-          </div>
-        </div>
-      </div>
-    );
+function indexIcon(index) {
+  switch (index) {
+    case 0:
+      return (
+        <img
+          alt="gene-icon"
+          src={geneIcon}
+          className={styles.geneIcon}
+        />
+      );
+    case 1:
+      return (<TaskIcon className={styles.coloredIcon} />);
+    case 2:
+      return (<AccountBalanceIcon className={styles.coloredIcon} />);
+    case 3:
+      return (<MapIcon className={styles.coloredIcon} />);
+    case 4:
+      return (<MenuBookIcon className={styles.coloredIcon} />);
+    default:
+      return (<LiveHelpIcon className={styles.coloredIcon} />);
   }
+}
 
-  const [jobs, setJobs] = useState([]);
+export default function Sidebar(props) {
+  const { setUser } = props;
+  const routes = ['dashboard', 'teams', 'institutions', 'genemapper', 'documentation', 'help'];
+  const titles = ['Dashboard', 'Teams', 'Institutions', 'Gene Mapper', 'Documentation', 'Help'];
+  const { url } = useRouteMatch();
+  const location = useLocation();
+  const path = location.pathname;
+  const settingsPath = '/sequencer/settings';
 
-  useEffect(() => {
-    const updateJobs = () => queryJobs().then((newJobs) => setJobs(filterInProgress(newJobs)))
-      .catch((ignored) => { console.log(ignored); });
-    updateJobs();
-    const intervalId = setInterval(updateJobs, PROJECTS_UPDATE_INTERVAL);
-    return (() => clearInterval(intervalId));
-  }, [setJobs]);
-
-  // NOT COLLAPSED
   return (
-    <div className={styles.sidebarNav}>
-      <div className={styles.sidebarWrap}>
-        <div style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-          <div style={{ paddingBlock: '35px', paddingLeft: '260px' }}>
-            <input
-              type="image"
-              className={styles.toggleButton}
-              alt="toggle-icon"
-              src={arrowClose}
-              onClick={toggleSidebar}
-            />
-          </div>
-        </div>
-
-        <div
-          className={styles.projectsBanner}
-        >
-          <img
-            alt="gene-icon"
-            src={geneIcon}
-            style={{ height: '35px', paddingLeft: '5px', paddingRight: '30px' }}
-          />
-          Projects
-        </div>
-        {jobs
-          .filter((job) => job.status === 'DONE')
-          .map((job) => (
-            <Link
-              className={styles.dropdownLink}
-              to={{ pathname: '/result', search: `tsv=${encodeURIComponent(job.location)}` }}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ textDecoration: 'none' }}
-              key={job.id}
+    <Box>
+      <Box className={styles.sidebarNav}>
+        <Box className={styles.sidebarWrap}>
+          <List className={styles.iconList}>
+            {routes.map((route, index) => (
+              <NavLink
+                className={styles.navlink}
+                to={`${url}/${route}`}
+                key={route.toString()}
+              >
+                <Tooltip
+                  title={titles[index]}
+                  placement="right"
+                  componentsProps={{
+                    tooltip: {
+                      sx: {
+                        bgcolor: '#5676E4',
+                      },
+                    },
+                  }}
+                >
+                  <Box
+                    className={styles.navbarItemContainer}
+                    sx={{ background: path.includes(route) ? '#5676E5' : '#184060' }}
+                  >
+                    <ListItemIcon className={styles.listItemIcon}>
+                      {indexIcon(index)}
+                    </ListItemIcon>
+                  </Box>
+                </Tooltip>
+              </NavLink>
+            ))}
+            <NavLink
+              to={settingsPath}
+              className={`${styles.navlinkIcon} ${styles.bottomIcons} ${styles.settingsIcon}`}
             >
-              <CgFileDocument style={{ color: 'white' }} />
-              <span className={styles.sidebarLabel}>
-                {dateFormat(new Date(job.uploadDate), 'dd/mm/yyyy hh:MM')}
-              </span>
-            </Link>
-          ))}
-      </div>
-    </div>
+              <SettingsIcon />
+            </NavLink>
+            <NavLink
+              to="/"
+              onClick={() => {
+                setUser(null);
+                localStorage.removeItem('user');
+                localStorage.removeItem('jwt');
+              }}
+              className={`${styles.navlinkIcon} ${styles.bottomIcons}`}
+            >
+              <LogoutIcon />
+            </NavLink>
+          </List>
+        </Box>
+      </Box>
+    </Box>
   );
-};
-
-export default Sidebar;
+}
