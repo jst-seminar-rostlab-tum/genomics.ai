@@ -82,4 +82,29 @@ export default class InstitutionService {
       Promise<( IInstitution & { _id: ObjectId } | null )> {
         return await institutionModel.findOne({name});
     }
+
+    /**
+     *  Search for a institution with the given institution id and return if found.
+     *
+     *  @param   institutionId
+     *  @returns project - matched proejct to projectId or null
+     */
+    static async getInstitutionById(institutionId: (ObjectId | string)):
+     Promise<( IInstitution & { _id: ObjectId } | null )> {
+       return await institutionModel.findById(institutionId).exec();
+    }
+
+    /**
+     *  Add the given teamId into the institution.
+     *
+     *  @param   teamId
+     *  @param   institutionId
+     *  @returns updateDocument
+     */
+     static async addNewMemberIntoTeam(teamId: (ObjectId | string), institutionId: (ObjectId | string)): Promise<any> {
+        return await institutionModel.updateOne(
+            { _id: institutionId },
+            { $addToSet: { memberIds: teamId} }
+        );
+    }
 }

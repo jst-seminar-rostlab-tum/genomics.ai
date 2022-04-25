@@ -2,6 +2,7 @@ import express, {Router} from "express";
 import TeamService from "../../../../database/services/team.service";
 import { AddTeamDTO } from "../../../../database/dtos/team.dto";
 import UserService from "../../../../database/services/user.service";
+import InstitutionService from "../../../../database/services/institution.service";
 import {ObjectId} from "mongoose";
 import { visibilityStatus } from "../../../../database/models/team";
 import check_auth from "../../middleware/check_auth";
@@ -236,4 +237,64 @@ const join_member = (): Router => {
     return router;
 }
 
-export { create_team, invite_person_to_a_team, add_user_to_admin, join_member }
+const add_team_to_institution = (): Router => {
+    let router = express.Router();
+
+    router.put("/teams/:id/institution", check_auth(), async (req: any, res) => {
+        try {
+            const {institutionId}: {institutionId: ObjectId}  = req.body;
+            const teamId: string = req.params.id;
+
+            if(!(institutionId && teamId))
+                return res.status(400).send("Missing parameters.");
+
+            const institution = await InstitutionService.getInstitutionById(institutionId)
+            if (! institution )
+                return res.status(400).send("Institution does not exist.");
+
+            const team = await TeamService.getTeamById(teamId);
+            if (! team)
+                return res.status(400).send("Team does not exist.");
+
+            var tempInstitutionId = String(institutionId);
+            var tempListMembers = institution.memberIds.map(String);
+
+            /*
+            var tempListAdmins = institution.adminIds.map(String);
+            if (tempListAdmins.includes(tempUserId))
+                return res.status(409).send("User is an admin of the team.")
+            */
+
+            if (tempListMembers.includes(teamId))
+                return res.status(409).send("Team is already a member of the Institution.")   
+                
+            //[PENDING] Consider whether is necessary to validate if a user should have been invited before it is joined. i.e. it should exist a record in invitedMemberIds
+
+            try {
+                const institution_updated = await InstitutionService.addNewMemberIntoTeam(teamId, institutionId);
+
+                if (!institution_updated)
+                    return res.status(400).send("Error when joining a new team into the institution.");
+
+                return res.status(200).json("Team has been joined.");
+
+            } catch(err) {
+                console.error("Error when trying to join the team into the institution.")
+                console.error(JSON.stringify(err));
+                console.error(err);
+                return res.status(500).send("Unable to register the team into the institution.");
+            }
+        } catch(e) {
+            /* Added since a test proved that if user sends a request with incorrect parameter names, it is able to shutdown the server. */
+            console.error("Error in add_team_to_institution()")
+            console.error(JSON.stringify(e));
+            console.error(e);
+            return res.status(500).send("Internal error.");
+        }
+
+    })
+
+    return router;
+}
+
+export { create_team, invite_person_to_a_team, add_user_to_admin, join_member, add_team_to_institution }
