@@ -97,4 +97,18 @@ export default class ProjectService {
             }
         );
     }
+
+    /**
+     *  Add the given userId into the given project.
+     *
+     *  @param   projectId
+     *  @param   userId
+     *  @returns updateDocument
+     */
+     static async addNewMemberIntoProject(projectId: (ObjectId | string), userId: (ObjectId | string)): Promise<any> {
+        return await projectModel.updateOne(
+            { _id: projectId },
+            { $addToSet: { memberIds: userId} }
+        );
+    }
 }

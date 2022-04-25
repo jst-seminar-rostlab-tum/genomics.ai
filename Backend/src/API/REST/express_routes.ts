@@ -21,8 +21,9 @@ import upload_complete_upload_route from "./routes/file_upload/complete_upload";
 import upload_start_upload_route from "./routes/file_upload/start_upload";
 import upload_get_upload_url_route from "./routes/file_upload/get_upload_url";
 import download_results_route from "./routes/file_download/results";
+
 import {test_institution, create_institution, invite_to_institution} from "./routes/institution/institutionRouter";
-import {create_team, invite_person_to_a_team, add_user_to_admin} from "./routes/team/teamRouter";
+import {create_team, invite_person_to_a_team, add_user_to_admin, join_member } from "./routes/team/teamRouter";
 
 // setup the websocket-server on top of the http_server
 export function express_routes(this: REST_Host): Router {
@@ -68,6 +69,7 @@ export function express_routes(this: REST_Host): Router {
     this.expressApp.use(create_team());
     this.expressApp.use(invite_person_to_a_team());
     this.expressApp.use(add_user_to_admin());
+    this.expressApp.use(join_member());
 
     this.expressApp.use(/^.*_ah.*$/, (req, res) => res.status(200).send()) // always tell google everything is fine
     this.expressApp.use((req, res) => res.status(404).send("Not found."));

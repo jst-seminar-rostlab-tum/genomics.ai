@@ -11,7 +11,7 @@ const create_team = () : Router => {
     let router = express.Router();
 
     router
-        .post("/teams", async (req: any, res) => {
+        .post("/teams", check_auth(), async (req: any, res) => {
 
             const {title, description, visibility} = req.body;
             const admin_user_id = req.user_id;
@@ -25,8 +25,8 @@ const create_team = () : Router => {
             // TODO: make this check later
             // const team = await TeamService.getTeamByTitle(title);
             // if (team)
-            //     return res.status(409).send("Project with the given name already exists!");
-            // // Is it not possible that there exists projects with same names?
+            //     return res.status(409).send("Team with the given name already exists!");
+            // // Is it not possible that there exists teams with same names?
 
             const admin = await UserService.getUserById(admin_user_id);
             if (!admin)
@@ -176,4 +176,64 @@ const add_user_to_admin = (): Router => {
     return router;
 }
 
-export { create_team, invite_person_to_a_team, add_user_to_admin }
+const join_member = (): Router => {
+    let router = express.Router();
+
+    router.put("/teams/:id/join", check_auth(), async (req: any, res) => {
+        try {
+            const {userId}: {userId: ObjectId}  = req.body;
+            const teamId: string = req.params.id;
+
+            if(!(userId && teamId))
+                return res.status(400).send("Missing parameters.");
+
+            const user = await UserService.getUserById(userId)
+            if (! user )
+                return res.status(400).send("User does not exist.");
+            if ( !user.isEmailVerified )
+                return res.status(409).send("User has not been verified.")
+
+            const team = await TeamService.getTeamById(teamId);
+            if (! team)
+                return res.status(400).send("Team does not exist.");
+
+            var tempUserId = String(userId);
+            var tempListAdmins = team.adminIds.map(String);
+            var tempListMembers = team.memberIds.map(String);
+
+            if (tempListAdmins.includes(tempUserId))
+                return res.status(409).send("User is an admin of the team.")
+
+            if (tempListMembers.includes(tempUserId))
+                return res.status(409).send("User is already a member of the team.")   
+                
+            //[PENDING] Consider whether is necessary to validate if a user should have been invited before it is joined. i.e. it should exist a record in invitedMemberIds
+
+            try {
+                const team_updated = await TeamService.addNewMemberIntoTeam(teamId, userId);
+
+                if (!team_updated)
+                    return res.status(400).send("Error when joining a new member into the team.");
+
+                return res.status(200).json("User has been joined.");
+
+            } catch(err) {
+                console.error("Error when trying to join a new member into a given team.")
+                console.error(JSON.stringify(err));
+                console.error(err);
+                return res.status(500).send("Unable to register new admin.");
+            }
+        } catch(e) {
+            /* Added since a test proved that if user sends a request with incorrect parameter names, it is able to shutdown the server. */
+            console.error("Error in join_member()")
+            console.error(JSON.stringify(e));
+            console.error(e);
+            return res.status(500).send("Internal error.");
+        }
+
+    })
+
+    return router;
+}
+
+export { create_team, invite_person_to_a_team, add_user_to_admin, join_member }
