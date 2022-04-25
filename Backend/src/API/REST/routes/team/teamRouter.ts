@@ -70,7 +70,7 @@ const invite_person_to_a_team = (): Router => {
 
             const team = await TeamService.getTeamById(teamId);
             if (! team)
-                return res.status(400).send("Project does not exist.");
+                return res.status(400).send("Team does not exist.");
 
             var tempUserId = String(userId);
             var tempListAdmins = team.adminIds.map(String);
