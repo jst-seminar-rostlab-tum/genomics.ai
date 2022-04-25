@@ -30,7 +30,6 @@ const theme = createTheme({
 
 const Home = (props) => {
   // inserting the logic from the landing page here
-  const { setUser } = props;
   const [isLoginFormVisible, setLoginFormVisible] = useState(false);
   const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
 
@@ -54,7 +53,7 @@ const Home = (props) => {
 
   return (
     <div className={styles.container}>
-      <NavBar setUser={setUser} />
+      <NavBar />
       {/* If genomics visualized stays in the middle, then it needs to be properly aligned.
       Right now it is using padding as the way to align the items */}
 
@@ -118,7 +117,6 @@ const Home = (props) => {
 
             <div>
               <LoginForm
-                setUser={setUser}
                 visible={isLoginFormVisible}
                 onClose={onLoginFormClosed}
               />
