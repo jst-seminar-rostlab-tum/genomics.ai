@@ -15,13 +15,13 @@ export default function upload_start_upload_route() {
 
         try {
             if (process.env.S3_BUCKET_NAME && req.user_id) {
-                const projectJobToAdd: AddProjectDTO = {
+                const projectToAdd: AddProjectDTO = {
                     owner: req.user_id,
                     fileName: String(fileName),
                     uploadDate: new Date(),
                     status: "UPLOAD_PENDING"
                 };
-                const project = await ProjectService.addProject(projectJobToAdd);
+                const project = await ProjectService.addProject(projectToAdd);
                 let params: S3.CreateMultipartUploadRequest = {
                     Bucket: process.env.S3_BUCKET_NAME,
                     Key: String(project._id)
