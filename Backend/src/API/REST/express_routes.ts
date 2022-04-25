@@ -9,8 +9,8 @@ import initiate_processing_route from "./routes/initiate_processing";
 import abort_processing_route from "./routes/abort_processing";
 
 import get_profile_route from "./routes/get_profile";
-import get_job_route from "./routes/get_job";
-import get_jobs_route from "./routes/get_jobs";
+import get_project_route from "./routes/get_project";
+import get_projects_route from "./routes/get_projects";
 import get_unauthorized_users_route from "./routes/get_unauthorized_users";
 import authorize_user_route from "./routes/authorize_user";
 import verify_email_route from "./routes/verify_email";
@@ -27,26 +27,11 @@ import {
   create_institution,
   invite_to_institution,
 } from "./routes/institution/institutionRouter";
-import {
-  create_project,
-  invite_person_to_a_project,
-} from "./routes/project/projectRouter";
-
-import * as swaggerDocument from "../../swagger.json";
-import * as swaggerUi from "swagger-ui-express";
-import { validationMdw } from "./middleware/validation";
+import { create_team, invite_person_to_a_team } from "./routes/team/teamRouter";
 
 // setup the websocket-server on top of the http_server
 export function express_routes(this: REST_Host): Router {
   let router = express.Router();
-
-  this.expressApp.use(
-    "/api-docs",
-    swaggerUi.serve,
-    swaggerUi.setup(swaggerDocument)
-  );
-
-  this.expressApp.use(validationMdw);
 
   // unauthenticated routes
   this.expressApp.use(auth_route());
@@ -58,8 +43,8 @@ export function express_routes(this: REST_Host): Router {
   // authenticated routes
   this.expressApp.use(update_profile_route());
   this.expressApp.use(get_profile_route());
-  this.expressApp.use(get_job_route());
-  this.expressApp.use(get_jobs_route());
+  this.expressApp.use(get_project_route());
+  this.expressApp.use(get_projects_route());
 
   // administrator routes
   this.expressApp.use(get_unauthorized_users_route());
@@ -84,9 +69,9 @@ export function express_routes(this: REST_Host): Router {
   this.expressApp.use(invite_to_institution());
   this.expressApp.use(test_institution());
 
-  // project routes
-  this.expressApp.use(create_project());
-  this.expressApp.use(invite_person_to_a_project());
+  // team routes
+  this.expressApp.use(create_team());
+  this.expressApp.use(invite_person_to_a_team());
 
   this.expressApp.use(/^.*_ah.*$/, (req, res) => res.status(200).send()); // always tell google everything is fine
   this.expressApp.use((req, res) => res.status(404).send("Not found."));
