@@ -32,8 +32,8 @@ export default function Breadcrumb({ fontSize, path }) {
         return accmulator
     }
     
-    const generate = (element, index) => index === 0 ? <></> : (
-        <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>
+    const generate = (element, index) => index === 0 ? <div key={index} /> : (
+        <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}} key={index}>
             { index != elements.length - 1 
                 ? <Box component={Link} to={rebuildLink(index)} sx={{cursor: "pointer", textDecoration: "none"}} onClick={()=>console.log("I'm clicked")}><Typography fontWeight="bold" fontSize={`${fontSize}em`} sx={{color: colors.neutral[500]}}>{element}</Typography></Box> 
                 : <Box><Typography fontWeight="bold" fontSize={`${fontSize}em`} sx={{color: colors.primary[800]}}>{element}</Typography></Box>}

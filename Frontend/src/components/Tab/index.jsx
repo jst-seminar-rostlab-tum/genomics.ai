@@ -1,7 +1,7 @@
-import {useState} from 'react'
-import {Link} from 'react-router-dom'
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
-import {Tab, Tabs} from '@mui/material'
+import { Tab, Tabs } from '@mui/material'
 
 /**
  * Styled Tab
@@ -15,25 +15,27 @@ import {Tab, Tabs} from '@mui/material'
  * 
  * see the example StyledTab in TabGroup below for how to combine the Tab with a Link from react-router-dom
  */
-export function StyledTab(props){
+export function StyledTab({ darkBackground, label, component, to }) {
 
-    const {darkBackground}=props
-
-    return(
-        <Tab disableRipple {...props}
-            sx={{
-                textTransform: "none",
-                fontWeight: "bold",
-                color: darkBackground ? "white" : "black",
-                opacity: 1,
-                "&.Mui-selected": {
-                    fontWeight: "bold",
-                    color: darkBackground ? "white" : "black",
-                    opacity: 1,
-                }
-            }}
-        />
-    )
+  return (
+    <Tab 
+      disableRipple
+      label={label}
+      component={component}
+      to={to}
+      sx={{
+        textTransform: "none",
+        fontWeight: "bold",
+        color: darkBackground ? "white" : "black",
+        opacity: 1,
+        "&.Mui-selected": {
+          fontWeight: "bold",
+          color: darkBackground ? "white" : "black",
+          opacity: 1,
+        }
+      }}
+    />
+  )
 }
 
 /**
@@ -63,20 +65,20 @@ export function StyledTab(props){
  */
 export function TabGroup(props) {
 
-    const {darkBackground, tabsInfo}=props
-    const [value, setValue]=useState(0)
+  const { darkBackground, tabsInfo } = props
+  const [value, setValue] = useState(0)
 
-    return (
-        <Tabs value={value} onChange={(_, newValue)=>setValue(newValue)}
-            sx={{
-                "& .MuiTabs-indicator": {
-                    backgroundColor: darkBackground ? "white" : "black"
-                }
-            }}
-        >
-            {
-                tabsInfo.map((tabInfo)=>(<StyledTab label={tabInfo.label} component={Link} to={tabInfo.path} darkBackground={darkBackground} />))
-            }
-        </Tabs>
-    )
+  return (
+    <Tabs value={value} onChange={(_, newValue) => setValue(newValue)}
+      sx={{
+        "& .MuiTabs-indicator": {
+          backgroundColor: darkBackground ? "white" : "black"
+        }
+      }}
+    >
+      {
+        tabsInfo.map((tabInfo, index) => (<StyledTab key={index} label={tabInfo.label} component={Link} to={tabInfo.path} darkBackground={darkBackground} />))
+      }
+    </Tabs>
+  )
 }

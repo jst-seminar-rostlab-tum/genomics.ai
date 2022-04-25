@@ -5,8 +5,11 @@ import Breadcrumb from "components/Breadcrumb"
 
 import { Box } from '@mui/material'
 import { TabGroup } from 'components/Tab'
+import Search from 'components/Search'
+import { useLocation } from 'react-router-dom/cjs/react-router-dom.min'
+import Filter from 'components/Filter'
 
-const tmpObj=[
+const tmpObj = [
   {
     label: "ATLASES",
     path: "/explore/atlases"
@@ -22,27 +25,30 @@ const tmpObj=[
 ]
 
 const Explore = () => {
+
+  const location = useLocation()
+
   return (
     <Box>
-        {/* Navbar */}
-        <Box />
+      {/* Navbar */}
+      <Box />
 
-        {/* Breadcrumbs */}
-        <Breadcrumb path="/explore/ajksdflkjasdjkf" fontSize={1} />
+      {/* Breadcrumbs */}
+      <Breadcrumb path={`${location.pathname}`} fontSize={1} />
 
-        {/* Search */}
-        <Box />
+      {/* Search */}
+      <Search filterComponent={<Filter references={["test", "test"]} categories={["category1", "category2"]} />} />
 
-        <Box>
-            <TabGroup tabsInfo={tmpObj} />
-            {/* /explore/atlases */}
-            <Switch> 
-                <Route path="/explore/atlases" render={()=><div>atlases</div>} />
-                <Route path="/explore/models" render={()=><div>models</div>} />
-                <Route path="/explore/datasets" render={()=><div>datasets</div>} />
-                <Redirect to="/explore/atlases" />
-            </Switch>
-        </Box>
+      <Box>
+        <TabGroup tabsInfo={tmpObj} />
+        {/* /explore/atlases */}
+        <Switch>
+          <Route path="/explore/atlases" render={() => <div>atlases</div>} />
+          <Route path="/explore/models" render={() => <div>models</div>} />
+          <Route path="/explore/datasets" render={() => <div>datasets</div>} />
+          <Redirect to="/explore/atlases" />
+        </Switch>
+      </Box>
     </Box>
   )
 }
