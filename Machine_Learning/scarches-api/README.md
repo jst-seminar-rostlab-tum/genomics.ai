@@ -20,7 +20,7 @@ expect paths that we can access to store the output, an example request body loo
 {
     "surgery_path": "/dev/null",
     "model_path": "/dev/urandom",
-    "generated_output_path": "/dev/random.tsv",
+    "generated_output_base_path": "/job/results/",
     "reference_dataset_path": "/dev/*.h5ad",
     "query_dataset_path": "/dev/*.h5ad",
     "model": "scANVI|scVI|totalVI",
@@ -30,7 +30,7 @@ expect paths that we can access to store the output, an example request body loo
 ```
 The given configuration is then merged with our default configuration and given to the 
 models. The models then store the computed results under `generated_output_path` and 
-our REST API returns the used configuration and computes the results asynchronously. After completing the 
+our REST API returns the used configuration (which is previously merged with the default configuration) and computes the results asynchronously. After completing the 
 query function and generating the results in the specified directories, the API will make a `POST` call 
 to an endpoint specified in the original configuration as `webhook`. This request will contain 
 the configuration that was used to calculate the results and allows the backend team to identify the results.

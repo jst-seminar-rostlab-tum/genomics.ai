@@ -109,7 +109,9 @@ def surgery(anndata):
 
     if get_from_config('debug'):
         utils.save_umap_as_pdf(surgery_latent, 'figures/surgery.pdf', color=['batch', 'cell_type'])
-        utils.write_latent_csv(surgery_latent, filename='/tmp/surgery.csv')
+
+    surgery_path = get_from_config('generated_output_base_path') + 'surgery.tsv'
+    utils.write_latent_csv(surgery_latent, filename=surgery_path)
 
     model.save(get_from_config('surgery_path'), overwrite=True)
 
@@ -142,9 +144,11 @@ def query(anndata):
 
     if get_from_config('debug'):
         utils.save_umap_as_pdf(query_latent, 'figures/query.pdf', color=['batch', 'cell_type'])
-        utils.write_latent_csv(query_latent, filename='/tmp/query.csv')
 
-        # Muss man das Model dann nicht abspeichern? Oder ist das dann nicht mehr das pre-trained?
+    query_path = get_from_config('generated_output_base_path') + 'query.tsv'
+    utils.write_latent_csv(query_latent, filename=query_path)
+
+    # Muss man das Model dann nicht abspeichern? Oder ist das dann nicht mehr das pre-trained?
 
     return model, query_latent
 
@@ -175,7 +179,9 @@ def both_adata(source_adata, target_adata):
 
     if get_from_config('debug'):
         utils.save_umap_as_pdf(full_latent, 'figures/both.pdf', color=['batch', 'cell_type'])
-        utils.write_latent_csv(full_latent, filename='/tmp/both.csv')
+
+    both_path = get_from_config('generated_output_base_path') + 'both.tsv'
+    utils.write_latent_csv(full_latent, filename=both_path)
 
     return full_latent
 
@@ -191,7 +197,9 @@ def compare_adata(model, source_adata, target_adata, latent):
 
     if get_from_config('debug'):
         utils.save_umap_as_pdf(latent, 'figures/compare.pdf', color=["predictions", "cell_type"])
-        utils.write_latent_csv(latent, filename='/tmp/compare.csv')
+
+    compare_path = get_from_config('generated_output_base_path') + 'compare.tsv'
+    utils.write_latent_csv(latent, filename=compare_path)
 
 
 def compute_scANVI(configP):

@@ -1,12 +1,9 @@
 import os
 import os.path
 from os import path
-
 import warnings
-
 import numpy as np
 import gdown
-import sys
 import getopt
 import torch
 import tempfile
@@ -17,6 +14,7 @@ import scarches as sca
 from scarches.dataset.trvae.data_handling import remove_sparsity
 import matplotlib.pyplot as plt
 import sys
+
 sys.path.append('../utils/')
 import utils
 
@@ -135,11 +133,7 @@ def compute_query(anndata):
     :param anndata:
     :return:
     """
-    model = sca.models.SCVI.load_query_data(
-        anndata,
-        get_from_config('model_path'),
-        freeze_dropout=True,
-    )
+    model = sca.models.SCVI.load_query_data(anndata, get_from_config('model_path'), freeze_dropout=True)
 
     model.train(
         max_epochs=get_from_config('scvi_max_epochs'),
@@ -150,7 +144,9 @@ def compute_query(anndata):
 
     if get_from_config('debug'):
         utils.save_umap_as_pdf(query_latent, 'data/figures/query.pdf', color=['batch', 'cell_type'])
-        utils.write_latent_csv(query_latent, filename='/tmp/query.csv')
+
+    query_path = get_from_config('generated_output_base_path') + 'query.tsv'
+    utils.write_latent_csv(query_latent, filename=query_path)
 
     return model
 
@@ -167,7 +163,9 @@ def compute_full_latent(source_adata, target_adata, model):
 
     if get_from_config('debug'):
         utils.save_umap_as_pdf(full_latent, 'data/figures/both.pdf', color=['batch', 'cell_type'])
-        utils.write_latent_csv(full_latent, filename='/tmp/both.csv')
+
+    both_path = get_from_config('generated_output_base_path') + 'both.tsv'
+    utils.write_latent_csv(full_latent, filename=both_path)
 
     return full_latent
 
