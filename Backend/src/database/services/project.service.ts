@@ -5,15 +5,15 @@ import {ObjectId} from "mongoose";
 /**
  *  @class ProjectService
  *
- *  Provides useful methods to access the database and modify team jobs,
+ *  Provides useful methods to access the database and modify projects,
  *  which can be used by the route-controllers.
  */
 export default class ProjectService {
     /**
-     *  Search for a team job with the given team id and return if found.
+     *  Search for a project with the given team id and return if found.
      *
      *  @param   project_id - the team id to search for
-     *  @returns project job - matched team job to project_id or null
+     *  @returns project - matched project to project_id or null
      */
     static async getProjectById(project_id: (ObjectId | string)):
       Promise<( IProject & { _id: ObjectId } | null )> {
@@ -21,12 +21,12 @@ export default class ProjectService {
     }
 
     /**
-     *  Search for a team job with the given uploadId and team owner (userId - optional)
+     *  Search for a project with the given uploadId and team owner (userId - optional)
      *  and return if found.
      *
      *  @param   uploadId
      *  @param   owner? - userId
-     *  @returns project job or null
+     *  @returns project or null
      */
     static async getProjectByUploadId(uploadId: string, owner?: ObjectId):
       Promise<( IProject & { _id: ObjectId } | null )> {
@@ -36,12 +36,12 @@ export default class ProjectService {
     }
 
     /**
-     *  Search for a team job with the given team owner and sort
+     *  Search for a project with the given team owner and sort
      *  in order of the given sort parameter.
      *
      *  @param   owner - userId
      *  @param   sort - order of the sort
-     *  @returns project jobs or null
+     *  @returns project or null
      */
     static async getProjectByOwner(user_id: ObjectId, sort: number = 0):
       Promise<( IProject & { _id: ObjectId } )[]> {
@@ -49,19 +49,19 @@ export default class ProjectService {
     }
 
     /**
-     *  Adds given team job to the database.
+     *  Adds given project to the database.
      *
-     *  @param    team job
-     *  @returns  projectJobAdded - the added team job
+     *  @param    project
+     *  @returns  projectAdded - the added project 
      */
-    static async addProject(projectJob: AddProjectDTO): Promise<IProject> {
-        let projectJobAdded : (IProject | undefined) = undefined;
-        projectJobAdded = await projectModel.create(projectJob);
-        return projectJobAdded;
+    static async addProject(project: AddProjectDTO): Promise<IProject> {
+        let projectAdded : (IProject | undefined) = undefined;
+        projectAdded = await projectModel.create(project);
+        return projectAdded;
     }
 
     /**
-     *  Updates the given team job corresponding to the uploadId with the
+     *  Updates the given project corresponding to the uploadId with the
      *  update_object.
      *
      *  @param uploadId
@@ -72,7 +72,7 @@ export default class ProjectService {
     }
 
     /**
-     *  Updates the upload id of the given team job.
+     *  Updates the upload id of the given project.
      *
      *  @param _id
      *  @param uploadId
