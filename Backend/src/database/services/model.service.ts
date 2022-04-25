@@ -12,4 +12,14 @@ export default class ModelService {
       Promise<( IModel & { _id: ObjectId } | null )> {
         return await modelModel.findById(modelId).exec();
     }
+
+    /**
+     *  Get all the available models.
+     *
+     *  @returns model array
+     */
+    static async getAllModels() :
+      Promise<( IModel & { _id: ObjectId } )[]> {
+        return await modelModel.find().exec();
+    }
 }
