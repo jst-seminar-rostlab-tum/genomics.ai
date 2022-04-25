@@ -12,7 +12,7 @@ def query():
     print("returning")
     thread = Thread(target=scarches.query, args=(config,))
     thread.start()
-    return scarches.merge_configs(config), 200
+    return actual_config, 200
 
 
 @app.route("/liveness")

@@ -1,7 +1,8 @@
 from scANVI.scANVI import query
 from scVI.scVI import compute_scVI
 from scANVI.scANVI import compute_scANVI
-
+import sys
+import utils
 
 def default_config():
     """
@@ -72,6 +73,6 @@ def query(user_config):
         print("not supported yet")
     else:
         raise ValueError(model + ' is not one of the supported models')
-
+    utils.notify_backend(get_from_config(configuration, 'webhook'), configuration)
 # query('data/ref/source_data.h5ad', 'data/query/target_data.h5ad', 'data/model', 'data/surgery/', 'scVI')
 # query(None)

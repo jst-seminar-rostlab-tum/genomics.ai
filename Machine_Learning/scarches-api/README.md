@@ -24,12 +24,16 @@ expect paths that we can access to store the output, an example request body loo
     "reference_dataset_path": "/dev/*.h5ad",
     "query_dataset_path": "/dev/*.h5ad",
     "model": "scANVI|scVI|totalVI",
+    "webhook": "https://finished.computing"
     "debug": true
 }
 ```
 The given configuration is then merged with our default configuration and given to the 
 models. The models then store the computed results under `generated_output_path` and 
-our REST API returns the used configuration and computes the results asynchronously.
+our REST API returns the used configuration and computes the results asynchronously. After completing the 
+query function and generating the results in the specified directories, the API will make a `POST` call 
+to an endpoint specified in the original configuration as `webhook`. This request will contain 
+the configuration that was used to calculate the results and allows the backend team to identify the results.
 
 ### Deployment
 The Dockerfile in this directory can be used to build a deployable API image containing
