@@ -44,6 +44,17 @@ export default class TeamService {
     }
 
     /**
+     *  Return all the teams that has the member specified by userId.
+     *
+     *  @param   userId
+     *  @returns array of teamId's and titles
+     */
+    static async getTeamsOfUser(userId: (ObjectId)):
+      Promise<( ITeam & { _id: ObjectId } )[] > {
+        return await teamModel.find( { memberIds: userId }, { title: 1 } ).exec();
+    }
+
+    /**
      *  Add the given userId to the invitation list of the given team.
      *
      *  @param   projectId
@@ -69,5 +80,48 @@ export default class TeamService {
             { _id: teamId },
             { $addToSet: { projects: projectId} }
         );
+    }
+
+    /**
+     *  Returns true if the given user is an admin of the given team.
+     *  The given team should exist, otherwise the method returns false.
+     *
+     *  @param  userId
+     *  @param  teamId
+     *  @return isAdmin
+     */
+    static async isAdmin(userId: (ObjectId | string), teamId: (ObjectId | string)): Promise<boolean> {
+        const team = await this.getTeamById(teamId);
+        if (!team)
+          return false; /* team does not exist */
+
+        let isAdmin = false;
+        var listAdmins = team.adminIds.map(String);
+        var userIdStr= String(userId);
+        if (listAdmins.includes(userIdStr))
+            isAdmin = true;
+        return isAdmin;
+    }
+
+    /**
+     *  Returns true if the given user is a member of the given team.
+     *  The given team should exist, otherwise the method returns false.
+     *
+     *  @param  userId
+     *  @param  teamId
+     *  @return isMember
+     */
+    static async isMember(userId: (ObjectId | string), teamId: (ObjectId | string)): Promise<boolean> {
+        const team = await this.getTeamById(teamId);
+        if (!team)
+          return false; /* team does not exist */
+
+        let isMember = false;
+        var listMembers = team.memberIds.map(String);
+
+        var userIdStr= String(userId);
+        if (listMembers.includes(userIdStr))
+            isMember = true;
+        return isMember;
     }
 }
