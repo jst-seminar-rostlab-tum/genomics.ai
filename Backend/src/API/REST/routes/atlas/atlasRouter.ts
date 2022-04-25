@@ -25,4 +25,24 @@ const get_atlas = () : Router => {
     return router;
 }
 
-export { get_atlas };
+/**
+ *  Get all available atlases.
+ */
+const get_allAtlases = () : Router => {
+    let router = express.Router();
+
+    router.get("/atlases", async (req: any, res) => {
+        try {
+            const atlases = AtlasService.getAllAtlases();
+            return res.status(200).json(atlases);
+        } catch(err) {
+            console.error("Error accessing the atlases!");
+            console.error(JSON.stringify(err));
+            console.error(err);
+            return res.status(500).send("Unable to access the atlases.");
+        }
+    })
+    return router;
+}
+
+export { get_atlas, get_allAtlases };

@@ -12,4 +12,14 @@ export default class AtlasService {
       Promise<( IAtlas & { _id: ObjectId } | null )> {
         return await atlasModel.findById(atlasId).exec();
     }
+
+    /**
+     *  Get all the available atlases.
+     *
+     *  @returns atlas array
+     */
+    static async getAllAtlases() :
+      Promise<( IAtlas & { _id: ObjectId } )[]> {
+        return await atlasModel.find().exec();
+    }
 }

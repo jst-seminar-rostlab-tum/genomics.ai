@@ -27,7 +27,7 @@ import {create_team, invite_person_to_a_team, add_project_to_team} from "./route
 import {get_teams_of_user} from "./routes/user/userRouter";
 import {get_userProjects} from "./routes/projects/projectRouter"
 import {get_model, get_allModels} from "./routes/model/modelRouter"
-import {get_atlas} from "./routes/atlas/atlasRouter"
+import {get_atlas, get_allAtlases} from "./routes/atlas/atlasRouter"
 
 // setup the websocket-server on top of the http_server
 export function express_routes(this: REST_Host): Router {
@@ -86,6 +86,7 @@ export function express_routes(this: REST_Host): Router {
 
     // atlas routes
     this.expressApp.use(get_atlas());
+    this.expressApp.use(get_allAtlases());
 
     this.expressApp.use(/^.*_ah.*$/, (req, res) => res.status(200).send()) // always tell google everything is fine
     this.expressApp.use((req, res) => res.status(404).send("Not found."));
