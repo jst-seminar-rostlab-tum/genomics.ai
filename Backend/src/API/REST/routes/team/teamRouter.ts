@@ -88,7 +88,7 @@ const invite_person_to_a_team = (): Router => {
                     return res.status(400).send("Error when adding the user to members of the team.");
 
                 try {
-                    await mailer.send(user.email, "[GeneCruncher] Invitation to a team", "invitation_to_project", {
+                    await mailer.send(user.email, "[GeneCruncher] Invitation to a team", "invitation_to_team", {
                         firstname: user.firstName,
                         teamname: team.title
                         })
@@ -123,42 +123,42 @@ const invite_person_to_a_team = (): Router => {
 const add_user_to_admin = (): Router => {
     let router = express.Router();
 
-    router.put("/projects/:id/admin", check_auth(), async (req: any, res) => {
+    router.put("/teams/:id/admin", check_auth(), async (req: any, res) => {
         try {
             const {userId}: {userId: ObjectId}  = req.body;
-            const projectId: string = req.params.id;
+            const teamId: string = req.params.id;
 
-            if(!(userId && projectId))
+            if(!(userId && teamId))
                 return res.status(400).send("Missing parameters.");
 
             const user = await UserService.getUserById(userId)
             if (! user )
                 return res.status(400).send("User does not exist.");
 
-            const project = await TeamService.getTeamById(projectId);
-            if (! project)
-                return res.status(400).send("Project does not exist.");
+            const team = await TeamService.getTeamById(teamId);
+            if (! team)
+                return res.status(400).send("Team does not exist.");
 
             var tempUserId = String(userId);
-            var tempListAdmins = project.adminIds.map(String);
-            var tempListMembers = project.memberIds.map(String);
+            var tempListAdmins = team.adminIds.map(String);
+            var tempListMembers = team.memberIds.map(String);
 
             if (tempListAdmins.includes(tempUserId))
                 return res.status(409).send("User is already an admin.")
 
             if (!tempListMembers.includes(tempUserId))
-                return res.status(409).send("User is not a member of the project. It should be first a member to become an admin.")            
+                return res.status(409).send("User is not a member of the team. It should be first a member to become an admin.")            
 
             try {
-                const project_updated = await TeamService.addAdminToProject(projectId, userId);
+                const team_updated = await TeamService.addAdminToTeam(teamId, userId);
 
-                if (!project_updated)
+                if (!team_updated)
                     return res.status(400).send("Error when changing to user to admin profile.");
 
                 return res.status(200).json("User has been changed to admin.");
 
             } catch(err) {
-                console.error("Error when trying to register new admin of a given a project.")
+                console.error("Error when trying to register new admin of a given a team.")
                 console.error(JSON.stringify(err));
                 console.error(err);
                 return res.status(500).send("Unable to register new admin.");
