@@ -255,8 +255,7 @@ const add_team_to_institution = (): Router => {
             const team = await TeamService.getTeamById(teamId);
             if (! team)
                 return res.status(400).send("Team does not exist.");
-
-            var tempInstitutionId = String(institutionId);
+            
             var tempListMembers = institution.memberIds.map(String);
 
             /*
@@ -297,4 +296,55 @@ const add_team_to_institution = (): Router => {
     return router;
 }
 
-export { create_team, invite_person_to_a_team, add_user_to_admin, join_member, add_team_to_institution }
+const remove_team_from_institution = (): Router => {
+    let router = express.Router();
+
+    router.delete("/teams/:id/institution", check_auth(), async (req: any, res) => {
+        try {
+            const {institutionId}: {institutionId: ObjectId}  = req.body;
+            const teamId: string = req.params.id;
+
+            if(!(institutionId && teamId))
+                return res.status(400).send("Missing parameters.");
+
+            const institution = await InstitutionService.getInstitutionById(institutionId)
+            if (! institution )
+                return res.status(400).send("Institution does not exist.");
+
+            const team = await TeamService.getTeamById(teamId);
+            if (! team)
+                return res.status(400).send("Team does not exist.");
+
+            var tempListMembers = institution.memberIds.map(String);
+
+            if ( !tempListMembers.includes(teamId))
+                return res.status(409).send("Team is not a member of the Institution.")   
+                
+            try {
+                const institution_updated = await InstitutionService.removeTeamFromInstitution(teamId, institutionId);
+
+                if (!institution_updated)
+                    return res.status(400).send("Error when removing the team from the institution.");
+
+                return res.status(200).json("Team has been removed.");
+
+            } catch(err) {
+                console.error("Error when trying to join the team into the institution.")
+                console.error(JSON.stringify(err));
+                console.error(err);
+                return res.status(500).send("Unable to register the team into the institution.");
+            }
+        } catch(e) {
+            /* Added since a test proved that if user sends a request with incorrect parameter names, it is able to shutdown the server. */
+            console.error("Error in add_team_to_institution()")
+            console.error(JSON.stringify(e));
+            console.error(e);
+            return res.status(500).send("Internal error.");
+        }
+
+    })
+
+    return router;
+}
+
+export { create_team, invite_person_to_a_team, add_user_to_admin, join_member, add_team_to_institution, remove_team_from_institution }

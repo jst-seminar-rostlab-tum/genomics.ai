@@ -107,4 +107,20 @@ export default class InstitutionService {
             { $addToSet: { memberIds: teamId} }
         );
     }
+
+    /**
+     *  Add the given userId to the admin list and removes he/she from the memberIds, of the given team.
+     *
+     *  @param   teamId
+     *  @param   institutionId
+     *  @returns updateDocument
+     */
+     static async removeTeamFromInstitution(teamId: (ObjectId | string), institutionId: (ObjectId | string)): Promise<any> {
+        return await institutionModel.updateOne(
+            { _id: institutionId },
+            {
+                $pull: { memberIds: teamId }
+            }
+        );
+    }
 }
