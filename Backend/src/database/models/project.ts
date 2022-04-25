@@ -18,7 +18,7 @@ export interface IProject extends Document {
     fileSize: number; // (of bytes)
     uploadDate: Date;
 
-    // team
+    // project
     status: string;
     resultName: string;
     resultSize: number;
