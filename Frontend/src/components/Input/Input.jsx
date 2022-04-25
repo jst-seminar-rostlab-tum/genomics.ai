@@ -2,7 +2,8 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 
-/* Example usage
+/* Props: Most of MUI TextField props..
+Example usage
 Import Input to any component, see below examples:
 
 const [name, setName] = useState('');
@@ -11,13 +12,16 @@ const [name, setName] = useState('');
 <Input isRequired onChangeEvent={setName} disabledHandler={false} />
 <Input helperText="Incorrect Output" errorHandler isRequired
  onChangeEvent={setName} disabledHandler={false} />
+
+ //For Multiline
+ <Input isRequired maxLength={120} multiline disabledHandler={false} />
  */
 
 const Input = ({
   helperText, placeholder, errorHandler, disabledHandler,
-  isRequired = true, defaultValue, onChangeEvent,
+  isRequired = true, defaultValue, multiline = false, onChangeEvent = null,
   label = 'Required',
-  maxLength = 30,
+  maxLength = 40,
   type = 'text',
 }) => (
   <Box
@@ -36,12 +40,13 @@ const Input = ({
       placeholder={placeholder}
       defaultValue={defaultValue}
       inputProps={{ maxLength }}
+      multiline={multiline}
       type={type}
       id="input"
       label={label}
       helperText={helperText}
       variant="standard"
-      onChange={(e) => onChangeEvent(e.target.value)}
+      onChange={(e) => (onChangeEvent !== null ? onChangeEvent(e.target.value) : null)}
     />
   </Box>
 );
