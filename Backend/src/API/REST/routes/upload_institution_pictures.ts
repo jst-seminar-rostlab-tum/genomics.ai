@@ -33,9 +33,9 @@ export function upload_institution_profilepicture_route() {
     router.post("/institutions/:id/profilepicture", check_auth(), async (req: ExtRequest, res) => {
         try {
             let valid = await checkForValidValues(req, res);
-            if(!valid) return;
-            let {instId, bucket} = valid;
-            let result = await processImageUpload(req, 400, 400, bucket, `inst_${instId}`);
+            if (!valid) return;
+            let { instId, bucket } = valid;
+            let result = await processImageUpload(req, { maxWidth: 400, maxHeight: 400, forceAspectRatio: true }, bucket, `inst_${instId}`);
             if (result.success === true) {
                 const institutionUpdate: UpdateInstitutionDTO = {
                     profilePictureURL: result.objectUrl
@@ -60,10 +60,9 @@ export function upload_institution_backgroundpicture_route() {
     router.post("/institutions/:id/backgroundpicture", check_auth(), async (req: ExtRequest, res) => {
         try {
             let valid = await checkForValidValues(req, res);
-            if(!valid) return;
-            let {instId, bucket} = valid;
-            //TODO: change width+height to value discussed with frontend
-            let result = await processImageUpload(req, 1600, 600, bucket, `instback_${instId}`);
+            if (!valid) return;
+            let { instId, bucket } = valid;
+            let result = await processImageUpload(req, { maxWidth: 1920, maxHeight: 1920, forceAspectRatio: false }, bucket, `instback_${instId}`);
             if (result.success === true) {
                 const institutionUpdate: UpdateInstitutionDTO = {
                     backgroundPictureUrl: result.objectUrl

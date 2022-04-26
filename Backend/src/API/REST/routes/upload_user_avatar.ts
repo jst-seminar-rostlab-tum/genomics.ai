@@ -15,7 +15,12 @@ export default function upload_user_avatar_route() {
             if (process.env.S3_PICTURE_BUCKET_NAME) {
                 if (req.user_id) {
                     try {
-                        let result = await processImageUpload(req, 400, 400, process.env.S3_PICTURE_BUCKET_NAME,`user_${req.user_id}`);
+                        let result = await processImageUpload(
+                            req,
+                            { maxWidth: 400, maxHeight: 400, forceAspectRatio: true },
+                            process.env.S3_PICTURE_BUCKET_NAME,
+                            `user_${req.user_id}`
+                        );
                         if (result.success === true) {
                             const userUpdate: UpdateUserDTO = {
                                 avatarUrl: result.objectUrl
@@ -23,10 +28,9 @@ export default function upload_user_avatar_route() {
                             await UserService.updateUser(req.user_id, userUpdate);
                             res.status(200).send(result.objectUrl);
                         } else {
-                            const {status,message,error} = result;
+                            const { status, message, error } = result;
                             res.status(status).send(message);
-                            if(error)
-                                throw error;
+                            if (error) throw error;
                         }
                     } catch (e) {
                         console.error(e);

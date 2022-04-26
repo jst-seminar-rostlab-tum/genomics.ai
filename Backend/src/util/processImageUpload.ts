@@ -2,12 +2,11 @@ import e, { Response } from "express";
 import { ExtRequest } from "../definitions/ext_request";
 import sharp from "sharp";
 import s3 from "./s3";
-import {ImageUploadResult} from "../definitions/image_upload_result";
+import { ImageUploadResult } from "../definitions/image_upload_result";
 
 export default async function processImageUpload(
     req: ExtRequest,
-    width: number,
-    height: number,
+    scalingOptions: { maxWidth: number; maxHeight: number; forceAspectRatio: boolean },
     bucketName: string,
     resultFilename: string
 ): Promise<ImageUploadResult> {
@@ -25,33 +24,38 @@ export default async function processImageUpload(
     try {
         const image = sharp(req.body);
         const metadata = await image.metadata();
-        const targetRatio = width / height;
-        const maxWidth = width;
-        const maxHeight = height;
         const sourceWidth = metadata.width!;
         const sourceHeight = metadata.height!;
-
-
-        //Calculate target width and height, so the resulting picture is cropped to the requested aspect ratio
-        //Afterwards, if the image is still to large it will be scaled down to the requested width and height
-        //If the image is smaller, it will thus only be cropped to the requested aspect ratio.
-        let targetWidth = targetRatio * sourceHeight;
-        let targetHeight = sourceHeight;
-        //Crop this amount left and right
-        let cropX = (sourceWidth - targetWidth) / 2;
+        let maxWidth = scalingOptions.maxWidth;
+        let maxHeight = scalingOptions.maxHeight;
+        let cropWidth = sourceWidth;
+        let cropHeight = sourceHeight;
+        let cropX = 0;
         let cropY = 0;
+        if (scalingOptions.forceAspectRatio) {
+            const targetRatio = maxWidth / maxHeight;
 
-        if (sourceWidth < targetWidth) {
-            targetWidth = sourceWidth;
-            targetHeight = sourceWidth / targetRatio;
-            cropX = 0;
-            cropY = (sourceHeight - targetHeight) / 2;
+            //Calculate target width and height, so the resulting picture is cropped to the requested aspect ratio
+            //Afterwards, if the image is still to large it will be scaled down to the requested width and height
+            //If the image is smaller, it will thus only be cropped to the requested aspect ratio.
+            cropWidth = targetRatio * sourceHeight;
+            cropHeight = sourceHeight;
+            //Crop this amount left and right
+            cropX = (sourceWidth - cropWidth) / 2;
+            cropY = 0;
+
+            if (sourceWidth < cropWidth) {
+                cropWidth = sourceWidth;
+                cropHeight = sourceWidth / targetRatio;
+                cropX = 0;
+                cropY = (sourceHeight - cropHeight) / 2;
+            }
         }
 
         let result = await image
-            .extract({ left: Math.floor(cropX), top: Math.floor(cropY), width: Math.ceil(targetWidth), height: Math.ceil(targetHeight) })
+            .extract({ left: Math.floor(cropX), top: Math.floor(cropY), width: Math.ceil(cropWidth), height: Math.ceil(cropHeight) })
             .resize(maxWidth, maxHeight, {
-                fit: "cover",
+                fit: "inside",
                 withoutEnlargement: true
             })
             .toBuffer({ resolveWithObject: true });
@@ -83,7 +87,7 @@ export default async function processImageUpload(
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(uploadData.Location);
+                    resolve(`${uploadData.Location}?c=${Date.now()}`);
                 }
             });
         });
