@@ -96,6 +96,7 @@
       "post": {
         "summary": "Register a user",
         "tags": ["User"],
+        "security": [],
         "requestBody": {
           "required": true,
           "content": {
@@ -151,7 +152,15 @@
     "/profile": {
       "get": {
         "summary": "Get a profile information",
-        "tags": ["User"]
+        "tags": ["User"],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
       }
     },
     "/project/:id": {
@@ -165,13 +174,29 @@
             "schema": { "type": "string" }
           }
         ],
-        "tags": ["Project"]
+        "tags": ["Project"],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
       }
     },
     "/projects": {
       "get": {
         "summary": "Get all projects of an owner",
-        "tags": ["Project"]
+        "tags": ["Project"],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
       }
     },
     "/initiate_processing": {
@@ -326,6 +351,9 @@
           }
         },
         "responses": {
+          "200": {
+            "description": "User updated successfully"
+          },
           "404": {
             "description": "Could not find user with this e-mail. Please register."
           }
@@ -349,6 +377,14 @@
                 "additionalProperties": false
               }
             }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
           }
         }
       }
@@ -409,6 +445,14 @@
               }
             }
           }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
         }
       }
     },
@@ -429,6 +473,14 @@
                 "additionalProperties": false
               }
             }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
           }
         }
       }
@@ -453,6 +505,14 @@
                 "additionalProperties": false
               }
             }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
           }
         }
       }
@@ -483,6 +543,14 @@
               }
             }
           }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
         }
       }
     },
@@ -505,6 +573,14 @@
                 "additionalProperties": false
               }
             }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
           }
         }
       }
@@ -534,6 +610,14 @@
                 "additionalProperties": false
               }
             }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
           }
         }
       }
