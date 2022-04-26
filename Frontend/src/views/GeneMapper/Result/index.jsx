@@ -50,6 +50,7 @@ function GeneMapperResultView({ sidebarShown, projectId }) {
   const [project, setProject] = useState(null);
   const umapContainer = useRef(null);
   const [umap, setUmap] = useState(null);
+  const [umapSize, setUmapSize] = useState(0);
 
   useEffect(() => {
     getProject(projectId)
@@ -59,7 +60,6 @@ function GeneMapperResultView({ sidebarShown, projectId }) {
 
   useEffect(() => {
     if (project?.resultURL) {
-      console.log('new newmap');
       csv(project.resultURL).then((data) => {
         setUmap(new UmapVisualization2(umapContainer.current, data));
       });
@@ -67,14 +67,22 @@ function GeneMapperResultView({ sidebarShown, projectId }) {
   }, [project]);
 
   useEffect(() => {
-    if (umap) {
-      console.log(umap, umapContainer.current);
-      const height = umapContainer.current.clientHeight;
-      const width = umapContainer.current.clientWidth;
-      const dim = Math.min(height, width);
-      umap.render(dim, dim);
+    if (umap && umapSize > 0) {
+      umap.render(umapSize, umapSize);
     }
-  }, [umap, umapContainer.current]);
+  }, [umap, umapSize]);
+
+  useEffect(() => {
+    if (umapContainer?.current) {
+      const observer = new ResizeObserver((entries) => {
+        const container = entries[0];
+        setUmapSize(Math.min(container.contentRect.height, container.contentRect.width));
+      });
+      observer.observe(umapContainer.current);
+      return () => observer.unobserve(umapContainer.current);
+    }
+    return () => {};
+  }, [umapContainer.current]);
 
   return (
     <Box
@@ -101,7 +109,7 @@ function GeneMapperResultView({ sidebarShown, projectId }) {
                   setColorMode={(mode) => umap.setColorMode(mode)}
                 />
               </Sidepanel>
-              <Box sx={{ flexGrow: 1 }} ref={umapContainer} />
+              <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }} ref={umapContainer} />
               <Sidepanel title="Graphs" collapseToRight />
             </Box>
           </>
