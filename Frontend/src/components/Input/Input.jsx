@@ -3,6 +3,20 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 
 /* Props: Most of MUI TextField props..
+/**
+ * Customized button
+ * @param {string} helperText - The helper text that is displayed under the input
+ * @param {string} placeholder - Placeholder of input
+ * @param {boolean} errorHandler - Error handler (true | false)
+ * @param {boolean} disabledHandler - Disabled handler (true | false)
+ * @param {boolean} isRequired - The input is required or not (true | false)
+ * @param {string} defaultValue - Default value of input
+ * @param {boolean} multiline - The Input is multiline or not. (true | false)
+ * @param {function} onChangeEvent - The onChange handler function
+ * @param {string} label - Label of input
+ * @param {number} maxLength - Maximum length of input Default:40
+ * @param {string} type - Type of input Default: 'text'
+
 Example usage
 Import Input to any component, see below examples:
 
