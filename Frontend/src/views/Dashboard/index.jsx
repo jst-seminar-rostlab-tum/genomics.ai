@@ -1,11 +1,12 @@
-import { Container, Stack } from '@mui/material';
-import React, { useCallback } from 'react';
+import { Stack, Container } from '@mui/material';
+import { useCallback } from 'react';
 import Uploader from 'components/Uploader';
 import StatusQueue from 'components/StatusQueue';
 import styles from './dashboard.module.css';
 
 function Dashboard({ sidebarShown }) {
   const paddingL = useCallback(() => (sidebarShown ? '100px' : '350px'), [sidebarShown]);
+
   return (
     <Stack
       direction="column"
