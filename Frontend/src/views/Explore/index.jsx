@@ -37,7 +37,7 @@ const Explore = () => {
       <Breadcrumb path={`${location.pathname}`} fontSize={1} />
 
       {/* Search */}
-      <Search filterComponent={<Filter references={["test", "test"]} categories={["category1", "category2"]} />} />
+      <Search filterComponent={<Filter references={["test", "test"]} categories={["category1", "category2"]} />} handleSearch={(textRef) => console.log(textRef)}/>
 
       <Box>
         <TabGroup tabsInfo={tmpObj} />
