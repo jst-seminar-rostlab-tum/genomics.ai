@@ -181,7 +181,12 @@ function LinkBox(props){
   )
 }
 
-export default function Navbar({ onLoginClicked, onSignUpClicked, executeScroll, setNavbarHegiht }) {
+export default function Navbar({ 
+  onLoginClicked, 
+  onSignUpClicked, 
+  executeScroll, 
+  setNavbarHeight 
+}) {
 
   const [drawerOpen, setDrawerOpen]=useState(false)
 
@@ -197,7 +202,7 @@ export default function Navbar({ onLoginClicked, onSignUpClicked, executeScroll,
 
   useEffect(()=>{
     //use the set function from Home page to set the height, so that we can use it later
-    setNavbarHegiht(boxRef.current.clientHeight)
+    setNavbarHeight(boxRef.current.clientHeight)
   })
 
   return (
@@ -223,8 +228,8 @@ export default function Navbar({ onLoginClicked, onSignUpClicked, executeScroll,
           <LinkBox to="/explore"><Navlink>Explore</Navlink></LinkBox>
         </Leftbar>
         <Rightbar>
-          <Login>Log In</Login>
-          <Signup>Sign Up</Signup>
+          <Login onClick={onLoginClicked}>Log In</Login>
+          <Signup onClick={onSignUpClicked}>Sign Up</Signup>
         </Rightbar>
       </Appbar>
     </Box>

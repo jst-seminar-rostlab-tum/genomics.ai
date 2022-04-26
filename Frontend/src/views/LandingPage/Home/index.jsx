@@ -18,11 +18,13 @@ const Home = ({ setUser }) => {
   const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
 
   const onLoginClicked = useCallback(() => {
+    console.log("login")
     setRegistrationFormVisible(false)
     setLoginFormVisible(true)
   }, [setLoginFormVisible])
 
   const onSignUpClicked = useCallback(() => {
+    console.log("register")
     setLoginFormVisible(false);
     setRegistrationFormVisible(true);
   }, [setRegistrationFormVisible])
@@ -38,7 +40,7 @@ const Home = ({ setUser }) => {
   //we store the actual height of the Navbar, since we set the Navbar's position to fixed
   //it jumps out from the document flow => the height collapse
   //we need to reset it
-  const [navbarHeight, setNavbarHegiht] = useState(0)
+  const [navbarHeight, setNavbarHeight] = useState(0)
 
   return (
     <Box style={{ overflow: "hidden" }} sx={{ position: "relative" }}>
@@ -47,7 +49,7 @@ const Home = ({ setUser }) => {
         {/* NAVBAR HERE */}
         {/* the Box that contains the Navbar will collapse, so we reset the height */}
         <Box sx={{height: navbarHeight, position: "relative"}}>
-          <Navbar setNavbarHegiht={setNavbarHegiht} onLoginClicked={onLoginClicked} onSignUpClicked={onSignUpClicked} executeScroll={executeScroll} />
+          <Navbar setUser={setUser} setNavbarHeight={setNavbarHeight} onLoginClicked={onLoginClicked} onSignUpClicked={onSignUpClicked} executeScroll={executeScroll} />
         </Box>
         {/* IOS WINDOW */}
         <WindowiOS />
