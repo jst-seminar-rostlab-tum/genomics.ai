@@ -3,7 +3,7 @@ import UploadIcon from '@mui/icons-material/Upload';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import Navbar from "components/Navbar";
+import Navbar from "components/NavBar";
 import WindowiOS from "components/WindowiOS";
 import Footer from "components/Footer";
 import { useCallback, useState, useEffect, useRef } from "react";
