@@ -184,7 +184,7 @@ const add_project_to_team = (): Router => {
 };
 
 /**
- *  TODO
+ *  Add the given userId to the admin list of a team.
  */
 const add_user_to_admin = (): Router => {
     let router = express.Router();
@@ -239,7 +239,7 @@ const add_user_to_admin = (): Router => {
 };
 
 /**
- *  TODO
+ *  Add the given userId to the member list of a team.
  */
 const join_member = (): Router => {
     let router = express.Router();
@@ -300,7 +300,7 @@ const join_member = (): Router => {
 };
 
 /**
- *  TODO
+ *  Add a team to an institution
  */
 const add_team_to_institution = (): Router => {
     let router = express.Router();
@@ -318,35 +318,26 @@ const add_team_to_institution = (): Router => {
                 return res.status(400).send("Institution does not exist.");
 
             const team = await TeamService.getTeamById(teamId);
-            if (! team)
+            if (!team)
                 return res.status(400).send("Team does not exist.");
 
-            const isMember = await InstitutionService.isMember(teamId, institutionId);
-
-            /*
-            var tempListAdmins = institution.adminIds.map(String);
-            if (tempListAdmins.includes(tempUserId))
-                return res.status(409).send("User is an admin of the team.")
-            */
-
-            if (isMember)
-                return res.status(409).send("Team is already a member of the Institution.")
-
-            //[PENDING] Consider whether is necessary to validate if a user should have been invited before it is joined. i.e. it should exist a record in invitedMemberIds
+            if (team.institutionId)
+                return res.status(409).send("Team has been already associated with an institution.")
 
             try {
-                const institution_updated = await InstitutionService.addNewMemberIntoTeam(teamId, institutionId);
+                const institution_updated = await TeamService.setInstitutionOfTeam(teamId, institutionId);
 
                 if (!institution_updated)
-                    return res.status(400).send("Error when joining a new team into the institution.");
+                    return res.status(400).send("Error when associating the team with the institution.");
 
-                return res.status(200).json("Team has been joined.");
+                const team2 = await TeamService.getTeamById(teamId);
+                return res.status(200).json(team2);
 
             } catch(err) {
                 console.error("Error when trying to join the team into the institution.")
                 console.error(JSON.stringify(err));
                 console.error(err);
-                return res.status(500).send("Unable to register the team into the institution.");
+                return res.status(500).send("Unable to associate the team with the institution.");
             }
         } catch(e) {
             /* Added since a test proved that if user sends a request with incorrect parameter names, it is able to shutdown the server. */
@@ -362,7 +353,7 @@ const add_team_to_institution = (): Router => {
 };
 
 /**
- *  TODO
+ *  Remove a team from an institution
  */
 const remove_team_from_institution = (): Router => {
     let router = express.Router();
@@ -382,10 +373,6 @@ const remove_team_from_institution = (): Router => {
             const team = await TeamService.getTeamById(teamId);
             if (! team)
                 return res.status(400).send("Team does not exist.");
-
-            const isMember: boolean = await InstitutionService.isMember(teamId, institutionId);
-            if ( !isMember )
-                return res.status(409).send("Team is not a member of the Institution.")
 
             try {
                 const institution_updated = await InstitutionService.removeTeamFromInstitution(teamId, institutionId);

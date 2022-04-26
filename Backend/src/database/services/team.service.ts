@@ -146,17 +146,45 @@ export default class TeamService {
     }
 
     /**
+     *  Return the visibility status {"PRIVATE", "PUBLIC", "BY_INSTITUTION"}
+     *  of the given team if it exists, otherwise null.
+     *
+     *  @param  teamId
+     *  @return visibilityStatus - {"PRIVATE", "PUBLIC", "BY_INSTITUTION"}
+     */
+    static async getVisibility(teamId: (ObjectId | string)):
+      Promise<(string | null)> {
+        const team = await this.getTeamById(teamId);
+        if (!team)
+            return null;
+        return team.visibility;
+    }
+
+    /**
      *  Add the given userId into the given project.
      *
      *  @param   teamId
      *  @param   userId
      *  @returns updateDocument
      */
-     static async addNewMemberIntoTeam(teamId: (ObjectId | string), userId: (ObjectId | string)):
-       Promise<any> {
+    static async addNewMemberIntoTeam(teamId: (ObjectId | string), userId: (ObjectId | string)): Promise<any> {
         return await teamModel.updateOne(
             { _id: teamId },
             { $addToSet: { memberIds: userId} }
+        );
+    }
+
+    /**
+     *  Add the given teamId into the institution.
+     *
+     *  @param   teamId
+     *  @param   institutionId
+     *  @returns updateDocument
+     */
+    static async setInstitutionOfTeam(teamId: (ObjectId | string), institutionId: (ObjectId | string)): Promise<any> {
+        return await teamModel.updateOne(
+            { _id: teamId },
+            { $set : { institutionId: institutionId }}
         );
     }
 }

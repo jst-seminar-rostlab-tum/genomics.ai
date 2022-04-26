@@ -1,7 +1,6 @@
 import {IInstitution, institutionModel} from "../models/institution";
 import {AddInstitutionDTO} from "../dtos/institution.dto";
 import {ObjectId} from "mongoose";
-import { IUser } from "../models/user";
 
 /**
  *  @class InstitutionService
@@ -122,28 +121,5 @@ export default class InstitutionService {
                 $pull: { memberIds: teamId }
             }
         );
-    }
-
-    /**
-     *  Returns true if the given team is a member of the given institution.
-     *  The given institution should exist, otherwise the method returns false.
-     *
-     *  @param  teamId
-     *  @param  institutionId
-     *  @return isMember
-     */
-    static async isMember(teamId: (ObjectId | string), institutionId: (ObjectId | string)):
-      Promise<boolean> {
-        const institution = await this.getInstitutionById(teamId);
-        if (!institution)
-          return false; /* institution does not exist */
-
-        let isMember = false;
-        var listMembers = institution.memberIds.map(String);
-
-        var teamIdStr = String(teamId);
-        if (listMembers.includes(teamIdStr))
-            isMember = true;
-        return isMember;
     }
 }
