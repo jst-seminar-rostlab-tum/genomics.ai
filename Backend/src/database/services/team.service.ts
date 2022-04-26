@@ -12,13 +12,13 @@ export default class TeamService {
     /**
      *  Adds given team to the database.
      *
-     *  @param    project
+     *  @param    team
      *  @returns  projectAdded - the added team
      */
     static async addTeam(project: AddTeamDTO): Promise<ITeam> {
-        let projectAdded : (ITeam | undefined) = undefined;
-        projectAdded = await teamModel.create(project);
-        return projectAdded;
+        let team : (ITeam | undefined) = undefined;
+        team = await teamModel.create(team);
+        return team;
     }
 
     /**
@@ -35,25 +35,70 @@ export default class TeamService {
     /**
      *  Search for a team with the given team id and return if found.
      *
-     *  @param   projectId
+     *  @param   teamId
      *  @returns project - matched proejct to projectId or null
      */
-    static async getTeamById(projectId: (ObjectId | string)):
+    static async getTeamById(teamId: (ObjectId | string)):
       Promise<( ITeam & { _id: ObjectId } | null )> {
-        return await teamModel.findById(projectId).exec();
+        return await teamModel.findById(teamId).exec();
     }
 
     /**
      *  Add the given userId to the invitation list of the given team.
      *
-     *  @param   projectId
+     *  @param   teamId
      *  @param   userId
      *  @returns updateDocument
      */
-    static async addInvitationMemberId(projectId: (ObjectId | string), userId: (ObjectId | string)): Promise<any> {
+    static async addInvitationMemberId(teamId: (ObjectId | string), userId: (ObjectId | string)): Promise<any> {
         return await teamModel.updateOne(
-            { _id: projectId },
+            { _id: teamId },
             { $addToSet: { invitedMemberIds: userId} }
+        );
+    }
+
+    /**
+     *  Add the given userId to the admin list and removes he/she from the memberIds, of the given team.
+     *
+     *  @param   teamId
+     *  @param   userId
+     *  @returns updateDocument
+     */
+     static async addAdminToTeam(teamId: (ObjectId | string), userId: (ObjectId | string)): Promise<any> {
+        return await teamModel.updateOne(
+            { _id: teamId },
+            { 
+                $addToSet: { adminIds: userId },
+                $pull: { memberIds: userId }
+            }
+        );
+    }
+
+    /**
+     *  Add the given userId into the given project.
+     *
+     *  @param   teamId
+     *  @param   userId
+     *  @returns updateDocument
+     */
+    static async addNewMemberIntoTeam(teamId: (ObjectId | string), userId: (ObjectId | string)): Promise<any> {
+        return await teamModel.updateOne(
+            { _id: teamId },
+            { $addToSet: { memberIds: userId} }
+        );
+    }
+
+    /**
+     *  Add the given teamId into the institution.
+     *
+     *  @param   teamId
+     *  @param   institutionId
+     *  @returns updateDocument
+     */
+    static async setInstitutionOfTeam(teamId: (ObjectId | string), institutionId: (ObjectId | string)): Promise<any> {
+        return await teamModel.updateOne(
+            { _id: teamId },
+            { $set : { institutionId: institutionId }}
         );
     }
 }

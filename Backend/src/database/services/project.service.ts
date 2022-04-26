@@ -80,4 +80,35 @@ export default class ProjectService {
     static async updateUploadId(_id: ObjectId, uploadId: string) {
         await projectModel.updateOne({_id}, {uploadId}).exec();
     }
+
+     /**
+     *  Add the given userId to the admin list and removes he/she from the memberIds, of the given project.
+     *
+     *  @param   projectId
+     *  @param   userId
+     *  @returns updateDocument
+     */
+      static async addAdminToProject(projectId: (ObjectId | string), userId: (ObjectId | string)): Promise<any> {
+        return await projectModel.updateOne(
+            { _id: projectId },
+            { 
+                $addToSet: { adminIds: userId },
+                $pull: { memberIds: userId }
+            }
+        );
+    }
+
+    /**
+     *  Add the given userId into the given project.
+     *
+     *  @param   projectId
+     *  @param   userId
+     *  @returns updateDocument
+     */
+     static async addNewMemberIntoProject(projectId: (ObjectId | string), userId: (ObjectId | string)): Promise<any> {
+        return await projectModel.updateOne(
+            { _id: projectId },
+            { $addToSet: { memberIds: userId} }
+        );
+    }
 }
