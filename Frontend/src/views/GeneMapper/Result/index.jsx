@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import GeneMapperCategories from 'components/GeneMapper/Categories';
-import Sidepanel from 'components/GeneMapper/Sidepanel';
 import GeneMapperResultHeader from 'components/GeneMapper/ResultHeader';
+import Sidepanel from 'components/GeneMapper/Sidepanel';
 import React, { useCallback } from 'react';
 
 /**
