@@ -90,6 +90,7 @@ const listColoringDomain = (data, mode) => {
          .attr("height", h)
          
  
+         this.cells = this.gCells.selectAll("*").remove();
          //Circle cells
          this.cells = this.gCells
          .selectAll("cell")
