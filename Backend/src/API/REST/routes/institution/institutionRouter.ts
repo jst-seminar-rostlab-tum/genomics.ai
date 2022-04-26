@@ -67,7 +67,7 @@ const invite_to_institution = () : Router => {
                 if (! await UserService.getUserById(userId))
                     return res.status(404).send("User that you are trying to invite does not exists!");      
 
-                if (await InstitutionService.findMemeberById(userId,institutionId_to_modify))
+                if (await InstitutionService.findMemeberOrInvitedById(userId,institutionId_to_modify))
                     return res.status(404).send("User that you are trying to invite to this institution already is an invited member or is a member!");      
 
                 const updatedInstitution = await  InstitutionService.inviteToInstitution(institutionId_to_modify, userId)
@@ -87,15 +87,50 @@ const invite_to_institution = () : Router => {
     return router;
 }
 
-const test_institution = () : Router => {
+const make_user_admin_of_institution = () : Router => {
     let router = express.Router();
 
     router
-        .get("/institutions/test", check_auth(), async (req: any, res) => {
-            res.json("test router")
+        .put("/institutions/:id/admin", check_auth(), async (req: any, res) => {
+
+            const { userId }: {userId: Schema.Types.ObjectId} = req.body;
+            const institutionId_to_modify = req.params.id;
+            const current_user = req.user_id
+
+            try {
+
+                if (!(userId))
+                return res.status(400).send("Missing parameter");
+
+                if (! await UserService.getUserById(userId))
+                    return res.status(404).send("User that you are trying to make as admin does not exists!");      
+
+                const institutionToBeUpdated = await InstitutionService.findMemeberById(userId,institutionId_to_modify)
+
+                if(!institutionToBeUpdated)
+                    return res.status(409).send("User that you are trying to make as admin is not a member!");  
+
+                if(!institutionToBeUpdated?.adminIds.includes(current_user))
+                    return res.status(401).send("Invalid autherization permission!");
+                
+                if(institutionToBeUpdated?.adminIds.includes(userId))
+                    return res.status(409).send("User is already an admin!");    
+                        
+                const updatedInstitution = await  InstitutionService.makeUserAnAdminOfInstitution(institutionId_to_modify, userId)
+
+                if(updatedInstitution) {
+                    res.json(updatedInstitution);
+                } else {
+                    return res.status(409).send("Could not make the user admin of the institution!");
+                }
+
+            } catch (error) {
+                return res.status(500).send("Something went wrong: "+ error)
+            }
+
         })
 
     return router;
 }
 
-export { create_institution, test_institution, invite_to_institution }
+export { create_institution, invite_to_institution, make_user_admin_of_institution }

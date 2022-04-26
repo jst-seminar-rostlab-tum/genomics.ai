@@ -42,11 +42,59 @@ export default class InstitutionService {
         }else {
             return undefined;
         }
+    }
 
+    /**
+     *  Make a person admin of an institution.
+     *
+     *  @param    institutionId - the institution that is being modified 
+     *  @param    userId - the user that is being added as admin
+     *  @returns  institutionUpdated - institution with new admin if updated without error
+     */
+     static async makeUserAnAdminOfInstitution(institutionId: ObjectId, userId: ObjectId): Promise<IInstitution | undefined> {
+        let updatedInstitution : (IInstitution | undefined) = undefined;
+
+        const institution = await institutionModel.findOne({_id: institutionId})
+                
+        if (institution) {
+
+            institution.adminIds = [...institution.adminIds, userId];
+            updatedInstitution = await institution.save();
+            return updatedInstitution;
+        }else {
+            return undefined;
+        }
     }
 
     /**
      *  Search for invited member or member of institution by id if they exists.
+     *
+     *  @param   user_id - the user id to search for
+     *  @param   institution_id - the institution id to search for
+     *  @returns institution - if user is member of the institution
+     */
+     static async findMemeberOrInvitedById(user_id: (ObjectId | string), institution_id: (ObjectId | string)):
+     Promise<(IInstitution & { _id: any; }) | undefined>  {
+        const result = await institutionModel.findOne({
+            _id: institution_id, 
+            $or: [{
+                invitedMemberIds: { $elemMatch: {$eq: user_id} },
+            },
+            {
+                memberIds: { $elemMatch: {$eq: user_id} }
+            }]
+            
+        })
+        console.log(result)
+        if (result) {
+            return result;
+        }else {
+            return undefined;
+        }
+    }
+
+    /**
+     *  Search for member of institution by id if they exists.
      *
      *  @param   user_id - the user id to search for
      *  @param   institution_id - the institution id to search for
@@ -57,9 +105,6 @@ export default class InstitutionService {
         const result = await institutionModel.findOne({
             _id: institution_id, 
             $or: [{
-                invitedMemberIds: { $elemMatch: {$eq: user_id} },
-            },
-            {
                 memberIds: { $elemMatch: {$eq: user_id} }
             }]
             
