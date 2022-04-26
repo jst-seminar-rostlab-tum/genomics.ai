@@ -103,4 +103,13 @@ export default class InstitutionService {
     static async updateInstitution(institution_id: (ObjectId | string), update_object: UpdateInstitutionDTO) {
         await institutionModel.updateOne({_id: institution_id}, update_object);
     }
+
+    static async unsetProfilePicture(institution_id: ObjectId | string): Promise<string|null|undefined> {
+        let old = await institutionModel.findByIdAndUpdate(institution_id, { $unset: { profilePictureURL: "" } });
+        return old?.profilePictureURL;
+    }
+    static async unsetBackgroundPicture(institution_id: ObjectId | string): Promise<string|null|undefined> {
+        let old = await institutionModel.findByIdAndUpdate(institution_id, { $unset: { backgroundPictureURL: "" } });
+        return old?.backgroundPictureURL;
+    }
 }

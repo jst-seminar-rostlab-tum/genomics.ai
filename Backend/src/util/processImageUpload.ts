@@ -78,19 +78,12 @@ export default async function processImageUpload(
     try {
         const params = {
             Bucket: bucketName,
-            Key: `${resultFilename}${extension}`,
+            Key: `${resultFilename}`,
             Body: croppedImage,
             ContentType: contentType
         };
-        let objectUrl = await new Promise<string>(function (resolve, reject) {
-            s3.upload(params, undefined, function (err, uploadData) {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(`${uploadData.Location}?c=${Date.now()}`);
-                }
-            });
-        });
+        let uploadData = await s3.upload(params).promise();
+        let objectUrl = `${uploadData.Location}?c=${Date.now()}`;
         return { success: true, objectUrl };
     } catch (e) {
         return { success: false, status: 500, message: "Error while saving image", error: e };

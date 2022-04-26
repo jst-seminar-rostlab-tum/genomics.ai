@@ -15,5 +15,5 @@ export interface UpdateInstitutionDTO {
     name?:string,
     country?: string,
     profilePictureURL?:string,
-    backgroundPictureUrl?: string,
+    backgroundPictureURL?: string,
 }

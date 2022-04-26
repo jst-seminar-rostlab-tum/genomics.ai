@@ -28,6 +28,8 @@ import {create_team, invite_person_to_a_team, add_user_to_admin, join_member,
     add_team_to_institution} from "./routes/team/teamRouter";
 
 import { upload_institution_backgroundpicture_route, upload_institution_profilepicture_route } from "./routes/upload_institution_pictures";
+import { reset_institution_backgroundpicture_route, reset_institution_profilepicture_route } from "./routes/reset_institution_pictures";
+import reset_user_avatar_route from "./routes/reset_user_avatar";
 
 // setup the websocket-server on top of the http_server
 export function express_routes(this: REST_Host): Router {
@@ -46,6 +48,7 @@ export function express_routes(this: REST_Host): Router {
     this.expressApp.use(get_project_route());
     this.expressApp.use(get_projects_route());
     this.expressApp.use(upload_user_avatar_route());
+    this.expressApp.use(reset_user_avatar_route());
 
     // administrator routes
     this.expressApp.use(get_unauthorized_users_route());
@@ -71,6 +74,8 @@ export function express_routes(this: REST_Host): Router {
     this.expressApp.use(test_institution());
     this.expressApp.use(upload_institution_profilepicture_route());
     this.expressApp.use(upload_institution_backgroundpicture_route());
+    this.expressApp.use(reset_institution_profilepicture_route());
+    this.expressApp.use(reset_institution_backgroundpicture_route());
 
     // team routes
     this.expressApp.use(create_team());

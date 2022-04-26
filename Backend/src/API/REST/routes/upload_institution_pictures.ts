@@ -65,7 +65,7 @@ export function upload_institution_backgroundpicture_route() {
             let result = await processImageUpload(req, { maxWidth: 1920, maxHeight: 1920, forceAspectRatio: false }, bucket, `instback_${instId}`);
             if (result.success === true) {
                 const institutionUpdate: UpdateInstitutionDTO = {
-                    backgroundPictureUrl: result.objectUrl
+                    backgroundPictureURL: result.objectUrl
                 };
                 await InstitutionService.updateInstitution(instId, institutionUpdate);
                 res.status(200).send(result.objectUrl);
