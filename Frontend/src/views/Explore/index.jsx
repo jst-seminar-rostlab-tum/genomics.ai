@@ -1,8 +1,8 @@
 import React from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import { Box } from '@mui/material'
-import { useLocation } from 'react-router-dom/cjs/react-router-dom.min'
 import Grid from '@mui/material/Grid';
+import { useState, useEffect } from 'react'
 
 import { TabGroup } from 'components/Tab'
 import Search from 'components/Search'
@@ -11,7 +11,7 @@ import NavBar from 'components/NavBar'
 import Breadcrumb from "components/Breadcrumb"
 import AtlasCard from 'components/Cards/AtlasCard'
 import DatasetCard from 'components/Cards/DatasetCard'
-import ModelCard from 'components/Cards/ModelCard'
+import { ModelCard } from 'components/Cards/ModelCard'
 import Mapper from "components/Mapper"
 
 import './Explore.css'
@@ -33,30 +33,30 @@ const tmpObj = [
 
 const atlasesGrid = (
     <Box className='atlasContainer'>
-        <Grid container spacing={2}>
+        <Grid container spacing={3}>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-                <AtlasCard title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
+                <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-                <AtlasCard title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
+                <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-                <AtlasCard title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
+                <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-                <AtlasCard title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
+                <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-                <AtlasCard title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
+                <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-                <AtlasCard title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
+                <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-                <AtlasCard title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
+                <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-                <AtlasCard title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
+                <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
             </Grid>
         </Grid>
     </Box >
@@ -64,9 +64,9 @@ const atlasesGrid = (
 
 const modelsGrid = (
     <Box className='cardsContainer'>
-        <Grid container spacing={2}>
+        <Grid container spacing={3}>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-
+                <ModelCard title="Model 1" description="This is a short description" />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
 
@@ -80,15 +80,15 @@ const modelsGrid = (
 
 const datasetsGrid = (
     <Box className='cardsContainer'>
-        <Grid container spacing={2}>
+        <Grid container spacing={3}>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-                <DatasetCard />
+                <DatasetCard title="title1" category="category1" />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-                <DatasetCard />
+                <DatasetCard title="title2" category="category1" />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-                <DatasetCard />
+                <DatasetCard title="title3" category="category1" />
             </Grid>
         </Grid>
     </Box>
@@ -96,17 +96,18 @@ const datasetsGrid = (
 
 const Explore = () => {
 
-    const location = useLocation()
+    const [value, setValue] = useState(0)
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }} >
+
             <Box>
                 <NavBar />
                 <h1>NavBar goes here</h1>
             </Box>
 
             <Box sx={{ alignSelf: 'center', width: '65%', marginTop: '2%' }}>
-                <Breadcrumb path={`${location.pathname}`} fontSize={1} />
+                <Breadcrumb fontSize={1} />
             </Box>
 
             <Box sx={{ alignSelf: 'center', width: '65%', marginBlock: '2%' }}>
@@ -115,8 +116,7 @@ const Explore = () => {
 
             <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignSelf: 'center', width: '80%' }}>
                 {/* /explore/atlases */}
-                <TabGroup tabsInfo={tmpObj} />
-
+                <TabGroup value={value} setValue={setValue} tabsInfo={tmpObj} />
                 <Switch>
                     <Route path="/explore/atlases" render={() => atlasesGrid} />
                     <Route path="/explore/models" render={() => modelsGrid} />

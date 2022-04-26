@@ -38,8 +38,7 @@ export default function AtlasCard({
   return (
     <Box
       sx={{
-        width: width,
-        height: height
+        width, height
       }}
     >
       <Box
@@ -50,8 +49,6 @@ export default function AtlasCard({
           width: "100%",
           height: "100%",
           position: "relative",
-          maxHeight: "350",
-          maxWidth: "300"
         }}
       >
         {
@@ -64,8 +61,6 @@ export default function AtlasCard({
               position: "absolute",
               width: "100%",
               height: "100%",
-              maxHeight: "350px",
-              maxWidth: "300px",
               borderRadius: "1.2rem",
               display: "flex",
               flexDirection: "column",
@@ -93,8 +88,6 @@ export default function AtlasCard({
           sx={{
             width: "100%",
             height: "100%",
-            maxHeight: "350px",
-            maxWidth: "300px",
             padding: "1rem",
             display: "flex",
             flexDirection: "column",

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom';
 
 import { Box, Typography } from '@mui/material'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -12,19 +13,17 @@ import { Link } from 'react-router-dom'
  *     Format of Path should be like:
  *     - /explore/atlases
  */
-export default function Breadcrumb({ fontSize, path }) {
+export default function Breadcrumb({ fontSize }) {
+
+    let position = useLocation()
+
+    let elements = position.pathname.split('/').map((element)=>{
+        const first = element.substring(0, 1)
+        const rest = element.substring(1)
+        return `${first.toUpperCase()}${rest}`
+    })
 
     const iconSize = fontSize * 0.7
-
-    const [elements, setElements] = useState([])
-
-    useEffect(() => {
-        setElements(path.split('/').map((element)=>{
-            const first = element.substring(0, 1)
-            const rest = element.substring(1)
-            return `${first.toUpperCase()}${rest}`
-        }))
-    }, [])
 
     const rebuildLink = (index) => {
         let accmulator = ""
@@ -44,7 +43,11 @@ export default function Breadcrumb({ fontSize, path }) {
     return (
         <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>
             {
-                elements.map((element, index) => generate(element, index))
+                position.pathname.split('/').map((element)=>{
+                    const first = element.substring(0, 1)
+                    const rest = element.substring(1)
+                    return `${first.toUpperCase()}${rest}`
+                }).map((element, index) => generate(element, index))
             }
         </Box>
     )
