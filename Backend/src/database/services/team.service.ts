@@ -81,10 +81,40 @@ export default class TeamService {
      *  @param   userId
      *  @returns updateDocument
      */
-     static async addNewMemberIntoTeam(teamId: (ObjectId | string), userId: (ObjectId | string)): Promise<any> {
+    static async addNewMemberIntoTeam(teamId: (ObjectId | string), userId: (ObjectId | string)): Promise<any> {
         return await teamModel.updateOne(
             { _id: teamId },
             { $addToSet: { memberIds: userId} }
+        );
+    }
+
+    /**
+     *  Add the given teamId into the institution.
+     *
+     *  @param   teamId
+     *  @param   institutionId
+     *  @returns updateDocument
+     */
+    static async setInstitutionOfTeam(teamId: (ObjectId | string), institutionId: (ObjectId | string)): Promise<any> {
+        return await teamModel.updateOne(
+            { _id: teamId },
+            { $set : { institutionId: institutionId }}
+        );
+    }
+
+    /**
+     *  Add the given userId to the admin list and removes he/she from the memberIds, of the given team.
+     *
+     *  @param   teamId
+     *  @param   institutionId
+     *  @returns updateDocument
+     */
+    static async removeTeamFromInstitution(teamId: (ObjectId | string), institutionId: (ObjectId | string)): Promise<any> {
+        return await teamModel.updateOne(
+            { _id: teamId },
+            {
+                $unset: { institutionId: 1 }
+            }
         );
     }
 }
