@@ -15,10 +15,10 @@ export default class TeamService {
      *  @param    team
      *  @returns  projectAdded - the added team
      */
-    static async addTeam(project: AddTeamDTO): Promise<ITeam> {
-        let team : (ITeam | undefined) = undefined;
-        team = await teamModel.create(team);
-        return team;
+    static async addTeam(team: AddTeamDTO): Promise<ITeam> {
+        let teamAdded : (ITeam | undefined) = undefined;
+        teamAdded = await teamModel.create(team);
+        return teamAdded;
     }
 
     /**
