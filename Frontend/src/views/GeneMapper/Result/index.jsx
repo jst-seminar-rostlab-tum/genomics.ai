@@ -1,8 +1,10 @@
-import { Box } from '@mui/material';
+import { Box, CircularProgress } from '@mui/material';
 import GeneMapperCategories from 'components/GeneMapper/Categories';
 import GeneMapperResultHeader from 'components/GeneMapper/ResultHeader';
 import Sidepanel from 'components/GeneMapper/Sidepanel';
-import React, { useCallback } from 'react';
+import { csv } from 'd3';
+import React, { useCallback, useEffect, useState } from 'react';
+import getProject from 'shared/services/mock/projects';
 
 const testCategories = {
   'Cell type': [
@@ -39,8 +41,20 @@ const testCategories = {
  * Shows the UMAP visualization for a given project.
  * @param sidebarShown set true if sidebar is open, false otherwise
  */
-function GeneMapperResultView({ sidebarShown }) {
+function GeneMapperResultView({ sidebarShown, projectId }) {
   const paddingL = useCallback(() => (sidebarShown ? '350px' : '100px'), [sidebarShown]);
+
+  const [project, setProject] = useState(null);
+
+  useEffect(() => {
+    getProject(projectId)
+      .then((response) => response.json())
+      .then((data) => setProject(data));
+  }, [projectId]);
+
+  useEffect(() => {
+    if (project) { csv(project.resultURL).then((data) => console.log(data)); }
+  }, [project]);
 
   return (
     <Box
@@ -52,18 +66,26 @@ function GeneMapperResultView({ sidebarShown }) {
         flexDirection: 'column',
       }}
     >
-      <GeneMapperResultHeader projectName="Demo Projectname" />
-      <Box
-        sx={{
-          display: 'flex', flexGrow: 1, justifyContent: 'space-between', alignItems: 'stretch',
-        }}
-      >
-        <Sidepanel title="Categories">
-          <GeneMapperCategories categories={testCategories} />
-        </Sidepanel>
-        <Box sx={{ flexGrow: 1 }} />
-        <Sidepanel title="Graphs" collapseToRight />
-      </Box>
+      {project
+        ? (
+          <>
+            <GeneMapperResultHeader projectName={project.name} />
+            <Box
+              sx={{
+                display: 'flex', flexGrow: 1, justifyContent: 'space-between', alignItems: 'stretch',
+              }}
+            >
+              <Sidepanel title="Categories">
+                <GeneMapperCategories categories={testCategories} />
+              </Sidepanel>
+              <Box sx={{ flexGrow: 1 }} />
+              <Sidepanel title="Graphs" collapseToRight />
+            </Box>
+          </>
+        )
+        : (
+          <CircularProgress />
+        )}
     </Box>
   );
 }
