@@ -41,7 +41,7 @@ export function upload_institution_profilepicture_route() {
                     profilePictureURL: result.objectUrl
                 };
                 await InstitutionService.updateInstitution(instId, institutionUpdate);
-                res.status(200).send(result.objectUrl);
+                res.status(200).contentType("text/plain").send(result.objectUrl);
             } else {
                 const { status, message, error } = result;
                 if (error) console.log(error);
@@ -68,7 +68,7 @@ export function upload_institution_backgroundpicture_route() {
                     backgroundPictureURL: result.objectUrl
                 };
                 await InstitutionService.updateInstitution(instId, institutionUpdate);
-                res.status(200).send(result.objectUrl);
+                res.status(200).contentType("text/plain").send(result.objectUrl);
             } else {
                 const { status, message, error } = result;
                 if (error) console.log(error);

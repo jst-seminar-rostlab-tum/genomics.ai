@@ -26,7 +26,7 @@ export default function upload_user_avatar_route() {
                                 avatarUrl: result.objectUrl
                             };
                             await UserService.updateUser(req.user_id, userUpdate);
-                            res.status(200).send(result.objectUrl);
+                            res.status(200).contentType("text/plain").send(result.objectUrl);
                         } else {
                             const { status, message, error } = result;
                             res.status(status).send(message);

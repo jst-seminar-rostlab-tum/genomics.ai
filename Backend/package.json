@@ -8,7 +8,7 @@
     "start": "node ./build/server.js",
     "gcp-build": "tsc -p .",
     "dev:start": "npm-run-all gcp-build start",
-    "dev": "nodemon --watch src -e ts,ejs --exec npm run dev:start",
+    "dev": "tsc-watch --onSuccess \"npm run start\"",
     "full-backend-local:docker": "docker-compose -f dev/docker-compose.yml up -d",
     "full-backend-local": "npm-run-all full-backend-local:docker dev"
   },
@@ -61,6 +61,7 @@
     "@types/sharp": "^0.30.2",
     "@types/ws": "^8.2.0",
     "source-map-support": "^0.5.20",
-    "ts-node": "^10.7.0"
+    "ts-node": "^10.7.0",
+    "tsc-watch": "^5.0.3"
   }
 }
