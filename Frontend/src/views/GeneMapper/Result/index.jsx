@@ -115,7 +115,12 @@ function GeneMapperResultView({ sidebarShown, projectId }) {
           </>
         )
         : (
-          <CircularProgress />
+          <Box sx={{
+            flexGrow: 1, display: 'flex', justifyContent: 'Center', alignItems: 'center',
+          }}
+          >
+            <CircularProgress />
+          </Box>
         )}
     </Box>
   );
