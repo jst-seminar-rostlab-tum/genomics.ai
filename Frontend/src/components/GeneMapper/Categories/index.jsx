@@ -6,11 +6,13 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 
-function Category({ title, colored, toggleColored }) {
+function Category({
+  title, values, colored, toggleColored,
+}) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
       <ListItemButton onClick={() => setOpen(!open)} sx={{ p: 0 }}>
         <ListItem
           secondaryAction={(
@@ -25,13 +27,11 @@ function Category({ title, colored, toggleColored }) {
         </ListItem>
       </ListItemButton>
       <Collapse in={open}>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <Value title="short" />
-          <Value title="veeeeeeeeeeeeeeeery long" />
-          <Value title="medium length" />
-        </div>
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+          {values.map((valueTitle) => <Value title={valueTitle} key={valueTitle} />)}
+        </Box>
       </Collapse>
-    </div>
+    </Box>
   );
 }
 
@@ -51,20 +51,21 @@ function Value({ title }) {
 
 /**
  *
- * @param categories A list of available categories
+ * @param categories An object containing available categories and their values as key-value pairs
  */
 function GeneMapperCategories({ categories }) {
-  const [coloredCategoryIndex, setColoredCategoryIndex] = useState(0);
+  const [coloredCategoryTitle, setColoredCategoryTitle] = useState(null);
 
   return (
     <>
-      {categories.map((category, idx) => (
+      {Object.keys(categories).map((title) => (
         <Category
-          key={category}
-          title={category}
-          colored={idx === coloredCategoryIndex}
+          key={title}
+          title={title}
+          values={categories[title]}
+          colored={title === coloredCategoryTitle}
           toggleColored={() => {
-            setColoredCategoryIndex(idx);
+            setColoredCategoryTitle(title);
           }}
         />
       ))}

@@ -4,14 +4,17 @@ import GeneMapperResultHeader from 'components/GeneMapper/ResultHeader';
 import Sidepanel from 'components/GeneMapper/Sidepanel';
 import React, { useCallback } from 'react';
 
+const testCategories = {
+  'Cell type': ['a', 'b', 'c'],
+  Batch: ['d', 'e', 'f'],
+};
+
 /**
  * Shows the UMAP visualization for a given project.
  * @param sidebarShown set true if sidebar is open, false otherwise
  */
 function GeneMapperResultView({ sidebarShown }) {
   const paddingL = useCallback(() => (sidebarShown ? '350px' : '100px'), [sidebarShown]);
-
-  console.log('render');
 
   return (
     <Box
@@ -30,7 +33,7 @@ function GeneMapperResultView({ sidebarShown }) {
         }}
       >
         <Sidepanel title="Categories">
-          <GeneMapperCategories categories={['Cell type', 'Batch']} />
+          <GeneMapperCategories categories={testCategories} />
         </Sidepanel>
         <Box sx={{ flexGrow: 1 }} />
         <Sidepanel title="Graphs" collapseToRight />
