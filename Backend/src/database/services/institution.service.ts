@@ -127,4 +127,15 @@ export default class InstitutionService {
       Promise<( IInstitution & { _id: ObjectId } | null )> {
         return await institutionModel.findOne({name});
     }
+
+    /**
+     *  Search for a institution with the given institution id and return if found.
+     *
+     *  @param   institutionId
+     *  @returns project - matched proejct to projectId or null
+     */
+    static async getInstitutionById(institutionId: (ObjectId | string)):
+     Promise<( IInstitution & { _id: ObjectId } | null )> {
+       return await institutionModel.findById(institutionId).exec();
+    }
 }
