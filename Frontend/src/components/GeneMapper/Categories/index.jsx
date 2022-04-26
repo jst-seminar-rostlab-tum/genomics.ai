@@ -21,10 +21,11 @@ function Category({
       <ListItemButton onClick={() => setOpen(!open)} sx={{ p: 0 }}>
         <ListItem
           secondaryAction={(
-            <IconButton onClick={(e) => { toggleColored(); e.stopPropagation(); }}>
+            <IconButton edge="end" onClick={(e) => { toggleColored(); e.stopPropagation(); }}>
               <OpacityIcon sx={{ color: colored ? activatedColor : deactivatedColor }} />
             </IconButton>
           )}
+          sx={{ pl: 1 }}
         >
           {open
             ? <ExpandLess sx={{ transform: 'rotate(180deg)' }} />
@@ -53,7 +54,7 @@ function Value({ title, color }) {
 
   return (
     <Box sx={{
-      display: 'flex', alignItems: 'center', pl: 4, pr: 2,
+      display: 'flex', alignItems: 'center', pl: 3, pr: 2,
     }}
     >
       <IconButton onClick={() => setVisible(!visible)}>
