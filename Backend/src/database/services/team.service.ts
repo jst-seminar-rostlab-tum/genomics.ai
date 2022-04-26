@@ -51,7 +51,9 @@ export default class TeamService {
      */
     static async getTeamsOfUser(userId: (ObjectId)):
       Promise<( ITeam & { _id: ObjectId } )[] > {
-        return await teamModel.find( { memberIds: userId }, { title: 1 } ).exec();
+        return await teamModel.find( {
+          $or: [ { memberIds: userId }, { adminIds: userId } ] },
+          { title: 1 } ).exec();
     }
 
     /**
