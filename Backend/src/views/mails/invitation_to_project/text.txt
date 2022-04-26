@@ -1,7 +1,0 @@
-Your password was reset
-
-Hey {{firstname}},
-We wanted to inform you that you were invited to the project {{projectname}}.
-
-Thanks,
-The GeneCruncher Team

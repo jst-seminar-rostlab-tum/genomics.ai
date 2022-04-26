@@ -31,7 +31,13 @@ import {
   create_institution,
   invite_to_institution,
 } from "./routes/institution/institutionRouter";
-import { create_team, invite_person_to_a_team } from "./routes/team/teamRouter";
+import {
+  create_team,
+  invite_person_to_a_team,
+  add_user_to_admin,
+  join_member,
+  add_team_to_institution,
+} from "./routes/team/teamRouter";
 
 // setup the websocket-server on top of the http_server
 export function express_routes(this: REST_Host): Router {
@@ -53,6 +59,10 @@ export function express_routes(this: REST_Host): Router {
   this.expressApp.use(get_profile_route());
   this.expressApp.use(get_project_route());
   this.expressApp.use(get_projects_route());
+
+  this.expressApp.use(add_user_to_admin());
+  this.expressApp.use(join_member());
+  this.expressApp.use(add_team_to_institution());
 
   // administrator routes
   this.expressApp.use(get_unauthorized_users_route());
