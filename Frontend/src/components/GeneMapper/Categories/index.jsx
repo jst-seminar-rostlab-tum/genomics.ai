@@ -71,7 +71,7 @@ function Value({ title, color }) {
  *
  * @param categories An object containing available categories and their values as key-value pairs
  */
-function GeneMapperCategories({ categories }) {
+function GeneMapperCategories({ categories, setColorMode }) {
   const [coloredCategoryTitle, setColoredCategoryTitle] = useState(null);
 
   return (
@@ -84,6 +84,7 @@ function GeneMapperCategories({ categories }) {
           colored={title === coloredCategoryTitle}
           toggleColored={() => {
             setColoredCategoryTitle(title);
+            setColorMode(title);
           }}
         />
       ))}

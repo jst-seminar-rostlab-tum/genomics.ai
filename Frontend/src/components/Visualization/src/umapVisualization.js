@@ -59,18 +59,21 @@ const listColoringDomain = (data, mode) => {
   export class UmapVisualization2 {
 
 
-    constructor(container, url) {
+    constructor(container, data) {
   
       this.svg = d3.select(container).append('svg');
       this.gCells = addGroup(this.svg, 'cells');
       this.gLabels = addGroup(this.svg, 'labels');
-      this.dataUrl = url;
+      this.data = data;
     };
 
-    render(w, h, mode){
-        csv(this.dataUrl).then( (dataUnpacked) =>
-       {
-        const data = dataUnpacked;
+    setColorMode(mode) {
+      const colorScale = setColoring(mode, this.data);
+      this.cells = this.cells.style("fill", (d)=> colorScale(d[mode]));
+    }
+
+    async render(w, h){
+        const data = this.data; //dataUnpacked;
         
         //Scales
         const  xScale = d3.scaleLinear()
@@ -80,9 +83,6 @@ const listColoringDomain = (data, mode) => {
         const  yScale = d3.scaleLinear()
         .domain([d3.min(data.map(d => parseFloat(d.y))), d3.max(data.map(d => parseFloat(d.y)))])
         .range([cons.margin, h-cons.margin]);
- 
-        
-         const colorScale = setColoring(mode, data);
  
          //svg
          this.svg
@@ -98,16 +98,15 @@ const listColoringDomain = (data, mode) => {
          .append("circle")
          .attr("cx", d => xScale(parseFloat(d.x)))
          .attr("cy", d => yScale(parseFloat(d.y)))
-         .attr("r", r)
-         .style("fill", (d)=> colorScale(d[mode]))
+         .attr("r", cons.initialPointRadius)
+        //  .style("fill", (d)=> colorScale(d[mode]))
+         .style("fill", "black")
          .style("opacity", originalOpacity)
 
          //Pan and mouse zoom
-         initZoom();
+         //initZoom();
 
      }
- 
-        );
-     }
- 
+
     }
+ 
