@@ -27,13 +27,13 @@ export default class InstitutionService {
      *
      *  @param    institutionId
      *  @param    userId
-     *  @returns  institutionUpdated 
+     *  @returns  institutionUpdated
      */
      static async inviteToInstitution(institutionId: ObjectId, userId: ObjectId): Promise<IInstitution | undefined> {
         let updatedInstitution : (IInstitution | undefined) = undefined;
 
         const institution = await institutionModel.findOne({_id: institutionId})
-                
+
         if (institution) {
 
             institution.invitedMemberIds = [...institution.invitedMemberIds, userId];
@@ -55,14 +55,14 @@ export default class InstitutionService {
      static async findMemeberById(user_id: (ObjectId | string), institution_id: (ObjectId | string)):
      Promise<(IInstitution & { _id: any; }) | undefined>  {
         const result = await institutionModel.findOne({
-            _id: institution_id, 
+            _id: institution_id,
             $or: [{
                 invitedMemberIds: { $elemMatch: {$eq: user_id} },
             },
             {
                 memberIds: { $elemMatch: {$eq: user_id} }
             }]
-            
+
         })
         console.log(result)
         if (result) {
@@ -81,5 +81,69 @@ export default class InstitutionService {
     static async getInstitutionByName(name: string):
       Promise<( IInstitution & { _id: ObjectId } | null )> {
         return await institutionModel.findOne({name});
+    }
+
+    /**
+     *  Search for a institution with the given institution id and return if found.
+     *
+     *  @param   institutionId
+     *  @returns project - matched proejct to projectId or null
+     */
+    static async getInstitutionById(institutionId: (ObjectId | string)):
+     Promise<( IInstitution & { _id: ObjectId } | null )> {
+       return await institutionModel.findById(institutionId).exec();
+    }
+
+    /**
+     *  Add the given teamId into the institution.
+     *
+     *  @param   teamId
+     *  @param   institutionId
+     *  @returns updateDocument
+     */
+     static async addNewMemberIntoTeam(teamId: (ObjectId | string), institutionId: (ObjectId | string)): Promise<any> {
+        return await institutionModel.updateOne(
+            { _id: institutionId },
+            { $addToSet: { memberIds: teamId} }
+        );
+    }
+
+    /**
+     *  Add the given userId to the admin list and removes he/she from the memberIds, of the given team.
+     *
+     *  @param   teamId
+     *  @param   institutionId
+     *  @returns updateDocument
+     */
+     static async removeTeamFromInstitution(teamId: (ObjectId | string), institutionId: (ObjectId | string)): Promise<any> {
+        return await institutionModel.updateOne(
+            { _id: institutionId },
+            {
+                $pull: { memberIds: teamId }
+            }
+        );
+    }
+
+    /**
+     *  Returns true if the given team is a member of the given institution.
+     *  The given institution should exist, otherwise the method returns false.
+     *
+     *  @param  teamId
+     *  @param  institutionId
+     *  @return isMember
+     */
+    static async isMember(teamId: (ObjectId | string), institutionId: (ObjectId | string)):
+      Promise<boolean> {
+        const institution = await this.getInstitutionById(teamId);
+        if (!institution)
+          return false; /* institution does not exist */
+
+        let isMember = false;
+        var listMembers = institution.memberIds.map(String);
+
+        var teamIdStr = String(teamId);
+        if (listMembers.includes(teamIdStr))
+            isMember = true;
+        return isMember;
     }
 }

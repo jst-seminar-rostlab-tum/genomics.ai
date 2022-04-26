@@ -9,8 +9,8 @@ import initiate_processing_route from "./routes/initiate_processing";
 import abort_processing_route from "./routes/abort_processing";
 
 import get_profile_route from "./routes/get_profile";
-import get_job_route from "./routes/get_job";
-import get_jobs_route from "./routes/get_jobs";
+import get_project_route from "./routes/get_project";
+import get_projects_route from "./routes/get_projects";
 import get_unauthorized_users_route from "./routes/get_unauthorized_users";
 import authorize_user_route from "./routes/authorize_user";
 import verify_email_route from "./routes/verify_email";
@@ -23,7 +23,8 @@ import upload_get_upload_url_route from "./routes/file_upload/get_upload_url";
 import download_results_route from "./routes/file_download/results";
 
 import {test_institution, create_institution, invite_to_institution} from "./routes/institution/institutionRouter";
-import {create_team, invite_person_to_a_team, add_project_to_team} from "./routes/team/teamRouter";
+import {create_team, invite_person_to_a_team, add_user_to_admin, join_member,
+    add_team_to_institution, remove_team_from_institution, add_project_to_team} from "./routes/team/teamRouter";
 import {get_teams_of_user} from "./routes/user/userRouter";
 import {get_userProjects} from "./routes/projects/projectRouter"
 import {get_model, get_allModels} from "./routes/model/modelRouter"
@@ -43,8 +44,8 @@ export function express_routes(this: REST_Host): Router {
     // authenticated routes
     this.expressApp.use(update_profile_route());
     this.expressApp.use(get_profile_route());
-    this.expressApp.use(get_job_route());
-    this.expressApp.use(get_jobs_route());
+    this.expressApp.use(get_project_route());
+    this.expressApp.use(get_projects_route());
 
     // administrator routes
     this.expressApp.use(get_unauthorized_users_route());
@@ -73,6 +74,10 @@ export function express_routes(this: REST_Host): Router {
     this.expressApp.use(create_team());
     this.expressApp.use(invite_person_to_a_team());
     this.expressApp.use(add_project_to_team());
+    this.expressApp.use(add_user_to_admin());
+    this.expressApp.use(join_member());
+    this.expressApp.use(add_team_to_institution());
+    this.expressApp.use(remove_team_from_institution());
 
     // user routes
     this.expressApp.use(get_teams_of_user());
