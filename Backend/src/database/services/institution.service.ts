@@ -94,6 +94,21 @@ export default class InstitutionService {
     }
 
     /**
+     *  Return the visibility status {"PRIVATE", "PUBLIC"}
+     *  of the given institution if it exists, otherwise null.
+     *
+     *  @param  institutionId
+     *  @return visibilityStatus - {"PRIVATE", "PUBLIC"}
+     */
+    static async getVisibility(institutionId: (ObjectId | string)):
+      Promise<(string | null)> {
+        const institution = await this.getInstitutionById(institutionId);
+        if (!institution)
+            return null;
+        return institution.visibility;
+    }
+
+    /**
      *  Add the given teamId into the institution.
      *
      *  @param   teamId
@@ -121,5 +136,48 @@ export default class InstitutionService {
                 $pull: { memberIds: teamId }
             }
         );
+    }
+
+    /**
+     *  Returns true if the given user is an admin of the given institution.
+     *  The given institution should exist, otherwise the method returns false.
+     *
+     *  @param  userId
+     *  @param  institutionId
+     *  @return isAdmin
+     */
+    static async isAdmin(userId: (ObjectId | string), institutionId: (ObjectId | string)): Promise<boolean> {
+        const institution = await this.getInstitutionById(institutionId);
+        if (!institution)
+          return false; /* institution does not exist */
+
+        let isAdmin = false;
+        var listAdmins = institution.adminIds.map(String);
+        var userIdStr= String(userId);
+        if (listAdmins.includes(userIdStr))
+            isAdmin = true;
+        return isAdmin;
+    }
+
+    /**
+     *  Returns true if the given user is a member of the given institution.
+     *  The given institution should exist, otherwise the method returns false.
+     *
+     *  @param  userId
+     *  @param  institutionId
+     *  @return isMember
+     */
+    static async isMember(userId: (ObjectId | string), institutionId: (ObjectId | string)): Promise<boolean> {
+        const institution = await this.getInstitutionById(institutionId);
+        if (!institution)
+          return false; /* institution does not exist */
+
+        let isMember = false;
+        var listMembers = institution.memberIds.map(String);
+
+        var userIdStr = String(userId);
+        if (listMembers.includes(userIdStr))
+            isMember = true;
+        return isMember;
     }
 }

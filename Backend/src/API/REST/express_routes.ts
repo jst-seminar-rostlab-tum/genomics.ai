@@ -26,7 +26,7 @@ import {test_institution, create_institution, invite_to_institution} from "./rou
 import {create_team, invite_person_to_a_team, add_user_to_admin, join_member,
     add_team_to_institution, remove_team_from_institution, add_project_to_team} from "./routes/team/teamRouter";
 import {get_teams_of_user} from "./routes/user/userRouter";
-import {get_userProjects} from "./routes/projects/projectRouter"
+import {get_userProjects, get_project_by_id} from "./routes/projects/projectRouter"
 import {get_model, get_allModels} from "./routes/model/modelRouter"
 import {get_atlas, get_allAtlases} from "./routes/atlas/atlasRouter"
 
@@ -84,6 +84,7 @@ export function express_routes(this: REST_Host): Router {
 
     // project routes
     this.expressApp.use(get_userProjects());
+    this.expressApp.use(get_project_by_id());
 
     // model routes
     this.expressApp.use(get_model());
