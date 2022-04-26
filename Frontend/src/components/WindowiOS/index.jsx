@@ -1,5 +1,5 @@
 import { Circle } from "@mui/icons-material"
-import { Box, Button, Divider, Typography } from "@mui/material"
+import { Box, Button, Typography } from "@mui/material"
 import { colors } from "shared/theme/colors"
 import tum from 'assets/landing-illustrations/tum-logo.png';
 import rostlab from 'assets/landing-illustrations/rostlab.png';
@@ -35,11 +35,11 @@ const WindowiOS = () => {
         <Circle sx={{ width: "15px", color: colors.success.main }}/>
       </Box>
       <Typography textAlign="center">genomics.ai</Typography>
-      <Box sx={{ p: "1em 4em 1em 4em", marginTop: "4em" }}>
-        <Typography fontSize="3.3rem" fontWeight="bold">
+      <Box sx={{ p: {xs: "1em 1em", sm: "1em 4em", md: "1em 4em", lg: "1em 4em", xl: "1em 4em"}, marginTop: "4em" }}>
+        <Typography fontSize={{xs: "1.7rem", sm: "2.3rem", md: "2.1rem", lg: "3.1rem", xl: "3.1rem"}} fontWeight="bold">
           AI-Driven Cell Type Annotation
         </Typography>
-        <Typography fontSize="2.2rem" fontWeight="semibold">
+        <Typography fontSize={{xs: "1.4rem", sm: "1.6rem", md: "1.4rem", lg: "2rem", xl: "2rem"}} fontWeight="semibold">
           No Code. Just Results.
         </Typography>
         <Typography fontSize="1.2rem" fontWeight="light" color="#8193B2">
@@ -49,9 +49,9 @@ const WindowiOS = () => {
         
         {/* DIVIDER */}
         <Box sx={{ marginTop: "3em", display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-          <Box sx={{ height: "1px", width: "40%", backgroundColor: "rgba(255,255,255, 0.5)" }} />
-          <Typography>Our partners</Typography>
-          <Box sx={{ height: "1px", width: "40%", backgroundColor: "rgba(255,255,255, 0.5)" }} />
+          <Box sx={{ height: "1px", width: {xs: "25%", sm: "37%", md: "35%", lg: "40%", xl: "40%"}, backgroundColor: "rgba(255,255,255, 0.5)" }} />
+          <Typography fontSize={{xs: "0.6em", sm: "1em", md: "1em", lg: "1em", xl: "1em"}} >Our partners</Typography>
+          <Box sx={{ height: "1px", width: {xs: "25%", sm: "37%", md: "35%", lg: "40%", xl: "40%"}, backgroundColor: "rgba(255,255,255, 0.5)" }} />
         </Box>
       </Box>
       {/* BUTTON PLACEHOLDER UNTIL WE HAVE A BUTTON DESIGN */}
@@ -66,13 +66,13 @@ const WindowiOS = () => {
           p: "1em 1em 2em 1em"
         }}
       >
-        <Box>
+        <Box sx={{margin: {xs: "2em 2em", sm: "0em", md: "0em", lg: "0em", xl: "0em"}}} >
           <img src={tum} alt="TUM" style={{ width: "6em", height: "auto" }}/> 
         </Box>
-        <Box>
+        <Box sx={{margin: {xs: "2em 2em", sm: "0em", md: "0em", lg: "0em", xl: "0em"}}} >
           <img src={rostlab} alt="ROSTLAB" style={{ width: "10em", height: "auto" }}/> 
         </Box>
-        <Box>
+        <Box sx={{margin: {xs: "2em 2em", sm: "0em", md: "0em", lg: "0em", xl: "0em"}}} >
           <img src={helmholtz} alt="HELMHOLTZ" style={{ width: "6em", height: "auto" }}/> 
         </Box>
       </Box>
