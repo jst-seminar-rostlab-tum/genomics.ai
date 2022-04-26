@@ -5,7 +5,7 @@ import check_auth from "../../middleware/check_auth";
 import {ExtRequest} from "../../../../definitions/ext_request";
 
 /**
- *  Returns all the teams of the user.
+ *  Returns all the teams that the user belong to.
  */
 const get_teams_of_user = (): Router => {
     let router = express.Router();

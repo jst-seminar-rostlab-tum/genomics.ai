@@ -80,4 +80,19 @@ export default class ProjectService {
     static async updateUploadId(_id: ObjectId, uploadId: string) {
         await projectModel.updateOne({_id}, {uploadId}).exec();
     }
+
+    /**
+     *  Returns the id of the owner of the given project if it exists,
+     *  otherwise null.
+     *
+     *  @param   project_id
+     *  @returns owner or null
+     */
+    static async getOwner(project_id: (ObjectId | string)):
+      Promise<(ObjectId | null)> {
+        const project = await ProjectService.getProjectById(project_id);
+        if (!project)
+            return null;
+        return project.owner;
+    }
 }
