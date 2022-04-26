@@ -11,7 +11,7 @@ function Category({ title, colored, toggleColored }) {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
-      <ListItemButton onClick={() => setOpen(!open)} disableGutters>
+      <ListItemButton onClick={() => setOpen(!open)} sx={{ p: 0 }}>
         <ListItem
           secondaryAction={(
             <IconButton onClick={(e) => { toggleColored(); e.stopPropagation(); }}>
@@ -49,31 +49,27 @@ function Value({ title }) {
   );
 }
 
+/**
+ *
+ * @param categories A list of available categories
+ */
 function GeneMapperCategories({ categories }) {
   const [coloredCategoryIndex, setColoredCategoryIndex] = useState(0);
-  const [open, setOpen] = useState(true);
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'strech' }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', pr: 1 }}>
-          <Typography variant="h6" style={{ flexGrow: 1 }}>Categories</Typography>
-          <IconButton size="large">
-            <ExpandLess fontSize="large" sx={{ transform: open ? 'rotate(90deg)' : 'rotate(-90deg)' }} />
-          </IconButton>
-        </Box>
-        {categories.map((category, idx) => (
-          <Category
-            key={category}
-            title={category}
-            colored={idx === coloredCategoryIndex}
-            toggleColored={() => {
-              setColoredCategoryIndex(idx);
-            }}
-          />
-        ))}
-      </Box>
-    </Box>
+    <>
+      {categories.map((category, idx) => (
+        <Category
+          key={category}
+          title={category}
+          colored={idx === coloredCategoryIndex}
+          toggleColored={() => {
+            setColoredCategoryIndex(idx);
+          }}
+        />
+      ))}
+    </>
+
   );
 }
 
