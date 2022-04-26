@@ -24,7 +24,8 @@ import download_results_route from "./routes/file_download/results";
 import upload_user_avatar_route from "./routes/upload_user_avatar";
 
 import {test_institution, create_institution, invite_to_institution} from "./routes/institution/institutionRouter";
-import {create_team, invite_person_to_a_team} from "./routes/team/teamRouter";
+import {create_team, invite_person_to_a_team, add_user_to_admin, join_member, 
+    add_team_to_institution} from "./routes/team/teamRouter";
 
 import { upload_institution_backgroundpicture_route, upload_institution_profilepicture_route } from "./routes/upload_institution_pictures";
 
@@ -74,6 +75,9 @@ export function express_routes(this: REST_Host): Router {
     // team routes
     this.expressApp.use(create_team());
     this.expressApp.use(invite_person_to_a_team());
+    this.expressApp.use(add_user_to_admin());
+    this.expressApp.use(join_member());
+    this.expressApp.use(add_team_to_institution());
 
     this.expressApp.use(/^.*_ah.*$/, (req, res) => res.status(200).send()) // always tell google everything is fine
     this.expressApp.use((req, res) => res.status(404).send("Not found."));
