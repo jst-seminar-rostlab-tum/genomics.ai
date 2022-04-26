@@ -41,8 +41,8 @@ function indexIcon(index) {
 
 export default function Sidebar(props) {
   const { setUser } = props;
-  const routes = ['dashboard', 'projects', 'institutions', 'genemapper', 'search', 'documentation', 'help'];
-  const titles = ['Dashboard', 'Projects', 'Institutions', 'Gene Mapper', 'Search', 'Documentation', 'Help'];
+  const routes = ['dashboard', 'teams', 'institutions', 'genemapper', 'documentation', 'help'];
+  const titles = ['Dashboard', 'Teams', 'Institutions', 'Gene Mapper', 'Documentation', 'Help'];
   const { url } = useRouteMatch();
   const location = useLocation();
   const path = location.pathname;
@@ -52,14 +52,17 @@ export default function Sidebar(props) {
     <Box>
       <Box className={styles.sidebarNav}>
         <Box className={styles.sidebarWrap}>
-          <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "98vh"}}>
+          <Box sx={{
+            display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '98vh',
+          }}
+          >
             <Box className={styles.iconList}>
               {routes.map((route, index) => (
                 <NavLink
                   className={styles.navlink}
                   to={`${url}/${route}`}
                   key={route.toString()}
-                  >
+                >
                   <Tooltip
                     title={titles[index]}
                     placement="right"
@@ -70,11 +73,11 @@ export default function Sidebar(props) {
                         },
                       },
                     }}
-                    >
+                  >
                     <Box
                       className={styles.navbarItemContainer}
                       sx={{ background: path.includes(route) ? '#5676E5' : '#184060' }}
-                      >
+                    >
                       <ListItemIcon className={styles.listItemIcon}>
                         {indexIcon(index)}
                       </ListItemIcon>
@@ -83,11 +86,11 @@ export default function Sidebar(props) {
                 </NavLink>
               ))}
             </Box>
-            <Box sx={{ display: "flex", flexDirection: "column", gap: "3" }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: '3' }}>
               <NavLink
                 to={settingsPath}
                 className={`${styles.navlinkIcon} ${styles.bottomIcons} ${styles.settingsIcon}`}
-                >
+              >
                 <SettingsIcon />
               </NavLink>
               <NavLink
@@ -98,7 +101,7 @@ export default function Sidebar(props) {
                   localStorage.removeItem('jwt');
                 }}
                 className={`${styles.navlinkIcon} ${styles.bottomIcons}`}
-                >
+              >
                 <LogoutIcon />
               </NavLink>
             </Box>

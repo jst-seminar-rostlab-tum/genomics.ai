@@ -4,6 +4,8 @@ import {
 } from 'react-router-dom';
 import Sidebar from '../Sidebar';
 import Dashboard from 'views/Dashboard';
+import TeamOverview from 'views/TeamOverview';
+import InstitutionOverview from 'views/InstitutionOverview';
 import Documentation from 'views/Documentation';
 import Settings from 'views/Settings';
 import Help from 'views/Help';
@@ -29,6 +31,14 @@ const DashboardContent = (props) => {
         </Route>
         <Route path={`${path}/dashboard`}>
           <Dashboard sidebarShown={sidebarShown} />
+        </Route>
+
+        <Route path={`${path}/teams`}>
+          <TeamOverview sidebarShown={sidebarShown} />
+        </Route>
+
+        <Route path={`${path}/institutions`}>
+          <InstitutionOverview sidebarShown={sidebarShown} />
         </Route>
 
         <Route path={`${path}/documentation`}>
