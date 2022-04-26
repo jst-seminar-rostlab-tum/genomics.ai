@@ -5,8 +5,34 @@ import Sidepanel from 'components/GeneMapper/Sidepanel';
 import React, { useCallback } from 'react';
 
 const testCategories = {
-  'Cell type': ['a', 'b', 'c'],
-  Batch: ['d', 'e', 'f'],
+  'Cell type': [
+    {
+      title: 'a',
+      color: 'red',
+    },
+    {
+      title: 'b',
+      color: 'blue',
+    },
+    {
+      title: 'c',
+      color: 'green',
+    },
+  ],
+  Batch: [
+    {
+      title: 'd',
+      color: 'orange',
+    },
+    {
+      title: 'e',
+      color: 'yellow',
+    },
+    {
+      title: 'f',
+      color: 'lime',
+    },
+  ],
 };
 
 /**

@@ -1,10 +1,15 @@
 import {
-  Circle, ExpandLess, ExpandMore, FormatColorFill, FormatColorReset, Visibility, VisibilityOff,
+  ExpandLess, ExpandMore, Visibility, VisibilityOff,
 } from '@mui/icons-material';
+import OpacityIcon from '@mui/icons-material/Opacity';
 import {
   Box, Collapse, IconButton, ListItem, ListItemButton, Typography,
 } from '@mui/material';
 import React, { useState } from 'react';
+import { colors } from 'shared/theme/colors';
+
+const activatedColor = colors.primary['400'];
+const deactivatedColor = colors.primary['200'];
 
 function Category({
   title, values, colored, toggleColored,
@@ -17,34 +22,46 @@ function Category({
         <ListItem
           secondaryAction={(
             <IconButton onClick={(e) => { toggleColored(); e.stopPropagation(); }}>
-              {colored ? <FormatColorFill /> : <FormatColorReset />}
+              <OpacityIcon sx={{ color: colored ? activatedColor : deactivatedColor }} />
             </IconButton>
           )}
         >
+          {open
+            ? <ExpandLess sx={{ transform: 'rotate(180deg)' }} />
+            : <ExpandMore sx={{ transform: 'rotate(-90deg)' }} />}
           <Typography sx={{ pr: 1 }}>{title}</Typography>
-          {open ? <ExpandLess /> : <ExpandMore />}
 
         </ListItem>
       </ListItemButton>
       <Collapse in={open}>
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-          {values.map((valueTitle) => <Value title={valueTitle} key={valueTitle} />)}
+          {values.map((value) => (
+            <Value
+              title={value.title}
+              color={value.color}
+              key={value.title}
+            />
+          ))}
         </Box>
       </Collapse>
     </Box>
   );
 }
 
-function Value({ title }) {
+function Value({ title, color }) {
   const [visible, setVisible] = useState(true);
 
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', px: 3 }}>
-      <IconButton edge="start" onClick={() => setVisible(!visible)}>
-        {visible ? <Visibility /> : <VisibilityOff />}
+    <Box sx={{
+      display: 'flex', alignItems: 'center', pl: 4, pr: 2,
+    }}
+    >
+      <IconButton onClick={() => setVisible(!visible)}>
+        { visible
+          ? <Visibility sx={{ color }} />
+          : <VisibilityOff sx={{ color: deactivatedColor }} />}
       </IconButton>
-      <Typography sx={{ flexGrow: 1, pr: 3 }}>{title}</Typography>
-      <Circle />
+      <Typography sx={{ flexGrow: 1 }}>{title}</Typography>
     </Box>
   );
 }
