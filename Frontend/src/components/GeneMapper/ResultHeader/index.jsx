@@ -17,7 +17,7 @@ function GeneMapperResultHeader({ projectName }) {
     <>
       <Toolbar disableGutters>
         <Button startIcon={<ArrowBackIos fontSize="small" />} size="small" sx={{ mr: 2 }} onClick={() => history.goBack()}>
-          <Typography variant="caption" disableGutters>Back to projects</Typography>
+          <Typography variant="caption">Back to projects</Typography>
         </Button>
         <Typography variant="h6">
           {projectName}

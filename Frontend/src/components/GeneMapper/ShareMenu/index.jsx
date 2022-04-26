@@ -21,7 +21,7 @@ function ShareMenu({ projectName, url }) {
       <IconButton onClick={() => navigator.clipboard.writeText(url)}>
         <ContentCopyIcon sx={{ color: copyIconColor }} />
       </IconButton>
-      <script async src="https://platform.twitter.com/widgets.js" charset="utf-8" />
+      <script async src="https://platform.twitter.com/widgets.js" charSet="utf-8" />
     </>
   );
 }
