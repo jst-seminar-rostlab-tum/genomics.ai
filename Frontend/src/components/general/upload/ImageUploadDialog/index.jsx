@@ -9,6 +9,9 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { DropzoneArea } from 'mui-file-dropzone';
 import CropImage from '../CropImage';
 
+import { BACKEND_ADDRESS } from 'shared/utils/common/constants';
+import { getAuthAndJsonHeader } from 'shared/utils/common/utils';
+
 export default function ImageUploadDialog({
   open, onClose, title, description, maxFileSizeMB, croppable,
   preview = (imgURL) => <img src={imgURL} alt="Preview" />,
@@ -16,9 +19,30 @@ export default function ImageUploadDialog({
   const [loading, setLoading] = useState(false);
   const [imgURL, setImgURL] = useState('');
   const [croppedImgURL, setCroppedImgURL] = useState('');
+  const [croppedImgBlob, setCroppedImgBlob] = useState();
 
-  function upload() {
-    // TODO: implement
+  async function upload() {
+    setLoading(true);
+    await fetch(`${BACKEND_ADDRESS}/user-avatar`, {
+      method: 'POST',
+      headers: {
+        ...getAuthAndJsonHeader(),
+        'Content-Type': 'image/png',
+      },
+      body: croppedImgBlob,
+    }).then((response) => {
+      if (response.status !== 200) {
+        if (response.status === 413) {
+          // should not happen because of the max file size in the filedrop component,
+          // but who knows, maybe the backend will change the limit in the future
+          alert('This image is too large. Please provide one with a smaller file size.');
+          return;
+        }
+        throw Error("Couldn't upload user avatar");
+      }
+    });
+    setLoading(false);
+    onClose();
   }
 
   function handleSave(files) {
@@ -51,7 +75,11 @@ export default function ImageUploadDialog({
         {imgURL && croppable && (
           <>
             <h3>Crop</h3>
-            <CropImage imgSrc={imgURL} onUpdate={(url) => setCroppedImgURL(url)} />
+            <CropImage
+              imgSrc={imgURL}
+              onUpdate={(url) => setCroppedImgURL(url)}
+              onUpdateBlob={(blob) => setCroppedImgBlob(blob)}
+            />
           </>
         )}
         {imgURL && (

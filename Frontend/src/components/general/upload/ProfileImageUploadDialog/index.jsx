@@ -16,7 +16,7 @@ export default function ProfileImageUploadDialog({ open, onClose }) {
       open={open}
       onClose={onClose}
       title="Upload Profile Image"
-      maxFileSizeMB={5}
+      maxFileSizeMB={1}
       croppable
       preview={(imgURL) => (
         <MemberCard memberId={user.id} overrideProfilePicture={imgURL} />

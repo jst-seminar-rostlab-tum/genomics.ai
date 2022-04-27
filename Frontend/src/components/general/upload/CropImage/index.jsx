@@ -8,7 +8,7 @@ import 'react-image-crop/dist/ReactCrop.css';
 
 // adapted from the react-image-crop example on
 // https://www.npmjs.com/package/react-image-crop
-export default function CropImage({ imgSrc, onUpdate }) {
+export default function CropImage({ imgSrc, onUpdate, onUpdateBlob }) {
   const previewCanvasRef = useRef(null);
   const imgRef = useRef(null);
   const [crop, setCrop] = useState();
@@ -27,7 +27,10 @@ export default function CropImage({ imgSrc, onUpdate }) {
           previewCanvasRef.current,
           completedCrop,
         );
-        onUpdate(previewCanvasRef.current.toDataURL());
+        onUpdate(previewCanvasRef.current.toDataURL('image/png'));
+        previewCanvasRef.current.toBlob((blob) => {
+          onUpdateBlob(blob);
+        }, 'image/png');
       }
     },
     100,
