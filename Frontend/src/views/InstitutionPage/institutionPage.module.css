@@ -10,3 +10,28 @@
     text-align: center;
     justify-content: center;
 }
+
+.test {
+    padding: 10px 60px 0px 140px;
+}
+
+.imageText{
+    text-align: center;
+}
+
+.imageText span{
+    background-color: #002644;
+    color:white;
+}
+
+.background {
+    background-repeat: no-repeat;
+    background-position: center;
+    
+}
+
+.institutionIcon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

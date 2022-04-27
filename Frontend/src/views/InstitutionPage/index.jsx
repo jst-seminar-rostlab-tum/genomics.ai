@@ -6,6 +6,7 @@ import HeaderView from 'components/general/HeaderView';
 import InstitutionMemberList from 'components/institutions/InstitutionMemberList';
 import getUser from 'shared/services/mock/user';
 import styles from './institutionPage.module.css';
+import Avatar from '@mui/material/Avatar';
 
 function InstitutionPage() {
   let { id } = useParams();
@@ -44,10 +45,14 @@ function InstitutionPage() {
 
   return (
     <>
-    <div style={{ backgroundImage: `url(${institution.backgroundPictureURL})`, resizeMode: "center", flex: 1, height:400, width: undefined}}>
-      <div class ={styles.container} ><img style={{width: 200, height: 200, borderRadius: 200 / 2}} src={institution.profilePictureURL} /></div>
+    <div class = {styles.background} style={{ backgroundImage: `url(${institution.backgroundPictureURL})`, resizeMode: "stretch"}}>
+      <div class = {styles.institutionIcon}>
+      <Avatar src={institution.profilePictureURL} sx={{width: 200, height: 200}} />
+      </div>
+      <h1 class= {styles.imageText}><span>{institution.name}</span></h1>
+      <h3 class= {styles.imageText}><span>{institution.country}</span></h3>
     </div>
-    <HeaderView>
+    <div class= {styles.test}>
     <section>
         <h2>Description</h2>
         <hr />
@@ -60,7 +65,7 @@ function InstitutionPage() {
           InputProps={{
             readOnly: !isAdmin,
           }}
-          fullwidth
+          style = {{width: '100%'}}
           onChange={handleDescriptionChange}
           variant="standard"
         />
@@ -74,7 +79,7 @@ function InstitutionPage() {
         <hr />
         <InstitutionMemberList institution={institution} />
       </section>
-      </HeaderView>
+      </div>
     </>
   );
 }

@@ -11,7 +11,7 @@ function TeamMemberList({ team }) {
     getUser().then(setUser);
   }, [setUser]);
 
-  if (!team.adminIds?.length || !team.memberIds?.length) {
+  if (team.institutionId == null) {
     return <CircularProgress />;
   }
 
