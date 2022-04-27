@@ -141,23 +141,21 @@ const add_project_to_team = (): Router => {
                 return res.status(400).send("Missing parameters.");
 
             const project = await ProjectService.getProjectById(projectId);
-            if (! project )
+            if (!project)
                 return res.status(400).send("Project to be added does not exist.");
 
             const team = await TeamService.getTeamById(teamId);
-            if (! team)
+            if (!team)
                 return res.status(400).send("Team does not exist.");
 
-            const isAuth: boolean = await TeamService.isAdmin(req.user_id!, teamId);
-            if (!isAuth)
-                return res.status(401).send("Unauthenticated User! Ask an admin of the team to add the project to the projects list of the team.");
+            /* the user should be either an admin or a member of the team */
+            const isPartOf: boolean = await TeamService.isAdminOrMember(req.user_id!, teamId);
+            if (!isPartOf)
+                return res.status(401).send("Unauthenticated User! The user is not part of the team.");
 
             const projectOwnerId = await ProjectService.getOwner(projectId); // cannot be null since the project must exist at this point
-            const projectOwnerIsInTeam: boolean =
-              await TeamService.isMember(projectOwnerId!, teamId) ||
-              await TeamService.isAdmin(projectOwnerId!, teamId);
-            if (!projectOwnerIsInTeam)
-                return res.status(401).send("The owner of the project you are trying to add is not part of the team.");
+            if (projectOwnerId!.toString() !== req.user_id!.toString())
+                return res.status(401).send("User is not the project owner!");
 
             try {
                 const team_updated = await TeamService.addProject(teamId, projectId);
