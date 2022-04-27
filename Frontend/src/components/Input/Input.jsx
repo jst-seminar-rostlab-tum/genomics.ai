@@ -1,10 +1,11 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import { colors } from 'shared/theme/colors';
 
 /* Props: Most of MUI TextField props..
 /**
- * Customized button
+ * Input 
  * @param {string} helperText - The helper text that is displayed under the input
  * @param {string} placeholder - Placeholder of input
  * @param {boolean} errorHandler - Error handler (true | false)
@@ -16,21 +17,17 @@ import TextField from '@mui/material/TextField';
  * @param {string} label - Label of input
  * @param {number} maxLength - Maximum length of input Default:40
  * @param {string} type - Type of input Default: 'text'
-
-Example usage
-Import Input to any component, see below examples:
-
-const [name, setName] = useState('');
-
-<Input isRequired onChangeEvent={setName} disabledHandler={false} />
-<Input isRequired onChangeEvent={setName} disabledHandler={false} />
-<Input helperText="Incorrect Output" errorHandler isRequired
- onChangeEvent={setName} disabledHandler={false} />
-
- //For Multiline
- <Input isRequired maxLength={120} multiline disabledHandler={false} />
+ * 
+ * Example usage
+ * Import Input to any component, see below examples:
+ * const [name, setName] = useState('');
+ * <Input isRequired onChangeEvent={setName} disabledHandler={false} />
+ * <Input isRequired onChangeEvent={setName} disabledHandler={false} />
+ * <Input helperText="Incorrect Output" errorHandler isRequired
+ * onChangeEvent={setName} disabledHandler={false} />
+ * For Multiline
+ * <Input isRequired maxLength={120} multiline disabledHandler={false} />
  */
-
 const Input = ({
   helperText, placeholder, errorHandler, disabledHandler,
   isRequired = true, defaultValue, multiline = false, onChangeEvent = null,
@@ -42,7 +39,7 @@ const Input = ({
     component="form"
     sx={{
       '& .MuiTextField-root': { m: 1, width: '100%' },
-      '& .MuiFormLabel-asterisk': { color: '#FF5F58' },
+      '& .MuiFormLabel-asterisk': { color: colors.error.main },
     }}
     noValidate
     autoComplete="off"
