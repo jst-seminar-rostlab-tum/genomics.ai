@@ -9,17 +9,13 @@ import s3 from "../../../util/s3";
 import { S3 } from "aws-sdk";
 
 async function retrieveInstitutionFromRequest(req: ExtRequest, res: Response): Promise<string | null> {
-    if (!req.user_id) {
-        res.status(401).send("Not authenticated");
-        return null;
-    }
     let instId = req.params.id;
     let institution = instId ? await InstitutionService.getInstitutionById(instId) : null;
     if (!institution) {
         res.status(404).send("Institution not found");
         return null;
     }
-    if (!institution.adminIds.includes(req.user_id)) {
+    if (!institution.adminIds.includes(req.user_id!)) {
         res.status(401).send("Unauthorized");
         return null;
     }

@@ -10,12 +10,11 @@ export default function reset_user_avatar_route() {
     let router = express.Router();
     router.delete("/user-avatar", check_auth(), async (req: ExtRequest, res) => {
         try {
-            if (req.user_id) {
                 if (!process.env.S3_PICTURE_BUCKET_NAME) {
                     res.status(500).send("S3-BucketName is not set");
                     return null;
                 }
-                let oldUrl = await UserService.unsetUserAvatar(req.user_id);
+                let oldUrl = await UserService.unsetUserAvatar(req.user_id!);
 
                 if (oldUrl) {
                     let key = oldUrl.substring(oldUrl.lastIndexOf("/")+1,oldUrl.lastIndexOf("?"));
@@ -27,9 +26,6 @@ export default function reset_user_avatar_route() {
                     await s3.deleteObject(params).promise();
                 }
                 res.status(200).send("OK");
-            } else {
-                res.status(401).send("Not authenticated");
-            }
         } catch (err) {
             console.log(err);
             res.status(500).send(err);

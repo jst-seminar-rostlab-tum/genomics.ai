@@ -7,18 +7,14 @@ import { UpdateInstitutionDTO } from "../../../database/dtos/institution.dto";
 import { IInstitution } from "../../../database/models/institution";
 
 async function checkForValidValues(req: ExtRequest, res: Response): Promise<{ instId: string; bucket: string } | null> {
-    if (!req.user_id) {
-        res.status(401).send("Not authenticated");
-        return null;
-    }
     let instId = req.params.id;
     let institution = instId ? await InstitutionService.getInstitutionById(instId) : null;
     if (!institution) {
         res.status(404).send("Institution not found");
         return null;
     }
-    if (!institution.adminIds.includes(req.user_id)) {
-        res.status(401).send("Unauthorized");
+    if (!institution.adminIds.includes(req.user_id!)) {
+        res.status(403).send("Forbidden");
         return null;
     }
     if (!process.env.S3_PICTURE_BUCKET_NAME) {

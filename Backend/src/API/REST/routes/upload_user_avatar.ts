@@ -13,7 +13,6 @@ export default function upload_user_avatar_route() {
     router.post("/user-avatar", check_auth(), async (req: ExtRequest, res) => {
         try {
             if (process.env.S3_PICTURE_BUCKET_NAME) {
-                if (req.user_id) {
                     try {
                         let result = await processImageUpload(
                             req,
@@ -25,7 +24,7 @@ export default function upload_user_avatar_route() {
                             const userUpdate: UpdateUserDTO = {
                                 avatarUrl: result.objectUrl
                             };
-                            await UserService.updateUser(req.user_id, userUpdate);
+                            await UserService.updateUser(req.user_id!, userUpdate);
                             res.status(200).contentType("text/plain").send(result.objectUrl);
                         } else {
                             const { status, message, error } = result;
@@ -35,9 +34,6 @@ export default function upload_user_avatar_route() {
                     } catch (e) {
                         console.error(e);
                     }
-                } else {
-                    res.status(401).send("Not authenticated");
-                }
             } else res.status(500).send("S3-BucketName is not set");
         } catch (err) {
             console.log(err);
