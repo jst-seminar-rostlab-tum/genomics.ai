@@ -1,135 +1,166 @@
-import React from 'react'
-import { Switch, Route, Redirect } from 'react-router-dom'
-import { Box } from '@mui/material'
+import React, { useState } from 'react';
+import {
+  Switch, Route, Redirect, useHistory,
+} from 'react-router-dom';
+import { Box } from '@mui/material';
 import Grid from '@mui/material/Grid';
-import { useState, useEffect } from 'react'
 
-import { TabGroup } from 'components/Tab'
-import Search from 'components/Search'
+import { TabGroup } from 'components/Tab';
+import Search from 'components/Search';
 
-import Filter from 'components/Filter/old'
-import NavBar from 'components/NavBar'
-import Breadcrumb from "components/Breadcrumb"
-import AtlasCard from 'components/Cards/AtlasCard'
-import DatasetCard from 'components/Cards/DatasetCard'
-import { ModelCard } from 'components/Cards/ModelCard'
-import Mapper from "components/Mapper"
+import Filter from 'components/Filter/old';
+import NavBar from 'components/NavBar';
+import Breadcrumb from 'components/Breadcrumb';
+import AtlasCard from 'components/Cards/AtlasCard';
+import DatasetCard from 'components/Cards/DatasetCard';
+import { ModelCard } from 'components/Cards/ModelCard';
+import Mapper from 'components/Mapper';
 
-import './Explore.css'
+import './Explore.css';
+import { FunctionsRounded } from '@mui/icons-material';
 
 const tmpObj = [
-    {
-        label: "ATLASES",
-        path: "/explore/atlases"
-    },
-    {
-        label: "MODELS",
-        path: "/explore/models"
-    },
-    {
-        label: "DATASETS",
-        path: "/explore/datasets"
-    }
-]
+  {
+    label: 'ATLASES',
+    path: '/explore/atlases',
+  },
+  {
+    label: 'MODELS',
+    path: '/explore/models',
+  },
+  {
+    label: 'DATASETS',
+    path: '/explore/datasets',
+  },
+];
 
-const atlasesGrid = (
-    <Box className='atlasContainer'>
-        <Grid container spacing={3}>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-                <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-                <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-                <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-                <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-                <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-                <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-                <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-                <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
-            </Grid>
-        </Grid>
-    </Box >
-)
+const atlasTitles = ['Human - PBMC0', 'Human - PBMC1', 'Human - PBMC2', 'Human - PBMC3', 'Human - PBMC4', 'Human - PBMC5', 'Human - PBMC6', 'Human - PBMC7'];
+const atlasImgLinks = ['https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg',
+  'https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg',
+  'https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg',
+  'https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg',
+  'https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg',
+  'https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg',
+  'https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg',
+  'https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg'];
+const atlasModalities = ['RNA, ADT', 'RNA, ADT', 'RNA, ADT', 'RNA, ADT', 'RNA, ADT', 'RNA, ADT', 'RNA, ADT', 'RNA, ADT'];
+const atlasCellsInReference = ['161,764', '161,764', '161,764', '161,764', '161,764', '161,764', '161,764', '161,764'];
+const atlasSpecies = ['Human', 'Human', 'Human', 'Human', 'Human', 'Human', 'Human', 'Human'];
 
-const modelsGrid = (
-    <Box className='cardsContainer'>
-        <Grid container spacing={3}>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-                <ModelCard title="Model 1" description="This is a short description" />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
+const modelTitles = ['Model 1', 'Model 2', 'Model 3', 'Model 4'];
+const modelDescriptions = ['This is a short description', 'This is a short description', 'This is a short description', 'This is a short description', 'This is a short description'];
 
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-
-            </Grid>
-        </Grid>
-    </Box>
-)
-
+const datasetTitles = ['title1', 'title2', 'title3'];
+const datasetCategories = ['category1', 'category1', 'category1'];
 const datasetsGrid = (
-    <Box className='cardsContainer'>
-        <Grid container spacing={3}>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-                <DatasetCard title="title1" category="category1" />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-                <DatasetCard title="title2" category="category1" />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-                <DatasetCard title="title3" category="category1" />
-            </Grid>
+  <Box className="cardsContainer">
+    <Grid container spacing={3}>
+      {datasetTitles.map((title, index) => (
+        <Grid item xs={12} sm={6} md={4} lg={3}>
+          <DatasetCard title={title} category={datasetCategories[index]} />
         </Grid>
-    </Box>
-)
+      ))}
+    </Grid>
+  </Box>
+);
 
 const Explore = () => {
+  const [value, setValue] = useState(0);
+  const [selectedAtlas, setSelectedAtlas] = useState(-1);
+  const [selectedModel, setSelectedModel] = useState(-1);
+  const [mapperVisible, setMapperVisible] = useState(false);
+  const history = useHistory();
 
-    const [value, setValue] = useState(0)
+  const handleAtlasMapClick = (index) => {
+    setSelectedAtlas(index);
+    if (!mapperVisible) {
+      setMapperVisible(true);
+    }
+    if (selectedModel === -1) {
+      history.push('/explore/models');
+    }
+  };
 
-    return (
-        <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }} >
+  const handleModelMapClick = (index) => {
+    setSelectedModel(index);
+    if (!mapperVisible) {
+      setMapperVisible(true);
+    }
+    if (selectedAtlas === -1) {
+      history.push('/explore/atlases');
+    }
+  };
 
-            <Box>
-                <NavBar />
-                <h1>NavBar goes here</h1>
-            </Box>
+  const atlasesGrid = (
+    <Box className="atlasContainer">
+      <Grid container spacing={3}>
+        {atlasTitles.map((title, index) => (
+          <Grid item xs={12} sm={6} md={4} lg={3}>
+            <AtlasCard width="300px" height="500px" index={index} title={title} imgLink={atlasImgLinks[index]} modalities={atlasModalities[index]} cellsInReference={atlasCellsInReference[index]} species={atlasSpecies[index]} onClick={handleAtlasMapClick} />
+          </Grid>
+        ))}
+      </Grid>
+    </Box>
+  );
 
-            <Box sx={{ alignSelf: 'center', width: '65%', marginTop: '2%' }}>
-                <Breadcrumb fontSize={1} actions={{explore: ()=>setValue(0)}} />
-            </Box>
+  const modelsGrid = (
+    <Box className="cardsContainer">
+      <Grid container spacing={3}>
+        {modelTitles.map((title, index) => (
+          <Grid item xs={12} sm={6} md={4} lg={3}>
+            <ModelCard
+              title={title}
+              description={modelDescriptions[index]}
+              onClick={handleModelMapClick}
+              index={index}
+            />
+          </Grid>
+        ))}
+      </Grid>
+    </Box>
+  );
 
-            <Box sx={{ alignSelf: 'center', width: '65%', marginBlock: '2%' }}>
-                <Search filterComponent={<Filter references={["test", "test"]} categories={["category1", "category2"]} />} handleSearch={(e) => console.log(e)} />
-            </Box>
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
 
-            <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignSelf: 'center', width: '80%' }}>
-                {/* /explore/atlases */}
-                <TabGroup value={value} setValue={setValue} tabsInfo={tmpObj} />
-                <Switch>
-                    <Route path="/explore/atlases" render={() => atlasesGrid} />
-                    <Route path="/explore/models" render={() => modelsGrid} />
-                    <Route path="/explore/datasets" render={() => datasetsGrid} />
-                    <Redirect to="/explore/atlases" />
-                </Switch>
+      <Box>
+        <NavBar />
+        <h1>NavBar goes here</h1>
+      </Box>
 
-            </Box>
+      <Box sx={{ alignSelf: 'center', width: '65%', marginTop: '2%' }}>
+        <Breadcrumb fontSize={1} actions={{ explore: () => setValue(0) }} />
+      </Box>
 
-            <Mapper />
-        </Box>
-    )
-}
+      <Box sx={{ alignSelf: 'center', width: '65%', marginBlock: '2%' }}>
+        <Search filterComponent={<Filter references={['test', 'test']} categories={['category1', 'category2']} />} handleSearch={(e) => console.log(e)} />
+      </Box>
 
-export default Explore
+      <Box sx={{
+        display: 'flex', flexDirection: 'column', justifyContent: 'center', alignSelf: 'center', width: '80%',
+      }}
+      >
+        {/* /explore/atlases */}
+        <TabGroup value={value} setValue={setValue} tabsInfo={tmpObj} />
+        <Switch>
+          <Route path="/explore/atlases" render={() => atlasesGrid} />
+          <Route path="/explore/models" render={() => modelsGrid} />
+          <Route path="/explore/datasets" render={() => datasetsGrid} />
+          <Redirect to="/explore/atlases" />
+        </Switch>
+
+      </Box>
+
+      <Mapper
+        mapperAtlas={atlasTitles[selectedAtlas]}
+        mapperModel={modelTitles[selectedModel]}
+        setSelectedAtlas={setSelectedAtlas}
+        setSelectedModel={setSelectedModel}
+        open={mapperVisible}
+        fabOnClick={() => setMapperVisible(!mapperVisible)}
+      />
+    </Box>
+  );
+};
+
+export default Explore;

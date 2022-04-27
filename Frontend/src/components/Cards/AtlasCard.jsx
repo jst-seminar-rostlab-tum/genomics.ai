@@ -18,7 +18,7 @@ import { OutlinedButton } from './ModelCard'
  */
 export default function AtlasCard({
   width = "100%", height = "100%", title, imgLink, modalities,
-  cellsInReference, species, mapLink, learnMoreLink
+  cellsInReference, species, learnMoreLink, onClick, index
 }) {
 
   //check if the mouse is hovering above the card
@@ -78,7 +78,7 @@ export default function AtlasCard({
                 justifyContent: "space-evenly",
               }}
             >
-              <OutlinedButton content="Map" link={mapLink} />
+              <OutlinedButton content="Map" onClick={() => onClick(index)} />
               <OutlinedButton content="Learn More" link={learnMoreLink} />
             </Box>
           </Box>
