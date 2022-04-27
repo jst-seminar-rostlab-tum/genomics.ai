@@ -146,7 +146,7 @@ def compute_query(anndata):
         utils.save_umap_as_pdf(query_latent, 'data/figures/query.pdf', color=['batch', 'cell_type'])
 
     query_path = get_from_config('generated_output_base_path') + 'query.tsv'
-    utils.write_latent_csv(query_latent, filename=query_path)
+    utils.write_latent_csv(query_latent, key='query.tsv', filename=query_path)
 
     return model
 
@@ -165,7 +165,7 @@ def compute_full_latent(source_adata, target_adata, model):
         utils.save_umap_as_pdf(full_latent, 'data/figures/both.pdf', color=['batch', 'cell_type'])
 
     both_path = get_from_config('generated_output_base_path') + 'both.tsv'
-    utils.write_latent_csv(full_latent, filename=both_path)
+    utils.write_latent_csv(full_latent, key='both.tsv', filename=both_path)
 
     return full_latent
 

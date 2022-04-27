@@ -41,3 +41,7 @@ the REST-API and the scarches code. It is configurable with several environment 
 - WORKERS sets the number of gunicorn workers in the container, default is 3.
 - THREADS sets the number of threads, default is 8.
 - PORT sets the port the container should listen on, defaults to 8080.
+- AWS_BUCKET storage bucket in s3
+- AWS_ENDPOINT aws endpoint
+- AWS_ACCESS_KEY access key
+- AWS_SECRET_KEY secret key

@@ -12,3 +12,6 @@ leidenalg==0.8.9
 Flask==2.1.1
 uWSGI==2.0.20
 gunicorn==20.1.0
+
+# for s3
+boto3==1.22.1
