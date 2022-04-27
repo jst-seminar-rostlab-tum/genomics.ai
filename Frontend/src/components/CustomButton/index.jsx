@@ -3,7 +3,7 @@ import { ButtonBase } from '@mui/material';
 import { colors } from 'shared/theme/colors';
 import styles from './custombutton.module.css';
 
-function getStyles(type ) {
+function getStyles(type) {
   switch (type) {
     case 'secondary':
       return ({
@@ -48,8 +48,8 @@ function getStyles(type ) {
  * 
  * Custom Button 
  * Accepts all MUI props
- * @param size ['small', 'medium', 'large']
  * @param type ['primary', 'secondary', 'tertiary']
+ * change size with sx prop
  * https://www.figma.com/file/HcTwUyNxjZJksJ7yfncM9y/JST-22-Design?node-id=42%3A2
  */
 const CustomButton = (props) => { 
@@ -59,7 +59,7 @@ const CustomButton = (props) => {
   <ButtonBase
     disableRipple
     {...props}
-    sx={getStyles(props.type, props.size)}
+    sx={getStyles(props.type)}
     className={styles.button}
     variant={props.type === 'tertiary' ? 'text' : 'contained'}
   >

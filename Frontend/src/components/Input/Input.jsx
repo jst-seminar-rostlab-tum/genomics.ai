@@ -3,9 +3,10 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { colors } from 'shared/theme/colors';
 
-/* Props: Most of MUI TextField props..
 /**
+ * 
  * Input 
+ * Props: Most of MUI TextField props..
  * @param {string} helperText - The helper text that is displayed under the input
  * @param {string} placeholder - Placeholder of input
  * @param {boolean} errorHandler - Error handler (true | false)
