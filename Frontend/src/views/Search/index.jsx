@@ -53,11 +53,7 @@ const Search = ({ sidebarShown }) => {
 
   useEffect(() => {
     fetchSearchHandler(type, searchedKeyword);
-  }, [fetchSearchHandler, type]);
-
-  const submitSearch = () => {
-    fetchSearchHandler(type, searchedKeyword);
-  };
+  }, [fetchSearchHandler, type, searchedKeyword]);
 
 
   return (
@@ -68,7 +64,6 @@ const Search = ({ sidebarShown }) => {
           <SearchBar
             searchedKeyword={searchedKeyword}
             searchedKeywordChangeHandler={searchedKeywordChangeHandler}
-            submitSearch={submitSearch}
           />
           <SearchTabs value={type} onChange={changedTabHandler} />
           {isLoading && (

@@ -18,13 +18,6 @@ const SearchBar = (props) => {
           type={'text'}
           value={props.searchedKeyword}
           onChange={props.searchedKeywordChangeHandler}
-          endAdornment={
-            <InputAdornment position='end'>
-              <Button variant='contained' onClick={props.submitSearch}>
-                Search
-              </Button>
-            </InputAdornment>
-          }
           label='Search'
         />
       </FormControl>
