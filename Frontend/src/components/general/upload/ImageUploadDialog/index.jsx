@@ -9,11 +9,9 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { DropzoneArea } from 'mui-file-dropzone';
 import CropImage from '../CropImage';
 
-import { BACKEND_ADDRESS } from 'shared/utils/common/constants';
-import { getAuthAndJsonHeader } from 'shared/utils/common/utils';
-
 export default function ImageUploadDialog({
   open, onClose, title, description, maxFileSizeMB, croppable,
+  onUpload, additionalButtons,
   preview = (imgURL) => <img src={imgURL} alt="Preview" />,
 }) {
   const [loading, setLoading] = useState(false);
@@ -23,24 +21,7 @@ export default function ImageUploadDialog({
 
   async function upload() {
     setLoading(true);
-    await fetch(`${BACKEND_ADDRESS}/user-avatar`, {
-      method: 'POST',
-      headers: {
-        ...getAuthAndJsonHeader(),
-        'Content-Type': 'image/png',
-      },
-      body: croppedImgBlob,
-    }).then((response) => {
-      if (response.status !== 200) {
-        if (response.status === 413) {
-          // should not happen because of the max file size in the filedrop component,
-          // but who knows, maybe the backend will change the limit in the future
-          alert('This image is too large. Please provide one with a smaller file size.');
-          return;
-        }
-        throw Error("Couldn't upload user avatar");
-      }
-    });
+    await onUpload(croppedImgBlob);
     setLoading(false);
     onClose();
   }
@@ -91,6 +72,14 @@ export default function ImageUploadDialog({
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
+        {additionalButtons.map(({ text, func }) => (
+          <Button
+            key={text}
+            onClick={async () => { setLoading(true); await func(); setLoading(false); }}
+          >
+            {text}
+          </Button>
+        ))}
         <LoadingButton onClick={() => upload()} loading={loading}>Upload</LoadingButton>
       </DialogActions>
     </Dialog>
