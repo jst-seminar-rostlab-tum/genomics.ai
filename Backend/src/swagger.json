@@ -594,6 +594,46 @@
         }
       }
     },
+    "/institutions/:id/join": {
+      "put": {
+        "summary": "Add the user to the institution members",
+        "tags": ["Institution"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userId": { "type": "string" }
+                },
+                "required": ["userId"],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          },
+          "401": {
+            "description": "Invalid autherization permission!"
+          }
+        }
+      }
+    },
     "/teams": {
       "post": {
         "summary": "Create a team",

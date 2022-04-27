@@ -133,4 +133,48 @@ const make_user_admin_of_institution = (): Router => {
     return router;
 }
 
-export { create_institution, invite_to_institution, make_user_admin_of_institution }
+const make_user_member_of_institution = (): Router => {
+    let router = express.Router();
+
+    router
+        .put("/institutions/:id/join", check_auth(), async (req: any, res) => {
+
+            const { userId }: { userId: Schema.Types.ObjectId } = req.body;
+            const institutionId_to_modify = req.params.id;
+            const current_user = req.user_id
+
+            try {
+
+                if (!(userId))
+                    return res.status(400).send("Missing parameter");
+
+                if (! await UserService.getUserById(userId))
+                    return res.status(404).send("User that you are trying to make as member does not exists!");
+
+                const institutionToBeUpdated = await InstitutionService.findInvitedMemeberById(userId, institutionId_to_modify)
+
+                if (!institutionToBeUpdated)
+                    return res.status(409).send("User that you are trying to make as member is not an invited member!");
+
+                if (!institutionToBeUpdated?.adminIds.includes(current_user))
+                    return res.status(401).send("Invalid autherization permission!");
+
+                const updatedInstitution = await InstitutionService.makeUserMemberOfInstitution(institutionId_to_modify, userId)
+
+                if (updatedInstitution) {
+                    res.json(updatedInstitution);
+                } else {
+                    return res.status(409).send("Could not make the user member of the institution!");
+                }
+
+            } catch (error) {
+                return res.status(500).send("Something went wrong: " + error)
+            }
+
+        })
+
+    return router;
+}
+
+
+export { create_institution, invite_to_institution, make_user_admin_of_institution, make_user_member_of_institution }
