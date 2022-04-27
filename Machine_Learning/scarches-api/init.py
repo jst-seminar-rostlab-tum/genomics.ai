@@ -2,7 +2,8 @@ from scANVI.scANVI import query
 from scVI.scVI import compute_scVI
 from scANVI.scANVI import compute_scANVI
 import sys
-import utils
+from utils import utils, parameters
+
 
 def default_config():
     """
@@ -10,7 +11,7 @@ def default_config():
     :return: dict containing all the default values
     """
     return {
-        'model': 'scANVI',
+        parameters.MODEL: 'scANVI',
 
         'reference_dataset': 'data/ref/source_data.h5ad',
         'query_dataset': 'data/query/target_data.h5ad',
@@ -22,27 +23,27 @@ def default_config():
         'pre_trained_scANVI': False,
 
         # scANVI stuff
-        'both': False,
-        'compare': False,
+        parameters.SCANVI_COMPARE_REFERENCE_AND_QUERY: False,
+        parameters.SCANVI_COMPARE_OBSERVED_AND_PREDICTED_CELLTYPES: False,
         'predict': True,
 
-        'condition_key': 'study',
-        'cell_type_key': 'cell_type',
-        'target_conditions': ['Pancreas CelSeq2', 'Pancreas SS2'],
+        parameters.CONDITION_KEY: 'study',
+        parameters.CELL_TYPE_KEY: 'cell_type',
+        parameters.TARGET_CONDITIONS: ['Pancreas CelSeq2', 'Pancreas SS2'],
         'ref_path': './ref_model/',
-        'n_layers': 2,
-        'encode_covariates': True,
-        'deeply_inject_covariates': False,
-        'use_layer_norm': 'both',
-        'use_batch_norm': 'none',
-        'unlabeled_key': 'Unknown',
-        'scanvi_max_epochs': 20,
-        'scvi_max_epochs': 20,
-        'n_neighbors': 8,
-        'max_epochs': 100,
-        'unwanted_labels': ['leiden'],
-        'debug': True, 
-        'attributes' : None
+        parameters.NUMBER_OF_LAYERS: 2,
+        parameters.ENCODE_COVARIATES: True,
+        parameters.DEEPLY_INJECT_COVARIATES: False,
+        parameters.USE_LAYER_NORM: 'both',
+        parameters.USE_BATCH_NORM: 'none',
+        parameters.UNLABELED_KEY: 'Unknown',
+        parameters.SCANVI_MAX_EPOCHS: 20,
+        parameters.SCVI_MAX_EPOCHS: 20,
+        parameters.NUMBER_OF_NEIGHBORS: 8,
+        parameters.MAX_EPOCHS: 100,
+        parameters.UNWANTED_LABELS: ['leiden'],
+        parameters.DEBUG: True,
+        parameters.ATTRIBUTES: None
     }
 
 
@@ -60,10 +61,11 @@ def merge_configs(user_config):
     """
     return default_config() | user_config
 
+
 # def query(reference_dataset, query_dataset, model_path, surgery_path,  model_type):
 def query(user_config):
     configuration = merge_configs(user_config)
-    model = get_from_config(configuration, 'model')
+    model = get_from_config(configuration, parameters.MODEL)
     attributes = None
     if model == 'scVI':
         attributes = compute_scVI(configuration)
@@ -75,6 +77,6 @@ def query(user_config):
     else:
         raise ValueError(model + ' is not one of the supported models')
     configuration["attributes"] = attributes
-    utils.notify_backend(get_from_config(configuration, 'webhook'), configuration)
+    utils.notify_backend(get_from_config(configuration, parameters.WEBHOOK), configuration)
 # query('data/ref/source_data.h5ad', 'data/query/target_data.h5ad', 'data/model', 'data/surgery/', 'scVI')
 # query(None)

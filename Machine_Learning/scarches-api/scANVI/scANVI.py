@@ -1,16 +1,12 @@
 import warnings
-from scVI.scVI import create_scVI_model, set_config
-
+from ..scVI.scVI import create_scVI_model, set_config
 import scanpy
 import scarches
 from scarches.dataset.trvae.data_handling import remove_sparsity
 from matplotlib import pyplot as plt
 import numpy as np
 import torch
-import sys
-
-sys.path.append('../utils/')
-import utils
+from ..utils import utils, parameters
 import logging
 
 config = {}
@@ -46,32 +42,21 @@ def pre_process_data():
 
 
 def setup_anndata_for_scanvi(anndata):
-    scarches.models.SCANVI.setup_anndata(anndata, unlabeled_category='Unknown',
-                                         batch_key=get_from_config('condition_key'),
-                                         labels_key=get_from_config('cell_type_key'))
+    scarches.models.SCANVI.setup_anndata(anndata, unlabeled_category=get_from_config(parameters.UNLABELED_KEY),
+                                         batch_key=get_from_config(parameters.CONDITION_KEY),
+                                         labels_key=get_from_config(parameters.CELL_TYPE_KEY))
 
 
 def get_scanvi_from_scvi_model(scvi_model):
-    return scarches.models.SCANVI.from_scvi_model(scvi_model, get_from_config('unlabeled_key'))
-
-
-'''def get_scvi_model(anndata):
-    return scarches.models.SCVI(
-        anndata,
-        n_layers=get_from_config('n_layers'),
-        encode_covariates=get_from_config('encode_covariates'),
-        deeply_inject_covariates=get_from_config('deeply_inject_covariates'),
-        use_layer_norm=get_from_config('use_layer_norm'),
-        use_batch_norm=get_from_config('use_batch_norm'),
-    )'''
+    return scarches.models.SCANVI.from_scvi_model(scvi_model, get_from_config(parameters.UNLABELED_KEY))
 
 
 def get_latent(model, adata):
     reference_latent = scanpy.AnnData(model.get_latent_representation())
-    reference_latent.obs["cell_type"] = adata.obs[get_from_config('cell_type_key')].tolist()
-    reference_latent.obs["batch"] = adata.obs[get_from_config('condition_key')].tolist()
+    reference_latent.obs["cell_type"] = adata.obs[get_from_config(parameters.CELL_TYPE_KEY)].tolist()
+    reference_latent.obs["batch"] = adata.obs[get_from_config(parameters.CONDITION_KEY)].tolist()
 
-    scanpy.pp.neighbors(reference_latent, n_neighbors=get_from_config('n_neighbors'))
+    scanpy.pp.neighbors(reference_latent, n_neighbors=get_from_config(parameters.NUMBER_OF_NEIGHBORS))
     scanpy.tl.leiden(reference_latent)
     scanpy.tl.umap(reference_latent)
 
@@ -100,14 +85,14 @@ def surgery(anndata):
     print("Unlabelled Indices: ", len(model._unlabeled_indices))
 
     model.train(
-        max_epochs=get_from_config('scanvi_max_epochs'),
+        max_epochs=get_from_config(parameters.SCANVI_MAX_EPOCHS),
         plan_kwargs=dict(weight_decay=0.0),
         check_val_every_n_epoch=10,
     )
 
     surgery_latent = get_latent(model, anndata)
 
-    if get_from_config('debug'):
+    if get_from_config(parameters.DEBUG):
         utils.save_umap_as_pdf(surgery_latent, 'figures/surgery.pdf', color=['batch', 'cell_type'])
 
     surgery_path = get_from_config('generated_output_base_path') + 'surgery.tsv'
@@ -130,19 +115,19 @@ def query(anndata):
     model._unlabeled_indices = np.arange(anndata.n_obs)
     model._labeled_indices = []
 
-    if get_from_config('debug'):
+    if get_from_config(parameters.DEBUG):
         print("Labelled Indices: ", len(model._labeled_indices))
         print("Unlabelled Indices: ", len(model._unlabeled_indices))
 
     model.train(
-        max_epochs=get_from_config('scanvi_max_epochs'),
+        max_epochs=get_from_config(parameters.SCANVI_MAX_EPOCHS),
         plan_kwargs=dict(weight_decay=0.0),
         check_val_every_n_epoch=10,
     )
 
     query_latent = get_latent(model, anndata)
 
-    if get_from_config('debug'):
+    if get_from_config(parameters.DEBUG):
         utils.save_umap_as_pdf(query_latent, 'figures/query.pdf', color=['batch', 'cell_type'])
 
     query_path = get_from_config('generated_output_base_path') + 'query.tsv'
@@ -177,7 +162,7 @@ def both_adata(source_adata, target_adata):
     scanpy.tl.leiden(full_latent)
     scanpy.tl.umap(full_latent)
 
-    if get_from_config('debug'):
+    if get_from_config(parameters.DEBUG):
         utils.save_umap_as_pdf(full_latent, 'figures/both.pdf', color=['batch', 'cell_type'])
 
     both_path = get_from_config('generated_output_base_path') + 'both.tsv'
@@ -195,7 +180,7 @@ def compare_adata(model, source_adata, target_adata, latent):
     scanpy.tl.leiden(latent)
     scanpy.tl.umap(latent)
 
-    if get_from_config('debug'):
+    if get_from_config(parameters.DEBUG):
         utils.save_umap_as_pdf(latent, 'figures/compare.pdf', color=["predictions", "cell_type"])
 
     compare_path = get_from_config('generated_output_base_path') + 'compare.tsv'
@@ -206,7 +191,7 @@ def compute_scANVI(configP):
     global config
     config = configP
 
-    if get_from_config('debug'):
+    if get_from_config(parameters.DEBUG):
         logger = logging.getLogger(__name__)
         logger.setLevel(logging.DEBUG)
 
@@ -226,15 +211,15 @@ def compute_scANVI(configP):
 
     scanvi = get_scanvi_from_scvi_model(vae)
 
-    if get_from_config('debug'):
+    if get_from_config(parameters.DEBUG):
         print("Labelled Indices: ", len(scanvi._labeled_indices))
         print("Unlabelled Indices: ", len(scanvi._unlabeled_indices))
 
-    scanvi.train(max_epochs=get_from_config('scanvi_max_epochs'))
+    scanvi.train(max_epochs=get_from_config(parameters.SCANVI_MAX_EPOCHS))
 
     reference_latent = get_latent(scanvi, source_adata)
 
-    if get_from_config('debug'):
+    if get_from_config(parameters.DEBUG):
         utils.save_umap_as_pdf(reference_latent, 'figures/reference.pdf', color=['batch', 'cell_type'])
 
     reference_latent = predict(scanvi, reference_latent)
@@ -255,10 +240,10 @@ def compute_scANVI(configP):
 
     full_latent = None
 
-    if get_from_config('both'):
+    if get_from_config(parameters.SCANVI_COMPARE_REFERENCE_AND_QUERY):
         full_latent = both_adata(source_adata, target_adata)
 
-    if get_from_config('compare'):
+    if get_from_config(parameters.SCANVI_COMPARE_OBSERVED_AND_PREDICTED_CELLTYPES):
         if full_latent is None:
             full_latent = both_adata(source_adata, target_adata)
         if model is None:
