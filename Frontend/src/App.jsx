@@ -13,6 +13,7 @@ import { guardedPage } from './shared/utils/common/utils';
 import VisualizationPage from './views/VisualizationPage';
 import PasswordResetPage from './views/PasswordResetPage';
 import { theme } from "./shared/theme/theme"
+import Explore from "./views/Explore/index.jsx"
 
 function App() {
   // https://stackoverflow.com/a/69836010
@@ -46,6 +47,7 @@ function App() {
           <Route path="/contact" render={() => <Contact setUser={setUser} />} />
           <Route path="/password_reset" render={() => <PasswordResetPage />} />
           <Route path="/result" render={() => <VisualizationPage />} />
+          <Route path="/explore" render={() => <Explore />} />
         </Switch>
       </HashRouter>
     </ThemeProvider>
