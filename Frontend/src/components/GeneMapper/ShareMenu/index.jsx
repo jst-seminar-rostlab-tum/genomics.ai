@@ -1,6 +1,6 @@
-import TwitterIcon from '@mui/icons-material/Twitter';
-import EmailIcon from '@mui/icons-material/Email';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import EmailIcon from '@mui/icons-material/Email';
+import TwitterIcon from '@mui/icons-material/Twitter';
 import { IconButton } from '@mui/material';
 import React from 'react';
 import { colors } from 'shared/theme/colors';

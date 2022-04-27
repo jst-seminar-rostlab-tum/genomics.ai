@@ -43,6 +43,7 @@ const testCategories = {
 /**
  * Shows the UMAP visualization for a given project.
  * @param sidebarShown set true if sidebar is open, false otherwise
+ * @param projectId id of the project the result belongs to
  */
 function GeneMapperResultView({ sidebarShown, projectId }) {
   const paddingL = useCallback(() => (sidebarShown ? '350px' : '100px'), [sidebarShown]);
