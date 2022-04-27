@@ -4,7 +4,7 @@ import {
 import React, { useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './navbar.module.css';
-import LoginForm from '../LoginForm';
+import LoginForm from '../LoginForm/LoginForm';
 import RegistrationForm from '../RegistrationForm';
 
 import logo from '../../assets/logo.svg';

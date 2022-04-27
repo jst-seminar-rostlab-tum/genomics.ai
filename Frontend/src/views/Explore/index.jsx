@@ -6,8 +6,9 @@ import Breadcrumb from "components/Breadcrumb"
 import { Box } from '@mui/material'
 import { TabGroup } from 'components/Tab'
 import Search from 'components/Search'
-import { useLocation } from 'react-router-dom/cjs/react-router-dom.min'
-import Filter from 'components/Filter'
+import { useLocation } from 'react-router-dom'
+import Filter from 'components/Filter/old'
+import { InlineSelector } from 'components/Filter/Filter'
 
 const tmpObj = [
   {
@@ -30,6 +31,8 @@ const Explore = () => {
 
   return (
     <Box>
+      <InlineSelector />
+
       {/* Navbar */}
       <Box />
 
