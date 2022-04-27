@@ -6,11 +6,24 @@ import { colors } from 'shared/theme/colors'
 import { Link } from 'react-router-dom'
 
 /**
- * Breadcrumb needs two parameters:
- * 1. fontsize
- * 2. path
- *     Format of Path should be like:
- *     - /explore/atlases
+ * Breadcrumb needs the parameter fontsize
+ * 
+ * It may also accept another parameter which is actions
+ * 
+ * the actions is the object, which summarize the action when clicking the corresponding element
+ * 
+ * for example:
+ * 
+ * the path is /explore/atlases
+ * 
+ * if you want to do something additionally than just redirect
+ * 
+ * you should give an object like this:
+ * 
+ * {
+ *      explore: ()=>{something you want to do}
+ * }
+ * 
  */
 export default function Breadcrumb({ fontSize, actions }) {
 
