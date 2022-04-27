@@ -108,7 +108,7 @@ const Explore = () => {
             </Box>
 
             <Box sx={{ alignSelf: 'center', width: '65%', marginTop: '2%' }}>
-                <Breadcrumb fontSize={1} />
+                <Breadcrumb fontSize={1} actions={{explore: ()=>setValue(0)}} />
             </Box>
 
             <Box sx={{ alignSelf: 'center', width: '65%', marginBlock: '2%' }}>

@@ -70,7 +70,7 @@ export function TabGroup(props) {
   const { darkBackground, tabsInfo, value, setValue } = props
 
   return (
-    <Tabs value={value} onChange={(_, newValue) => {setValue(newValue); console.log("changed")}}
+    <Tabs value={value} onChange={(_, newValue) => setValue(newValue)}
       sx={{
         "& .MuiTabs-indicator": {
           backgroundColor: darkBackground ? "white" : "black"
