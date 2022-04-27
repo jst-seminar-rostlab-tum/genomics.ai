@@ -1,6 +1,6 @@
 import './app.module.css';
 import React, { useState } from 'react';
-import { ThemeProvider } from '@mui/material';
+import { ThemeProvider, createTheme } from '@mui/material';
 import {
   Route, HashRouter, Switch, Redirect,
 } from 'react-router-dom';
@@ -14,6 +14,7 @@ import VisualizationPage from './views/VisualizationPage';
 import PasswordResetPage from './views/PasswordResetPage';
 import { theme } from "./shared/theme/theme"
 import Explore from "./views/Explore/index.jsx"
+import UploadFilePage from 'views/GeneMapper/UploadFilePage';
 
 function App() {
   // https://stackoverflow.com/a/69836010
@@ -48,6 +49,7 @@ function App() {
           <Route path="/password_reset" render={() => <PasswordResetPage />} />
           <Route path="/result" render={() => <VisualizationPage />} />
           <Route path="/explore" render={() => <Explore />} />
+          <Route path="/genemapper" render={() => <UploadFilePage />} />
         </Switch>
       </HashRouter>
     </ThemeProvider>
