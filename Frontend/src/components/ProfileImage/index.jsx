@@ -3,7 +3,7 @@ import profileDefault from 'assets/user.png';
 
 import styles from './profileImage.module.css';
 
-function ProfileImage({ sizePixels }) {
+function ProfileImage({ sizePixels, editable = false }) {
   return (
     <div
       className={styles.profileImage} // TODO: load actual image
@@ -12,7 +12,13 @@ function ProfileImage({ sizePixels }) {
         width: `${sizePixels}px`,
         backgroundImage: `url(${profileDefault})`,
       }}
-    />
+    >
+      {editable && (
+        <div className={styles.editButton}>
+          <span>Edit</span>
+        </div>
+      )}
+    </div>
   );
 }
 
