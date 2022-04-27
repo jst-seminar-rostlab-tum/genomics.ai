@@ -2,6 +2,7 @@
     max-width: 400px;
     margin: 12px;
     position: absolute;
+    z-index: 100;
     right: 2%;
     bottom: 2%;
 }
@@ -9,8 +10,8 @@
 .borderContainer {
     border-radius: 20px;
     padding: 16px 32px;
-    z-index: 2;
     position: relative;
+    background-color: white;
 }
 
 .input {
