@@ -10,7 +10,7 @@ function Dashboard({ sidebarShown }) {
     <Stack
       direction="column"
       sx={{
-        paddingTop: '100px',
+        paddingTop: '10px',
         paddingLeft: paddingL,
         display: 'flex',
         width: '100%',
@@ -33,6 +33,7 @@ function Dashboard({ sidebarShown }) {
           <StatusQueue />
         </Container>
       </Stack>
+      
     </Stack>
   );
 }
