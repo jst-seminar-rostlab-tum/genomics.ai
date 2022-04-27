@@ -14,6 +14,7 @@ import VisualizationPage from './views/VisualizationPage';
 import PasswordResetPage from './views/LandingPage/PasswordResetPage';
 import { theme } from "./shared/theme/theme"
 import Explore from "./views/Explore/index.jsx"
+import AtlasModelChoice from 'views/GeneMapper/AtlasModelChoice/AtlasModelChoice';
 
 function App() {
 
