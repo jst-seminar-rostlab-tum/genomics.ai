@@ -41,7 +41,8 @@ def default_config():
         'n_neighbors': 8,
         'max_epochs': 100,
         'unwanted_labels': ['leiden'],
-        'debug': True
+        'debug': True, 
+        'attributes' : None
     }
 
 
@@ -59,20 +60,21 @@ def merge_configs(user_config):
     """
     return default_config() | user_config
 
-
 # def query(reference_dataset, query_dataset, model_path, surgery_path,  model_type):
 def query(user_config):
     configuration = merge_configs(user_config)
     model = get_from_config(configuration, 'model')
+    attributes = None
     if model == 'scVI':
-        compute_scVI(configuration)
+        attributes = compute_scVI(configuration)
     elif model == 'scANVI':
-        compute_scANVI(configuration)
+        attributes = compute_scANVI(configuration)
     elif model == 'totalVI':
         # compute_totalVI()
         print("not supported yet")
     else:
         raise ValueError(model + ' is not one of the supported models')
+    configuration["attributes"] = attributes
     utils.notify_backend(get_from_config(configuration, 'webhook'), configuration)
 # query('data/ref/source_data.h5ad', 'data/query/target_data.h5ad', 'data/model', 'data/surgery/', 'scVI')
 # query(None)
