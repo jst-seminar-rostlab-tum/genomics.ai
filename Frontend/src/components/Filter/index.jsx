@@ -39,7 +39,14 @@ export default function Filter(props) {
   };
 
   return (
-    <Box className={styles.container}>
+    <Box className={styles.container}
+      sx={{
+        backgroundColor: "white",
+        borderRadius: "20px",
+        boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.15), 0px 0px 1px rgba(0, 0, 0, 0.4)",
+        zIndex: "100"
+      }}
+    >
       <FormGroup>
         <Stack
           direction="row"
@@ -53,10 +60,9 @@ export default function Filter(props) {
               >
                 Referenced By Atlas
               </Typography>
-)}
+            )}
           />
           <TextField
-            autoWidth
             value={reference}
             onChange={handleReferenceChange}
             className={styles.select}
@@ -64,7 +70,7 @@ export default function Filter(props) {
             variant="standard"
           >
             {references.map((referenceItem, index) => (
-              <MenuItem value={index}>{referenceItem}</MenuItem>
+              <MenuItem key={index} value={index}>{referenceItem}</MenuItem>
             ))}
           </TextField>
         </Stack>
@@ -81,10 +87,9 @@ export default function Filter(props) {
               >
                 Category
               </Typography>
-)}
+            )}
           />
           <TextField
-            autoWidth
             value={category}
             onChange={handleCategoryChange}
             className={styles.select}
@@ -92,7 +97,7 @@ export default function Filter(props) {
             variant="standard"
           >
             {categories.map((categoryItem, index) => (
-              <MenuItem value={index}>{categoryItem}</MenuItem>
+              <MenuItem key={index} value={index}>{categoryItem}</MenuItem>
             ))}
           </TextField>
           <Button variant="contained" className={styles.addButton} onClick={addCategory}>Add</Button>
@@ -101,8 +106,8 @@ export default function Filter(props) {
           direction="row"
           className={styles.tagStack}
         >
-          {selectedIndexes.map((selectedIndex) => (
-            <Tag text={categories[selectedIndex]} handleClick={() => removeTag(selectedIndex)} />
+          {selectedIndexes.map((selectedIndex, index) => (
+            <Tag key={index} text={categories[selectedIndex]} handleClick={() => removeTag(selectedIndex)} />
           ))}
         </Stack>
       </FormGroup>
