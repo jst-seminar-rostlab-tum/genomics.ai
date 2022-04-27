@@ -6,6 +6,8 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import Navbar from "components/NavBar";
 import WindowiOS from "components/WindowiOS";
 import Footer from "components/Footer";
+import LoginForm from 'components/LoginForm'
+import RegistrationForm from 'components/RegistrationForm'
 import { useCallback, useState, useEffect, useRef } from "react";
 import { colors } from "shared/theme/colors";
 import graphic1 from 'assets/landing-illustrations/science.png';
@@ -29,6 +31,10 @@ const Home = ({ setUser }) => {
     setRegistrationFormVisible(true);
   }, [setRegistrationFormVisible])
   
+  const onLoginFormClosed = useCallback(() => {
+    setLoginFormVisible(false);
+  }, [setLoginFormVisible]);
+
   const onRegistrationFormClosed = useCallback(() => {
     setRegistrationFormVisible(false);
   }, [setRegistrationFormVisible]);
@@ -44,6 +50,10 @@ const Home = ({ setUser }) => {
 
   return (
     <Box style={{ overflow: "hidden" }} sx={{ position: "relative" }}>
+
+      {isLoginFormVisible && <LoginForm setUser={setUser} visible={isLoginFormVisible} onClose={onLoginFormClosed} />}
+      {isRegistrationFormVisible && <RegistrationForm setUser={setUser} visible={isRegistrationFormVisible} onClose={setRegistrationFormVisible} />}
+
       {/* STARTING PAGE */}
       <Box sx={{width: window.width, bgcolor: colors.primary[800], position: "relative", paddingBottom: "4em"}}>
         {/* NAVBAR HERE */}
