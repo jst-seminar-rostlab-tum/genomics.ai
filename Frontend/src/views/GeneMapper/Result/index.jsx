@@ -54,7 +54,6 @@ function GeneMapperResultView({ sidebarShown, projectId }) {
 
   useEffect(() => {
     getProject(projectId)
-      .then((response) => response.json())
       .then((data) => setProject(data));
   }, [projectId]);
 
