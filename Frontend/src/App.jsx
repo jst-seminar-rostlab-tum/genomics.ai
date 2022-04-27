@@ -1,30 +1,21 @@
 import './app.module.css';
 import React, { useState } from 'react';
-import { createTheme, ThemeProvider } from '@mui/material';
+import { ThemeProvider } from '@mui/material';
 import {
   Route, HashRouter as Router, Switch, Redirect,
 } from 'react-router-dom';
-import HomePage from './views/Home';
-import About from './views/About';
-import Docs from './views/Docs';
-import Contact from './views/Contact';
+import HomePage from './views/LandingPage/Home';
+import About from './views/LandingPage/About';
+import Docs from './views/LandingPage/Docs';
+import Contact from './views/LandingPage/Contact';
 import DashboardContent from './components/DashboardContent';
 import { guardedPage } from './shared/utils/common/utils';
 import VisualizationPage from './views/VisualizationPage';
-import PasswordResetPage from './views/PasswordResetPage';
-import AtlasModelChoice from 'views/GeneMapper/AtlasModelChoice/AtlasModelChoice';
+import PasswordResetPage from './views/LandingPage/PasswordResetPage';
+import { theme } from "./shared/theme/theme"
+import Explore from "./views/Explore/index.jsx"
 
 function App() {
-  const theme = createTheme({
-    palette: {
-      primary: {
-        main: '#01579B',
-      },
-      light: {
-        main: '#4F83CC',
-      },
-    },
-  });
 
   const [user, setUser] = useState(localStorage.user ? JSON.parse(localStorage.user) : null);
 
@@ -42,6 +33,7 @@ function App() {
           <Route path="/password_reset" render={() => <PasswordResetPage />} />
           <Route path="/result" render={() => <VisualizationPage />} />
           <Route path="/alex" render={() => <AtlasModelChoice />} />
+          <Route path="/explore" render={() => <Explore />} />
         </Switch>
       </Router>
     </ThemeProvider>
