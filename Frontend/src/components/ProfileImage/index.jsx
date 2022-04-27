@@ -1,14 +1,20 @@
-import React, { useState } from 'react';
-import profileDefault from 'assets/user.png';
+import React, { useState, useEffect } from 'react';
+import Avatar from '@mui/material/Avatar';
 
 import ProfileImageUploadDialog from 'components/general/upload/ProfileImageUploadDialog';
-
 import styles from './profileImage.module.css';
 
-function ProfileImage({ sizePixels, editable = false, overrideProfileImage = null }) {
-  const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
+import stringToColor from 'shared/utils/stringColor';
+import getUser from 'shared/services/mock/user';
 
-  const openUploadDialog = () => setUploadDialogOpen(true);
+function ProfileImage({ sizePixels, editable = false, overrideProfileImage = null }) {
+  const [user, setUser] = useState({});
+  async function loadUser() {
+    setUser(await getUser());
+  }
+  useEffect(loadUser, [setUser]);
+
+  const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
 
   return (
     <>
@@ -17,15 +23,25 @@ function ProfileImage({ sizePixels, editable = false, overrideProfileImage = nul
         style={{
           height: `${sizePixels}px`,
           width: `${sizePixels}px`,
-          backgroundImage: `url(${overrideProfileImage || profileDefault})`,
         }}
       >
+        <Avatar
+          src={overrideProfileImage || user.profilePictureURL}
+          alt={`${user.firstName} ${user.lastName}`}
+          sx={{
+            backgroundColor: stringToColor(`${user.firstName} ${user.lastName}`),
+            width: sizePixels,
+            height: sizePixels,
+          }}
+        >
+          {(user.firstName || '?')[0]}
+        </Avatar>
         {editable && (
           <div
             className={styles.editButton}
-            onClick={() => openUploadDialog()}
+            onClick={() => setUploadDialogOpen(true)}
             role="button"
-            onKeyPress={() => openUploadDialog()}
+            onKeyPress={() => setUploadDialogOpen(true)}
             tabIndex={0}
           >
             <span>Edit</span>
@@ -35,7 +51,10 @@ function ProfileImage({ sizePixels, editable = false, overrideProfileImage = nul
       {uploadDialogOpen && (
         <ProfileImageUploadDialog
           open={uploadDialogOpen}
-          onClose={() => setUploadDialogOpen(false)}
+          onClose={() => {
+            setUploadDialogOpen(false);
+            loadUser();
+          }}
         />
       )}
     </>

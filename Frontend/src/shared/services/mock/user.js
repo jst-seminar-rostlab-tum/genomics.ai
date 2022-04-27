@@ -4,5 +4,6 @@ export default async function getUser() {
     firstName: 'Paul',
     lastName: 'Schwind',
     email: 'paul@example.com',
+    profilePictureURL: 'https://pschwind.de/img/favicon.png',
   };
 }
