@@ -11,7 +11,7 @@ import { setTypeInUrl } from "shared/utils/common/utils";
 
 
 
-const SearchContent = ({ searchedData, type, submittedKeyword }) => {
+const SearchContent = ({ searchedData, type, searchedKeyword }) => {
   const { path } = useRouteMatch();
 
   const renderSearchResultsList = (listItemWrapper) => {
@@ -28,7 +28,7 @@ const SearchContent = ({ searchedData, type, submittedKeyword }) => {
       <ResultStatus
         count={searchedData.length}
         searchedEntity={type}
-        searchedKeyword={submittedKeyword}
+        searchedKeyword={searchedKeyword}
       />
       <Switch>
         <Route path={setTypeInUrl(path, "teams")}>

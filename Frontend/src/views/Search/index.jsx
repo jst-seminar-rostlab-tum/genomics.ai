@@ -27,25 +27,25 @@ const Search = ({ sidebarShown }) => {
 
   // type of the items searched (teams/institutions/users/projects)
   const { type } = useParams();
-  const submittedKeyword =
+  const searchedKeyword =
     new URLSearchParams(location.search).get("keyword") || "";
+  const submittedSortBy =
+    new URLSearchParams(location.search).get("sortBy") || "";
 
-  const [searchedKeyword, setSearchedKeyword] = useState(submittedKeyword);
   const [searchedData, setSearchedData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const searchedKeywordChangeHandler = (event) => {
-    setSearchedKeyword(event.target.value);
+    history.push(`?keyword=${event.target.value}`);
   };
 
   const changedTabHandler = (event, newValue) => {
     setIsLoading(true);
     const newPath = setTypeInUrl(path, newValue);
-    history.push(`${newPath}`);
+    history.push({ pathname: `${newPath}`, search: location.search });
   };
 
   const fetchSearchHandler = useCallback(async (type, keyword) => {
-    history.push(`?keyword=${keyword}`);
     const searchResponse = await querySearch(type, keyword.toLowerCase());
     setSearchedData(searchResponse);
     setIsLoading(false);
@@ -54,7 +54,6 @@ const Search = ({ sidebarShown }) => {
   useEffect(() => {
     fetchSearchHandler(type, searchedKeyword);
   }, [fetchSearchHandler, type, searchedKeyword]);
-
 
   return (
     <Stack direction="column" sx={{ paddingLeft: paddingL }}>
@@ -75,7 +74,7 @@ const Search = ({ sidebarShown }) => {
             <SearchContent
               searchedData={searchedData}
               type={type}
-              submittedKeyword={submittedKeyword}
+              searchedKeyword={searchedKeyword}
             />
           )}
         </Box>
@@ -83,6 +82,5 @@ const Search = ({ sidebarShown }) => {
     </Stack>
   );
 };
-
 
 export default Search;
