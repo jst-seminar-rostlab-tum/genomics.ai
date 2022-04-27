@@ -1,12 +1,13 @@
 .cardsContainer{
-    margin-top: 1%;
+    padding-top: 1%;
 }
 
 .atlasContainer{
-    margin-top: 1%;
+    padding-top: 1%;
     overflow: scroll;
     overflow-x: hidden;
     height: 500px;
+    padding-right: 3%;
 }
 
 .atlasContainer::-webkit-scrollbar{

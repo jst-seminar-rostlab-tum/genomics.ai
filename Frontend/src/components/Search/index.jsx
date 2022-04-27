@@ -46,7 +46,7 @@ const Search = ({ filterComponent, handleSearch }) => {
      */
     const handleFilterClose = (e) => {
       if (filterBox.current && !filterBox.current.contains(e.target)) {
-        // setFilterEnabled(false)
+        setFilterEnabled(false)
       }
     }
     window.addEventListener("click", handleFilterClose, true)
