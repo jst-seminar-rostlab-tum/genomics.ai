@@ -79,7 +79,7 @@ function GeneMapperResultView({ sidebarShown, projectId }) {
         setUmapSize(Math.min(container.contentRect.height, container.contentRect.width));
       });
       observer.observe(umapContainer.current);
-      return () => observer.unobserve(umapContainer.current);
+      return () => observer.disconnect();
     }
     return () => {};
   }, [umapContainer.current]);
@@ -100,7 +100,11 @@ function GeneMapperResultView({ sidebarShown, projectId }) {
             <GeneMapperResultHeader projectName={project.name} />
             <Box
               sx={{
-                display: 'flex', flexGrow: 1, justifyContent: 'space-between', alignItems: 'stretch',
+                flexGrow: 1,
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'stretch',
+                overflow: 'hidden',
               }}
             >
               <Sidepanel title="Categories">
@@ -109,7 +113,10 @@ function GeneMapperResultView({ sidebarShown, projectId }) {
                   setColorMode={(mode) => umap.setColorMode(mode)}
                 />
               </Sidepanel>
-              <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }} ref={umapContainer} />
+              <Box
+                sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}
+                ref={umapContainer}
+              />
               <Sidepanel title="Graphs" collapseToRight />
             </Box>
           </>
