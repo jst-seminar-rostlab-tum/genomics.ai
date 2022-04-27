@@ -35,10 +35,15 @@ const Search = ({ filterComponent, handleSearch }) => {
   const [active, setActive] = useState(false)
   const [filterEnabled, setFilterEnabled] = useState(false)
   const filterBox = useRef()
-  const textRef = useRef()
-  const [inputChange, setInputChange] = useState("")
 
   useEffect(() => {
+    // TODO
+    /*
+     * Want to achieve this effect: click outside box -> close filter 
+     * Problem: current solution detects clicks on other components except the filter
+     *          works when clicking outside, but when you click a child component inside filter
+     *          it still closes. 
+     */
     const handleFilterClose = (e) => {
       if (filterBox.current && !filterBox.current.contains(e.target)) {
         // setFilterEnabled(false)
@@ -50,16 +55,12 @@ const Search = ({ filterComponent, handleSearch }) => {
     }
   }, [])
 
-  useEffect(() => {
-    handleSearch(textRef)
-  }, [inputChange])
-
   return (
     <Stack direction="row" justifyContent="space-between" sx={{ position: "relative", p: "10px", border: `2px solid ${active ? colors.primary[400] : colors.primary[700]}`, borderRadius: "40px" }}>
       {/* Left part */}
       <Stack direction="row" alignItems="center" gap="5px" sx={{ marginLeft: "20px", width: "100%" }}>
         <SearchIcon sx={{ color: active ? "primary.light" : "primary.main" }} />
-        <SearchInput ref={textRef} onChange={() => setInputChange(textRef.current.value)} placeholder="Search" onMouseEnter={() => setActive(true)} onMouseLeave={() => setActive(false)} />
+        <SearchInput onChange={(e) => handleSearch(e.target.value)} placeholder="Search" onMouseEnter={() => setActive(true)} onMouseLeave={() => setActive(false)} />
       </Stack>
       {/* Right part */}
       <Stack direction="row" sx={{ marginRight: "20px" }}>

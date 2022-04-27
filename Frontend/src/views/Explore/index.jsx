@@ -110,7 +110,7 @@ const Explore = () => {
             </Box>
 
             <Box sx={{ alignSelf: 'center', width: '65%', marginBlock: '2%' }}>
-                <Search filterComponent={<Filter references={["test", "test"]} categories={["category1", "category2"]} />} handleSearch={(textRef) => console.log(textRef)} />
+                <Search filterComponent={<Filter references={["test", "test"]} categories={["category1", "category2"]} />} handleSearch={(e) => console.log(e)} />
             </Box>
 
             <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignSelf: 'center', width: '80%' }}>
