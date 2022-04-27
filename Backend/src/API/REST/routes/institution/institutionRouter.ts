@@ -98,4 +98,36 @@ const test_institution = () : Router => {
     return router;
 }
 
-export { create_institution, test_institution, invite_to_institution }
+const get_institution = () : Router => {
+    let router = express.Router();
+    router
+        .get("/institution/:id", check_auth(), async (req: any, res) =>{
+            const institutionId = req.params.id;
+            try {
+                const institution = await InstitutionService.getInstitutionById(institutionId);
+                return res.status(200).json(institution);
+            } catch (err) {
+                console.error(JSON.stringify(err));
+                return res.status(404).send(`Institution ${institutionId} not found`);
+            }
+        })
+    return router;
+}
+
+const get_institutions = () : Router => {
+    let router = express.Router();
+    router
+        .get("/institutions", check_auth(), async( req: any, res) => {
+            const query = {...req.query };
+            try{
+                const institutions = await InstitutionService.filterInstitutions(query);
+                return res.status(200).json(institutions);
+            } catch (err){
+                console.error(JSON.stringify(err));
+                return res.status(404).send(`No institutions found`);
+            }
+        })
+    return router;
+}
+
+export { create_institution, test_institution, invite_to_institution, get_institutions, get_institution }

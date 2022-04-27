@@ -93,4 +93,23 @@ export default class InstitutionService {
      Promise<( IInstitution & { _id: ObjectId } | null )> {
        return await institutionModel.findById(institutionId).exec();
     }
+
+    static async filterInstitutions(query: any):
+     Promise<(IInstitution[] | null )>{
+
+        var keyword : object,
+            sortBy  : any;
+
+        query.hasOwnProperty('keyword') ?  keyword = { name : query.keyword } : keyword = {};
+
+        if(query.hasOwnProperty('sortBy')){
+            let sortProperty = query.sortBy;
+            sortBy = { sortProperty : 1 }
+        } else
+            sortBy = {};
+
+        return await institutionModel.find(keyword).sort(sortBy).exec();
+    }
+
+
 }
