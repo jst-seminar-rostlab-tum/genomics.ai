@@ -26,7 +26,7 @@ function Mapper({
 
   return (
     <Box className={styles.container}>
-      <Box className={styles.borderContainer} sx={{ visibility: open ? 'visible' : 'hidden', boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.25)" }}>
+      <Box className={styles.borderContainer} sx={{ visibility: open ? 'visible' : 'hidden', boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.25)' }}>
         <Typography className={styles.title}>Mapper</Typography>
         <Divider className={styles.divider} />
         <Typography>Selected Atlas</Typography>
