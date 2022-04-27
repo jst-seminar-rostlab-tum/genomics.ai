@@ -12,7 +12,7 @@ import CropImage from '../CropImage';
 export default function ImageUploadDialog({
   open, onClose, title, description, maxFileSizeMB, croppable,
   onUpload, additionalButtons,
-  preview = (imgURL) => <img src={imgURL} alt="Preview" />,
+  preview = (imgURL) => <img style={{ width: '100%' }} src={imgURL} alt="Preview" />,
 }) {
   const [loading, setLoading] = useState(false);
   const [imgURL, setImgURL] = useState('');
