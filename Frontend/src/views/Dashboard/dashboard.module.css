@@ -3,6 +3,7 @@
 }
 
 .fileUpload {
+    background-color: red;
     flex-basis: 100%;
     position: relative;
     height: 100%;

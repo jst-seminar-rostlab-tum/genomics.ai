@@ -12,6 +12,7 @@ import DashboardContent from './components/DashboardContent';
 import { guardedPage } from './shared/utils/common/utils';
 import VisualizationPage from './views/VisualizationPage';
 import PasswordResetPage from './views/PasswordResetPage';
+import AtlasModelChoice from 'views/GeneMapper/AtlasModelChoice/AtlasModelChoice';
 
 function App() {
   const theme = createTheme({
@@ -40,6 +41,7 @@ function App() {
           <Route path="/contact" render={() => <Contact setUser={setUser} />} />
           <Route path="/password_reset" render={() => <PasswordResetPage />} />
           <Route path="/result" render={() => <VisualizationPage />} />
+          <Route path="/alex" render={() => <AtlasModelChoice />} />
         </Switch>
       </Router>
     </ThemeProvider>
