@@ -15,10 +15,12 @@ import { Tab, Tabs } from '@mui/material'
  * 
  * see the example StyledTab in TabGroup below for how to combine the Tab with a Link from react-router-dom
  */
-export function StyledTab({ darkBackground, label, component, to }) {
+export function StyledTab(props) {
+
+  const { darkBackground, label, component, to } = props
 
   return (
-    <Tab 
+    <Tab {...props}
       disableRipple
       label={label}
       component={component}
@@ -65,11 +67,10 @@ export function StyledTab({ darkBackground, label, component, to }) {
  */
 export function TabGroup(props) {
 
-  const { darkBackground, tabsInfo } = props
-  const [value, setValue] = useState(0)
+  const { darkBackground, tabsInfo, value, setValue } = props
 
   return (
-    <Tabs value={value} onChange={(_, newValue) => setValue(newValue)}
+    <Tabs value={value} onChange={(_, newValue) => {setValue(newValue); console.log("changed")}}
       sx={{
         "& .MuiTabs-indicator": {
           backgroundColor: darkBackground ? "white" : "black"
@@ -77,7 +78,7 @@ export function TabGroup(props) {
       }}
     >
       {
-        tabsInfo.map((tabInfo, index) => (<StyledTab key={index} label={tabInfo.label} component={Link} to={tabInfo.path} darkBackground={darkBackground} />))
+        tabsInfo.map((tabInfo, index) => (<StyledTab key={index} value={index} label={tabInfo.label} component={Link} to={tabInfo.path} darkBackground={darkBackground} />))
       }
     </Tabs>
   )
