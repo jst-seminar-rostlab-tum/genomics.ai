@@ -36,9 +36,11 @@ function Sidepanel({ title, collapseToRight, children }) {
             </IconButton>
           </Tooltip>
         )}
-      <Collapse in={open} orientation="horizontal">
-        {children}
-      </Collapse>
+      <Box sx={{ overflow: 'auto' }}>
+        <Collapse in={open} orientation="horizontal">
+          {children}
+        </Collapse>
+      </Box>
     </Box>
   );
 }

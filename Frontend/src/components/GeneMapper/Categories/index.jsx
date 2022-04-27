@@ -62,7 +62,7 @@ function Value({ title, color }) {
           ? <Visibility sx={{ color }} />
           : <VisibilityOff sx={{ color: deactivatedColor }} />}
       </IconButton>
-      <Typography sx={{ flexGrow: 1 }}>{title}</Typography>
+      <Typography sx={{ flexGrow: 1 }} noWrap>{title}</Typography>
     </Box>
   );
 }
