@@ -12,11 +12,19 @@ from os.path import exists
 import logging
 import argparse
 
+config = {}
+
+def set_config(new_config):
+    global config
+    config = new_config
+
+def get_from_config(key):
+    return config[key]
+
+
 def parse_args():
     parser = argparse.ArgumentParser(description='Run functions on totalVI using scArches')
     parser.add_argument('-d', '--debug', help='print debug output', action='store_true')
-    parser.add_argument('--ref', help='.h5ad file(s) containing the CITE-seq reference data')
-    parser.add_argument('--query', help='.h5 file containing the query data')
     parser.add_argument('--epoch1', help='override the default amount of epochs for the first training', default=400)
     parser.add_argument('--epoch2', help='override the default amount of epochs for the second training', default=200)
     parser.add_argument('--path', help='path to store and load the model', default='saved_model/')
@@ -37,8 +45,8 @@ def setup_modules():
     torch.set_printoptions(precision=3, sci_mode=False, edgeitems=7)
 
 def prepare_data():
-    adata_ref = scv.data.pbmcs_10x_cite_seq() if args.example else args.ref
-    adata_query = scv.data.dataset_10x("pbmc_10k_v3") if args.example else args.query
+    adata_ref = scv.data.pbmcs_10x_cite_seq() if args.example else sc.read(get_from_config('reference_dataset'))
+    adata_query = scv.data.dataset_10x("pbmc_10k_v3") if args.example else sc.read(get_from_config('query_dataset'))
 
     adata_query.obs["batch"] = "PBMC 10k (RNA only)"
     pro_exp = adata_ref.obsm["protein_expression"] # put matrix of zeros for protein expression (considered missing)
@@ -183,8 +191,8 @@ def main():
     args = parse_args()
     logger = logging.getLogger(__name__)
     logger.setLevel(logging.DEBUG if args.debug else logging.INFO)
-    if not args.example and not (args.ref or args.query):
-        logger.error("'ref' and 'query' arguments can't be empty if the argument 'example' is set to false")
+    if not args.example and not (args.ref or args.query) (exists(get_from_config('reference_dataset')) or exists(get_from_config('query_dataset'))):
+        logger.error("file path to 'ref' and 'query' can't be empty if the argument 'example' is set to false")
         exit()
 
     setup_modules()
