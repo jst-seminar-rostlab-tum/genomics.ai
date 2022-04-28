@@ -1,6 +1,6 @@
 import e, { Response } from "express";
 import { ExtRequest } from "../definitions/ext_request";
-import sharp from "sharp";
+import Jimp from "jimp";
 import s3 from "./s3";
 import { ImageUploadResult } from "../definitions/image_upload_result";
 
@@ -20,12 +20,11 @@ export default async function processImageUpload(
             error: new Error(`Invalid image format: ${req.headers["content-type"]}`)
         };
     }
-    let croppedImage: Buffer, format: string;
+    let croppedImage: Buffer ;
     try {
-        const image = sharp(req.body);
-        const metadata = await image.metadata();
-        const sourceWidth = metadata.width!;
-        const sourceHeight = metadata.height!;
+        const image = await Jimp.read(req.body);
+        const sourceWidth = image.getWidth();
+        const sourceHeight = image.getHeight();
         let maxWidth = scalingOptions.maxWidth;
         let maxHeight = scalingOptions.maxHeight;
         let cropWidth = sourceWidth;
@@ -52,26 +51,25 @@ export default async function processImageUpload(
             }
         }
 
-        let result = await image
-            .extract({ left: Math.floor(cropX), top: Math.floor(cropY), width: Math.ceil(cropWidth), height: Math.ceil(cropHeight) })
-            .resize(maxWidth, maxHeight, {
-                fit: "inside",
-                withoutEnlargement: true
-            })
-            .toBuffer({ resolveWithObject: true });
+        let ops = image.crop(Math.floor(cropX), Math.floor(cropY), Math.ceil(cropWidth), Math.ceil(cropHeight));
+        if(cropWidth>maxWidth || cropHeight> maxHeight) {
+            ops = ops.scaleToFit(maxWidth, maxHeight);
+        }
+        let buffer = await ops.getBufferAsync(contentType);
 
-        croppedImage = result.data;
-        format = result.info.format;
+        croppedImage = buffer;
     } catch (e) {
+        console.log(e);
         return { success: false, status: 500, message: "Image processing failed", error: e };
     }
 
     let extension;
-    if (format == "png") {
+    if (contentType == "image/png") {
         extension = ".png";
-    } else if (format == "jpeg") {
+    } else if (contentType == "image/jpeg") {
         extension = ".jpg";
     } else {
+        console.error("Wrong content type? "+contentType);
         return { success: false, status: 500, message: "Image processing failed" };
     }
 
