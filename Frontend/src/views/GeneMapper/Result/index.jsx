@@ -5,7 +5,7 @@ import Sidepanel from 'components/GeneMapper/Sidepanel';
 import { UmapVisualization2 } from 'components/Visualization/src/umapVisualization';
 import { csv } from 'd3';
 import React, {
-  useCallback, useEffect, useRef, useState,
+  useEffect, useRef, useState,
 } from 'react';
 import getProject from 'shared/services/mock/projects';
 
