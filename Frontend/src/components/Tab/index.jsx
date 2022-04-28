@@ -16,25 +16,29 @@ import {Tab, Tabs, Box} from '@mui/material'
  * 
  * see the example StyledTab in TabGroup below for how to combine the Tab with a Link from react-router-dom
  */
-export function StyledTab(props){
+export function StyledTab(props) {
 
-    const {darkBackground}=props
+  const { darkBackground, label, component, to } = props
 
-    return(
-        <Tab disableRipple {...props}
-            sx={{
-                textTransform: "none",
-                fontWeight: "bold",
-                color: darkBackground ? "white" : "black",
-                opacity: 1,
-                "&.Mui-selected": {
-                    fontWeight: "bold",
-                    color: darkBackground ? "white" : "black",
-                    opacity: 1,
-                }
-            }}
-        />
-    )
+  return (
+    <Tab {...props}
+      disableRipple
+      label={label}
+      component={component}
+      to={to}
+      sx={{
+        textTransform: "none",
+        fontWeight: "bold",
+        color: darkBackground ? "white" : "black",
+        opacity: 1,
+        "&.Mui-selected": {
+          fontWeight: "bold",
+          color: darkBackground ? "white" : "black",
+          opacity: 1,
+        }
+      }}
+    />
+  )
 }
 
 /**
