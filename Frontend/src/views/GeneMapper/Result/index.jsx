@@ -9,37 +9,6 @@ import React, {
 } from 'react';
 import getProject from 'shared/services/mock/projects';
 
-const testCategories = {
-  cell_type: [
-    {
-      title: 'a',
-      color: 'red',
-    },
-    {
-      title: 'b',
-      color: 'blue',
-    },
-    {
-      title: 'c',
-      color: 'green',
-    },
-  ],
-  batch: [
-    {
-      title: 'd',
-      color: 'orange',
-    },
-    {
-      title: 'e',
-      color: 'yellow',
-    },
-    {
-      title: 'f',
-      color: 'lime',
-    },
-  ],
-};
-
 /**
  * Shows the UMAP visualization for a given project.
  * @param projectId id of the project the result belongs to
@@ -110,7 +79,7 @@ function GeneMapperResultView({ projectId }) {
             >
               <Sidepanel title="Categories">
                 <GeneMapperCategories
-                  categories={testCategories}
+                  categories={umap?.coloringModes}
                   setColorMode={(mode) => umap.setColorMode(mode)}
                 />
               </Sidepanel>

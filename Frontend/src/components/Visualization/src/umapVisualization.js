@@ -45,7 +45,7 @@ const listColoringDomain = (data, mode) => {
       var colorScale = 
       d3.scaleLinear()
       .domain([d3.min(colorDomain),d3.max(colorDomain)])
-      .range(gradientColors);
+      .range(cons.gradientColors);
     
     }
     return colorScale;
