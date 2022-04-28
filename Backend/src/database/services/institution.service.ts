@@ -1,5 +1,5 @@
 import { IInstitution, institutionModel } from "../models/institution";
-import { AddInstitutionDTO } from "../dtos/institution.dto";
+import { AddInstitutionDTO, UpdateInstitutionDTO} from "../dtos/institution.dto";
 import { ObjectId } from "mongoose";
 
 /**
@@ -128,13 +128,33 @@ export default class InstitutionService {
     }
 
     /**
-     *  Search for a institution with the given institution id and return if found.
+     *  Search for an institution with the given id and return if found.
      *
-     *  @param   institutionId
-     *  @returns project - matched proejct to projectId or null
+     *  @param   id - the institution id to search for
+     *  @returns institution - matching institution for id or null
      */
     static async getInstitutionById(institutionId: (ObjectId | string)):
         Promise<(IInstitution & { _id: ObjectId } | null)> {
         return await institutionModel.findById(institutionId).exec();
+    }
+
+    /**
+     *  Updates the given institution corresponding to the id with the
+     *  update_object.
+     *
+     *  @param institution_id
+     *  @param update_object - includes fields to be updated
+     */
+    static async updateInstitution(institution_id: (ObjectId | string), update_object: UpdateInstitutionDTO) {
+        await institutionModel.updateOne({_id: institution_id}, update_object);
+    }
+
+    static async unsetProfilePicture(institution_id: ObjectId | string): Promise<string|null|undefined> {
+        let old = await institutionModel.findByIdAndUpdate(institution_id, { $unset: { profilePictureURL: "" } });
+        return old?.profilePictureURL;
+    }
+    static async unsetBackgroundPicture(institution_id: ObjectId | string): Promise<string|null|undefined> {
+        let old = await institutionModel.findByIdAndUpdate(institution_id, { $unset: { backgroundPictureURL: "" } });
+        return old?.backgroundPictureURL;
     }
 }

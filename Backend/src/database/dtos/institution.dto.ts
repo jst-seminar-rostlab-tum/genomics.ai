@@ -10,3 +10,10 @@ export interface AddInstitutionDTO {
     backgroundPictureURL: string,
     adminIds: Array<ObjectId>,
 }
+
+export interface UpdateInstitutionDTO {
+    name?:string,
+    country?: string,
+    profilePictureURL?:string,
+    backgroundPictureURL?: string,
+}

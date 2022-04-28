@@ -7,6 +7,7 @@ export interface AddUserDTO {
     email: string;
     password: string;
     note: string;
+    avatarUrl?: string;
 }
 
 /**
@@ -18,4 +19,5 @@ export interface UpdateUserDTO {
     // email?: string; TODO Changing email-address is not implemented yet.
     password?: string;
     note?: string;
+    avatarUrl?: string;
 }

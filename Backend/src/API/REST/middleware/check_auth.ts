@@ -15,7 +15,7 @@ export default function check_auth() {
       const jwtToken = req.header("auth") || req.header("Authorization")?.split(" ")[1] || "";
       try {
         jwt.verify(jwtToken, JWT_SECRET, async function (err, decoded) {
-          if (err || !decoded || !decoded.email) {
+          if (err || !decoded || !decoded.email || !decoded.id) {
             console.log(err?.name);
             if (err?.name == "TokenExpiredError")
               return res.status(440).send("JWT authentication token expired. Please log in again");
@@ -25,6 +25,11 @@ export default function check_auth() {
 
           UserService.getUserById(decoded.id).then(
             (result) => {
+              if (!result) {
+                return res
+                  .status(401)
+                  .send("JWT authentication token invalid. Please log in again");
+              }
               req.is_authenticated = true;
               req.user_id = decoded.id;
               req.email = result!.email;

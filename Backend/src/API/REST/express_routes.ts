@@ -21,6 +21,7 @@ import upload_complete_upload_route from "./routes/file_upload/complete_upload";
 import upload_start_upload_route from "./routes/file_upload/start_upload";
 import upload_get_upload_url_route from "./routes/file_upload/get_upload_url";
 import download_results_route from "./routes/file_download/results";
+import upload_user_avatar_route from "./routes/upload_user_avatar";
 
 import * as swaggerDocument from "../../swagger.json";
 import * as swaggerUi from "swagger-ui-express";
@@ -35,6 +36,16 @@ import {
   join_member,
   add_team_to_institution,
 } from "./routes/team/teamRouter";
+
+import {
+  upload_institution_backgroundpicture_route,
+  upload_institution_profilepicture_route,
+} from "./routes/upload_institution_pictures";
+import {
+  reset_institution_backgroundpicture_route,
+  reset_institution_profilepicture_route,
+} from "./routes/reset_institution_pictures";
+import reset_user_avatar_route from "./routes/reset_user_avatar";
 
 // setup the websocket-server on top of the http_server
 export function express_routes(this: REST_Host): Router {
@@ -56,6 +67,8 @@ export function express_routes(this: REST_Host): Router {
   this.expressApp.use(get_profile_route());
   this.expressApp.use(get_project_route());
   this.expressApp.use(get_projects_route());
+  this.expressApp.use(upload_user_avatar_route());
+  this.expressApp.use(reset_user_avatar_route());
 
   this.expressApp.use(add_user_to_admin());
   this.expressApp.use(join_member());
@@ -82,6 +95,10 @@ export function express_routes(this: REST_Host): Router {
   // institution routes
   this.expressApp.use(create_institution());
   this.expressApp.use(invite_to_institution());
+  this.expressApp.use(upload_institution_profilepicture_route());
+  this.expressApp.use(upload_institution_backgroundpicture_route());
+  this.expressApp.use(reset_institution_profilepicture_route());
+  this.expressApp.use(reset_institution_backgroundpicture_route());
   this.expressApp.use(make_user_admin_of_institution());
 
   // team routes
