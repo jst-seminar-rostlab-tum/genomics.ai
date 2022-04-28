@@ -14,6 +14,8 @@ import VisualizationPage from './views/VisualizationPage';
 import PasswordResetPage from './views/PasswordResetPage';
 import { theme } from "./shared/theme/theme"
 
+import TestPage from 'views/TestPage';
+
 function App() {
 
   const [user, setUser] = useState(localStorage.user ? JSON.parse(localStorage.user) : null);
@@ -31,6 +33,7 @@ function App() {
           <Route path="/contact" render={() => <Contact setUser={setUser} />} />
           <Route path="/password_reset" render={() => <PasswordResetPage />} />
           <Route path="/result" render={() => <VisualizationPage />} />
+          <Route path="/test" render={() => <TestPage />} />
         </Switch>
       </Router>
     </ThemeProvider>
