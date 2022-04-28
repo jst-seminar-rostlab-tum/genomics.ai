@@ -97,6 +97,12 @@ const datasetsGrid = (
 const Explore = () => {
 
     const [value, setValue] = useState(0)
+    const [searchValue, setSearchValue] = useState('fgfbgfb');
+
+    const handleSearch = (e) => {
+        setSearchValue(e);
+        console.log(e);
+    }
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }} >
@@ -111,7 +117,7 @@ const Explore = () => {
             </Box>
 
             <Box sx={{ alignSelf: 'center', width: '65%', marginBlock: '2%' }}>
-                <Search filterComponent={<Filter references={["test", "test"]} categories={["category1", "category2"]} />} handleSearch={(e) => console.log(e)} />
+                <Search filterComponent={<Filter references={["test", "test"]} categories={["category1", "category2"]} />} handleSearch={handleSearch} value={searchValue}/>
             </Box>
 
             <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignSelf: 'center', width: '80%' }}>

@@ -30,7 +30,7 @@ const FilterButton = ({ onClick }) => {
   )
 }
 
-const Search = ({ filterComponent, handleSearch }) => {
+const Search = ({ filterComponent, handleSearch, value }) => {
 
   const [active, setActive] = useState(false)
   const [filterEnabled, setFilterEnabled] = useState(false)
@@ -60,7 +60,7 @@ const Search = ({ filterComponent, handleSearch }) => {
       {/* Left part */}
       <Stack direction="row" alignItems="center" gap="5px" sx={{ marginLeft: "20px", width: "100%" }}>
         <SearchIcon sx={{ color: active ? "primary.light" : "primary.main" }} />
-        <SearchInput onChange={(e) => handleSearch(e.target.value)} placeholder="Search" onMouseEnter={() => setActive(true)} onMouseLeave={() => setActive(false)} />
+        <SearchInput onChange={(e) => handleSearch(e.target.value)} placeholder="Search" onMouseEnter={() => setActive(true)} onMouseLeave={() => setActive(false)} value={value}/>
       </Stack>
       {/* Right part */}
       <Stack direction="row" sx={{ marginRight: "20px" }}>
