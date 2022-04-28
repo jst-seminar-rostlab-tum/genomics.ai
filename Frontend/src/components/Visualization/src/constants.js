@@ -21,6 +21,7 @@ export const textHeight = 20;
 export const offset = 11; 
 export const searchRadius = 0.02;
 export const fill = '#000000';
+export const gradientColors = ["#42e91f", "#0a43c8"];
 export const colors = [
 
   "#FF0000", "#9ACD32" , "#00BFFF", "#FF8C00", "#FFD700", "#BA55D3" , "#A0522D", "#8B0000",

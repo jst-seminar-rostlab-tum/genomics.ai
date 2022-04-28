@@ -1,12 +1,10 @@
-import { ContentCutOutlined } from "@mui/icons-material";
 import * as d3 from "d3";
-import { selectAll } from "d3";
 import * as cons from "./constants";
-import {zoomM} from "./newZoom"
+import {zoomM, zoomInN, zoomOutN} from "./newZoom"
 //TODO: Fix constants
 //TODO: Convert x and y to float beforehand before to_csv
 //TODO: Add a ref attribute
-
+//TODO: Refactor coloring functions
 
 const listColoringDomain = (data, mode) => {
     let coloringDomain = data.map(x => x[mode]).filter((x, i, a) => a.indexOf(x) == i);
@@ -47,7 +45,7 @@ const listColoringDomain = (data, mode) => {
       var colorScale = 
       d3.scaleLinear()
       .domain([d3.min(colorDomain),d3.max(colorDomain)])
-      .range(["#42e91f", "#0a43c8"]);
+      .range(gradientColors);
     
     }
     return colorScale;
@@ -57,25 +55,32 @@ const listColoringDomain = (data, mode) => {
     return svg.append('g').attr('id', `${id}`);
   };
 
+
+  const getColoringModes = (data) =>
+  Object.assign({},
+    ...(Object.keys(data[0])
+    .filter(d => (d != "x" && d != "y" && d != ""))
+    .map(d =>{ var a = {};
+                if (parseFloat(data[0][d]))
+                {
+                  let max = d3.max(data.map(val => parseFloat(val[d])));
+                  let min = d3.min(data.map(val => parseFloat(val[d])));
+                  a[d] = listColoringDomain(data,d).map(val => parseFloat(val)).filter( val => val == max || val == min).sort((a,b) => a - b).map((d,i) => [d, cons.gradientColors[i]]);
+                  return a; 
+                }
+                a[d] = listColoringDomain(data,d).map((d,i) => [d,cons.colors[i]])
+              return a;} )));
+
   export class UmapVisualization2 {
 
 
     constructor(container, data) {
       d3.select(container).selectAll("*").remove();
       this.svg = d3.select(container).append('svg');
+      this.label = this.svg.append("label");
       this.gCells = addGroup(this.svg, 'cells');
       this.gLabels = addGroup(this.svg, 'labels');
-      this.coloringModes = Object.assign({},
-      ...(Object.keys(data[0])
-      .filter(d => (d != "x" && d != "y" && d != ""))
-      .map(d =>{ var a = {}; 
-                  if (!parseFloat(data[0][d]))
-                  {
-                    a[d] = [d3.min(data.map(value => parseFloat(value[d]))), d3.max(data.map(value => parseFloat(value[d])))];
-                    return a[d] ; 
-                  }
-                  a[d] = listColoringDomain(data,d)
-                return a;} )));
+      this.coloringModes = getColoringModes(data);
       this.data = data;
     };
 
@@ -86,7 +91,7 @@ const listColoringDomain = (data, mode) => {
 
     //Width and height should be the size of the container, not square
     async render(w, h){
-      console.log(this.coloringModes);
+      
         const data = this.data; //dataUnpacked;
         
         const min = d3.min([h,w]);
@@ -106,7 +111,7 @@ const listColoringDomain = (data, mode) => {
         const  yScale = d3.scaleLinear()
         .domain([d3.min(data.map(d => parseFloat(d.y))), d3.max(data.map(d => parseFloat(d.y)))])
         .range([cons.margin, min-cons.margin]);
- 
+
          //svg
          this.svg
          .attr("width", w)
@@ -122,13 +127,12 @@ const listColoringDomain = (data, mode) => {
          .attr("cx", d => xScale(parseFloat(d.x)))
          .attr("cy", d => yScale(parseFloat(d.y)))
          .attr("r", r)
-        //  .style("fill", (d)=> colorScale(d[mode]))
          .style("fill", cons.fill)
          .style("opacity", cons.originalOpacity)
          
          
-         //Pan and mouse zoom
          
+         //Pan and mouse zoom
          this.svg
             .attr('class', 'mouse-capture')
             .attr('x', -w)

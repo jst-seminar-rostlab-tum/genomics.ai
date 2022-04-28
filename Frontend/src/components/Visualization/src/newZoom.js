@@ -2,6 +2,7 @@ import * as d3 from "d3";
 import * as cons from "./constants";
 
 export const zoomInN = () => {
+
     d3.select('svg')
       .transition()
       .call(zoomM.scaleBy, 1.75); 
