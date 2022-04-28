@@ -13,10 +13,10 @@ const listColoringDomain = (data, mode) => {
 
 
  //For Before and After query
- const queryAfter = (cells) =>{
+ const queryAfter = (cells, category, value) =>{
     cells
     .style("opacity", d => {
-      if (!d.ref){
+      if (d[category] == value){
         return 0;
       }
       else{
@@ -26,7 +26,7 @@ const listColoringDomain = (data, mode) => {
   
   }
   
-  const queryBefore = (smth) =>{
+  const queryBefore = (cells) =>{
     cells
     .style("opacity", cons.originalOpacity)
   }
@@ -45,7 +45,7 @@ const listColoringDomain = (data, mode) => {
       var colorScale = 
       d3.scaleLinear()
       .domain([d3.min(colorDomain),d3.max(colorDomain)])
-      .range(gradientColors);
+      .range(cons.gradientColors);
     
     }
     return colorScale;
@@ -65,10 +65,20 @@ const listColoringDomain = (data, mode) => {
                 {
                   let max = d3.max(data.map(val => parseFloat(val[d])));
                   let min = d3.min(data.map(val => parseFloat(val[d])));
-                  a[d] = listColoringDomain(data,d).map(val => parseFloat(val)).filter( val => val == max || val == min).sort((a,b) => a - b).map((d,i) => [d, cons.gradientColors[i]]);
+                  a[d] = Object.assign({}, ...listColoringDomain(data,d).map(val => parseFloat(val)).filter( val => val == max || val == min).sort((a,b) => a - b)
+                  .map((d,i) => {
+                  const obj = new Object();
+                  obj[d] = cons.gradientColors[i];
+                  return obj;}));
                   return a; 
                 }
-                a[d] = listColoringDomain(data,d).map((d,i) => [d,cons.colors[i]])
+                a[d] = Object.assign({},
+                ...listColoringDomain(data,d)
+                .map((d,i) => {
+                  const obj = new Object();
+                  obj[d] = cons.colors[i];
+                  return obj;
+                }))
               return a;} )));
 
   export class UmapVisualization2 {
@@ -81,6 +91,7 @@ const listColoringDomain = (data, mode) => {
       this.gCells = addGroup(this.svg, 'cells');
       this.gLabels = addGroup(this.svg, 'labels');
       this.coloringModes = getColoringModes(data);
+      console.log(this.coloringModes);
       this.data = data;
     };
 
