@@ -72,7 +72,7 @@ const listColoringDomain = (data, mode) => {
                   if (!parseFloat(data[0][d]))
                   {
                     a[d] = [d3.min(data.map(value => parseFloat(value[d]))), d3.max(data.map(value => parseFloat(value[d])))];
-                    return a[d] ;
+                    return a[d] ; 
                   }
                   a[d] = listColoringDomain(data,d)
                 return a;} )));
