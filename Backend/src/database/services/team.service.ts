@@ -123,11 +123,11 @@ export default class TeamService {
      *  The given team should exist, otherwise the method returns false.
      *
      *  @param  userId
-     *  @param  teamId
+     *  @param  team
      *  @return isAdmin
      */
-    static async isAdmin(userId: (ObjectId | string), teamId: (ObjectId | string)): Promise<boolean> {
-        const team = await this.getTeamById(teamId);
+    static async isAdmin(userId: (ObjectId | string), team: (ITeam & {_id: ObjectId}) | null):
+      Promise<boolean> {
         if (!team)
           return false; /* team does not exist */
 
@@ -144,11 +144,11 @@ export default class TeamService {
      *  The given team should exist, otherwise the method returns false.
      *
      *  @param  userId
-     *  @param  teamId
+     *  @param  team
      *  @return isMember
      */
-    static async isMember(userId: (ObjectId | string), teamId: (ObjectId | string)): Promise<boolean> {
-        const team = await this.getTeamById(teamId);
+    static async isMember(userId: (ObjectId | string), team: (ITeam & {_id: ObjectId}) | null):
+      Promise<boolean> {
         if (!team)
           return false; /* team does not exist */
 
@@ -165,12 +165,11 @@ export default class TeamService {
      *  Return the visibility status {"PRIVATE", "PUBLIC", "BY_INSTITUTION"}
      *  of the given team if it exists, otherwise null.
      *
-     *  @param  teamId
+     *  @param  team
      *  @return visibilityStatus - {"PRIVATE", "PUBLIC", "BY_INSTITUTION"}
      */
-    static async getVisibility(teamId: (ObjectId | string)):
+    static async getVisibility(team: (ITeam & {_id: ObjectId}) | null):
       Promise<(string | null)> {
-        const team = await this.getTeamById(teamId);
         if (!team)
             return null;
         return team.visibility;
