@@ -26,9 +26,9 @@ the an example request body looks like this
     "ref_path": "[s3 key where we can retrieve a pretrained model]",
     "reference_data": "[s3 key to the .h5ad file used as a reference]",
     "query_data": "[s3 key to the .h5ad file used for the query]",
-    "webhook": "[url where we should make a request when we complete the query]"
+    "webhook": "[url where we should make a request when we complete the query]",
     "debug": true,
-    "async" false
+    "async": false
 }
 ```
 

@@ -5,7 +5,7 @@ import scarches as sca
 import torch
 from scarches.dataset.trvae.data_handling import remove_sparsity
 
-from ..utils import utils, parameters
+from utils import utils, parameters
 
 config = {}
 

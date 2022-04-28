@@ -1,12 +1,12 @@
 import warnings
-from ..scVI.scVI import create_scVI_model, set_config
+from scVI import scVI
 import scanpy
 import scarches
 from scarches.dataset.trvae.data_handling import remove_sparsity
 from matplotlib import pyplot as plt
 import numpy as np
 import torch
-from ..utils import utils, parameters
+from utils import utils, parameters
 import logging
 
 config = {}
@@ -196,9 +196,9 @@ def compute_scANVI(configP):
 
     source_adata, target_adata = pre_process_data()
     #                                                   if not get_from_config('pre_trained_scANVI'): bin mir bei dir nicht sicher, was alles zu was gehöhrt
-    set_config(configP)  # sets the config in scVI
+    scVI.set_config(configP)  # sets the config in scVI
 
-    vae = create_scVI_model(source_adata,
+    vae = scVI.create_scVI_model(source_adata,
                             target_adata)  # kann man sehen ob es schon ein scVI oder ein scANVI model gibt?
 
     # if args.train:

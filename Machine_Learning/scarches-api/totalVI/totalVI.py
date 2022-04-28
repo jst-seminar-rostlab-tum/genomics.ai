@@ -10,7 +10,7 @@ import pandas as pd
 from os.path import exists
 import logging
 import argparse
-from ..utils import utils, parameters
+from utils import utils, parameters
 
 config = {}
 
