@@ -67,7 +67,7 @@ export default class ProjectService {
      *  @param uploadId
      *  @param update_object - includes fields to be updated
      */
-    static async updateProject(uploadId: string, update_object: UpdateProjectDTO) {
+    static async updateProjectByUploadId(uploadId: string, update_object: UpdateProjectDTO) {
         await projectModel.updateOne({uploadId}, update_object).exec();
     }
 

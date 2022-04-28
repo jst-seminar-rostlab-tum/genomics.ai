@@ -8,7 +8,7 @@ import check_auth from "../middleware/check_auth";
 // Tests the Cloud Run connection
 export default function abort_processing_route(): Router {
     let router = express.Router();
-
+    //DISABLED AT THE MOMENT probably never used? Seems to be part of the test routes?
     router
         .post("/abort_processing",
             check_auth(),
@@ -29,7 +29,7 @@ export default function abort_processing_route(): Router {
                 const update_object: UpdateProjectDTO = {
                     status: ProjectStatus[ProjectStatus.ABORTED]
                 };
-                await ProjectService.updateProject(project._id, update_object);
+                await ProjectService.updateProjectByUploadId(project.uploadId, update_object);
 
                 project.status = ProjectStatus[ProjectStatus.ABORTED];
 

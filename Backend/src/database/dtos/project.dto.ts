@@ -1,3 +1,4 @@
+import { stringMap } from "aws-sdk/clients/backup";
 import {ObjectId} from "mongoose";
 
 /**
@@ -14,7 +15,10 @@ export interface UpdateProjectDTO {
  */
 export interface AddProjectDTO {
     owner: ObjectId,
+    name: string,
     fileName: string,
     uploadDate: Date,
-    status: string
+    status: string,
+    modelId: string,
+    atlasId: string,
 }
