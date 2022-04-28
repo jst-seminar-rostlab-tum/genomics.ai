@@ -53,9 +53,9 @@ const NavBar = (props) => {
                 <Box>
                   <li><Link to="/" className={styles.navbarcontent}>Home</Link></li>
                 </Box>
-                <li><Link to="about" className={styles.navbarcontent}>Team</Link></li>
-                <li><Link to="docs" className={styles.navbarcontent}>Docs</Link></li>
-                <li><Link to="contact" className={styles.navbarcontent}>Contact</Link></li>
+                <li><Link to="/about" className={styles.navbarcontent}>Team</Link></li>
+                <li><Link to="/docs" className={styles.navbarcontent}>Docs</Link></li>
+                <li><Link to="/contact" className={styles.navbarcontent}>Contact</Link></li>
               </ul>
             </Typography>
           </Box>
