@@ -68,7 +68,7 @@ const listColoringDomain = (data, mode) => {
       this.coloringModes = Object.assign({},
       ...(Object.keys(data[0])
       .filter(d => (d != "x" && d != "y" && d != ""))
-      .map(d =>{ var a = {};
+      .map(d =>{ var a = {}; 
                   if (!parseFloat(data[0][d]))
                   {
                     a[d] = [d3.min(data.map(value => parseFloat(value[d]))), d3.max(data.map(value => parseFloat(value[d])))];
