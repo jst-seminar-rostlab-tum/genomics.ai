@@ -57,22 +57,6 @@ export default class TeamService {
     }
 
     /**
-     *  Returns the id of the institution of the given team if it exists,
-     *  otherwise null.
-     *
-     *  @param   teamId
-     *  @returns institutionId or null
-     *
-     */
-    static async getInstitution(teamId: (ObjectId | string)):
-      Promise<(ObjectId | null)> {
-        const team = await this.getTeamById(teamId);
-        if (!team || team?.visibility !== "BY_INSTITUTION")
-            return null;
-        return team.institutionId;
-    }
-
-    /**
      *  Add the given userId to the invitation list of the given team.
      *
      *  @param   teamId
@@ -159,20 +143,6 @@ export default class TeamService {
         if (listMembers.includes(userIdStr))
             isMember = true;
         return isMember;
-    }
-
-    /**
-     *  Return the visibility status {"PRIVATE", "PUBLIC", "BY_INSTITUTION"}
-     *  of the given team if it exists, otherwise null.
-     *
-     *  @param  team
-     *  @return visibilityStatus - {"PRIVATE", "PUBLIC", "BY_INSTITUTION"}
-     */
-    static async getVisibility(team: (ITeam & {_id: ObjectId}) | null):
-      Promise<(string | null)> {
-        if (!team)
-            return null;
-        return team.visibility;
     }
 
     /**

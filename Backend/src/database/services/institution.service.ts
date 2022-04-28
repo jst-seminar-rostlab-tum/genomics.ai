@@ -138,21 +138,6 @@ export default class InstitutionService {
     }
 
     /**
-     *  Return the visibility status {"PRIVATE", "PUBLIC"}
-     *  of the given institution if it exists, otherwise null.
-     *
-     *  @param  institutionId
-     *  @return visibilityStatus - {"PRIVATE", "PUBLIC"}
-     */
-    static async getVisibility(institutionId: (ObjectId | string)):
-      Promise<(string | null)> {
-        const institution = await this.getInstitutionById(institutionId);
-        if (!institution)
-            return null;
-        return institution.visibility;
-    }
-
-    /**
      *  Add the given teamId into the institution.
      *
      *  @param   teamId
@@ -187,11 +172,11 @@ export default class InstitutionService {
      *  The given institution should exist, otherwise the method returns false.
      *
      *  @param  userId
-     *  @param  institutionId
+     *  @param  institution
      *  @return isAdmin
      */
-    static async isAdmin(userId: (ObjectId | string), institutionId: (ObjectId | string)): Promise<boolean> {
-        const institution = await this.getInstitutionById(institutionId);
+    static async isAdmin(userId: (ObjectId | string), institution: (IInstitution & {_id: ObjectId}) | null):
+      Promise<boolean> {
         if (!institution)
           return false; /* institution does not exist */
 
@@ -208,11 +193,11 @@ export default class InstitutionService {
      *  The given institution should exist, otherwise the method returns false.
      *
      *  @param  userId
-     *  @param  institutionId
+     *  @param  institution
      *  @return isMember
      */
-    static async isMember(userId: (ObjectId | string), institutionId: (ObjectId | string)): Promise<boolean> {
-        const institution = await this.getInstitutionById(institutionId);
+    static async isMember(userId: (ObjectId | string), institution: (IInstitution & {_id: ObjectId}) | null):
+      Promise<boolean> {
         if (!institution)
           return false; /* institution does not exist */
 
