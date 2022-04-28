@@ -40,6 +40,9 @@ export function StyledTab(props){
 /**
  * Tab Group, the collection of Tabs
  * 
+ * !!! important 
+ * the value state is now designed to be organizd by it's parent to make it more flexble
+ * 
  * like the StyledTab, it also need a boolean parameter 
  * - darkBackground
  * to render the Tab accordingly
@@ -73,6 +76,10 @@ export function StyledTab(props){
  *         additionalContent: (<Box>something else</Box>)
  *     }
  * ]
+ * 
+ * the default width and height is 100% of the containing block
+ * but it is also possible to customize it
+ * 
  */
 export function TabGroup(props) {
 
