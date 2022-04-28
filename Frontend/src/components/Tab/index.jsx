@@ -1,7 +1,8 @@
-import {useState} from 'react'
-import {Link} from 'react-router-dom'
+import { useRef, useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
-import {Tab, Tabs} from '@mui/material'
+import {Tab, Tabs, Box} from '@mui/material'
 
 /**
  * Styled Tab
@@ -63,20 +64,40 @@ export function StyledTab(props){
  */
 export function TabGroup(props) {
 
-    const {darkBackground, tabsInfo}=props
-    const [value, setValue]=useState(0)
+    const position = useLocation()
+
+    const {value, setValue, darkBackground, tabsInfo, width="100%", height="100%"}=props
+
+    const tabsRef = useRef()
+    const [tabsHeight, setTabsHeight] = useState(0)
+
+    useEffect(()=>{
+        setTabsHeight(tabsRef.current.clientHeight)
+    }, [])
 
     return (
-        <Tabs value={value} onChange={(_, newValue)=>setValue(newValue)}
-            sx={{
-                "& .MuiTabs-indicator": {
-                    backgroundColor: darkBackground ? "white" : "black"
-                }
-            }}
-        >
+        <Box sx={{width, height, position: "relative"}}>
+            <Box ref={tabsRef}>
+                <Tabs value={value} onChange={(_, newValue)=>setValue(newValue)}
+                    sx={{
+                        "& .MuiTabs-indicator": {
+                            backgroundColor: darkBackground ? "white" : "black"
+                        }
+                    }}
+                >
+                    {
+                        tabsInfo.map((tabInfo)=>(<StyledTab label={tabInfo.label} component={Link} to={tabInfo.path ? tabInfo.path : position.pathname} darkBackground={darkBackground} />))
+                    }
+                </Tabs>
+            </Box>
+            
             {
-                tabsInfo.map((tabInfo)=>(<StyledTab label={tabInfo.label} component={Link} to={tabInfo.path} darkBackground={darkBackground} />))
+                tabsInfo[value].additionalContent && 
+
+                <Box sx={{width: "100%", height: `calc(100% - ${tabsHeight}px)`, overflowY: "scroll"}}>
+                    {tabsInfo[value].additionalContent}
+                </Box>
             }
-        </Tabs>
+        </Box>
     )
 }
