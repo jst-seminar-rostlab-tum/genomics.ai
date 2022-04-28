@@ -1,4 +1,3 @@
-import csv
 import os
 import tempfile
 import scanpy

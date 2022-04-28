@@ -1,7 +1,5 @@
-from scANVI.scANVI import query
-from scVI.scVI import compute_scVI
 from scANVI.scANVI import compute_scANVI
-import sys
+from scVI.scVI import compute_scVI
 from utils import utils, parameters
 
 
@@ -13,24 +11,24 @@ def default_config():
     return {
         parameters.MODEL: 'scANVI',
 
-        'reference_dataset': 'data/ref/source_data.h5ad',
-        'query_dataset': 'data/query/target_data.h5ad',
-        'model_path': 'data/model',
-        'surgery_path': 'data/surgery',
+        parameters.REFERENCE_DATA_PATH: 'data/ref/source_data.h5ad',
+        parameters.QUERY_DATA_PATH: 'data/query/target_data.h5ad',
+        parameters.RESULTING_MODEL_PATH: 'data/model',
+        parameters.OUTPUT_PATH: 'query.tsv',
 
-        'pre_trained_scVI': False,
-        'pre_trained_totalVI': False,
-        'pre_trained_scANVI': False,
+        parameters.USE_PRETRAINED_SCVI_MODEL: False,
+        parameters.USE_PRETRAINED_TOTALVI_MODEL: False,
+        parameters.USE_PRETRAINED_SCANVI_MODEL: False,
 
         # scANVI stuff
         parameters.SCANVI_COMPARE_REFERENCE_AND_QUERY: False,
         parameters.SCANVI_COMPARE_OBSERVED_AND_PREDICTED_CELLTYPES: False,
-        'predict': True,
+        parameters.SCANVI_PREDICT_CELLTYPES: True,
 
         parameters.CONDITION_KEY: 'study',
         parameters.CELL_TYPE_KEY: 'cell_type',
         parameters.TARGET_CONDITIONS: ['Pancreas CelSeq2', 'Pancreas SS2'],
-        'ref_path': './ref_model/',
+        parameters.PRETRAINED_MODEL_PATH: './ref_model/',
         parameters.NUMBER_OF_LAYERS: 2,
         parameters.ENCODE_COVARIATES: True,
         parameters.DEEPLY_INJECT_COVARIATES: False,

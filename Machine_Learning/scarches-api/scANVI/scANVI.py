@@ -33,8 +33,8 @@ def setup_modules():
 
 
 def pre_process_data():
-    source_adata = scanpy.read(get_from_config('reference_dataset'))
-    target_adata = scanpy.read(get_from_config('query_dataset'))
+    source_adata = scanpy.read(get_from_config(parameters.REFERENCE_DATA_PATH)) #TODO add s3
+    target_adata = scanpy.read(get_from_config(parameters.QUERY_DATA_PATH)) #TODO add s3
     source_adata = remove_sparsity(source_adata)
     target_adata = remove_sparsity(target_adata)
 
@@ -74,7 +74,8 @@ def predict(model, latent):
 def surgery(anndata):
     model = scarches.models.SCANVI.load_query_data(
         anndata,
-        get_from_config('model_path'),  # ist das der richtige Pfad? Ist doch dann schon einmal trainiert?
+        get_from_config(parameters.PRETRAINED_MODEL_PATH),
+        # ist das der richtige Pfad? Ist doch dann schon einmal trainiert?
         freeze_dropout=True,
     )
 
@@ -95,10 +96,9 @@ def surgery(anndata):
     if get_from_config(parameters.DEBUG):
         utils.save_umap_as_pdf(surgery_latent, 'figures/surgery.pdf', color=['batch', 'cell_type'])
 
-    surgery_path = get_from_config('generated_output_base_path') + 'surgery.tsv'
-    utils.write_latent_csv(surgery_latent, key='surgery.tsv', filename=surgery_path)
+    utils.write_latent_csv(surgery_latent, key=get_from_config(parameters.OUTPUT_PATH))
 
-    model.save(get_from_config('surgery_path'), overwrite=True)
+    model.save(get_from_config(parameters.RESULTING_MODEL_PATH), overwrite=True) #TODO add s3
 
     return model, surgery_latent
 
@@ -106,7 +106,7 @@ def surgery(anndata):
 def query(anndata):
     model = scarches.models.SCANVI.load_query_data(
         anndata,
-        get_from_config('model_path'),
+        get_from_config(parameters.RESULTING_MODEL_PATH),
         # ist das der richtige Pfad? Das wäre ja dann das gerade von scVI convertierte, hier gabs nen Fehler von wegen falsche Klasse (also weil das convertierte scanVI wahrscheinlich nicht gespeichert wurde)
         freeze_dropout=True,
         # habs jetzt mal unten gespeichert bevor query aufgerufen wird, schau es dir aber nochmal an
@@ -130,8 +130,7 @@ def query(anndata):
     if get_from_config(parameters.DEBUG):
         utils.save_umap_as_pdf(query_latent, 'figures/query.pdf', color=['batch', 'cell_type'])
 
-    query_path = get_from_config('generated_output_base_path') + 'query.tsv'
-    utils.write_latent_csv(query_latent, key='query.tsv', filename=query_path)
+    utils.write_latent_csv(query_latent, key=get_from_config(parameters.OUTPUT_PATH))
 
     # Muss man das Model dann nicht abspeichern? Oder ist das dann nicht mehr das pre-trained?
 
@@ -155,8 +154,8 @@ def predict_latent(latent):
 def both_adata(source_adata, target_adata):
     adata_full = source_adata.concatenate(target_adata)
     full_latent = scanpy.AnnData(scarches.models.SCANVI.get_latent_representation(adata=adata_full))
-    full_latent.obs['cell_type'] = adata_full.obs[get_from_config('cell_type_key')].tolist()
-    full_latent.obs['batch'] = adata_full.obs[get_from_config('condition_key')].tolist()
+    full_latent.obs['cell_type'] = adata_full.obs[get_from_config(parameters.CELL_TYPE_KEY)].tolist()
+    full_latent.obs['batch'] = adata_full.obs[get_from_config(parameters.CONDITION_KEY)].tolist()
 
     scanpy.pp.neighbors(full_latent)
     scanpy.tl.leiden(full_latent)
@@ -165,8 +164,7 @@ def both_adata(source_adata, target_adata):
     if get_from_config(parameters.DEBUG):
         utils.save_umap_as_pdf(full_latent, 'figures/both.pdf', color=['batch', 'cell_type'])
 
-    both_path = get_from_config('generated_output_base_path') + 'both.tsv'
-    utils.write_latent_csv(full_latent, key='both.tsv', filename=both_path)
+    utils.write_latent_csv(full_latent, key=get_from_config(parameters.OUTPUT_PATH))
 
     return full_latent
 
@@ -183,8 +181,7 @@ def compare_adata(model, source_adata, target_adata, latent):
     if get_from_config(parameters.DEBUG):
         utils.save_umap_as_pdf(latent, 'figures/compare.pdf', color=["predictions", "cell_type"])
 
-    compare_path = get_from_config('generated_output_base_path') + 'compare.tsv'
-    utils.write_latent_csv(latent, key='compare.tsv', filename=compare_path)
+    utils.write_latent_csv(latent, key=get_from_config(parameters.OUTPUT_PATH))
 
 
 def compute_scANVI(configP):
@@ -224,7 +221,7 @@ def compute_scANVI(configP):
 
     reference_latent = predict(scanvi, reference_latent)
 
-    scanvi.save(get_from_config('ref_path'),
+    scanvi.save(get_from_config(parameters.RESULTING_MODEL_PATH),
                 overwrite=True)  # ich bin mir nicht sicher, wann dein Model in welchem Stadium ist
 
     model_query, query_latent = query(target_adata)

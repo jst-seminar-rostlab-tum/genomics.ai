@@ -4,13 +4,13 @@ import scanpy as sc
 import anndata
 import torch
 import scarches as sca
-import matplotlib.pyplot as plt
 import numpy as np
 import scvi as scv
 import pandas as pd
 from os.path import exists
 import logging
 import argparse
+from ..utils import utils, parameters
 
 config = {}
 
@@ -45,8 +45,8 @@ def setup_modules():
     torch.set_printoptions(precision=3, sci_mode=False, edgeitems=7)
 
 def prepare_data():
-    adata_ref = scv.data.pbmcs_10x_cite_seq() if args.example else sc.read(get_from_config('reference_dataset'))
-    adata_query = scv.data.dataset_10x("pbmc_10k_v3") if args.example else sc.read(get_from_config('query_dataset'))
+    adata_ref = scv.data.pbmcs_10x_cite_seq() if args.example else sc.read(get_from_config(parameters.REFERENCE_DATA_PATH)) #TODO add s3
+    adata_query = scv.data.dataset_10x("pbmc_10k_v3") if args.example else sc.read(get_from_config(parameters.QUERY_DATA_PATH)) #TODO add s3
 
     adata_query.obs["batch"] = "PBMC 10k (RNA only)"
     pro_exp = adata_ref.obsm["protein_expression"] # put matrix of zeros for protein expression (considered missing)
@@ -191,7 +191,7 @@ def main():
     args = parse_args()
     logger = logging.getLogger(__name__)
     logger.setLevel(logging.DEBUG if args.debug else logging.INFO)
-    if not args.example and not (args.ref or args.query) (exists(get_from_config('reference_dataset')) or exists(get_from_config('query_dataset'))):
+    if not args.example and not (args.ref or args.query) (exists(get_from_config(parameters.REFERENCE_DATA_PATH)) or exists(get_from_config(parameters.QUERY_DATA_PATH))): #TODO add s3
         logger.error("file path to 'ref' and 'query' can't be empty if the argument 'example' is set to false")
         exit()
 

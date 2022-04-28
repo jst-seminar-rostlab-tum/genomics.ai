@@ -42,5 +42,23 @@ ATTRIBUTES = 'attributes'
 SCANVI_COMPARE_REFERENCE_AND_QUERY = 'scanvi_compare_reference_and_query'
 # compare observed and predicted celltypes
 SCANVI_COMPARE_OBSERVED_AND_PREDICTED_CELLTYPES = 'scanvi_compare_observed_and_predicted_celltypes'
+# predict celltypes
+SCANVI_PREDICT_CELLTYPES = 'predict'
 # sets the key for the webhook to call after the computation
 WEBHOOK = 'webhook'
+# sets the path/s3 key of the pretrained model
+PRETRAINED_MODEL_PATH = 'ref_path'
+# sets the path/s3 key of the model we can store after training it
+RESULTING_MODEL_PATH = 'model_path'
+# sets if we can use a pretrained scVI model
+USE_PRETRAINED_SCVI_MODEL = 'pre_trained_scVI'
+# sets if we can use a pretrained scANVI model
+USE_PRETRAINED_SCANVI_MODEL = 'pre_trained_scANVI'
+# sets if we can use a pretrained totalVI model
+USE_PRETRAINED_TOTALVI_MODEL = 'pre_trained_totalVI'
+# sets the path/s3 key of the reference_data
+REFERENCE_DATA_PATH = 'reference_data'
+# sets the path/s3 key of the reference_data
+QUERY_DATA_PATH = 'query_data'
+# sets the path/s3 key of the output tsv file
+OUTPUT_PATH = 'output_path'

@@ -1,18 +1,10 @@
-import os
-import os.path
-from os import path
 import warnings
-import numpy as np
-import gdown
-import getopt
-import torch
-import tempfile
-import logging, sys
-import argparse
+
 import scanpy as sc
 import scarches as sca
+import torch
 from scarches.dataset.trvae.data_handling import remove_sparsity
-import matplotlib.pyplot as plt
+
 from ..utils import utils, parameters
 
 config = {}
@@ -46,8 +38,8 @@ def setup():
 
 
 def pre_process_data():
-    source_adata = sc.read(get_from_config('reference_dataset'))
-    target_adata = sc.read(get_from_config('query_dataset'))
+    source_adata = sc.read(get_from_config(parameters.REFERENCE_DATA_PATH))
+    target_adata = sc.read(get_from_config(parameters.QUERY_DATA_PATH))
     source_adata = remove_sparsity(source_adata)
     target_adata = remove_sparsity(target_adata)
 
@@ -64,7 +56,7 @@ def create_scVI_model(source_adata, target_adata):
     if get_from_config('pre_trained_scVI'):
         return sca.models.SCVI.load_query_data(
             target_adata,
-            get_from_config('model_path'),
+            get_from_config(parameters.PRETRAINED_MODEL_PATH),
             freeze_dropout=True,
         )
     else:
@@ -72,7 +64,7 @@ def create_scVI_model(source_adata, target_adata):
         vae = get_model(source_adata)
         vae.train(max_epochs=get_from_config(parameters.SCVI_MAX_EPOCHS))
         compute_latent(vae, source_adata)
-        vae.save(get_from_config('model_path'), overwrite=True)
+        vae.save(get_from_config(parameters.RESULTING_MODEL_PATH), overwrite=True)
         return vae
 
 
@@ -130,7 +122,7 @@ def compute_query(anndata):
     :param anndata:
     :return:
     """
-    model = sca.models.SCVI.load_query_data(anndata, get_from_config('model_path'), freeze_dropout=True)
+    model = sca.models.SCVI.load_query_data(anndata, get_from_config(parameters.PRETRAINED_MODEL_PATH), freeze_dropout=True)
 
     model.train(
         max_epochs=get_from_config(parameters.SCVI_MAX_EPOCHS),

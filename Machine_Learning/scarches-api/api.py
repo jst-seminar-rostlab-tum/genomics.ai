@@ -16,7 +16,7 @@ def query():
 
 
 @app.route("/liveness")
-def hello():
+def liveness():
     return "up"
 
 
