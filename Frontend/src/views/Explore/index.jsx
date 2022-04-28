@@ -97,7 +97,7 @@ const datasetsGrid = (
 const Explore = () => {
 
     const [value, setValue] = useState(0)
-    const [searchValue, setSearchValue] = useState('fgfbgfb');
+    const [searchValue, setSearchValue] = useState('');
 
     const handleSearch = (e) => {
         setSearchValue(e);
