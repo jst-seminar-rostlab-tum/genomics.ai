@@ -21,7 +21,8 @@ def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=
     final["x"] = list(map(lambda p: p[0], latent.obsm["X_umap"]))
     final["y"] = list(map(lambda p: p[1], latent.obsm["X_umap"]))
     final.to_csv(filename)
-    store_file_in_s3(filename, key)
+    if key is not None:
+        store_file_in_s3(filename, key)
     return filename
 
 

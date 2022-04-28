@@ -58,7 +58,9 @@ USE_PRETRAINED_SCANVI_MODEL = 'pre_trained_scANVI'
 USE_PRETRAINED_TOTALVI_MODEL = 'pre_trained_totalVI'
 # sets the path/s3 key of the reference_data
 REFERENCE_DATA_PATH = 'reference_data'
-# sets the path/s3 key of the reference_data
+# sets the path/s3 key of the query data
 QUERY_DATA_PATH = 'query_data'
 # sets the path/s3 key of the output tsv file
 OUTPUT_PATH = 'output_path'
+# sets if the computation should run asynchronously
+RUN_ASYNCHRONOUSLY = 'async'

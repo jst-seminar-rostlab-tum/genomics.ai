@@ -76,5 +76,6 @@ def query(user_config):
         raise ValueError(model + ' is not one of the supported models')
     configuration["attributes"] = attributes
     utils.notify_backend(get_from_config(configuration, parameters.WEBHOOK), configuration)
+    return configuration
 # query('data/ref/source_data.h5ad', 'data/query/target_data.h5ad', 'data/model', 'data/surgery/', 'scVI')
 # query(None)
