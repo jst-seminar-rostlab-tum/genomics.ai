@@ -44,7 +44,7 @@ export function StyledTab(props){
  * - darkBackground
  * to render the Tab accordingly
  * 
- * it also need an array of objects containing labels and paths
+ * it also need an array of objects containing labels and paths / additionalContent
  * 
  * for example: 
  * [
@@ -59,6 +59,18 @@ export function StyledTab(props){
  *     {
  *         label: "tab 3",
  *         path: "/tab_3"
+ *     }
+ * ]
+ * 
+ * or: 
+ * [
+ *     {
+ *         label: "tab 1",
+ *         additionalContent: (<Box>something</Box>)
+ *     },
+ *     {
+ *         label: "tab 2",
+ *         additionalContent: (<Box>something else</Box>)
  *     }
  * ]
  */
