@@ -5,14 +5,18 @@ import {
   useLocation,
   useParams,
   useRouteMatch,
+  Route,
 } from "react-router-dom";
 
 import styles from "./search.module.css";
 import SearchBar from "components/Search/SearchBar";
 import SearchTabs from "components/Search/SearchTabs";
 import SearchContent from "components/Search/SearchContent";
+import Filter from "components/Search/Filter";
+import GeneralFilter from "components/Search/Filter/GeneralFilter";
 import { setTypeInUrl } from "shared/utils/common/utils";
 import querySearch from "shared/mock/search";
+import TeamsFilter from "components/Search/Filter/TeamsFilter";
 
 const Search = ({ sidebarShown }) => {
   /* Booleans */
@@ -22,27 +26,40 @@ const Search = ({ sidebarShown }) => {
   );
 
   const history = useHistory();
-  const location = useLocation();
+  const { search } = useLocation();
   const { path } = useRouteMatch();
+
+  const searchParams = new URLSearchParams(search);
 
   // type of the items searched (teams/institutions/users/projects)
   const { type } = useParams();
-  const searchedKeyword =
-    new URLSearchParams(location.search).get("keyword") || "";
-  const submittedSortBy =
-    new URLSearchParams(location.search).get("sortBy") || "";
+  const searchedKeyword = searchParams.get("keyword") || "";
 
   const [searchedData, setSearchedData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  const updateQueryParams = (param, value) => {
+    const params = new URLSearchParams(history.location.search);
+    if (value) {
+      params.set(param, value);
+    } else {
+      params.delete(param);
+    }
+
+    history.push({
+      pathname: history.location.pathname,
+      search: params.toString(),
+    });
+  };
+
   const searchedKeywordChangeHandler = (event) => {
-    history.push(`?keyword=${event.target.value}`);
+    updateQueryParams("keyword", event.target.value);
   };
 
   const changedTabHandler = (event, newValue) => {
     setIsLoading(true);
     const newPath = setTypeInUrl(path, newValue);
-    history.push({ pathname: `${newPath}`, search: location.search });
+    history.push({ pathname: `${newPath}`, search: history.location.search });
   };
 
   const fetchSearchHandler = useCallback(async (type, keyword) => {
@@ -63,6 +80,13 @@ const Search = ({ sidebarShown }) => {
           <SearchBar
             searchedKeyword={searchedKeyword}
             searchedKeywordChangeHandler={searchedKeywordChangeHandler}
+            filterComponent={
+              <Filter
+                searchParams={searchParams}
+                updateQueryParams={updateQueryParams}
+                path={path}
+              />
+            }
           />
           <SearchTabs value={type} onChange={changedTabHandler} />
           {isLoading && (

@@ -1,26 +1,20 @@
-import React from 'react';
-import {
-  Button,
-  FormControl,
-  OutlinedInput,
-  InputAdornment,
-  InputLabel,
-  Stack,
-} from '@mui/material';
+import React from "react";
+import { FormControl, OutlinedInput, InputLabel, Stack } from "@mui/material";
 
 const SearchBar = (props) => {
   return (
-    <Stack direction='row'>
-      <FormControl sx={{ m: 1, width: '25ch' }} variant='outlined'>
-        <InputLabel htmlFor='outlined-adornment-search'>Type...</InputLabel>
+    <Stack direction="row">
+      <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
+        <InputLabel htmlFor="outlined-adornment-search">Type...</InputLabel>
         <OutlinedInput
-          id='outlined-adornment-search'
-          type={'text'}
+          id="outlined-adornment-search"
+          type={"text"}
           value={props.searchedKeyword}
           onChange={props.searchedKeywordChangeHandler}
-          label='Search'
+          label="Search"
         />
       </FormControl>
+      {props.filterComponent}
     </Stack>
   );
 };
