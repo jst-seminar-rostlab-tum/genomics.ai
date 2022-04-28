@@ -91,13 +91,14 @@ const listColoringDomain = (data, mode) => {
       this.gCells = addGroup(this.svg, 'cells');
       this.gLabels = addGroup(this.svg, 'labels');
       this.coloringModes = getColoringModes(data);
-      console.log(this.coloringModes);
+      this.mode = null;
       this.data = data;
     };
 
     setColorMode(mode) {
       const colorScale = setColoring(mode, this.data);
       this.cells = this.cells.style("fill", (d)=> colorScale(d[mode]));
+      this.mode = mode;
     }
 
     //Width and height should be the size of the container, not square
@@ -138,7 +139,13 @@ const listColoringDomain = (data, mode) => {
          .attr("cx", d => xScale(parseFloat(d.x)))
          .attr("cy", d => yScale(parseFloat(d.y)))
          .attr("r", r)
-         .style("fill", cons.fill)
+         .style("fill", (d) => {
+           if (this.mode != null){
+             const colorScale = setColoring(this.mode, this.data);
+             return colorScale(d[this.mode]);
+           }
+           return cons.fill;
+          })
          .style("opacity", cons.originalOpacity)
          
          
