@@ -48,7 +48,10 @@ function GeneMapperResultView({ projectId }) {
   const [project, setProject] = useState(null);
   const umapContainer = useRef(null);
   const [umap, setUmap] = useState(null);
-  const [umapSize, setUmapSize] = useState(0);
+  const [umapSize, setUmapSize] = useState({
+    width: 0,
+    height: 0,
+  });
 
   useEffect(() => {
     getProject(projectId)
@@ -64,8 +67,8 @@ function GeneMapperResultView({ projectId }) {
   }, [project]);
 
   useEffect(() => {
-    if (umap && umapSize > 0) {
-      umap.render(umapSize, umapSize);
+    if (umap && umapSize.width > 0 && umapSize.height > 0) {
+      umap.render(umapSize.width, umapSize.height);
     }
   }, [umap, umapSize]);
 
@@ -73,7 +76,10 @@ function GeneMapperResultView({ projectId }) {
     if (umapContainer?.current) {
       const observer = new ResizeObserver((entries) => {
         const container = entries[0];
-        setUmapSize(Math.min(container.contentRect.height, container.contentRect.width));
+        setUmapSize({
+          width: container.contentRect.width,
+          height: container.contentRect.height,
+        });
       });
       observer.observe(umapContainer.current);
       return () => observer.disconnect();
