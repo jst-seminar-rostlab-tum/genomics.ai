@@ -122,7 +122,7 @@ export default class InstitutionService {
      *  @returns institution or null
      */
     static async getInstitutionByName(name: string):
-        Promise<(IInstitution & { _id: ObjectId } | null)> {
+      Promise<(IInstitution & { _id: ObjectId } | null)> {
         return await institutionModel.findOne({ name });
     }
 
@@ -133,7 +133,7 @@ export default class InstitutionService {
      *  @returns project - matched proejct to projectId or null
      */
     static async getInstitutionById(institutionId: (ObjectId | string)):
-        Promise<(IInstitution & { _id: ObjectId } | null)> {
+      Promise<(IInstitution & { _id: ObjectId } | null)> {
         return await institutionModel.findById(institutionId).exec();
     }
 

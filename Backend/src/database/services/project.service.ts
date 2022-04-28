@@ -111,4 +111,19 @@ export default class ProjectService {
             { $addToSet: { memberIds: userId} }
         );
     }
+
+    /**
+     *  Set the team of a project to the given teamId.
+     *
+     *  @param   projectId
+     *  @param   teamId
+     *  @returns updateDocument
+     */
+    static async setTeamOfProject(projectId: (ObjectId | string), teamId: (ObjectId | string)):
+      Promise<any> {
+        return await projectModel.updateOne(
+            { _id: projectId },
+            { $set : { teamId: teamId } }
+        );
+    }
 }

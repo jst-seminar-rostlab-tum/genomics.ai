@@ -79,14 +79,11 @@ const invite_person_to_a_team = (): Router => {
             if (! team)
                 return res.status(400).send("Team does not exist.");
 
-            const isAdmin: boolean = await TeamService.isAdmin(userId, teamId);
-            const isMember: boolean = await TeamService.isMember(userId, teamId);
+            const isAdmin: boolean = await TeamService.isAdmin(userId, team);
+            const isMember: boolean = await TeamService.isMember(userId, team);
 
-            if (isMember)
-                return res.status(409).send("User is already a member of the team")
-
-            if (isAdmin)
-                return res.status(409).send("User is an admin of the team")
+            if (isAdmin || isMember)
+                return res.status(409).send("User is already part of the team")
 
             try {
                 const team_updated = await TeamService.addInvitationMemberId(teamId, userId);
@@ -149,19 +146,23 @@ const add_project_to_team = (): Router => {
                 return res.status(400).send("Team does not exist.");
 
             /* the user should be either an admin or a member of the team */
-            const isPartOf: boolean = await TeamService.isAdminOrMember(req.user_id!, teamId);
-            if (!isPartOf)
+            const isAdmin: boolean = await TeamService.isAdmin(req.user_id!, team);
+            const isMember: boolean = await TeamService.isMember(req.user_id!, team);
+            if (!(isAdmin || isMember))
                 return res.status(401).send("Unauthenticated User! The user is not part of the team.");
 
-            const projectOwnerId = await ProjectService.getOwner(projectId); // cannot be null since the project must exist at this point
-            if (projectOwnerId!.toString() !== req.user_id!.toString())
+            if (project.owner!.toString() !== req.user_id!.toString()) // cannot be null since the project must exist at this point
                 return res.status(401).send("User is not the project owner!");
 
             try {
                 const team_updated = await TeamService.addProject(teamId, projectId);
+                const project_updated = await ProjectService.setTeamOfProject(projectId, teamId);
 
                 if (!team_updated)
                     return res.status(400).send("Error when adding the project to project list of the team.");
+
+                if (!project_updated)
+                    return res.status(400).send("Error when setting the team id of the project.");
 
                 return res.status(200).json("The project is successfully added.");
             } catch(err) {
@@ -203,12 +204,12 @@ const add_user_to_admin = (): Router => {
             if (! team)
                 return res.status(400).send("Team does not exist.");
 
-            const isAdmin: boolean = await TeamService.isAdmin(userId, teamId);
-            const isMember: boolean = await TeamService.isMember(userId, teamId);
+            const isAdmin: boolean = await TeamService.isAdmin(userId, team);
+            const isMember: boolean = await TeamService.isMember(userId, team);
             if (isAdmin)
                 return res.status(409).send("User is already an admin.")
             if (!isMember)
-                return res.status(409).send("User is not a member of the team. It should be first a member to become an admin.")
+                return res.status(409).send("User is not a member of the team. It should first become a member to become an admin.")
 
             try {
                 const team_updated = await TeamService.addAdminToTeam(teamId, userId);
@@ -260,11 +261,11 @@ const join_member = (): Router => {
             if (! team)
                 return res.status(400).send("Team does not exist.");
 
-            const isAdmin = await TeamService.isAdmin(userId, teamId);
+            const isAdmin = await TeamService.isAdmin(userId, team);
             if (isAdmin)
                 return res.status(409).send("User is an admin of the team.")
 
-            const isMember = await TeamService.isMember(userId, teamId);
+            const isMember = await TeamService.isMember(userId, team);
             if (isMember)
                 return res.status(409).send("User is already a member of the team.")
 

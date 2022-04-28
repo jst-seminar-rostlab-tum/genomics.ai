@@ -54,16 +54,17 @@ const get_project_by_id = (): Router => {
             let allowAccess = false;
 
             /* is user the owner of the project */
-            let isOwner: boolean = req.user_id! === await ProjectService.getOwner(projectId);
+            let isOwner: boolean = req.user_id! === project.owner;
             allowAccess ||= isOwner;
 
             /* is the project part of a team */
-            let teamId: (ObjectId | null) = await ProjectService.getTeam(projectId);
+            let teamId: (ObjectId | undefined) = project.teamId;
+            const team = await TeamService.getTeamById(teamId);
 
-            if (!allowAccess && teamId) {
-              const visibility: (string | null) = await TeamService.getVisibility(teamId);
-              const isAdmin = await TeamService.isAdmin(req.user_id!, teamId);
-              const isMember = await TeamService.isMember(req.user_id!, teamId);
+            if (!allowAccess && team) {
+              const visibility: string = team.visibility; // "PRIVATE", "PUBLIC", "BY_INSTITUTION"
+              const isAdmin = await TeamService.isAdmin(req.user_id!, team);
+              const isMember = await TeamService.isMember(req.user_id!, team);
 
               /* is the project part of a PUBLIC team */
               const inPublicTeam: boolean = "PUBLIC" === visibility;
@@ -73,16 +74,19 @@ const get_project_by_id = (): Router => {
 
               if ("BY_INSTITUTION" === visibility) {
                   /* is the project part of a team that is a PUBLIC institution */
-                  const institutionId = await TeamService.getInstitution(teamId);
-                  const institutionVisibility = await InstitutionService.getVisibility(institutionId!);
-                  const inPublicInstitution: boolean = "PUBLIC" === institutionVisibility;
+                  const institution = await InstitutionService.getInstitutionById(team.institutionId!);
+                  /* since visibility equals BY_INSTITUTION this should always hold actually */
+                  if (institution) {
+                      const institutionVisibility = institution.visibility!;
+                      const inPublicInstitution: boolean = "PUBLIC" === institutionVisibility;
 
-                  /* is the user part of the institution */
-                  const isAdmin = await InstitutionService.isAdmin(req.user_id!, institutionId!);
-                  const isMember = await InstitutionService.isMember(req.user_id!, institutionId!);
-                  const userInInstitution: boolean = isAdmin || isMember;
+                      /* is the user part of the institution */
+                      const isAdmin = await InstitutionService.isAdmin(req.user_id!, institution!);
+                      const isMember = await InstitutionService.isMember(req.user_id!, institution!);
+                      const userInInstitution: boolean = isAdmin || isMember;
 
-                  allowAccess ||= inPublicInstitution || userInInstitution;
+                      allowAccess ||= inPublicInstitution || userInInstitution;
+                  }
               }
 
               allowAccess ||= inPublicTeam || userInTeam;
