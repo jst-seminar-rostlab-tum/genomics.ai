@@ -1,5 +1,6 @@
 export const width = 1860;
 export const height = 965;
+export const margin = 10;
 export const initialPointRadius = 2;
 export const increasedPointRadius = 4;
 export const cornerRadius = 5;
