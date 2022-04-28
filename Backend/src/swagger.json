@@ -63,8 +63,16 @@
       "description": "APIs for CRUD operations on Institution"
     },
     {
-      "name": "Teams",
-      "description": "APIs for CRUD operations on Teams"
+      "name": "Team",
+      "description": "APIs for CRUD operations on Team"
+    },
+    {
+      "name": "Atlas",
+      "description": "APIs for CRUD operations on Atlas"
+    },
+    {
+      "name": "Model",
+      "description": "APIs for CRUD operations on Model"
     }
   ],
   "paths": {
@@ -883,7 +891,7 @@
       "post": {
         "summary": "Create a team",
         "tags": [
-          "Teams"
+          "Team"
         ],
         "requestBody": {
           "required": true,
@@ -936,7 +944,7 @@
         ],
         "summary": "Invite person to a team",
         "tags": [
-          "Teams"
+          "Team"
         ],
         "requestBody": {
           "required": true,
