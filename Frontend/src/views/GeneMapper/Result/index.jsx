@@ -21,6 +21,7 @@ function GeneMapperResultView({ projectId }) {
   const [project, setProject] = useState(null);
   const umapContainer = useRef(null);
   const [umap, setUmap] = useState(null);
+  const [rendered, setRendered] = useState(false);
   const [umapSize, setUmapSize] = useState({
     width: 0,
     height: 0,
@@ -41,9 +42,14 @@ function GeneMapperResultView({ projectId }) {
 
   useEffect(() => {
     if (umap && umapSize.width > 0 && umapSize.height > 0) {
-      umap.render(umapSize.width, umapSize.height);
+      if (rendered) {
+        umap.resize(umapSize.width, umapSize.height);
+      } else {
+        umap.render(umapSize.width, umapSize.height);
+        setRendered(true);
+      }
     }
-  }, [umap, umapSize]);
+  }, [umap, umapSize, rendered]);
 
   useEffect(() => {
     if (umapContainer?.current) {
