@@ -61,7 +61,7 @@ export const institution_admin_or_member_auth = (req: ExtInstRequest, res: any, 
             if (!inst) {
                 return res.status(404).send("There is no institution with id: " + institution_id);
             }
-            if (!inst.adminIds.includes(current_user!) || inst.memberIds.includes(current_user!)) {
+            if (!(inst.adminIds.includes(current_user!) || inst.memberIds.includes(current_user!))) {
                 return res.status(401).send("Invalid permissions to do this operations!");
             }
             next()
