@@ -36,5 +36,7 @@
       }
     }]
   },
-  "ignorePatterns": ["src/components/Dashboard/Visualization"]
+  "ignorePatterns": [
+    "src/components/Visualization"
+  ]
 }
