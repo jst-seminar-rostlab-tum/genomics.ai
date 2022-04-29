@@ -71,8 +71,8 @@ export function express_routes(this: REST_Host): Router {
   // authenticated routes
   this.expressApp.use(update_profile_route());
   this.expressApp.use(get_profile_route());
-  this.expressApp.use(get_project_route());
-  this.expressApp.use(get_projects_route());
+  //this.expressApp.use(get_project_route());  -- depreciated, we use get_project_by_id
+  //this.expressApp.use(get_projects_route()); -- depreciated, we use get_userProjects
   this.expressApp.use(upload_user_avatar_route());
   this.expressApp.use(reset_user_avatar_route());
 
