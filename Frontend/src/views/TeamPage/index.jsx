@@ -40,7 +40,7 @@ export default function TeamPage({ sidebarShown }) {
   }, [setUser, isAdmin]);
 
   useEffect(() => {
-    getTeam(id)
+    getTeam(parseInt(id, 10))
       .then((newTeam) => { setTeam(newTeam); updateIsAdmin(); })
       .catch((ignored) => { console.error(ignored); });
   }, [setTeam, isAdmin]);

@@ -44,8 +44,8 @@ export async function removeMemberFromTeam(teamId, memberId) {
 }
 
 export async function getTeam(id) {
-  console.log(mockTeams.find((team) => team.id === parseInt(id, 10)));
-  return mockTeams.find((team) => team.id === parseInt(id, 10));
+  console.log(mockTeams.find((team) => team.id === id));
+  return mockTeams.find((team) => team.id === id);
 }
 
 export default async function queryMyTeams() {
