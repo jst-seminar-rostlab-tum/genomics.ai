@@ -36,11 +36,11 @@ function Category({
       </ListItemButton>
       <Collapse in={open}>
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-          {values.map((value) => (
+          {Object.entries(values).map(([value, color]) => (
             <Value
-              title={value.title}
-              color={value.color}
-              key={value.title}
+              title={value}
+              color={color}
+              key={value}
             />
           ))}
         </Box>
@@ -62,7 +62,7 @@ function Value({ title, color }) {
           ? <Visibility sx={{ color }} />
           : <VisibilityOff sx={{ color: deactivatedColor }} />}
       </IconButton>
-      <Typography sx={{ flexGrow: 1 }}>{title}</Typography>
+      <Typography sx={{ flexGrow: 1 }} noWrap>{title}</Typography>
     </Box>
   );
 }
@@ -76,18 +76,20 @@ function GeneMapperCategories({ categories, setColorMode }) {
 
   return (
     <>
-      {Object.keys(categories).map((title) => (
-        <Category
-          key={title}
-          title={title}
-          values={categories[title]}
-          colored={title === coloredCategoryTitle}
-          toggleColored={() => {
-            setColoredCategoryTitle(title);
-            setColorMode(title);
-          }}
-        />
-      ))}
+      { categories
+        ? Object.entries(categories).map(([title, values]) => (
+          <Category
+            key={title}
+            title={title}
+            values={values}
+            colored={title === coloredCategoryTitle}
+            toggleColored={() => {
+              setColoredCategoryTitle(title);
+              setColorMode(title);
+            }}
+          />
+        ))
+        : null}
     </>
 
   );

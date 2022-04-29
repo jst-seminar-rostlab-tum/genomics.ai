@@ -26,7 +26,7 @@ function Mapper({
 
   return (
     <Box className={styles.container}>
-      <Box className={styles.borderContainer} sx={{ visibility: open ? 'visible' : 'hidden', boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.25)" }}>
+      <Box className={styles.borderContainer} sx={{ visibility: open ? 'visible' : 'hidden', boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.25)' }}>
         <Typography className={styles.title}>Mapper</Typography>
         <Divider className={styles.divider} />
         <Typography>Selected Atlas</Typography>
@@ -56,7 +56,9 @@ function Mapper({
         </Stack>
         <Divider className={styles.divider} />
         <Box className={styles.buttonBox}>
-          {/* Button will be disabled if selected models and atlases are incompatible with eachother, in this case it will be gray. Lets keep it enabled all the time for now. */}
+          {/* Button will be disabled if selected models and atlases are incompatible with e
+          achother,
+          in this case it will be gray. Lets keep it enabled all the time for now. */}
           <Button className={styles.goButton} variant="contained" disableRipple>Go</Button>
         </Box>
       </Box>

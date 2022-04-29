@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {
   Box,
@@ -9,16 +10,9 @@ import {
   Button,
   Stack,
 } from '@mui/material';
-import {
-  red,
-  green,
-  yellow,
-  grey,
-  blue,
-} from '@mui/material/colors';
 import CircleIcon from '@mui/icons-material/Circle';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Link } from 'react-router-dom';
+import { jobStatusColors, jobStatusTitles } from 'shared/utils/common/constants';
 import styles from './statuscard.module.css';
 
 /*
@@ -49,24 +43,6 @@ const theme = createTheme({
 function StatusCard({
   id, status, log, location,
 }) {
-  // object of colors for the statuses
-  const statusColor = {
-    UPLOAD_PENDING: yellow[600],
-    PROCESSING_PENDING: blue[300],
-    ABORTED: red[300],
-    DONE: green[300],
-    unknown: grey[500],
-  };
-
-  const statusTitle = {
-    UPLOAD_PENDING: 'UPLOADING',
-    UPLOAD_COMPLETE: 'UPLOADED',
-    PROCESSING_PENDING: 'PROCESSING',
-    ABORTED: 'CANCELLED',
-    DONE: 'COMPLETED',
-    unknown: 'UNKNOWN',
-  };
-
   // TODO: talk to Dom to check with prepending the path to the results page is necessary
 
   const cancelJob = () => {
@@ -100,7 +76,7 @@ function StatusCard({
                 >
                   {`Job ${id.substr(id.length - 4)}`}
                 </Typography>
-                <CircleIcon sx={{ color: statusColor[status], height: '20px' }} />
+                <CircleIcon sx={{ color: jobStatusColors[status], height: '20px' }} />
                 <Typography
                   sx={{
                     fontSize: '16px',
@@ -109,10 +85,10 @@ function StatusCard({
                     padding: '0',
                     textAlign: 'center',
                     display: 'inline',
-                    color: statusColor[status],
+                    color: jobStatusColors[status],
                   }}
                 >
-                  {` ${statusTitle[status]}`}
+                  {` ${jobStatusTitles[status]}`}
                 </Typography>
               </Stack>
 
@@ -130,10 +106,10 @@ function StatusCard({
                     padding: '0',
                     textAlign: 'center',
                     display: 'inline',
-                    color: statusColor[status],
+                    color: jobStatusColors[status],
                   }}
                 >
-                  {` ${statusTitle[status]}`}
+                  {` ${jobStatusTitles[status]}`}
                 </Typography>
               </Typography>
               <Typography sx={{ paddingBottom: '10px' }}>
@@ -168,7 +144,7 @@ function StatusCard({
                 <Button variant="outlined" color="error" onClick={cancelJob}>
                   cancel
                 </Button>
-              ) }
+              )}
             </Box>
           </AccordionDetails>
         </Accordion>
