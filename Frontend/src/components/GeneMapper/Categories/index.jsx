@@ -36,7 +36,7 @@ function Category({
       </ListItemButton>
       <Collapse in={open}>
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-          {values.map(([value, color]) => (
+          {Object.entries(values).map(([value, color]) => (
             <Value
               title={value}
               color={color}
