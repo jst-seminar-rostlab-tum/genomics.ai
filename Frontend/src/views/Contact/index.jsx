@@ -19,7 +19,6 @@ const theme = createTheme({
 });
 
 const Contact = (props) => {
-  const { setUser } = props;
   const [contactDetails, setContactDetails] = useState({
     email: '',
     firstname: '',
@@ -60,7 +59,7 @@ const Contact = (props) => {
 
     <ThemeProvider theme={theme}>
       <div>
-        <NavBar setUser={setUser} />
+        <NavBar />
 
         <div className={styles.headerContainer}>
           <Stack
