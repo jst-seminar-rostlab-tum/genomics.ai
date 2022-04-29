@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import LabeledSelect from "../LabeledSelect";
 
+// Teams Filter needed only in the team category
 const TeamsFilter = ({ visibility, onChange }) => {
   const visibilityItems = [
     { label: "All", value: "" },

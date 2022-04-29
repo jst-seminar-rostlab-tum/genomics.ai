@@ -1,6 +1,7 @@
 import React from "react";
 import { Tabs, Tab } from "@mui/material";
 
+// Tabs component to group different categories for search
 const SearchTabs = (props) => {
   return (
     <Tabs value={props.value} onChange={props.onChange}>

@@ -4,6 +4,7 @@ import { Chip } from "@mui/material";
 import SearchCard from "../SearchCard";
 import LabeledLink from "../LabeledLink";
 
+// Card to display search result for a single project
 const ProjectCard = ({ item: project }) => {
   return (
     <SearchCard

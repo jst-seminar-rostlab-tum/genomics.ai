@@ -4,6 +4,7 @@ import { Chip } from "@mui/material";
 import SearchCard from "../SearchCard";
 import Avatars from "components/Avatars";
 
+// Card to display search result for a single institution
 const InstitutionCard = ({ item: institution }) => {
   return (
     <SearchCard

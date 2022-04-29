@@ -10,7 +10,7 @@ import ResultStatus from "components/Search/ResultStatus";
 import { setTypeInUrl } from "shared/utils/common/utils";
 
 
-
+// wrapper component to display the searched items  
 const SearchContent = ({ searchedData, type, searchedKeyword }) => {
   const { path } = useRouteMatch();
 

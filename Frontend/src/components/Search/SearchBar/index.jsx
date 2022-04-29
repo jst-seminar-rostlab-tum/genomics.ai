@@ -1,6 +1,7 @@
 import React from "react";
 import { FormControl, OutlinedInput, InputLabel, Stack } from "@mui/material";
 
+// Temporary search bar that will be be replaced by F2 component
 const SearchBar = (props) => {
   return (
     <Stack direction="row">

@@ -6,6 +6,7 @@ import Avatars from "components/Avatars";
 import SearchCard from "../SearchCard";
 import LabeledLink from "../LabeledLink";
 
+// Card to display search result for a single team
 const TeamCard = ({ item: team }) => {
   return (
     <SearchCard

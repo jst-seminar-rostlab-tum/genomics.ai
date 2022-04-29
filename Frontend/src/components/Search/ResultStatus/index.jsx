@@ -1,6 +1,7 @@
 import { Typography, Box } from "@mui/material";
 import React from "react";
 
+// Component to display the feedback text 
 const ResultStatus = ({ count, searchedEntity, searchedKeyword }) => {
   const countText = `${count} result${count != 1 ? "s" : ""}`;
   const entityText =

@@ -18,6 +18,7 @@ function randomColor() {
   return color;
 }
 
+// Generic card component to reuse the same structure for the different search card items as Institution, team, ...
 const SearchCard = (props) => {
   return (
     <ListItem divider alignItems="flex-start" secondaryAction={props.action}>

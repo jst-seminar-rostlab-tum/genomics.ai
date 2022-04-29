@@ -5,6 +5,7 @@ import { setTypeInUrl } from "shared/utils/common/utils";
 import GeneralFilter from "./GeneralFilter";
 import TeamsFilter from "./TeamsFilter";
 
+// Component storing the necessary filter 
 const Filter = ({ path, searchParams, updateQueryParams }) => {
   return (
     <Stack>

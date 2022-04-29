@@ -25,19 +25,21 @@ const Search = ({ sidebarShown }) => {
     [sidebarShown]
   );
 
+  // state managed in path and query params
   const history = useHistory();
   const { search } = useLocation();
   const { path } = useRouteMatch();
 
   const searchParams = new URLSearchParams(search);
 
-  // type of the items searched (teams/institutions/users/projects)
+  // type of the searched items (teams/institutions/users/projects)
   const { type } = useParams();
   const searchedKeyword = searchParams.get("keyword") || "";
 
   const [searchedData, setSearchedData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  // function to update the state in the URL
   const updateQueryParams = (param, value) => {
     const params = new URLSearchParams(history.location.search);
     if (value) {

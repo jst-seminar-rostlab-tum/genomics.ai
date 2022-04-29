@@ -1,6 +1,7 @@
 import React from "react";
 import LabeledSelect from "../LabeledSelect";
 
+// General filter that is needed in all categories
 const GeneralFilter = ({  sortBy, onChange }) => {
   const sortItems = [
     { label: "Name", value: "name" },
