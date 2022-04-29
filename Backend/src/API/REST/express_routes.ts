@@ -9,8 +9,8 @@ import initiate_processing_route from "./routes/initiate_processing";
 import abort_processing_route from "./routes/abort_processing";
 
 import get_profile_route from "./routes/get_profile";
-import get_project_route from "./routes/get_project";
-import get_projects_route from "./routes/get_projects";
+//import get_project_route from "./routes/get_project";
+//import get_projects_route from "./routes/get_projects";
 import get_unauthorized_users_route from "./routes/get_unauthorized_users";
 import authorize_user_route from "./routes/authorize_user";
 import verify_email_route from "./routes/verify_email";
@@ -31,7 +31,15 @@ import * as swaggerDocument from "../../swagger.json";
 import * as swaggerUi from "swagger-ui-express";
 import { validationMdw } from "./middleware/validation";
 
-import { create_institution, invite_to_institution, make_user_admin_of_institution } from "./routes/institution/institutionRouter";
+
+import {
+  create_institution,
+  invite_to_institution,
+  make_user_admin_of_institution,
+  get_institutions,
+  get_institution
+} from "./routes/institution/institutionRouter";
+
 
 import {
   create_team,
@@ -40,8 +48,12 @@ import {
   join_member,
   add_team_to_institution,
   remove_team_from_institution,
-  add_project_to_team
+  add_project_to_team,
+  get_teams
 } from "./routes/team/teamRouter";
+import {
+  get_projects
+} from "./routes/project/projectRouter";
 
 import {
   upload_institution_backgroundpicture_route,
@@ -94,6 +106,7 @@ export function express_routes(this: REST_Host): Router {
   this.expressApp.use(join_member());
   this.expressApp.use(add_team_to_institution());
   this.expressApp.use(remove_team_from_institution());
+  this.expressApp.use(get_teams());
 
   // user routes
   this.expressApp.use(get_teams_of_user());
@@ -121,11 +134,16 @@ export function express_routes(this: REST_Host): Router {
   // institution routes
   this.expressApp.use(create_institution());
   this.expressApp.use(invite_to_institution());
+  this.expressApp.use(get_institution());
+  this.expressApp.use(get_institutions());
   this.expressApp.use(upload_institution_profilepicture_route());
   this.expressApp.use(upload_institution_backgroundpicture_route());
   this.expressApp.use(reset_institution_profilepicture_route());
   this.expressApp.use(reset_institution_backgroundpicture_route());
   this.expressApp.use(make_user_admin_of_institution());
+
+  //project routes
+  this.expressApp.use(get_projects());
 
   this.expressApp.use(/^.*_ah.*$/, (req, res) => res.status(200).send()); // always tell google everything is fine
   this.expressApp.use((req, res) => res.status(404).send("Not found."));

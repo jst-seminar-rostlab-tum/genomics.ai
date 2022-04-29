@@ -400,4 +400,21 @@ const remove_team_from_institution = (): Router => {
     return router;
 };
 
-export { create_team, invite_person_to_a_team, add_user_to_admin, join_member, add_team_to_institution, remove_team_from_institution, add_project_to_team };
+const get_teams = () : Router => {
+    let router = express.Router();
+    router
+        .get("/teams", check_auth(), async (req: any, res) => {
+            const query = { ...req.query };
+            try{
+                const teams = await TeamService.getTeams(query);
+                return res.status(200).json(teams);
+            } catch (err){
+                console.error(JSON.stringify(err));
+                return res.status(404).send(`No teams found`);
+            }
+        })
+
+    return router;
+}
+
+export { create_team, invite_person_to_a_team, add_user_to_admin, join_member, add_team_to_institution, remove_team_from_institution, add_project_to_team, get_teams};
