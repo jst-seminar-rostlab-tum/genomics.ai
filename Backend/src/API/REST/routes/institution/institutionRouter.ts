@@ -7,7 +7,7 @@ import { AddInstitutionDTO } from "../../../../database/dtos/institution.dto";
 import UserService from "../../../../database/services/user.service";
 
 import check_auth from "../../middleware/check_auth";
-import { check_institution_auth } from "../../middleware/check_institution_auth";
+import { institution_admin_auth } from "../../middleware/check_institution_auth";
 
 const create_institution = (): Router => {
     let router = express.Router();
@@ -55,7 +55,7 @@ const invite_to_institution = (): Router => {
     let router = express.Router();
 
     router
-        .put("/institutions/:id/invite", check_auth(), check_institution_auth, async (req: any, res) => {
+        .put("/institutions/:id/invite", check_auth(), institution_admin_auth, async (req: any, res) => {
 
             const { userId }: { userId: Schema.Types.ObjectId } = req.body;
             const institutionId_to_modify = req.params.id;
@@ -92,7 +92,7 @@ const make_user_admin_of_institution = (): Router => {
     let router = express.Router();
 
     router
-        .put("/institutions/:id/admin", check_auth(), check_institution_auth, async (req: any, res) => {
+        .put("/institutions/:id/admin", check_auth(), institution_admin_auth, async (req: any, res) => {
 
             const { userId }: { userId: Schema.Types.ObjectId } = req.body;
             const institutionId_to_modify = req.params.id;
@@ -135,7 +135,7 @@ const make_user_member_of_institution = (): Router => {
     let router = express.Router();
 
     router
-        .put("/institutions/:id/join", check_auth(), check_institution_auth, async (req: any, res) => {
+        .put("/institutions/:id/join", check_auth(), institution_admin_auth, async (req: any, res) => {
 
             const { userId }: { userId: Schema.Types.ObjectId } = req.body;
             const institutionId_to_modify = req.params.id;
