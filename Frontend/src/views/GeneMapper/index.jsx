@@ -6,6 +6,7 @@ import {
 import GeneMapperResultView from './Result';
 import AtlasModelChoice from './AtlasModelChoice/AtlasModelChoice';
 import UploadFilePage from './UploadFilePage';
+import GeneMapperHome from './Home';
 
 function GeneMapper({ sidebarShown }) {
   const paddingL = useCallback(() => (sidebarShown ? '100px' : '350px'), [sidebarShown]);
@@ -18,6 +19,7 @@ function GeneMapper({ sidebarShown }) {
       pl: paddingL,
       pr: '20px',
       height: '100vh',
+      width: "100vw",
     }}
     >
       <Switch>
@@ -25,6 +27,7 @@ function GeneMapper({ sidebarShown }) {
           <Button onClick={() => history.push(`${path}/selection`)}>Selection</Button>
           <Button onClick={() => history.push(`${path}/upload`)}>Upload</Button>
           <Button onClick={() => history.push(`${path}/result`)}>Result</Button>
+          <GeneMapperHome />
         </Route>
 
         <Route path={`${path}/selection`}>
