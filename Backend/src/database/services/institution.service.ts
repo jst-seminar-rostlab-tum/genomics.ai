@@ -131,7 +131,7 @@ export default class InstitutionService {
             }]
 
         })
-        console.log(result)
+
         if (result) {
             return result;
         } else {
@@ -155,7 +155,7 @@ export default class InstitutionService {
             }]
 
         })
-        console.log(result)
+
         if (result) {
             return result;
         } else {

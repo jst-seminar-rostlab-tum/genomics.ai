@@ -7,6 +7,7 @@ import { AddInstitutionDTO } from "../../../../database/dtos/institution.dto";
 import UserService from "../../../../database/services/user.service";
 
 import check_auth from "../../middleware/check_auth";
+import { check_institution_auth } from "../../middleware/check_institution_auth";
 
 const create_institution = (): Router => {
     let router = express.Router();
@@ -54,7 +55,7 @@ const invite_to_institution = (): Router => {
     let router = express.Router();
 
     router
-        .put("/institutions/:id/invite", check_auth(), async (req: any, res) => {
+        .put("/institutions/:id/invite", check_auth(), check_institution_auth, async (req: any, res) => {
 
             const { userId }: { userId: Schema.Types.ObjectId } = req.body;
             const institutionId_to_modify = req.params.id;
@@ -91,7 +92,7 @@ const make_user_admin_of_institution = (): Router => {
     let router = express.Router();
 
     router
-        .put("/institutions/:id/admin", check_auth(), async (req: any, res) => {
+        .put("/institutions/:id/admin", check_auth(), check_institution_auth, async (req: any, res) => {
 
             const { userId }: { userId: Schema.Types.ObjectId } = req.body;
             const institutionId_to_modify = req.params.id;
@@ -109,9 +110,6 @@ const make_user_admin_of_institution = (): Router => {
 
                 if (!institutionToBeUpdated)
                     return res.status(409).send("User that you are trying to make as admin is not a member!");
-
-                if (!institutionToBeUpdated?.adminIds.includes(current_user))
-                    return res.status(401).send("Invalid autherization permission!");
 
                 if (institutionToBeUpdated?.adminIds.includes(userId))
                     return res.status(409).send("User is already an admin!");
@@ -137,7 +135,7 @@ const make_user_member_of_institution = (): Router => {
     let router = express.Router();
 
     router
-        .put("/institutions/:id/join", check_auth(), async (req: any, res) => {
+        .put("/institutions/:id/join", check_auth(), check_institution_auth, async (req: any, res) => {
 
             const { userId }: { userId: Schema.Types.ObjectId } = req.body;
             const institutionId_to_modify = req.params.id;
@@ -155,9 +153,6 @@ const make_user_member_of_institution = (): Router => {
 
                 if (!institutionToBeUpdated)
                     return res.status(409).send("User that you are trying to make as member is not an invited member!");
-
-                if (!institutionToBeUpdated?.adminIds.includes(current_user))
-                    return res.status(401).send("Invalid autherization permission!");
 
                 const updatedInstitution = await InstitutionService.makeUserMemberOfInstitution(institutionId_to_modify, userId)
 
