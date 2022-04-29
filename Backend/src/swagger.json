@@ -16,11 +16,39 @@
         "scheme": "bearer",
         "bearerFormat": "JWT"
       }
+    },
+    "requestBodies": {
+      "pictureUpload": {
+        "required": true,
+        "description": "raw png or jpg data",
+        "content": {
+          "image/png": {
+            "schema": {
+              "type": "string",
+              "format": "binary"
+            }
+          },
+          "image/jpeg": {
+            "schema": {
+              "type": "string",
+              "format": "binary"
+            }
+          }
+        }
+      }
     }
   },
-  "security": [{ "bearerAuth": [] }],
-  "consumes": ["application/json"],
-  "produces": ["application/json"],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
   "tags": [
     {
       "name": "User",
@@ -44,7 +72,9 @@
       "post": {
         "security": [],
         "summary": "Authenticate user",
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -52,10 +82,17 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "email": { "type": "string" },
-                  "password": { "type": "string" }
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
                 },
-                "required": ["email", "password"],
+                "required": [
+                  "email",
+                  "password"
+                ],
                 "additionalProperties": false
               }
             }
@@ -67,22 +104,47 @@
             "schema": {
               "type": "object",
               "properties": {
-                "msg": { "type": "string" },
+                "msg": {
+                  "type": "string"
+                },
                 "user": {
                   "type": "object",
                   "properties": {
-                    "_id": { "type": "string" },
-                    "firstName": { "type": "string" },
-                    "lastName": { "type": "string" },
-                    "email": { "type": "string" },
-                    "note": { "type": "string" },
-                    "isEmailVerified": { "type": "boolean" },
-                    "isAdministrator": { "type": "boolean" },
-                    "createdAt": { "type": "string" },
-                    "updatedAt": { "type": "string" }
+                    "_id": {
+                      "type": "string"
+                    },
+                    "firstName": {
+                      "type": "string"
+                    },
+                    "lastName": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "note": {
+                      "type": "string"
+                    },
+                    "isEmailVerified": {
+                      "type": "boolean"
+                    },
+                    "isAdministrator": {
+                      "type": "boolean"
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    },
+                    "updatedAt": {
+                      "type": "string"
+                    },
+                    "avatarUrl": {
+                      "type": "string"
+                    }
                   }
                 },
-                "jwt": { "type": "string" }
+                "jwt": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -95,7 +157,9 @@
     "/register": {
       "post": {
         "summary": "Register a user",
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "security": [],
         "requestBody": {
           "required": true,
@@ -104,13 +168,26 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "first_name": { "type": "string" },
-                  "last_name": { "type": "string" },
-                  "email": { "type": "string" },
-                  "password": { "type": "string" },
-                  "note": { "type": "string" }
+                  "first_name": {
+                    "type": "string"
+                  },
+                  "last_name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "note": {
+                    "type": "string"
+                  }
                 },
-                "required": ["email", "password"],
+                "required": [
+                  "email",
+                  "password"
+                ],
                 "additionalProperties": false
               }
             }
@@ -122,9 +199,15 @@
             "schema": {
               "type": "object",
               "properties": {
-                "msg": { "type": "string" },
-                "user": { "type": "string" },
-                "jwt": { "type": "string" }
+                "msg": {
+                  "type": "string"
+                },
+                "user": {
+                  "type": "string"
+                },
+                "jwt": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -142,17 +225,23 @@
             "in": "path",
             "name": "id",
             "required": true,
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "description": "Used by an admin to authorize a specific user",
-        "tags": ["User"]
+        "tags": [
+          "User"
+        ]
       }
     },
     "/profile": {
       "get": {
         "summary": "Get a profile information",
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -171,10 +260,14 @@
             "in": "path",
             "name": "id",
             "required": true,
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
-        "tags": ["Project"],
+        "tags": [
+          "Project"
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -188,7 +281,9 @@
     "/projects": {
       "get": {
         "summary": "Get all projects of an owner",
-        "tags": ["Project"],
+        "tags": [
+          "Project"
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -202,7 +297,9 @@
     "/initiate_processing": {
       "post": {
         "summary": "Initiate processing",
-        "tags": ["Project"],
+        "tags": [
+          "Project"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -210,9 +307,13 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "uploadId": { "type": "string" }
+                  "uploadId": {
+                    "type": "string"
+                  }
                 },
-                "required": ["uploadId"],
+                "required": [
+                  "uploadId"
+                ],
                 "additionalProperties": false
               }
             }
@@ -224,9 +325,15 @@
             "schema": {
               "type": "object",
               "properties": {
-                "msg": { "type": "string" },
-                "user": { "type": "string" },
-                "jwt": { "type": "string" }
+                "msg": {
+                  "type": "string"
+                },
+                "user": {
+                  "type": "string"
+                },
+                "jwt": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -245,7 +352,9 @@
     "/password_reset": {
       "post": {
         "summary": "Make a request for password reset",
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -253,9 +362,13 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "email": { "type": "string" }
+                  "email": {
+                    "type": "string"
+                  }
                 },
-                "required": ["email"],
+                "required": [
+                  "email"
+                ],
                 "additionalProperties": false
               }
             }
@@ -271,13 +384,17 @@
     "/password_reset/:token": {
       "post": {
         "summary": "Reset the password for given token",
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "parameters": [
           {
             "in": "path",
             "name": "token",
             "required": true,
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "requestBody": {
@@ -287,9 +404,13 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "password": { "type": "string" }
+                  "password": {
+                    "type": "string"
+                  }
                 },
-                "required": ["password"],
+                "required": [
+                  "password"
+                ],
                 "additionalProperties": false
               }
             }
@@ -305,7 +426,9 @@
     "/resend": {
       "post": {
         "summary": "Reset the password for given token",
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -313,9 +436,13 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "email": { "type": "string" }
+                  "email": {
+                    "type": "string"
+                  }
                 },
-                "required": ["email"],
+                "required": [
+                  "email"
+                ],
                 "additionalProperties": false
               }
             }
@@ -331,7 +458,9 @@
     "/update_profile": {
       "post": {
         "summary": "Update profile data",
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -339,11 +468,21 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "first_name": { "type": "string" },
-                  "last_name": { "type": "string" },
-                  "email": { "type": "string" },
-                  "password": { "type": "string" },
-                  "note": { "type": "string" }
+                  "first_name": {
+                    "type": "string"
+                  },
+                  "last_name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "note": {
+                    "type": "string"
+                  }
                 },
                 "minProperties": 1
               }
@@ -360,10 +499,52 @@
         }
       }
     },
+    "/user-avatar": {
+      "post": {
+        "summary": "Upload new profile picture for user",
+        "tags": [
+          "User"
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/pictureUpload"
+        },
+        "responses": {
+          "200": {
+            "description": "URL pointing to the S3 bucket location of the uploaded image",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete profile picture of user",
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
     "/file_download/results": {
       "post": {
         "summary": "Download results",
-        "tags": ["Project"],
+        "tags": [
+          "Project"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -371,9 +552,13 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "id": { "type": "string" }
+                  "id": {
+                    "type": "string"
+                  }
                 },
-                "required": ["id"],
+                "required": [
+                  "id"
+                ],
                 "additionalProperties": false
               }
             }
@@ -392,7 +577,9 @@
     "/file_upload/complete_upload": {
       "post": {
         "summary": "Complete upload",
-        "tags": ["Project"],
+        "tags": [
+          "Project"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -400,10 +587,17 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "parts": { "type": "string" },
-                  "uploadId": { "type": "string" }
+                  "parts": {
+                    "type": "string"
+                  },
+                  "uploadId": {
+                    "type": "string"
+                  }
                 },
-                "required": ["parts", "uploadId"],
+                "required": [
+                  "parts",
+                  "uploadId"
+                ],
                 "additionalProperties": false
               }
             }
@@ -414,7 +608,9 @@
     "/file_upload/get_upload_url": {
       "get": {
         "summary": "Get upload URL",
-        "tags": ["Project"],
+        "tags": [
+          "Project"
+        ],
         "parameters": [
           {
             "in": "query",
@@ -438,9 +634,13 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "id": { "type": "string" }
+                  "id": {
+                    "type": "string"
+                  }
                 },
-                "required": ["id"],
+                "required": [
+                  "id"
+                ],
                 "additionalProperties": false
               }
             }
@@ -459,7 +659,9 @@
     "/file_upload/start_upload": {
       "post": {
         "summary": "Start upload",
-        "tags": ["Project"],
+        "tags": [
+          "Project"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -467,9 +669,13 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "fileName": { "type": "string" }
+                  "fileName": {
+                    "type": "string"
+                  }
                 },
-                "required": ["filename"],
+                "required": [
+                  "filename"
+                ],
                 "additionalProperties": false
               }
             }
@@ -488,7 +694,9 @@
     "/institutions": {
       "post": {
         "summary": "Add institution",
-        "tags": ["Institution"],
+        "tags": [
+          "Institution"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -496,12 +704,23 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "name": { "type": "string" },
-                  "country": { "type": "string" },
-                  "profilePictureURL": { "type": "string" },
-                  "backgroundPictureURL": { "type": "string" }
+                  "name": {
+                    "type": "string"
+                  },
+                  "country": {
+                    "type": "string"
+                  },
+                  "profilePictureURL": {
+                    "type": "string"
+                  },
+                  "backgroundPictureURL": {
+                    "type": "string"
+                  }
                 },
-                "required": ["name", "country"],
+                "required": [
+                  "name",
+                  "country"
+                ],
                 "additionalProperties": false
               }
             }
@@ -563,7 +782,9 @@
             "in": "path",
             "name": "id",
             "required": true,
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "requestBody": {
@@ -573,9 +794,13 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "userId": { "type": "string" }
+                  "userId": {
+                    "type": "string"
+                  }
                 },
-                "required": ["userId"],
+                "required": [
+                  "userId"
+                ],
                 "additionalProperties": false
               }
             }
@@ -594,42 +819,62 @@
         }
       }
     },
-    "/institutions/:id/join": {
-      "put": {
-        "summary": "Add the user to the institution members",
-        "tags": ["Institution"],
+    "/institutions/:id/profilepicture": {
+      "post": {
+        "summary": "Upload new profile picture for institution",
+        "tags": [
+          "Institution"
+        ],
         "parameters": [
           {
             "in": "path",
             "name": "id",
             "required": true,
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "userId": { "type": "string" }
-                },
-                "required": ["userId"],
-                "additionalProperties": false
+          "$ref": "#/components/requestBodies/pictureUpload"
+        },
+        "responses": {
+          "200": {
+            "description": "URL pointing to the S3 bucket location of the uploaded image",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
           }
-        },
+        }
+      },
+      "delete": {
+        "summary": "Delete profile picture of institution",
+        "tags": [
+          "Institution"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
           },
-          "400": {
-            "description": "Failed. Bad post data."
-          },
           "401": {
-            "description": "Invalid autherization permission!"
+            "description": "Unauthorized"
           }
         }
       }
@@ -637,7 +882,9 @@
     "/teams": {
       "post": {
         "summary": "Create a team",
-        "tags": ["Teams"],
+        "tags": [
+          "Teams"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -645,11 +892,21 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "title": { "type": "string" },
-                  "description": { "type": "string" },
-                  "visibility": { "type": "string" }
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "visibility": {
+                    "type": "string"
+                  }
                 },
-                "required": ["title", "description", "visibility"],
+                "required": [
+                  "title",
+                  "description",
+                  "visibility"
+                ],
                 "additionalProperties": false
               }
             }
@@ -672,11 +929,15 @@
             "in": "path",
             "name": "id",
             "required": true,
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "summary": "Invite person to a team",
-        "tags": ["Teams"],
+        "tags": [
+          "Teams"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -684,9 +945,13 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "userId": { "type": "string" }
+                  "userId": {
+                    "type": "string"
+                  }
                 },
-                "required": ["userId"],
+                "required": [
+                  "userId"
+                ],
                 "additionalProperties": false
               }
             }
