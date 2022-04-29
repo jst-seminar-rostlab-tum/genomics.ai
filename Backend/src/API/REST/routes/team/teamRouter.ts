@@ -159,10 +159,10 @@ const add_project_to_team = (): Router => {
                 const project_updated = await ProjectService.setTeamOfProject(projectId, teamId);
 
                 if (!team_updated)
-                    return res.status(400).send("Error when adding the project to project list of the team.");
+                    return res.status(500).send("Error when adding the project to project list of the team.");
 
                 if (!project_updated)
-                    return res.status(400).send("Error when setting the team id of the project.");
+                    return res.status(500).send("Error when setting the team id of the project.");
 
                 return res.status(200).json("The project is successfully added.");
             } catch(err) {
