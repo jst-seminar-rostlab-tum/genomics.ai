@@ -1,5 +1,5 @@
 /* eslint-disable no-return-assign */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Dialog from '@mui/material/Dialog';
@@ -19,11 +19,19 @@ export default function ImageUploadDialog({
   const [croppedImgURL, setCroppedImgURL] = useState('');
   const [croppedImgBlob, setCroppedImgBlob] = useState();
 
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+    return () => setIsMounted(false);
+  }, []);
+
   async function upload() {
     setLoading(true);
     await onUpload(croppedImgBlob);
-    setLoading(false);
-    onClose();
+    if (isMounted) {
+      setLoading(false);
+    }
   }
 
   function handleSave(files) {

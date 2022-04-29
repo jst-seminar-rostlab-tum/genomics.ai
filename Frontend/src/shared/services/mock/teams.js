@@ -26,7 +26,7 @@ export async function createTeam(name, description) {
       name,
       country: null,
       description,
-      profilePictureURL: null,
+      avatarUrl: null,
       backgroundPictureURL: null,
       adminIds: [1], // TODO: make sure that the backend puts my user ID here
       memberIds: [],

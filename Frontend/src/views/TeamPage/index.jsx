@@ -9,7 +9,7 @@ import TeamAdminHeaderRight from 'components/teams/detail/TeamAdminHeaderRight';
 import TeamUserHeaderRight from 'components/teams/detail/TeamUserHeaderRight';
 import TeamHeaderOptions from 'components/teams/detail/TeamHeaderOptions';
 import { getTeam } from 'shared/services/mock/teams';
-import getUser from 'shared/services/mock/user';
+import getProfile from 'shared/services/profile';
 import { getInstitution, queryIsAdminInstitutions } from 'shared/services/mock/institutions';
 import TextField from '@mui/material/TextField';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
@@ -35,7 +35,7 @@ export default function TeamPage({ sidebarShown }) {
   };
 
   useEffect(() => {
-    getUser()
+    getProfile()
       .then((newUser) => { setUser(newUser); updateIsAdmin(); });
   }, [setUser, isAdmin]);
 

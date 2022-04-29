@@ -5,12 +5,12 @@ import ProfileImageUploadDialog from 'components/general/upload/ProfileImageUplo
 import styles from './profileImage.module.css';
 
 import stringToColor from 'shared/utils/stringColor';
-import getUser from 'shared/services/mock/user';
+import getProfile from 'shared/services/profile';
 
 function ProfileImage({ sizePixels, editable = false, overrideProfileImage = null }) {
   const [user, setUser] = useState({});
   async function loadUser() {
-    setUser(await getUser());
+    setUser(await getProfile());
   }
   useEffect(loadUser, [setUser]);
 
@@ -26,7 +26,7 @@ function ProfileImage({ sizePixels, editable = false, overrideProfileImage = nul
         }}
       >
         <Avatar
-          src={overrideProfileImage || user.profilePictureURL}
+          src={overrideProfileImage || user.avatarUrl}
           alt={`${user.firstName} ${user.lastName}`}
           sx={{
             backgroundColor: stringToColor(`${user.firstName} ${user.lastName}`),
@@ -54,6 +54,11 @@ function ProfileImage({ sizePixels, editable = false, overrideProfileImage = nul
           onClose={() => {
             setUploadDialogOpen(false);
             loadUser();
+          }}
+          onChange={(newUrl) => {
+            // update without reload
+            user.avatarUrl = newUrl;
+            setUser(user);
           }}
         />
       )}

@@ -39,6 +39,16 @@ export default function CropImage({ imgSrc, onUpdate, onUpdateBlob }) {
 
   if (!imgSrc) return <></>;
 
+  // initialize crop blob
+  function onFirstImgLoad() {
+    setCompletedCrop({
+      x: 0,
+      y: 0,
+      width: imgRef.current.getBoundingClientRect().width,
+      height: imgRef.current.getBoundingClientRect().height,
+    });
+  }
+
   return (
     <>
       <ReactCrop
@@ -52,6 +62,7 @@ export default function CropImage({ imgSrc, onUpdate, onUpdateBlob }) {
           alt="Crop me"
           src={imgSrc}
           style={{ width: '100%' }}
+          onLoad={onFirstImgLoad}
         />
       </ReactCrop>
       <div>

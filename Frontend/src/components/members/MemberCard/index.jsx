@@ -24,7 +24,7 @@ function MemberCard({
 
   return (
     <ListCard
-      imageURL={overrideProfilePicture || member.profilePictureURL}
+      imageURL={overrideProfilePicture || member.avatarUrl}
       enforceImage
       title={isLoading ? '...' : `${member.firstName} ${member.lastName}`}
       description={isLoading ? '...' : member.email}

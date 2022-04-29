@@ -7,24 +7,24 @@ import InstitutionCard from 'components/institutions/InstitutionCard';
 
 export default function InstitutionProfileImageUploadDialog({ institution, open, onClose }) {
   async function upload(blob) {
-    await fetch(`${BACKEND_ADDRESS}/institutions/${institution.id}/profilepicture`, {
+    const response = await fetch(`${BACKEND_ADDRESS}/institutions/${institution.id}/profilepicture`, {
       method: 'POST',
       headers: {
         ...getAuthAndJsonHeader(),
-        'Content-Type': 'image/png',
+        'content-type': 'image/png',
       },
       body: blob,
-    }).then((response) => {
-      if (response.status !== 200) {
-        if (response.status === 413) {
-          // should not happen because of the max file size in the filedrop component,
-          // but who knows, maybe the backend will change the limit in the future
-          alert('This image is too large. Please provide one with a smaller file size.');
-          return;
-        }
-        throw Error("Couldn't upload institution profile picture");
-      }
     });
+    if (response.status !== 200) {
+      if (response.status === 413) {
+        // should not happen because of the max file size in the filedrop component,
+        // but who knows, maybe the backend will change the limit in the future
+        alert('This image is too large. Please provide one with a smaller file size.');
+        return;
+      }
+      throw Error("Couldn't upload institution profile picture");
+    }
+    onClose();
   }
 
   async function reset() {
@@ -44,7 +44,7 @@ export default function InstitutionProfileImageUploadDialog({ institution, open,
       croppable
       preview={(imgURL) => (
         <InstitutionCard
-          institution={{ ...institution, profilePictureURL: imgURL }}
+          institution={{ ...institution, avatarUrl: imgURL }}
           showTrailing={false}
         />
       )}
