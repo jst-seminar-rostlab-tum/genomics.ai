@@ -18,5 +18,14 @@ export function express_middleware(this:REST_Host) : Router {
     router.use(bodyParser.json());
     router.use(bodyParser.urlencoded({ extended: true }));
 
+    router.use(["/user-avatar", "/institutions/:id/profilepicture"], bodyParser.raw({
+        limit: "1MB",
+        type: ["image/png", "image/jpeg"]
+    }));
+    router.use("/institutions/:id/backgroundpicture", bodyParser.raw({
+        limit: "4MB",
+        type: ["image/png", "image/jpeg"]
+    }));
+
     return router;
 }
