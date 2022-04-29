@@ -102,6 +102,24 @@ export default class TeamService {
         );
     }
 
+    static async getTeams(queryParams: any ):
+    Promise<ITeam[] | null >{
+
+        var filter  : any,
+            sortBy  : any;
+
+        queryParams.hasOwnProperty('keyword') ?  filter = { name : queryParams.keyword } : filter = {};
+        queryParams.hasOwnProperty('visibility') ? filter.visibility = queryParams.visibility : null;
+        
+        if(queryParams.hasOwnProperty('sortBy')){
+            let sortProperty = queryParams.sortBy;
+            sortBy = { sortProperty : 1 }
+        } else
+            sortBy = {};
+
+        return await teamModel.find(filter).sort(sortBy);
+    }
+
     /**
      *  Add the given userId to the admin list and removes he/she from the memberIds, of the given team.
      *
@@ -109,7 +127,7 @@ export default class TeamService {
      *  @param   institutionId
      *  @returns updateDocument
      */
-    static async removeTeamFromInstitution(teamId: (ObjectId | string), institutionId: (ObjectId | string)): Promise<any> {
+     static async removeTeamFromInstitution(teamId: (ObjectId | string), institutionId: (ObjectId | string)): Promise<any> {
         return await teamModel.updateOne(
             { _id: teamId },
             {

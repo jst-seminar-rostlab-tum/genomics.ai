@@ -1,6 +1,6 @@
-import {IUser, userModel} from "../models/user";
-import {AddUserDTO, UpdateUserDTO} from "../dtos/user.dto";
-import {ObjectId} from "mongoose"
+import { IUser, userModel } from "../models/user";
+import { AddUserDTO, UpdateUserDTO } from "../dtos/user.dto";
+import { ObjectId } from "mongoose";
 
 /**
  *  @class UserService
@@ -64,7 +64,7 @@ export default class UserService {
      *  @returns  userAdded - the added user
      */
     static async addUser(user: AddUserDTO): Promise<IUser> {
-        let userAdded : (IUser | undefined) = undefined;
+        let userAdded: (IUser | undefined) = undefined;
         userAdded = await userModel.create(user);
         return userAdded;
     }
@@ -78,5 +78,10 @@ export default class UserService {
      */
     static async updateUser(user_id: (ObjectId | string), update_object: UpdateUserDTO) {
         await userModel.updateOne({_id: user_id}, update_object);
+    }
+
+    static async unsetUserAvatar(user_id: ObjectId | string): Promise<string|null|undefined> {
+        let old = await userModel.findByIdAndUpdate(user_id, { $unset: { avatarUrl: "" } });
+        return old?.avatarUrl;
     }
 }
