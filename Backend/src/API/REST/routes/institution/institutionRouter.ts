@@ -55,7 +55,7 @@ const invite_to_institution = (): Router => {
     let router = express.Router();
 
     router
-        .put("/institutions/:id/invite", check_auth(), institution_admin_auth, async (req: any, res) => {
+        .put("/institutions/:id/invite", check_auth(), async (req: any, res) => {
 
             const { userId }: { userId: Schema.Types.ObjectId } = req.body;
             const institutionId_to_modify = req.params.id;
@@ -96,7 +96,6 @@ const make_user_admin_of_institution = (): Router => {
 
             const { userId }: { userId: Schema.Types.ObjectId } = req.body;
             const institutionId_to_modify = req.params.id;
-            const current_user = req.user_id
 
             try {
 
@@ -131,41 +130,31 @@ const make_user_admin_of_institution = (): Router => {
     return router;
 }
 
-const make_user_member_of_institution = (): Router => {
+const join_as_member_of_institution = (): Router => {
     let router = express.Router();
 
     router
-        .put("/institutions/:id/join", check_auth(), institution_admin_auth, async (req: any, res) => {
+        .put("/institutions/:id/join", check_auth(), async (req: any, res) => {
 
-            const { userId }: { userId: Schema.Types.ObjectId } = req.body;
             const institutionId_to_modify = req.params.id;
-            const current_user = req.user_id
-
+            const current_user = req.user_id;
             try {
 
-                if (!(userId))
-                    return res.status(400).send("Missing parameter");
+                const institutionToBeUpdated = await InstitutionService.getInstitutionById(institutionId_to_modify)
 
-                if (! await UserService.getUserById(userId))
-                    return res.status(404).send("User that you are trying to make as member does not exists!");
+                if (!institutionToBeUpdated?.invitedMemberIds.includes(current_user))
+                    return res.status(409).send("Could not join as you are not an invited member!");
 
-                const institutionToBeUpdated = await InstitutionService.findInvitedMemeberById(userId, institutionId_to_modify)
-
-                if (!institutionToBeUpdated)
-                    return res.status(409).send("User that you are trying to make as member is not an invited member!");
-
-                const updatedInstitution = await InstitutionService.makeUserMemberOfInstitution(institutionId_to_modify, userId)
+                const updatedInstitution = await InstitutionService.makeUserMemberOfInstitution(institutionId_to_modify, current_user)
 
                 if (updatedInstitution) {
                     res.json(updatedInstitution);
                 } else {
-                    return res.status(409).send("Could not make the user member of the institution!");
+                    return res.status(409).send("Could not join as member of the institution!");
                 }
-
             } catch (error) {
                 return res.status(500).send("Something went wrong: " + error)
             }
-
         })
 
     return router;
@@ -203,6 +192,6 @@ const get_institutions = (): Router => {
     return router;
 }
 
-export { create_institution, invite_to_institution, make_user_admin_of_institution, make_user_member_of_institution, get_institutions, get_institution }
+export { create_institution, invite_to_institution, make_user_admin_of_institution, join_as_member_of_institution, get_institutions, get_institution }
 
 

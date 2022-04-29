@@ -736,7 +736,7 @@
         }
       }
     },
-    "/institutions/:id/invite": {
+    "/institutions/{id}/invite": {
       "put": {
         "summary": "Invite a user to institution",
         "tags": ["Institution"],
@@ -773,7 +773,7 @@
         }
       }
     },
-    "/institutions/:id/admin": {
+    "/institutions/{id}/admin": {
       "put": {
         "summary": "Make a member of institution admin",
         "tags": ["Institution"],
@@ -806,6 +806,33 @@
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          },
+          "401": {
+            "description": "Invalid autherization permission!"
+          }
+        }
+      }
+    },
+    "/institutions/{id}/join": {
+      "put": {
+        "summary": "Join as member of institution",
+        "tags": ["Institution"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
