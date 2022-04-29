@@ -1,24 +1,22 @@
-import React from 'react';
-import styles from './uploadfilepage.module.css';
-import { Container, Stack, Typography, Button, Divider } from '@mui/material';
-import { CheckCircleOutlinedIcon, ArrowBackIcon } from '@mui/icons-material/CheckCircle';
+import { ArrowBackIcon, CheckCircleOutlinedIcon } from '@mui/icons-material/CheckCircle';
+import { Box, Button, Container, Divider, Stack, Step, StepLabel, Stepper, Typography } from '@mui/material';
 import { GeneralCard as Card } from 'components/Cards/GeneralCard';
-import { TabGroup } from 'components/Tab';
+import CustomButton from 'components/CustomButton';
 import FileUpload from 'components/FileUpload';
-import { Modal, ModalTitle } from 'components/Modal';
 import Input from 'components/Input/Input';
-import CustomButton from 'components/CustomButton'
-import { useState, useEffect } from 'react';
+import { Modal, ModalTitle } from 'components/Modal';
+import { TabGroup } from 'components/Tab';
+import { useState } from 'react';
+import styles from './uploadfilepage.module.css';
 
-// import { tabLabels } from './tabLabels'
-
-function UploadFilePage({ basePath }) {
+function UploadFilePage({ basePath, selectedAtlas, selectedModel, activeStep, setActiveStep, steps}) {
   const [uploadedFile, setUploadedFile] = useState();
   const [existingDatasets, setExistingDatasets] = useState([]);
   const [ongoingUploads, setOngoingUploads] = useState([]);
   const [tabsValue, setTabsValue] = useState(0);
   const [requirements, setRequirements] = useState([]);
   const [open, setOpen] = useState(false);
+  // attribute to go back
 
   const [tabLabels] = useState([
     {
@@ -34,7 +32,6 @@ function UploadFilePage({ basePath }) {
   const handleOnDropChange = (file) => {
     console.log(file)
     setUploadedFile(file);
-    setOpen(true); // opens modal to input mapping name
   }
 
   const handleSubmit = () => {
@@ -44,8 +41,7 @@ function UploadFilePage({ basePath }) {
   }
 
   return (
-    <Container sx={{ paddingTop:'30px' }}>
-      {/* Pick atlas and model -> upload files component */}
+    <Container>
       <Stack
         direction="row"
         divider={(
@@ -65,7 +61,7 @@ function UploadFilePage({ basePath }) {
               width='50%'
               component={(
                 <Stack direction='column'>
-                  <Typography sx={{ fontWeight: 'bold', fontSize: '18px'}}>Atlas</Typography>
+                  <Typography sx={{ fontWeight: 'bold', fontSize: '18px'}}>{selectedAtlas}</Typography>
                   <Typography sx={{ fontSize: '12px'}}>
                     Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor  
                   </Typography>
@@ -141,12 +137,10 @@ function UploadFilePage({ basePath }) {
         </Container>
       </Stack>
       <Stack direction='row' justifyContent='space-between' sx={{ marginTop:'75px'}}>
-        <CustomButton type='tertiary' children={( <Stack direction='row'>
-            <ArrowBackIcon />
-          </Stack>)}>
+        <CustomButton type='tertiary' onClick={() => setActiveStep(0)}>
           Back
         </CustomButton>
-        <CustomButton type='primary' children={(
+        <CustomButton type='primary' onClick={() => setOpen(true)} children={(
           <Stack direction='row'>
             <CheckCircleOutlinedIcon />
           </Stack> )}>
