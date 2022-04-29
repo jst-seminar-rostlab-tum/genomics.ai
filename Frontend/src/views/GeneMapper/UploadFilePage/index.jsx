@@ -9,15 +9,14 @@ import { TabGroup } from 'components/Tab';
 import { useState } from 'react';
 import styles from './uploadfilepage.module.css';
 
-function UploadFilePage({basePath}) {
-  const steps = ["Pick Atlas and Model", "Choose File and Project details"];
+function UploadFilePage({ basePath, selectedAtlas, selectedModel, activeStep, setActiveStep, steps}) {
   const [uploadedFile, setUploadedFile] = useState();
   const [existingDatasets, setExistingDatasets] = useState([]);
   const [ongoingUploads, setOngoingUploads] = useState([]);
   const [tabsValue, setTabsValue] = useState(0);
   const [requirements, setRequirements] = useState([]);
   const [open, setOpen] = useState(false);
-  const [activeStep, setActiveStep] = useState(1);
+  // attribute to go back
 
   const [tabLabels] = useState([
     {
@@ -42,21 +41,7 @@ function UploadFilePage({basePath}) {
   }
 
   return (
-    <Container sx={{ paddingTop:'30px' }}>
-      {/* Pick atlas and model -> upload files component */}
-      <Box width="500px" margin="auto" sx={{ marginBottom:'3%'}}>
-        <Stepper activeStep={activeStep}>
-            {steps.map((labelText, index) => {
-                return (
-                  <Step index={index}>
-                      <StepLabel>
-                          {labelText}
-                      </StepLabel>
-                  </Step>
-                )
-            })}
-        </Stepper>
-      </Box>
+    <Container>
       <Stack
         direction="row"
         divider={(
@@ -76,7 +61,7 @@ function UploadFilePage({basePath}) {
               width='50%'
               component={(
                 <Stack direction='column'>
-                  <Typography sx={{ fontWeight: 'bold', fontSize: '18px'}}>Atlas</Typography>
+                  <Typography sx={{ fontWeight: 'bold', fontSize: '18px'}}>{selectedAtlas}</Typography>
                   <Typography sx={{ fontSize: '12px'}}>
                     Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor  
                   </Typography>
@@ -152,9 +137,7 @@ function UploadFilePage({basePath}) {
         </Container>
       </Stack>
       <Stack direction='row' justifyContent='space-between' sx={{ marginTop:'75px'}}>
-        <CustomButton type='tertiary' children={( <Stack direction='row'>
-            <ArrowBackIcon />
-          </Stack>)}>
+        <CustomButton type='tertiary' onClick={() => setActiveStep(0)}>
           Back
         </CustomButton>
         <CustomButton type='primary' onClick={() => setOpen(true)} children={(

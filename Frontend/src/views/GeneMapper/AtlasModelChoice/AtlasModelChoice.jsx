@@ -1,46 +1,28 @@
-import AtlasCardSelect from "components/Cards/AtlasCardSelect";
-import {ModelCardSelect} from "components/Cards/ModelCardSelect";
-import Stepper from "@mui/material/Stepper";
-import Step from "@mui/material/Step";
-import Box from "@mui/material/Box";
-import StepLabel from "@mui/material/StepLabel";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
 import HelpIcon from '@mui/icons-material/Help';
-import React, {useState} from "react";
+import { Grid, Typography, Stack } from "@mui/material";
+import AtlasCardSelect from "components/Cards/AtlasCardSelect";
+import { ModelCardSelect } from "components/Cards/ModelCardSelect";
+import CustomButton from 'components/CustomButton';
 import styles from "./atlasModelChoice.module.css";
 
-function AtlasModelChoice(props) {
-    let steps = ["Pick Atlas and Model", "Choose File and Project details"];
-    let [activeStep, setActiveStep] = useState(0);
-    let [completed, setCompleted] = useState([]);
-    let [selectedAtlas, setSelectedAtlas] = useState("");
-    let [selectedModel, setSelectedModel] = useState("");
+function AtlasModelChoice({ 
+    activeStep, setActiveStep, 
+    selectedAtlas, setSelectedAtlas, 
+    selectedModel, setSelectedModel, steps
+    }) {
+    // let [activeStep, setActiveStep] = useState(0);
+    // let [completed, setCompleted] = useState([]);
+    // let [selectedAtlas, setSelectedAtlas] = useState("");
+    // let [selectedModel, setSelectedModel] = useState("");
 
     let headerStyle = {
         color: "#003560",
         fontSize: "1.6rem",
         fontWeight: "bold"
     }
-    
+
     return (
         <div>
-            <br/>
-            <Box width="500px" margin="auto">
-                <Stepper activeStep={activeStep}>
-                    {steps.map((labelText, index) => {
-                        return (
-                            <Step index={index}>
-                                <StepLabel>
-                                    {labelText}
-                                </StepLabel>
-                            </Step>
-                        )
-                    })}
-                </Stepper>
-            </Box>
-            <br/>
-            <br/>
             <Typography marginLeft="170px" sx={headerStyle}>
                 Pick an Atlas <HelpIcon sx={{color:"#B1CBDE"}} />
             </Typography>
@@ -125,6 +107,14 @@ function AtlasModelChoice(props) {
                     />               
                 </Grid>
             </Grid>
+            <Stack direction='row' justifyContent='space-between' sx={{ marginTop:'75px'}}>
+                <CustomButton type='tertiary'>
+                    Cancel
+                </CustomButton>
+                <CustomButton type='primary' onClick={() => setActiveStep(1)}>
+                    Confirm
+                </CustomButton>
+            </Stack>
         </div>
     )
 }

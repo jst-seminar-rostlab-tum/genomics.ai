@@ -17,6 +17,7 @@ import Explore from "./views/Explore/index.jsx"
 import UploadFilePage from 'views/GeneMapper/UploadFilePage';
 import AtlasModelChoice from 'views/GeneMapper/AtlasModelChoice/AtlasModelChoice';
 import { useAuth } from 'shared/context/authContext';
+import GeneMapperState from './views/GeneMapper/GeneMapperState';
 
 function App() {
   // https://stackoverflow.com/a/69836010
@@ -52,7 +53,7 @@ function App() {
           <Route path="/result" render={() => <VisualizationPage />} />
           <Route path="/alex" render={() => <AtlasModelChoice />} />
           <Route path="/explore" render={() => <Explore />} />
-          <Route path="/evan" render={() => <UploadFilePage />} />
+          <Route path="/evan" render={() => <GeneMapperState />} />
         </Switch>
       </HashRouter>
     </ThemeProvider>
