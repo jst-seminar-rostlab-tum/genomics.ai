@@ -64,3 +64,7 @@ QUERY_DATA_PATH = 'query_data'
 OUTPUT_PATH = 'output_path'
 # sets if the computation should run asynchronously
 RUN_ASYNCHRONOUSLY = 'async'
+# sets the max_epochs of the first totalVI stage
+TOTALVI_MAX_EPOCHS_1 = 'totalvi_max_epochs_1'
+# sets the max_epochs of the second totalVI stage
+TOTALVI_MAX_EPOCHS_2 = 'totalvi_max_epochs_2'

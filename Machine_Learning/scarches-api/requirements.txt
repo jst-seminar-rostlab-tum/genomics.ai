@@ -7,6 +7,7 @@ gdown~=4.4.0
 torch~=1.11.0
 jaxlib==0.3.5
 leidenalg==0.8.9
+scikit-misc==0.1.4
 
 # for the api
 Flask==2.1.1

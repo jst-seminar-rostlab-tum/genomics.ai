@@ -32,6 +32,138 @@ the an example request body looks like this
 }
 ```
 
+#### Example with scVI
+request
+```
+{
+    "model": "scVI",
+    "output_path": "query.tsv",
+    "model_path": "model.pt",
+    "pre_trained_scVI": false,
+    "reference_data": "pancreas.h5ad",
+    "query_data": "pancreas.h5ad",
+    "ref_path": "model.pt",
+    "debug": false,
+    "async": false
+}
+```
+response
+```
+{
+    "async": false,
+    "attributes": null,
+    "cell_type_key": "cell_type",
+    "condition_key": "study",
+    "debug": false,
+    "deeply_inject_covariates": false,
+    "encode_covariates": true,
+    "model": "scVI",
+    "model_path": "model.pt",
+    "n_layers": 2,
+    "n_neighbors": 100,
+    "output_path": "query.tsv",
+    "pre_trained_scANVI": false,
+    "pre_trained_scVI": false,
+    "pre_trained_totalVI": false,
+    "predict": false,
+    "query_data": "pancreas.h5ad",
+    "ref_path": "model.pt",
+    "reference_data": "pancreas.h5ad",
+    "scanvi_compare_observed_and_predicted_celltypes": false,
+    "scanvi_compare_reference_and_query": false,
+    "scanvi_max_epochs": 20,
+    "scvi_max_epochs": 20,
+    "target_conditions": [
+        "Pancreas CelSeq2",
+        "Pancreas SS2"
+    ],
+    "unlabeled_key": "Unknown",
+    "unwanted_labels": [
+        "leiden"
+    ],
+    "use_batch_norm": "none",
+    "use_layer_norm": "both",
+    "webhook": ""
+}
+```
+#### Example with scANVI
+request
+```
+{
+    "model": "scANVI",
+    "output_path": "query.tsv",
+    "model_path": "model.pt",
+    "pre_trained_scVI": false,
+    "reference_data": "pancreas.h5ad",
+    "query_data": "pancreas.h5ad",
+    "webhook": "",
+    "ref_path": "model.pt",
+    "debug": false,
+    "async": false
+}
+```
+response
+```
+{
+    "async": false,
+    "attributes": null,
+    "cell_type_key": "cell_type",
+    "condition_key": "study",
+    "debug": false,
+    "deeply_inject_covariates": false,
+    "encode_covariates": true,
+    "model": "scANVI",
+    "model_path": "model.pt",
+    "n_layers": 2,
+    "n_neighbors": 100,
+    "output_path": "query.tsv",
+    "pre_trained_scANVI": false,
+    "pre_trained_scVI": false,
+    "pre_trained_totalVI": false,
+    "predict": false,
+    "query_data": "pancreas.h5ad",
+    "ref_path": "model.pt",
+    "reference_data": "pancreas.h5ad",
+    "scanvi_compare_observed_and_predicted_celltypes": false,
+    "scanvi_compare_reference_and_query": false,
+    "scanvi_max_epochs": 20,
+    "scvi_max_epochs": 20,
+    "target_conditions": [
+        "Pancreas CelSeq2",
+        "Pancreas SS2"
+    ],
+    "unlabeled_key": "Unknown",
+    "unwanted_labels": [
+        "leiden"
+    ],
+    "use_batch_norm": "none",
+    "use_layer_norm": "both",
+    "webhook": ""
+}
+```
+#### Example with totalVI
+
+request
+```
+{
+    "model": "totalVI",
+    "output_path": "query.tsv",
+    "model_path": "model.pt",
+    "pre_trained_scVI": false,
+    "reference_data": "pbmc_10k_protein_v3.h5ad",
+    "query_data": "pbmc_5k_protein_v3.h5ad",
+    "webhook": "",
+    "ref_path": "model.pt",
+    "debug": false,
+    "async": false
+}
+```
+response
+```
+{
+    TBA
+}
+```
 The given configuration is then merged with our default configuration and given to the
 models, specified [here](./init.py). The models then store the computed results under the s3 key given by `output_path`
 and our REST API returns the used configuration (which is previously merged with the default configuration) and computes

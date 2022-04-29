@@ -1,5 +1,8 @@
+import sys
+
 from scANVI.scANVI import compute_scANVI
 from scVI.scVI import compute_scVI
+from totalVI.totalVI import computeTotalVI
 from utils import utils, parameters
 
 
@@ -23,7 +26,7 @@ def default_config():
         # scANVI stuff
         parameters.SCANVI_COMPARE_REFERENCE_AND_QUERY: False,
         parameters.SCANVI_COMPARE_OBSERVED_AND_PREDICTED_CELLTYPES: False,
-        parameters.SCANVI_PREDICT_CELLTYPES: True,
+        parameters.SCANVI_PREDICT_CELLTYPES: False,
 
         parameters.CONDITION_KEY: 'study',
         parameters.CELL_TYPE_KEY: 'cell_type',
@@ -41,7 +44,11 @@ def default_config():
         parameters.MAX_EPOCHS: 100,
         parameters.UNWANTED_LABELS: ['leiden'],
         parameters.DEBUG: True,
-        parameters.ATTRIBUTES: None
+        parameters.ATTRIBUTES: None,
+
+        # totalVI stuff
+        parameters.TOTALVI_MAX_EPOCHS_1: 1,  # 400
+        parameters.TOTALVI_MAX_EPOCHS_2: 1,  # 200
     }
 
 
@@ -70,12 +77,12 @@ def query(user_config):
     elif model == 'scANVI':
         attributes = compute_scANVI(configuration)
     elif model == 'totalVI':
-        # compute_totalVI()
-        print("not supported yet")
+        attributes = computeTotalVI(configuration)
     else:
         raise ValueError(model + ' is not one of the supported models')
     configuration["attributes"] = attributes
-    utils.notify_backend(get_from_config(configuration, parameters.WEBHOOK), configuration)
+    if get_from_config(configuration, parameters.RUN_ASYNCHRONOUSLY):
+        utils.notify_backend(get_from_config(configuration, parameters.WEBHOOK), configuration)
     return configuration
 # query('data/ref/source_data.h5ad', 'data/query/target_data.h5ad', 'data/model', 'data/surgery/', 'scVI')
 # query(None)

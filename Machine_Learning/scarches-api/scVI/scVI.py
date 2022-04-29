@@ -39,10 +39,8 @@ def setup():
 
 
 def pre_process_data():
-    utils.fetch_file_from_s3(get_from_config(parameters.REFERENCE_DATA_PATH), 'scVI-reference.h5ad')
-    utils.fetch_file_from_s3(get_from_config(parameters.QUERY_DATA_PATH), 'scVI-query.h5ad')
-    source_adata = sc.read('scVI-reference.h5ad')
-    target_adata = sc.read('scVI-query.h5ad')
+    source_adata = utils.read_h5ad_file_from_s3(get_from_config(parameters.REFERENCE_DATA_PATH))
+    target_adata = utils.read_h5ad_file_from_s3(get_from_config(parameters.QUERY_DATA_PATH))
     source_adata = remove_sparsity(source_adata)
     target_adata = remove_sparsity(target_adata)
 

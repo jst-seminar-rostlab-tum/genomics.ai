@@ -1,3 +1,4 @@
+import os
 import warnings
 from scVI import scVI
 import scanpy
@@ -33,8 +34,8 @@ def setup_modules():
 
 
 def pre_process_data():
-    source_adata = scanpy.read(get_from_config(parameters.REFERENCE_DATA_PATH)) #TODO add s3
-    target_adata = scanpy.read(get_from_config(parameters.QUERY_DATA_PATH)) #TODO add s3
+    source_adata = utils.read_h5ad_file_from_s3(get_from_config(parameters.REFERENCE_DATA_PATH))
+    target_adata = utils.read_h5ad_file_from_s3(get_from_config(parameters.QUERY_DATA_PATH))
     source_adata = remove_sparsity(source_adata)
     target_adata = remove_sparsity(target_adata)
 
@@ -98,8 +99,9 @@ def surgery(anndata):
 
     utils.write_latent_csv(surgery_latent, key=get_from_config(parameters.OUTPUT_PATH))
 
-    model.save(get_from_config(parameters.RESULTING_MODEL_PATH), overwrite=True) #TODO add s3
-
+    model.save('scvi_model', overwrite=True)  # TODO check if we need this, for now, we delete it
+    utils.delete_file('scvi_model/model.pt')
+    os.rmdir('scvi_model')
     return model, surgery_latent
 
 
@@ -195,11 +197,11 @@ def compute_scANVI(configP):
     setup_modules()
 
     source_adata, target_adata = pre_process_data()
-    #                                                   if not get_from_config('pre_trained_scANVI'): bin mir bei dir nicht sicher, was alles zu was gehöhrt
+    #  if not get_from_config('pre_trained_scANVI'): bin mir bei dir nicht sicher, was alles zu was gehöhrt
     scVI.set_config(configP)  # sets the config in scVI
 
-    vae = scVI.create_scVI_model(source_adata,
-                            target_adata)  # kann man sehen ob es schon ein scVI oder ein scANVI model gibt?
+    # kann man sehen ob es schon ein scVI oder ein scANVI model gibt?
+    vae = scVI.create_scVI_model(source_adata, target_adata)
 
     # if args.train:
     # vae.train(max_epochs=get_from_config('scvi_max_epochs'))
@@ -221,18 +223,19 @@ def compute_scANVI(configP):
 
     reference_latent = predict(scanvi, reference_latent)
 
-    scanvi.save(get_from_config(parameters.RESULTING_MODEL_PATH),
-                overwrite=True)  # ich bin mir nicht sicher, wann dein Model in welchem Stadium ist
+    scanvi.save('scanvi_model', overwrite=True)  # ich bin mir nicht sicher, wann dein Model in welchem Stadium ist
+    utils.delete_file('scanvi_model/model.pt')
+    os.rmdir('scanvi_model')
 
     model_query, query_latent = query(target_adata)
     model = model_query
 
-    if predict:
+    if get_from_config(parameters.SCANVI_PREDICT_CELLTYPES):
         predict_latent(predict(model_query, query_latent))
 
     model_surgery, surgery_latent = surgery(target_adata)
 
-    if predict:
+    if get_from_config(parameters.SCANVI_PREDICT_CELLTYPES):
         predict_latent(predict(model_surgery, surgery_latent))
 
     full_latent = None

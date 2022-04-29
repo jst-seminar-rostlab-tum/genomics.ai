@@ -6,6 +6,7 @@ import boto3
 from aiohttp import ClientError
 import sys
 from pathlib import Path
+import scanpy
 
 
 def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=None):
@@ -99,3 +100,15 @@ def delete_file(file):
     """
     if os.path.isfile(file):
         os.remove(file)
+
+def read_h5ad_file_from_s3(key):
+    """
+    downloads an .h5ad file from s3, reads the data and deletes the file
+    :param key:
+    :return:
+    """
+    filename = tempfile.mktemp(suffix=".h5ad")
+    fetch_file_from_s3(key, filename)
+    data = scanpy.read(filename)
+    delete_file(filename)
+    return data
