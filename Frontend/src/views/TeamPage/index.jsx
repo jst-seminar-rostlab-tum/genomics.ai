@@ -20,12 +20,7 @@ export default function TeamPage({ sidebarShown }) {
   const [team, setTeam] = useState({});
   const [user, setUser] = useState({});
   const [institution, setInstitution] = useState({});
-  const [isAdmin, setIsAdmin] = useState(false);
   const [adminInstitutions, setAdminInstitutions] = useState([]);
-
-  function updateIsAdmin() {
-    setIsAdmin((team.adminIds || []).includes(user.id));
-  }
 
   const handleDescriptionChange = (event) => {
     setTeam({
@@ -36,14 +31,14 @@ export default function TeamPage({ sidebarShown }) {
 
   useEffect(() => {
     getUser()
-      .then((newUser) => { setUser(newUser); updateIsAdmin(); });
-  }, [setUser, isAdmin]);
+      .then((newUser) => { setUser(newUser); });
+  }, [setUser]);
 
   useEffect(() => {
     getTeam(id)
-      .then((newTeam) => { setTeam(newTeam); updateIsAdmin(); })
+      .then((newTeam) => { setTeam(newTeam); })
       .catch((ignored) => { console.error(ignored); });
-  }, [setTeam, isAdmin]);
+  }, [setTeam]);
 
   // Institution may be undefined
   useEffect(() => {
@@ -55,6 +50,8 @@ export default function TeamPage({ sidebarShown }) {
     queryIsAdminInstitutions(user.id)
       .then((newAdminInstitutions) => setAdminInstitutions(newAdminInstitutions));
   }, [user, setAdminInstitutions]);
+
+  const isAdmin = team.adminIds ? team.adminIds.includes(user.id) : false;
 
   return (
     <HeaderView

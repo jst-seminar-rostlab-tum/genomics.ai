@@ -9,6 +9,16 @@ let mockTeams = [
     visibility: 'public',
     institutionId: 2,
   },
+  {
+    id: 2,
+    name: 'Genomics Team',
+    description: 'Genomics Team bla bla',
+    adminIds: [1, 2],
+    invitedMemberIds: [],
+    memberIds: [3, 4, 5],
+    visibility: 'public',
+    institutionId: 3,
+  },
 ];
 let runningId = 1;
 

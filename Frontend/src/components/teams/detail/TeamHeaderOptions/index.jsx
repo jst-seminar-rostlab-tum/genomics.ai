@@ -41,6 +41,7 @@ function TeamHeaderOptions({
             value={institution}
             onChange={handleOpenDialog}
             variant="standard"
+            sx={{ minWidth: '150px' }}
           >
             {availableInstitutions.map((institutionOption) => (
               <MenuItem
