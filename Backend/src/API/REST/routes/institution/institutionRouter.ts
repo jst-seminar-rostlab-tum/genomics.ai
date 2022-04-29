@@ -7,6 +7,7 @@ import { AddInstitutionDTO } from "../../../../database/dtos/institution.dto";
 import UserService from "../../../../database/services/user.service";
 
 import check_auth from "../../middleware/check_auth";
+import { institution_admin_auth } from "../../middleware/check_institution_auth";
 
 const create_institution = (): Router => {
     let router = express.Router();
@@ -91,11 +92,10 @@ const make_user_admin_of_institution = (): Router => {
     let router = express.Router();
 
     router
-        .put("/institutions/:id/admin", check_auth(), async (req: any, res) => {
+        .put("/institutions/:id/admin", check_auth(), institution_admin_auth, async (req: any, res) => {
 
             const { userId }: { userId: Schema.Types.ObjectId } = req.body;
             const institutionId_to_modify = req.params.id;
-            const current_user = req.user_id
 
             try {
 
@@ -109,9 +109,6 @@ const make_user_admin_of_institution = (): Router => {
 
                 if (!institutionToBeUpdated)
                     return res.status(409).send("User that you are trying to make as admin is not a member!");
-
-                if (!institutionToBeUpdated?.adminIds.includes(current_user))
-                    return res.status(401).send("Invalid autherization permission!");
 
                 if (institutionToBeUpdated?.adminIds.includes(userId))
                     return res.status(409).send("User is already an admin!");
@@ -133,11 +130,40 @@ const make_user_admin_of_institution = (): Router => {
     return router;
 }
 
+const join_as_member_of_institution = (): Router => {
+    let router = express.Router();
 
-const get_institution = () : Router => {
+    router
+        .put("/institutions/:id/join", check_auth(), async (req: any, res) => {
+
+            const institutionId_to_modify = req.params.id;
+            const current_user = req.user_id;
+            try {
+
+                const institutionToBeUpdated = await InstitutionService.getInstitutionById(institutionId_to_modify)
+
+                if (!institutionToBeUpdated?.invitedMemberIds.includes(current_user))
+                    return res.status(409).send("Could not join as you are not an invited member!");
+
+                const updatedInstitution = await InstitutionService.makeUserMemberOfInstitution(institutionId_to_modify, current_user)
+
+                if (updatedInstitution) {
+                    res.json(updatedInstitution);
+                } else {
+                    return res.status(409).send("Could not join as member of the institution!");
+                }
+            } catch (error) {
+                return res.status(500).send("Something went wrong: " + error)
+            }
+        })
+
+    return router;
+}
+
+const get_institution = (): Router => {
     let router = express.Router();
     router
-        .get("/institution/:id", check_auth(), async (req: any, res) =>{
+        .get("/institution/:id", check_auth(), async (req: any, res) => {
             const institutionId = req.params.id;
             try {
                 const institution = await InstitutionService.getInstitutionById(institutionId);
@@ -150,15 +176,15 @@ const get_institution = () : Router => {
     return router;
 }
 
-const get_institutions = () : Router => {
+const get_institutions = (): Router => {
     let router = express.Router();
     router
-        .get("/institutions", check_auth(), async( req: any, res) => {
-            const query = {...req.query };
-            try{
+        .get("/institutions", check_auth(), async (req: any, res) => {
+            const query = { ...req.query };
+            try {
                 const institutions = await InstitutionService.filterInstitutions(query);
                 return res.status(200).json(institutions);
-            } catch (err){
+            } catch (err) {
                 console.error(JSON.stringify(err));
                 return res.status(404).send(`No institutions found`);
             }
@@ -166,6 +192,6 @@ const get_institutions = () : Router => {
     return router;
 }
 
-export { create_institution, invite_to_institution,make_user_admin_of_institution, get_institutions, get_institution }
+export { create_institution, invite_to_institution, make_user_admin_of_institution, join_as_member_of_institution, get_institutions, get_institution }
 
 
