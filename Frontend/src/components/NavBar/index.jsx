@@ -220,7 +220,6 @@ export default function Navbar({
               > 
               <img width={28} alt="logo" src={logo} />
             </IconButton>
-<<<<<<< HEAD
             <Navlink>genomics.ai</Navlink>
           </LinkBox>
           <LinkBox to="/about"><Navlink>About us</Navlink></LinkBox>
@@ -236,54 +235,3 @@ export default function Navbar({
     </Box>
   )
 }
-=======
-          </Link>
-          <Typography sx={{ fontSize: '24px', fontWeight: '500' }}>genomics.ai</Typography>
-          <Box sx={{ flexGrow: 1 }}>
-            <Typography variant="h6" sx={{ flexGrow: 1 }}>
-              <ul>
-                <Box>
-                  <li><Link to="/" className={styles.navbarcontent}>Home</Link></li>
-                </Box>
-                <li><Link to="about" className={styles.navbarcontent}>Team</Link></li>
-                <li><Link to="docs" className={styles.navbarcontent}>Docs</Link></li>
-                <li><Link to="contact" className={styles.navbarcontent}>Contact</Link></li>
-              </ul>
-            </Typography>
-          </Box>
-          <Box className={styles.buttonContainer}>
-            <Button
-              variant="text"
-              color="inherit"
-              sx={{ m: 2 }}
-              onClick={onSignUpClicked}
-            >
-              <Typography sx={{ color: 'black', fontWeight: '500' }}>
-                Sign up
-              </Typography>
-            </Button>
-            <Button variant="outlined" color="info" onClick={onLoginClicked}>
-              <Typography sx={{ color: '#4F83CC', fontWeight: '500' }}>
-                Login
-              </Typography>
-            </Button>
-          </Box>
-        </Toolbar>
-      </div>
-      <div>
-        <LoginForm
-          visible={isLoginFormVisible}
-          onClose={onLoginFormClosed}
-        />
-        <RegistrationForm
-          visible={isRegistrationFormVisible}
-          onClose={onRegistrationFormClosed}
-          onSuccessfulRegistration={onLoginClicked}
-        />
-      </div>
-    </div>
-  );
-};
-
-export default NavBar;
->>>>>>> main
