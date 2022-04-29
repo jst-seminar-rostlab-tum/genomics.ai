@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import FindMapping from 'components/GeneMapper/findMapping';
 import {
@@ -7,6 +7,7 @@ import {
 import PlusIcon from 'components/GeneMapper/plusIcon';
 import styles from './geneMapper.css';
 import ProjectBarCard from 'components/GeneMapper/projectBarCard';
+import FindMappingRequest from 'components/GeneMapper/findMappingRequest';
 
 const theme = createTheme({
   palette: {
@@ -52,7 +53,7 @@ function GeneMapperHome() {
                 <PlusIcon />
               </ThemeProvider>
             </Stack>
-            <FindMapping />
+            <FindMappingRequest className="findMappingRequest" />
           </Stack>
           <ProjectBarCard />
           <ProjectBarCard />

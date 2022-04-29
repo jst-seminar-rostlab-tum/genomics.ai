@@ -7,11 +7,13 @@ import Typography from '@mui/material/Typography';
 import { Stack } from '@mui/material';
 import './projectBarCard.css';
 import CircleIcon from '@mui/icons-material/Circle';
+import { useHistory } from 'react-router-dom';
 
 export default function ProjectBarCard() {
+  const history = useHistory();
   return (
     <Card sx={{
-      width: 1527, height: 80, marginLeft: 60, marginTop: 30,
+      width: 1527, height: 80, marginLeft: 60, marginTop: 5,
     }}
     >
       <Stack direction="row" spacing={120}>
@@ -27,8 +29,10 @@ export default function ProjectBarCard() {
 
         <CardActions>
           <Stack direction="row" spacing={3}>
-            <Button variant="outlined" size="small" disableRipple sx={{ borderRadius: 100 }}>Add To Team </Button>
-            <Button variant="contained" size="small" color="secondary" sx={{ borderRadius: 100 }}>See Results</Button>
+            {// with drop }
+}
+            <Button variant="outlined" size="small" sx={{ borderRadius: 100 }}>Add To Team </Button>
+            <Button variant="contained" size="small" color="secondary" sx={{ borderRadius: 100 }} onClick={() => history.push('./result')}>See Results</Button>
           </Stack>
         </CardActions>
       </Stack>

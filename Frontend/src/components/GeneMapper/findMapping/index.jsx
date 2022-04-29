@@ -17,10 +17,8 @@ export default function FindProject() {
         marginLeft: 250,
         marginTop: 20,
         color: 'CECECE',
-        borderRadius: 20,
+        borderRadius: 80,
       }}
-      noValidate
-      autoComplete="off"
     >
       <TextField
         className="textfield"
