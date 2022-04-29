@@ -5,7 +5,7 @@ import Sidepanel from 'components/GeneMapper/Sidepanel';
 import { UmapVisualization2 } from 'components/Visualization/src/umapVisualization';
 import { csv } from 'd3';
 import React, {
-  useCallback, useEffect, useRef, useState,
+  useEffect, useRef, useState,
 } from 'react';
 import getProject from 'shared/services/mock/projects';
 
@@ -42,12 +42,9 @@ const testCategories = {
 
 /**
  * Shows the UMAP visualization for a given project.
- * @param sidebarShown set true if sidebar is open, false otherwise
  * @param projectId id of the project the result belongs to
  */
-function GeneMapperResultView({ sidebarShown, projectId }) {
-  const paddingL = useCallback(() => (sidebarShown ? '350px' : '100px'), [sidebarShown]);
-
+function GeneMapperResultView({ projectId }) {
   const [project, setProject] = useState(null);
   const umapContainer = useRef(null);
   const [umap, setUmap] = useState(null);
@@ -87,9 +84,7 @@ function GeneMapperResultView({ sidebarShown, projectId }) {
   return (
     <Box
       sx={{
-        pl: paddingL,
-        pr: '20px',
-        height: '100vh',
+        height: '100%',
         display: 'flex',
         flexDirection: 'column',
       }}
@@ -114,7 +109,9 @@ function GeneMapperResultView({ sidebarShown, projectId }) {
                 />
               </Sidepanel>
               <Box
-                sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}
+                sx={{
+                  flexGrow: 1, display: 'flex', justifyContent: 'center', overflow: 'hidden',
+                }}
                 ref={umapContainer}
               />
               <Sidepanel title="Graphs" collapseToRight />

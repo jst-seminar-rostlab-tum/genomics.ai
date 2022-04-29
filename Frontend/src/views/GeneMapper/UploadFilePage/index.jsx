@@ -10,15 +10,26 @@ import Input from 'components/Input/Input';
 import CustomButton from 'components/CustomButton'
 import { useState, useEffect } from 'react';
 
-import { tabLabels } from './tabLabels'
+// import { tabLabels } from './tabLabels'
 
-function UploadFilePage() {
+function UploadFilePage({ basePath }) {
   const [uploadedFile, setUploadedFile] = useState();
   const [existingDatasets, setExistingDatasets] = useState([]);
   const [ongoingUploads, setOngoingUploads] = useState([]);
   const [tabsValue, setTabsValue] = useState(0);
   const [requirements, setRequirements] = useState([]);
   const [open, setOpen] = useState(false);
+
+  const [tabLabels] = useState([
+    {
+      label: 'Exisiting Datasets',
+      path: `${basePath}/datasets`,
+    },
+    {
+      label: 'Ongoing Uploads',
+      path: `${basePath}/ongoing`,
+    },
+  ]);
 
   const handleOnDropChange = (file) => {
     console.log(file)

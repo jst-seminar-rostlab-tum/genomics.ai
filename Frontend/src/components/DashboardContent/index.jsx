@@ -6,6 +6,7 @@ import Sidebar from '../Sidebar';
 import Dashboard from 'views/Dashboard';
 import TeamOverview from 'views/TeamOverview';
 import InstitutionOverview from 'views/InstitutionOverview';
+import GeneMapper from 'views/GeneMapper';
 import UserProfile from 'views/UserProfile';
 import Documentation from 'views/Documentation';
 import Settings from 'views/Settings';
@@ -16,7 +17,7 @@ import { useAuth } from 'shared/context/authContext';
 const DashboardContent = (props) => {
   const [sidebarShown, setSidebarShown] = useState(true);
   const toggleSidebar = () => setSidebarShown(!sidebarShown);
-  const [user, setUser] = useAuth()
+  const [user, setUser] = useAuth();
 
   const { path, url } = useRouteMatch();
 
@@ -42,6 +43,10 @@ const DashboardContent = (props) => {
 
         <Route path={`${path}/institutions`}>
           <InstitutionOverview sidebarShown={sidebarShown} />
+        </Route>
+
+        <Route path={`${path}/genemapper`}>
+          <GeneMapper sidebarShown={sidebarShown} />
         </Route>
 
         <Route path={`${path}/users`}>
