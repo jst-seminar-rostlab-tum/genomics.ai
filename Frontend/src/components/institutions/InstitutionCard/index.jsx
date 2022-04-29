@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Button from '@mui/material/Button';
 import ListCard from 'components/general/ListCard';
-import InstitutionLeaveButton from 'components/institutionOverview/InstitutionLeaveButton';
+import InstitutionLeaveButton from 'components/institutions/InstitutionLeaveButton';
 import styles from './institutionCard.module.css';
 
 import getUser from 'shared/services/mock/user';
@@ -14,6 +15,11 @@ function InstitutionCard({ institution, onLeft }) {
       .then(setUser);
   }, [setUser]);
 
+  const history = useHistory();
+  const navigateToInstitution = () => {
+    history.push(`/sequencer/institutions/${institution.id}`);
+  };
+
   const {
     name, profilePictureURL, adminIds,
   } = institution;
@@ -21,6 +27,7 @@ function InstitutionCard({ institution, onLeft }) {
     <ListCard
       title={name}
       imageURL={profilePictureURL}
+      enforceImage
       nextToTitle={(
         <span className={styles.accessRightIndicator}>
           {adminIds.indexOf(user.id) !== -1 ? 'admin' : 'member'}
@@ -39,6 +46,7 @@ function InstitutionCard({ institution, onLeft }) {
         ) : <div key="nothing" />,
         <InstitutionLeaveButton key="leave" institution={institution} onLeft={onLeft} />,
       ]}
+      onClick={navigateToInstitution}
     />
   );
 }

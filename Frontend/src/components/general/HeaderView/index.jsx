@@ -9,28 +9,30 @@ function HeaderView({
 }) {
   const navbarPaddingLeft = useCallback(() => (sidebarShown ? '80px' : '190px'), [sidebarShown]);
   return (
-    <Stack
-      direction="column"
-      sx={{
-        width: '100%',
-        height: '100vh',
-        paddingLeft: navbarPaddingLeft,
-      }}
-    >
-      <div style={{ paddingLeft: '60px', paddingRight: '60px' }}>
-        <Header title={title} rightOfTitle={rightOfTitle} replaceRight={replaceHeaderRight} />
-      </div>
-
+    <div className={styles.headerView}>
       <Stack
-        className="flexContainer"
-        direction="row"
-        sx={{ height: '100%' }}
+        direction="column"
+        sx={{
+          width: '100%',
+          height: '100vh',
+          paddingLeft: navbarPaddingLeft,
+        }}
       >
-        <div className={styles.content}>
-          {children}
+        <div style={{ paddingLeft: '60px', paddingRight: '60px' }}>
+          <Header title={title} rightOfTitle={rightOfTitle} replaceRight={replaceHeaderRight} />
         </div>
+
+        <Stack
+          className="flexContainer"
+          direction="row"
+          sx={{ height: 'calc(100% - var(--header-height))' }}
+        >
+          <div className={styles.content}>
+            {children}
+          </div>
+        </Stack>
       </Stack>
-    </Stack>
+    </div>
   );
 }
 
