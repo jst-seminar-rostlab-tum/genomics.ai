@@ -11,7 +11,6 @@ export const check_institution_auth = (req: ExtInstRequest, res: any, next: any)
     const institution_id = req.params.id;
 
     try {
-
         InstitutionService.getInstitutionById(institution_id).then(inst => {
             if (!inst) {
                 return res.status(500).send("Error during authentication: Failed to fetch the institution");
