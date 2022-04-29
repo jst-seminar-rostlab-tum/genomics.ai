@@ -1,7 +1,11 @@
-import { Box, CircularProgress } from '@mui/material';
+import CenterFocusWeakIcon from '@mui/icons-material/CenterFocusWeak';
+import ZoomInIcon from '@mui/icons-material/ZoomIn';
+import ZoomOutIcon from '@mui/icons-material/ZoomOut';
+import { Box, CircularProgress, IconButton } from '@mui/material';
 import GeneMapperCategories from 'components/GeneMapper/Categories';
 import GeneMapperResultHeader from 'components/GeneMapper/ResultHeader';
 import Sidepanel from 'components/GeneMapper/Sidepanel';
+import { resetZoom, zoomInN, zoomOutN } from 'components/Visualization/src/newZoom';
 import { UmapVisualization2 } from 'components/Visualization/src/umapVisualization';
 import { csv } from 'd3';
 import React, {
@@ -85,10 +89,27 @@ function GeneMapperResultView({ projectId }) {
               </Sidepanel>
               <Box
                 sx={{
-                  flexGrow: 1, display: 'flex', justifyContent: 'center', overflow: 'hidden',
+                  flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', overflow: 'hidden',
                 }}
-                ref={umapContainer}
-              />
+              >
+                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                  <IconButton onClick={() => zoomInN()}>
+                    <ZoomInIcon />
+                  </IconButton>
+                  <IconButton onClick={() => zoomOutN()}>
+                    <ZoomOutIcon />
+                  </IconButton>
+                  <IconButton onClick={() => resetZoom()}>
+                    <CenterFocusWeakIcon />
+                  </IconButton>
+                </Box>
+                <Box
+                  sx={{
+                    flexGrow: 1, display: 'flex', justifyContent: 'center', overflow: 'hidden',
+                  }}
+                  ref={umapContainer}
+                />
+              </Box>
               <Sidepanel title="Graphs" collapseToRight />
             </Box>
           </>
