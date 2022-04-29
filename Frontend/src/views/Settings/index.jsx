@@ -4,12 +4,15 @@ import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import validator from 'validator';
 import { LoadingButton } from '@mui/lab';
 import { Alert, Snackbar } from '@mui/material';
+import validator from 'validator';
+
+import ProfileImage from 'components/ProfileImage';
+
 import styles from './settings.module.css';
-import profileDefault from 'assets/user.png';
 import updateProfile from 'shared/services/SettingsLogic';
+import { useAuth } from 'shared/context/authContext';
 
 const myTheme = createTheme({
   palette: {
@@ -62,7 +65,8 @@ function PasswordSection({ onPasswordInfoChange, errors, changePassword }) {
   return null;
 }
 
-function Settings({ user, setUser, sidebarShown }) {
+function Settings({ sidebarShown }) {
+  const [user, setUser] = useAuth()
   /* Booleans */
   const paddingL = useCallback(() => (sidebarShown ? '130px' : '380px'), [sidebarShown]);
 
@@ -159,12 +163,8 @@ function Settings({ user, setUser, sidebarShown }) {
           direction="column"
         >
           {/* Profile Image --------------------------------------------------------------*/}
-          <div style={{ marginBottom: '50px' }}>
-            <img
-              alt="profile"
-              src={profileDefault}
-              style={{ height: '180px' }}
-            />
+          <div className={styles.profilePicture}>
+            <ProfileImage sizePixels={180} />
           </div>
 
           {/* Input Fields --------------------------------------------------------------*/}
