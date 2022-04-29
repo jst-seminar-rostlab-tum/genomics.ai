@@ -111,4 +111,20 @@ export default class ProjectService {
             { $addToSet: { memberIds: userId} }
         );
     }
+
+    static async getProjects( queryParams : any):
+    Promise<IProject[] | null >{
+        var keyword : object,
+            sortBy  : any;
+
+        queryParams.hasOwnProperty('keyword') ?  keyword = { name : queryParams.keyword } : keyword = {};
+
+        if(queryParams.hasOwnProperty('sortBy')){
+            let sortProperty = queryParams.sortBy;
+            sortBy = { sortProperty : 1 }
+        } else
+            sortBy = {};
+
+        return await projectModel.find(keyword).sort(sortBy);
+    }
 }

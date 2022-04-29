@@ -204,4 +204,23 @@ export default class InstitutionService {
         let old = await institutionModel.findByIdAndUpdate(institution_id, { $unset: { backgroundPictureURL: "" } });
         return old?.backgroundPictureURL;
     }
+
+    static async filterInstitutions(query: any):
+     Promise<(IInstitution[] | null )>{
+
+        var keyword : object,
+            sortBy  : any;
+
+        query.hasOwnProperty('keyword') ?  keyword = { name : query.keyword } : keyword = {};
+
+        if(query.hasOwnProperty('sortBy')){
+            let sortProperty = query.sortBy;
+            sortBy = { sortProperty : 1 }
+        } else
+            sortBy = {};
+
+        return await institutionModel.find(keyword).sort(sortBy).exec();
+    }
+
+
 }

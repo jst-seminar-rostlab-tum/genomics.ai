@@ -101,4 +101,22 @@ export default class TeamService {
             { $set : { institutionId: institutionId }}
         );
     }
+
+    static async getTeams(queryParams: any ):
+    Promise<ITeam[] | null >{
+
+        var filter  : any,
+            sortBy  : any;
+
+        queryParams.hasOwnProperty('keyword') ?  filter = { name : queryParams.keyword } : filter = {};
+        queryParams.hasOwnProperty('visibility') ? filter.visibility = queryParams.visibility : null;
+        
+        if(queryParams.hasOwnProperty('sortBy')){
+            let sortProperty = queryParams.sortBy;
+            sortBy = { sortProperty : 1 }
+        } else
+            sortBy = {};
+
+        return await teamModel.find(filter).sort(sortBy);
+    }
 }
