@@ -4,6 +4,8 @@ import scanpy
 import requests
 import boto3
 from aiohttp import ClientError
+import sys
+from pathlib import Path
 
 
 def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=None):
@@ -20,7 +22,7 @@ def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=
     final = latent.obs.drop(columns=drop_columns)
     final["x"] = list(map(lambda p: p[0], latent.obsm["X_umap"]))
     final["y"] = list(map(lambda p: p[1], latent.obsm["X_umap"]))
-    final.to_csv(filename)
+    final.to_csv(filename, sep='\t')
     if key is not None:
         store_file_in_s3(filename, key)
     return filename
@@ -35,6 +37,7 @@ def print_csv(filename):
 def save_umap_as_pdf(latent, filepath, color=None, wspace=0.6):
     if color is None:
         color = []
+    Path(os.path.dirname(filepath)).mkdir(parents=True, exist_ok=True)
     scanpy.pl.umap(latent,
                    color=color,
                    frameon=False,
@@ -62,8 +65,9 @@ def fetch_file_from_s3(key, path):
     :param path: desired path
     :return:
     """
-    client = boto3.client('s3', aws_access_key_id=os.getenv('AWS_ENDPOINT'),
-                          aws_secret_access_key=os.getenv('AWS_ACCESS_KEY'))
+    client = boto3.client('s3', endpoint_url=os.getenv('AWS_ENDPOINT'),
+                      aws_access_key_id=os.getenv('AWS_ACCESS_KEY'),
+                      aws_secret_access_key=os.getenv('AWS_SECRET_KEY'))
     client.download_file(os.getenv('AWS_BUCKET'), key, path)
 
 

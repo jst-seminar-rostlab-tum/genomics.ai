@@ -1,3 +1,4 @@
+import os
 import warnings
 
 import scanpy as sc
@@ -6,7 +7,7 @@ import torch
 from scarches.dataset.trvae.data_handling import remove_sparsity
 
 from utils import utils, parameters
-
+import sys
 config = {}
 
 
@@ -38,8 +39,10 @@ def setup():
 
 
 def pre_process_data():
-    source_adata = sc.read(get_from_config(parameters.REFERENCE_DATA_PATH))
-    target_adata = sc.read(get_from_config(parameters.QUERY_DATA_PATH))
+    utils.fetch_file_from_s3(get_from_config(parameters.REFERENCE_DATA_PATH), 'scVI-reference.h5ad')
+    utils.fetch_file_from_s3(get_from_config(parameters.QUERY_DATA_PATH), 'scVI-query.h5ad')
+    source_adata = sc.read('scVI-reference.h5ad')
+    target_adata = sc.read('scVI-query.h5ad')
     source_adata = remove_sparsity(source_adata)
     target_adata = remove_sparsity(target_adata)
 
@@ -53,10 +56,12 @@ def create_scVI_model(source_adata, target_adata):
     :param target_adata:
     :return:
     """
-    if get_from_config('pre_trained_scVI'):
+    if get_from_config(parameters.USE_PRETRAINED_SCVI_MODEL):
+        os.mkdir('scvi_model')
+        utils.fetch_file_from_s3(get_from_config(parameters.PRETRAINED_MODEL_PATH), 'assets/scVI/model.pt')
         return sca.models.SCVI.load_query_data(
             target_adata,
-            get_from_config(parameters.PRETRAINED_MODEL_PATH),
+            'assets/scVI/',
             freeze_dropout=True,
         )
     else:
@@ -64,7 +69,10 @@ def create_scVI_model(source_adata, target_adata):
         vae = get_model(source_adata)
         vae.train(max_epochs=get_from_config(parameters.SCVI_MAX_EPOCHS))
         compute_latent(vae, source_adata)
-        vae.save(get_from_config(parameters.RESULTING_MODEL_PATH), overwrite=True)
+        vae.save('scvi_model', overwrite=True)
+        # TODO check if we need to to this
+        #print(os.listdir('scvi_model'), file=sys.stderr)
+        #utils.store_file_in_s3('scvi_model/model.pt', get_from_config(parameters.RESULTING_MODEL_PATH))
         return vae
 
 
@@ -122,7 +130,7 @@ def compute_query(anndata):
     :param anndata:
     :return:
     """
-    model = sca.models.SCVI.load_query_data(anndata, get_from_config(parameters.PRETRAINED_MODEL_PATH), freeze_dropout=True)
+    model = sca.models.SCVI.load_query_data(anndata, 'scvi_model/', freeze_dropout=True)
 
     model.train(
         max_epochs=get_from_config(parameters.SCVI_MAX_EPOCHS),
@@ -134,8 +142,7 @@ def compute_query(anndata):
     if get_from_config(parameters.DEBUG):
         utils.save_umap_as_pdf(query_latent, 'data/figures/query.pdf', color=['batch', 'cell_type'])
 
-    query_path = get_from_config('generated_output_base_path') + 'query.tsv'
-    utils.write_latent_csv(query_latent, key='query.tsv', filename=query_path)
+    utils.write_latent_csv(query_latent, key=get_from_config(parameters.OUTPUT_PATH))
 
     return model
 
@@ -153,7 +160,7 @@ def compute_full_latent(source_adata, target_adata, model):
     if get_from_config(parameters.DEBUG):
         utils.save_umap_as_pdf(full_latent, 'data/figures/both.pdf', color=['batch', 'cell_type'])
 
-    both_path = get_from_config('generated_output_base_path') + 'both.tsv'
+    both_path = 'both.tsv'
     utils.write_latent_csv(full_latent, key='both.tsv', filename=both_path)
 
     return full_latent
@@ -165,5 +172,7 @@ def compute_scVI(new_config):
     source_adata, target_adata = pre_process_data()
     create_scVI_model(source_adata, target_adata)
     model = compute_query(target_adata)
-    compute_full_latent(source_adata, target_adata, model)
-    model.save(get_from_config('surgery_path'), overwrite=True)
+    #TODO figure out if we need to do this
+    #compute_full_latent(source_adata, target_adata, model)
+    #model.save('resulting_model', overwrite=True)
+    #utils.store_file_in_s3('resulting_model/model.pt', get_from_config(parameters.RESULTING_MODEL_PATH) + '_new')
