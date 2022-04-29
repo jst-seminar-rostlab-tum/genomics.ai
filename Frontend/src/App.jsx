@@ -51,7 +51,7 @@ function App() {
           <Route path="/result" render={() => <VisualizationPage />} />
           <Route path="/alex" render={() => <AtlasModelChoice />} />
           <Route path="/explore" render={() => <Explore />} />
-          <Route path="/genemapper" render={() => <UploadFilePage />} />
+          <Route path="/evan" render={() => <UploadFilePage />} />
         </Switch>
       </HashRouter>
     </ThemeProvider>

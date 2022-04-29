@@ -1,29 +1,29 @@
-import React from 'react';
-import styles from './uploadfilepage.module.css';
-import { Container, Stack, Typography, Button, Divider } from '@mui/material';
-import { CheckCircleOutlinedIcon, ArrowBackIcon } from '@mui/icons-material/CheckCircle';
+import { ArrowBackIcon, CheckCircleOutlinedIcon } from '@mui/icons-material/CheckCircle';
+import { Box, Button, Container, Divider, Stack, Step, StepLabel, Stepper, Typography } from '@mui/material';
 import { GeneralCard as Card } from 'components/Cards/GeneralCard';
-import { TabGroup } from 'components/Tab';
+import CustomButton from 'components/CustomButton';
 import FileUpload from 'components/FileUpload';
-import { Modal, ModalTitle } from 'components/Modal';
 import Input from 'components/Input/Input';
-import CustomButton from 'components/CustomButton'
-import { useState, useEffect } from 'react';
+import { Modal, ModalTitle } from 'components/Modal';
+import { TabGroup } from 'components/Tab';
+import { useState } from 'react';
+import styles from './uploadfilepage.module.css';
 
-import { tabLabels } from './tabLabels'
+import { tabLabels } from './tabLabels';
 
-function UploadFilePage() {
+function UploadFilePage(props) {
+  const steps = ["Pick Atlas and Model", "Choose File and Project details"];
   const [uploadedFile, setUploadedFile] = useState();
   const [existingDatasets, setExistingDatasets] = useState([]);
   const [ongoingUploads, setOngoingUploads] = useState([]);
   const [tabsValue, setTabsValue] = useState(0);
   const [requirements, setRequirements] = useState([]);
   const [open, setOpen] = useState(false);
+  const [activeStep, setActiveStep] = useState(1);
 
   const handleOnDropChange = (file) => {
     console.log(file)
     setUploadedFile(file);
-    setOpen(true); // opens modal to input mapping name
   }
 
   const handleSubmit = () => {
@@ -35,6 +35,19 @@ function UploadFilePage() {
   return (
     <Container sx={{ paddingTop:'30px' }}>
       {/* Pick atlas and model -> upload files component */}
+      <Box width="500px" margin="auto" sx={{ marginBottom:'3%'}}>
+        <Stepper activeStep={activeStep}>
+            {steps.map((labelText, index) => {
+                return (
+                  <Step index={index}>
+                      <StepLabel>
+                          {labelText}
+                      </StepLabel>
+                  </Step>
+                )
+            })}
+        </Stepper>
+      </Box>
       <Stack
         direction="row"
         divider={(
@@ -135,7 +148,7 @@ function UploadFilePage() {
           </Stack>)}>
           Back
         </CustomButton>
-        <CustomButton type='primary' children={(
+        <CustomButton type='primary' onClick={() => setOpen(true)} children={(
           <Stack direction='row'>
             <CheckCircleOutlinedIcon />
           </Stack> )}>

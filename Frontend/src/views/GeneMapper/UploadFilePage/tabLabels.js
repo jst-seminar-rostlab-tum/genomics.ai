@@ -5,7 +5,7 @@ export const tabLabels = [
     },
     {
         label: "Ongoing Uploads",
-        path: "/genemapper/ongoing"
+        path: "/evan/ongoing"
     }
 ]
 
@@ -13,4 +13,4 @@ export const tabLabels = [
 // export const tabValues = [
     
 // ]
-// TODO path requests
+// TODO path requests, change path label for ongoing uploads 
