@@ -13,10 +13,9 @@ import clusterLabel from 'assets/landing-illustrations/clusterLabel.png';
 import csvformat from 'assets/landing-illustrations/csvformat.png';
 
 const Docs = (props) => {
-  const { setUser } = props;
   return (
     <div>
-      <NavBar setUser={setUser} />
+      <NavBar />
 
       <div className={styles.container}>
         <Stack

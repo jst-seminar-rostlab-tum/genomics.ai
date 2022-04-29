@@ -3,11 +3,12 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import { CssBaseline } from '@mui/material';
 import App from './App';
+import { AuthProvider } from "shared/context/authContext"
 
 ReactDOM.render(
   <>
     <CssBaseline />
-    <App />
+    <AuthProvider><App /> </AuthProvider>
   </>,
   document.getElementById('root'),
 );
