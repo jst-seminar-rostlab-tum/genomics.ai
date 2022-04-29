@@ -149,9 +149,16 @@ async function uploadMultipartFile(uploadId, selectedFile,
     setSubmissionProgress, selectedFile, uploadId);
 }
 
-const startUpload = (selectedFile, submissionProgress, setSubmissionProgress) => fetch(
+const startUpload = (selectedFile,
+  submissionProgress,
+  setSubmissionProgress,
+  projectData = null) => fetch(
   `${BACKEND_ADDRESS}/file_upload/start_upload`,
-  { method: 'POST', headers: getAuthAndJsonHeader(), body: JSON.stringify({ fileName: selectedFile.name }) },
+  {
+    method: 'POST',
+    headers: getAuthAndJsonHeader(),
+    body: JSON.stringify(projectData || { fileName: selectedFile.name }),
+  },
 )
   .then((response) => expectStatus(response, 'start_upload', 200))
   .then((response) => response.json())
@@ -171,11 +178,12 @@ export async function startOrContinueUpload(
   selectedFile,
   submissionProgress,
   setSubmissionProgress,
+  projectData = null,
 ) {
   localStorage.removeItem('cancelUpload');
   const { status, uploadId } = submissionProgress;
   if (status === Status.ERROR_PROGRESS || status === Status.ERROR_FINISH) {
     return uploadMultipartFile(uploadId, selectedFile, submissionProgress, setSubmissionProgress);
   }
-  return startUpload(selectedFile, submissionProgress, setSubmissionProgress);
+  return startUpload(selectedFile, submissionProgress, setSubmissionProgress, projectData);
 }
