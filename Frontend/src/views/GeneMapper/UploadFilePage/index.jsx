@@ -21,6 +21,17 @@ function UploadFilePage(props) {
   const [open, setOpen] = useState(false);
   const [activeStep, setActiveStep] = useState(1);
 
+  const [tabLabels] = useState([
+    {
+      label: 'Exisiting Datasets',
+      path: `${basePath}/datasets`,
+    },
+    {
+      label: 'Ongoing Uploads',
+      path: `${basePath}/ongoing`,
+    },
+  ]);
+
   const handleOnDropChange = (file) => {
     console.log(file)
     setUploadedFile(file);

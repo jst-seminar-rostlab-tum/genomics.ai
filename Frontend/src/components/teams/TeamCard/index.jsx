@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Button from '@mui/material/Button';
 import ListCard from 'components/general/ListCard';
@@ -13,6 +14,13 @@ function TeamCard({ team, onLeft }) {
     getUser()
       .then(setUser);
   }, [setUser]);
+
+  const history = useHistory();
+  const navigateToTeam = () => history.push(`/sequencer/teams/${team.id}`);
+
+  const preventBubble = (evt) => {
+    evt.stopPropagation();
+  };
 
   const {
     name, description, adminIds,
@@ -33,12 +41,16 @@ function TeamCard({ team, onLeft }) {
             endIcon={<SettingsIcon />}
             variant="outlined"
             sx={{ marginRight: '6px' }}
+            onClick={navigateToTeam}
           >
             Settings
           </Button>
         ) : <div key="nothing" />,
-        <TeamLeaveButton key="leave" team={team} onLeft={onLeft} />,
+        <div key="leave" onClick={preventBubble} onKeyPress={preventBubble} role="button" tabIndex={0}>
+          <TeamLeaveButton team={team} onLeft={onLeft} />
+        </div>,
       ]}
+      onClick={navigateToTeam}
     />
   );
 }
