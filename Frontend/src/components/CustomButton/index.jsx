@@ -52,16 +52,15 @@ function getStyles(type) {
  * change size with sx prop
  * https://www.figma.com/file/HcTwUyNxjZJksJ7yfncM9y/JST-22-Design?node-id=42%3A2
  */
-const CustomButton = (props) => { 
+const CustomButton = (props, { type }) => { 
 
-  console.log(props.size)
   return (
   <ButtonBase
     disableRipple
     {...props}
-    sx={getStyles(props.type)}
+    sx={getStyles(type)}
     className={styles.button}
-    variant={props.type === 'tertiary' ? 'text' : 'contained'}
+    variant={type === 'tertiary' ? 'text' : 'contained'}
   >
     {props.children}
   </ButtonBase>
