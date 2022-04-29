@@ -32,7 +32,7 @@ function Footer() {
         </ul>
       </Typography>
       <CopyrightIcon sx={{ paddingLeft: '20px', fontSize: '35px' }} />
-      <Typography sx={{ fontSize: '14px', padding: '10px' }}>Copyright 2021</Typography>
+      <Typography sx={{ fontSize: '14px', padding: '10px' }}>Copyright 2022</Typography>
     </Box>
   );
 }
