@@ -9,9 +9,7 @@ import { TabGroup } from 'components/Tab';
 import { useState } from 'react';
 import styles from './uploadfilepage.module.css';
 
-import { tabLabels } from './tabLabels';
-
-function UploadFilePage(props) {
+function UploadFilePage({basePath}) {
   const steps = ["Pick Atlas and Model", "Choose File and Project details"];
   const [uploadedFile, setUploadedFile] = useState();
   const [existingDatasets, setExistingDatasets] = useState([]);
