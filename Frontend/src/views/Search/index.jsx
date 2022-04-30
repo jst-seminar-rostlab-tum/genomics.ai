@@ -8,10 +8,10 @@ import {
 } from "react-router-dom";
 
 import styles from "./search.module.css";
-import SearchBar from "components/Search/SearchBar";
-import SearchTabs from "components/Search/SearchTabs";
-import SearchContent from "components/Search/SearchContent";
-import Filter from "components/Search/Filter";
+import SearchBar from "components/SearchPageComponents/SearchBar";
+import SearchTabs from "components/SearchPageComponents/SearchTabs";
+import SearchContent from "components/SearchPageComponents/SearchContent";
+import Filter from "components/SearchPageComponents/Filter";
 import { setSeachCategoryInUrl } from "shared/utils/common/utils";
 import querySearch from "shared/mock/search";
 

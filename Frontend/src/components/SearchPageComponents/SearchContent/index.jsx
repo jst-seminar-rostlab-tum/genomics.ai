@@ -1,12 +1,12 @@
 import React from "react";
 
 import { useRouteMatch, Switch, Route } from "react-router-dom";
-import SearchResultList from "components/Search/SearchResultList";
-import TeamCard from "components/Search/SearchResultList/TeamCard";
-import InstitutionCard from "components/Search/SearchResultList/InstitutionCard";
-import UserCard from "components/Search/SearchResultList/UserCard";
-import ProjectCard from "components/Search/SearchResultList/ProjectCard";
-import ResultStatus from "components/Search/ResultStatus";
+import SearchResultList from "../SearchResultList";
+import TeamCard from "../SearchResultList/TeamCard";
+import InstitutionCard from "../SearchResultList/InstitutionCard";
+import UserCard from "../SearchResultList/UserCard";
+import ProjectCard from "../SearchResultList/ProjectCard";
+import ResultStatus from "../ResultStatus";
 import { setSeachCategoryInUrl } from "shared/utils/common/utils";
 
 
