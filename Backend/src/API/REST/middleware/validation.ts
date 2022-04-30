@@ -11,8 +11,11 @@ for (const [path, pathObj] of Object.entries(swaggerDocument.paths)) {
     const reqBody = (methodObj as any).requestBody;
 
     if (!reqBody) continue;
-
-    const schema = reqBody.content["application/json"].schema;
+    let content = reqBody.content;
+    if (!content && reqBody.$ref) {
+      content = resolveRef(swaggerDocument, reqBody.$ref);
+    }
+    let schema = content?.["application/json"]?.schema;
     if (schema) ajv.addSchema(schema, schemaName).getSchema(schemaName);
   }
 }
@@ -35,4 +38,16 @@ export function validationMdw(req: Request, res: Response, next: NextFunction) {
 
 function constructSchemaName(path: string, method: string) {
   return `${path}_${method}`.toLowerCase();
+}
+
+function resolveRef(doc: any, ref: string): any {
+  if (!ref.startsWith("#/")) {
+    throw new Error("invalid ref");
+  }
+  let obj = doc;
+  let components = ref.substr(2).split("/");
+  for (const component of components) {
+    obj = obj[component];
+  }
+  return obj;
 }

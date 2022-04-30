@@ -16,6 +16,26 @@
         "scheme": "bearer",
         "bearerFormat": "JWT"
       }
+    },
+    "requestBodies": {
+      "pictureUpload": {
+        "required": true,
+        "description": "raw png or jpg data",
+        "content": {
+          "image/png": {
+            "schema": {
+              "type": "string",
+              "format": "binary"
+            }
+          },
+          "image/jpeg": {
+            "schema": {
+              "type": "string",
+              "format": "binary"
+            }
+          }
+        }
+      }
     }
   },
   "security": [
@@ -115,6 +135,9 @@
                       "type": "string"
                     },
                     "updatedAt": {
+                      "type": "string"
+                    },
+                    "avatarUrl": {
                       "type": "string"
                     }
                   }
@@ -476,6 +499,46 @@
         }
       }
     },
+    "/user-avatar": {
+      "post": {
+        "summary": "Upload new profile picture for user",
+        "tags": [
+          "User"
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/pictureUpload"
+        },
+        "responses": {
+          "200": {
+            "description": "URL pointing to the S3 bucket location of the uploaded image",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete profile picture of user",
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
     "/file_download/results": {
       "post": {
         "summary": "Download results",
@@ -677,7 +740,7 @@
         }
       }
     },
-    "/institutions/:id/invite": {
+    "/institutions/{id}/invite": {
       "put": {
         "summary": "Invite a user to institution",
         "tags": [
@@ -722,7 +785,7 @@
         }
       }
     },
-    "/institutions/:id/admin": {
+    "/institutions/{id}/admin": {
       "put": {
         "summary": "Make a member of institution admin",
         "tags": [
@@ -766,6 +829,93 @@
           },
           "401": {
             "description": "Invalid autherization permission!"
+          }
+        }
+      }
+    },
+    "/institutions/{id}/join": {
+      "put": {
+        "summary": "Join as member of institution",
+        "tags": ["Institution"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          },
+          "401": {
+            "description": "Invalid autherization permission!"
+          }
+        }
+      }
+    },
+    "/institutions/:id/profilepicture": {
+      "post": {
+        "summary": "Upload new profile picture for institution",
+        "tags": [
+          "Institution"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/pictureUpload"
+        },
+        "responses": {
+          "200": {
+            "description": "URL pointing to the S3 bucket location of the uploaded image",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete profile picture of institution",
+        "tags": [
+          "Institution"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         }
       }

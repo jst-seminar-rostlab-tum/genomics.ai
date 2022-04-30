@@ -52,7 +52,7 @@ export default class ProjectService {
      *  Adds given project to the database.
      *
      *  @param    project
-     *  @returns  projectAdded - the added project 
+     *  @returns  projectAdded - the added project
      */
     static async addProject(project: AddProjectDTO): Promise<IProject> {
         let projectAdded : (IProject | undefined) = undefined;
@@ -91,7 +91,7 @@ export default class ProjectService {
       static async addAdminToProject(projectId: (ObjectId | string), userId: (ObjectId | string)): Promise<any> {
         return await projectModel.updateOne(
             { _id: projectId },
-            { 
+            {
                 $addToSet: { adminIds: userId },
                 $pull: { memberIds: userId }
             }
@@ -110,5 +110,36 @@ export default class ProjectService {
             { _id: projectId },
             { $addToSet: { memberIds: userId} }
         );
+    }
+
+    /**
+     *  Set the team of a project to the given teamId.
+     *
+     *  @param   projectId
+     *  @param   teamId
+     *  @returns updateDocument
+     */
+    static async setTeamOfProject(projectId: (ObjectId | string), teamId: (ObjectId | string)):
+      Promise<any> {
+        return await projectModel.updateOne(
+            { _id: projectId },
+            { $set : { teamId: teamId } }
+        );
+    }
+
+    static async getProjects( queryParams : any):
+    Promise<IProject[] | null> {
+        var keyword : object,
+            sortBy  : any;
+
+        queryParams.hasOwnProperty('keyword') ?  keyword = { name : queryParams.keyword } : keyword = {};
+
+        if(queryParams.hasOwnProperty('sortBy')) {
+            let sortProperty = queryParams.sortBy;
+            sortBy = { sortProperty : 1 }
+        } else
+            sortBy = {};
+
+        return await projectModel.find(keyword).sort(sortBy);
     }
 }
