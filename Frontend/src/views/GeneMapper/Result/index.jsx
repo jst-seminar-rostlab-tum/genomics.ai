@@ -11,7 +11,7 @@ import { csv } from 'd3';
 import React, {
   useEffect, useRef, useState,
 } from 'react';
-import getProject from 'shared/services/mock/projects';
+import { getProject } from 'shared/services/mock/projects';
 
 /**
  * Shows the UMAP visualization for a given project.
@@ -33,8 +33,8 @@ function GeneMapperResultView({ projectId }) {
   }, [projectId]);
 
   useEffect(() => {
-    if (project?.resultURL) {
-      csv(project.resultURL).then((data) => {
+    if (project?.location) {
+      csv(project.location).then((data) => {
         setUmap(new UmapVisualization2(umapContainer.current, data));
       });
     }

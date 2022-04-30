@@ -32,7 +32,7 @@ export async function startOrContinueProjectUpload(
     projectData);
 }
 
-export function addProjectToTeam(teamId, projectId) {
+export async function addProjectToTeam(teamId, projectId) {
   return axios.put(api(`/teams/${teamId}/add_project`), { projectId },
     { headers: getAuthAndJsonHeader() });
 }
