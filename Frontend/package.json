@@ -34,11 +34,11 @@
     "start": "react-scripts start",
     "lint": "eslint \"src/**/*.js?(x)\"",
     "lint-fix": "eslint \"src/**/*.js?(x)\" --fix",
-    "build": "react-scripts build",
+    "build": "DISABLE_ESLINT_PLUGIN=true react-scripts build",
     "deploy-manual": "gh-pages -d build -b master -o pages",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "predeploy": "DISABLE_ESLINT_PLUGIN=true npm run build",
+    "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
