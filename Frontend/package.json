@@ -1,7 +1,7 @@
 {
   "name": "genecruncher_front",
   "version": "0.1.0",
-  "homepage": "https://jst-seminar-rostlab-tum.github.io/genomics.ai",
+  "homepage": "https://jst-seminar-rostlab-tum.github.io/genomics.ai/",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.5.0",
@@ -38,7 +38,7 @@
     "deploy-manual": "gh-pages -d build -b master -o pages",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "predeploy": "npm run build",
+    "predeploy": "DISABLE_ESLINT_PLUGIN=true npm run build",
     "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
