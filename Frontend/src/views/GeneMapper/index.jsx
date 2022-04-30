@@ -19,7 +19,7 @@ function GeneMapper({ sidebarShown }) {
       pl: paddingL,
       pr: '20px',
       height: '100vh',
-      width: "100vw",
+      width: '100vw',
     }}
     >
       <Switch>

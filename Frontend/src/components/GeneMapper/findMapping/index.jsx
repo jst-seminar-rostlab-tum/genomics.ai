@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import './findMapping.css';
 import SearchIcon from '@mui/icons-material/Search';
+import { Stack, Typography } from '@mui/material';
 
 export default function FindProject() {
   return (
@@ -10,25 +11,19 @@ export default function FindProject() {
     // hight color
     // Schrift
     // color of textfield not working?
-    <Box
-      sx={{
-        width: 350,
-        justifyContent: 'center',
-        marginLeft: 250,
-        marginTop: 20,
-        color: 'CECECE',
-        borderRadius: 80,
-      }}
-    >
+    <Box>
       <TextField
         className="textfield"
         id="outlined-basic"
-        label={<SearchIcon />}
+        label={(
+          <Stack>
+            <SearchIcon />
+            Find a Mapping
+          </Stack>
+        )}
         variant="outlined"
         size="small"
-        sx={{
-          borderRadius: 100,
-        }}
+        value={findString}
       />
     </Box>
   );
