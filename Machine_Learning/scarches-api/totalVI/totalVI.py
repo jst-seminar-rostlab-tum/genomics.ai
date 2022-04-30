@@ -50,12 +50,10 @@ def setup_modules():
 
 
 def prepare_data():
-    utils.fetch_file_from_s3(get_from_config(parameters.REFERENCE_DATA_PATH), 'totalVI-reference.h5ad')
-    utils.fetch_file_from_s3(get_from_config(parameters.QUERY_DATA_PATH), 'totalVI-query.h5ad')
     # scv.data.pbmcs_10x_cite_seq()
-    adata_ref = scv.data.pbmcs_10x_cite_seq() #sc.read('totalVI-reference.h5ad')
+    adata_ref = utils.read_h5ad_file_from_s3(get_from_config(parameters.REFERENCE_DATA_PATH))
     # scv.data.dataset_10x("pbmc_10k_v3")
-    adata_query = scv.data.dataset_10x("pbmc_10k_v3") #sc.read('totalVI-query.h5ad')
+    adata_query = utils.read_h5ad_file_from_s3(get_from_config(parameters.QUERY_DATA_PATH))
 
     adata_query.obs["batch"] = "PBMC 10k (RNA only)"
     pro_exp = adata_ref.obsm["protein_expression"]  # put matrix of zeros for protein expression (considered missing)
@@ -141,7 +139,7 @@ def surgery(adata_query):
 
 
 def impute_proteins(vae_q, adata_query):
-    # TODO API crashes here
+    # TODO API crashes here if not sufficient memory available
     _, imputed_proteins = vae_q.get_normalized_expression(
         adata_query,
         n_samples=25,
