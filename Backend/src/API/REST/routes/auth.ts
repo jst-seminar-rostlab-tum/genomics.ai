@@ -27,11 +27,9 @@ export default function auth_route() {
         }
 
         delete user.password;
-        const token = jwt.sign(
-          { id: user._id, email: user.email },
-          JWT_SECRET,
-          { expiresIn: "20h" }
-        );
+        const token = jwt.sign({ id: user._id, email: user.email }, JWT_SECRET, {
+          expiresIn: "20h",
+        });
 
         /* user without the password field */
         const { password, ...userSecure } = user.toObject();

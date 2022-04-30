@@ -1,47 +1,55 @@
-import {Document, model, Schema} from "mongoose";
+import { Document, model, Schema } from "mongoose";
 
 export interface IAtlas extends Document {
-   name: string,
-   previewPictureURL: string,
-   modalities: Array<string>,
-   numberOfCells: number,
-   species: Array<string>,
-   compatibleModels: Array<Schema.Types.ObjectId>
+  name: string;
+  previewPictureURL: string;
+  modalities: Array<string>;
+  numberOfCells: number;
+  species: Array<string>;
+  compatibleModels: Array<Schema.Types.ObjectId>;
 }
 
-const atlasSchema = new Schema<IAtlas>({
+const atlasSchema = new Schema<IAtlas>(
+  {
     name: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
 
     previewPictureURL: {
-        type: String,
-        required: false,
+      type: String,
+      required: false,
     },
 
-    modalities: [{
+    modalities: [
+      {
         type: String,
-        required: true
-    }],
+        required: true,
+      },
+    ],
 
     numberOfCells: {
-        type: Number,
-        required: true
+      type: Number,
+      required: true,
     },
 
-    species: [{
+    species: [
+      {
         type: String,
-        required: true
-    }],
+        required: true,
+      },
+    ],
 
-    compatibleModels: [{
+    compatibleModels: [
+      {
         type: String,
-        required: true
-    }]
-
-}, {
+        required: true,
+      },
+    ],
+  },
+  {
     timestamps: true,
-});
+  }
+);
 
 export const atlasModel = model<IAtlas>("Atlas", atlasSchema);
