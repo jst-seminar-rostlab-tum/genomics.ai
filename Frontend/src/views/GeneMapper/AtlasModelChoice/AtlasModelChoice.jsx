@@ -48,8 +48,9 @@ function AtlasModelChoice({
                                 cellsInReference={a.numberOfCells}
                                 species={a.species}
                                 imgLink={atlasPng}
-                                selected={selectedAtlas===a.name}
+                                selected={selectedAtlas.name===a.name}
                                 onSelect={setSelectedAtlas}
+                                atlasObject={a}
                             />      
                         </Grid>
                     )
@@ -69,13 +70,14 @@ function AtlasModelChoice({
                             height="97%"
                             title={m.name} 
                             description={m.description}
-                            selected={selectedModel===m.name}
+                            selected={selectedModel.name===m.name}
                             onSelect={setSelectedModel}
+                            modelObject={m}
                     />               
                 </Grid>)
             }
             </Grid>
-            <Stack direction='row' justifyContent='space-between' sx={{ marginTop:'75px'}}>
+            <Stack direction='row' justifyContent='space-between' sx={{ marginTop:'20px'}}>
                 <CustomButton type='tertiary' onClick={() => history.push(`${path}`)}>
                     Cancel
                 </CustomButton>

@@ -31,7 +31,7 @@ export const OutlinedButtonSelect = ({ content, onSelect }) => {
  * @param mapLink onHover button Map url
  * @param learnMoreLink onHover button Learn More url
  */
-export const ModelCardSelect = ({ width = "100%", height = "100%", title, description, onSelect, selected, learnMoreLink}) => {
+export const ModelCardSelect = ({ width = "100%", height = "100%", title, description, onSelect, selected, learnMoreLink, modelObject={}}) => {
 
   const [hover, setHover] = useState(false)
   const ref = useRef()
@@ -91,7 +91,7 @@ export const ModelCardSelect = ({ width = "100%", height = "100%", title, descri
                 transform: "translate(-50%, -50%)"
               }}  
               >
-              <OutlinedButtonSelect content="Select" onSelect={() => onSelect(title)}/>
+              <OutlinedButtonSelect content="Select" onSelect={() => onSelect(modelObject)}/>
               <OutlinedButtonSelect content="Learn More"/>
             </Box>
           </Box>

@@ -61,7 +61,6 @@ function GeneMapperHome() {
       <ThemeProvider theme={theme}>
         <Box
           sx={{
-            width: '100%',
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'space-between',
