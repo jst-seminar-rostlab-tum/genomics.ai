@@ -8,6 +8,8 @@ import styles from './home.module.css';
 import ProjectBarCard from 'components/GeneMapper/projectBarCard';
 import SearchIcon from '@mui/icons-material/Search';
 import ProjectMock from 'shared/services/mock/projects';
+import { useSubmissionProgress } from 'shared/context/submissionProgressContext';
+import { getSubmissionProgressPercentage } from 'shared/services/UploadLogic';
 
 const theme = createTheme({
   palette: {
@@ -44,6 +46,11 @@ const themeIcon = createTheme({
 function GeneMapperHome() {
   const [projects, setProjects] = useState([]);
   const [findString, setFindString] = useState('');
+  const [submissionProgress, setSubmissionProgress] = useSubmissionProgress();
+
+  useEffect(() => {
+    console.log(getSubmissionProgressPercentage(submissionProgress));
+  }, [submissionProgress]);
 
   useEffect(() => {
     ProjectMock.getProjects().then((data) => setProjects(data));
