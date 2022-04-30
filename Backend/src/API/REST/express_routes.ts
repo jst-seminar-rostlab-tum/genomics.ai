@@ -23,7 +23,7 @@ import upload_get_upload_url_route from "./routes/file_upload/get_upload_url";
 import download_results_route from "./routes/file_download/results";
 import upload_user_avatar_route from "./routes/upload_user_avatar";
 
-import { get_teams_of_user } from "./routes/user/userRouter";
+import { get_teams_of_user, get_users } from "./routes/user/userRouter";
 import { get_model, get_allModels } from "./routes/model/modelRouter";
 import { get_atlas, get_allAtlases } from "./routes/atlas/atlasRouter";
 import * as swaggerDocument from "../../swagger.json";
@@ -106,6 +106,8 @@ export function express_routes(this: REST_Host): Router {
 
   // user routes
   this.expressApp.use(get_teams_of_user());
+  this.expressApp.use(get_users());
+
 
   // project routes
   this.expressApp.use(get_projects());

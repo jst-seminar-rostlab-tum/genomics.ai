@@ -739,13 +739,17 @@
     "/institutions/{id}/invite": {
       "put": {
         "summary": "Invite a user to institution",
-        "tags": ["Institution"],
+        "tags": [
+          "Institution"
+        ],
         "parameters": [
           {
             "in": "path",
             "name": "id",
             "required": true,
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "requestBody": {
@@ -755,9 +759,13 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "userId": { "type": "string" }
+                  "userId": {
+                    "type": "string"
+                  }
                 },
-                "required": ["userId"],
+                "required": [
+                  "userId"
+                ],
                 "additionalProperties": false
               }
             }
@@ -776,7 +784,9 @@
     "/institutions/{id}/admin": {
       "put": {
         "summary": "Make a member of institution admin",
-        "tags": ["Institution"],
+        "tags": [
+          "Institution"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -822,7 +832,9 @@
     "/institutions/{id}/join": {
       "put": {
         "summary": "Join as member of institution",
-        "tags": ["Institution"],
+        "tags": [
+          "Institution"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -987,6 +999,38 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "summary": "Search users",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "keyword",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Matching users as json array"
           },
           "400": {
             "description": "Failed. Bad post data."
