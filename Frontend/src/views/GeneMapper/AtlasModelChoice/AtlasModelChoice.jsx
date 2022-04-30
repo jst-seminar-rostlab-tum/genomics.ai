@@ -4,16 +4,14 @@ import AtlasCardSelect from "components/Cards/AtlasCardSelect";
 import { ModelCardSelect } from "components/Cards/ModelCardSelect";
 import CustomButton from 'components/CustomButton';
 import styles from "./atlasModelChoice.module.css";
+import { useHistory } from 'react-router-dom';
 
 function AtlasModelChoice({ 
     activeStep, setActiveStep, 
     selectedAtlas, setSelectedAtlas, 
-    selectedModel, setSelectedModel, steps
-    }) {
-    // let [activeStep, setActiveStep] = useState(0);
-    // let [completed, setCompleted] = useState([]);
-    // let [selectedAtlas, setSelectedAtlas] = useState("");
-    // let [selectedModel, setSelectedModel] = useState("");
+    selectedModel, setSelectedModel, steps, path
+}) {
+    const history = useHistory();
 
     let headerStyle = {
         color: "#003560",
@@ -108,10 +106,10 @@ function AtlasModelChoice({
                 </Grid>
             </Grid>
             <Stack direction='row' justifyContent='space-between' sx={{ marginTop:'75px'}}>
-                <CustomButton type='tertiary'>
+                <CustomButton type='tertiary' onClick={() => history.push(`${path}`)}>
                     Cancel
                 </CustomButton>
-                <CustomButton type='primary' onClick={() => setActiveStep(1)}>
+                <CustomButton type='primary' disabled={!selectedAtlas || !selectedModel} onClick={() => setActiveStep(1)}>
                     Confirm
                 </CustomButton>
             </Stack>

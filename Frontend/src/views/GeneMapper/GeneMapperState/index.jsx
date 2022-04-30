@@ -3,17 +3,15 @@ import { useState } from 'react';
 import AtlasModelChoice from '../AtlasModelChoice/AtlasModelChoice';
 import UploadFilePage from '../UploadFilePage';
 
-function GeneMapperState(props) {
+function GeneMapperState({basePath, path}) {
     const [selectedAtlas, setSelectedAtlas] = useState("");
     const [selectedModel, setSelectedModel] = useState("");
     const [activeStep, setActiveStep] = useState(0);
     const steps = ["Pick Atlas and Model", "Choose File and Project details"];
 
-    const functions = {setSelectedAtlas, setSelectedModel, setActiveStep};
-
     return (
         <Container>
-            <Box width="500px" margin="auto" sx={{ marginTop:'5%', marginBottom:'3%'}}>
+            <Box width="500px" margin="auto" sx={{ paddingTop:'4%', marginBottom:'3%'}}>
                 <Stepper activeStep={activeStep}>
                     {steps.map((labelText, index) => {
                         return (
@@ -28,7 +26,8 @@ function GeneMapperState(props) {
             </Box>
             { 
                 activeStep === 0 ? 
-                <AtlasModelChoice 
+                <AtlasModelChoice
+                    path={path}
                     selectedAtlas={selectedAtlas}
                     selectedModel={selectedModel}
                     activeStep={activeStep}
@@ -38,6 +37,8 @@ function GeneMapperState(props) {
                     setActiveStep={setActiveStep}
                 /> :
                 <UploadFilePage
+                    basePath={basePath}
+                    path={path}
                     selectedAtlas={selectedAtlas}
                     selectedModel={selectedModel}
                     activeStep={activeStep}
