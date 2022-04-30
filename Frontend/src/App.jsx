@@ -2,7 +2,7 @@ import './app.module.css';
 import React, { useState } from 'react';
 import { ThemeProvider } from '@mui/material';
 import {
-  Route, HashRouter as Router, Switch, Redirect,
+  Route, HashRouter, Switch, Redirect,
 } from 'react-router-dom';
 import HomePage from './views/Home';
 import About from './views/About';
@@ -22,7 +22,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       {/* eslint-disable-next-line no-restricted-globals */}
-      <Router history={history}>
+      <HashRouter>
         <Switch>
           <Route exact path="/" render={() => (user ? <Redirect to="/sequencer" /> : <HomePage setUser={setUser} />)} />
           <Route path="/sequencer" render={() => guardedPage(<DashboardContent user={user} setUser={setUser} />)} />
@@ -34,7 +34,7 @@ function App() {
           <Route path="/result" render={() => <VisualizationPage />} />
           <Route path="/explore" render={() => <Explore />} />
         </Switch>
-      </Router>
+      </HashRouter>
     </ThemeProvider>
   );
 }
