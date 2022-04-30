@@ -9,7 +9,7 @@ import { useHistory } from 'react-router-dom';
 export default function ProjectBarCard({ name, status }) {
   const history = useHistory();
   const [color, setColor] = React.useState(status === 'DONE' ? 'lightGreen' : status === 'IN PROGRESS' ? 'orange' : 'red');
-  const [typographyColor, setTypographyColor] = React.useState('red');
+  const [typographyColor, setTypographyColor] = React.useState(status === 'UPLOAD FAILED' ? 'red' : 'black');
 
   return (
     <Card sx={{
@@ -24,13 +24,13 @@ export default function ProjectBarCard({ name, status }) {
         >
 
           <CircleIcon sx={{
-            fontSize: 18, marginLeft: '3%', color: { color },
+            fontSize: 18, marginLeft: '3%', color,
           }}
           />
           <Typography sx={{ fontSize: '14px', fontWeight: [500] }}>
             {name}
           </Typography>
-          <Typography sx={{ fontSize: '14px', fontWeight: [500], color: { typographyColor } }}>
+          <Typography sx={{ fontSize: '14px', fontWeight: [500], color: typographyColor }}>
             {status}
           </Typography>
         </Stack>
