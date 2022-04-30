@@ -10,6 +10,7 @@ import scanpy
 import fileinput
 from pathlib import Path
 
+
 def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=None):
     """
     stores a given latent in a file, and if a key is given also in an s3 bucket
@@ -45,12 +46,12 @@ def write_combined_csv(latent_ref, latent_query, key=None, filename=tempfile.mkt
     query = latent_query.obs.drop(columns=drop_columns)
     query["x"] = list(map(lambda p: float(p[0]), latent_query.obsm["X_umap"]))
     query["y"] = list(map(lambda p: float(p[1]), latent_query.obsm["X_umap"]))
-    query["is_reference"] = ['n'] * len(latent_query.obsm["X_umap"])
+    query["is_reference"] = ['No'] * len(latent_query.obsm["X_umap"])
     query.to_csv(filename, sep='\t')
     reference = latent_ref.obs.drop(columns=drop_columns)
     reference["x"] = list(map(lambda p: float(p[0]), latent_ref.obsm["X_umap"]))
     reference["y"] = list(map(lambda p: float(p[1]), latent_ref.obsm["X_umap"]))
-    reference["is_reference"] = ['y'] * len(latent_ref.obsm["X_umap"])
+    reference["is_reference"] = ['Yes'] * len(latent_ref.obsm["X_umap"])
     reference.to_csv(filename, sep='\t', header=False, mode='a')
 
     if key is not None:
