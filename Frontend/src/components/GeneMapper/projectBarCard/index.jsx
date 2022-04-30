@@ -13,18 +13,18 @@ export default function ProjectBarCard({ projectId, name, status }) {
 
   return (
     <Card sx={{
-      marginLeft: '5%', marginTop: '5', marginRight: '10%', marginBottom: '0.5em',
+      marginTop: '5', marginBottom: '0.5em', borderStyle:"solid", borderColor:"#C8C8C8", borderWidth:"0.1px"
     }}
     >
-      <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
+      <Stack direction="row" sx={{ justifyContent: 'space-between' , height:"56px"}}>
         <Stack
           direction="row"
           spacing={4}
-          sx={{ width: '50%', marginTop: '1%' }}
+          sx={{ width: '50%', paddingTop:"18px"}}
         >
 
           <CircleIcon sx={{
-            fontSize: 18, marginLeft: '3%', color,
+            fontSize: 24, marginLeft: '3%', color,
           }}
           />
           <Typography sx={{ fontSize: '14px', fontWeight: [500] }}>
@@ -35,7 +35,7 @@ export default function ProjectBarCard({ projectId, name, status }) {
           </Typography>
         </Stack>
         <Box sx={{
-          p: 0.1, bgcolor: 'background.paper', borderRadius: 3, width: 'flex', mr: 3,
+          p: 0.1, bgcolor: 'background.paper', borderRadius: 3, width: 'flex', mr: 3, paddingTop:"12px"
         }}
         >
           <Button

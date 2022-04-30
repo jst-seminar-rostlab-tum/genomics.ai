@@ -13,7 +13,7 @@ function GeneMapperState({ basePath, path }) {
 
   return (
     <Container>
-      <Box width="500px" margin="auto" sx={{ paddingTop: '4%', marginBottom: '3%' }}>
+      <Box width="500px" margin="auto" sx={{ marginBottom: '3%' }}>
         <Stepper activeStep={activeStep}>
           {steps.map((labelText, index) => (
             <Step index={index}>

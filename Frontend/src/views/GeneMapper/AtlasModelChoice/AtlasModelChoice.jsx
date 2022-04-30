@@ -22,7 +22,7 @@ function AtlasModelChoice({
     let headerStyle = {
         color: "#003560",
         fontSize: "1.6rem",
-        fontWeight: "bold"
+        fontWeight: "bold",
     }
     
     useEffect(() => {
