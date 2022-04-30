@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import { getInstitution } from 'shared/services/mock/institutions';
-import HeaderView from 'components/general/HeaderView';
 import InstitutionMemberList from 'components/institutions/InstitutionMemberList';
 import getUser from 'shared/services/mock/user';
 import styles from './institutionPage.module.css';
 import Avatar from '@mui/material/Avatar';
+
+import queryMyTeams from 'shared/services/mock/teams';
+import InstitutionTeamCard from 'components/institutions/InstitutionTeamCard';
 
 function InstitutionPage() {
   let { id } = useParams();
@@ -14,6 +16,16 @@ function InstitutionPage() {
   const [institution, setInstitution] = useState({});
   const [isAdmin, setIsAdmin] = useState(false);
   const [user, setUser] = useState({});
+
+
+  const [teams, setTeams] = useState([]);
+  useEffect(() => {
+    queryMyTeams()
+      .then((newTeams) => setTeams(newTeams))
+      .catch((ignored) => { console.log(ignored); });
+  }, [setTeams]);
+
+
 
   function updateIsAdmin() {
     setIsAdmin((institution.adminIds || []).includes(user.id));
@@ -43,6 +55,12 @@ function InstitutionPage() {
       .catch((ignored) => { console.error(ignored); });
   }, [setInstitution, isAdmin]);
 
+  function onLeft(team) {
+    setTeams(teams.filter((i) => i.id !== team.id));
+  }
+
+
+
   return (
     <>
     <div class = {styles.background} style={{ backgroundImage: `url(${institution.backgroundPictureURL})`, resizeMode: "stretch"}}>
@@ -51,6 +69,7 @@ function InstitutionPage() {
       </div>
       <h1 class= {styles.imageText}><span>{institution.name}</span></h1>
       <h3 class= {styles.imageText}><span>{institution.country}</span></h3>
+      <p class= {styles.imageText}><span>{institution.memberIds?.length+institution.adminIds?.length} Members</span></p>
     </div>
     <div class= {styles.test}>
     <section>
@@ -73,6 +92,18 @@ function InstitutionPage() {
       <section>
         <h2>Teams</h2>
         <hr />
+        <div className={styles.content}>
+              {teams.length === 0 ? 'No teams.' : ''}
+              {teams.map((team) => (
+                <div key={team.id}>
+                  <InstitutionTeamCard
+                    team={team}
+                    onLeft={(t) => onLeft(t)}
+                  />
+                  <div className={styles.cardSpacing} />
+                </div>
+              ))}
+            </div>
       </section>
       <section>
         <h2>Members</h2>

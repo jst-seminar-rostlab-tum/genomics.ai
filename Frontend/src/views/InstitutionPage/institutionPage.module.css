@@ -20,18 +20,22 @@
 }
 
 .imageText span{
-    background-color: #002644;
     color:white;
+    border-radius: 25px;
+    background: #002644;
+    padding: 10px;
+    margin: 10px;
 }
 
 .background {
     background-repeat: no-repeat;
     background-position: center;
-    
+    height: 400px;
 }
 
 .institutionIcon {
     display: flex;
     justify-content: center;
     align-items: center;
+    padding-top: 20px;
 }

@@ -25,7 +25,7 @@ const testInstitutions = [
     description: 'Test',
     profilePictureURL: 'https://www.hzdr.de/db/Pic?pOid=55058',
     backgroundPictureURL: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Helmholtz_Zentrum_M%C3%BCnchen.jpg/2560px-Helmholtz_Zentrum_M%C3%BCnchen.jpg',
-    adminIds: [1],
+    adminIds: [1,4,5],
     memberIds: [2, 3],
   },
   {
