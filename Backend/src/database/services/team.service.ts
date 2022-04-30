@@ -186,4 +186,9 @@ export default class TeamService {
 
     return await teamModel.find(filter).sort(sortBy);
   }
+
+  static async getUsersTeams(userId: (ObjectId | string)):
+      Promise<ITeam[] | null> {
+    return await teamModel.find({memberIds: { $elemMatch: { $eq: userId } }});
+  }
 }

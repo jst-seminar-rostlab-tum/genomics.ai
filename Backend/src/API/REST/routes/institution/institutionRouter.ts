@@ -193,6 +193,22 @@ const get_institutions = (): Router => {
   return router;
 };
 
+const get_users_institutions = (): Router => {
+  let router = express.Router();
+  router
+      .get("/users/:id/institutions", check_auth(), async (req: any, res) => {
+        const userId = req.params.id;
+        try {
+          const institutions = await InstitutionService.getUsersInstitutions(userId);
+          return res.status(200).json(institutions);
+        } catch (err) {
+          console.error(JSON.stringify(err));
+          return res.status(404).send(`No institutions found`);
+        }
+      })
+  return router;
+}
+
 export {
   create_institution,
   invite_to_institution,
@@ -200,4 +216,5 @@ export {
   join_as_member_of_institution,
   get_institutions,
   get_institution,
+  get_users_institutions
 };

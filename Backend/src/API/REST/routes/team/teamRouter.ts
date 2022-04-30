@@ -398,6 +398,22 @@ const get_teams = (): Router => {
   return router;
 };
 
+const get_users_teams = (): Router => {
+  let router = express.Router();
+  router
+      .get("/users/:id/teams", check_auth(), async (req: any, res) => {
+        const userId = req.params.id;
+        try {
+          const teams = await TeamService.getUsersTeams(userId);
+          return res.status(200).json(teams);
+        } catch (err) {
+          console.error(JSON.stringify(err));
+          return res.status(404).send(`No teams found`);
+        }
+      })
+  return router;
+}
+
 export {
   create_team,
   invite_person_to_a_team,
@@ -407,4 +423,5 @@ export {
   remove_team_from_institution,
   add_project_to_team,
   get_teams,
+  get_users_teams
 };

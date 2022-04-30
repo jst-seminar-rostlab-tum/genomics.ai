@@ -300,4 +300,9 @@ export default class InstitutionService {
 
     return await institutionModel.find(keyword).sort(sortBy).exec();
   }
+
+  static async getUsersInstitutions(userId: (ObjectId | string)):
+      Promise<IInstitution[] | null> {
+    return await institutionModel.find({memberIds: { $elemMatch: { $eq: userId } }});
+  }
 }

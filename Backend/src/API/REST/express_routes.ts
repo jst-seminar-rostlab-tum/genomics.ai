@@ -37,6 +37,7 @@ import {
   join_as_member_of_institution,
   get_institutions,
   get_institution,
+  get_users_institutions
 } from "./routes/institution/institutionRouter";
 
 import {
@@ -48,8 +49,14 @@ import {
   remove_team_from_institution,
   add_project_to_team,
   get_teams,
+  get_users_teams
 } from "./routes/team/teamRouter";
-import { get_projects, get_userProjects, get_project_by_id } from "./routes/project/projectRouter";
+import {
+  get_projects,
+  get_userProjects,
+  get_project_by_id,
+  get_users_projects
+} from "./routes/project/projectRouter";
 
 import {
   upload_institution_backgroundpicture_route,
@@ -103,6 +110,8 @@ export function express_routes(this: REST_Host): Router {
   this.expressApp.use(add_team_to_institution());
   this.expressApp.use(remove_team_from_institution());
   this.expressApp.use(get_teams());
+  this.expressApp.use(get_users_teams());
+
 
   // user routes
   this.expressApp.use(get_teams_of_user());
@@ -111,6 +120,8 @@ export function express_routes(this: REST_Host): Router {
   this.expressApp.use(get_projects());
   this.expressApp.use(get_userProjects());
   this.expressApp.use(get_project_by_id());
+  this.expressApp.use(get_users_projects());
+
 
   // model routes
   this.expressApp.use(get_model());
@@ -139,6 +150,8 @@ export function express_routes(this: REST_Host): Router {
   this.expressApp.use(reset_institution_backgroundpicture_route());
   this.expressApp.use(make_user_admin_of_institution());
   this.expressApp.use(join_as_member_of_institution());
+  this.expressApp.use(get_users_institutions());
+
 
   this.expressApp.use(/^.*_ah.*$/, (req, res) => res.status(200).send()); // always tell google everything is fine
   this.expressApp.use((req, res) => res.status(404).send("Not found."));
