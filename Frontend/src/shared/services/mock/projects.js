@@ -36,7 +36,7 @@ const projects = [
     location: './testData/test_file1.csv',
     fileSize: 10000000,
     modelId: 4,
-    name: 'test project 02',
+    name: 'test project 03',
     resultSize: '10000',
     status: 'IN PROGRESS',
     uploadDate: '2022-04-30T106:00:00.000Z',
@@ -50,7 +50,7 @@ const projects = [
     location: './testData/test_file1.csv',
     fileSize: 10000000,
     modelId: 4,
-    name: 'test project 02',
+    name: 'test project 04',
     resultSize: '10000',
     status: 'ERROR',
     uploadDate: '2022-04-30T106:00:00.000Z',
@@ -139,15 +139,15 @@ const models = [
 
 const ProjectMock = {
   getProjects: async () => projects,
-  getProject: async (id) => projects.find((project) => project._id === id),
+  getProject: async (id) => projects.find((project) => project._id === Number(id)),
 
   addProjectToTeam: async (teamId, projectId) => { throw new Error('400'); },
   getOwnTeams: async () => ownTeams,
 
   getAtlases: async () => atlases,
-  getAtlas: async (id) => atlases.find((atlas) => atlas._id === id),
+  getAtlas: async (id) => atlases.find((atlas) => atlas._id === Number(id)),
 
-  getModel: async (id) => models.find((model) => model._id === id),
+  getModel: async (id) => models.find((model) => model._id === Number(id)),
   getModels: async () => models,
 
 };

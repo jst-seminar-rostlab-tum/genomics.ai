@@ -6,7 +6,7 @@ import { Box, Stack } from '@mui/material';
 import CircleIcon from '@mui/icons-material/Circle';
 import { useHistory } from 'react-router-dom';
 
-export default function ProjectBarCard({ name, status }) {
+export default function ProjectBarCard({ projectId, name, status }) {
   const history = useHistory();
   const [color, setColor] = React.useState(status === 'DONE' ? 'lightGreen' : status === 'IN PROGRESS' ? 'orange' : 'red');
   const [typographyColor, setTypographyColor] = React.useState(status === 'UPLOAD FAILED' ? 'red' : 'black');
@@ -55,7 +55,7 @@ export default function ProjectBarCard({ name, status }) {
             sx={{
               borderRadius: 100,
             }}
-            onClick={() => history.push('./genemapper/result')}
+            onClick={() => history.push(`./genemapper/result/${projectId}`)}
           >
             See Results
           </Button>

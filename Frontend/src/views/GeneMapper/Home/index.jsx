@@ -88,7 +88,7 @@ function GeneMapperHome() {
             .filter((project) => (
               findString === '' || project.name.toLowerCase().includes(findString.toLowerCase())))
             .map((project) => (
-              <ProjectBarCard name={project.name} status={project.status} />
+              <ProjectBarCard projectId={project._id} name={project.name} status={project.status} />
             ))}
         </div>
 
