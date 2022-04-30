@@ -3,7 +3,7 @@ import {
   Typography, Divider, Stack, createTheme, ThemeProvider, Button,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
-import NavBar from 'components/NavBar';
+import NavBar from 'components/Navbar/old';
 import styles from './home.module.css';
 import graphic1 from 'assets/landing-illustrations/science.png';
 import graphic2 from 'assets/landing-illustrations/upload.png';
@@ -12,7 +12,7 @@ import graphic4 from 'assets/landing-illustrations/results.png';
 import tum from 'assets/landing-illustrations/tum-logo.png';
 import rostlab from 'assets/landing-illustrations/rostlab.png';
 import helmholtz from 'assets/landing-illustrations/helmholtz.png';
-import Footer from 'components/Footer';
+import Footer from 'components/Footer/old';
 import dnaImage from 'assets/dna.png';
 import RegistrationForm from 'components/RegistrationForm';
 import LoginForm from 'components/LoginForm';
@@ -241,5 +241,3 @@ const Home = (props) => {
 
   );
 };
-
-export default Home;
