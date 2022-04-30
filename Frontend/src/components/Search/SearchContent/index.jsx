@@ -7,18 +7,18 @@ import InstitutionCard from "components/Search/SearchResultList/InstitutionCard"
 import UserCard from "components/Search/SearchResultList/UserCard";
 import ProjectCard from "components/Search/SearchResultList/ProjectCard";
 import ResultStatus from "components/Search/ResultStatus";
-import { setTypeInUrl } from "shared/utils/common/utils";
+import { setSeachCategoryInUrl } from "shared/utils/common/utils";
 
 
 // wrapper component to display the searched items  
-const SearchContent = ({ searchedData, type, searchedKeyword }) => {
+const SearchContent = ({ searchResult, searchCategory, searchedKeyword }) => {
   const { path } = useRouteMatch();
 
   const renderSearchResultsList = (listItemWrapper) => {
     return (
       <SearchResultList
         listItemWrapper={listItemWrapper}
-        searchedData={searchedData}
+        searchResult={searchResult}
       />
     );
   };
@@ -26,21 +26,21 @@ const SearchContent = ({ searchedData, type, searchedKeyword }) => {
   return (
     <React.Fragment>
       <ResultStatus
-        count={searchedData.length}
-        searchedEntity={type}
+        count={searchResult.length}
+        searchedEntity={searchCategory}
         searchedKeyword={searchedKeyword}
       />
       <Switch>
-        <Route path={setTypeInUrl(path, "teams")}>
+        <Route path={setSeachCategoryInUrl(path, "teams")}>
           {renderSearchResultsList(TeamCard)}
         </Route>
-        <Route path={setTypeInUrl(path, "institutions")}>
+        <Route path={setSeachCategoryInUrl(path, "institutions")}>
           {renderSearchResultsList(InstitutionCard)}
         </Route>
-        <Route path={setTypeInUrl(path, "users")}>
+        <Route path={setSeachCategoryInUrl(path, "users")}>
           {renderSearchResultsList(UserCard)}
         </Route>
-        <Route path={setTypeInUrl(path, "projects")}>
+        <Route path={setSeachCategoryInUrl(path, "projects")}>
           {renderSearchResultsList(ProjectCard)}
         </Route>
       </Switch>

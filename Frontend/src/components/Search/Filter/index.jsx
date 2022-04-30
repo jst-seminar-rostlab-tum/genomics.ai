@@ -1,7 +1,7 @@
 import { FormGroup, Stack } from "@mui/material";
 import React from "react";
 import { Route } from "react-router-dom";
-import { setTypeInUrl } from "shared/utils/common/utils";
+import { setSeachCategoryInUrl } from "shared/utils/common/utils";
 import GeneralFilter from "./GeneralFilter";
 import TeamsFilter from "./TeamsFilter";
 
@@ -14,7 +14,7 @@ const Filter = ({ path, searchParams, updateQueryParams }) => {
           sortBy={searchParams.get("sortBy")}
           onChange={(param, value) => updateQueryParams(param, value)}
         />
-        <Route path={setTypeInUrl(path, "teams")}>
+        <Route path={setSeachCategoryInUrl(path, "teams")}>
           <TeamsFilter
             visibility={searchParams.get("visibility")}
             onChange={(param, value) => updateQueryParams(param, value)}

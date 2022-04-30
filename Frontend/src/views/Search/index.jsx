@@ -5,7 +5,6 @@ import {
   useLocation,
   useParams,
   useRouteMatch,
-  Route,
 } from "react-router-dom";
 
 import styles from "./search.module.css";
@@ -13,17 +12,12 @@ import SearchBar from "components/Search/SearchBar";
 import SearchTabs from "components/Search/SearchTabs";
 import SearchContent from "components/Search/SearchContent";
 import Filter from "components/Search/Filter";
-import GeneralFilter from "components/Search/Filter/GeneralFilter";
-import { setTypeInUrl } from "shared/utils/common/utils";
+import { setSeachCategoryInUrl } from "shared/utils/common/utils";
 import querySearch from "shared/mock/search";
-import TeamsFilter from "components/Search/Filter/TeamsFilter";
 
 const Search = ({ sidebarShown }) => {
   /* Booleans */
-  const paddingL = useCallback(
-    () => (sidebarShown ? "130px" : "380px"),
-    [sidebarShown]
-  );
+  const paddingL = () => (sidebarShown ? "130px" : "380px");
 
   // state managed in path and query params
   const history = useHistory();
@@ -32,11 +26,11 @@ const Search = ({ sidebarShown }) => {
 
   const searchParams = new URLSearchParams(search);
 
-  // type of the searched items (teams/institutions/users/projects)
-  const { type } = useParams();
+  // category of the searched items (teams/institutions/users/projects)
+  const { searchCategory } = useParams();
   const searchedKeyword = searchParams.get("keyword") || "";
 
-  const [searchedData, setSearchedData] = useState([]);
+  const [searchRequestResult, setSearchRequestResult] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   // function to update the state in the URL
@@ -60,19 +54,22 @@ const Search = ({ sidebarShown }) => {
 
   const changedTabHandler = (event, newValue) => {
     setIsLoading(true);
-    const newPath = setTypeInUrl(path, newValue);
+    const newPath = setSeachCategoryInUrl(path, newValue);
     history.push({ pathname: `${newPath}`, search: history.location.search });
   };
 
-  const fetchSearchHandler = useCallback(async (type, keyword) => {
-    const searchResponse = await querySearch(type, keyword.toLowerCase());
-    setSearchedData(searchResponse);
+  const fetchSearchHandler = useCallback(async (searchCategory, keyword) => {
+    const searchResponse = await querySearch(
+      searchCategory,
+      keyword.toLowerCase()
+    );
+    setSearchRequestResult(searchResponse);
     setIsLoading(false);
   }, []);
 
   useEffect(() => {
-    fetchSearchHandler(type, searchedKeyword);
-  }, [fetchSearchHandler, type, searchedKeyword]);
+    fetchSearchHandler(searchCategory, searchedKeyword);
+  }, [fetchSearchHandler, searchCategory, searchedKeyword]);
 
   return (
     <Stack direction="column" sx={{ paddingLeft: paddingL }}>
@@ -90,7 +87,7 @@ const Search = ({ sidebarShown }) => {
               />
             }
           />
-          <SearchTabs value={type} onChange={changedTabHandler} />
+          <SearchTabs value={searchCategory} onChange={changedTabHandler} />
           {isLoading && (
             <Box sx={{ display: "flex", justifyContent: "center" }}>
               <CircularProgress />
@@ -98,8 +95,8 @@ const Search = ({ sidebarShown }) => {
           )}
           {!isLoading && (
             <SearchContent
-              searchedData={searchedData}
-              type={type}
+              searchResult={searchRequestResult}
+              searchCategory={searchCategory}
               searchedKeyword={searchedKeyword}
             />
           )}

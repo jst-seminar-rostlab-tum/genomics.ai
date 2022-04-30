@@ -39,7 +39,7 @@ const DashboardContent = (props) => {
           <Help sidebarShown={sidebarShown} />
         </Route>
 
-        <Route path={`${path}/search/:type`}>
+        <Route path={`${path}/search/:searchCategory`}>
           <Search sidebarShown={sidebarShown} />
         </Route>
 

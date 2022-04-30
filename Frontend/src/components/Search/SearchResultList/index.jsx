@@ -8,7 +8,7 @@ const SearchResultList = (props) => {
 
   return (
     <List style={{ display: "flex", flexDirection: "column" }}>
-      {props.searchedData.map((searchedItem) => (
+      {props.searchResult.map((searchedItem) => (
         <ListItemWrapper key={searchedItem.id} item={searchedItem} />
       ))}
     </List>
