@@ -1,13 +1,12 @@
-import { stringMap } from "aws-sdk/clients/backup";
-import {ObjectId} from "mongoose";
+import { ObjectId } from "mongoose";
 
 /**
  *  Stores the raw data to update a project.
  */
 export interface UpdateProjectDTO {
-    fileSize?: number;
-    status?: string;
-    location?: string;
+  fileSize?: number;
+  status?: string;
+  location?: string;
 }
 
 /**

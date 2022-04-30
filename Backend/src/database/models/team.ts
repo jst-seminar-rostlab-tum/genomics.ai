@@ -1,71 +1,80 @@
-import {Document, model, Schema} from "mongoose";
+import { Document, model, Schema } from "mongoose";
 
 export enum visibilityStatus {
-    "PRIVATE",
-    "PUBLIC",
-    "BY_INSTITUTION",
+  "PRIVATE",
+  "PUBLIC",
+  "BY_INSTITUTION",
 }
 export interface ITeam extends Document {
-   title:string,
-   description:string,
-   adminIds: Array<Schema.Types.ObjectId>,
-   invitedMemberIds: Array<Schema.Types.ObjectId>,
-   memberIds: Array<Schema.Types.ObjectId>,
-   projects: Array<Schema.Types.ObjectId>,
-   visibility: string,
-   institutionId: Schema.Types.ObjectId,
+  title: string;
+  description: string;
+  adminIds: Array<Schema.Types.ObjectId>;
+  invitedMemberIds: Array<Schema.Types.ObjectId>;
+  memberIds: Array<Schema.Types.ObjectId>;
+  projects: Array<Schema.Types.ObjectId>;
+  visibility: string;
+  institutionId: Schema.Types.ObjectId;
 }
 
-const teamSchema = new Schema<ITeam>({
+const teamSchema = new Schema<ITeam>(
+  {
     title: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
 
     description: {
-        type: String,
-        require: true
+      type: String,
+      require: true,
     },
 
-    adminIds: [{
+    adminIds: [
+      {
         type: Schema.Types.ObjectId,
-        ref: 'User',
-        require: true
-    }],
+        ref: "User",
+        require: true,
+      },
+    ],
 
-    invitedMemberIds: [{
+    invitedMemberIds: [
+      {
         type: Schema.Types.ObjectId,
-        ref: 'User',
-        require: false
-    }],
+        ref: "User",
+        require: false,
+      },
+    ],
 
-    memberIds: [{
+    memberIds: [
+      {
         type: Schema.Types.ObjectId,
-        ref: 'User',
-        require: false
-    }],
+        ref: "User",
+        require: false,
+      },
+    ],
 
-    projects: [{
+    projects: [
+      {
         type: Schema.Types.ObjectId,
-        ref: 'Project',
-        require: false
-    }],
+        ref: "Project",
+        require: false,
+      },
+    ],
 
     visibility: {
-        type: String,
-        enum: visibilityStatus,
-        required: true
+      type: String,
+      enum: visibilityStatus,
+      required: true,
     },
 
     institutionId: {
-        type: Schema.Types.ObjectId,
-        ref: 'Institution',
-        require: false
-    }
-
-}, {
+      type: Schema.Types.ObjectId,
+      ref: "Institution",
+      require: false,
+    },
+  },
+  {
     timestamps: true,
-});
+  }
+);
 
 export const teamModel = model<ITeam>("Team", teamSchema);
-

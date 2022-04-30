@@ -1,4 +1,4 @@
-import express, {Router} from "express";
+import express, { Router } from "express";
 import ProjectService from "../../../database/services/project.service";
 import { UpdateProjectDTO } from "../../../database/dtos/project.dto";
 import { GoogleAuth } from "google-auth-library";
@@ -7,34 +7,32 @@ import check_auth from "../middleware/check_auth";
 
 // Tests the Cloud Run connection
 export default function abort_processing_route(): Router {
-    let router = express.Router();
-    //DISABLED AT THE MOMENT probably never used? Seems to be part of the test routes?
-    router
-        .post("/abort_processing",
-            check_auth(),
-            async (req: any, res) => {
-                const {uploadId} = req.body;
+  let router = express.Router();
 
-                let project = await ProjectService.getProjectByUploadId(uploadId);
+  router.post("/abort_processing", check_auth(), async (req: any, res) => {
+    const { uploadId } = req.body;
 
-                if (!project)
-                    return res.status(404).json({ msg: "No team found with upload ID." });
+    let project = await ProjectService.getProjectByUploadId(uploadId);
 
-                if (project.owner != req.user_id)
-                    return res.status(403).json({ msg: "A user may only abort their own projects!" });
+    if (!project) return res.status(404).json({ msg: "No team found with upload ID." });
 
-                if (project.status != ProjectStatus[ProjectStatus.PROCESSING_PENDING])
-                    return res.status(400).json({ msg: "Project processing cannot be aborted as it is not pending."});
+    if (project.owner != req.user_id)
+      return res.status(403).json({ msg: "A user may only abort their own projects!" });
 
-                const update_object: UpdateProjectDTO = {
-                    status: ProjectStatus[ProjectStatus.ABORTED]
-                };
-                await ProjectService.updateProjectByUploadId(project.uploadId, update_object);
+    if (project.status != ProjectStatus[ProjectStatus.PROCESSING_PENDING])
+      return res
+        .status(400)
+        .json({ msg: "Project processing cannot be aborted as it is not pending." });
 
-                project.status = ProjectStatus[ProjectStatus.ABORTED];
+    const update_object: UpdateProjectDTO = {
+      status: ProjectStatus[ProjectStatus.ABORTED],
+    };
+    await ProjectService.updateProject(project._id, update_object);
 
-                res.status(200).json({ project: project});
-        });
+    project.status = ProjectStatus[ProjectStatus.ABORTED];
 
-    return router;
+    res.status(200).json({ project: project });
+  });
+
+  return router;
 }

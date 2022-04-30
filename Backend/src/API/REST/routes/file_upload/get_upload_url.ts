@@ -6,7 +6,7 @@ import s3 from "../../../../util/s3";
 import express from "express";
 
 export default function upload_get_upload_url_route() {
-    let router = express.Router();
+  let router = express.Router();
 
     router.get("/file_upload/get_upload_url", check_auth(), async (req: ExtRequest, res) => {
         let { partNumber, uploadId } = req.query;

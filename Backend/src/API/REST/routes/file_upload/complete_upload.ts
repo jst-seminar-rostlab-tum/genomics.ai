@@ -45,7 +45,6 @@ export default function upload_complete_upload_route() {
       if (!data || !data.Key || !data.Bucket || !data.Location)
         return res.status(500).send("Error getting Multipart-Upload object data");
 
-      
       //Query file size and save in project
       try {
         let request: S3.HeadObjectRequest = { Key: data.Key, Bucket: data.Bucket };
@@ -72,7 +71,9 @@ export default function upload_complete_upload_route() {
           //Processing is synchronous, response is sent by ML only after the result is produced, might take some time
           await client.request({ url, method: "POST", body: queryInfo });
         } else if (!process.env.production) {
-          console.log("CLOUD_RUN_URL not defined, falling back to dummy result with 10s processing time")
+          console.log(
+            "CLOUD_RUN_URL not defined, falling back to dummy result with 10s processing time"
+          );
           res.status(200).send("Processing started");
           const params2: PutObjectRequest = {
             Bucket: process.env.S3_BUCKET_NAME!,
