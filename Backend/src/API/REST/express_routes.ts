@@ -27,7 +27,8 @@ import * as swaggerDocument from "../../swagger.json";
 import * as swaggerUi from "swagger-ui-express";
 import { validationMdw } from "./middleware/validation";
 
-import { create_institution, invite_to_institution, make_user_admin_of_institution, join_as_member_of_institution, get_institutions, get_institution} from "./routes/institution/institutionRouter";
+import { create_institution, invite_to_institution, make_user_admin_of_institution, join_as_member_of_institution, get_institutions, get_institution, 
+  disjoin_member_of_institution} from "./routes/institution/institutionRouter";
 
 import { create_team, invite_person_to_a_team, add_user_to_admin, join_member, add_team_to_institution, get_teams,
   remove_team_from_institution, disjoin_member } from "./routes/team/teamRouter";
@@ -102,6 +103,7 @@ export function express_routes(this: REST_Host): Router {
   this.expressApp.use(reset_institution_backgroundpicture_route());
   this.expressApp.use(make_user_admin_of_institution());
   this.expressApp.use(join_as_member_of_institution());
+  this.expressApp.use(disjoin_member_of_institution());
 
   // team routes
   this.expressApp.use(create_team());

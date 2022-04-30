@@ -199,4 +199,19 @@ export default class InstitutionService {
     }
 
 
+    /**
+     *  Remove the given userId from the given institution.
+     *
+     *  @param   institutionId
+     *  @param   userId
+     *  @returns updateDocument
+     */
+     static async removeMemberFromTeam(institutionId: (ObjectId | string), userId: (ObjectId | string)): Promise<any> {
+        return await institutionModel.updateOne(
+            { _id: institutionId },
+            { 
+                $pull: { memberIds: userId, adminIds: userId}
+            }
+        );
+    }
 }
