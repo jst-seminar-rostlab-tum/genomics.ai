@@ -6,13 +6,10 @@ import check_auth from "../middleware/check_auth";
 
 // Tests the Cloud Run connection
 export default function initiate_processing_route(): Router {
-    let router = express.Router();
-    //DISABLED AT THE MOMENT probably never used? Seems to be part of the test routes?
-    router
-        .post("/initiate_processing",
-            check_auth(),
-            async (req: any, res) => {
-                const {uploadId} = req.body;
+  let router = express.Router();
+  //DISABLED AT THE MOMENT probably never used? Seems to be part of the test routes?
+  router.post("/initiate_processing", check_auth(), async (req: any, res) => {
+    const { uploadId } = req.body;
 
     let project = await ProjectService.getProjectByUploadId(uploadId);
 
@@ -22,11 +19,9 @@ export default function initiate_processing_route(): Router {
       return res.status(403).json({ msg: "A user may only initiate their own projects!" });
 
     if (project.status != ProjectStatus[ProjectStatus.UPLOAD_COMPLETE])
-      return res
-        .status(400)
-        .json({
-          msg: "Processing cannot be initiated. The upload has to be finished uploading and can only be initiated once.",
-        });
+      return res.status(400).json({
+        msg: "Processing cannot be initiated. The upload has to be finished uploading and can only be initiated once.",
+      });
 
     const url = `${process.env.CLOUD_RUN_URL}/run_classifier?uploadId=${uploadId}`;
 
