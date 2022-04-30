@@ -35,7 +35,7 @@ export default function ProjectBarCard({ name, status }) {
           </Typography>
         </Stack>
         <Box sx={{
-          p: 0.1, bgcolor: 'background.paper', borderRadius: 3, width: 'flex', marginRight: '3%',
+          p: 0.1, bgcolor: 'background.paper', borderRadius: 3, width: 'flex', mr: 3,
         }}
         >
           <Button
@@ -43,6 +43,7 @@ export default function ProjectBarCard({ name, status }) {
             size="small"
             sx={{
               borderRadius: 100,
+              mr: 1,
             }}
           >
             Add To Team
