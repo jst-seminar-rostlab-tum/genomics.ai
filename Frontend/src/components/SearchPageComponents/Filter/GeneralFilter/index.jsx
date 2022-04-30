@@ -10,6 +10,7 @@ const GeneralFilter = ({  sortBy, onChange }) => {
 
   return (
     <LabeledSelect
+      label="Sort by"
       value={sortBy}
       defaultValue={"name"}
       onChange={(event) => onChange("sortBy", event.target.value)}

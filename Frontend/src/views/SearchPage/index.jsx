@@ -8,14 +8,14 @@ import {
 } from "react-router-dom";
 
 import styles from "./search.module.css";
-import SearchBar from "components/SearchPageComponents/SearchBar";
 import SearchTabs from "components/SearchPageComponents/SearchTabs";
 import SearchContent from "components/SearchPageComponents/SearchContent";
 import Filter from "components/SearchPageComponents/Filter";
 import { setSeachCategoryInUrl } from "shared/utils/common/utils";
 import querySearch from "shared/mock/search";
+import Search from "components/Search";
 
-const Search = ({ sidebarShown }) => {
+const SearchPage = ({ sidebarShown }) => {
   /* Booleans */
   const paddingL = () => (sidebarShown ? "130px" : "380px");
 
@@ -48,8 +48,8 @@ const Search = ({ sidebarShown }) => {
     });
   };
 
-  const searchedKeywordChangeHandler = (event) => {
-    updateQueryParams("keyword", event.target.value);
+  const searchedKeywordChangeHandler = (value) => {
+    updateQueryParams("keyword", value);
   };
 
   const changedTabHandler = (event, newValue) => {
@@ -76,16 +76,16 @@ const Search = ({ sidebarShown }) => {
       <div className={styles.title}>
         <h1>Search</h1>
         <Box sx={{ margin: "auto", maxWidth: 1200 }}>
-          <SearchBar
-            searchedKeyword={searchedKeyword}
-            searchedKeywordChangeHandler={searchedKeywordChangeHandler}
+          <Search
             filterComponent={
-              <Filter
-                searchParams={searchParams}
-                updateQueryParams={updateQueryParams}
-                path={path}
-              />
+                <Filter
+                  searchParams={searchParams}
+                  updateQueryParams={updateQueryParams}
+                  path={path}
+                />
             }
+            handleSearch={searchedKeywordChangeHandler}
+            value={searchedKeyword} // currently two-way-binding missing
           />
           <SearchTabs value={searchCategory} onChange={changedTabHandler} />
           {isLoading && (
@@ -106,4 +106,4 @@ const Search = ({ sidebarShown }) => {
   );
 };
 
-export default Search;
+export default SearchPage;

@@ -11,7 +11,7 @@ import Documentation from 'views/Documentation';
 import Settings from 'views/Settings';
 import Help from 'views/Help';
 import styles from './dashboardContent.module.css';
-import Search from 'views/Search';
+import SearchPage from 'views/SearchPage';
 import { useAuth } from 'shared/context/authContext';
 
 const DashboardContent = (props) => {
@@ -58,7 +58,7 @@ const DashboardContent = (props) => {
         </Route>
 
         <Route path={`${path}/search/:searchCategory`}>
-          <Search sidebarShown={sidebarShown} />
+          <SearchPage sidebarShown={sidebarShown} />
         </Route>
 
         <Route path={`${path}/settings`}>

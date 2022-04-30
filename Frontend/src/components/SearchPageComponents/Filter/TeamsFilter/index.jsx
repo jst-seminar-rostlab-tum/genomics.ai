@@ -19,6 +19,7 @@ const TeamsFilter = ({ visibility, onChange }) => {
 
   return (
     <LabeledSelect
+      label={"Access rights"}
       value={visibility}
       defaultValue={""}
       onChange={(event) => onChange("visibility", event.target.value)}
