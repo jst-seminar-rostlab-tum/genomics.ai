@@ -109,31 +109,19 @@ const models = [
   },
 ];
 
-export default async function getProjects() {
-  return projects;
-}
+const ProjectMock = {
+  getProjects: async () => projects,
+  getProject: async (id) => projects.find((project) => project._id === id),
 
-export async function getProject(id) {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  return projects.find((project) => project._id === id);
-}
+  addProjectToTeam: async (teamId, projectId) => { throw new Error('400'); },
+  getOwnTeams: async () => ownTeams,
 
-export async function addProjectToTeam(teamId, projectId) {
-  throw new Error('400');
-}
+  getAtlases: async () => atlases,
+  getAtlas: async (id) => atlases.find((atlas) => atlas._id === id),
 
-export async function getOwnTeams() {
-  return ownTeams;
-}
+  getModel: async (id) => models.find((model) => model._id === id),
+  getModels: async () => models,
 
-export async function getAtlas(id) {
-  return atlases.find((atlas) => atlas._id === id);
-}
+};
 
-export async function getModels() {
-  return models;
-}
-
-export async function getAtlases() {
-  return atlases;
-}
+export default ProjectMock;

@@ -11,13 +11,15 @@ import { csv } from 'd3';
 import React, {
   useEffect, useRef, useState,
 } from 'react';
-import { getProject } from 'shared/services/mock/projects';
+import { useParams } from 'react-router-dom';
+import ProjectMock, { getProject } from 'shared/services/mock/projects';
+import ProjectService from 'shared/services/Project.service';
 
 /**
  * Shows the UMAP visualization for a given project.
  * @param projectId id of the project the result belongs to
  */
-function GeneMapperResultView({ projectId }) {
+function GeneMapperResultView() {
   const [project, setProject] = useState(null);
   const umapContainer = useRef(null);
   const [umap, setUmap] = useState(null);
@@ -27,9 +29,15 @@ function GeneMapperResultView({ projectId }) {
     height: 0,
   });
 
+  const { projectId } = useParams();
+
   useEffect(() => {
-    getProject(projectId)
-      .then((data) => setProject(data));
+    ProjectService.getProject(projectId)
+      .then((data) => setProject(data))
+      .catch(() => {
+        console.log('using mock project data');
+        ProjectMock.getProject(1).then((data) => setProject(data));
+      });
   }, [projectId]);
 
   useEffect(() => {

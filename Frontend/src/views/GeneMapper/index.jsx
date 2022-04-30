@@ -27,7 +27,7 @@ function GeneMapper({ sidebarShown }) {
           <Button onClick={() => history.push(`${path}/selection`)}>Selection</Button>
           <Button onClick={() => history.push(`${path}/upload`)}>Upload</Button>
           <Button onClick={() => history.push(`${path}/result`)}>Result</Button>
-          <GeneMapperHome />
+          <GeneMapperHome basePath={path} />
         </Route>
 
         <Route path={`${path}/selection`}>
@@ -38,8 +38,8 @@ function GeneMapper({ sidebarShown }) {
           <UploadFilePage basePath={`${path}/upload`} />
         </Route>
 
-        <Route exact path={`${path}/result`}>
-          <GeneMapperResultView projectId={1} />
+        <Route path={`${path}/result/:projectId`}>
+          <GeneMapperResultView />
         </Route>
 
         <Route path={`${path}/*`}>
