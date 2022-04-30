@@ -13,6 +13,8 @@ import { UpdateProjectDTO } from "../../../../database/dtos/project.dto";
 import s3 from "../../../../util/s3";
 import { GoogleAuth } from "google-auth-library";
 import { ProjectStatus } from "../../../../database/models/project";
+import AtlasService from "../../../../database/services/atlas.service";
+import ModelService from "../../../../database/services/model.service";
 
 export default function upload_complete_upload_route() {
   let router = express.Router();
@@ -21,10 +23,7 @@ export default function upload_complete_upload_route() {
     if (!process.env.S3_BUCKET_NAME) return res.status(500).send("Server was not set up correctly");
 
     try {
-      let project =
-        req.user_id === undefined
-          ? null
-          : await ProjectService.getProjectByUploadId(String(uploadId), req.user_id);
+      let project = await ProjectService.getProjectByUploadId(String(uploadId), req.user_id);
 
       if (!project) return res.status(400).send("Project could not be found");
 
@@ -54,13 +53,21 @@ export default function upload_complete_upload_route() {
           status: ProjectStatus.PROCESSING_PENDING,
         };
         await ProjectService.updateProjectByUploadId(params.UploadId, updateFileAndStatus);
+        let [model, atlas] = await Promise.all([
+          ModelService.getModelById(project.modelId),
+          AtlasService.getAtlasById(project.atlasId),
+        ]);
+        if (!model) {
+          return res.status(500).send("Could not find model");
+        }
         let queryInfo = {
-          surgery_path: `surgery/${project!.id}/`,
-          model_path: `model/${project!.modelId}/`,
-          generated_output_base_path: `result/${project!.id}/`,
-          reference_dataset_path: `atlas/${project.atlasId}/`,
-          model: "scANVI",
-          debug: true,
+          model: model.name,
+          query_data: `projects/${project.id}/query.h5ad`,
+          output_path: `results/${project.id}/query.tsv`,
+          model_path: `results/${project.id}/model.pt`,
+          reference_data: `atlas/${project.atlasId}/data.h5ad`,
+          ref_path: `models/${project.modelId}/model.pt`,
+          async: false,
         };
         if (process.env.CLOUD_RUN_URL) {
           const url = `${process.env.CLOUD_RUN_URL}/query`;
@@ -77,7 +84,7 @@ export default function upload_complete_upload_route() {
           res.status(200).send("Processing started");
           const params2: PutObjectRequest = {
             Bucket: process.env.S3_BUCKET_NAME!,
-            Key: `result/${project!.id}/query.tsv`,
+            Key: `results/${project!.id}/query.tsv`,
             Body: "This is a dummy result",
           };
           await s3.upload(params2).promise();

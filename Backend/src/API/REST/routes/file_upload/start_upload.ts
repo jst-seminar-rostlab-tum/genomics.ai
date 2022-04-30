@@ -28,7 +28,7 @@ export default function upload_start_upload_route() {
             const project = await ProjectService.addProject(projectToAdd);
             let params: S3.CreateMultipartUploadRequest = {
                 Bucket: process.env.S3_BUCKET_NAME,
-                Key: String(project._id)
+                Key: `projects/${project._id}/query.h5ad`
             };
             s3.createMultipartUpload(params, async (err, uploadData) => {
                 if (err) {
