@@ -19,9 +19,6 @@ def get_from_config(key):
     return None
 
 
-# url = 'https://drive.google.com/uc?id=1ehxgfHTsMZXy6YzlFKGJOsBKQ5rrvMnd'
-# gdown.download(url, output, quiet=False)
-
 def setup_modules():
     warnings.simplefilter(action='ignore', category=FutureWarning)
     warnings.simplefilter(action='ignore', category=UserWarning)
@@ -61,8 +58,6 @@ def get_latent(model, adata):
     scanpy.tl.leiden(reference_latent)
     scanpy.tl.umap(reference_latent)
 
-    # model.save(get_from_config('ref_path'), overwrite=True)     # würde das speichern wo anders machen, muss ja an verschiedenen Orten gespeichert werden
-
     return reference_latent
 
 
@@ -97,12 +92,12 @@ def surgery(reference_latent, anndata):
     if get_from_config(parameters.DEBUG):
         utils.save_umap_as_pdf(surgery_latent, 'figures/surgery.pdf', color=['batch', 'cell_type'])
 
-    # utils.write_latent_csv(surgery_latent, key=get_from_config(parameters.OUTPUT_PATH))
     utils.write_combined_csv(reference_latent, surgery_latent, key=get_from_config(parameters.OUTPUT_PATH))
 
     model.save('scvi_model', overwrite=True)  # TODO check if we need this, for now, we delete it
     utils.delete_file('scvi_model/model.pt')
     os.rmdir('scvi_model')
+
     return model, surgery_latent
 
 
@@ -110,9 +105,7 @@ def query(reference_latent, anndata):
     model = scarches.models.SCANVI.load_query_data(
         anndata,
         get_from_config(parameters.RESULTING_MODEL_PATH),
-        # ist das der richtige Pfad? Das wäre ja dann das gerade von scVI convertierte, hier gabs nen Fehler von wegen falsche Klasse (also weil das convertierte scanVI wahrscheinlich nicht gespeichert wurde)
         freeze_dropout=True,
-        # habs jetzt mal unten gespeichert bevor query aufgerufen wird, schau es dir aber nochmal an
     )
 
     model._unlabeled_indices = np.arange(anndata.n_obs)
@@ -134,8 +127,6 @@ def query(reference_latent, anndata):
         utils.save_umap_as_pdf(query_latent, 'figures/query.pdf', color=['batch', 'cell_type'])
 
     utils.write_combined_csv(reference_latent, query_latent, key=get_from_config(parameters.OUTPUT_PATH))
-
-    # Muss man das Model dann nicht abspeichern? Oder ist das dann nicht mehr das pre-trained?
 
     return model, query_latent
 
@@ -198,16 +189,9 @@ def compute_scANVI(configP):
     setup_modules()
 
     source_adata, target_adata = pre_process_data()
-    #  if not get_from_config('pre_trained_scANVI'): bin mir bei dir nicht sicher, was alles zu was gehöhrt
-    scVI.set_config(configP)  # sets the config in scVI
+    scVI.set_config(configP)
 
-    # kann man sehen ob es schon ein scVI oder ein scANVI model gibt?
     vae = scVI.create_scVI_model(source_adata, target_adata)
-
-    # if args.train:
-    # vae.train(max_epochs=get_from_config('scvi_max_epochs'))
-
-    # setup_anndata_for_scanvi(source_adata)
 
     scanvi = get_scanvi_from_scvi_model(vae)
 
@@ -224,7 +208,8 @@ def compute_scANVI(configP):
 
     reference_latent = predict(scanvi, reference_latent)
 
-    scanvi.save('scanvi_model', overwrite=True)  # ich bin mir nicht sicher, wann dein Model in welchem Stadium ist
+    # TODO check if we need this
+    scanvi.save('scanvi_model', overwrite=True)
     utils.delete_file('scanvi_model/model.pt')
     os.rmdir('scanvi_model')
 
