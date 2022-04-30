@@ -7,7 +7,7 @@ import {
 import HomePage from './views/Home';
 import About from './views/About';
 import Docs from './views/Docs';
-import Contact from './views/LandingPage/Contact';
+import Contact from './views/Contact';
 import DashboardContent from './components/DashboardContent';
 import { guardedPage } from './shared/utils/common/utils';
 import VisualizationPage from './views/VisualizationPage';
