@@ -126,7 +126,6 @@ export async function getOwnTeams() {
   return ownTeams;
 }
 
-
 export async function getAtlas(id) {
   return atlases.find((atlas) => atlas._id === id);
 }
