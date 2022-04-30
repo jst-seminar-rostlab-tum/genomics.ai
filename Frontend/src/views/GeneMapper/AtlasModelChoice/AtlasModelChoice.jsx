@@ -8,6 +8,7 @@ import { useHistory} from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import ProjectMock from "shared/services/mock/projects"
 import atlasPng from "assets/previewImages/atlas.png"
+import ModelService from 'shared/services/Model.service';
 
 function AtlasModelChoice({ 
     activeStep, setActiveStep, 
@@ -15,6 +16,7 @@ function AtlasModelChoice({
     selectedModel, setSelectedModel, steps, path
 }) {
     let [atlases, setAtlases] = useState([]);
+    let [models, setModels] = useState([]);
     const history = useHistory();
 
     let headerStyle = {
@@ -25,6 +27,7 @@ function AtlasModelChoice({
     
     useEffect(() => {
         ProjectMock.getAtlases().then(a => setAtlases(a));
+        ProjectMock.getModels().then(m => setModels(m));
     });
 
     return (
@@ -59,35 +62,18 @@ function AtlasModelChoice({
             <hr className={styles.line}/>
 
             <Grid container spacing={2} width="100%" overflow="auto" wrap="nowrap">
-                <Grid item height="150px">
+            {
+                models.map(m => 
+                    <Grid item height="150px">
                     <ModelCardSelect width="225px"
                             height="97%"
-                            title="Model 1" 
-                            description="Lorem ipsum dolor sit amet, consetetur sadipscing"
-                            selected={selectedModel==="Model 1"}
+                            title={m.name} 
+                            description={m.description}
+                            selected={selectedModel===m.name}
                             onSelect={setSelectedModel}
                     />               
-                </Grid>
-                <Grid item height="150px">
-                    <ModelCardSelect 
-                        width="225px"
-                        height="97%"
-                        title="Model 2" 
-                        description="Lorem ipsum dolor sit amet, consetetur sadipscing"
-                        selected={selectedModel==="Model 2"}
-                        onSelect={setSelectedModel}
-                    />               
-                </Grid>
-                <Grid item height="150px">
-                    <ModelCardSelect 
-                        width="225px"
-                        height="97%"
-                        title="Model 3" 
-                        description="Lorem ipsum dolor sit amet, consetetur sadipscing"
-                        selected={selectedModel==="Model 3"}
-                        onSelect={setSelectedModel}
-                    />               
-                </Grid>
+                </Grid>)
+            }
             </Grid>
             <Stack direction='row' justifyContent='space-between' sx={{ marginTop:'75px'}}>
                 <CustomButton type='tertiary' onClick={() => history.push(`${path}`)}>

@@ -119,7 +119,16 @@ export const ModelCardSelect = ({ width = "100%", height = "100%", title, descri
       }}
       >
         <Typography sx={{ fontSize: "1.4rem", fontWeight: "bold" }}>{title}</Typography>
-        <Typography sx={{ fontSize: "1rem", color: colors.neutral[800] }}>{description}</Typography>
+        <Typography 
+          className="modelDescription" 
+          sx={{ 
+            fontSize: "1rem", 
+            color: colors.neutral[800],
+            display: '-webkit-box',
+            overflow: 'hidden',
+            WebkitBoxOrient: 'vertical',
+            WebkitLineClamp: 2,
+          }}>{description}</Typography>
       </Box>
       </Box>
     </Box>
