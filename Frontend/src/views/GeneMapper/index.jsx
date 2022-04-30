@@ -1,6 +1,8 @@
 import { Box, Button } from '@mui/material';
 import { useCallback } from 'react';
-import { Redirect, Route, Switch, useHistory, useRouteMatch } from 'react-router-dom';
+import {
+  Redirect, Route, Switch, useHistory, useRouteMatch,
+} from 'react-router-dom';
 import GeneMapperState from './GeneMapperState';
 import GeneMapperHome from './Home';
 import GeneMapperResultView from './Result';
@@ -21,7 +23,6 @@ function GeneMapper({ sidebarShown }) {
     >
       <Switch>
         <Route exact path={`${path}`}>
-          <Button onClick={() => history.push(`${path}/create`)}>Create</Button>
           <Button onClick={() => history.push(`${path}/result`)}>Result</Button>
           <GeneMapperHome basePath={path} />
         </Route>
