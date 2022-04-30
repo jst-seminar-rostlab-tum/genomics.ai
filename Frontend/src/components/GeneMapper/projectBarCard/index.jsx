@@ -20,22 +20,22 @@ export default function ProjectBarCard({ name, status }) {
         <Stack
           direction="row"
           spacing={4}
-          sx={{ width: '50%', marginTop: '1%' }}
+          sx={{ width: '50%', alignItems: 'center' }}
         >
 
           <CircleIcon sx={{
-            fontSize: 18, marginLeft: '3%', color,
+            fontSize: 30, marginLeft: '3%', color,
           }}
           />
-          <Typography sx={{ fontSize: '14px', fontWeight: [500] }}>
+          <Typography>
             {name}
           </Typography>
-          <Typography sx={{ fontSize: '14px', fontWeight: [500], color: typographyColor }}>
+          <Typography sx={{ color: typographyColor }}>
             {status}
           </Typography>
         </Stack>
         <Box sx={{
-          p: 0.1, bgcolor: 'background.paper', borderRadius: 3, width: 'flex', mr: 3,
+          p: 0.1, bgcolor: 'background.paper', borderRadius: 3, width: 'flex', mr: 3, display: 'flex', m: 2,
         }}
         >
           <Button
@@ -43,8 +43,9 @@ export default function ProjectBarCard({ name, status }) {
             size="small"
             sx={{
               borderRadius: 100,
-              mr: 1,
+              mr: 2,
             }}
+            style={{ textTransform: 'none' }}
           >
             Add To Team
           </Button>
@@ -55,6 +56,7 @@ export default function ProjectBarCard({ name, status }) {
             sx={{
               borderRadius: 100,
             }}
+            style={{ textTransform: 'none' }}
             onClick={() => history.push('./genemapper/result')}
           >
             See Results

@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import {
   Typography, createTheme, ThemeProvider, Stack, TextField,
 } from '@mui/material';
 import PlusIcon from 'components/GeneMapper/plusIcon';
-import styles from './home.module.css';
 import ProjectBarCard from 'components/GeneMapper/projectBarCard';
 import SearchIcon from '@mui/icons-material/Search';
+// import ProjectsMock from 'shared/services/mock/projects.js';
 
 const theme = createTheme({
   palette: {
@@ -17,21 +17,8 @@ const theme = createTheme({
       main: '#5676E4',
     },
   },
-  // typography: {
-  //   fontFamily: 'Lato',
-  //   fontSize: 16,
-  //   // the size of save
-  // },
 });
-// theme.typography.h3 = {
-//   fontSize: '1.2rem',
-//   '@media (min-width:600px)': {
-//     fontSize: '1.5rem',
-//   },
-//   [theme.breakpoints.up('md')]: {
-//     fontSize: '2rem',
-//   },
-// };
+
 const themeIcon = createTheme({
   palette: {
     primary: {
@@ -61,6 +48,9 @@ function GeneMapperHome() {
   },
 
   ]);
+
+  // useEffect(ProjectsMock.getProjects().then((data) => { setProjects(data); }),[]);
+
   const [findString, setFindString] = useState('');
   const [foundProjects, setFoundProjects] = useState({}, {});
 
@@ -91,12 +81,11 @@ function GeneMapperHome() {
             justifyContent: 'space-between',
             paddingBottom: '2em',
           }}
-          className={styles.stack}
         >
           <Stack direction="row" className="stack">
-            <Typography sx={{ fontWeight: 600, fontSize: '20px', marginTop: 0.5 }} className={styles.title}>Your Mappings </Typography>
+            <Typography variant="h6" sx={{ marginTop: 0.5 }}>Your Mappings </Typography>
             <ThemeProvider theme={themeIcon}>
-              <PlusIcon className={styles.plus} />
+              <PlusIcon />
             </ThemeProvider>
           </Stack>
           <TextField
