@@ -1,8 +1,8 @@
 import './app.module.css';
 import React, { useState } from 'react';
-import { createTheme, ThemeProvider } from '@mui/material';
+import { ThemeProvider } from '@mui/material';
 import {
-  Route, HashRouter as Router, Switch, Redirect,
+  Route, HashRouter, Switch, Redirect,
 } from 'react-router-dom';
 import HomePage from './views/Home';
 import About from './views/About';
@@ -12,36 +12,30 @@ import DashboardContent from './components/DashboardContent';
 import { guardedPage } from './shared/utils/common/utils';
 import VisualizationPage from './views/VisualizationPage';
 import PasswordResetPage from './views/PasswordResetPage';
+import { theme } from "./shared/theme/theme"
+import Explore from "./views/Explore/index.jsx"
+import { useAuth } from 'shared/context/authContext';
 
 function App() {
-  const theme = createTheme({
-    palette: {
-      primary: {
-        main: '#01579B',
-      },
-      light: {
-        main: '#4F83CC',
-      },
-    },
-  });
 
-  const [user, setUser] = useState(localStorage.user ? JSON.parse(localStorage.user) : null);
+  const [user] = useAuth()
 
   return (
     <ThemeProvider theme={theme}>
       {/* eslint-disable-next-line no-restricted-globals */}
-      <Router history={history}>
+      <HashRouter>
         <Switch>
-          <Route exact path="/" render={() => (user ? <Redirect to="/sequencer" /> : <HomePage setUser={setUser} />)} />
-          <Route path="/sequencer" render={() => guardedPage(<DashboardContent user={user} setUser={setUser} />)} />
+          <Route exact path="/" render={() => (user ? <Redirect to="/sequencer" /> : <HomePage />)} />
+          <Route path="/sequencer" render={() => guardedPage(<DashboardContent />)} />
           <Route path="/dashboard" component={DashboardContent} />
-          <Route path="/about" render={() => <About setUser={setUser} />} />
-          <Route path="/docs" render={() => <Docs setUser={setUser} />} />
-          <Route path="/contact" render={() => <Contact setUser={setUser} />} />
+          <Route path="/about" render={() => <About />} />
+          <Route path="/docs" render={() => <Docs />} />
+          <Route path="/contact" render={() => <Contact />} />
           <Route path="/password_reset" render={() => <PasswordResetPage />} />
           <Route path="/result" render={() => <VisualizationPage />} />
+          <Route path="/explore" render={() => <Explore />} />
         </Switch>
-      </Router>
+      </HashRouter>
     </ThemeProvider>
   );
 }
