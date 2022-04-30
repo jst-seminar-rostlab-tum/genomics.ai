@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import {
   Typography, createTheme, ThemeProvider, Stack, TextField,
@@ -7,6 +7,9 @@ import PlusIcon from 'components/GeneMapper/plusIcon';
 import styles from './home.module.css';
 import ProjectBarCard from 'components/GeneMapper/projectBarCard';
 import SearchIcon from '@mui/icons-material/Search';
+import ProjectMock from 'shared/services/mock/projects';
+import { useSubmissionProgress } from 'shared/context/submissionProgressContext';
+import { getSubmissionProgressPercentage } from 'shared/services/UploadLogic';
 
 const theme = createTheme({
   palette: {
@@ -41,43 +44,17 @@ const themeIcon = createTheme({
 });
 // dummy projects
 function GeneMapperHome() {
-  const [projects, setProjects] = useState([{
-    id: 1,
-    name: 'Leanne Graham',
-    username: 'Bret',
-    status: 'DONE',
-  },
-  {
-    id: 2,
-    name: 'Ervin Howell',
-    username: 'Antonette',
-    status: 'IN PROGRESS',
-  },
-  {
-    id: 3,
-    name: 'Max Musterman',
-    username: 'Antonette',
-    status: 'UPLOAD FAILED',
-  },
-
-  ]);
+  const [projects, setProjects] = useState([]);
   const [findString, setFindString] = useState('');
-  const [foundProjects, setFoundProjects] = useState({}, {});
+  const [submissionProgress, setSubmissionProgress] = useSubmissionProgress();
 
-  const filterFunktion = (e) => {
-    const keyword = e.target.value;
+  useEffect(() => {
+    console.log(getSubmissionProgressPercentage(submissionProgress));
+  }, [submissionProgress]);
 
-    if (keyword !== '') {
-      const results = projects.filter((project) => project.name.toLowerCase()
-        .startsWith(keyword.toLowerCase()));
-      setFoundProjects(results);
-    } else {
-      setFoundProjects(projects);
-      // If the text field is empty, show all users
-    }
-
-    setFindString(keyword);
-  };
+  useEffect(() => {
+    ProjectMock.getProjects().then((data) => setProjects(data));
+  }, []);
 
   return (
     <div>
@@ -110,19 +87,16 @@ function GeneMapperHome() {
             variant="outlined"
             size="small"
             value={findString}
-            onChange={filterFunktion}
+            onChange={(e) => setFindString(e.target.value)}
           />
         </Box>
         <div>
-          {foundProjects && foundProjects.length > 0 ? (
-            foundProjects.map((project) => (
-              <ProjectBarCard name={project.name} status={project.status} />
-            ))
-          ) : (
-            projects.map((project) => (
-              <ProjectBarCard name={project.name} status={project.status} />
-            ))
-          )}
+          {projects
+            .filter((project) => (
+              findString === '' || project.name.toLowerCase().includes(findString.toLowerCase())))
+            .map((project) => (
+              <ProjectBarCard projectId={project._id} name={project.name} status={project.status} />
+            ))}
         </div>
 
       </ThemeProvider>
