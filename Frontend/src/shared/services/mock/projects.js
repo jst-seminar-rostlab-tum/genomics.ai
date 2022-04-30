@@ -137,6 +137,28 @@ const models = [
   },
 ];
 
+const datasets = [
+  {
+    _id: 1,
+    name: 'dataset1',
+    category: 'category1'
+  },
+  {
+    _id: 2,
+    name: 'dataset2',
+    category: 'category2'
+  },
+  {
+    _id: 3,
+    name: 'dataset3',
+    category: 'category3'
+  },{
+    _id: 4,
+    name: 'dataset4',
+    category: 'category4'
+  },
+]
+
 const ProjectMock = {
   getProjects: async () => projects,
   getProject: async (id) => projects.find((project) => project._id === Number(id)),
@@ -150,6 +172,8 @@ const ProjectMock = {
   getModel: async (id) => models.find((model) => model._id === Number(id)),
   getModels: async () => models,
 
+  getDataset: async (id) => models.find((dataset) => dataset._id === Number(id)),
+  getDatasets: async () => datasets
 };
 
 export default ProjectMock;

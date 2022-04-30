@@ -8,6 +8,7 @@ import styles from './home.module.css';
 import ProjectBarCard from 'components/GeneMapper/projectBarCard';
 import SearchIcon from '@mui/icons-material/Search';
 import ProjectMock from 'shared/services/mock/projects';
+import ProjectService from 'shared/services/Project.service';
 import { useSubmissionProgress } from 'shared/context/submissionProgressContext';
 import { getSubmissionProgressPercentage } from 'shared/services/UploadLogic';
 
@@ -53,8 +54,8 @@ function GeneMapperHome() {
   }, [submissionProgress]);
 
   useEffect(() => {
-    ProjectMock.getProjects().then((data) => setProjects(data));
-  }, []);
+    ProjectService.getProjects().then((data) => setProjects(data));
+  }, [submissionProgress]); 
 
   return (
     <div>
