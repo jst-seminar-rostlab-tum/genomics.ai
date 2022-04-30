@@ -11,3 +11,10 @@ services:
     ports:
       - 9000:9000
       - 9001:9001
+
+  minioconfigure:
+    build:
+      context: .
+      dockerfile: minioconfig.Dockerfile
+    depends_on:
+      - minio

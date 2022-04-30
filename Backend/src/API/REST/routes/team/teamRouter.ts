@@ -1,4 +1,5 @@
 import express, {Router} from "express";
+import ProjectService from "../../../../database/services/project.service";
 import TeamService from "../../../../database/services/team.service";
 import { AddTeamDTO } from "../../../../database/dtos/team.dto";
 import UserService from "../../../../database/services/user.service";
@@ -6,6 +7,7 @@ import InstitutionService from "../../../../database/services/institution.servic
 import {ObjectId} from "mongoose";
 import { visibilityStatus } from "../../../../database/models/team";
 import check_auth from "../../middleware/check_auth";
+import {ExtRequest} from "../../../../definitions/ext_request";
 import {mailer} from "../../../../util/mailer";
 
 const create_team = () : Router => {
@@ -52,8 +54,12 @@ const create_team = () : Router => {
         })
 
     return router;
-}
+};
 
+/**
+ *  Invites a user to a team by adding this userId to
+ *  the invitedMemberIds of this team.
+ */
 const invite_person_to_a_team = (): Router => {
     let router = express.Router();
 
@@ -73,15 +79,11 @@ const invite_person_to_a_team = (): Router => {
             if (! team)
                 return res.status(400).send("Team does not exist.");
 
-            var tempUserId = String(userId);
-            var tempListAdmins = team.adminIds.map(String);
-            var tempListMembers = team.memberIds.map(String);
+            const isAdmin: boolean = await TeamService.isAdmin(userId, team);
+            const isMember: boolean = await TeamService.isMember(userId, team);
 
-            if (tempListMembers.includes(tempUserId))
-                return res.status(409).send("User is already a member of the team")
-
-            if (tempListAdmins.includes(tempUserId))
-                return res.status(409).send("User is an admin of the team")
+            if (isAdmin || isMember)
+                return res.status(409).send("User is already part of the team")
 
             try {
                 const team_updated = await TeamService.addInvitationMemberId(teamId, userId);
@@ -119,8 +121,70 @@ const invite_person_to_a_team = (): Router => {
     })
 
     return router;
-}
+};
 
+/**
+ *  Adds the given projectId to the projects list of the team.
+ */
+const add_project_to_team = (): Router => {
+    let router = express.Router();
+
+    router.put("/teams/:id/add_project", check_auth(), async (req: ExtRequest, res: any) => {
+        try {
+            const {projectId}: {projectId: ObjectId}  = req.body;
+            const teamId: string = req.params.id;
+
+            if(!(projectId && teamId))
+                return res.status(400).send("Missing parameters.");
+
+            const project = await ProjectService.getProjectById(projectId);
+            if (!project)
+                return res.status(400).send("Project to be added does not exist.");
+
+            const team = await TeamService.getTeamById(teamId);
+            if (!team)
+                return res.status(400).send("Team does not exist.");
+
+            /* the user should be either an admin or a member of the team */
+            const isAdmin: boolean = await TeamService.isAdmin(req.user_id!, team);
+            const isMember: boolean = await TeamService.isMember(req.user_id!, team);
+            if (!(isAdmin || isMember))
+                return res.status(401).send("Unauthenticated User! The user is not part of the team.");
+
+            if (project.owner!.toString() !== req.user_id!.toString()) // cannot be null since the project must exist at this point
+                return res.status(401).send("User is not the project owner!");
+
+            try {
+                const team_updated = await TeamService.addProject(teamId, projectId);
+                const project_updated = await ProjectService.setTeamOfProject(projectId, teamId);
+
+                if (!team_updated)
+                    return res.status(500).send("Error when adding the project to project list of the team.");
+
+                if (!project_updated)
+                    return res.status(500).send("Error when setting the team id of the project.");
+
+                return res.status(200).json("The project is successfully added.");
+            } catch(err) {
+                console.error("Error when trying to add the project to a team.")
+                console.error(JSON.stringify(err));
+                console.error(err);
+                return res.status(500).send("Unable to add the project to the team.");
+            }
+        } catch(e) {
+            /* Added since a test proved that if user sends a request with incorrect parameter names, it is able to shutdown the server. */
+            console.error("Error in invite_person_to_a_project()")
+            console.error(JSON.stringify(e));
+            console.error(e);
+            return res.status(500).send("Internal error.");
+        }
+    })
+    return router;
+};
+
+/**
+ *  Add the given userId to the admin list of a team.
+ */
 const add_user_to_admin = (): Router => {
     let router = express.Router();
 
@@ -140,15 +204,12 @@ const add_user_to_admin = (): Router => {
             if (! team)
                 return res.status(400).send("Team does not exist.");
 
-            var tempUserId = String(userId);
-            var tempListAdmins = team.adminIds.map(String);
-            var tempListMembers = team.memberIds.map(String);
-
-            if (tempListAdmins.includes(tempUserId))
+            const isAdmin: boolean = await TeamService.isAdmin(userId, team);
+            const isMember: boolean = await TeamService.isMember(userId, team);
+            if (isAdmin)
                 return res.status(409).send("User is already an admin.")
-
-            if (!tempListMembers.includes(tempUserId))
-                return res.status(409).send("User is not a member of the team. It should be first a member to become an admin.")            
+            if (!isMember)
+                return res.status(409).send("User is not a member of the team. It should first become a member to become an admin.")
 
             try {
                 const team_updated = await TeamService.addAdminToTeam(teamId, userId);
@@ -171,12 +232,14 @@ const add_user_to_admin = (): Router => {
             console.error(e);
             return res.status(500).send("Internal error.");
         }
-
     })
 
     return router;
-}
+};
 
+/**
+ *  Add the given userId to the member list of a team.
+ */
 const join_member = (): Router => {
     let router = express.Router();
 
@@ -198,16 +261,14 @@ const join_member = (): Router => {
             if (! team)
                 return res.status(400).send("Team does not exist.");
 
-            var tempUserId = String(userId);
-            var tempListAdmins = team.adminIds.map(String);
-            var tempListMembers = team.memberIds.map(String);
-
-            if (tempListAdmins.includes(tempUserId))
+            const isAdmin = await TeamService.isAdmin(userId, team);
+            if (isAdmin)
                 return res.status(409).send("User is an admin of the team.")
 
-            if (tempListMembers.includes(tempUserId))
-                return res.status(409).send("User is already a member of the team.")   
-                
+            const isMember = await TeamService.isMember(userId, team);
+            if (isMember)
+                return res.status(409).send("User is already a member of the team.")
+
             //[PENDING] Consider whether is necessary to validate if a user should have been invited before it is joined. i.e. it should exist a record in invitedMemberIds
 
             try {
@@ -235,8 +296,11 @@ const join_member = (): Router => {
     })
 
     return router;
-}
+};
 
+/**
+ *  Add a team to an institution
+ */
 const add_team_to_institution = (): Router => {
     let router = express.Router();
 
@@ -285,6 +349,72 @@ const add_team_to_institution = (): Router => {
     })
 
     return router;
+};
+
+/**
+ *  Remove a team from an institution
+ */
+const remove_team_from_institution = (): Router => {
+    let router = express.Router();
+
+    router.delete("/teams/:id/institution", check_auth(), async (req: any, res) => {
+        try {
+            const {institutionId}: {institutionId: ObjectId}  = req.body;
+            const teamId: string = req.params.id;
+
+            if(!(institutionId && teamId))
+                return res.status(400).send("Missing parameters.");
+
+            const institution = await InstitutionService.getInstitutionById(institutionId)
+            if (! institution )
+                return res.status(400).send("Institution does not exist.");
+
+            const team = await TeamService.getTeamById(teamId);
+            if (! team)
+                return res.status(400).send("Team does not exist.");
+
+            try {
+                const institution_updated = await InstitutionService.removeTeamFromInstitution(teamId, institutionId);
+
+                if (!institution_updated)
+                    return res.status(400).send("Error when removing the team from the institution.");
+
+                return res.status(200).json("Team has been removed.");
+
+            } catch(err) {
+                console.error("Error when trying to join the team into the institution.")
+                console.error(JSON.stringify(err));
+                console.error(err);
+                return res.status(500).send("Unable to register the team into the institution.");
+            }
+        } catch(e) {
+            /* Added since a test proved that if user sends a request with incorrect parameter names, it is able to shutdown the server. */
+            console.error("Error in add_team_to_institution()")
+            console.error(JSON.stringify(e));
+            console.error(e);
+            return res.status(500).send("Internal error.");
+        }
+
+    })
+
+    return router;
+};
+
+const get_teams = () : Router => {
+    let router = express.Router();
+    router
+        .get("/teams", check_auth(), async (req: any, res) => {
+            const query = { ...req.query };
+            try{
+                const teams = await TeamService.getTeams(query);
+                return res.status(200).json(teams);
+            } catch (err){
+                console.error(JSON.stringify(err));
+                return res.status(404).send(`No teams found`);
+            }
+        })
+
+    return router;
 }
 
-export { create_team, invite_person_to_a_team, add_user_to_admin, join_member, add_team_to_institution }
+export { create_team, invite_person_to_a_team, add_user_to_admin, join_member, add_team_to_institution, remove_team_from_institution, add_project_to_team, get_teams};
