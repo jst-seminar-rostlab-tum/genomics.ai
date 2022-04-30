@@ -26,7 +26,7 @@ export default class InstitutionService {
      *
      *  @param    institutionId
      *  @param    userId
-     *  @returns  institutionUpdated 
+     *  @returns  institutionUpdated
      */
     static async inviteToInstitution(institutionId: ObjectId, userId: ObjectId): Promise<IInstitution | undefined> {
         let updatedInstitution: (IInstitution | undefined) = undefined;
@@ -46,7 +46,7 @@ export default class InstitutionService {
     /**
      *  Make a person admin of an institution.
      *
-     *  @param    institutionId - the institution that is being modified 
+     *  @param    institutionId - the institution that is being modified
      *  @param    userId - the user that is being added as admin
      *  @returns  institutionUpdated - institution with new admin if updated without error
      */
@@ -69,7 +69,7 @@ export default class InstitutionService {
     /**
     *  Make a user member of an institution.
     *
-    *  @param    institutionId - the institution that is being modified 
+    *  @param    institutionId - the institution that is being modified
     *  @param    userId - the user that is being added as admin
     *  @returns  institutionUpdated - institution with new member if updated without error
     */
@@ -130,7 +130,7 @@ export default class InstitutionService {
                 memberIds: { $elemMatch: { $eq: user_id } }
             }]
 
-        })
+        });
 
         if (result) {
             return result;
@@ -146,7 +146,7 @@ export default class InstitutionService {
      *  @returns institution or null
      */
     static async getInstitutionByName(name: string):
-        Promise<(IInstitution & { _id: ObjectId } | null)> {
+      Promise<(IInstitution & { _id: ObjectId } | null)> {
         return await institutionModel.findOne({ name });
     }
 
@@ -157,11 +157,84 @@ export default class InstitutionService {
      *  @returns institution - matching institution for id or null
      */
     static async getInstitutionById(institutionId: (ObjectId | string)):
-        Promise<(IInstitution & { _id: ObjectId } | null)> {
+      Promise<(IInstitution & { _id: ObjectId } | null)> {
         return await institutionModel.findById(institutionId).exec();
     }
 
     /**
+     *  Add the given teamId into the institution.
+     *
+     *  @param   teamId
+     *  @param   institutionId
+     *  @returns updateDocument
+     */
+    static async addNewMemberIntoTeam(teamId: (ObjectId | string), institutionId: (ObjectId | string)): Promise<any> {
+        return await institutionModel.updateOne(
+            { _id: institutionId },
+            { $addToSet: { memberIds: teamId} }
+        );
+    }
+
+    /**
+     *  Add the given userId to the admin list and removes he/she from the memberIds, of the given team.
+     *
+     *  @param   teamId
+     *  @param   institutionId
+     *  @returns updateDocument
+     */
+    static async removeTeamFromInstitution(teamId: (ObjectId | string), institutionId: (ObjectId | string)): Promise<any> {
+        return await institutionModel.updateOne(
+            { _id: institutionId },
+            {
+                $pull: { memberIds: teamId }
+            }
+        );
+    }
+
+    /**
+     *  Returns true if the given user is an admin of the given institution.
+     *  The given institution should exist, otherwise the method returns false.
+     *
+     *  @param  userId
+     *  @param  institution
+     *  @return isAdmin
+     */
+    static async isAdmin(userId: (ObjectId | string), institution: (IInstitution & {_id: ObjectId}) | null):
+      Promise<boolean> {
+        if (!institution)
+          return false; /* institution does not exist */
+
+        let isAdmin = false;
+        var listAdmins = institution.adminIds.map(String);
+        var userIdStr= String(userId);
+        if (listAdmins.includes(userIdStr))
+            isAdmin = true;
+        return isAdmin;
+    }
+
+    /**
+     *  Returns true if the given user is a member of the given institution.
+     *  The given institution should exist, otherwise the method returns false.
+     *
+     *  @param  userId
+     *  @param  institution
+     *  @return isMember
+     */
+    static async isMember(userId: (ObjectId | string), institution: (IInstitution & {_id: ObjectId}) | null):
+      Promise<boolean> {
+        if (!institution)
+          return false; /* institution does not exist */
+
+        let isMember = false;
+        var listMembers = institution.memberIds.map(String);
+
+        var userIdStr = String(userId);
+        if (listMembers.includes(userIdStr))
+            isMember = true;
+        return isMember;
+    }
+
+    /*
      *  Updates the given institution corresponding to the id with the
      *  update_object.
      *
@@ -176,6 +249,7 @@ export default class InstitutionService {
         let old = await institutionModel.findByIdAndUpdate(institution_id, { $unset: { profilePictureURL: "" } });
         return old?.profilePictureURL;
     }
+
     static async unsetBackgroundPicture(institution_id: ObjectId | string): Promise<string | null | undefined> {
         let old = await institutionModel.findByIdAndUpdate(institution_id, { $unset: { backgroundPictureURL: "" } });
         return old?.backgroundPictureURL;
