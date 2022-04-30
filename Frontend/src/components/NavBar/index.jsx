@@ -185,7 +185,8 @@ export default function Navbar({
   onLoginClicked, 
   onSignUpClicked, 
   executeScroll, 
-  setNavbarHeight 
+  setNavbarHeight,
+  position
 }) {
 
   const [drawerOpen, setDrawerOpen]=useState(false)
@@ -194,7 +195,7 @@ export default function Navbar({
     console.log("clicked", drawerOpen)
     setDrawerOpen(false)
     console.log("after set", drawerOpen)
-    executeScroll()
+    if(position==="fixed") executeScroll()
   }
 
   //we get the ref of the box that contains the Navbar here
@@ -202,11 +203,11 @@ export default function Navbar({
 
   useEffect(()=>{
     //use the set function from Home page to set the height, so that we can use it later
-    setNavbarHeight(boxRef.current.clientHeight)
+    if(position==="fixed") setNavbarHeight(boxRef.current.clientHeight)
   })
 
   return (
-    <Box ref={boxRef} sx={{width: "100%", bgcolor: colors.primary[800], position: "fixed", zIndex: "3"}}>
+    <Box ref={boxRef} sx={{width: "100%", bgcolor: colors.primary[800], position: position, zIndex: "3"}}>
       <Appbar>
         <DrawerBar open={drawerOpen} setOpen={setDrawerOpen} executeScroll={handleClickContactUsInDrawer} />
         <Leftbar>
