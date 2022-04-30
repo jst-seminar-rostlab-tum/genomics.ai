@@ -11,10 +11,10 @@ import Contact from './views/Contact';
 import DashboardContent from './components/DashboardContent';
 import { guardedPage } from './shared/utils/common/utils';
 import VisualizationPage from './views/VisualizationPage';
-import { useAuth } from 'shared/context/authContext';
 import PasswordResetPage from './views/PasswordResetPage';
 import { theme } from "./shared/theme/theme"
 import Explore from "./views/Explore/index.jsx"
+import { useAuth } from 'shared/context/authContext';
 
 function App() {
 
