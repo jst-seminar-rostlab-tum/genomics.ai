@@ -81,10 +81,13 @@ export default class TeamService {
      *  @param   userId
      *  @returns updateDocument
      */
-    static async addNewMemberIntoTeam(teamId: (ObjectId | string), userId: (ObjectId | string)): Promise<any> {
+    static async joinMemberIntoTeam(teamId: (ObjectId | string), userId: (ObjectId | string)): Promise<any> {
         return await teamModel.updateOne(
             { _id: teamId },
-            { $addToSet: { memberIds: userId} }
+            { 
+                $addToSet: { memberIds: userId},
+                $pull: { invitedMemberIds: userId }
+            }
         );
     }
 
