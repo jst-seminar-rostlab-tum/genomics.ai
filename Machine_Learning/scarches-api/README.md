@@ -22,12 +22,9 @@ the an example request body looks like this
 {
     "model": "scANVI|scVI|totalVI",
     "output_path": "[s3 key where we should store the generated .tsv]",
-    "model_path": "[s3 key where we should store the resulting model.pt]",
-    "ref_path": "[s3 key where we can retrieve a pretrained model]",
     "reference_data": "[s3 key to the .h5ad file used as a reference]",
     "query_data": "[s3 key to the .h5ad file used for the query]",
     "webhook": "[url where we should make a request when we complete the query]",
-    "debug": true,
     "async": false
 }
 ```
@@ -38,13 +35,8 @@ request
 {
     "model": "scVI",
     "output_path": "query.tsv",
-    "model_path": "model.pt",
-    "pre_trained_scVI": false,
     "reference_data": "pancreas.h5ad",
-    "query_data": "pancreas.h5ad",
-    "ref_path": "model.pt",
-    "debug": false,
-    "async": false
+    "query_data": "pancreas.h5ad"
 }
 ```
 response
@@ -148,14 +140,8 @@ request
 {
     "model": "totalVI",
     "output_path": "query.tsv",
-    "model_path": "model.pt",
-    "pre_trained_scVI": false,
     "reference_data": "pbmc_10k_protein_v3.h5ad",
     "query_data": "pbmc_5k_protein_v3.h5ad",
-    "webhook": "",
-    "ref_path": "model.pt",
-    "debug": false,
-    "async": false
 }
 ```
 response

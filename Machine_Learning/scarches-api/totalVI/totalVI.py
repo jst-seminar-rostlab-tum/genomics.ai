@@ -131,17 +131,12 @@ def surgery(adata_query):
         dir_path,
         freeze_expression=True
     )
-    print('hello', file=sys.stderr)
     vae_q.train(int(get_from_config(parameters.TOTALVI_MAX_EPOCHS_2)),
                 plan_kwargs=dict(weight_decay=0.0))  # , use_gpu=True)
-    print('a', file=sys.stderr)
     vae_q.save('totalVI_model', overwrite=True)
-    print('ab', file=sys.stderr)
     adata_query.obsm["X_totalVI"] = vae_q.get_latent_representation()
-    print('c', file=sys.stderr)
     sc.pp.neighbors(adata_query, use_rep="X_totalVI")
     sc.tl.umap(adata_query, min_dist=0.4)
-    print('d', file=sys.stderr)
     return vae_q
 
 

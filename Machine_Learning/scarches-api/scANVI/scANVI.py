@@ -72,7 +72,7 @@ def predict(model, latent):
     return latent
 
 
-def surgery(anndata):
+def surgery(reference_latent, anndata):
     model = scarches.models.SCANVI.load_query_data(
         anndata,
         get_from_config(parameters.PRETRAINED_MODEL_PATH),
@@ -97,7 +97,8 @@ def surgery(anndata):
     if get_from_config(parameters.DEBUG):
         utils.save_umap_as_pdf(surgery_latent, 'figures/surgery.pdf', color=['batch', 'cell_type'])
 
-    utils.write_latent_csv(surgery_latent, key=get_from_config(parameters.OUTPUT_PATH))
+    # utils.write_latent_csv(surgery_latent, key=get_from_config(parameters.OUTPUT_PATH))
+    utils.write_combined_csv(reference_latent, surgery_latent, key=get_from_config(parameters.OUTPUT_PATH))
 
     model.save('scvi_model', overwrite=True)  # TODO check if we need this, for now, we delete it
     utils.delete_file('scvi_model/model.pt')
@@ -105,7 +106,7 @@ def surgery(anndata):
     return model, surgery_latent
 
 
-def query(anndata):
+def query(reference_latent, anndata):
     model = scarches.models.SCANVI.load_query_data(
         anndata,
         get_from_config(parameters.RESULTING_MODEL_PATH),
@@ -132,7 +133,7 @@ def query(anndata):
     if get_from_config(parameters.DEBUG):
         utils.save_umap_as_pdf(query_latent, 'figures/query.pdf', color=['batch', 'cell_type'])
 
-    utils.write_latent_csv(query_latent, key=get_from_config(parameters.OUTPUT_PATH))
+    utils.write_combined_csv(reference_latent, query_latent, key=get_from_config(parameters.OUTPUT_PATH))
 
     # Muss man das Model dann nicht abspeichern? Oder ist das dann nicht mehr das pre-trained?
 
@@ -227,16 +228,17 @@ def compute_scANVI(configP):
     utils.delete_file('scanvi_model/model.pt')
     os.rmdir('scanvi_model')
 
-    model_query, query_latent = query(target_adata)
+    model_query, query_latent = query(reference_latent, target_adata)
     model = model_query
 
     if get_from_config(parameters.SCANVI_PREDICT_CELLTYPES):
         predict_latent(predict(model_query, query_latent))
 
-    model_surgery, surgery_latent = surgery(target_adata)
+    if get_from_config(parameters.SCANVI_DO_SURGERY):
+        model_surgery, surgery_latent = surgery(reference_latent, target_adata)
 
-    if get_from_config(parameters.SCANVI_PREDICT_CELLTYPES):
-        predict_latent(predict(model_surgery, surgery_latent))
+        if get_from_config(parameters.SCANVI_PREDICT_CELLTYPES):
+            predict_latent(predict(model_surgery, surgery_latent))
 
     full_latent = None
 
@@ -247,6 +249,6 @@ def compute_scANVI(configP):
         if full_latent is None:
             full_latent = both_adata(source_adata, target_adata)
         if model is None:
-            model_query, query_latent = query(target_adata)
+            model_query, query_latent = query(reference_latent, target_adata)
             model = model_query
         compare_adata(model, source_adata, target_adata, full_latent)

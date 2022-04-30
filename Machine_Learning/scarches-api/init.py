@@ -43,12 +43,14 @@ def default_config():
         parameters.NUMBER_OF_NEIGHBORS: 8,
         parameters.MAX_EPOCHS: 100,
         parameters.UNWANTED_LABELS: ['leiden'],
-        parameters.DEBUG: True,
+        parameters.DEBUG: False,
+        parameters.RUN_ASYNCHRONOUSLY: False,
         parameters.ATTRIBUTES: None,
 
         # totalVI stuff
         parameters.TOTALVI_MAX_EPOCHS_1: 1,  # 400
         parameters.TOTALVI_MAX_EPOCHS_2: 1,  # 200
+        parameters.SCANVI_DO_SURGERY: False,
     }
 
 

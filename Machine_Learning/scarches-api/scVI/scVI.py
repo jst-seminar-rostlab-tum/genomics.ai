@@ -8,6 +8,7 @@ from scarches.dataset.trvae.data_handling import remove_sparsity
 
 from utils import utils, parameters
 import sys
+
 config = {}
 
 
@@ -66,12 +67,12 @@ def create_scVI_model(source_adata, target_adata):
         setup_anndata(source_adata)
         vae = get_model(source_adata)
         vae.train(max_epochs=get_from_config(parameters.SCVI_MAX_EPOCHS))
-        compute_latent(vae, source_adata)
+        reference_latent = compute_latent(vae, source_adata)
         vae.save('scvi_model', overwrite=True)
         # TODO check if we need to to this
-        #print(os.listdir('scvi_model'), file=sys.stderr)
-        #utils.store_file_in_s3('scvi_model/model.pt', get_from_config(parameters.RESULTING_MODEL_PATH))
-        return vae
+        # print(os.listdir('scvi_model'), file=sys.stderr)
+        # utils.store_file_in_s3('scvi_model/model.pt', get_from_config(parameters.RESULTING_MODEL_PATH))
+        return reference_latent
 
 
 def setup_anndata(anndata):
@@ -122,7 +123,7 @@ def compute_latent(model, adata):
     return reference_latent
 
 
-def compute_query(anndata):
+def compute_query(anndata, reference_latent):
     """
     trains the model on a query and saves the result
     :param anndata:
@@ -140,7 +141,8 @@ def compute_query(anndata):
     if get_from_config(parameters.DEBUG):
         utils.save_umap_as_pdf(query_latent, 'data/figures/query.pdf', color=['batch', 'cell_type'])
 
-    utils.write_latent_csv(query_latent, key=get_from_config(parameters.OUTPUT_PATH))
+    # utils.write_latent_csv(query_latent, key=get_from_config(parameters.OUTPUT_PATH))
+    utils.write_combined_csv(reference_latent, query_latent, key=get_from_config(parameters.OUTPUT_PATH))
 
     return model
 
@@ -168,9 +170,9 @@ def compute_scVI(new_config):
     set_config(new_config)
     setup()
     source_adata, target_adata = pre_process_data()
-    create_scVI_model(source_adata, target_adata)
-    model = compute_query(target_adata)
-    #TODO figure out if we need to do this
-    #compute_full_latent(source_adata, target_adata, model)
-    #model.save('resulting_model', overwrite=True)
-    #utils.store_file_in_s3('resulting_model/model.pt', get_from_config(parameters.RESULTING_MODEL_PATH) + '_new')
+    reference_latent = create_scVI_model(source_adata, target_adata)
+    model = compute_query(target_adata, reference_latent)
+    # TODO figure out if we need to do this
+    # compute_full_latent(source_adata, target_adata, model)
+    # model.save('resulting_model', overwrite=True)
+    # utils.store_file_in_s3('resulting_model/model.pt', get_from_config(parameters.RESULTING_MODEL_PATH) + '_new')

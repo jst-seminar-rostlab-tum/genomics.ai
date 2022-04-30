@@ -7,7 +7,8 @@ from aiohttp import ClientError
 import sys
 from pathlib import Path
 import scanpy
-
+import fileinput
+from pathlib import Path
 
 def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=None):
     """
@@ -27,6 +28,33 @@ def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=
     if key is not None:
         store_file_in_s3(filename, key)
     return filename
+
+
+def write_combined_csv(latent_ref, latent_query, key=None, filename=tempfile.mktemp(), drop_columns=None):
+    """
+    stores a given latent in a file, and if a key is given also in an s3 bucket
+    :param latent_ref: reference_data to be saved
+    :param latent_query: query data to be saved
+    :param key: s3 key
+    :param filename: local filename
+    :param drop_columns: not needed columns
+    :return:
+    """
+    if drop_columns is None:
+        drop_columns = []
+    query = latent_query.obs.drop(columns=drop_columns)
+    query["x"] = list(map(lambda p: float(p[0]), latent_query.obsm["X_umap"]))
+    query["y"] = list(map(lambda p: float(p[1]), latent_query.obsm["X_umap"]))
+    query["is_reference"] = ['n'] * len(latent_query.obsm["X_umap"])
+    query.to_csv(filename, sep='\t')
+    reference = latent_ref.obs.drop(columns=drop_columns)
+    reference["x"] = list(map(lambda p: float(p[0]), latent_ref.obsm["X_umap"]))
+    reference["y"] = list(map(lambda p: float(p[1]), latent_ref.obsm["X_umap"]))
+    reference["is_reference"] = ['y'] * len(latent_ref.obsm["X_umap"])
+    reference.to_csv(filename, sep='\t', header=False, mode='a')
+
+    if key is not None:
+        store_file_in_s3(filename, key)
 
 
 def print_csv(filename):
@@ -67,8 +95,8 @@ def fetch_file_from_s3(key, path):
     :return:
     """
     client = boto3.client('s3', endpoint_url=os.getenv('AWS_ENDPOINT'),
-                      aws_access_key_id=os.getenv('AWS_ACCESS_KEY'),
-                      aws_secret_access_key=os.getenv('AWS_SECRET_KEY'))
+                          aws_access_key_id=os.getenv('AWS_ACCESS_KEY'),
+                          aws_secret_access_key=os.getenv('AWS_SECRET_KEY'))
     client.download_file(os.getenv('AWS_BUCKET'), key, path)
 
 
@@ -100,6 +128,7 @@ def delete_file(file):
     """
     if os.path.isfile(file):
         os.remove(file)
+
 
 def read_h5ad_file_from_s3(key):
     """

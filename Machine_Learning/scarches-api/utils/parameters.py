@@ -68,3 +68,5 @@ RUN_ASYNCHRONOUSLY = 'async'
 TOTALVI_MAX_EPOCHS_1 = 'totalvi_max_epochs_1'
 # sets the max_epochs of the second totalVI stage
 TOTALVI_MAX_EPOCHS_2 = 'totalvi_max_epochs_2'
+# sets if we need to do surgery
+SCANVI_DO_SURGERY = 'scanvi_do_surgery'
