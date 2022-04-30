@@ -6,15 +6,17 @@ import Sidebar from '../Sidebar';
 import Dashboard from 'views/Dashboard';
 import TeamOverview from 'views/TeamOverview';
 import InstitutionOverview from 'views/InstitutionOverview';
+import UserProfile from 'views/UserProfile';
 import Documentation from 'views/Documentation';
 import Settings from 'views/Settings';
 import Help from 'views/Help';
 import styles from './dashboardContent.module.css';
+import { useAuth } from 'shared/context/authContext';
 
 const DashboardContent = (props) => {
   const [sidebarShown, setSidebarShown] = useState(true);
   const toggleSidebar = () => setSidebarShown(!sidebarShown);
-  const { user, setUser } = props;
+  const [user, setUser] = useAuth()
 
   const { path, url } = useRouteMatch();
 
@@ -23,6 +25,7 @@ const DashboardContent = (props) => {
       <Sidebar
         toggleSidebar={toggleSidebar}
         sidebarShown={sidebarShown}
+        user={user}
         setUser={setUser}
       />
       <Switch>
@@ -41,6 +44,10 @@ const DashboardContent = (props) => {
           <InstitutionOverview sidebarShown={sidebarShown} />
         </Route>
 
+        <Route path={`${path}/users`}>
+          <UserProfile sidebarShown={sidebarShown} />
+        </Route>
+
         <Route path={`${path}/documentation`}>
           <Documentation sidebarShown={sidebarShown} />
         </Route>
@@ -52,8 +59,6 @@ const DashboardContent = (props) => {
         <Route path={`${path}/settings`}>
           <Settings
             className={sidebarShown ? styles.subpage : styles.subpageSidebarCollapsed}
-            user={user}
-            setUser={setUser}
             sidebarShown={sidebarShown}
           />
         </Route>

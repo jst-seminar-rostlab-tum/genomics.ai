@@ -10,7 +10,6 @@ import RegistrationForm from '../RegistrationForm';
 import logo from '../../assets/logo.svg';
 
 const NavBar = (props) => {
-  const { setUser } = props;
   // inserting the logic from the landing page here
   const [isLoginFormVisible, setLoginFormVisible] = useState(false);
   const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
@@ -59,7 +58,6 @@ const NavBar = (props) => {
               </ul>
             </Typography>
           </Box>
-          {setUser && (
           <Box className={styles.buttonContainer}>
             <Button
               variant="text"
@@ -77,12 +75,10 @@ const NavBar = (props) => {
               </Typography>
             </Button>
           </Box>
-          ) }
         </Toolbar>
       </div>
       <div>
         <LoginForm
-          setUser={setUser}
           visible={isLoginFormVisible}
           onClose={onLoginFormClosed}
         />
