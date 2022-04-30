@@ -6,14 +6,19 @@ import Avatars from "components/Avatars";
 import SearchCard from "../SearchCard";
 import LabeledLink from "../LabeledLink";
 
+import Tag from "components/Tag";
+import CustomButton from "components/CustomButton"
+
 // Card to display search result for a single team
 const TeamCard = ({ item: team }) => {
   return (
     <SearchCard
-      action={<Button variant="contained">Join</Button>}
+      // action={<Button variant="contained">Join</Button>}
+      action={<CustomButton type="primary">Join</CustomButton>}
       title={team.name}
       primary={
-          <Chip label={team.visibility} color="primary" size="small" />
+        //  <Tag content={team.visibility} variant="primary-default" />
+        <Chip label={team.visibility} color="primary" size="small" />
       }
       secondary={`updated on ${team.updated}`}
       tertiary={
@@ -29,7 +34,9 @@ const TeamCard = ({ item: team }) => {
             size="small"
             sx={{ color: "text.secondary" }}
           />
-          {team.institution && <LabeledLink label={"Institution"} content={team.institution} />}
+          {team.institution && (
+            <LabeledLink label={"Institution"} content={team.institution} />
+          )}
         </React.Fragment>
       }
     />
