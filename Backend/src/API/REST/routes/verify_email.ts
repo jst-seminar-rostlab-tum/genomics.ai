@@ -3,30 +3,33 @@ import TokenService from "../../../database/services/token.service";
 import UserService from "../../../database/services/user.service";
 
 export default function verify_email(): Router {
-    let router = express.Router();
+  let router = express.Router();
 
-    router
-        .get("/verify/:token", (async (req, res) => {
-            const tokenObj = await TokenService.getTokenByToken(req.params.token);
-            if (!tokenObj)
-                return res.status(404).send("Verification token could not be found. It may have expired.");
+  router.get("/verify/:token", async (req, res) => {
+    const tokenObj = await TokenService.getTokenByToken(req.params.token);
+    if (!tokenObj)
+      return res.status(404).send("Verification token could not be found. It may have expired.");
 
-            const user = await UserService.getUserById(tokenObj._userId);
+    const user = await UserService.getUserById(tokenObj._userId);
 
-            if (!user)
-                return res.status(404).send("Invalid token: User for this token could not be found.");
+    if (!user)
+      return res.status(404).send("Invalid token: User for this token could not be found.");
 
-            if (user.isEmailVerified) {
-                res.status(200).send("User has already been verified.");
-                return tokenObj.delete();
-            }
+    if (user.isEmailVerified) {
+      res.status(200).send("User has already been verified.");
+      return tokenObj.delete();
+    }
 
-            user.isEmailVerified = true;
-            await user.save();
-            // res.status(200).send("<h2>User Email has been verified successfully. click <a href='https://www.genecruncher.com/'>here</a> to return</h2>");
-            res.status(200).send(`<h2>User Email has been verified successfully. click <a href='${process.env.FRONTEND_URL}/'>here</a> to return</h2>`);
-            tokenObj.delete();
-        }))
+    user.isEmailVerified = true;
+    await user.save();
+    // res.status(200).send("<h2>User Email has been verified successfully. click <a href='https://www.genecruncher.com/'>here</a> to return</h2>");
+    res
+      .status(200)
+      .send(
+        `<h2>User Email has been verified successfully. click <a href='${process.env.FRONTEND_URL}/'>here</a> to return</h2>`
+      );
+    tokenObj.delete();
+  });
 
-    return router;
+  return router;
 }

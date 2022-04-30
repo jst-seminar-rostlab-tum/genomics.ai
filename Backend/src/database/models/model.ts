@@ -1,31 +1,35 @@
-import {Document, model, Schema} from "mongoose";
+import { Document, model, Schema } from "mongoose";
 
 export interface IModel extends Document {
-   name: string,
-   description: string,
-   requirements: Array<string>
+  name: string;
+  description: string;
+  requirements: Array<string>;
 }
 
-const modelSchema = new Schema<IModel>({
+const modelSchema = new Schema<IModel>(
+  {
     name: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
 
     description: {
-        type: String,
-        required: false,
-        default: ""
+      type: String,
+      required: false,
+      default: "",
     },
 
-    requirements: [{
+    requirements: [
+      {
         type: Schema.Types.ObjectId,
         required: false,
-        default: ""
-    }]
-
-}, {
+        default: "",
+      },
+    ],
+  },
+  {
     timestamps: true,
-});
+  }
+);
 
 export const modelModel = model<IModel>("Model", modelSchema);
