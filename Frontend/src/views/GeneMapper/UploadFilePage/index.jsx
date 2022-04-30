@@ -51,44 +51,13 @@ function UploadFilePage({
       category: 'category4'
     },
   ]
-  const [tabLabels] = useState([
+  const [tabLabels, setTabLabels] = useState([
     {
       label: 'Exisiting Datasets',
       additionalContent: (
-        <Box sx={{ flexDirection: 'column', maxHeight: '10.5em' }}>
-
-          {/* <DatasetCard title="dataset1" width="96%" height="3em" /> */}
-          { existingDatasets.map(data => {
-              console.log(data)
-              return <DatasetCard title={data.name} category={data.category} width='95%' height='3em' />
-            })
-          }
-          {/* { existingDatasets ? existingDatasets.map(data => {
-              console.log(data)
-              return <DatasetCard title={data.name} category={data.category} width='95%' height='3em' />
-            }) :
-            <Typography>No existing datasets available.</Typography>
-          } */}
-        </Box>
+        <Typography>Loading datasets...</Typography>
       ),
     },
-    // {
-    //   label: 'Ongoing Uploads',
-    //   additionalContent: (
-    //     <Box sx={{ flexDirection: 'column', maxHeight: '10.5em' }}>
-    //       <DatasetCard title="upload1" width="96%" height="3em" />
-    //       <DatasetCard title="upload2" width="96%" height="3em" />
-    //       <DatasetCard title="upload3" width="96%" height="3em" />
-    //       <DatasetCard title="upload4" width="96%" height="3em" />
-    //       <DatasetCard title="upload5" width="96%" height="3em" />
-    //       {/* { ongoingUploads ? ongoingUploads.map((data, index) => {
-    //           <Card title={data} category='in progress' />
-    //         }) :
-    //         <Typography>There are currently no ongoing uploads.</Typography>
-    //       } */}
-    //     </Box>
-    //   ),
-    // },
   ]);
 
   useEffect(() => {
@@ -96,7 +65,27 @@ function UploadFilePage({
   }, []);
 
   useEffect(() => {
-    ProjectMock.getDatasets().then((data) => setExistingDatasets(data));
+    ProjectMock.getDatasets().then((data) => {
+      setExistingDatasets(data);
+      console.log("Hallo");
+      setTabLabels(
+        [
+          {
+            label: 'Exisiting Datasets',
+            additionalContent: (
+              <Box sx={{ flexDirection: 'column', maxHeight: '10.5em' }}>
+                { existingDatasets ? existingDatasets.map(data => {
+                    console.log(data)
+                    return <DatasetCard title={data.name} category={data.category} width='95%' height='3em' />
+                  }) :
+                  <Typography>No existing datasets available.</Typography>
+                }
+              </Box>
+            ),
+          },
+        ]
+      )
+    });
   }, [existingDatasets]);
 
   const handleOnDropChange = (file) => {
