@@ -24,7 +24,6 @@ import download_results_route from "./routes/file_download/results";
 import upload_user_avatar_route from "./routes/upload_user_avatar";
 
 import {get_teams_of_user} from "./routes/user/userRouter";
-import {get_userProjects, get_project_by_id} from "./routes/projects/projectRouter"
 import {get_model, get_allModels} from "./routes/model/modelRouter"
 import {get_atlas, get_allAtlases} from "./routes/atlas/atlasRouter"
 import * as swaggerDocument from "../../swagger.json";
@@ -44,7 +43,9 @@ import {
   get_teams
 } from "./routes/team/teamRouter";
 import {
-  get_projects
+  get_projects,
+  get_userProjects,
+  get_project_by_id
 } from "./routes/project/projectRouter";
 
 import {
@@ -104,8 +105,10 @@ export function express_routes(this: REST_Host): Router {
   this.expressApp.use(get_teams_of_user());
 
   // project routes
+  this.expressApp.use(get_projects());
   this.expressApp.use(get_userProjects());
   this.expressApp.use(get_project_by_id());
+
 
   // model routes
   this.expressApp.use(get_model());
@@ -134,9 +137,6 @@ export function express_routes(this: REST_Host): Router {
   this.expressApp.use(reset_institution_backgroundpicture_route());
   this.expressApp.use(make_user_admin_of_institution());
   this.expressApp.use(join_as_member_of_institution());
-
-  //project routes
-  this.expressApp.use(get_projects());
 
   this.expressApp.use(/^.*_ah.*$/, (req, res) => res.status(200).send()); // always tell google everything is fine
   this.expressApp.use((req, res) => res.status(404).send("Not found."));

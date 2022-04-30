@@ -249,12 +249,8 @@ export default class InstitutionService {
         let old = await institutionModel.findByIdAndUpdate(institution_id, { $unset: { profilePictureURL: "" } });
         return old?.profilePictureURL;
     }
-<<<<<<< HEAD
 
-    static async unsetBackgroundPicture(institution_id: ObjectId | string): Promise<string|null|undefined> {
-=======
     static async unsetBackgroundPicture(institution_id: ObjectId | string): Promise<string | null | undefined> {
->>>>>>> develop-backend
         let old = await institutionModel.findByIdAndUpdate(institution_id, { $unset: { backgroundPictureURL: "" } });
         return old?.backgroundPictureURL;
     }
