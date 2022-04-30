@@ -140,22 +140,28 @@ const models = [
 const datasets = [
   {
     _id: 1,
-    name: 'dataset1',
-    category: 'category1'
+    name: 'Hao and Hao et al, bioRvix 2020',
+    status: 'DONE'
   },
   {
     _id: 2,
-    name: 'dataset2',
-    category: 'category2'
+    name: 'Hao and Hao et al, bioRvix 2020',
+    status: 'IN PROGRESS'
   },
   {
     _id: 3,
-    name: 'dataset3',
-    category: 'category3'
-  },{
+    name: 'Hao and Hao et al, bioRvix 2020',
+    status: 'UPLOAD FAILED'
+  },
+  {
     _id: 4,
-    name: 'dataset4',
-    category: 'category4'
+    name: 'Hao and Hao et al, bioRvix 2020',
+    status: 'DONE'
+  },
+  {
+    _id: 5,
+    name: 'Hao and Hao et al, bioRvix 2020',
+    status: 'IN PROGRESS'
   },
 ]
 
