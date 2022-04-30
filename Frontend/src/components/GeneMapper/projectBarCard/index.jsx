@@ -54,7 +54,7 @@ export default function ProjectBarCard({ name, status }) {
             sx={{
               borderRadius: 100,
             }}
-            onClick={() => history.push('./result')}
+            onClick={() => history.push('./genemapper/result')}
           >
             See Results
           </Button>
