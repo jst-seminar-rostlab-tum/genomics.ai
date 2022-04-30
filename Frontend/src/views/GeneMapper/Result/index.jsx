@@ -1,79 +1,71 @@
-import { Box, CircularProgress } from '@mui/material';
+import CenterFocusWeakIcon from '@mui/icons-material/CenterFocusWeak';
+import ZoomInIcon from '@mui/icons-material/ZoomIn';
+import ZoomOutIcon from '@mui/icons-material/ZoomOut';
+import { Box, CircularProgress, IconButton } from '@mui/material';
 import GeneMapperCategories from 'components/GeneMapper/Categories';
 import GeneMapperResultHeader from 'components/GeneMapper/ResultHeader';
 import Sidepanel from 'components/GeneMapper/Sidepanel';
+import { resetZoom, zoomInN, zoomOutN } from 'components/Visualization/src/newZoom';
 import { UmapVisualization2 } from 'components/Visualization/src/umapVisualization';
 import { csv } from 'd3';
 import React, {
   useEffect, useRef, useState,
 } from 'react';
-import getProject from 'shared/services/mock/projects';
-
-const testCategories = {
-  cell_type: [
-    {
-      title: 'a',
-      color: 'red',
-    },
-    {
-      title: 'b',
-      color: 'blue',
-    },
-    {
-      title: 'c',
-      color: 'green',
-    },
-  ],
-  batch: [
-    {
-      title: 'd',
-      color: 'orange',
-    },
-    {
-      title: 'e',
-      color: 'yellow',
-    },
-    {
-      title: 'f',
-      color: 'lime',
-    },
-  ],
-};
+import { useParams } from 'react-router-dom';
+import ProjectMock from 'shared/services/mock/projects';
+import ProjectService from 'shared/services/Project.service';
 
 /**
  * Shows the UMAP visualization for a given project.
  * @param projectId id of the project the result belongs to
  */
-function GeneMapperResultView({ projectId }) {
+function GeneMapperResultView() {
   const [project, setProject] = useState(null);
   const umapContainer = useRef(null);
   const [umap, setUmap] = useState(null);
-  const [umapSize, setUmapSize] = useState(0);
+  const [rendered, setRendered] = useState(false);
+  const [umapSize, setUmapSize] = useState({
+    width: 0,
+    height: 0,
+  });
+
+  const { projectId } = useParams();
 
   useEffect(() => {
-    getProject(projectId)
-      .then((data) => setProject(data));
+    ProjectService.getProject(projectId)
+      .then((data) => setProject(data))
+      .catch(() => {
+        ProjectMock.getProject(projectId).then((data) => setProject(data));
+      });
   }, [projectId]);
 
   useEffect(() => {
-    if (project?.resultURL) {
-      csv(project.resultURL).then((data) => {
+    if (project?.location) {
+      csv(project.location).then((data) => {
         setUmap(new UmapVisualization2(umapContainer.current, data));
       });
     }
   }, [project]);
 
   useEffect(() => {
-    if (umap && umapSize > 0) {
-      umap.render(umapSize, umapSize);
+    if (umap && umapSize.width > 0 && umapSize.height > 0) {
+      if (rendered) {
+        umap.resize(umapSize.width, umapSize.height);
+      } else {
+        umap.render(umapSize.width, umapSize.height);
+        setRendered(true);
+      }
     }
-  }, [umap, umapSize]);
+  }, [umap, umapSize, rendered]);
 
   useEffect(() => {
     if (umapContainer?.current) {
       const observer = new ResizeObserver((entries) => {
         const container = entries[0];
-        setUmapSize(Math.min(container.contentRect.height, container.contentRect.width));
+        setUmapSize({
+          width: container.contentRect.width,
+          height: container.contentRect.height,
+        });
       });
       observer.observe(umapContainer.current);
       return () => observer.disconnect();
@@ -104,16 +96,33 @@ function GeneMapperResultView({ projectId }) {
             >
               <Sidepanel title="Categories">
                 <GeneMapperCategories
-                  categories={testCategories}
+                  categories={umap?.coloringModes}
                   setColorMode={(mode) => umap.setColorMode(mode)}
                 />
               </Sidepanel>
               <Box
                 sx={{
-                  flexGrow: 1, display: 'flex', justifyContent: 'center', overflow: 'hidden',
+                  flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', overflow: 'hidden',
                 }}
-                ref={umapContainer}
-              />
+              >
+                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                  <IconButton onClick={() => zoomInN()}>
+                    <ZoomInIcon />
+                  </IconButton>
+                  <IconButton onClick={() => zoomOutN()}>
+                    <ZoomOutIcon />
+                  </IconButton>
+                  <IconButton onClick={() => resetZoom()}>
+                    <CenterFocusWeakIcon />
+                  </IconButton>
+                </Box>
+                <Box
+                  sx={{
+                    flexGrow: 1, display: 'flex', justifyContent: 'center', overflow: 'hidden',
+                  }}
+                  ref={umapContainer}
+                />
+              </Box>
               <Sidepanel title="Graphs" collapseToRight />
             </Box>
           </>
