@@ -1,8 +1,9 @@
-import express, { Router } from "express";
+import express, { Router, Request, Response } from "express";
 
 import { Schema } from "mongoose";
 
 import InstitutionService from "../../../../database/services/institution.service";
+import TeamsService from "../../../../database/services/team.service";
 import { AddInstitutionDTO } from "../../../../database/dtos/institution.dto";
 import UserService from "../../../../database/services/user.service";
 
@@ -193,6 +194,58 @@ const get_institutions = (): Router => {
   return router;
 };
 
+const get_members_of_institution = (): Router => {
+  let router = express.Router();
+  router.get("/institutions/:id/members", check_auth(), async (req: Request, res: Response) => {
+    const institutionId = req.params.id;
+    try {
+      const institution = await InstitutionService.getMembersOfInstitution(institutionId);
+      if (institution == null) {
+        return res.status(404).send(`Institution ${institutionId} not found`);
+      }
+      return res.status(200).send(institution.memberIds);
+    } catch (err) {
+      console.error(JSON.stringify(err));
+      return res.status(500).json({ error: "General server error" });
+    }
+  });
+  return router;
+};
+
+const get_teams_of_institution = (): Router => {
+  let router = express.Router();
+  router.get("/institutions/:id/teams", check_auth(), async (req: Request, res: Response) => {
+    const institutionId = req.params.id;
+    try {
+      const teams = await TeamsService.getTeams({ institutionId: institutionId });
+
+      return res.status(200).send(teams);
+    } catch (err) {
+      console.error(JSON.stringify(err));
+      return res.status(500).json({ error: "General server error" });
+    }
+  });
+  return router;
+};
+
+const get_projects_of_institution = (): Router => {
+  let router = express.Router();
+  router.get("/institutions/:id/projects", check_auth(), async (req: Request, res: Response) => {
+    const institutionId = req.params.id;
+    try {
+      const projects = await InstitutionService.getProjectsOfInstitution(institutionId);
+      if (projects == null) {
+        return res.status(404).send(`Institution ${institutionId} not found`);
+      }
+      return res.status(200).send(projects);
+    } catch (err) {
+      console.error(JSON.stringify(err));
+      return res.status(500).json({ error: "General server error" });
+    }
+  });
+  return router;
+};
+
 export {
   create_institution,
   invite_to_institution,
@@ -200,4 +253,7 @@ export {
   join_as_member_of_institution,
   get_institutions,
   get_institution,
+  get_members_of_institution,
+  get_teams_of_institution,
+  get_projects_of_institution,
 };

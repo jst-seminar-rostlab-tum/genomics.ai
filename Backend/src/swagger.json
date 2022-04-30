@@ -674,7 +674,7 @@
                   }
                 },
                 "required": [
-                  "filename"
+                  "fileName"
                 ],
                 "additionalProperties": false
               }
@@ -739,13 +739,17 @@
     "/institutions/{id}/invite": {
       "put": {
         "summary": "Invite a user to institution",
-        "tags": ["Institution"],
+        "tags": [
+          "Institution"
+        ],
         "parameters": [
           {
             "in": "path",
             "name": "id",
             "required": true,
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "requestBody": {
@@ -755,9 +759,13 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "userId": { "type": "string" }
+                  "userId": {
+                    "type": "string"
+                  }
                 },
-                "required": ["userId"],
+                "required": [
+                  "userId"
+                ],
                 "additionalProperties": false
               }
             }
@@ -773,10 +781,66 @@
         }
       }
     },
+    "/institutions/{id}/members": {
+      "get": {
+        "summary": "Get all members of an institution",
+        "tags": [
+          "Institution"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Id of the instituion",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    },
+    "/institutions/{id}/projects": {
+      "get": {
+        "summary": "Get all projects of an institution",
+        "tags": [
+          "Institution"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Id of the instituion",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    },
     "/institutions/{id}/admin": {
       "put": {
         "summary": "Make a member of institution admin",
-        "tags": ["Institution"],
+        "tags": [
+          "Institution"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -822,7 +886,9 @@
     "/institutions/{id}/join": {
       "put": {
         "summary": "Join as member of institution",
-        "tags": ["Institution"],
+        "tags": [
+          "Institution"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -906,6 +972,33 @@
         }
       }
     },
+    "/institutions/{id}/teams": {
+      "get": {
+        "summary": "Get teams for an institution",
+        "tags": [
+          "Institution"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Id of the instituion",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    },
     "/teams": {
       "post": {
         "summary": "Create a team",
@@ -978,6 +1071,51 @@
                 },
                 "required": [
                   "userId"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    },
+    "/teams/{id}/institution": {
+      "put": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "summary": "Invite person to a team",
+        "tags": [
+          "Teams"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "institutionId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "institutionId"
                 ],
                 "additionalProperties": false
               }
