@@ -2,6 +2,7 @@ import * as d3 from "d3";
 import * as cons from "./constants";
 import { zoomM } from "./newZoom";
 import "./tooltip.css";
+import {addBarPlot} from "./barChart"
 
 //TODO: Fix constants
 //TODO: Refactor coloring functions
@@ -114,7 +115,7 @@ const getColoringModes = (data) =>
 export class UmapVisualization2 {
 
 
-  constructor(container, data) {
+  constructor(container, data){ //, containerBar) {
     d3.select(container).selectAll("*").remove();
     this.svg = d3.select(container).append('svg');
     this.gCells = addGroup(this.svg, 'cells');
@@ -122,6 +123,7 @@ export class UmapVisualization2 {
     this.coloringModes = getColoringModes(data);
     this.tooltip = d3.select(container).append("div");
     this.mode = undefined;
+    // this.barChart = addBarPlot(containerBar, data);
     this.data = data;
   };
 
