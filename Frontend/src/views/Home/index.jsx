@@ -183,7 +183,7 @@ const Home = () => {
                 <Input isRequired label="First Name" />
                 <Input isRequired label="Last Name" />
               </Stack>
-              <Input isRequired label="Message" multiline />
+              <Input isRequired label="Message" multiline maxLength={1000} />
               <Box sx={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
                 <CustomButton>Send</CustomButton>
               </Box>

@@ -29,13 +29,11 @@ import { colors } from 'shared/theme/colors';
  * For Multiline
  * <Input isRequired maxLength={120} multiline disabledHandler={false} />
  */
-const Input = ({
-  helperText, placeholder, errorHandler, disabledHandler,
-  isRequired = true, defaultValue, multiline = false, onChangeEvent = null,
-  label = 'Required',
-  maxLength = 40,
-  type = 'text',
-}) => (
+const Input = (props) => { 
+
+  const {helperText, placeholder, errorHandler, disabledHandler, isRequired=true, defaultValue, multiline=false, onChangeEvent=null, label='Required', maxLength=40, type='text'} = props
+
+  return (
   <Box
     component="form"
     sx={{
@@ -46,6 +44,7 @@ const Input = ({
     autoComplete="off"
   >
     <TextField
+      sx={{ ...props }}
       error={errorHandler}
       required={isRequired}
       disabled={disabledHandler}
@@ -55,12 +54,13 @@ const Input = ({
       multiline={multiline}
       type={type}
       id="input"
+      rows={4}
       label={label}
       helperText={helperText}
       variant="standard"
       onChange={(e) => (onChangeEvent !== null ? onChangeEvent(e.target.value) : null)}
     />
   </Box>
-);
+)};
 
 export default Input;
