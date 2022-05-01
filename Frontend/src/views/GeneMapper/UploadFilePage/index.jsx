@@ -1,4 +1,5 @@
-import { ArrowBackIcon, CheckCircleOutlinedIcon } from '@mui/icons-material/CheckCircle';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 import {
   Button, Box, Container, Divider, Stack, Typography,
 } from '@mui/material';
@@ -15,6 +16,7 @@ import ProjectMock from 'shared/services/mock/projects';
 import ProjectService from 'shared/services/Project.service';
 import { useSubmissionProgress } from 'shared/context/submissionProgressContext';
 import { TabCard } from 'components/GeneMapper/TabCard';
+import { colors } from 'shared/theme/colors';
 
 function UploadFilePage({
   path, selectedAtlas, selectedModel, setActiveStep
@@ -53,7 +55,7 @@ function UploadFilePage({
           {
             label: 'Exisiting Datasets',
             additionalContent: (
-              <Box sx={{ flexDirection: 'column', maxHeight: '10.5em' }}>
+              <Box sx={{ flexDirection: 'column', maxHeight: '50%' }}>
                 { existingDatasets ? existingDatasets.map(data => {
                     return <TabCard fileName={data.name} status={data.status} width='95%' height='3em' />
                   }) :
@@ -68,7 +70,7 @@ function UploadFilePage({
   }, [existingDatasets]);
 
   const handleOnDropChange = (file) => {
-    console.log(file);
+    // console.log(file);
     setUploadedFile(file);
     setOpenUploadConfirmation(true);
   };
@@ -95,23 +97,23 @@ function UploadFilePage({
   };
 
   return (
-    <Container>
+    <Box sx={{ marginTop: '2.5em' }}>
       <Stack
         direction="row"
         divider={(<Divider className={styles.divider} orientation="vertical" flexItem />)}
+        justifyContent="space-between"
       >
         {/* Left side */}
         <Container>
           <Stack direction="column">
-            <Typography variant='h5' sx={{ fontWeight: 'bold', paddingBottom: '1em' }}>Your Choice</Typography>
+            <Typography variant='h5' fontWeight='bold' pb='1em'>Your Choice</Typography>
             <Stack direction="row" spacing={2} sx={{ paddingBottom: '1.5em' }}>
               <Card
                 width="50%"
                 children={(
                   <Stack direction="column">
-                    {/* TODO atlas details */}
-                    <Typography variant='h6' sx={{ fontWeight: 'bold' }}>{selectedAtlas.name}</Typography>
-                    <Typography variant='caption'>
+                    <Typography gutterBottom variant='h6' fontWeight='bold'>{selectedAtlas.name}</Typography>
+                    <Typography gutterBottom variant='caption'>
                       { 'Species: ' + selectedAtlas.species }
                     </Typography>
                     <Button size="small" disabled={!selectedAtlas} onClick={() => setAtlasInfoOpen(true)}>Learn More</Button>
@@ -123,7 +125,9 @@ function UploadFilePage({
                           <ModalTitle>{selectedAtlas.name}</ModalTitle>
                           <Typography variant='body1' gutterBottom>{
                               /* Atlas information here */
-                              Object.entries(selectedAtlas).forEach(([key, value]) => <li>{key + ': ' + value}</li> )
+                              Object.keys(selectedAtlas).map((key, i) => {
+                                return (<li key={i}>{key + ' : ' + selectedAtlas[key]}</li>)
+                              })
                             }
                           </Typography>
                           <Button size="large" onClick={() => setAtlasInfoOpen(false)}>Close</Button>
@@ -137,9 +141,8 @@ function UploadFilePage({
                 width="50%"
                 children={(
                   <Stack direction="column">
-                    {/* TODO model details */}
-                    <Typography variant='h6' gutterBottom sx={{ fontWeight: 'bold' }}>{selectedModel.name}</Typography>
-                    <Typography variant='caption' gutterBottom>
+                    <Typography gutterBottom variant='h6' fontWeight='bold'>{selectedModel.name}</Typography>
+                    <Typography gutterBottom variant='caption' sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '200px'}}>
                       {selectedModel.description}
                     </Typography>
                     <Button size="small" disabled={!selectedModel} onClick={() => setModelInfoOpen(true)}>Learn More</Button>
@@ -151,7 +154,9 @@ function UploadFilePage({
                           <ModalTitle>{selectedModel.name}</ModalTitle>
                           <Typography variant='body1' gutterBottom>{
                               /* Model information here */
-                              Object.entries(selectedModel).forEach(([key, value]) => <li>{key + ': ' + value}</li> )
+                              Object.keys(selectedModel).map((key, i) => {
+                                return (<li key={i}>{key + ' : ' + selectedModel[key]}</li>)
+                              })
                             }
                           </Typography>
                           <Button size="large" onClick={() => setModelInfoOpen(false)}>Close</Button>
@@ -163,9 +168,10 @@ function UploadFilePage({
               />
             </Stack>
             <Card
+              bg={colors.neutral[100]}
               children={(
-                <Box sx={{ flexDirection:'column', backgroundColor: 'e9ecef'}}>
-                  <Typography variant='h6' sx={{ fontWeight: 'bold' }}>Consquent Requirements</Typography>
+                <Box sx={{ flexDirection:'column', minHeight: '19.5em'}}>
+                  <Typography variant='h6' fontWeight='bold'>Consquent Requirements</Typography>
                   { requirements
                     ? requirements.map((text) => (
                       <Typography variant='body2' gutterBottom>
@@ -173,7 +179,7 @@ function UploadFilePage({
                       </Typography>
                     ))
                     : (
-                      <Typography variant="body2" gutterBottom sx={{ fontWeight:'bold' }}>
+                      <Typography variant="body2" gutterBottom fontWeight='bold'>
                         There are no consequent requirements!
                       </Typography>
                     )}
@@ -195,6 +201,7 @@ function UploadFilePage({
                   placeholder="Enter name here"
                   defaultValue={mappingName}
                   onChangeEvent={setMappingName}
+                  disabledHandler
                   isRequired
                 />
                 <Stack direction="row">
@@ -219,9 +226,9 @@ function UploadFilePage({
             )}
           />
           <Stack className="flexContainer" direction="column">
-            <Typography variant='h5' sx={{ fontWeight: 'bold', paddingBottom: '1em' }}>Upload Datasets</Typography>
+            <Typography variant='h5' fontWeight='bold' pb='1em'>Upload Datasets</Typography>
             <FileUpload
-              height="200px"
+              height="250px"
               handleFileUpload={handleOnDropChange}
             />
           </Stack>
@@ -230,8 +237,9 @@ function UploadFilePage({
           </Box>
         </Container>
       </Stack>
-      <Stack direction="row" justifyContent="space-between" sx={{ marginTop: '75px' }}>
+      <Stack direction="row" justifyContent="space-between" sx={{ marginTop: '75px', marginBottom: '3em'}}>
         <CustomButton type="tertiary" onClick={() => setActiveStep(0)}>
+          <ArrowBackIcon sx={{marginRight: '2px'}} />
           Back
         </CustomButton>
         <CustomButton
@@ -241,9 +249,10 @@ function UploadFilePage({
           }}
         >
           Create Mapping
+          <CheckCircleOutlineIcon sx={{marginLeft: '4px'}} />
         </CustomButton>
       </Stack>
-    </Container>
+    </Box>
   );
 }
 
