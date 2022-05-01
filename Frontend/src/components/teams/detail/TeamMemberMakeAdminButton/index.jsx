@@ -6,7 +6,6 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-
 function TeamMemberMakeAdminButton({ team, member }) {
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -25,8 +24,8 @@ function TeamMemberMakeAdminButton({ team, member }) {
 
   return (
     <>
-      <Button variant="outlined" onClick={handleOpenDialog} sx={{marginRight: "20px", width: "145px"}}>
-        {isAlreadyAdmin ? "Remove Admin" : "Make Admin"}
+      <Button variant="outlined" onClick={handleOpenDialog} sx={{ marginRight: '20px', width: '145px' }}>
+        {isAlreadyAdmin ? 'Remove Admin' : 'Make Admin'}
       </Button>
       <Dialog
         open={dialogOpen}
@@ -35,18 +34,18 @@ function TeamMemberMakeAdminButton({ team, member }) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-        {isAlreadyAdmin ? "Remove Admin" : "Make Admin"}
+          {isAlreadyAdmin ? 'Remove Admin' : 'Make Admin'}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            {`Do you really want to ${isAlreadyAdmin ? "remove" : "make"} ${member.firstName} 
-            ${member.lastName} ${isAlreadyAdmin ? "as" : ""} an admin of ${team.name}?`}
+            {`Do you really want to ${isAlreadyAdmin ? 'remove' : 'make'} ${member.firstName} 
+            ${member.lastName} ${isAlreadyAdmin ? 'as' : ''} an admin of ${team.name}?`}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog}>Cancel</Button>
-          <Button onClick={isAlreadyAdmin ? () => removeAdmin() : () => addAdmin() } color="error" autoFocus>
-          {isAlreadyAdmin ? "Remove" : "Make"}
+          <Button onClick={isAlreadyAdmin ? () => removeAdmin() : () => addAdmin()} color="error" autoFocus>
+            {isAlreadyAdmin ? 'Remove' : 'Make'}
           </Button>
         </DialogActions>
       </Dialog>
