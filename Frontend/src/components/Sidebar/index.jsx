@@ -43,8 +43,8 @@ function indexIcon(index) {
 
 export default function Sidebar(props) {
   const { setUser } = props;
-  const routes = ['dashboard', 'projects', 'institutions', 'genemapper', 'search/teams', 'documentation', 'help'];
-  const titles = ['Dashboard', 'Projects', 'Institutions', 'Gene Mapper', 'Search', 'Documentation', 'Help'];
+  const routes = ['dashboard', 'teams', 'institutions', 'genemapper', 'search/teams', 'documentation', 'help'];
+  const titles = ['Dashboard', 'Teams', 'Institutions', 'Gene Mapper', 'Search', 'Documentation', 'Help'];
   const { url } = useRouteMatch();
   const location = useLocation();
   const path = location.pathname;

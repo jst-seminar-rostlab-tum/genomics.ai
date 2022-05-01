@@ -164,7 +164,7 @@ function Settings({ sidebarShown }) {
         >
           {/* Profile Image --------------------------------------------------------------*/}
           <div className={styles.profilePicture}>
-            <ProfileImage sizePixels={180} />
+            <ProfileImage sizePixels={180} editable />
           </div>
 
           {/* Input Fields --------------------------------------------------------------*/}
