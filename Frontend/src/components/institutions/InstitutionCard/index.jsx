@@ -6,12 +6,12 @@ import ListCard from 'components/general/ListCard';
 import InstitutionLeaveButton from 'components/institutions/InstitutionLeaveButton';
 import styles from './institutionCard.module.css';
 
-import getUser from 'shared/services/mock/user';
+import getProfile from 'shared/services/profile';
 
 function InstitutionCard({ institution, onLeft }) {
   const [user, setUser] = useState({});
   useEffect(() => {
-    getUser()
+    getProfile()
       .then(setUser);
   }, [setUser]);
 
@@ -21,12 +21,12 @@ function InstitutionCard({ institution, onLeft }) {
   };
 
   const {
-    name, profilePictureURL, adminIds,
+    name, avatarUrl, adminIds,
   } = institution;
   return (
     <ListCard
       title={name}
-      imageURL={profilePictureURL}
+      imageURL={avatarUrl}
       enforceImage
       nextToTitle={(
         <span className={styles.accessRightIndicator}>

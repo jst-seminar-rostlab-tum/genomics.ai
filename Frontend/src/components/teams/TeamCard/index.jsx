@@ -6,12 +6,12 @@ import ListCard from 'components/general/ListCard';
 import TeamLeaveButton from 'components/teams/overview/TeamLeaveButton';
 import styles from './teamCard.module.css';
 
-import getUser from 'shared/services/mock/user';
+import getProfile from 'shared/services/profile';
 
 function TeamCard({ team, onLeft }) {
   const [user, setUser] = useState({});
   useEffect(() => {
-    getUser()
+    getProfile()
       .then(setUser);
   }, [setUser]);
 

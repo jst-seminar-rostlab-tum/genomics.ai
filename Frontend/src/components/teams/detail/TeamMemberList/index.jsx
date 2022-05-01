@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import MemberList from 'components/members/MemberList';
 import TeamMemberRemoveButton from '../TeamMemberRemoveButton';
-import getUser from 'shared/services/mock/user';
+import getProfile from 'shared/services/profile';
 import styles from './teamMemberList.module.css';
 
 function TeamMemberList({ team }) {
   const [user, setUser] = useState({});
   useEffect(() => {
-    getUser().then(setUser);
+    getProfile().then(setUser);
   }, [setUser]);
 
   if (team.institutionId == null) {
