@@ -53,7 +53,7 @@ function AtlasModelChoice({
             setAtlases(a);
         });
         ProjectMock.getModels().then(m => setModels(m));
-    });
+    }, []);
 
     return (
         <div>

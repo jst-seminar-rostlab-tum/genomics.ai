@@ -12,7 +12,7 @@ function GeneMapperState({ basePath, path }) {
   const steps = ['Pick Atlas and Model', 'Choose File and Project details'];
 
   return (
-    <Container>
+    <>
       <Box width="500px" margin="auto" sx={{ marginTop: '1%', marginBottom: '1%' }}>
         <Stepper activeStep={activeStep}>
           {steps.map((labelText, index) => (
@@ -50,7 +50,7 @@ function GeneMapperState({ basePath, path }) {
                     />
                   )
             }
-    </Container>
+    </>
   );
 }
 
