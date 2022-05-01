@@ -12,7 +12,7 @@ const get_atlas = (): Router => {
     if (!atlasId) return res.status(400).send("Missing atlas id");
 
     try {
-      const atlas = AtlasService.getAtlasById(atlasId);
+      const atlas = await AtlasService.getAtlasById(atlasId);
       return res.status(200).json(atlas);
     } catch (err) {
       console.error("Error getting information about the atlas!");
@@ -32,7 +32,7 @@ const get_allAtlases = (): Router => {
 
   router.get("/atlases", async (req: any, res) => {
     try {
-      const atlases = AtlasService.getAllAtlases();
+      const atlases = await AtlasService.getAllAtlases();
       return res.status(200).json(atlases);
     } catch (err) {
       console.error("Error accessing the atlases!");
