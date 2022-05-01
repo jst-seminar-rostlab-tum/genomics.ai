@@ -10,11 +10,8 @@ export class HTTP_Server {
     if (
       ["SSL_CERT", "SSL_KEY", "SSL_CA"].map((x) => process.env.hasOwnProperty(x)).includes(false)
     ) {
-      if (process.env.NODE_ENV="production") throw new Error("SSL-env-variables missing!");
-      else {
         console.log("Running unencrypted HTTP-server! (dev mode)");
         this.server = http.createServer();
-      }
     } else {
       const privateKey = await fs.readFile(process.env.SSL_KEY + "", "utf8");
       const certificate = await fs.readFile(process.env.SSL_CERT + "", "utf8");
