@@ -99,6 +99,12 @@ function GeneMapperResultView() {
                 <GeneMapperCategories
                   categories={umap?.coloringModes}
                   setColorMode={(mode) => umap.setColorMode(mode)}
+                  hide={(category, value) => {
+                    umap.after(category, value);
+                  }}
+                  show={() => {
+                    umap.before();
+                  }}
                 />
               </Sidepanel>
               <Box

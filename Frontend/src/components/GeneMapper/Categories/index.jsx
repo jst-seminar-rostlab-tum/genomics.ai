@@ -12,7 +12,7 @@ const activatedColor = colors.primary['400'];
 const deactivatedColor = colors.primary['200'];
 
 function Category({
-  title, values, colored, toggleColored,
+  title, values, colored, toggleColored, hide, show,
 }) {
   const [open, setOpen] = useState(false);
 
@@ -41,6 +41,10 @@ function Category({
               title={value}
               color={color}
               key={value}
+              setVisibility={(visible) => {
+                if (visible) show();
+                else hide(value);
+              }}
             />
           ))}
         </Box>
@@ -49,7 +53,7 @@ function Category({
   );
 }
 
-function Value({ title, color }) {
+function Value({ title, color, setVisibility }) {
   const [visible, setVisible] = useState(true);
 
   return (
@@ -57,7 +61,7 @@ function Value({ title, color }) {
       display: 'flex', alignItems: 'center', pl: 3, pr: 2,
     }}
     >
-      <IconButton onClick={() => setVisible(!visible)}>
+      <IconButton onClick={() => { setVisible(!visible); setVisibility(!visible); }}>
         { visible
           ? <Visibility sx={{ color }} />
           : <VisibilityOff sx={{ color: deactivatedColor }} />}
@@ -71,7 +75,9 @@ function Value({ title, color }) {
  *
  * @param categories An object containing available categories and their values as key-value pairs
  */
-function GeneMapperCategories({ categories, setColorMode }) {
+function GeneMapperCategories({
+  categories, setColorMode, hide, show,
+}) {
   const [coloredCategoryTitle, setColoredCategoryTitle] = useState(null);
 
   return (
@@ -87,6 +93,8 @@ function GeneMapperCategories({ categories, setColorMode }) {
               setColoredCategoryTitle(title);
               setColorMode(title);
             }}
+            hide={(value) => hide(title, value)}
+            show={show}
           />
         ))
         : null}
