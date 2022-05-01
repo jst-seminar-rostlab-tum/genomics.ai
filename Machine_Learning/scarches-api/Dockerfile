@@ -1,11 +1,8 @@
 FROM python:3.9-slim
 
-RUN apt-get clean && \
-    apt-get -y update && \
-    apt-get -y install nginx gcc&& \
-    apt-get clean \
-
-COPY nginx/nginx.conf /etc/nginx
+RUN apt-get -y update && \
+    apt-get -y install gcc&& \
+    apt-get clean
 
 ENV APP_HOME /app
 WORKDIR $APP_HOME
