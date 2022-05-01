@@ -1,7 +1,7 @@
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import EmailIcon from '@mui/icons-material/Email';
 import TwitterIcon from '@mui/icons-material/Twitter';
-import { IconButton } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 import React from 'react';
 import { colors } from 'shared/theme/colors';
 
@@ -11,7 +11,7 @@ const twitterIconColor = '#00aced';
 
 function ShareMenu({ projectName, url }) {
   return (
-    <>
+    <Box>
       <IconButton href={`https://twitter.com/share?ref_src=twsrc%5Etfw&url=${url}`} target="_blank">
         <TwitterIcon sx={{ color: twitterIconColor }} />
       </IconButton>
@@ -22,7 +22,7 @@ function ShareMenu({ projectName, url }) {
         <ContentCopyIcon sx={{ color: copyIconColor }} />
       </IconButton>
       <script async src="https://platform.twitter.com/widgets.js" charSet="utf-8" />
-    </>
+    </Box>
   );
 }
 
