@@ -8,6 +8,7 @@ const UserCard = ({ item: user }) => {
     <SearchCard
       avatar={user.image}
       title={user.name}
+      link={`/sequencer/users/${user.id}`}
       secondary={` ${user.affiliation}`}
       tertiary={`${user.email}`}
     />

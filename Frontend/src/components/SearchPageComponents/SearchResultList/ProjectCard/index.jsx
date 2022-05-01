@@ -9,6 +9,7 @@ const ProjectCard = ({ item: project }) => {
   return (
     <SearchCard
       title={project.name}
+      link={`/sequencer/projects/${project.id}`}
       primary={<Chip label={project.type} color="primary" size="small" />}
       tertiary={
         <React.Fragment>

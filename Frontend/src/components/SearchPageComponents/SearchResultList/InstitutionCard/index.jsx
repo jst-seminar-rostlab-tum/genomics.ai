@@ -10,6 +10,7 @@ const InstitutionCard = ({ item: institution }) => {
     <SearchCard
       title={institution.name}
       avatar={institution.logo}
+      link={`/sequencer/institutions/${institution.id}`}
       secondary={`updated on ${institution.updated}`}
       tertiary={
         <React.Fragment>

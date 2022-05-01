@@ -37,7 +37,7 @@ const SearchCard = (props) => {
           <Link
             sx={{ fontSize: "24px" }}
             component={RouterLink}
-            to="documentation" // TODO integarte as prop
+            to={props.link}
             underline="hover"
           >
             <b>{props.title}</b>
