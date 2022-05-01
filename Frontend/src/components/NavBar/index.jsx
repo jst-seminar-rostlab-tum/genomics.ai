@@ -209,7 +209,6 @@ export default function Navbar({
   const boxRef = useRef()
 
   useEffect(()=>{
-    console.log(user)
     //use the set function from Home page to set the height, so that we can use it later
     if(position==="fixed") setNavbarHeight(boxRef.current.clientHeight)
   })
