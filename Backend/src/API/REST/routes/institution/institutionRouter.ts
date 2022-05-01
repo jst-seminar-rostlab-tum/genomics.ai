@@ -165,7 +165,7 @@ const join_as_member_of_institution = (): Router => {
 
 const get_institution = (): Router => {
   let router = express.Router();
-  router.get("/institution/:id", check_auth(), async (req: any, res) => {
+  router.get("/institutions/:id", check_auth(), async (req: any, res) => {
     const institutionId = req.params.id;
     try {
       const institution = await InstitutionService.getInstitutionById(institutionId);
