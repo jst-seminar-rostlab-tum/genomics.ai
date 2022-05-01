@@ -301,6 +301,16 @@ export default class InstitutionService {
     return await institutionModel.find(keyword).sort(sortBy).exec();
   }
 
+  static async getUsersInstitutions(userId: (ObjectId | string)):
+      Promise<IInstitution[] | null> {
+    return await institutionModel.find({ $or: [
+        {memberIds: {$elemMatch: {$eq: userId}}},
+        {adminIds: {$elemMatch: {$eq: userId}}}
+      ]});
+  }
+
+
+
   /**
    *  Remove the given userId from the given institution.
    *

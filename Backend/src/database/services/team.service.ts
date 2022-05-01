@@ -193,6 +193,14 @@ export default class TeamService {
     return await teamModel.find(filter).sort(sortBy);
   }
 
+  static async getUsersTeams(userId: (ObjectId | string)):
+      Promise<ITeam[] | null> {
+        return await teamModel.find({ $or: [
+            {memberIds: {$elemMatch: {$eq: userId}}},
+            {adminIds: {$elemMatch: {$eq: userId}}}
+          ]});
+  }
+
   /**
    *  Add the given userId to the admin list and removes he/she from the memberIds, of the given team.
    *
