@@ -58,7 +58,7 @@ function Mapper({
         <Divider className={styles.divider} />
         <Box className={styles.buttonBox}>
           {/* Button will be disabled if selected models and atlases are incompatible with eachother, in this case it will be gray. Lets keep it enabled all the time for now. */}
-          <Button className={styles.goButton} variant="contained" disableRipple>Go</Button>
+          <Button disabled={!atlas || !model} className={styles.goButton} variant="contained" disableRipple>Go</Button>
         </Box>
       </Box>
       <Box className={styles.mapperBox}>

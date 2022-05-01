@@ -51,6 +51,10 @@
     background-color: #5676E4 !important;
 }
 
+.goButton:disabled {
+    background-color: #CED4DA !important;
+}
+
 .goButton:hover {
     background-color: #0969DA !important;
 }
