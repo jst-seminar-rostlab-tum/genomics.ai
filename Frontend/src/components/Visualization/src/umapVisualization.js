@@ -4,8 +4,6 @@ import { zoomM } from "./newZoom";
 import "./tooltip.css";
 
 //TODO: Fix constants
-//TODO: Convert x and y to float beforehand before to_csv
-//TODO: Add a ref attribute
 //TODO: Refactor coloring functions
 
 //
@@ -21,21 +19,22 @@ const getMin = (w, h) => {
 //Hide (for every possible attribute)
 const queryAfter = (cells, category, value) => {
   cells
-    .style("opacity", d => {
-      if (d[category] == value) {
-        return 0;
-      }
-      else {
-        return cons.originalOpacity;
-      }
-    })
+  .style("visibility", function(d){
+    // console.log((d3.select(this).attr("active")));
+    console.log("here");
+    if (d[category] == value){
+      d3.select(this)
+      .attr("active", false);
+      return "hidden";
+    }
+  });
 
 }
 
 //Show
 const queryBefore = (cells) => {
-  cells = cells
-    .style("opacity", cons.originalOpacity)
+  cells
+  .style("visibility", (d) => (d[category]===value? "hidden" : "visible"))
 }
 
 //Reference before and after
@@ -72,18 +71,18 @@ const addGroup = (svg, id) => {
   return svg.append('g').attr('id', `${id}`);
 };
 
-//TODO: Fix
-const attrAdding = (cells, attrDom) => {
-  for (let i = 0; i < attrDom.length; i++) {
-    var att = attrDom[i];
-    cells
-      .attr(att, (d) => { return d[att] });
-  }
+// //TODO: Fix
+// const attrAdding = (cells, attrDom) => {
+//   for (let i = 0; i < attrDom.length; i++) {
+//     var att = attrDom[i];
+//     cells
+//       .attr(att, (d) => { return d[att] });
+//   }
 
-}
+// }
 
 //Get the possible color modes with their values
-const getColoringModes = (data, colorScale) =>
+const getColoringModes = (data) =>
   Object.assign({},
     ...(Object.keys(data[0])
       .filter(d => (d !== "x" && d !== "y" && d !== ""))
@@ -101,12 +100,12 @@ const getColoringModes = (data, colorScale) =>
           return a;
         }
         const colorDomain = listColoringDomain(data, d).sort()
-        .map((d, i) => {
-          const obj = new Object();
-          obj[d] = cons.colors[i];
-          return obj;
-        });
-        console.log(colorDomain);
+          .map((d, i) => {
+            const obj = new Object();
+            obj[d] = cons.colors[i];
+            return obj;
+          });
+        // console.log(colorDomain);
         a[d] = Object.assign({},
           ...colorDomain)
         return a;
@@ -130,10 +129,11 @@ export class UmapVisualization2 {
   setColorMode(mode) {
     const colorScale = setColoring(mode, this.data);
     if (this.cells != null) {
-      this.cells = this.cells.style("fill", (d) => colorScale(d[mode]));
+      
+      this.cells.style("fill", (d) => colorScale(d[mode]));
     }
     this.mode = mode;
-    return colorScale;
+    this.colorScale = colorScale;
   }
 
   //Sizing and resizing the cells
@@ -156,7 +156,6 @@ export class UmapVisualization2 {
       .domain([d3.min(data.map(d => parseFloat(d.y))), d3.max(data.map(d => parseFloat(d.y)))])
       .range([cons.margin, min - cons.margin]);
 
-    this.cells =
       this.cells
         .attr("cx", d => xScale(parseFloat(d.x)))
         .attr("cy", d => yScale(parseFloat(d.y)))
@@ -168,35 +167,39 @@ export class UmapVisualization2 {
   //Constructing the svg
   async render(w, h) {
 
-    const data = this.data; //dataUnpacked;
+    const data = this.data;
 
     const min = getMin(w, h);
 
     const r = 0.003 * min;
+
+    const _this = this;
 
     //svg
     this.svg
       .attr("width", w)
       .attr("height", h)
 
-    //Circle cells
-    this.cells = this.gCells.selectAll("*").remove();
+    //Circle cell
+    this.gCells.selectAll("*").remove();
 
-    this.cells = this.gCells
+    this.cells =
+    this.gCells
       .selectAll("cell")
       .data(data)
       .enter()
       .append("circle")
-      //  .attr("cx", d => xScale(parseFloat(d.x)))
-      //  .attr("cy", d => yScale(parseFloat(d.y)))
       .attr("r", r)
-      .style("fill", "black")
+      .style("fill", (d) => (_this.mode ? _this.colorScale(d[_this.mode]) : "black"))
       .style("opacity", cons.originalOpacity)
+      .attr("active", true)
 
+      // queryAfter(this.cells, "cell_type", "Pancreas Beta")
+    
+      // queryAfter(this.cells, "cell_type", "Pancreas Alpha")
 
     //Addiding
     const [xScale, yScale] = this.resize(w, h);
-
 
     //tooltip
     var tooltip =
@@ -205,34 +208,29 @@ export class UmapVisualization2 {
         .attr('opacity', 1)
         .style("visibility", "hidden")
 
-    const _this = this;
-    this.cells =
+
       this.cells
         .on("mouseover", function (m, d) { //getter bigger on hover
           d3.select(this)
-          .transition()
-          .duration(100)
-          .attr('r', r * 1.5)
-          .style("stroke", "black")
-          .style("opacity", 1)
-          
-          // console.log(_this.mode);
-          // const att = d.cell_type + "<br>" + d.batch //? mode : "No information.";
-          // console.log(d);
+            .transition()
+            .duration(100)
+            .attr('r', r * 1.5)
+            .style("stroke", "black")
+            .style("opacity", 1)
+
           if (!_this.mode) return;
           const att = d[_this.mode];
-          const xPos = m.screenX + 10;
-          const yPos = m.screenY - 80;
-          
+          const xPos = parseFloat(m.x) + 5;
+          const yPos = parseFloat(m.y) - 35;
+
           tooltip
             .style("visibility", "visible")
+
           tooltip
-            .attr('font-family', 'ui-sans-serif')
             .html(att)
-            .attr('font-weight', 600)
-            .attr('font-style', 'italic')
             .style("top", `${yPos}px`)
             .style("left", `${xPos}px`)
+
         })
         .on("mouseout", function () {
           tooltip.style("visibility", "hidden");
@@ -263,8 +261,8 @@ export class UmapVisualization2 {
       .style('fill', 'white')
       .lower()
       .call(zoomM);
-  
 
+        console.log(this.cells)
   }
 
 }
