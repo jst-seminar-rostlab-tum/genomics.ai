@@ -10,7 +10,9 @@ import getMember from 'shared/services/mock/members';
  * @param {Function(Object)} trailingBuilder will be called with the member
  * @returns the card for the member
  */
-function MemberCard({ memberId, nextToNameBuilder, trailingBuilder }) {
+function MemberCard({
+  memberId, nextToNameBuilder, trailingBuilder, overrideProfilePicture = null,
+}) {
   const [isLoading, setIsLoading] = useState(true);
   const [member, setMember] = useState({});
 
@@ -22,12 +24,12 @@ function MemberCard({ memberId, nextToNameBuilder, trailingBuilder }) {
 
   return (
     <ListCard
-      imageURL={member.profilePictureURL}
+      imageURL={overrideProfilePicture || member.avatarUrl}
       enforceImage
       title={isLoading ? '...' : `${member.firstName} ${member.lastName}`}
       description={isLoading ? '...' : member.email}
-      nextToTitle={isLoading ? null : nextToNameBuilder(member)}
-      trailing={isLoading ? <CircularProgress /> : trailingBuilder(member)}
+      nextToTitle={(isLoading || !nextToNameBuilder) ? null : nextToNameBuilder(member)}
+      trailing={isLoading ? <CircularProgress /> : (trailingBuilder || (() => null))(member)}
     />
   );
 }
