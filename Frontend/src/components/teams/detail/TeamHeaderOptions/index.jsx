@@ -70,7 +70,7 @@ function TeamHeaderOptions({
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog}>Cancel</Button>
-          <Button onClick={handleInstitutionChange} color="critical" autoFocus>
+          <Button onClick={handleInstitutionChange} color="error" autoFocus>
             Confirm
           </Button>
         </DialogActions>
