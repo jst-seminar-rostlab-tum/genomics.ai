@@ -13,7 +13,7 @@ import getUser from 'shared/services/mock/user';
 import { getInstitution, queryIsAdminInstitutions } from 'shared/services/mock/institutions';
 import TextField from '@mui/material/TextField';
 
-export default function TeamPage({ sidebarShown }) {
+export default function TeamPage() {
   const { id } = useParams();
   const [team, setTeam] = useState({});
   const [user, setUser] = useState({});
@@ -56,7 +56,6 @@ export default function TeamPage({ sidebarShown }) {
 
   return (
     <HeaderView
-      sidebarShown={sidebarShown}
       title={team.name}
       rightOfTitle={(
         <TeamHeaderOptions

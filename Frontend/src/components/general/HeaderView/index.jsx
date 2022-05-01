@@ -1,13 +1,12 @@
 import { Stack } from '@mui/material';
-import React, { useCallback } from 'react';
+import React from 'react';
 import Header from 'components/general/Header';
 
 import styles from './headerView.module.css';
 
 function HeaderView({
-  sidebarShown, title, rightOfTitle, replaceHeaderRight, children,
+  title, rightOfTitle, replaceHeaderRight, children,
 }) {
-  const navbarPaddingLeft = useCallback(() => (sidebarShown ? '80px' : '190px'), [sidebarShown]);
   return (
     <div className={styles.headerView}>
       <Stack
@@ -15,7 +14,7 @@ function HeaderView({
         sx={{
           width: '100%',
           height: '100vh',
-          paddingLeft: navbarPaddingLeft,
+          paddingLeft: '80px',
         }}
       >
         <div style={{ paddingLeft: '60px', paddingRight: '60px' }}>
