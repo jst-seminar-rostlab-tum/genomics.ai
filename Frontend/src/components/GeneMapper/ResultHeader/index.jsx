@@ -1,7 +1,8 @@
 import { ArrowBackIos, InfoOutlined } from '@mui/icons-material';
 import {
-  Button, Divider, IconButton, Toolbar, Typography,
+  Box, Divider, IconButton, Typography,
 } from '@mui/material';
+import CustomButton from 'components/CustomButton';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import ShareMenu from '../ShareMenu';
@@ -15,20 +16,22 @@ function GeneMapperResultHeader({ projectName }) {
 
   return (
     <>
-      <Toolbar disableGutters>
-        <Button startIcon={<ArrowBackIos fontSize="small" />} size="small" sx={{ mr: 2 }} onClick={() => history.goBack()}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <CustomButton type="tertiary" onClick={() => history.goBack()}>
+          <ArrowBackIos sx={{ ml: -2 }} fontSize="small" />
           <Typography variant="caption">Back</Typography>
-        </Button>
-        <Typography variant="h6">
-          {projectName}
-        </Typography>
-        <IconButton aria-label="learn more" size="small">
-          <InfoOutlined fontSize="small" />
-        </IconButton>
-        <Divider orientation="vertical" variant="middle" sx={{ m: 1 }} flexItem />
-        <ShareMenu projectName={projectName} url="https://genecruncher.com" />
-      </Toolbar>
-      <Divider sx={{ mb: 1 }} />
+        </CustomButton>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Typography variant="h6">
+            {projectName}
+          </Typography>
+          <IconButton aria-label="learn more" size="small">
+            <InfoOutlined fontSize="small" />
+          </IconButton>
+        </Box>
+        <ShareMenu projectName={projectName} url={window.location} />
+      </Box>
+      <Divider sx={{ mt: 1, mb: 1 }} />
     </>
   );
 }

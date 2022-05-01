@@ -4,18 +4,16 @@ import { ThemeProvider, createTheme } from '@mui/material';
 import {
   Route, HashRouter, Switch, Redirect,
 } from 'react-router-dom';
-import HomePage from './views/LandingPage/Home';
-import About from './views/LandingPage/About';
-import Docs from './views/LandingPage/Docs';
-import Contact from './views/LandingPage/Contact';
+import HomePage from './views/Home';
+import About from './views/About';
+import Docs from './views/Docs';
+import Contact from './views/Contact';
 import DashboardContent from './components/DashboardContent';
 import { guardedPage } from './shared/utils/common/utils';
 import VisualizationPage from './views/VisualizationPage';
-import PasswordResetPage from './views/LandingPage/PasswordResetPage';
+import PasswordResetPage from './views/PasswordResetPage';
 import { theme } from "./shared/theme/theme"
 import Explore from "./views/Explore/index.jsx"
-import UploadFilePage from 'views/GeneMapper/UploadFilePage';
-import AtlasModelChoice from 'views/GeneMapper/AtlasModelChoice/AtlasModelChoice';
 import { useAuth } from 'shared/context/authContext';
 
 function App() {
@@ -50,9 +48,7 @@ function App() {
           <Route path="/contact" render={() => <Contact />} />
           <Route path="/password_reset" render={() => <PasswordResetPage />} />
           <Route path="/result" render={() => <VisualizationPage />} />
-          <Route path="/alex" render={() => <AtlasModelChoice />} />
           <Route path="/explore" render={() => <Explore />} />
-          <Route path="/genemapper" render={() => <UploadFilePage />} />
         </Switch>
       </HashRouter>
     </ThemeProvider>

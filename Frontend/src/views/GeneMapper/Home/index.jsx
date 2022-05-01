@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
-import FindMapping from 'components/GeneMapper/findMapping';
 import {
-  Typography, createTheme, ThemeProvider, Stack,
+  Typography, createTheme, ThemeProvider, Stack, TextField,
 } from '@mui/material';
 import PlusIcon from 'components/GeneMapper/plusIcon';
-import styles from './geneMapper.css';
 import ProjectBarCard from 'components/GeneMapper/projectBarCard';
-import FindMappingRequest from 'components/GeneMapper/findMappingRequest';
+import SearchIcon from '@mui/icons-material/Search';
+import ProjectMock from 'shared/services/mock/projects';
+import ProjectService from 'shared/services/Project.service';
+import { useSubmissionProgress } from 'shared/context/submissionProgressContext';
+import { getSubmissionProgressPercentage } from 'shared/services/UploadLogic';
 
 const theme = createTheme({
   palette: {
@@ -18,21 +20,8 @@ const theme = createTheme({
       main: '#5676E4',
     },
   },
-  typography: {
-    fontFamily: 'Lato',
-    fontSize: 16,
-    // the size of save
-  },
 });
-theme.typography.h3 = {
-  fontSize: '1.2rem',
-  '@media (min-width:600px)': {
-    fontSize: '1.5rem',
-  },
-  [theme.breakpoints.up('md')]: {
-    fontSize: '2rem',
-  },
-};
+
 const themeIcon = createTheme({
   palette: {
     primary: {
@@ -42,25 +31,60 @@ const themeIcon = createTheme({
 });
 
 function GeneMapperHome() {
+  const [projects, setProjects] = useState([]);
+  const [findString, setFindString] = useState('');
+  const [submissionProgress, setSubmissionProgress] = useSubmissionProgress();
+
+  useEffect(() => {
+    console.log(getSubmissionProgressPercentage(submissionProgress));
+  }, [submissionProgress]);
+
+  useEffect(() => {
+    ProjectService.getProjects().then((data) => setProjects(data));
+  }, [submissionProgress]); 
+
   return (
     <div>
       <ThemeProvider theme={theme}>
-        <Box className="box">
-          <Stack direction="row" spacing={160} sx={{ marginTop: 15, marginLeft: 30 }} className="stack">
-            <Stack direction="row" spacing={4} className="stack">
-              <Typography variant="h3" color="primary" className={styles.title}>Your Mappings </Typography>
-              <ThemeProvider theme={themeIcon}>
-                <PlusIcon />
-              </ThemeProvider>
-            </Stack>
-            <FindMappingRequest className="findMappingRequest" />
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            paddingBottom: '2em',
+            marginTop:'10px'
+          }}
+        >
+          <Stack direction="row" className="stack">
+            <Typography variant="h6" sx={{ marginTop: 0.5 }}>Your Mappings </Typography>
+            <ThemeProvider theme={themeIcon}>
+              <PlusIcon />
+            </ThemeProvider>
           </Stack>
-          <ProjectBarCard />
-          <ProjectBarCard />
-          <ProjectBarCard />
+          <TextField
+            id="outlined-basic"
+            label={(
+              <Stack direction="row">
+                <SearchIcon />
+                Find a Mapping
+              </Stack>
+        )}
+            variant="outlined"
+            size="small"
+            value={findString}
+            onChange={(e) => setFindString(e.target.value)}
+          />
         </Box>
-      </ThemeProvider>
+        <div>
+          {projects
+            .filter((project) => (
+              findString === '' || project.name.toLowerCase().includes(findString.toLowerCase())))
+            .map((project) => (
+              <ProjectBarCard projectId={project._id} name={project.name} status={project.status} />
+            ))}
+        </div>
 
+      </ThemeProvider>
     </div>
   );
 }

@@ -16,6 +16,7 @@ import graphic3 from 'assets/landing-illustrations/processing.png';
 import graphic4 from 'assets/landing-illustrations/results.png';
 
 const Home = ({ setUser }) => {
+  
   const [isLoginFormVisible, setLoginFormVisible] = useState(false);
   const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
 

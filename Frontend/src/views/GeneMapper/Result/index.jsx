@@ -11,39 +11,56 @@ import { csv } from 'd3';
 import React, {
   useEffect, useRef, useState,
 } from 'react';
-import getProject from 'shared/services/mock/projects';
+import { useParams } from 'react-router-dom';
+import ProjectMock from 'shared/services/mock/projects';
+import ProjectService from 'shared/services/Project.service';
 
 /**
  * Shows the UMAP visualization for a given project.
  * @param projectId id of the project the result belongs to
  */
-function GeneMapperResultView({ projectId }) {
+function GeneMapperResultView() {
   const [project, setProject] = useState(null);
   const umapContainer = useRef(null);
+  const graphContainer = useRef(null);
   const [umap, setUmap] = useState(null);
+  const [rendering, setRendering] = useState(true);
+  const [rendered, setRendered] = useState(false);
   const [umapSize, setUmapSize] = useState({
     width: 0,
     height: 0,
   });
 
+  const { projectId } = useParams();
+
   useEffect(() => {
-    getProject(projectId)
-      .then((data) => setProject(data));
+    ProjectService.getProject(projectId)
+      .then((data) => setProject(data))
+      .catch(() => {
+        ProjectMock.getProject(1).then((data) => setProject(data));
+      });
   }, [projectId]);
 
   useEffect(() => {
-    if (project?.resultURL) {
-      csv(project.resultURL).then((data) => {
-        setUmap(new UmapVisualization2(umapContainer.current, data));
+    if (project?.location) {
+      csv(project.location).then((data) => {
+        setRendering(true);
+        setUmap(new UmapVisualization2(umapContainer.current, data, graphContainer.current));
       });
     }
   }, [project]);
 
   useEffect(() => {
     if (umap && umapSize.width > 0 && umapSize.height > 0) {
-      umap.render(umapSize.width, umapSize.height);
+      if (rendered) {
+        umap.resize(umapSize.width, umapSize.height);
+      } else {
+        umap.render(umapSize.width, umapSize.height);
+        setRendered(true);
+        setRendering(false);
+      }
     }
-  }, [umap, umapSize]);
+  }, [umap, umapSize, rendered]);
 
   useEffect(() => {
     if (umapContainer?.current) {
@@ -79,17 +96,36 @@ function GeneMapperResultView({ projectId }) {
                 justifyContent: 'space-between',
                 alignItems: 'stretch',
                 overflow: 'hidden',
+                position: 'relative',
               }}
             >
+              {rendering ? (
+                <Box sx={{
+                  position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+                }}
+                >
+                  <CircularProgress />
+                </Box>
+              ) : null}
               <Sidepanel title="Categories">
                 <GeneMapperCategories
                   categories={umap?.coloringModes}
                   setColorMode={(mode) => umap.setColorMode(mode)}
+                  hide={(category, value) => {
+                    umap.after(category, value);
+                  }}
+                  show={() => {
+                    umap.before();
+                  }}
                 />
               </Sidepanel>
               <Box
                 sx={{
-                  flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', overflow: 'hidden',
+                  flexGrow: 1,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  overflow: 'hidden',
                 }}
               >
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -110,7 +146,9 @@ function GeneMapperResultView({ projectId }) {
                   ref={umapContainer}
                 />
               </Box>
-              <Sidepanel title="Graphs" collapseToRight />
+              <Sidepanel title="Graphs" collapseToRight>
+                <Box ref={graphContainer} />
+              </Sidepanel>
             </Box>
           </>
         )

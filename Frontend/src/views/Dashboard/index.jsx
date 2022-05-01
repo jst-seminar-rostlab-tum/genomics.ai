@@ -33,7 +33,6 @@ function Dashboard({ sidebarShown }) {
           <StatusQueue />
         </Container>
       </Stack>
-
     </Stack>
   );
 }
