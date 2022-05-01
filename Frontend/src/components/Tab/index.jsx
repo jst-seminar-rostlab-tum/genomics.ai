@@ -109,7 +109,7 @@ export function TabGroup(props) {
                     }}
                 >
                     {
-                        tabsInfo.map((tabInfo)=>(<StyledTab key={index} value={index} label={tabInfo.label} component={Link} to={tabInfo.path ? tabInfo.path : position.pathname} darkBackground={darkBackground} />))
+                        tabsInfo.map((tabInfo, index)=>(<StyledTab key={index} value={index} label={tabInfo.label} component={Link} to={tabInfo.path ? tabInfo.path : position.pathname} darkBackground={darkBackground} />))
                     }
                 </Tabs>
             </Box>
