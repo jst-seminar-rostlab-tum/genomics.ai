@@ -15,8 +15,12 @@ import { ModelCard } from 'components/Cards/ModelCard'
 import Mapper from "components/Mapper"
 import LoginForm from 'components/LoginForm'
 import RegistrationForm from 'components/RegistrationForm'
+import ModelsService from 'shared/services/Models.service'
+import AtlasService from 'shared/services/Atlas.service'
 
 import './Explore.css'
+import { useLocation } from 'react-router-dom';
+import { useAuth } from 'shared/context/authContext';
 
 const tmpObj = [
   {
@@ -33,30 +37,16 @@ const tmpObj = [
   }
 ]
 
-const atlasesGrid = (
+const atlasesGrid = (atlases, path) => (
   <Box className='atlasContainer'>
     <Grid container spacing={3}>
-      <Grid item xs={12} sm={6} md={4} lg={3}>
-        <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
-      </Grid>
-      <Grid item xs={12} sm={6} md={4} lg={3}>
-        <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
-      </Grid>
-      <Grid item xs={12} sm={6} md={4} lg={3}>
-        <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
-      </Grid>
-      <Grid item xs={12} sm={6} md={4} lg={3}>
-        <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
-      </Grid>
-      <Grid item xs={12} sm={6} md={4} lg={3}>
-        <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
-      </Grid>
-      <Grid item xs={12} sm={6} md={4} lg={3}>
-        <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
-      </Grid>
-      <Grid item xs={12} sm={6} md={4} lg={3}>
-        <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
-      </Grid>
+      {
+        atlases.map((atlas) => (
+          <Grid item xs={12} sm={6} md={4} lg={3}>
+            <AtlasCard width="300px" height="500px" imgLink={atlas.previewPictureURL} species={atlas.species} modalities={atlas.modalities} title={atlas.title} learnMoreLink={`${path}/${atlases._id}`}/>
+          </Grid>
+        ))
+      }
       <Grid item xs={12} sm={6} md={4} lg={3}>
         <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
       </Grid>
@@ -64,18 +54,16 @@ const atlasesGrid = (
   </Box >
 )
 
-const modelsGrid = (
+const modelsGrid = (models, path) => (
   <Box className='cardsContainer'>
     <Grid container spacing={3}>
-      <Grid item xs={12} sm={6} md={4} lg={3}>
-        <ModelCard title="Model 1" description="This is a short description" />
-      </Grid>
-      <Grid item xs={12} sm={6} md={4} lg={3}>
-
-      </Grid>
-      <Grid item xs={12} sm={6} md={4} lg={3}>
-
-      </Grid>
+      {
+        models.map((model) => (
+          <Grid item xs={12} sm={6} md={4} lg={3}>
+            <ModelCard title={`Model ${model.name}`} description={model.description} learnMoreLink={`${path}/${model._id}`} />
+          </Grid>
+        ))
+      }
     </Grid>
   </Box>
 )
@@ -96,12 +84,34 @@ const datasetsGrid = (
   </Box>
 )
 
-const Explore = ({ setUser }) => {
+const Explore = () => {
+
+  const [, setUser] = useAuth()
 
   const [isLoginFormVisible, setLoginFormVisible] = useState(false);
   const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
 
-  const onLoginClicked = useCallback(() => {
+  const [atlases, setAtlases] = useState([])
+  const [models, setModels] = useState([])
+
+  const path = useLocation().pathname
+
+  console.log(path)
+
+  useEffect(() => {
+    AtlasService.getAtlases()
+      .then((atlases) => setAtlases(atlases))
+      .catch((err) => console.log(err))
+
+    ModelsService.getModels()
+      .then((models) => setModels(models))
+      .catch((err) => console.log(err))
+
+    console.log(atlases)
+    console.log(models)
+  }, [])
+
+  const onLoginClicked = useCallback(() => {  
     console.log("login")
     setRegistrationFormVisible(false)
     setLoginFormVisible(true)
@@ -151,8 +161,8 @@ const Explore = ({ setUser }) => {
         {/* /explore/atlases */}
         <TabGroup value={value} setValue={setValue} tabsInfo={tmpObj} />
         <Switch>
-          <Route path="/explore/atlases" render={() => atlasesGrid} />
-          <Route path="/explore/models" render={() => modelsGrid} />
+          <Route path="/explore/atlases" render={() => atlasesGrid(atlases, path)} />
+          <Route path="/explore/models" render={() => modelsGrid(models, path)} />
           <Route path="/explore/datasets" render={() => datasetsGrid} />
           <Redirect to="/explore/atlases" />
         </Switch>
