@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Switch, Route, Redirect, useRouteMatch,
 } from 'react-router-dom';
@@ -11,55 +11,44 @@ import Documentation from 'views/Documentation';
 import Settings from 'views/Settings';
 import Help from 'views/Help';
 import styles from './dashboardContent.module.css';
-import { useAuth } from 'shared/context/authContext';
 
-const DashboardContent = (props) => {
-  const [sidebarShown, setSidebarShown] = useState(true);
-  const toggleSidebar = () => setSidebarShown(!sidebarShown);
-  const [user, setUser] = useAuth()
-
+const DashboardContent = () => {
   const { path, url } = useRouteMatch();
 
   return (
     <div>
-      <Sidebar
-        toggleSidebar={toggleSidebar}
-        sidebarShown={sidebarShown}
-        user={user}
-        setUser={setUser}
-      />
+      <Sidebar />
       <Switch>
         <Route exact path={`${path}/`}>
           <Redirect to={`${url}/dashboard`} />
         </Route>
         <Route path={`${path}/dashboard`}>
-          <Dashboard sidebarShown={sidebarShown} />
+          <Dashboard />
         </Route>
 
         <Route path={`${path}/teams`}>
-          <TeamOverview sidebarShown={sidebarShown} />
+          <TeamOverview />
         </Route>
 
         <Route path={`${path}/institutions`}>
-          <InstitutionOverview sidebarShown={sidebarShown} />
+          <InstitutionOverview />
         </Route>
 
         <Route path={`${path}/users`}>
-          <UserProfile sidebarShown={sidebarShown} />
+          <UserProfile />
         </Route>
 
         <Route path={`${path}/documentation`}>
-          <Documentation sidebarShown={sidebarShown} />
+          <Documentation />
         </Route>
 
         <Route path={`${path}/help`}>
-          <Help sidebarShown={sidebarShown} />
+          <Help />
         </Route>
 
         <Route path={`${path}/settings`}>
           <Settings
-            className={sidebarShown ? styles.subpage : styles.subpageSidebarCollapsed}
-            sidebarShown={sidebarShown}
+            className={styles.subpage}
           />
         </Route>
       </Switch>
