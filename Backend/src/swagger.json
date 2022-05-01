@@ -1407,6 +1407,52 @@
           }
         }
       }
+    },
+    "/models": {
+      "get": {
+        "summary": "Get all available models",
+        "tags": [
+          "Model"
+        ],
+        "responses": {
+          "200": {
+            "description": "Getting all available models successful.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "requirements": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing model id"
+          },
+          "500": {
+            "description": "Internal error, unable to retrieve information about the models"
+          }
+        }
+      }
     }
   }
 }
