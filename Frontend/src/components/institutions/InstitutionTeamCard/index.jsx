@@ -1,19 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
-import SettingsIcon from '@mui/icons-material/Settings';
-import Button from '@mui/material/Button';
 import ListCard from 'components/general/ListCard';
 import TeamLeaveButton from 'components/teams/overview/TeamLeaveButton';
 import styles from './institutionTeamCard.module.css';
-
-import getUser from 'shared/services/mock/user';
+import { useAuth } from 'shared/context/authContext';
 
 function InstitutionTeamCard({ team, onLeft }) {
-  const [user, setUser] = useState({});
-  useEffect(() => {
-    getUser()
-      .then(setUser);
-  }, [setUser]);
+  const [user] = useAuth();
 
   const history = useHistory();
   const navigateToTeam = () => history.push(`/sequencer/teams/${team.id}`);
@@ -37,7 +30,7 @@ function InstitutionTeamCard({ team, onLeft }) {
       )}
       trailing={[
         adminIds.indexOf(user.id) !== -1 ? (
-            <div key="leave" onClick={preventBubble} onKeyPress={preventBubble} role="button" tabIndex={0}>
+          <div key="leave" onClick={preventBubble} onKeyPress={preventBubble} role="button" tabIndex={0}>
             <TeamLeaveButton team={team} onLeft={onLeft} />
           </div>
         ) : <div key="nothing" />,

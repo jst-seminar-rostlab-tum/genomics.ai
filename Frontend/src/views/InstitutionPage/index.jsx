@@ -3,19 +3,19 @@ import { useParams } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import { getInstitution } from 'shared/services/mock/institutions';
 import InstitutionMemberList from 'components/institutions/InstitutionMemberList';
-import getUser from 'shared/services/mock/user';
 import styles from './institutionPage.module.css';
 import Avatar from '@mui/material/Avatar';
 
 import queryMyTeams from 'shared/services/mock/teams';
 import InstitutionTeamCard from 'components/institutions/InstitutionTeamCard';
+import { useAuth } from 'shared/context/authContext';
 
 function InstitutionPage() {
   let { id } = useParams();
   id = parseInt(id, 10);
   const [institution, setInstitution] = useState({});
   const [isAdmin, setIsAdmin] = useState(false);
-  const [user, setUser] = useState({});
+  const [user] = useAuth();
 
   const [teams, setTeams] = useState([]);
   useEffect(() => {
@@ -34,11 +34,6 @@ function InstitutionPage() {
       description: event.target.value,
     });
   };
-
-  useEffect(() => {
-    getUser()
-      .then((newUser) => { setUser(newUser); updateIsAdmin(); });
-  }, [setUser, isAdmin]);
 
   useEffect(() => {
     getInstitution(id)

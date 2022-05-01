@@ -1,15 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import MemberList from 'components/members/MemberList';
 import InstitutionMemberRemoveButton from 'components/institutions/InstitutionMemberRemoveButton';
-import getUser from 'shared/services/mock/user';
 import styles from './institutionMemberList.module.css';
+import { useAuth } from 'shared/context/authContext';
 
 function InstitutionMemberList({ institution, onRemoved }) {
-  const [user, setUser] = useState({});
-  useEffect(() => {
-    getUser().then(setUser);
-  }, [setUser]);
+  const [user] = useAuth();
 
   if (!institution.adminIds?.length || !institution.memberIds?.length) {
     return <CircularProgress />;
