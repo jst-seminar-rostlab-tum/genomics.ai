@@ -1,10 +1,15 @@
-import { Box, IconButton, Typography, Drawer, List } from "@mui/material"
+import { Box, IconButton, Typography, Drawer, List, Avatar } from "@mui/material"
 import ListIcon from '@mui/icons-material/List';
-import { Link } from "react-router-dom"
+import { Link, useHistory } from "react-router-dom"
 
 import logo from 'assets/logo.svg';
 import { colors } from "shared/theme/colors";
 import { useEffect, useRef, useState } from "react";
+
+import { useAuth } from 'shared/context/authContext';
+
+// REMOVE THIS LATER
+import UserProfileImage from "assets/user.png";
 
 //In styled(), we cannot use different width to fix different resolution
 //we have to use sx
@@ -189,7 +194,9 @@ export default function Navbar({
   position
 }) {
 
+  const [user, setUser] = useAuth()
   const [drawerOpen, setDrawerOpen]=useState(false)
+  const history = useHistory()
 
   function handleClickContactUsInDrawer(){
     console.log("clicked", drawerOpen)
@@ -202,6 +209,7 @@ export default function Navbar({
   const boxRef = useRef()
 
   useEffect(()=>{
+    console.log(user)
     //use the set function from Home page to set the height, so that we can use it later
     if(position==="fixed") setNavbarHeight(boxRef.current.clientHeight)
   })
@@ -229,8 +237,15 @@ export default function Navbar({
           <LinkBox to="/explore"><Navlink>Explore</Navlink></LinkBox>
         </Leftbar>
         <Rightbar>
-          <Login onClick={onLoginClicked}>Log In</Login>
-          <Signup onClick={onSignUpClicked}>Sign Up</Signup>
+            {!user && <Login onClick={onLoginClicked}>Log In</Login>}
+            {!user && <Signup onClick={onSignUpClicked}>Sign Up</Signup>}
+            {/* TODO: Display user avatar */}
+            {
+              user && 
+              <IconButton sx={{ border: "4px solid white", p: "0" }} onClick={() => history.push("/")}>
+                <Avatar alt={user.firstName} src={UserProfileImage} />
+              </IconButton>
+            }
         </Rightbar>
       </Appbar>
     </Box>
