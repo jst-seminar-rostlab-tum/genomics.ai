@@ -8,6 +8,7 @@ import { AddInstitutionDTO } from "../../../../database/dtos/institution.dto";
 import UserService from "../../../../database/services/user.service";
 
 import check_auth from "../../middleware/check_auth";
+import { validationMdw } from "../../middleware/validation";
 import { institution_admin_auth } from "../../middleware/check_institution_auth";
 
 const create_institution = (): Router => {
@@ -50,37 +51,41 @@ const create_institution = (): Router => {
 const invite_to_institution = (): Router => {
   let router = express.Router();
 
-  router.put("/institutions/:id/invite", check_auth(), async (req: any, res) => {
-    const { userId }: { userId: Schema.Types.ObjectId } = req.body;
-    const institutionId_to_modify = req.params.id;
+  router.put(
+    "/institutions/:id/invite",
+    [validationMdw, check_auth()],
+    async (req: any, res: any) => {
+      const { userId }: { userId: Schema.Types.ObjectId } = req.body;
+      const institutionId_to_modify = req.params.id;
 
-    try {
-      if (!userId) return res.status(400).send("Missing parameter");
+      try {
+        if (!userId) return res.status(400).send("Missing parameter");
 
-      if (!(await UserService.getUserById(userId)))
-        return res.status(404).send("User that you are trying to invite does not exists!");
+        if (!(await UserService.getUserById(userId)))
+          return res.status(404).send("User that you are trying to invite does not exists!");
 
-      if (await InstitutionService.findMemeberOrInvitedById(userId, institutionId_to_modify))
-        return res
-          .status(404)
-          .send(
-            "User that you are trying to invite to this institution already is an invited member or is a member!"
-          );
+        if (await InstitutionService.findMemeberOrInvitedById(userId, institutionId_to_modify))
+          return res
+            .status(404)
+            .send(
+              "User that you are trying to invite to this institution already is an invited member or is a member!"
+            );
 
-      const updatedInstitution = await InstitutionService.inviteToInstitution(
-        institutionId_to_modify,
-        userId
-      );
+        const updatedInstitution = await InstitutionService.inviteToInstitution(
+          institutionId_to_modify,
+          userId
+        );
 
-      if (updatedInstitution) {
-        res.json(updatedInstitution);
-      } else {
-        return res.status(409).send("Could not invite person to institution!");
+        if (updatedInstitution) {
+          res.json(updatedInstitution);
+        } else {
+          return res.status(409).send("Could not invite person to institution!");
+        }
+      } catch (error) {
+        return res.status(500).send("Something went wrong: " + error);
       }
-    } catch (error) {
-      return res.status(500).send("Something went wrong: " + error);
     }
-  });
+  );
 
   return router;
 };
@@ -214,17 +219,22 @@ const get_members_of_institution = (): Router => {
 
 const get_teams_of_institution = (): Router => {
   let router = express.Router();
-  router.get("/institutions/:id/teams", check_auth(), async (req: Request, res: Response) => {
-    const institutionId = req.params.id;
-    try {
-      const teams = await TeamsService.getTeams({ institutionId: institutionId });
+  router.get(
+    "/institutions/:id/teams",
+    validationMdw,
+    check_auth(),
+    async (req: Request, res: Response) => {
+      const institutionId = req.params.id;
+      try {
+        const teams = await TeamsService.getTeams({ institutionId: institutionId });
 
-      return res.status(200).send(teams);
-    } catch (err) {
-      console.error(JSON.stringify(err));
-      return res.status(500).json({ error: "General server error" });
+        return res.status(200).send(teams);
+      } catch (err) {
+        console.error(JSON.stringify(err));
+        return res.status(500).json({ error: "General server error" });
+      }
     }
-  });
+  );
   return router;
 };
 

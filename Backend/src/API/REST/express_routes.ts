@@ -70,8 +70,6 @@ export function express_routes(this: REST_Host): Router {
 
   this.expressApp.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-  this.expressApp.use(validationMdw);
-
   // unauthenticated routes
   this.expressApp.use(auth_route());
   this.expressApp.use(register_route());
