@@ -29,8 +29,7 @@ function GeneMapperResultHeader({ projectName }) {
             <InfoOutlined fontSize="small" />
           </IconButton>
         </Box>
-        {/* <Divider orientation="vertical" variant="middle" sx={{ m: 1 }} flexItem /> */}
-        <ShareMenu projectName={projectName} url="https://www.genecruncher.com" />
+        <ShareMenu projectName={projectName} url={window.location} />
       </Box>
       <Divider sx={{ mt: 1, mb: 1 }} />
     </>

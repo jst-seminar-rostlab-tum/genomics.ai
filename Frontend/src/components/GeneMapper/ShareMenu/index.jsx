@@ -12,7 +12,7 @@ const twitterIconColor = '#00aced';
 function ShareMenu({ projectName, url }) {
   return (
     <Box>
-      <IconButton href={`https://twitter.com/share?ref_src=twsrc%5Etfw&url=${url}`} target="_blank">
+      <IconButton href={`https://twitter.com/share?ref_src=twsrc%5Etfw&url=${encodeURIComponent(url)}`} target="_blank">
         <TwitterIcon sx={{ color: twitterIconColor }} />
       </IconButton>
       <IconButton href={`mailto:?subject=${encodeURIComponent(projectName)}&body=${url}`}>
