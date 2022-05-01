@@ -10,7 +10,7 @@ export class HTTP_Server {
     if (
       ["SSL_CERT", "SSL_KEY", "SSL_CA"].map((x) => process.env.hasOwnProperty(x)).includes(false)
     ) {
-      if (process.env.production) throw new Error("SSL-env-variables missing!");
+      if (process.env.NODE_ENV="production") throw new Error("SSL-env-variables missing!");
       else {
         console.log("Running unencrypted HTTP-server! (dev mode)");
         this.server = http.createServer();

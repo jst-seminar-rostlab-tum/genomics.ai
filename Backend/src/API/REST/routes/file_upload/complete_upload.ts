@@ -15,7 +15,6 @@ import { GoogleAuth } from "google-auth-library";
 import { ProjectStatus } from "../../../../database/models/project";
 import AtlasService from "../../../../database/services/atlas.service";
 import ModelService from "../../../../database/services/model.service";
-import { request as gaxiosRequest } from "gaxios";
 
 export default function upload_complete_upload_route() {
   let router = express.Router();
@@ -78,7 +77,7 @@ export default function upload_complete_upload_route() {
           res.status(200).send("Processing started");
           //Processing is synchronous, response is sent by ML only after the result is produced, might take some time
           await client.request({ url, method: "POST", body: JSON.stringify(queryInfo) });
-        } else if (!process.env.production) {
+        } else if (process.env.NODE_ENV!="production") {
           console.log(
             "CLOUD_RUN_URL not defined, falling back to dummy result with 10s processing time"
           );
