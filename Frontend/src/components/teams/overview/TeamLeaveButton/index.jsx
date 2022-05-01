@@ -22,7 +22,7 @@ function TeamLeaveButton({ team, onLeft }) {
 
   return (
     <>
-      <Button variant="outlined" color="critical" onClick={handleOpenDialog}>
+      <Button variant="outlined" color="error" onClick={handleOpenDialog}>
         Leave
       </Button>
       <Dialog
@@ -43,7 +43,7 @@ function TeamLeaveButton({ team, onLeft }) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog}>Cancel</Button>
-          <Button onClick={() => leave()} color="critical" autoFocus>
+          <Button onClick={() => leave()} color="error" autoFocus>
             Leave
           </Button>
         </DialogActions>

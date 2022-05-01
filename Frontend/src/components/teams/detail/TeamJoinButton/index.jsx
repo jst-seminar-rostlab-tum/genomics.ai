@@ -39,7 +39,7 @@ function TeamLeaveButton({ team, onJoin, isDisabled }) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialog} color="critical">Cancel</Button>
+          <Button onClick={handleCloseDialog} color="error">Cancel</Button>
           <Button onClick={() => leave()} autoFocus>
             Join
           </Button>
