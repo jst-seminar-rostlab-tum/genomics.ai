@@ -137,6 +137,34 @@ const models = [
   },
 ];
 
+const datasets = [
+  {
+    _id: 1,
+    name: 'Hao and Hao et al, bioRvix 2020',
+    status: 'DONE'
+  },
+  {
+    _id: 2,
+    name: 'Hao and Hao et al, bioRvix 2020',
+    status: 'IN PROGRESS'
+  },
+  {
+    _id: 3,
+    name: 'Hao and Hao et al, bioRvix 2020',
+    status: 'UPLOAD FAILED'
+  },
+  {
+    _id: 4,
+    name: 'Hao and Hao et al, bioRvix 2020',
+    status: 'DONE'
+  },
+  {
+    _id: 5,
+    name: 'Hao and Hao et al, bioRvix 2020',
+    status: 'IN PROGRESS'
+  },
+]
+
 const ProjectMock = {
   getProjects: async () => projects,
   getProject: async (id) => projects.find((project) => project._id === Number(id)),
@@ -150,6 +178,8 @@ const ProjectMock = {
   getModel: async (id) => models.find((model) => model._id === Number(id)),
   getModels: async () => models,
 
+  getDataset: async (id) => models.find((dataset) => dataset._id === Number(id)),
+  getDatasets: async () => datasets
 };
 
 export default ProjectMock;

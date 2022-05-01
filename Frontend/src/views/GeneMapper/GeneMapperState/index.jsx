@@ -5,7 +5,7 @@ import { useState } from 'react';
 import AtlasModelChoice from '../AtlasModelChoice/AtlasModelChoice';
 import UploadFilePage from '../UploadFilePage';
 
-function GeneMapperState({ basePath, path }) {
+function GeneMapperState({ path }) {
   const [selectedAtlas, setSelectedAtlas] = useState('');
   const [selectedModel, setSelectedModel] = useState('');
   const [activeStep, setActiveStep] = useState(0);
@@ -25,31 +25,28 @@ function GeneMapperState({ basePath, path }) {
         </Stepper>
       </Box>
       {
-                activeStep === 0
-                  ? (
-                    <AtlasModelChoice
-                      path={path}
-                      selectedAtlas={selectedAtlas}
-                      selectedModel={selectedModel}
-                      activeStep={activeStep}
-                      steps={steps}
-                      setSelectedAtlas={setSelectedAtlas}
-                      setSelectedModel={setSelectedModel}
-                      setActiveStep={setActiveStep}
-                    />
-                  )
-                  : (
-                    <UploadFilePage
-                      basePath={basePath}
-                      path={path}
-                      selectedAtlas={selectedAtlas}
-                      selectedModel={selectedModel}
-                      activeStep={activeStep}
-                      steps={steps}
-                      setActiveStep={setActiveStep}
-                    />
-                  )
-            }
+        activeStep === 0
+          ? (
+            <AtlasModelChoice
+              path={path}
+              selectedAtlas={selectedAtlas}
+              selectedModel={selectedModel}
+              activeStep={activeStep}
+              steps={steps}
+              setSelectedAtlas={setSelectedAtlas}
+              setSelectedModel={setSelectedModel}
+              setActiveStep={setActiveStep}
+            />
+          )
+          : (
+            <UploadFilePage
+              path={path}
+              selectedAtlas={selectedAtlas}
+              selectedModel={selectedModel}
+              setActiveStep={setActiveStep}
+            />
+          )
+      }
     </>
   );
 }

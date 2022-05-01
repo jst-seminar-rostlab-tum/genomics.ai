@@ -33,7 +33,7 @@ function GeneMapper({ sidebarShown }) {
           </Route>
 
           <Route path={`${path}/create`}>
-            <GeneMapperState basePath={`${path}/create`} path={`${path}`} />
+            <GeneMapperState path={`${path}`} />
           </Route>
 
           <Route path={`${path}/result/:projectId`}>
