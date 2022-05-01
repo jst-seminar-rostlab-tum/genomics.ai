@@ -1,0 +1,13 @@
+.bar{
+background-color:#023c68;
+}
+
+.bar:hover {
+    fill: #ff5e00;
+}
+
+.tickText {
+    font-style: normal;
+    font-family: inherit;
+    font-weight: 400;
+}
