@@ -1,14 +1,15 @@
-import React from "react";
+import React from 'react';
 
-import { Chip } from "@mui/material";
+import { Chip } from '@mui/material';
 
-import Avatars from "components/Avatars";
-import SearchCard from "../SearchCard";
-import LabeledLink from "../LabeledLink";
+import Avatars from 'components/Avatars';
+import SearchCard from '../SearchCard';
+import LabeledLink from '../LabeledLink';
 
-import CustomButton from "components/CustomButton";
+import CustomButton from 'components/CustomButton';
 
 // Card to display search result for a single team
+// eslint-disable-next-line arrow-body-style
 const TeamCard = ({ item: team }) => {
   return (
     <SearchCard
@@ -21,28 +22,26 @@ const TeamCard = ({ item: team }) => {
         <Chip label={team.visibility} color="primary" size="small" />
       }
       secondary={`updated on ${team.updated}`}
-      tertiary={
-        <React.Fragment>
+      tertiary={(
+        <>
           <Avatars
-            items={team.members.map(({ name, image }) => {
-              return { src: image, alt: name };
-            })}
+            items={team.members.map(({ name, image }) => ({ src: image, alt: name }))}
           />
           <Chip
             label={`${team.membersCount} members`}
             variant="outlined"
             size="small"
-            sx={{ color: "text.secondary" }}
+            sx={{ color: 'text.secondary' }}
           />
           {team.institution && (
             <LabeledLink
-              label={"Institution"}
+              label="Institution"
               content={team.institution.name}
               to={`/sequencer/institutions/${team.institution.id}`}
             />
           )}
-        </React.Fragment>
-      }
+        </>
+      )}
     />
   );
 };
