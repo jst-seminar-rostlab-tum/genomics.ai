@@ -7,7 +7,7 @@ provide a unified endpoint for the different scarches models to backend.
 
 The Dockerfile creates an image that runs a webserver which (currenty, still under
 development and prone to change) *two* endpoints. `liveness` to check if the webserver is
-responsive and `query` which is the actual endpoint used to compute the `.tsv` files.
+responsive and `query` which is the actual endpoint used to compute the `.csv` files.
 
 ### `/query`
 
@@ -21,7 +21,7 @@ the an example request body looks like this
 ```
 {
     "model": "scANVI|scVI|totalVI",
-    "output_path": "[s3 key where we should store the generated .tsv]",
+    "output_path": "[s3 key where we should store the generated .csv]",
     "reference_data": "[s3 key to the .h5ad file used as a reference]",
     "query_data": "[s3 key to the .h5ad file used for the query]",
     "webhook": "[url where we should make a request when we complete the query]",
@@ -34,7 +34,7 @@ request
 ```
 {
     "model": "scVI",
-    "output_path": "query.tsv",
+    "output_path": "query.csv",
     "reference_data": "pancreas.h5ad",
     "query_data": "pancreas.h5ad"
 }
@@ -53,7 +53,7 @@ response
     "model_path": "model.pt",
     "n_layers": 2,
     "n_neighbors": 100,
-    "output_path": "query.tsv",
+    "output_path": "query.csv",
     "pre_trained_scANVI": false,
     "pre_trained_scVI": false,
     "pre_trained_totalVI": false,
@@ -83,7 +83,7 @@ request
 ```
 {
     "model": "scANVI",
-    "output_path": "query.tsv",
+    "output_path": "query.csv",
     "model_path": "model.pt",
     "pre_trained_scVI": false,
     "reference_data": "pancreas.h5ad",
@@ -108,7 +108,7 @@ response
     "model_path": "model.pt",
     "n_layers": 2,
     "n_neighbors": 100,
-    "output_path": "query.tsv",
+    "output_path": "query.csv",
     "pre_trained_scANVI": false,
     "pre_trained_scVI": false,
     "pre_trained_totalVI": false,
@@ -139,7 +139,7 @@ request
 ```
 {
     "model": "totalVI",
-    "output_path": "query.tsv",
+    "output_path": "query.csv",
     "reference_data": "pbmc_10k_protein_v3.h5ad",
     "query_data": "pbmc_5k_protein_v3.h5ad",
 }

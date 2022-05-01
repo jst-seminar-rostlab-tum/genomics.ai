@@ -25,7 +25,7 @@ def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=
     final = latent.obs.drop(columns=drop_columns)
     final["x"] = list(map(lambda p: p[0], latent.obsm["X_umap"]))
     final["y"] = list(map(lambda p: p[1], latent.obsm["X_umap"]))
-    final.to_csv(filename, sep='\t')
+    final.to_csv(filename)
     if key is not None:
         store_file_in_s3(filename, key)
     return filename
@@ -47,12 +47,12 @@ def write_combined_csv(latent_ref, latent_query, key=None, filename=tempfile.mkt
     query["x"] = list(map(lambda p: float(p[0]), latent_query.obsm["X_umap"]))
     query["y"] = list(map(lambda p: float(p[1]), latent_query.obsm["X_umap"]))
     query["is_reference"] = ['No'] * len(latent_query.obsm["X_umap"])
-    query.to_csv(filename, sep='\t')
+    query.to_csv(filename)
     reference = latent_ref.obs.drop(columns=drop_columns)
     reference["x"] = list(map(lambda p: float(p[0]), latent_ref.obsm["X_umap"]))
     reference["y"] = list(map(lambda p: float(p[1]), latent_ref.obsm["X_umap"]))
     reference["is_reference"] = ['Yes'] * len(latent_ref.obsm["X_umap"])
-    reference.to_csv(filename, sep='\t', header=False, mode='a')
+    reference.to_csv(filename, header=False, mode='a')
 
     if key is not None:
         store_file_in_s3(filename, key)
