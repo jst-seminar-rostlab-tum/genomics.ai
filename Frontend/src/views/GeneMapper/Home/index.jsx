@@ -4,7 +4,6 @@ import {
   Typography, createTheme, ThemeProvider, Stack, TextField,
 } from '@mui/material';
 import PlusIcon from 'components/GeneMapper/plusIcon';
-import styles from './home.module.css';
 import ProjectBarCard from 'components/GeneMapper/projectBarCard';
 import SearchIcon from '@mui/icons-material/Search';
 import ProjectMock from 'shared/services/mock/projects';
@@ -21,21 +20,8 @@ const theme = createTheme({
       main: '#5676E4',
     },
   },
-  // typography: {
-  //   fontFamily: 'Lato',
-  //   fontSize: 16,
-  //   // the size of save
-  // },
 });
-// theme.typography.h3 = {
-//   fontSize: '1.2rem',
-//   '@media (min-width:600px)': {
-//     fontSize: '1.5rem',
-//   },
-//   [theme.breakpoints.up('md')]: {
-//     fontSize: '2rem',
-//   },
-// };
+
 const themeIcon = createTheme({
   palette: {
     primary: {
@@ -43,7 +29,7 @@ const themeIcon = createTheme({
     },
   },
 });
-// dummy projects
+
 function GeneMapperHome() {
   const [projects, setProjects] = useState([]);
   const [findString, setFindString] = useState('');
@@ -62,19 +48,17 @@ function GeneMapperHome() {
       <ThemeProvider theme={theme}>
         <Box
           sx={{
-            marginLeft: '5%',
-            width: '85%',
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'space-between',
             paddingBottom: '2em',
+            marginTop:'10px'
           }}
-          className={styles.stack}
         >
           <Stack direction="row" className="stack">
-            <Typography sx={{ fontWeight: 600, fontSize: '20px', marginTop: 0.5 }} className={styles.title}>Your Mappings </Typography>
+            <Typography variant="h6" sx={{ marginTop: 0.5 }}>Your Mappings </Typography>
             <ThemeProvider theme={themeIcon}>
-              <PlusIcon className={styles.plus} />
+              <PlusIcon />
             </ThemeProvider>
           </Stack>
           <TextField
