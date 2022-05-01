@@ -24,6 +24,7 @@ function GeneMapperResultView() {
   const umapContainer = useRef(null);
   const graphContainer = useRef(null);
   const [umap, setUmap] = useState(null);
+  const [rendering, setRendering] = useState(true);
   const [rendered, setRendered] = useState(false);
   const [umapSize, setUmapSize] = useState({
     width: 0,
@@ -43,6 +44,7 @@ function GeneMapperResultView() {
   useEffect(() => {
     if (project?.location) {
       csv(project.location).then((data) => {
+        setRendering(true);
         setUmap(new UmapVisualization2(umapContainer.current, data, graphContainer.current));
       });
     }
@@ -55,6 +57,7 @@ function GeneMapperResultView() {
       } else {
         umap.render(umapSize.width, umapSize.height);
         setRendered(true);
+        setRendering(false);
       }
     }
   }, [umap, umapSize, rendered]);
@@ -93,8 +96,17 @@ function GeneMapperResultView() {
                 justifyContent: 'space-between',
                 alignItems: 'stretch',
                 overflow: 'hidden',
+                position: 'relative',
               }}
             >
+              {rendering ? (
+                <Box sx={{
+                  position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+                }}
+                >
+                  <CircularProgress />
+                </Box>
+              ) : null}
               <Sidepanel title="Categories">
                 <GeneMapperCategories
                   categories={umap?.coloringModes}
@@ -109,7 +121,11 @@ function GeneMapperResultView() {
               </Sidepanel>
               <Box
                 sx={{
-                  flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', overflow: 'hidden',
+                  flexGrow: 1,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  overflow: 'hidden',
                 }}
               >
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
