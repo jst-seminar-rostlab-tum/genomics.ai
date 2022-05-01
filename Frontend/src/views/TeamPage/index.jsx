@@ -8,10 +8,8 @@ import TeamUserHeaderRight from 'components/teams/detail/TeamUserHeaderRight';
 import TeamHeaderOptions from 'components/teams/detail/TeamHeaderOptions';
 import TeamInviteButton from 'components/teams/detail/TeamInviteButton';
 import { getTeam } from 'shared/services/mock/teams';
-import { getInstitution, queryIsAdminInstitutions } from 'shared/services/mock/institutions';
+import { getInstitution } from 'shared/services/mock/institutions';
 import TextField from '@mui/material/TextField';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import Fab from '@mui/material/Fab';
 import { useAuth } from 'shared/context/authContext';
 
 export default function TeamPage({ sidebarShown }) {
@@ -19,11 +17,6 @@ export default function TeamPage({ sidebarShown }) {
   const [team, setTeam] = useState({});
   const [user] = useAuth();
   const [institution, setInstitution] = useState({});
-  const [adminInstitutions, setAdminInstitutions] = useState([]);
-
-  function isAdmin() {
-    return (team.adminIds || []).includes(user.id);
-  }
 
   const handleDescriptionChange = (event) => {
     setTeam({
@@ -44,11 +37,6 @@ export default function TeamPage({ sidebarShown }) {
       .then((newInstitution) => setInstitution(newInstitution));
   }, [team, setInstitution]);
 
-  useEffect(() => {
-    queryIsAdminInstitutions(user.id)
-      .then((newAdminInstitutions) => setAdminInstitutions(newAdminInstitutions));
-  }, [user, setAdminInstitutions]);
-
   const isAdmin = team.adminIds ? team.adminIds.includes(user.id) : false;
 
   return (
@@ -58,10 +46,8 @@ export default function TeamPage({ sidebarShown }) {
       rightOfTitle={(
         <TeamHeaderOptions
           team={team}
-          isAdmin={isAdmin()}
+          isAdmin={isAdmin}
           institution={institution}
-          availableInstitutions={adminInstitutions}
-          setInstitution={setInstitution}
         />
       )}
       replaceHeaderRight={

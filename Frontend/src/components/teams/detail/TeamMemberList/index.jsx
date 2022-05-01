@@ -3,7 +3,6 @@ import CircularProgress from '@mui/material/CircularProgress';
 import MemberList from 'components/members/MemberList';
 import TeamMemberRemoveButton from '../TeamMemberRemoveButton';
 import TeamMemberMakeAdminButton from '../TeamMemberMakeAdminButton';
-import getUser from 'shared/services/mock/user';
 import styles from './teamMemberList.module.css';
 import { useAuth } from 'shared/context/authContext';
 
