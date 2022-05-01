@@ -73,19 +73,6 @@ export default class TeamService {
   }
 
   /**
-   *  Add the given projectId to the project list of the given team.
-   *
-   *  FIXME delete this method
-   *
-   *  @param   teamId
-   *  @param   projectId
-   *  @returns updateDocument
-   */
-  static async addProject(teamId: ObjectId | string, projectId: ObjectId | string): Promise<any> {
-    return await teamModel.updateOne({ _id: teamId }, { $addToSet: { projects: projectId } });
-  }
-
-  /**
    *  Add the given userId to the admin list and removes he/she from the memberIds, of the given team.
    *
    *  @param   teamId

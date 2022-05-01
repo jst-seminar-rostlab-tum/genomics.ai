@@ -11,7 +11,6 @@ export interface ITeam extends Document {
   adminIds: Array<Schema.Types.ObjectId>;
   invitedMemberIds: Array<Schema.Types.ObjectId>;
   memberIds: Array<Schema.Types.ObjectId>;
-  projects: Array<Schema.Types.ObjectId>;
   visibility: string;
   institutionId: Schema.Types.ObjectId;
 }
@@ -48,14 +47,6 @@ const teamSchema = new Schema<ITeam>(
       {
         type: Schema.Types.ObjectId,
         ref: "User",
-        require: false,
-      },
-    ],
-
-    projects: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Project",
         require: false,
       },
     ],

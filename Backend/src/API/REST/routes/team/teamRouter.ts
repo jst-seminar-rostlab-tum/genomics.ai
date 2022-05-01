@@ -153,11 +153,7 @@ const add_project_to_team = (): Router => {
         return res.status(401).send("User is not the project owner!");
 
       try {
-        const team_updated = await TeamService.addProject(teamId, projectId);
         const project_updated = await ProjectService.setTeamOfProject(projectId, teamId);
-
-        if (!team_updated)
-          return res.status(500).send("Error when adding the project to project list of the team.");
 
         if (!project_updated)
           return res.status(500).send("Error when setting the team id of the project.");
@@ -171,7 +167,7 @@ const add_project_to_team = (): Router => {
       }
     } catch (e) {
       /* Added since a test proved that if user sends a request with incorrect parameter names, it is able to shutdown the server. */
-      console.error("Error in invite_person_to_a_project()");
+      console.error("Error in add_project_to_team()");
       console.error(JSON.stringify(e));
       console.error(e);
       return res.status(500).send("Internal error.");
