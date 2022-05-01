@@ -5,7 +5,7 @@ import TeamMemberRemoveButton from '../TeamMemberRemoveButton';
 import getUser from 'shared/services/mock/user';
 import styles from './teamMemberList.module.css';
 
-function TeamMemberList({ team }) {
+function TeamMemberList({ team, onMemberRemoved }) {
   const [user, setUser] = useState({});
   useEffect(() => {
     getUser().then(setUser);
@@ -25,7 +25,7 @@ function TeamMemberList({ team }) {
       )}
       trailingBuilder={(member) => (
         team.adminIds.includes(user.id) && user.id === member.id ? null : (
-          <TeamMemberRemoveButton team={team} member={member} />
+          <TeamMemberRemoveButton team={team} member={member} onRemoved={onMemberRemoved} />
         )
       )}
     />

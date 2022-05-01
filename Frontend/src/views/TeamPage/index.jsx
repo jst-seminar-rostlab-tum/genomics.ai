@@ -103,7 +103,16 @@ export default function TeamPage({ sidebarShown }) {
       <section>
         <h2>Members</h2>
         <hr />
-        <TeamMemberList team={team} />
+        <TeamMemberList
+          team={team}
+          onMemberRemoved={(_team, member) => {
+            setTeam({
+              ...team,
+              memberIds: team.memberIds.filter((mId) => mId !== member.id),
+              adminIds: team.adminIds.filter((aId) => aId !== member.id),
+            });
+          }}
+        />
       </section>
     </HeaderView>
   );
