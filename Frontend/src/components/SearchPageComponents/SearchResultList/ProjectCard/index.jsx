@@ -1,36 +1,36 @@
-import React from "react";
+import React from 'react';
 
-import { Chip } from "@mui/material";
-import SearchCard from "../SearchCard";
-import LabeledLink from "../LabeledLink";
+import { Chip } from '@mui/material';
+import SearchCard from '../SearchCard';
+import LabeledLink from '../LabeledLink';
 
 // Card to display search result for a single project
-const ProjectCard = ({ item: project }) => {
+function ProjectCard({ item: project }) {
   return (
     <SearchCard
       title={project.name}
       link={`/sequencer/projects/${project.id}`}
       primary={<Chip label={project.type} color="primary" size="small" />}
-      tertiary={
-        <React.Fragment>
+      tertiary={(
+        <>
           {project.institution && (
             <LabeledLink
-              label={"Institution"}
+              label="Institution"
               content={project.institution.name}
               to={`/sequencer/institutions/${project.institution.id}`}
             />
           )}
           {project.team && (
             <LabeledLink
-              label={"Team"}
+              label="Team"
               content={project.team.name}
               to={`/sequencer/teams/${project.team.id}`}
             />
           )}
-        </React.Fragment>
-      }
+        </>
+      )}
     />
   );
-};
+}
 
 export default ProjectCard;

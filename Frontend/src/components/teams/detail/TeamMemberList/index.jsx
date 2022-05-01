@@ -1,15 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import MemberList from 'components/members/MemberList';
 import TeamMemberRemoveButton from '../TeamMemberRemoveButton';
-import getProfile from 'shared/services/profile';
 import styles from './teamMemberList.module.css';
+import { useAuth } from 'shared/context/authContext';
 
-function TeamMemberList({ team, onMemberRemoved }) {
-  const [user, setUser] = useState({});
-  useEffect(() => {
-    getProfile().then(setUser);
-  }, [setUser]);
+function TeamMemberList({ team }) {
+  const [user] = useAuth();
 
   if (team.institutionId == null) {
     return <CircularProgress />;

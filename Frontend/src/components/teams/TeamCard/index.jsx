@@ -1,19 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Button from '@mui/material/Button';
 import ListCard from 'components/general/ListCard';
 import TeamLeaveButton from 'components/teams/overview/TeamLeaveButton';
 import styles from './teamCard.module.css';
-
-import getProfile from 'shared/services/profile';
+import { useAuth } from 'shared/context/authContext';
 
 function TeamCard({ team, onLeft }) {
-  const [user, setUser] = useState({});
-  useEffect(() => {
-    getProfile()
-      .then(setUser);
-  }, [setUser]);
+  const [user] = useAuth();
 
   const history = useHistory();
   const navigateToTeam = () => history.push(`/sequencer/teams/${team.id}`);

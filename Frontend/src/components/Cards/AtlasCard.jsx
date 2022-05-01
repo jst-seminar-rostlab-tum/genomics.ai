@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { useState, useRef, useEffect } from "react"
 
 import { Box, Typography } from '@mui/material'

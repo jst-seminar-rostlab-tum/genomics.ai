@@ -1,23 +1,23 @@
-import React, { useCallback, useState, useEffect } from "react";
-import { Box, Stack, CircularProgress } from "@mui/material";
+import React, { useCallback, useState, useEffect } from 'react';
+import { Box, Stack, CircularProgress } from '@mui/material';
 import {
   useHistory,
   useLocation,
   useParams,
   useRouteMatch,
-} from "react-router-dom";
+} from 'react-router-dom';
 
-import styles from "./search.module.css";
-import SearchTabs from "components/SearchPageComponents/SearchTabs";
-import SearchContent from "components/SearchPageComponents/SearchContent";
-import Filter from "components/SearchPageComponents/Filter";
-import { setSeachCategoryInUrl } from "shared/utils/common/utils";
-import querySearch from "shared/mock/search";
-import Search from "components/Search";
+import styles from './search.module.css';
+import SearchTabs from 'components/SearchPageComponents/SearchTabs';
+import SearchContent from 'components/SearchPageComponents/SearchContent';
+import Filter from 'components/SearchPageComponents/Filter';
+// import { setSeachCategoryInUrl } from "shared/utils/common/utils";
+import querySearch from 'shared/mock/search';
+import Search from 'components/Search';
 
 const SearchPage = ({ sidebarShown }) => {
   /* Booleans */
-  const paddingL = () => (sidebarShown ? "130px" : "380px");
+  const paddingL = () => (sidebarShown ? '130px' : '380px');
 
   // state managed in path and query params
   const history = useHistory();
@@ -28,7 +28,7 @@ const SearchPage = ({ sidebarShown }) => {
 
   // category of the searched items (teams/institutions/users/projects)
   const { searchCategory } = useParams();
-  const searchedKeyword = searchParams.get("keyword") || "";
+  const searchedKeyword = searchParams.get('keyword') || '';
 
   const [searchRequestResult, setSearchRequestResult] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -49,17 +49,17 @@ const SearchPage = ({ sidebarShown }) => {
   };
 
   const searchedKeywordChangeHandler = (value) => {
-    updateQueryParams("keyword", value);
+    updateQueryParams('keyword', value);
   };
 
   const changedTabHandler = () => {
     setIsLoading(true);
   };
 
-  const fetchSearchHandler = useCallback(async (searchCategory, keyword) => {
+  const fetchSearchHandler = useCallback(async (_searchCategory, keyword) => {
     const searchResponse = await querySearch(
-      searchCategory,
-      keyword.toLowerCase()
+      _searchCategory,
+      keyword.toLowerCase(),
     );
     setSearchRequestResult(searchResponse);
     setIsLoading(false);
@@ -74,15 +74,15 @@ const SearchPage = ({ sidebarShown }) => {
     <Stack direction="column" sx={{ paddingLeft: paddingL }}>
       <div className={styles.title}>
         <h1>Search</h1>
-        <Box sx={{ margin: "auto", maxWidth: 1200 }}>
+        <Box sx={{ margin: 'auto', maxWidth: 1200 }}>
           <Search
-            filterComponent={
+            filterComponent={(
               <Filter
                 searchParams={searchParams}
                 updateQueryParams={updateQueryParams}
                 path={path}
               />
-            }
+            )}
             handleSearch={searchedKeywordChangeHandler}
             value={searchedKeyword} // currently two-way-binding missing
           />
@@ -93,7 +93,7 @@ const SearchPage = ({ sidebarShown }) => {
             path={path}
           />
           {isLoading && (
-            <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
               <CircularProgress />
             </Box>
           )}

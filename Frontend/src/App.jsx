@@ -1,5 +1,5 @@
 import './app.module.css';
-import React, { useState } from 'react';
+import React from 'react';
 import { ThemeProvider } from '@mui/material';
 import {
   Route, HashRouter, Switch, Redirect,
@@ -12,13 +12,12 @@ import DashboardContent from './components/DashboardContent';
 import { guardedPage } from './shared/utils/common/utils';
 import VisualizationPage from './views/VisualizationPage';
 import PasswordResetPage from './views/PasswordResetPage';
-import { theme } from "./shared/theme/theme"
-import Explore from "./views/Explore/index.jsx"
+import { theme } from './shared/theme/theme';
+import Explore from './views/Explore/index';
 import { useAuth } from 'shared/context/authContext';
 
 function App() {
-
-  const [user] = useAuth()
+  const [user] = useAuth();
 
   return (
     <ThemeProvider theme={theme}>

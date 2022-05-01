@@ -1,20 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import MemberCard from 'components/members/MemberCard';
 import ImageUploadDialog from '../ImageUploadDialog';
 
-import getProfile from 'shared/services/profile';
-
 import { BACKEND_ADDRESS } from 'shared/utils/common/constants';
 import { getAuthAndJsonHeader } from 'shared/utils/common/utils';
+import { useAuth } from 'shared/context/authContext';
 
 export default function ProfileImageUploadDialog({
   open, onClose, onChange,
 }) {
-  const [user, setUser] = useState({});
-  useEffect(() => {
-    getProfile()
-      .then(setUser);
-  });
+  const [user] = useAuth();
 
   async function upload(blob) {
     const response = await fetch(`${BACKEND_ADDRESS}/user-avatar`, {

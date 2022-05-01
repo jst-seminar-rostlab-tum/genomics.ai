@@ -29,11 +29,10 @@ export function getAuthAndJsonHeader() {
   };
 }
 
-
 export function createUrl(path, pathParam, value) {
   return path.replace(`:${pathParam}`, value);
 }
 
 export function setSeachCategoryInUrl(path, value) {
-  return createUrl(path, "searchCategory", value);
+  return createUrl(path, 'searchCategory', value);
 }
