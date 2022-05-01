@@ -150,11 +150,17 @@ export default class TeamService {
    *  @param   userId
    *  @returns updateDocument
    */
-  static async addNewMemberIntoTeam(
+  static async joinMemberIntoTeam(
     teamId: ObjectId | string,
     userId: ObjectId | string
   ): Promise<any> {
-    return await teamModel.updateOne({ _id: teamId }, { $addToSet: { memberIds: userId } });
+    return await teamModel.updateOne(
+      { _id: teamId },
+      {
+        $addToSet: { memberIds: userId },
+        $pull: { invitedMemberIds: userId },
+      }
+    );
   }
 
   /**
@@ -189,6 +195,44 @@ export default class TeamService {
 
   static async getUsersTeams(userId: (ObjectId | string)):
       Promise<ITeam[] | null> {
-    return await teamModel.find({memberIds: { $elemMatch: { $eq: userId } }});
+        return await teamModel.find({memberIds: {$elemMatch: {$eq: userId}}});
+  }
+
+  /**
+   *  Add the given userId to the admin list and removes he/she from the memberIds, of the given team.
+   *
+   *  @param   teamId
+   *  @param   institutionId
+   *  @returns updateDocument
+   */
+  static async removeTeamFromInstitution(
+    teamId: ObjectId | string,
+    institutionId: ObjectId | string
+  ): Promise<any> {
+    return await teamModel.updateOne(
+      { _id: teamId },
+      {
+        $unset: { institutionId: 1 },
+      }
+    );
+  }
+
+  /**
+   *  Remove the given userId into the given project.
+   *
+   *  @param   teamId
+   *  @param   userId
+   *  @returns updateDocument
+   */
+  static async removeMemberFromTeam(
+    teamId: ObjectId | string,
+    userId: ObjectId | string
+  ): Promise<any> {
+    return await teamModel.updateOne(
+      { _id: teamId },
+      {
+        $pull: { memberIds: userId, adminIds: userId },
+      }
+    );
   }
 }

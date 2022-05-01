@@ -1,6 +1,6 @@
 import express, { Router } from "express";
 
-import { Schema } from "mongoose";
+import { Schema, ObjectId } from "mongoose";
 
 import InstitutionService from "../../../../database/services/institution.service";
 import { AddInstitutionDTO } from "../../../../database/dtos/institution.dto";
@@ -217,6 +217,61 @@ const get_users_institutions = (): Router => {
   return router;
 }
 
+const disjoin_member_of_institution = (): Router => {
+  let router = express.Router();
+
+  router.delete("/institutions/:id/join", check_auth(), async (req: any, res) => {
+    try {
+      const { userId }: { userId: ObjectId } = req.body;
+      const institutionId: string = req.params.id;
+      const user_id_jwt = req.user_id;
+
+      if (!(userId && institutionId)) return res.status(400).send("Missing parameters.");
+
+      const user = await UserService.getUserById(userId);
+      if (!user) return res.status(409).send("User does not exist.");
+      if (userId != user_id_jwt)
+        return res.status(409).send("Information of the user does not match.");
+
+      const institution = await InstitutionService.getInstitutionById(institutionId);
+      if (!institution) return res.status(409).send("Institution does not exist.");
+
+      var tempUserId = String(userId);
+      var tempListAdmins = institution.adminIds.map(String);
+      var tempListMembers = institution.memberIds.map(String);
+
+      if (!(tempListMembers.includes(tempUserId) || tempListAdmins.includes(tempUserId)))
+        return res.status(409).send("You are not member of the institution.");
+
+      if (tempListAdmins.includes(tempUserId) && tempListAdmins.length == 1)
+        return res.status(403).send("You are the only one admin of the institution.");
+
+      try {
+        const team_updated = await InstitutionService.removeMemberFromTeam(institutionId, userId);
+
+        if (!team_updated)
+          return res.status(500).send("Error when removing you from the institution.");
+
+        const teamRes = await InstitutionService.getInstitutionById(institutionId);
+        return res.status(200).json(teamRes);
+      } catch (err) {
+        console.error("Error when trying to remove a member from a institution.");
+        console.error(JSON.stringify(err));
+        console.error(err);
+        return res.status(500).send("Unable to remove user from a institution.");
+      }
+    } catch (e) {
+      /* Added since a test proved that if user sends a request with incorrect parameter names, it is able to shutdown the server. */
+      console.error("Error in disjoin_member_of_institution()");
+      console.error(JSON.stringify(e));
+      console.error(e);
+      return res.status(500).send("Internal error.");
+    }
+  });
+
+  return router;
+};
+
 export {
   create_institution,
   invite_to_institution,
@@ -224,5 +279,6 @@ export {
   join_as_member_of_institution,
   get_institutions,
   get_institution,
-  get_users_institutions
+  get_users_institutions,
+  disjoin_member_of_institution
 };
