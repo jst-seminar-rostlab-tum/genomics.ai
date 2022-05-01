@@ -9,8 +9,10 @@ import { Alert } from '@mui/lab';
 import { BACKEND_ADDRESS } from 'shared/utils/common/constants';
 import logo from 'assets/logo.svg';
 import styles from './registrationform.module.css';
+import { useAuth } from 'shared/context/authContext';
 
 function RegistrationForm(props) {
+  const [, setUser] = useAuth();
   const [userDetails, setUserDetails] = useState({
     email: '',
     firstname: '',
@@ -61,7 +63,7 @@ function RegistrationForm(props) {
     setErrors({});
     setLoading(false);
     props.onClose();
-  }, [setUserDetails, setErrors, setLoading, props]);
+  }, [setUserDetails, setErrors, setLoading, props, setUser]);
 
   function onSuccessfulRegistration() {
     onClose();
@@ -110,7 +112,7 @@ function RegistrationForm(props) {
         }
         setSnackbarVisible(true);
       });
-  }, [userDetails, setErrors, setLoading, props, setSnackbarVisible]);
+  }, [userDetails, setErrors, setLoading, props, setSnackbarVisible, setUser]);
 
   const boxStyle = {
     position: 'absolute',

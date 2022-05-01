@@ -7,7 +7,7 @@ import profiledefault from '../../assets/user.png';
 import { useAuth } from 'shared/context/authContext';
 
 function NavigationBar({ sidebarShown }) {
-  const [user, setUser] = useAuth()
+  const [user] = useAuth();
   const [dropDown, setDropDown] = useState(false);
 
   const onMouseEnter = () => {
@@ -82,7 +82,7 @@ function NavigationBar({ sidebarShown }) {
             src={profiledefault}
             style={{ height: '40px', paddingLeft: '15px' }}
           />
-          {dropDown && <SettingsDropdown setUser={setUser} />}
+          {dropDown && <SettingsDropdown />}
         </li>
 
       </nav>

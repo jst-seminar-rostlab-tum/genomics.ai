@@ -10,7 +10,7 @@ import styles from './teamOverview.module.css';
 import queryMyTeams from 'shared/services/mock/teams';
 import TeamCreationDialog from 'components/teams/overview/TeamCreationDialog';
 
-function TeamOverview({ sidebarShown }) {
+function TeamOverview() {
   const [teams, setTeams] = useState([]);
   useEffect(() => {
     queryMyTeams()
@@ -31,7 +31,6 @@ function TeamOverview({ sidebarShown }) {
       <Route exact path={`${path}/`}>
         <>
           <HeaderView
-            sidebarShown={sidebarShown}
             title="My Teams"
             replaceHeaderRight={(
               <Button onClick={() => setCreateOpen(true)}>Create</Button>
@@ -59,7 +58,7 @@ function TeamOverview({ sidebarShown }) {
       </Route>
 
       <Route path={`${path}/:id`}>
-        <TeamPage sidebarShown={sidebarShown} />
+        <TeamPage />
       </Route>
     </Switch>
   );

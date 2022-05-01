@@ -6,7 +6,7 @@ import queryMyInstitutions from 'shared/services/mock/institutions';
 import InstitutionCreationDialog from 'components/institutions/InstitutionCreationDialog';
 import InstitutionList from 'components/institutions/InstitutionList';
 
-function InstitutionOverview({ sidebarShown }) {
+function InstitutionOverview() {
   const [institutions, setInstitutions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   useEffect(async () => {
@@ -25,7 +25,6 @@ function InstitutionOverview({ sidebarShown }) {
   return (
     <>
       <HeaderView
-        sidebarShown={sidebarShown}
         title="My Institutions"
         replaceHeaderRight={(
           <Button onClick={() => setCreateOpen(true)}>Create</Button>

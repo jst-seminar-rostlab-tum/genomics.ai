@@ -53,7 +53,7 @@ let mockTeams = [
     },
 ];
 
-function UserProfile({ sidebarShown }) {
+function UserProfile() {
     const [user] = useAuth()
 
     const [value, setValue] = React.useState(0);
@@ -68,7 +68,6 @@ function UserProfile({ sidebarShown }) {
     return (
         <>
             <HeaderView
-                sidebarShown={sidebarShown}
                 title="Profile"
             >
                 <Grid container justifyContent="center" alignItems="center" spacing={3}>
