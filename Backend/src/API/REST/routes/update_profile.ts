@@ -4,11 +4,12 @@ import UserService from "../../../database/services/user.service";
 import { UpdateUserDTO } from "../../../database/dtos/user.dto";
 import bcrypt from "bcrypt";
 import check_auth from "../middleware/check_auth";
+import { validationMdw } from "../middleware/validation";
 
 export default function update_profile_route() {
   let router = express.Router();
 
-  router.post("/update_profile", check_auth(), async (req: ExtRequest, res) => {
+  router.post("/update_profile", validationMdw, check_auth(), async (req: ExtRequest, res) => {
     const { first_name, last_name, email, password, note } = req.body;
 
     if (!(first_name || last_name || email || password || note))

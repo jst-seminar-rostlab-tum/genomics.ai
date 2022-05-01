@@ -28,7 +28,6 @@ import { get_model, get_allModels } from "./routes/model/modelRouter";
 import { get_atlas, get_allAtlases } from "./routes/atlas/atlasRouter";
 import * as swaggerDocument from "../../swagger.json";
 import * as swaggerUi from "swagger-ui-express";
-import { validationMdw } from "./middleware/validation";
 
 import {
   create_institution,

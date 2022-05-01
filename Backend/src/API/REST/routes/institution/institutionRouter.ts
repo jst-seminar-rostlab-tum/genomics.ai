@@ -14,7 +14,7 @@ import { institution_admin_auth } from "../../middleware/check_institution_auth"
 const create_institution = (): Router => {
   let router = express.Router();
 
-  router.post("/institutions", check_auth(), async (req: any, res) => {
+  router.post("/institutions", validationMdw, check_auth(), async (req: any, res) => {
     const { name, country, profilePictureURL, backgroundPictureURL } = req.body;
     const admin_user_id = req.user_id;
 
@@ -53,7 +53,8 @@ const invite_to_institution = (): Router => {
 
   router.put(
     "/institutions/:id/invite",
-    [validationMdw, check_auth()],
+    validationMdw,
+    check_auth(),
     async (req: any, res: any) => {
       const { userId }: { userId: Schema.Types.ObjectId } = req.body;
       const institutionId_to_modify = req.params.id;
@@ -95,6 +96,7 @@ const make_user_admin_of_institution = (): Router => {
 
   router.put(
     "/institutions/:id/admin",
+    validationMdw,
     check_auth(),
     institution_admin_auth,
     async (req: any, res) => {
@@ -219,22 +221,17 @@ const get_members_of_institution = (): Router => {
 
 const get_teams_of_institution = (): Router => {
   let router = express.Router();
-  router.get(
-    "/institutions/:id/teams",
-    validationMdw,
-    check_auth(),
-    async (req: Request, res: Response) => {
-      const institutionId = req.params.id;
-      try {
-        const teams = await TeamsService.getTeams({ institutionId: institutionId });
+  router.get("/institutions/:id/teams", check_auth(), async (req: Request, res: Response) => {
+    const institutionId = req.params.id;
+    try {
+      const teams = await TeamsService.getTeams({ institutionId: institutionId });
 
-        return res.status(200).send(teams);
-      } catch (err) {
-        console.error(JSON.stringify(err));
-        return res.status(500).json({ error: "General server error" });
-      }
+      return res.status(200).send(teams);
+    } catch (err) {
+      console.error(JSON.stringify(err));
+      return res.status(500).json({ error: "General server error" });
     }
-  );
+  });
   return router;
 };
 
@@ -259,7 +256,7 @@ const get_projects_of_institution = (): Router => {
 const disjoin_member_of_institution = (): Router => {
   let router = express.Router();
 
-  router.delete("/institutions/:id/join", check_auth(), async (req: any, res) => {
+  router.delete("/institutions/:id/join", validationMdw, check_auth(), async (req: any, res) => {
     try {
       const { userId }: { userId: ObjectId } = req.body;
       const institutionId: string = req.params.id;

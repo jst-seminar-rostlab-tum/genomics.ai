@@ -3,11 +3,12 @@ import { AddTokenDTO } from "../../../database/dtos/token.dto";
 import TokenService from "../../../database/services/token.service";
 import UserService from "../../../database/services/user.service";
 import { mailer } from "../../../util/mailer";
+import { validationMdw } from "../middleware/validation";
 
 export default function resend_verification_link(): Router {
   let router = express.Router();
 
-  router.post("/resend", async (req, res) => {
+  router.post("/resend", validationMdw, async (req, res) => {
     const email = req.body.email;
     if (!email) return res.status(400).send("Missing e-mail parameter.");
 
