@@ -2,7 +2,7 @@ import React from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import { Box } from '@mui/material'
 import Grid from '@mui/material/Grid';
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
 import { TabGroup } from 'components/Tab'
 import Search from 'components/Search'
@@ -13,6 +13,8 @@ import AtlasCard from 'components/Cards/AtlasCard'
 import DatasetCard from 'components/Cards/DatasetCard'
 import { ModelCard } from 'components/Cards/ModelCard'
 import Mapper from "components/Mapper"
+import LoginForm from 'components/LoginForm'
+import RegistrationForm from 'components/RegistrationForm'
 
 import './Explore.css'
 
@@ -94,7 +96,30 @@ const datasetsGrid = (
     </Box>
 )
 
-const Explore = () => {
+const Explore = ({setUser}) => {
+
+    const [isLoginFormVisible, setLoginFormVisible] = useState(false);
+    const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
+
+    const onLoginClicked = useCallback(() => {
+        console.log("login")
+        setRegistrationFormVisible(false)
+        setLoginFormVisible(true)
+    }, [setLoginFormVisible])
+
+    const onSignUpClicked = useCallback(() => {
+        console.log("register")
+        setLoginFormVisible(false);
+        setRegistrationFormVisible(true);
+    }, [setRegistrationFormVisible])
+    
+    const onLoginFormClosed = useCallback(() => {
+        setLoginFormVisible(false);
+    }, [setLoginFormVisible]);
+
+    const onRegistrationFormClosed = useCallback(() => {
+        setRegistrationFormVisible(false);
+    }, [setRegistrationFormVisible]);
 
     const [value, setValue] = useState(0)
     const [searchValue, setSearchValue] = useState('');
@@ -107,9 +132,11 @@ const Explore = () => {
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }} >
 
+            {isLoginFormVisible && <LoginForm setUser={setUser} visible={isLoginFormVisible} onClose={onLoginFormClosed} />}
+            {isRegistrationFormVisible && <RegistrationForm setUser={setUser} visible={isRegistrationFormVisible} onClose={onRegistrationFormClosed} />}
+
             <Box>
-                <NavBar />
-                <h1>NavBar goes here</h1>
+                <NavBar position="relative" setUser={setUser} onLoginClicked={onLoginClicked} onSignUpClicked={onSignUpClicked} />
             </Box>
 
             <Box sx={{ alignSelf: 'center', width: '65%', marginTop: '2%' }}>
