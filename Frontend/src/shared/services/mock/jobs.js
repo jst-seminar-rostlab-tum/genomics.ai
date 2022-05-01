@@ -1,7 +1,7 @@
 import { BACKEND_ADDRESS } from '../../utils/common/constants';
 import { getAuthAndJsonHeader } from '../../utils/common/utils';
 
-let mockJobs = [
+const mockJobs = [
   {
     id: 'f7f7',
     forPart: 'geneMapper',

@@ -24,9 +24,9 @@ function TeamMemberList({ team }) {
         </span>
       )}
       trailingBuilder={(member) => (
-        team.adminIds.includes(user.id) && user.id === member.id ? null : (
+        team.adminIds.includes(user.id) && user.id !== member.id ? (
           <TeamMemberRemoveButton team={team} member={member} />
-        )
+        ) : null
       )}
     />
   );

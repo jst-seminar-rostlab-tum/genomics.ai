@@ -17,7 +17,7 @@ function TeamMemberRemoveButton({ team, member, onRemoved }) {
   async function remove() {
     await removeMemberFromTeam(team.id, member.id);
     handleCloseDialog();
-    onRemoved(team, member);
+    //onRemoved(team, member);
   }
 
   return (
