@@ -3,9 +3,9 @@ import {
   TextField, Typography, Grid, Button, Box, createTheme, ThemeProvider,
 } from '@mui/material';
 import Stack from '@mui/material/Stack';
-import NavBar from 'components/NavBar';
+import NavBar from 'components/NavBar/old';
 import styles from './contact.module.css';
-import Footer from 'components/Footer';
+import Footer from 'components/Footer/old';
 
 const theme = createTheme({
   palette: {
@@ -19,7 +19,6 @@ const theme = createTheme({
 });
 
 const Contact = (props) => {
-  const { setUser } = props;
   const [contactDetails, setContactDetails] = useState({
     email: '',
     firstname: '',
@@ -60,7 +59,7 @@ const Contact = (props) => {
 
     <ThemeProvider theme={theme}>
       <div>
-        <NavBar setUser={setUser} />
+        <NavBar />
 
         <div className={styles.headerContainer}>
           <Stack
