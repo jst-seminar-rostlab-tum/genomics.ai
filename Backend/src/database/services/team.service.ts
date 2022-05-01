@@ -195,7 +195,10 @@ export default class TeamService {
 
   static async getUsersTeams(userId: (ObjectId | string)):
       Promise<ITeam[] | null> {
-        return await teamModel.find({memberIds: {$elemMatch: {$eq: userId}}});
+        return await teamModel.find({ $or: [
+            {memberIds: {$elemMatch: {$eq: userId}}},
+            {adminIds: {$elemMatch: {$eq: userId}}}
+          ]});
   }
 
   /**

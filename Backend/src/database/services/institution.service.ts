@@ -303,7 +303,10 @@ export default class InstitutionService {
 
   static async getUsersInstitutions(userId: (ObjectId | string)):
       Promise<IInstitution[] | null> {
-    return await institutionModel.find({memberIds: {$elemMatch: {$eq: userId}}});
+    return await institutionModel.find({ $or: [
+        {memberIds: {$elemMatch: {$eq: userId}}},
+        {adminIds: {$elemMatch: {$eq: userId}}}
+      ]});
   }
 
 
