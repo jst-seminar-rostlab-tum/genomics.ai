@@ -69,7 +69,7 @@ function AtlasModelChoice({
                             <AtlasCardSelect width="225px"
                                 height="97%"
                                 title={a.name}
-                                modalities={a.modalities}
+                                modalities={a.modalities.reduce((acc, v) => acc + ', ' + v)}
                                 cellsInReference={a.numberOfCells}
                                 species={a.species}
                                 imgLink={atlasPng}
