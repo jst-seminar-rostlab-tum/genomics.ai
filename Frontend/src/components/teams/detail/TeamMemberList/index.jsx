@@ -1,16 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import MemberList from 'components/members/MemberList';
 import TeamMemberRemoveButton from '../TeamMemberRemoveButton';
 import TeamMemberMakeAdminButton from '../TeamMemberMakeAdminButton';
 import getUser from 'shared/services/mock/user';
 import styles from './teamMemberList.module.css';
+import { useAuth } from 'shared/context/authContext';
 
 function TeamMemberList({ team }) {
-  const [user, setUser] = useState({});
-  useEffect(() => {
-    getUser().then(setUser);
-  }, [setUser]);
+  const [user] = useAuth();
 
   if (!team.adminIds?.length || !team.memberIds?.length) {
     return <CircularProgress />;

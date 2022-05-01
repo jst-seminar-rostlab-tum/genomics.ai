@@ -36,7 +36,7 @@ export async function createTeam(name, description) {
       name,
       country: null,
       description,
-      profilePictureURL: null,
+      avatarUrl: null,
       backgroundPictureURL: null,
       adminIds: [1], // TODO: make sure that the backend puts my user ID here
       memberIds: [],
@@ -54,8 +54,8 @@ export async function removeMemberFromTeam(teamId, memberId) {
 }
 
 export async function getTeam(id) {
-  console.log(mockTeams.find((team) => team.id === parseInt(id, 10)));
-  return mockTeams.find((team) => team.id === parseInt(id, 10));
+  console.log(mockTeams.find((team) => team.id === id));
+  return mockTeams.find((team) => team.id === id);
 }
 
 export default async function queryMyTeams() {
