@@ -2,6 +2,7 @@
 // Example of how to use the multipart routes* //
 //********************************************//
 
+const https = require("https");
 const http = require("http");
 const fs = require("fs");
 const querystring = require("querystring");
@@ -46,7 +47,8 @@ function request(method, path, jwt, contentType, body, query) {
     if (jwt) {
       headers.auth = jwt;
     }
-    let req = http.request(
+    let module = path.startsWith("https") ? https : http;
+    let req = module.request(
       path,
       {
         method,

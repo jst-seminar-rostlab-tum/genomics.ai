@@ -15,6 +15,7 @@ import { GoogleAuth } from "google-auth-library";
 import { ProjectStatus } from "../../../../database/models/project";
 import AtlasService from "../../../../database/services/atlas.service";
 import ModelService from "../../../../database/services/model.service";
+import { request as gaxiosRequest } from "gaxios";
 
 export default function upload_complete_upload_route() {
   let router = express.Router();
@@ -30,7 +31,7 @@ export default function upload_complete_upload_route() {
       //Complete multipart upload
       let params: CompleteMultipartUploadRequest = {
         Bucket: process.env.S3_BUCKET_NAME,
-        Key: String(project._id),
+        Key: `projects/${project._id}/query.h5ad`,
         MultipartUpload: { Parts: parts },
         UploadId: String(uploadId),
       };
@@ -66,7 +67,7 @@ export default function upload_complete_upload_route() {
           output_path: `results/${project.id}/query.tsv`,
           model_path: `results/${project.id}/model.pt`,
           reference_data: `atlas/${project.atlasId}/data.h5ad`,
-          ref_path: `models/${project.modelId}/model.pt`,
+          //ref_path: `models/${project.modelId}/model.pt`,
           async: false,
         };
         if (process.env.CLOUD_RUN_URL) {
@@ -76,7 +77,7 @@ export default function upload_complete_upload_route() {
           //Send response before processing
           res.status(200).send("Processing started");
           //Processing is synchronous, response is sent by ML only after the result is produced, might take some time
-          await client.request({ url, method: "POST", body: queryInfo });
+          await client.request({ url, method: "POST", body: JSON.stringify(queryInfo) });
         } else if (!process.env.production) {
           console.log(
             "CLOUD_RUN_URL not defined, falling back to dummy result with 10s processing time"
@@ -100,7 +101,7 @@ export default function upload_complete_upload_route() {
         //Processing finished, http response has already be sent before processing, update database entry now
         let params2: any = {
           Bucket: process.env.S3_BUCKET_NAME!,
-          Key: `result/${project!.id}/query.tsv`,
+          Key: `results/${project!.id}/query.tsv`,
           Expires: 60 * 60 * 24 * 7 - 1, // one week minus one second
         };
         let presignedUrl = await s3.getSignedUrlPromise("getObject", params2);
@@ -110,7 +111,10 @@ export default function upload_complete_upload_route() {
         };
         await ProjectService.updateProjectByUploadId(params.UploadId, updateLocationAndStatus);
       } catch (err) {
-        res.status(500).send(`Error persisting Multipart-Upload object data: ${err}`);
+        console.log(err);
+        try {
+          res.status(500).send(`Error persisting Multipart-Upload object data: ${err}`);
+        } catch {}
       }
     } catch (err) {
       console.log(err);
