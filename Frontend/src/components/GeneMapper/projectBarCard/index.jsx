@@ -6,17 +6,17 @@ import { Box, Stack } from '@mui/material';
 import CircleIcon from '@mui/icons-material/Circle';
 import { useHistory } from 'react-router-dom';
 
-export default function ProjectBarCard({ name, status }) {
+export default function ProjectBarCard({ projectId, name, status }) {
   const history = useHistory();
   const [color, setColor] = React.useState(status === 'DONE' ? 'lightGreen' : status === 'IN PROGRESS' ? 'orange' : 'red');
   const [typographyColor, setTypographyColor] = React.useState(status === 'UPLOAD FAILED' ? 'red' : 'black');
 
   return (
     <Card sx={{
-      marginLeft: '5%', marginTop: '5', marginRight: '10%', marginBottom: '0.5em',
+      marginTop: '5', marginBottom: '0.5em', borderStyle: 'solid', borderColor: '#C8C8C8', borderWidth: '0.1px',
     }}
     >
-      <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
+      <Stack direction="row" sx={{ justifyContent: 'space-between', height: '56px' }}>
         <Stack
           direction="row"
           spacing={4}
@@ -35,12 +35,12 @@ export default function ProjectBarCard({ name, status }) {
           </Typography>
         </Stack>
         <Box sx={{
-          p: 0.1, bgcolor: 'background.paper', borderRadius: 3, width: 'flex', mr: 3, display: 'flex', m: 2,
+          p: 0.1, bgcolor: 'background.paper', borderRadius: 3, width: 'flex', mr: 3, display: 'flex', m: 2, alignItems: 'center',
         }}
         >
           <Button
             variant="outlined"
-            size="small"
+            // size="small"
             sx={{
               borderRadius: 100,
               mr: 2,
@@ -51,13 +51,12 @@ export default function ProjectBarCard({ name, status }) {
           </Button>
           <Button
             variant="contained"
-            size="small"
             color="secondary"
             sx={{
               borderRadius: 100,
             }}
             style={{ textTransform: 'none' }}
-            onClick={() => history.push('./genemapper/result')}
+            onClick={() => history.push(`./genemapper/result/${projectId}`)}
           >
             See Results
           </Button>

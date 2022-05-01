@@ -12,7 +12,7 @@ import React, {
   useEffect, useRef, useState,
 } from 'react';
 import { useParams } from 'react-router-dom';
-import ProjectMock, { getProject } from 'shared/services/mock/projects';
+import ProjectMock from 'shared/services/mock/projects';
 import ProjectService from 'shared/services/Project.service';
 
 /**
@@ -35,8 +35,7 @@ function GeneMapperResultView() {
     ProjectService.getProject(projectId)
       .then((data) => setProject(data))
       .catch(() => {
-        console.log('using mock project data');
-        ProjectMock.getProject(1).then((data) => setProject(data));
+        ProjectMock.getProject(projectId).then((data) => setProject(data));
       });
   }, [projectId]);
 

@@ -1,52 +1,51 @@
-import React, { useCallback } from 'react';
-import { Box, Button } from '@mui/material';
+import { Box, Typography, Button } from '@mui/material';
+import React, { useCallback, useState } from 'react';
 import {
-  Switch, Route, Redirect, useHistory, useRouteMatch,
+  Redirect, Route, Switch, useRouteMatch,
 } from 'react-router-dom';
-import GeneMapperResultView from './Result';
-import AtlasModelChoice from './AtlasModelChoice/AtlasModelChoice';
-import UploadFilePage from './UploadFilePage';
+import GeneMapperState from './GeneMapperState';
 import GeneMapperHome from './Home';
+import GeneMapperResultView from './Result';
+import HeaderView from 'components/general/HeaderView';
 
 function GeneMapper({ sidebarShown }) {
   const paddingL = useCallback(() => (sidebarShown ? '100px' : '350px'), [sidebarShown]);
 
   const { path, url } = useRouteMatch();
-  const history = useHistory();
+
+  const headerStyle = {
+    color: "#003560",
+    fontSize: "1.6rem",
+    fontWeight: "bold",
+    paddingTop: "20px"
+  } 
+  const [createOpen, setCreateOpen] = useState(false);
 
   return (
-    <Box sx={{
-      pl: paddingL,
-      pr: '20px',
-      height: '100vh',
-      width: '100vw',
-    }}
-    >
-      <Switch>
-        <Route exact path={`${path}`}>
-          <Button onClick={() => history.push(`${path}/selection`)}>Selection</Button>
-          <Button onClick={() => history.push(`${path}/upload`)}>Upload</Button>
-          <Button onClick={() => history.push(`${path}/result`)}>Result</Button>
-          <GeneMapperHome basePath={path} />
-        </Route>
+    <div>
+      <HeaderView
+        sidebarShown={sidebarShown}
+        title="Gene Mapper"
+      >
+        <Switch>
+          <Route exact path={`${path}`}>
+            <GeneMapperHome basePath={path} />
+          </Route>
 
-        <Route path={`${path}/selection`}>
-          <AtlasModelChoice />
-        </Route>
+          <Route path={`${path}/create`}>
+            <GeneMapperState basePath={`${path}/create`} path={`${path}`} />
+          </Route>
 
-        <Route path={`${path}/upload`}>
-          <UploadFilePage basePath={`${path}/upload`} />
-        </Route>
+          <Route path={`${path}/result/:projectId`}>
+            <GeneMapperResultView />
+          </Route>
 
-        <Route path={`${path}/result/:projectId`}>
-          <GeneMapperResultView />
-        </Route>
-
-        <Route path={`${path}/*`}>
-          <Redirect to={`${url}`} />
-        </Route>
-      </Switch>
-    </Box>
+          <Route path={`${path}/*`}>
+            <Redirect to={`${url}`} />
+          </Route>
+        </Switch>
+      </HeaderView>
+    </div>
   );
 }
 

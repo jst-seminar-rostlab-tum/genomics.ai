@@ -20,7 +20,7 @@ import { borders } from "@mui/system"
  */
 export default function AtlasCardSelect({
   width = "100%", height = "100%", title, imgLink, modalities,
-  cellsInReference, species, mapLink, learnMoreLink, selected=false, onSelect
+  cellsInReference, species, mapLink, learnMoreLink, selected=false, onSelect, atlasObject={}
 }) {
 
   //check if the mouse is hovering above the card
@@ -80,7 +80,7 @@ export default function AtlasCardSelect({
                 justifyContent: "space-evenly",
               }}
             >
-              <OutlinedButtonSelect content="Select" onSelect={() => onSelect(title)} />
+              <OutlinedButtonSelect content="Select" onSelect={() => onSelect(atlasObject)} />
               <OutlinedButtonSelect content="Learn More" />
             </Box>
           </Box>

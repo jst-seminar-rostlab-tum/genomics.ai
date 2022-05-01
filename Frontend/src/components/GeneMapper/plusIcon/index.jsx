@@ -11,7 +11,7 @@ export default function PlusIcon() {
   return (
     // change the size of it
     // route to the right page!!
-    <IconButton aria-label="plus icon" onClick={() => { history.push('./genemapper/selection'); }}>
+    <IconButton aria-label="plus icon" onClick={() => { history.push('genemapper/create'); }}>
       <Icon className="plusicon" color="primary" sx={{ fontSize: 25 }}>add_circle</Icon>
     </IconButton>
 
