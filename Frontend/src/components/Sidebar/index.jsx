@@ -49,6 +49,10 @@ export default function Sidebar(props) {
   const path = location.pathname;
   const settingsPath = '/sequencer/settings';
 
+  const pathRegex = new RegExp(".*\/sequencer\/(\\w+)(?=\/|)", "g")
+
+  const checkPathActive = pathRegex.exec(path)[1]
+
   return (
     <Box>
       <Box className={styles.sidebarNav}>
@@ -74,7 +78,7 @@ export default function Sidebar(props) {
                   >
                     <Box
                       className={styles.navbarItemContainer}
-                      sx={{ background: path.includes(route) ? '#5676E5' : '#184060' }}
+                      sx={{ background: checkPathActive === route ? '#5676E5' : '#184060' }}
                     >
                       <ListItemIcon className={styles.listItemIcon}>
                         {indexIcon(index)}

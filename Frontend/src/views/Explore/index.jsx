@@ -19,149 +19,149 @@ import RegistrationForm from 'components/RegistrationForm'
 import './Explore.css'
 
 const tmpObj = [
-    {
-        label: "ATLASES",
-        path: "/explore/atlases"
-    },
-    {
-        label: "MODELS",
-        path: "/explore/models"
-    },
-    {
-        label: "DATASETS",
-        path: "/explore/datasets"
-    }
+  {
+    label: "ATLASES",
+    path: "/explore/atlases"
+  },
+  {
+    label: "MODELS",
+    path: "/explore/models"
+  },
+  {
+    label: "DATASETS",
+    path: "/explore/datasets"
+  }
 ]
 
 const atlasesGrid = (
-    <Box className='atlasContainer'>
-        <Grid container spacing={3}>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-                <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-                <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-                <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-                <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-                <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-                <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-                <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-                <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
-            </Grid>
-        </Grid>
-    </Box >
+  <Box className='atlasContainer'>
+    <Grid container spacing={3}>
+      <Grid item xs={12} sm={6} md={4} lg={3}>
+        <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
+      </Grid>
+      <Grid item xs={12} sm={6} md={4} lg={3}>
+        <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
+      </Grid>
+      <Grid item xs={12} sm={6} md={4} lg={3}>
+        <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
+      </Grid>
+      <Grid item xs={12} sm={6} md={4} lg={3}>
+        <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
+      </Grid>
+      <Grid item xs={12} sm={6} md={4} lg={3}>
+        <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
+      </Grid>
+      <Grid item xs={12} sm={6} md={4} lg={3}>
+        <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
+      </Grid>
+      <Grid item xs={12} sm={6} md={4} lg={3}>
+        <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
+      </Grid>
+      <Grid item xs={12} sm={6} md={4} lg={3}>
+        <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
+      </Grid>
+    </Grid>
+  </Box >
 )
 
 const modelsGrid = (
-    <Box className='cardsContainer'>
-        <Grid container spacing={3}>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-                <ModelCard title="Model 1" description="This is a short description" />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
+  <Box className='cardsContainer'>
+    <Grid container spacing={3}>
+      <Grid item xs={12} sm={6} md={4} lg={3}>
+        <ModelCard title="Model 1" description="This is a short description" />
+      </Grid>
+      <Grid item xs={12} sm={6} md={4} lg={3}>
 
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
+      </Grid>
+      <Grid item xs={12} sm={6} md={4} lg={3}>
 
-            </Grid>
-        </Grid>
-    </Box>
+      </Grid>
+    </Grid>
+  </Box>
 )
 
 const datasetsGrid = (
-    <Box className='cardsContainer'>
-        <Grid container spacing={3}>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-                <DatasetCard title="title1" category="category1" />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-                <DatasetCard title="title2" category="category1" />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-                <DatasetCard title="title3" category="category1" />
-            </Grid>
-        </Grid>
-    </Box>
+  <Box className='cardsContainer'>
+    <Grid container spacing={3}>
+      <Grid item xs={12} sm={6} md={4} lg={3}>
+        <DatasetCard title="title1" category="category1" />
+      </Grid>
+      <Grid item xs={12} sm={6} md={4} lg={3}>
+        <DatasetCard title="title2" category="category1" />
+      </Grid>
+      <Grid item xs={12} sm={6} md={4} lg={3}>
+        <DatasetCard title="title3" category="category1" />
+      </Grid>
+    </Grid>
+  </Box>
 )
 
-const Explore = ({setUser}) => {
+const Explore = ({ setUser }) => {
 
-    const [isLoginFormVisible, setLoginFormVisible] = useState(false);
-    const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
+  const [isLoginFormVisible, setLoginFormVisible] = useState(false);
+  const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
 
-    const onLoginClicked = useCallback(() => {
-        console.log("login")
-        setRegistrationFormVisible(false)
-        setLoginFormVisible(true)
-    }, [setLoginFormVisible])
+  const onLoginClicked = useCallback(() => {
+    console.log("login")
+    setRegistrationFormVisible(false)
+    setLoginFormVisible(true)
+  }, [setLoginFormVisible])
 
-    const onSignUpClicked = useCallback(() => {
-        console.log("register")
-        setLoginFormVisible(false);
-        setRegistrationFormVisible(true);
-    }, [setRegistrationFormVisible])
-    
-    const onLoginFormClosed = useCallback(() => {
-        setLoginFormVisible(false);
-    }, [setLoginFormVisible]);
+  const onSignUpClicked = useCallback(() => {
+    console.log("register")
+    setLoginFormVisible(false);
+    setRegistrationFormVisible(true);
+  }, [setRegistrationFormVisible])
 
-    const onRegistrationFormClosed = useCallback(() => {
-        setRegistrationFormVisible(false);
-    }, [setRegistrationFormVisible]);
+  const onLoginFormClosed = useCallback(() => {
+    setLoginFormVisible(false);
+  }, [setLoginFormVisible]);
 
-    const [value, setValue] = useState(0)
-    const [searchValue, setSearchValue] = useState('');
+  const onRegistrationFormClosed = useCallback(() => {
+    setRegistrationFormVisible(false);
+  }, [setRegistrationFormVisible]);
 
-    const handleSearch = (e) => {
-        setSearchValue(e);
-        console.log(e);
-    }
+  const [value, setValue] = useState(0)
+  const [searchValue, setSearchValue] = useState('');
 
-    return (
-        <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }} >
+  const handleSearch = (e) => {
+    setSearchValue(e);
+    console.log(e);
+  }
 
-            {isLoginFormVisible && <LoginForm setUser={setUser} visible={isLoginFormVisible} onClose={onLoginFormClosed} />}
-            {isRegistrationFormVisible && <RegistrationForm setUser={setUser} visible={isRegistrationFormVisible} onClose={onRegistrationFormClosed} />}
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }} >
 
-            <Box>
-                <NavBar position="relative" setUser={setUser} onLoginClicked={onLoginClicked} onSignUpClicked={onSignUpClicked} />
-            </Box>
+      {isLoginFormVisible && <LoginForm setUser={setUser} visible={isLoginFormVisible} onClose={onLoginFormClosed} />}
+      {isRegistrationFormVisible && <RegistrationForm setUser={setUser} visible={isRegistrationFormVisible} onClose={onRegistrationFormClosed} />}
 
-            <Box sx={{ alignSelf: 'center', width: '65%', marginTop: '2%' }}>
-                <Breadcrumb fontSize={1} />
-            </Box>
+      <Box>
+        <NavBar position="relative" setUser={setUser} onLoginClicked={onLoginClicked} onSignUpClicked={onSignUpClicked} />
+      </Box>
 
-            <Box sx={{ alignSelf: 'center', width: '65%', marginBlock: '2%' }}>
-                <Search filterComponent={<Filter references={["test", "test"]} categories={["category1", "category2"]} />} handleSearch={handleSearch} value={searchValue}/>
-            </Box>
+      <Box sx={{ alignSelf: 'center', width: '65%', marginTop: '2%' }}>
+        <Breadcrumb fontSize={1} />
+      </Box>
 
-            <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignSelf: 'center', width: '80%' }}>
-                {/* /explore/atlases */}
-                <TabGroup value={value} setValue={setValue} tabsInfo={tmpObj} />
-                <Switch>
-                    <Route path="/explore/atlases" render={() => atlasesGrid} />
-                    <Route path="/explore/models" render={() => modelsGrid} />
-                    <Route path="/explore/datasets" render={() => datasetsGrid} />
-                    <Redirect to="/explore/atlases" />
-                </Switch>
+      <Box sx={{ alignSelf: 'center', width: '65%', marginBlock: '2%' }}>
+        <Search filterComponent={<Filter references={["test", "test"]} categories={["category1", "category2"]} />} handleSearch={handleSearch} value={searchValue} />
+      </Box>
 
-            </Box>
+      <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignSelf: 'center', width: '80%' }}>
+        {/* /explore/atlases */}
+        <TabGroup value={value} setValue={setValue} tabsInfo={tmpObj} />
+        <Switch>
+          <Route path="/explore/atlases" render={() => atlasesGrid} />
+          <Route path="/explore/models" render={() => modelsGrid} />
+          <Route path="/explore/datasets" render={() => datasetsGrid} />
+          <Redirect to="/explore/atlases" />
+        </Switch>
 
-            <Mapper />
-        </Box>
-    )
+      </Box>
+
+      <Mapper />
+    </Box>
+  )
 }
 
 export default Explore
