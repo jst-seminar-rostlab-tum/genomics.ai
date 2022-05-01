@@ -8,6 +8,10 @@ import { useHistory} from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import ProjectMock from "shared/services/mock/projects"
 import atlasPng from "assets/previewImages/atlas.png"
+
+import CancelIcon from '@mui/icons-material/Cancel';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+
 import ModelService from 'shared/services/Model.service';
 
 function AtlasModelChoice({ 
@@ -26,7 +30,28 @@ function AtlasModelChoice({
     }
     
     useEffect(() => {
-        ProjectMock.getAtlases().then(a => setAtlases(a));
+        ProjectMock.getAtlases().then(a => {
+            a.map(a => {
+                let numberOfCells = a.numberOfCells;
+                let dimension = ""
+                if (numberOfCells > 1000000000) {
+                    numberOfCells = Math.round(numberOfCells / 1000000000);
+                    dimension = "B";
+                } else if (numberOfCells > 1000000) {
+                    numberOfCells = Math.round(numberOfCells / 1000000);
+                    dimension = "M";
+                } else if (numberOfCells > 1000) {
+                    numberOfCells = Math.round(numberOfCells / 1000);
+                    console.log(numberOfCells);
+                    numberOfCells = Math.round(numberOfCells);
+                    console.log(numberOfCells);
+                    dimension = "K"
+                }
+                a.numberOfCells = numberOfCells + dimension;
+                return a;
+            })
+            setAtlases(a);
+        });
         ProjectMock.getModels().then(m => setModels(m));
     });
 
@@ -79,10 +104,10 @@ function AtlasModelChoice({
             </Grid>
             <Stack direction='row' justifyContent='space-between' sx={{ marginTop:'20px'}}>
                 <CustomButton type='tertiary' onClick={() => history.push(`${path}`)}>
-                    Cancel
+                <CancelIcon/>&nbsp; Cancel
                 </CustomButton>
                 <CustomButton type='primary' disabled={!selectedAtlas || !selectedModel} onClick={() => setActiveStep(1)}>
-                    Confirm
+                    Confirm&nbsp;<ArrowForwardIcon/>
                 </CustomButton>
             </Stack>
         </div>

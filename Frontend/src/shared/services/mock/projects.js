@@ -74,7 +74,7 @@ const atlases = [
     name: 'Atlas 1',
     previewPictureURL: './previewImages/atlas.png',
     modalities: ['RNA', 'ADT'],
-    numberOfCells: 5348812,
+    numberOfCells: 53488,
     species: ['Human'],
     compatibleModels: [1, 2, 3],
   },
