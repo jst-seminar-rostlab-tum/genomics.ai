@@ -1,6 +1,0 @@
-build
-node_modules
-.gitignore
-license.txt
-README.md
-cloud-run-example
