@@ -1131,6 +1131,38 @@
           }
         }
       }
+    },
+    "/users": {
+      "get": {
+        "summary": "Search users",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "keyword",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Matching users as json array"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
     }
   }
 }

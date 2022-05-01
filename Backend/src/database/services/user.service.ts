@@ -1,6 +1,6 @@
 import { IUser, userModel } from "../models/user";
 import { AddUserDTO, UpdateUserDTO } from "../dtos/user.dto";
-import { ObjectId } from "mongoose";
+import { ObjectId, FilterQuery } from "mongoose";
 
 /**
  *  @class UserService
@@ -16,6 +16,43 @@ export default class UserService {
    */
   static async getAllUsers(): Promise<(IUser & { _id: ObjectId })[]> {
     return await userModel.find().exec();
+  }
+
+  /**
+   * Search for all users by a keyword. Advanced search not implemented yet,
+   * just matching first/last name at the moment
+   * 
+   * Does not return private info like email, password, creation date, etc.
+   * 
+   * Sorting methods (TODO):
+   * default: ascending by name
+   * "namedesc": descending by name
+   *
+   * @param keyword a keyword
+   * @param sortBy sorting method
+   * @returns array of users
+   */
+  static async searchUsers(keyword: string | null | undefined, sortBy: string | null | undefined) {
+    //TODO implement actual fuzzy searching and other sorting methods
+    let sort = 1;
+    if (sortBy == "namedesc") {
+      sort = -1;
+    }
+    let keywordFilter: FilterQuery<IUser> = {};
+    if (keyword && keyword.length > 0) {
+      keywordFilter = { $or: [{ firstName: keyword }, { lastName: keyword }] };
+    }
+    return await userModel
+      .find(keywordFilter, {
+        _id: 1,
+        email: 0,
+        password: 0,
+        isEmailVerified: 0,
+        isAdministrator: 0,
+        createdAt: 0,
+        updatedAt: 0,
+      })
+      .sort({ name: sort });
   }
 
   /**
