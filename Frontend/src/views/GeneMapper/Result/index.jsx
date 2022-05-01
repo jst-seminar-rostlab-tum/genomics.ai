@@ -22,6 +22,7 @@ import ProjectService from 'shared/services/Project.service';
 function GeneMapperResultView() {
   const [project, setProject] = useState(null);
   const umapContainer = useRef(null);
+  const graphContainer = useRef(null);
   const [umap, setUmap] = useState(null);
   const [rendered, setRendered] = useState(false);
   const [umapSize, setUmapSize] = useState({
@@ -35,14 +36,14 @@ function GeneMapperResultView() {
     ProjectService.getProject(projectId)
       .then((data) => setProject(data))
       .catch(() => {
-        ProjectMock.getProject(projectId).then((data) => setProject(data));
+        ProjectMock.getProject(1).then((data) => setProject(data));
       });
   }, [projectId]);
 
   useEffect(() => {
     if (project?.location) {
       csv(project.location).then((data) => {
-        setUmap(new UmapVisualization2(umapContainer.current, data));
+        setUmap(new UmapVisualization2(umapContainer.current, data, graphContainer.current));
       });
     }
   }, [project]);
@@ -123,7 +124,9 @@ function GeneMapperResultView() {
                   ref={umapContainer}
                 />
               </Box>
-              <Sidepanel title="Graphs" collapseToRight />
+              <Sidepanel title="Graphs" collapseToRight>
+                <Box ref={graphContainer} />
+              </Sidepanel>
             </Box>
           </>
         )

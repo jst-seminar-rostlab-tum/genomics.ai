@@ -1,14 +1,15 @@
-const { margin } = require("@mui/system");
+// const { margin } = require("@mui/system");
+import * as d3 from "d3";
 
-addBarPlot = (BarContainer, data) => {
+export const addBarPlot = (BarContainer, data) => {
   const svg = d3.select(BarContainer).append("svg");
-    margin = 10;
+    const margin = 10;
     // width = svg.attr("width") - margin,
     // height = svg.attr("height") - margin
-    width = 250 - margin;
-    height = 400 - margin;
+    const width = 250 - margin;
+    const height = 400 - margin;
 
-  this.svg.append("text")
+  svg.append("text")
     .attr("transform", "translate(100,0)")
     .attr("x", 0)
     .attr("y", 50)
@@ -112,7 +113,7 @@ addBarPlot = (BarContainer, data) => {
       .attr("height", function (d) {
         return height - yScale(getNum(d.cell_type));
       })
-    attr("fill", "steelblue")
+      .attr("fill", "steelblue")
       .append('title')
       .text(d => getNum(d.cell_type) / data.length)
 
