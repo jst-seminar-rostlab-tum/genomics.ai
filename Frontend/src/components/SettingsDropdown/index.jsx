@@ -2,9 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Stack from '@mui/material/Stack';
 import styles from './settingsDropdown.module.css';
+import { useAuth } from 'shared/context/authContext';
 
-export function SettingsDropdown(props) {
-  const { setUser } = props;
+export function SettingsDropdown() {
+  const [, setUser] = useAuth();
   return (
     <Stack
       className={styles.dropdownMenu}

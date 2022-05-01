@@ -9,7 +9,7 @@ import RegistrationForm from '../RegistrationForm';
 
 import logo from '../../assets/logo.svg';
 
-const NavBar = (props) => {
+const NavBar = () => {
   // inserting the logic from the landing page here
   const [isLoginFormVisible, setLoginFormVisible] = useState(false);
   const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);

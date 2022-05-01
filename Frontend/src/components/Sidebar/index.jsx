@@ -41,7 +41,7 @@ function indexIcon(index) {
 }
 
 export default function Sidebar() {
-  const [setUser] = useAuth();
+  const [, setUser] = useAuth();
   const routes = ['dashboard', 'projects', 'institutions', 'genemapper', 'search', 'documentation', 'help'];
   const titles = ['Dashboard', 'Projects', 'Institutions', 'Gene Mapper', 'Search', 'Documentation', 'Help'];
   const { url } = useRouteMatch();
