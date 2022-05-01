@@ -105,7 +105,10 @@ def visualize_RNA_data(adata_ref, vae_ref):
     adata_ref.obsm["X_totalVI"] = vae_ref.get_latent_representation()
     sc.pp.neighbors(adata_ref, use_rep="X_totalVI")
     sc.tl.umap(adata_ref, min_dist=0.4)
-    utils.write_latent_csv(adata_ref, key=get_from_config(parameters.OUTPUT_PATH))
+    #utils.write_latent_csv(adata_ref, key=get_from_config(parameters.OUTPUT_PATH))
+    utils.write_full_adata_to_csv(vae_ref, adata_ref, sc.AnnData(vae_ref.get_latent_representation()), key=get_from_config(parameters.OUTPUT_PATH),
+                                  cell_type_key=get_from_config(parameters.CELL_TYPE_KEY),
+                                  condition_key=get_from_config(parameters.CONDITION_KEY))
     if get_from_config(parameters.DEBUG):
         visualize_and_store_as_pdf("firstumap.pdf",
                                    adata_ref,

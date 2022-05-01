@@ -123,7 +123,7 @@ def compute_latent(model, adata):
     return reference_latent
 
 
-def compute_query(anndata, reference_latent):
+def compute_query(anndata, reference_latent, source_adata):
     """
     trains the model on a query and saves the result
     :param anndata:
@@ -142,7 +142,13 @@ def compute_query(anndata, reference_latent):
         utils.save_umap_as_pdf(query_latent, 'data/figures/query.pdf', color=['batch', 'cell_type'])
 
     # utils.write_latent_csv(query_latent, key=get_from_config(parameters.OUTPUT_PATH))
-    utils.write_combined_csv(reference_latent, query_latent, key=get_from_config(parameters.OUTPUT_PATH))
+    #utils.write_combined_csv(reference_latent, query_latent, key=get_from_config(parameters.OUTPUT_PATH))
+    #utils.write_adata_to_csv(model, source_adata, key=get_from_config(parameters.OUTPUT_PATH),
+    #                              cell_type_key=get_from_config(parameters.CELL_TYPE_KEY),
+    #                              condition_key=get_from_config(parameters.CONDITION_KEY))
+    utils.write_full_adata_to_csv(model, source_adata, anndata, key=get_from_config(parameters.OUTPUT_PATH),
+                                  cell_type_key=get_from_config(parameters.CELL_TYPE_KEY),
+                                  condition_key=get_from_config(parameters.CONDITION_KEY))
 
     return model
 
@@ -171,7 +177,7 @@ def compute_scVI(new_config):
     setup()
     source_adata, target_adata = pre_process_data()
     reference_latent = create_scVI_model(source_adata, target_adata)
-    model = compute_query(target_adata, reference_latent)
+    model = compute_query(target_adata, reference_latent, source_adata)
     # TODO figure out if we need to do this
     # compute_full_latent(source_adata, target_adata, model)
     # model.save('resulting_model', overwrite=True)

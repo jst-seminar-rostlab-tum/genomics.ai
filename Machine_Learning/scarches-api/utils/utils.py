@@ -31,6 +31,23 @@ def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=
     return filename
 
 
+def write_full_adata_to_csv(model, source_adata, target_adata, key=None, filename=tempfile.mktemp(), drop_columns=None,
+                            cell_type_key='', condition_key='', neighbors=8):
+    adata_full = source_adata.concatenate(target_adata)
+    return write_adata_to_csv(model, adata_full, key, filename, drop_columns, cell_type_key, condition_key, neighbors)
+
+
+def write_adata_to_csv(model, adata, key=None, filename=tempfile.mktemp(), drop_columns=None, cell_type_key='',
+                       condition_key='', neighbors=8):
+    latent = scanpy.AnnData(model.get_latent_representation(adata=adata))
+    latent.obs['cell_type'] = adata.obs[cell_type_key].tolist()
+    latent.obs['batch'] = adata.obs[condition_key].tolist()
+    scanpy.pp.neighbors(latent, n_neighbors=neighbors)
+    scanpy.tl.leiden(latent)
+    scanpy.tl.umap(latent)
+    return write_latent_csv(latent, key, filename)
+
+
 def write_combined_csv(latent_ref, latent_query, key=None, filename=tempfile.mktemp(), drop_columns=None):
     """
     stores a given latent in a file, and if a key is given also in an s3 bucket

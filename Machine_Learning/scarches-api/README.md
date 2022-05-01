@@ -158,7 +158,7 @@ asynchronously. After completing the query function, generating the results, and
 will make a `POST` call to an endpoint specified in the original configuration as `webhook`. This request will contain
 the configuration that was used to calculate the results and allows the backend team to identify the results. If the
 configuration
-is done synchronously, the used configuration will be returned after the computation as a respsonse
+is done synchronously, the used configuration will be returned after the computation as a response
 to the original request.
 
 ### Deployment

@@ -67,7 +67,7 @@ def predict(model, latent):
     return latent
 
 
-def surgery(reference_latent, anndata):
+def surgery(reference_latent, source_adata, anndata):
     model = scarches.models.SCANVI.load_query_data(
         anndata,
         get_from_config(parameters.PRETRAINED_MODEL_PATH),
@@ -92,7 +92,10 @@ def surgery(reference_latent, anndata):
     if get_from_config(parameters.DEBUG):
         utils.save_umap_as_pdf(surgery_latent, 'figures/surgery.pdf', color=['batch', 'cell_type'])
 
-    utils.write_combined_csv(reference_latent, surgery_latent, key=get_from_config(parameters.OUTPUT_PATH))
+    #utils.write_combined_csv(reference_latent, surgery_latent, key=get_from_config(parameters.OUTPUT_PATH))
+    utils.write_full_adata_to_csv(model, source_adata, anndata, key=get_from_config(parameters.OUTPUT_PATH),
+                                  cell_type_key=get_from_config(parameters.CELL_TYPE_KEY),
+                                  condition_key=get_from_config(parameters.CONDITION_KEY))
 
     model.save('scvi_model', overwrite=True)  # TODO check if we need this, for now, we delete it
     utils.delete_file('scvi_model/model.pt')
@@ -101,7 +104,7 @@ def surgery(reference_latent, anndata):
     return model, surgery_latent
 
 
-def query(reference_latent, anndata):
+def query(reference_latent, anndata, source_adata):
     model = scarches.models.SCANVI.load_query_data(
         anndata,
         get_from_config(parameters.RESULTING_MODEL_PATH),
@@ -126,7 +129,10 @@ def query(reference_latent, anndata):
     if get_from_config(parameters.DEBUG):
         utils.save_umap_as_pdf(query_latent, 'figures/query.pdf', color=['batch', 'cell_type'])
 
-    utils.write_combined_csv(reference_latent, query_latent, key=get_from_config(parameters.OUTPUT_PATH))
+    #utils.write_combined_csv(reference_latent, query_latent, key=get_from_config(parameters.OUTPUT_PATH))
+    utils.write_full_adata_to_csv(model, source_adata, anndata, key=get_from_config(parameters.OUTPUT_PATH),
+                                  cell_type_key=get_from_config(parameters.CELL_TYPE_KEY),
+                                  condition_key=get_from_config(parameters.CONDITION_KEY))
 
     return model, query_latent
 
