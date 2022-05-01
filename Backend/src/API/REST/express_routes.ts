@@ -23,7 +23,7 @@ import upload_get_upload_url_route from "./routes/file_upload/get_upload_url";
 import download_results_route from "./routes/file_download/results";
 import upload_user_avatar_route from "./routes/upload_user_avatar";
 
-import { get_teams_of_user } from "./routes/user/userRouter";
+import { get_teams_of_user, get_users } from "./routes/user/userRouter";
 import { get_model, get_allModels } from "./routes/model/modelRouter";
 import { get_atlas, get_allAtlases } from "./routes/atlas/atlasRouter";
 import * as swaggerDocument from "../../swagger.json";
@@ -37,6 +37,7 @@ import {
   join_as_member_of_institution,
   get_institutions,
   get_institution,
+  disjoin_member_of_institution,
 } from "./routes/institution/institutionRouter";
 
 import {
@@ -48,13 +49,16 @@ import {
   remove_team_from_institution,
   add_project_to_team,
   get_teams,
+  disjoin_member,
 } from "./routes/team/teamRouter";
+
 import { get_projects, get_userProjects, get_project_by_id } from "./routes/project/projectRouter";
 
 import {
   upload_institution_backgroundpicture_route,
   upload_institution_profilepicture_route,
 } from "./routes/upload_institution_pictures";
+
 import {
   reset_institution_backgroundpicture_route,
   reset_institution_profilepicture_route,
@@ -103,9 +107,12 @@ export function express_routes(this: REST_Host): Router {
   this.expressApp.use(add_team_to_institution());
   this.expressApp.use(remove_team_from_institution());
   this.expressApp.use(get_teams());
+  this.expressApp.use(disjoin_member());
 
   // user routes
   this.expressApp.use(get_teams_of_user());
+  this.expressApp.use(get_users());
+
 
   // project routes
   this.expressApp.use(get_projects());
@@ -139,6 +146,7 @@ export function express_routes(this: REST_Host): Router {
   this.expressApp.use(reset_institution_backgroundpicture_route());
   this.expressApp.use(make_user_admin_of_institution());
   this.expressApp.use(join_as_member_of_institution());
+  this.expressApp.use(disjoin_member_of_institution());
 
   this.expressApp.use(/^.*_ah.*$/, (req, res) => res.status(200).send()); // always tell google everything is fine
   this.expressApp.use((req, res) => res.status(404).send("Not found."));

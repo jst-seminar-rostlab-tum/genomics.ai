@@ -836,7 +836,9 @@
     "/institutions/{id}/join": {
       "put": {
         "summary": "Join as member of institution",
-        "tags": ["Institution"],
+        "tags": [
+          "Institution"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -1001,6 +1003,38 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "summary": "Search users",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "keyword",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Matching users as json array"
           },
           "400": {
             "description": "Failed. Bad post data."
