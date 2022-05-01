@@ -101,7 +101,7 @@ export default function TeamPage({ sidebarShown }) {
         <hr />
         <TeamMemberList team={team} />
       </section>
-      <TeamInviteButton team={team} />
+      {isAdmin && <TeamInviteButton team={team} />}
     </HeaderView>
   );
 }
