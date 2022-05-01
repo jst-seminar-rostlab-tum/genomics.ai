@@ -37,6 +37,7 @@ import {
   join_as_member_of_institution,
   get_institutions,
   get_institution,
+  disjoin_member_of_institution,
 } from "./routes/institution/institutionRouter";
 
 import {
@@ -143,6 +144,7 @@ export function express_routes(this: REST_Host): Router {
   this.expressApp.use(reset_institution_backgroundpicture_route());
   this.expressApp.use(make_user_admin_of_institution());
   this.expressApp.use(join_as_member_of_institution());
+  this.expressApp.use(disjoin_member_of_institution());
 
   this.expressApp.use(/^.*_ah.*$/, (req, res) => res.status(200).send()); // always tell google everything is fine
   this.expressApp.use((req, res) => res.status(404).send("Not found."));
