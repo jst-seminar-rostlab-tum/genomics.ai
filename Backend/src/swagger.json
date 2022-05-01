@@ -1045,6 +1045,70 @@
           }
         }
       }
+    },
+    "/ownprojects": {
+      "get": {
+        "summary": "Get all projects of an owner",
+        "tags": [
+          "Project"
+        ],
+        "responses": {
+          "200": {
+            "description": "Getting the project list of the user successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string"
+                    },
+                    "owner": {
+                      "type": "string"
+                    },
+                    "uploadId": {
+                      "type": "string"
+                    },
+                    "location": {
+                      "type": "string"
+                    },
+                    "fileName": {
+                      "type": "string"
+                    },
+                    "fileSize": {
+                      "type": "number"
+                    },
+                    "uploadDate": {
+                      "type": "object"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "resultName": {
+                      "type": "string"
+                    },
+                    "resultSize": {
+                      "type": "number"
+                    },
+                    "atlasId": {
+                      "type": "string"
+                    },
+                    "modelId": {
+                      "type": "string"
+                    },
+                    "teamId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error, cannot get the project list of the user"
+          }
+        }
+      }
     }
   }
 }
