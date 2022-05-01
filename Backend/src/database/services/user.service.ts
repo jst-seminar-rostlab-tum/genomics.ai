@@ -18,6 +18,20 @@ export default class UserService {
     return await userModel.find().exec();
   }
 
+  /**
+   * Search for all users by a keyword. Advanced search not implemented yet,
+   * just matching first/last name at the moment
+   * 
+   * Does not return private info like email, password, creation date, etc.
+   * 
+   * Sorting methods (TODO):
+   * default: ascending by name
+   * "namedesc": descending by name
+   *
+   * @param keyword a keyword
+   * @param sortBy sorting method
+   * @returns array of users
+   */
   static async searchUsers(keyword: string | null | undefined, sortBy: string | null | undefined) {
     //TODO implement actual fuzzy searching and other sorting methods
     let sort = 1;
