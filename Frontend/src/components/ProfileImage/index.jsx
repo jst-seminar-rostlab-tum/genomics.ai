@@ -6,9 +6,10 @@ import styles from './profileImage.module.css';
 
 import stringToColor from 'shared/utils/stringColor';
 import getProfile from 'shared/services/profile';
+import { useAuth } from 'shared/context/authContext';
 
 function ProfileImage({ sizePixels, editable = false, overrideProfileImage = null }) {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useAuth();
   async function loadUser() {
     setUser(await getProfile());
   }

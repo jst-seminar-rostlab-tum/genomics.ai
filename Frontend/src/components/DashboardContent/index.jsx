@@ -13,10 +13,10 @@ import Help from 'views/Help';
 import styles from './dashboardContent.module.css';
 import { useAuth } from 'shared/context/authContext';
 
-const DashboardContent = (props) => {
+const DashboardContent = () => {
   const [sidebarShown, setSidebarShown] = useState(true);
   const toggleSidebar = () => setSidebarShown(!sidebarShown);
-  const [user, setUser] = useAuth()
+  const [user, setUser] = useAuth();
 
   const { path, url } = useRouteMatch();
 
