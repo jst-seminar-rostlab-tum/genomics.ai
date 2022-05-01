@@ -8,6 +8,7 @@ import UserService from "../../../../database/services/user.service";
 
 import check_auth from "../../middleware/check_auth";
 import { institution_admin_auth } from "../../middleware/check_institution_auth";
+import { mailer } from "../../../../util/mailer";
 
 const create_institution = (): Router => {
   let router = express.Router();
@@ -56,8 +57,8 @@ const invite_to_institution = (): Router => {
     try {
       if (!userId) return res.status(400).send("Missing parameter");
 
-      if (!(await UserService.getUserById(userId)))
-        return res.status(404).send("User that you are trying to invite does not exists!");
+      const user = await UserService.getUserById(userId);
+      if (!user) return res.status(400).send("User to be invited does not exist.");
 
       if (await InstitutionService.findMemeberOrInvitedById(userId, institutionId_to_modify))
         return res
@@ -72,7 +73,24 @@ const invite_to_institution = (): Router => {
       );
 
       if (updatedInstitution) {
-        res.json(updatedInstitution);
+        try {
+          await mailer.send(
+            user.email,
+            "[GeneCruncher] Invitation to an institution",
+            "invitation_to_institution",
+            {
+              institution: updatedInstitution.name,
+              country: updatedInstitution.country,
+              firstname: user.firstName,
+            }
+          );
+        } catch (e) {
+          console.error("Error when sending invitation of user to an institution.");
+          console.error(JSON.stringify(e));
+          console.error(e);
+          return res.status(500).send("Error when sending email. Invitation has been stored.");
+        }
+        return res.json(updatedInstitution);
       } else {
         return res.status(409).send("Could not invite person to institution!");
       }
