@@ -158,8 +158,8 @@ const Explore = () => {
       </Box>
 
       <Mapper
-        mapperAtlas={atlasTitles[selectedAtlas]}
-        mapperModel={modelTitles[selectedModel]}
+        mapperAtlas={atlasTitles[selectedAtlas] ?? null}
+        mapperModel={modelTitles[selectedModel] ?? null}
         setSelectedAtlas={setSelectedAtlas}
         setSelectedModel={setSelectedModel}
         open={mapperVisible}

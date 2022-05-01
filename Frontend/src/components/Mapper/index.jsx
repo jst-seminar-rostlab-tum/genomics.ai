@@ -3,7 +3,6 @@ import {
   Typography, Box, Button, IconButton, Divider, Stack, Fab,
 } from '@mui/material';
 import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
-import NoteAltIcon from '@mui/icons-material/NoteAlt';
 import CancelIcon from '@mui/icons-material/Cancel';
 import styles from './mapper.module.css';
 import { useHistory } from 'react-router-dom';
@@ -15,24 +14,14 @@ function Mapper({
   const [model, setModel] = useState(mapperModel);
   const history = useHistory();
 
-  const handleEditAtlas = () => {
+  const deleteAtlas = () => {
     history.push('/explore/atlases');
     setSelectedAtlas(-1);
     setAtlas(null);
   };
 
-  const deleteAtlas = () => {
-    setSelectedAtlas(-1);
-    setAtlas(null);
-  };
-
-  const handleEditModel = () => {
-    history.push('/explore/models');
-    setSelectedModel(-1);
-    setModel(null);
-  };
-
   const deleteModel = () => {
+    history.push('/explore/models');
     setSelectedModel(-1);
     setModel(null);
   };
@@ -52,11 +41,8 @@ function Mapper({
           direction="row"
         >
           <Typography className={styles.filename}>{atlas || 'None'}</Typography>
-          <IconButton className={styles.iconButton} variant="contained" component="span" onClick={handleEditAtlas}>
-            <NoteAltIcon className={styles.icon} />
-          </IconButton>
-          <IconButton className={styles.iconButton} variant="contained" component="span" onClick={deleteAtlas}>
-            <CancelIcon className={styles.icon} />
+          <IconButton className={styles.iconButton} variant="contained" component="span" onClick={deleteAtlas} disabled={!atlas}>
+            <CancelIcon className={atlas ? styles.icon : styles.disabledIcon} />
           </IconButton>
         </Stack>
         <Divider className={styles.divider} />
@@ -65,11 +51,8 @@ function Mapper({
           direction="row"
         >
           <Typography className={styles.filename}>{model || 'None'}</Typography>
-          <IconButton className={styles.iconButton} variant="contained" component="span" onClick={handleEditModel}>
-            <NoteAltIcon className={styles.icon} />
-          </IconButton>
-          <IconButton className={styles.iconButton} variant="contained" component="span" onClick={deleteModel}>
-            <CancelIcon className={styles.icon} />
+          <IconButton className={styles.iconButton} variant="contained" component="span" onClick={deleteModel} disabled={!model}>
+            <CancelIcon className={model ? styles.icon : styles.disabledIcon} />
           </IconButton>
         </Stack>
         <Divider className={styles.divider} />

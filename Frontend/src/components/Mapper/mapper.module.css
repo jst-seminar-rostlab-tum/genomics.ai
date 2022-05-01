@@ -22,6 +22,10 @@
     color: #FF5F58;
 }
 
+.disabledIcon {
+    color: #CED4DA;
+}
+
 .filename {
     color: #0969DA;
     font-weight: bold !important;
