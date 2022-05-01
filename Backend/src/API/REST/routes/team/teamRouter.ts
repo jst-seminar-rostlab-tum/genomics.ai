@@ -388,10 +388,13 @@ const get_teams = (): Router => {
     const query = { ...req.query };
     try {
       const teams = await TeamService.getTeams(query);
-      return res.status(200).json(teams);
+
+      if( teams != null )
+        return res.status(200).json(teams);
+      return res.status(404).send(`No teams found`);
     } catch (err) {
       console.error(JSON.stringify(err));
-      return res.status(404).send(`No teams found`);
+      return res.status(500).send(`Internal server error`);
     }
   });
 
@@ -405,10 +408,13 @@ const get_users_teams = (): Router => {
         const userId = req.params.id;
         try {
           const teams = await TeamService.getUsersTeams(userId);
-          return res.status(200).json(teams);
+
+          if( teams != null)
+            return res.status(200).json(teams);
+          res.status(404).send(`No teams found`);
         } catch (err) {
           console.error(JSON.stringify(err));
-          return res.status(404).send(`No teams found`);
+          return res.status(500).send(`Internal server error`);
         }
       })
   return router;

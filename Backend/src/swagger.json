@@ -1020,8 +1020,8 @@
           "200": {
             "description": "OK"
           },
-          "404": {
-            "description": "Failed.No institution found"
+          "400": {
+            "description": "Failed. Bad post data."
           }
         }
       }
@@ -1059,8 +1059,8 @@
           "200": {
             "description": "OK"
           },
-          "404": {
-            "description": "Failed.No team found"
+          "400": {
+            "description": "Failed. Bad post data."
           }
         }
       }
@@ -1091,8 +1091,8 @@
           "200": {
             "description": "OK"
           },
-          "404": {
-            "description": "Failed.No project found"
+          "400": {
+            "description": "Failed. Bad post data."
           }
         }
       }
@@ -1117,8 +1117,8 @@
           "200": {
             "description": "OK"
           },
-          "404": {
-            "description": "Institution with id not found"
+          "400": {
+            "description": "Failed. Bad post data."
           }
         }
       }
@@ -1143,8 +1143,8 @@
           "200": {
             "description": "OK"
           },
-          "404": {
-            "description": "No institution found"
+          "400": {
+            "description": "Failed. Bad post data."
           }
         }
       }
@@ -1169,8 +1169,8 @@
           "200": {
             "description": "OK"
           },
-          "404": {
-            "description": "No team found"
+          "400": {
+            "description": "Failed. Bad post data."
           }
         }
       }
@@ -1195,8 +1195,8 @@
           "200": {
             "description": "OK"
           },
-          "404": {
-            "description": "No project found"
+          "400": {
+            "description": "Failed. Bad post data."
           }
         }
       }

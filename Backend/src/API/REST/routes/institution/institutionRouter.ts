@@ -169,10 +169,13 @@ const get_institution = (): Router => {
     const institutionId = req.params.id;
     try {
       const institution = await InstitutionService.getInstitutionById(institutionId);
-      return res.status(200).json(institution);
+
+      if( institution != null )
+        return res.status(200).json(institution);
+      return res.status(404).send(`Institution ${institutionId} not found`);
     } catch (err) {
       console.error(JSON.stringify(err));
-      return res.status(404).send(`Institution ${institutionId} not found`);
+      return res.status(500).send(`Internal server error`);
     }
   });
   return router;
@@ -184,10 +187,13 @@ const get_institutions = (): Router => {
     const query = { ...req.query };
     try {
       const institutions = await InstitutionService.filterInstitutions(query);
-      return res.status(200).json(institutions);
+
+      if(institutions != null)
+        return res.status(200).json(institutions);
+      return res.status(404).send(`No institutions found`);
     } catch (err) {
       console.error(JSON.stringify(err));
-      return res.status(404).send(`No institutions found`);
+      return res.status(500).send(`Internal server error`);
     }
   });
   return router;
@@ -200,10 +206,12 @@ const get_users_institutions = (): Router => {
         const userId = req.params.id;
         try {
           const institutions = await InstitutionService.getUsersInstitutions(userId);
-          return res.status(200).json(institutions);
+          if( institutions != null )
+            return res.status(200).json(institutions);
+          return res.status(404).send(`No institutions found`);
         } catch (err) {
           console.error(JSON.stringify(err));
-          return res.status(404).send(`No institutions found`);
+          return res.status(500).send(`Internal server error`);
         }
       })
   return router;
