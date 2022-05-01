@@ -22,7 +22,7 @@ function TeamMemberRemoveButton({ team, member, onRemoved }) {
 
   return (
     <>
-      <Button variant="outlined" color="critical" onClick={handleOpenDialog}>
+      <Button variant="outlined" color="error" onClick={handleOpenDialog}>
         Remove
       </Button>
       <Dialog
@@ -45,7 +45,7 @@ function TeamMemberRemoveButton({ team, member, onRemoved }) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog}>Cancel</Button>
-          <Button onClick={() => remove()} color="critical" autoFocus>
+          <Button onClick={() => remove()} color="error" autoFocus>
             Remove
           </Button>
         </DialogActions>
