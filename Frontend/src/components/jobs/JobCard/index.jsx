@@ -1,8 +1,8 @@
 import React from 'react';
 import Circle from '@mui/icons-material/Circle';
-import Button from '@mui/material/Button';
 import ListCard from 'components/general/ListCard';
 import { jobStatusColors } from 'shared/utils/common/constants';
+import CustomButton from 'components/CustomButton';
 // import styles from './teamCard.module.css';
 
 function JobCard({ job }) {
@@ -19,7 +19,7 @@ function JobCard({ job }) {
         )}
         title={`Job ${id}`}
         trailing={(
-          <Button>See Results</Button>
+          <CustomButton type="primary">See Results</CustomButton>
         )}
       />
     </div>
