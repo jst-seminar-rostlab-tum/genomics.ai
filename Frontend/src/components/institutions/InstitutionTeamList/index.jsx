@@ -1,34 +1,39 @@
-import React, { useState, useEffect } from "react";
-import CircularProgress from "@mui/material/CircularProgress";
-import MemberList from "components/members/MemberList";
-import InstitutionMemberRemoveButton from "components/institutions/InstitutionMemberRemoveButton";
-import getUser from "shared/services/mock/user";
-import styles from "./institutionMemberList.module.css";
+import React, { useState, useEffect } from 'react';
+import CircularProgress from '@mui/material/CircularProgress';
+import styles from './institutionMemberList.module.css';
+import { getInstitutionTeams } from 'shared/services/mock/teams';
+import TeamCard from 'components/teams/TeamCard';
 
-function InstitutionTeamList({ team }) {
-  const [user, setUser] = useState({});
+function InstitutionTeamList({ institution }) {
+  const [teams, setTeams] = useState([]);
+  const [teamsLoaded, setTeamsLoaded] = useState(false);
+
   useEffect(() => {
-    getUser().then(setUser);
-  }, [setUser]);
+    getInstitutionTeams(institution.id).then((loadedTeams) => {
+      setTeams(loadedTeams);
+      setTeamsLoaded(true);
+    });
+  });
 
-  if (!institution.adminIds?.length || !institution.memberIds?.length) {
+  if (!teamsLoaded) {
     return <CircularProgress />;
   }
 
   return (
-    <MemberList
-      memberIds={[...institution.adminIds, ...institution.memberIds]}
-      nextToNameBuilder={(member) => (
-        <span className={styles.accessRightIndicator}>
-          {institution.adminIds.indexOf(member.id) !== -1 ? "admin" : "member"}
-        </span>
-      )}
-      trailingBuilder={(member) =>
-        institution.adminIds.includes(user.id) && user.id === member.id ? null : (
-          <InstitutionMemberRemoveButton institution={institution} member={member} />
-        )
-      }
-    />
+    <div className={styles.content}>
+      {teams.length === 0 ? 'No teams.' : ''}
+      {teams.map((team) => (
+        <div key={team.id}>
+          <TeamCard
+            team={team}
+            onLeft={(leftTeam) => {
+              setTeams(teams.filter((t) => t.id !== leftTeam.id));
+            }}
+          />
+          <div className={styles.cardSpacing} />
+        </div>
+      ))}
+    </div>
   );
 }
 

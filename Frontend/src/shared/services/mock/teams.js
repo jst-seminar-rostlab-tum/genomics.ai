@@ -48,6 +48,10 @@ export async function getTeam(id) {
   return mockTeams.find((team) => team.id === parseInt(id, 10));
 }
 
+export async function getInstitutionTeams(institutionId) {
+  return mockTeams.filter((team) => team.institutionId === institutionId);
+}
+
 export default async function queryMyTeams() {
   return mockTeams;
 }
