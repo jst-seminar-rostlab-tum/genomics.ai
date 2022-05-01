@@ -5,7 +5,7 @@ import TeamMemberRemoveButton from '../TeamMemberRemoveButton';
 import getProfile from 'shared/services/profile';
 import styles from './teamMemberList.module.css';
 
-function TeamMemberList({ team }) {
+function TeamMemberList({ team, onMemberRemoved }) {
   const [user, setUser] = useState({});
   useEffect(() => {
     getProfile().then(setUser);
@@ -25,7 +25,7 @@ function TeamMemberList({ team }) {
       )}
       trailingBuilder={(member) => (
         team.adminIds.includes(user.id) && user.id === member.id ? null : (
-          <TeamMemberRemoveButton team={team} member={member} />
+          <TeamMemberRemoveButton team={team} member={member} onRemoved={onMemberRemoved} />
         )
       )}
     />
