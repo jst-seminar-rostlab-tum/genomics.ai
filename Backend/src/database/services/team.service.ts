@@ -211,4 +211,23 @@ export default class TeamService {
       }
     );
   }
+
+  /**
+   *  Remove the given userId into the given project.
+   *
+   *  @param   teamId
+   *  @param   userId
+   *  @returns updateDocument
+   */
+  static async removeMemberFromTeam(
+    teamId: ObjectId | string,
+    userId: ObjectId | string
+  ): Promise<any> {
+    return await teamModel.updateOne(
+      { _id: teamId },
+      {
+        $pull: { memberIds: userId, adminIds: userId },
+      }
+    );
+  }
 }

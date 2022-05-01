@@ -48,6 +48,7 @@ import {
   remove_team_from_institution,
   add_project_to_team,
   get_teams,
+  disjoin_member,
 } from "./routes/team/teamRouter";
 
 import { get_projects, get_userProjects, get_project_by_id } from "./routes/project/projectRouter";
@@ -105,6 +106,7 @@ export function express_routes(this: REST_Host): Router {
   this.expressApp.use(add_team_to_institution());
   this.expressApp.use(remove_team_from_institution());
   this.expressApp.use(get_teams());
+  this.expressApp.use(disjoin_member());
 
   // user routes
   this.expressApp.use(get_teams_of_user());
