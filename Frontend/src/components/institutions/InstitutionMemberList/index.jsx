@@ -7,8 +7,8 @@ import { useAuth } from 'shared/context/authContext';
 
 function InstitutionMemberList({ institution, onRemoved }) {
   const [user] = useAuth();
-
-  if (!institution.adminIds?.length || !institution.memberIds?.length) {
+  
+  if (!institution.adminIds?.length && !institution.memberIds?.length) {
     return <CircularProgress />;
   }
 
@@ -21,7 +21,7 @@ function InstitutionMemberList({ institution, onRemoved }) {
         </span>
       )}
       trailingBuilder={(member) => (
-        institution.adminIds.includes(user.id) && user.id === member.id ? null : (
+        user._id === member.id ? null : (
           <InstitutionMemberRemoveButton
             institution={institution}
             member={member}

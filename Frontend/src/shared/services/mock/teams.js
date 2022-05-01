@@ -7,7 +7,7 @@ let mockTeams = [
     invitedMemberIds: [],
     memberIds: [1, 2, 3, 4, 5],
     visibility: 'public',
-    institutionId: 2,
+    institutionId: 1,
   },
 ];
 let runningId = 1;

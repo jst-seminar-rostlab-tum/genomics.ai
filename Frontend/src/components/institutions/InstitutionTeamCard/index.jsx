@@ -5,7 +5,7 @@ import TeamLeaveButton from 'components/teams/overview/TeamLeaveButton';
 import styles from './institutionTeamCard.module.css';
 import { useAuth } from 'shared/context/authContext';
 
-function InstitutionTeamCard({ team, onLeft }) {
+function InstitutionTeamCard({ team, onLeft, institution }) {
   const [user] = useAuth();
 
   const history = useHistory();
@@ -15,8 +15,12 @@ function InstitutionTeamCard({ team, onLeft }) {
     evt.stopPropagation();
   };
 
+  function isAdmin() {
+    return (institution.adminIds || []).includes(user._id);
+  }
+
   const {
-    name, description, adminIds, visibility
+    name, description, visibility
   } = team;
 
   return (
@@ -28,13 +32,6 @@ function InstitutionTeamCard({ team, onLeft }) {
           {visibility}
         </span>
       )}
-      trailing={[
-        adminIds.indexOf(user.id) !== -1 ? (
-          <div key="leave" onClick={preventBubble} onKeyPress={preventBubble} role="button" tabIndex={0}>
-            <TeamLeaveButton team={team} onLeft={onLeft} />
-          </div>
-        ) : <div key="nothing" />,
-      ]}
       onClick={navigateToTeam}
     />
   );

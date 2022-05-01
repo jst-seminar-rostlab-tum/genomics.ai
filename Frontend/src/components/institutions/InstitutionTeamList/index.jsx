@@ -1,19 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import CircularProgress from '@mui/material/CircularProgress';
-import styles from './institutionMemberList.module.css';
-import { getInstitutionTeams } from 'shared/services/mock/teams';
-import TeamCard from 'components/teams/TeamCard';
+import React, { useState, useEffect } from "react";
+import CircularProgress from "@mui/material/CircularProgress";
+import styles from "./institutionTeamList.module.css";
+import { getInstitutionTeams } from "shared/services/mock/teams";
+import { getInstitution } from "shared/services/mock/institutions";
+import InstitutionTeamCard from "components/institutions/InstitutionTeamCard";
 
-function InstitutionTeamList({ institution }) {
+function InstitutionTeamList({ onLeft, institution }) {
   const [teams, setTeams] = useState([]);
   const [teamsLoaded, setTeamsLoaded] = useState(false);
 
-  useEffect(() => {
-    getInstitutionTeams(institution.id).then((loadedTeams) => {
-      setTeams(loadedTeams);
-      setTeamsLoaded(true);
-    });
-  });
+  useEffect(async () => {
+    setTeams(await getInstitutionTeams(institution.id));
+    setTeamsLoaded(true);
+  }, []);
 
   if (!teamsLoaded) {
     return <CircularProgress />;
@@ -21,14 +20,13 @@ function InstitutionTeamList({ institution }) {
 
   return (
     <div className={styles.content}>
-      {teams.length === 0 ? 'No teams.' : ''}
+      {teams.length === 0 ? "No teams." : ""}
       {teams.map((team) => (
         <div key={team.id}>
-          <TeamCard
+          <InstitutionTeamCard
             team={team}
-            onLeft={(leftTeam) => {
-              setTeams(teams.filter((t) => t.id !== leftTeam.id));
-            }}
+            onLeft={onLeft}
+            institution={institution}
           />
           <div className={styles.cardSpacing} />
         </div>
