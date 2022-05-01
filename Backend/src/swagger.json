@@ -1058,6 +1058,83 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string"
+                      },
+                      "owner": {
+                        "type": "string"
+                      },
+                      "uploadId": {
+                        "type": "string"
+                      },
+                      "location": {
+                        "type": "string"
+                      },
+                      "fileName": {
+                        "type": "string"
+                      },
+                      "fileSize": {
+                        "type": "number"
+                      },
+                      "uploadDate": {
+                        "type": "object"
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "resultName": {
+                        "type": "string"
+                      },
+                      "resultSize": {
+                        "type": "number"
+                      },
+                      "atlasId": {
+                        "type": "string"
+                      },
+                      "modelId": {
+                        "type": "string"
+                      },
+                      "teamId": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error, cannot get the project list of the user"
+          }
+        }
+      }
+    },
+    "/project/:id": {
+      "get": {
+        "summary": "Get detailed information about a project",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Project"
+        ],
+        "responses": {
+          "200": {
+            "description": "Get project by id successful",
+            "content": {
+              "application/json": {
+                "schema": {
                   "type": "object",
                   "properties": {
                     "_id": {
@@ -1104,8 +1181,14 @@
               }
             }
           },
+          "400": {
+            "description": "Missing parameters or the project does not exist"
+          },
+          "401": {
+            "description": "Access denied"
+          },
           "500": {
-            "description": "Internal error, cannot get the project list of the user"
+            "description": "Internal error, cannot get project by id"
           }
         }
       }
