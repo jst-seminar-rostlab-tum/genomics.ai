@@ -1286,6 +1286,59 @@
           }
         }
       }
+    },
+    "/model/:id": {
+      "get": {
+        "summary": "Get details about a model",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Model"
+        ],
+        "responses": {
+          "200": {
+            "description": "Getting model by id successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "requirements": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing model id"
+          },
+          "500": {
+            "description": "Internal error, unable to retrieve information about the model"
+          }
+        }
+      }
     }
   }
 }
