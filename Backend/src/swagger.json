@@ -1251,6 +1251,41 @@
           }
         }
       }
+    },
+    "/users/ownteams": {
+      "get": {
+        "summary": "Returns the teams that the user belong to",
+        "tags": [
+          "User",
+          "Team"
+        ],
+        "responses": {
+          "200": {
+            "description": "Getting team list successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error, unable to get team list of the user"
+          }
+        }
+      }
     }
   }
 }
