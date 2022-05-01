@@ -10,7 +10,7 @@ const LabeledLink = (props) => {
       <div>{props.label}</div>
       <Link
         component={RouterLink}
-        to="documentation" // TODO integrate as prop
+        to={props.to}
         underline="hover"
       >
         {props.content}

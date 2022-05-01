@@ -13,8 +13,20 @@ const ProjectCard = ({ item: project }) => {
       primary={<Chip label={project.type} color="primary" size="small" />}
       tertiary={
         <React.Fragment>
-          {project.institution && <LabeledLink label={"Institution"} content={project.institution} />}
-          {project.team && <LabeledLink label={"Team"} content={project.team} />}
+          {project.institution && (
+            <LabeledLink
+              label={"Institution"}
+              content={project.institution.name}
+              to={`/sequencer/institutions/${project.institution.id}`}
+            />
+          )}
+          {project.team && (
+            <LabeledLink
+              label={"Team"}
+              content={project.team.name}
+              to={`/sequencer/teams/${project.team.id}`}
+            />
+          )}
         </React.Fragment>
       }
     />

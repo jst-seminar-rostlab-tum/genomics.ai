@@ -4,7 +4,10 @@ const DUMMY_TEAMS = [
     name: "Team 1 - 7K7K",
     visibility: "public",
     updated: "17th March", // Target to change to some date format
-    institution: "Technische Universität München",
+    institution: {
+      id: "1",
+      name: "Technische Universität München",
+    },
     membersCount: 18,
     members: [
       // not all are needed but around 3
@@ -27,7 +30,10 @@ const DUMMY_TEAMS = [
     name: "Team 2 - FF77",
     visibility: "private",
     updated: "24th March", // Target to change to some date format
-    institution: "Technische Universität München",
+    institution: {
+      id: "1",
+      name: "Technische Universität München",
+    },
     membersCount: 9,
     members: [
       // not all are needed but around 3
@@ -50,7 +56,10 @@ const DUMMY_TEAMS = [
     name: "Team 3 - 5623",
     visibility: "private",
     updated: "24th March", // Target to change to some date format
-    institution: "Helmholtz Institut",
+    institution: {
+      id: "2",
+      name: "Helmholtz Institut",
+    },
     membersCount: 9,
     members: [
       // not all are needed but around 3
@@ -171,28 +180,49 @@ const DUMMY_PROJECTS = [
     id: "1",
     name: "Job f567",
     type: "Gene Mapper",
-    institution: "Helmholtz Institut",
-    team: "Heinzig Lab",
+    institution: {
+      id: "2",
+      name: "Helmholtz Institut",
+    },
+    team: {
+      id: "1",
+      name: "Heinzig Lab",
+    },
   },
   {
     id: "2",
     name: "Job f568",
     type: "Gene Mapper",
-    institution: "Technische Universität München",
-    team: "Rost Lab",
+    institution: {
+      id: "1",
+      name: "Technische Universität München",
+    },
+    team: {
+      id: "2",
+      name: "Rost Lab",
+    },
   },
   {
     id: "3",
     name: "Job f569",
     type: "Gene Mapper",
-    institution: "Ludwig-Maximilians-Universität München",
-    team: "Med Lab",
+    institution: {
+      id: "3",
+      name:"Ludwig-Maximilians-Universität München",
+    },
+    team: {
+      id: "5",
+      name: "Med Lab",
+    },
   },
   {
     id: "4",
     name: "Job f709",
     type: "Gene Mapper",
-    team: "Med Lab",
+    team: {
+      id: "7",
+      name: "Theis Lab",
+    },
   },
 ];
 

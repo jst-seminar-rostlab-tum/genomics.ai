@@ -1,13 +1,12 @@
 import React from "react";
 
-import { Button, Chip } from "@mui/material";
+import { Chip } from "@mui/material";
 
 import Avatars from "components/Avatars";
 import SearchCard from "../SearchCard";
 import LabeledLink from "../LabeledLink";
 
-import Tag from "components/Tag";
-import CustomButton from "components/CustomButton"
+import CustomButton from "components/CustomButton";
 
 // Card to display search result for a single team
 const TeamCard = ({ item: team }) => {
@@ -36,7 +35,11 @@ const TeamCard = ({ item: team }) => {
             sx={{ color: "text.secondary" }}
           />
           {team.institution && (
-            <LabeledLink label={"Institution"} content={team.institution} />
+            <LabeledLink
+              label={"Institution"}
+              content={team.institution.name}
+              to={`/sequencer/institutions/${team.institution.id}`}
+            />
           )}
         </React.Fragment>
       }
