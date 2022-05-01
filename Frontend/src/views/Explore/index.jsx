@@ -1,21 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Switch, Route, Redirect, useHistory,
 } from 'react-router-dom';
 import { Box } from '@mui/material';
 import Grid from '@mui/material/Grid';
-
 import { TabGroup } from 'components/Tab';
 import Search from 'components/Search';
-
-import Filter from 'components/Filter/old';
+import { Filter } from 'components/Filter/Filter';
 import NavBar from 'components/NavBar';
 import Breadcrumb from 'components/Breadcrumb';
 import AtlasCard from 'components/Cards/AtlasCard';
 import DatasetCard from 'components/Cards/DatasetCard';
 import { ModelCard } from 'components/Cards/ModelCard';
 import Mapper from 'components/Mapper';
-
+import LoginForm from 'components/LoginForm';
+import RegistrationForm from 'components/RegistrationForm';
 import './Explore.css';
 import { FunctionsRounded } from '@mui/icons-material';
 
@@ -69,6 +68,8 @@ const Explore = () => {
   const [selectedAtlas, setSelectedAtlas] = useState(-1);
   const [selectedModel, setSelectedModel] = useState(-1);
   const [mapperVisible, setMapperVisible] = useState(false);
+  const [isLoginFormVisible, setLoginFormVisible] = useState(false);
+  const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const history = useHistory();
 
@@ -81,11 +82,31 @@ const Explore = () => {
     setSelectedAtlas(index);
     if (!mapperVisible) {
       setMapperVisible(true);
-    }
-    if (selectedModel === -1) {
-      history.push('/explore/models');
+      if (selectedModel === -1) {
+        history.push('/explore/models');
+      }
     }
   };
+
+  const onLoginClicked = useCallback(() => {
+    console.log('login');
+    setRegistrationFormVisible(false);
+    setLoginFormVisible(true);
+  }, [setLoginFormVisible]);
+
+  const onSignUpClicked = useCallback(() => {
+    console.log('register');
+    setLoginFormVisible(false);
+    setRegistrationFormVisible(true);
+  }, [setRegistrationFormVisible]);
+
+  const onLoginFormClosed = useCallback(() => {
+    setLoginFormVisible(false);
+  }, [setLoginFormVisible]);
+
+  const onRegistrationFormClosed = useCallback(() => {
+    setRegistrationFormVisible(false);
+  }, [setRegistrationFormVisible]);
 
   const handleModelMapClick = (index) => {
     setSelectedModel(index);
@@ -102,7 +123,7 @@ const Explore = () => {
       <Grid container spacing={3}>
         {atlasTitles.map((title, index) => (
           <Grid item xs={12} sm={6} md={4} lg={3}>
-            <AtlasCard width="300px" height="500px" index={index} title={title} imgLink={atlasImgLinks[index]} modalities={atlasModalities[index]} cellsInReference={atlasCellsInReference[index]} species={atlasSpecies[index]} onClick={handleAtlasMapClick} />
+            <AtlasCard width="270px" height="500px" index={index} title={title} imgLink={atlasImgLinks[index]} modalities={atlasModalities[index]} cellsInReference={atlasCellsInReference[index]} species={atlasSpecies[index]} onClick={handleAtlasMapClick} />
           </Grid>
         ))}
       </Grid>
@@ -129,9 +150,18 @@ const Explore = () => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
 
+      {isLoginFormVisible
+      && <LoginForm visible={isLoginFormVisible} onClose={onLoginFormClosed} />}
+      {isRegistrationFormVisible
+      && (
+      <RegistrationForm
+        visible={isRegistrationFormVisible}
+        onClose={onRegistrationFormClosed}
+      />
+      )}
+
       <Box>
-        <NavBar />
-        <h1>NavBar goes here</h1>
+        <NavBar position="relative" onLoginClicked={onLoginClicked} onSignUpClicked={onSignUpClicked} />
       </Box>
 
       <Box sx={{ alignSelf: 'center', width: '65%', marginTop: '2%' }}>

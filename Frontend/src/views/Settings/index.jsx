@@ -65,8 +65,10 @@ function PasswordSection({ onPasswordInfoChange, errors, changePassword }) {
   return null;
 }
 
-function Settings() {
+function Settings({ sidebarShown }) {
   const [user, setUser] = useAuth();
+  /* Booleans */
+  const paddingL = useCallback(() => (sidebarShown ? '130px' : '380px'), [sidebarShown]);
 
   // Password Change
   const [changePassword, setChangePassword] = React.useState(false);
@@ -162,7 +164,7 @@ function Settings() {
         >
           {/* Profile Image --------------------------------------------------------------*/}
           <div className={styles.profilePicture}>
-            <ProfileImage sizePixels={180} />
+            <ProfileImage sizePixels={180} editable />
           </div>
 
           {/* Input Fields --------------------------------------------------------------*/}

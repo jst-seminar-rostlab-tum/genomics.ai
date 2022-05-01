@@ -54,12 +54,13 @@ function getStyles(type) {
  */
 const CustomButton = (props) => { 
 
-  console.log(props.size)
   return (
   <ButtonBase
     disableRipple
-    {...props}
-    sx={getStyles(props.type)}
+    sx={{ 
+      ...getStyles(props.type),
+      ...props
+    }}
     className={styles.button}
     variant={props.type === 'tertiary' ? 'text' : 'contained'}
   >

@@ -4,6 +4,7 @@ import { colors } from "shared/theme/colors"
 import tum from 'assets/landing-illustrations/tum-logo.png';
 import rostlab from 'assets/landing-illustrations/rostlab.png';
 import helmholtz from 'assets/landing-illustrations/helmholtz.png';
+import CustomButton from "components/CustomButton";
 
 const WindowiOS = () => {
   return (
@@ -45,7 +46,7 @@ const WindowiOS = () => {
         <Typography fontSize="1.2rem" fontWeight="light" color="#8193B2">
           Genomics.ai helps you visualize all of your single-cell sequencing data in a fast and easy way using neural networks.
         </Typography>
-        <Button disableRipple variant="contained" sx={{ margin: "2em 0 2em 0", backgroundColor: colors.primary[400], borderRadius: "20px" }}>Sign up for genomics.ai</Button>
+        <CustomButton marginTop="1em">Sign up for genomics.ai</CustomButton>
         
         {/* DIVIDER */}
         <Box sx={{ marginTop: "3em", display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>

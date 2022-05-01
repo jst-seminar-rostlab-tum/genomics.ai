@@ -15,7 +15,7 @@ import PasswordForgetForm from '../PasswordForgetForm';
 import { useAuth } from 'shared/context/authContext';
 
 function LoginForm(props) {
-  const [user, setUser] = useAuth()
+  const [, setUser] = useAuth();
   const [loginDetails, setLoginDetails] = useState({
     email: '',
     password: '',
