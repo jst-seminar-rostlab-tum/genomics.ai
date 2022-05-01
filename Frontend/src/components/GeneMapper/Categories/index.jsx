@@ -12,7 +12,7 @@ const activatedColor = colors.primary['400'];
 const deactivatedColor = colors.primary['200'];
 
 function Category({
-  title, values, colored, toggleColored, hide, show,
+  title, values, colored, toggleColored, hide, show, hiddenValue,
 }) {
   const [open, setOpen] = useState(false);
 
@@ -41,7 +41,8 @@ function Category({
               title={value}
               color={color}
               key={value}
-              setVisibility={(visible) => {
+              visible={hiddenValue !== value}
+              setVisible={(visible) => {
                 if (visible) show();
                 else hide(value);
               }}
@@ -53,15 +54,15 @@ function Category({
   );
 }
 
-function Value({ title, color, setVisibility }) {
-  const [visible, setVisible] = useState(true);
-
+function Value({
+  title, color, visible, setVisible,
+}) {
   return (
     <Box sx={{
       display: 'flex', alignItems: 'center', pl: 3, pr: 2,
     }}
     >
-      <IconButton onClick={() => { setVisible(!visible); setVisibility(!visible); }}>
+      <IconButton onClick={() => { setVisible(!visible); }}>
         { visible
           ? <Visibility sx={{ color }} />
           : <VisibilityOff sx={{ color: deactivatedColor }} />}
@@ -79,6 +80,7 @@ function GeneMapperCategories({
   categories, setColorMode, hide, show,
 }) {
   const [coloredCategoryTitle, setColoredCategoryTitle] = useState(null);
+  const [hiddenValue, setHiddenValue] = useState(null);
 
   return (
     <>
@@ -93,8 +95,9 @@ function GeneMapperCategories({
               setColoredCategoryTitle(title);
               setColorMode(title);
             }}
-            hide={(value) => hide(title, value)}
-            show={show}
+            hide={(value) => { hide(title, value); setHiddenValue(value); }}
+            show={() => { show(); setHiddenValue(null); }}
+            hiddenValue={hiddenValue}
           />
         ))
         : null}
