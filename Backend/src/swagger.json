@@ -1445,11 +1445,66 @@
               }
             }
           },
-          "400": {
-            "description": "Missing model id"
-          },
           "500": {
             "description": "Internal error, unable to retrieve information about the models"
+          }
+        }
+      }
+    },
+    "/atlases": {
+      "get": {
+        "summary": "Get all available atlases",
+        "tags": [
+          "Atlas"
+        ],
+        "responses": {
+          "200": {
+            "description": "Getting all available atlases successful.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                  "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "previewPictureURL": {
+                        "type": "string"
+                      },
+                      "modalities": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "numberOfCells": {
+                        "type": "number"
+                      },
+                      "species": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "compatibleModels": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error, unable to retrieve information about the atlases"
           }
         }
       }
