@@ -1,15 +1,25 @@
 import React from "react";
-import { Tabs, Tab } from "@mui/material";
+import { TabGroup } from "components/Tab";
+import { setSeachCategoryInUrl } from "shared/utils/common/utils";
 
-// Tabs component to group different categories for search
-const SearchTabs = ({ value, onChange }) => {
+const SearchTabs = ({ value, onChange, searchParams, path }) => {
+  let categories = ["teams", "institutions", "users", "projects"];
+  categories = categories.map((category) => {
+    return {
+      label: category.toUpperCase(),
+      path: `${setSeachCategoryInUrl(path, category)}?${searchParams}`,
+    };
+  });
+  // Not nice solution but TabGroup works only with integer at the moment. 
+  const index = categories.findIndex(
+    (item) => item.label.toLowerCase() === value
+  );
   return (
-    <Tabs value={value} onChange={onChange}>
-      <Tab label="Teams" value="teams" />
-      <Tab label="Institutions" value="institutions" />
-      <Tab label="Users" value="users" />
-      <Tab label="Projects" value="projects" />
-    </Tabs>
+    <TabGroup
+      value={index}
+      setValue={() => {onChange()}}
+      tabsInfo={categories}
+    />
   );
 };
 

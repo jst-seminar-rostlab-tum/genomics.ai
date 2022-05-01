@@ -52,10 +52,8 @@ const SearchPage = ({ sidebarShown }) => {
     updateQueryParams("keyword", value);
   };
 
-  const changedTabHandler = (event, newValue) => {
+  const changedTabHandler = () => {
     setIsLoading(true);
-    const newPath = setSeachCategoryInUrl(path, newValue);
-    history.push({ pathname: `${newPath}`, search: history.location.search });
   };
 
   const fetchSearchHandler = useCallback(async (searchCategory, keyword) => {
@@ -68,6 +66,7 @@ const SearchPage = ({ sidebarShown }) => {
   }, []);
 
   useEffect(() => {
+    setIsLoading(true);
     fetchSearchHandler(searchCategory, searchedKeyword);
   }, [fetchSearchHandler, searchCategory, searchedKeyword]);
 
@@ -78,16 +77,21 @@ const SearchPage = ({ sidebarShown }) => {
         <Box sx={{ margin: "auto", maxWidth: 1200 }}>
           <Search
             filterComponent={
-                <Filter
-                  searchParams={searchParams}
-                  updateQueryParams={updateQueryParams}
-                  path={path}
-                />
+              <Filter
+                searchParams={searchParams}
+                updateQueryParams={updateQueryParams}
+                path={path}
+              />
             }
             handleSearch={searchedKeywordChangeHandler}
             value={searchedKeyword} // currently two-way-binding missing
           />
-          <SearchTabs value={searchCategory} onChange={changedTabHandler} />
+          <SearchTabs
+            value={searchCategory}
+            onChange={changedTabHandler}
+            searchParams={searchParams}
+            path={path}
+          />
           {isLoading && (
             <Box sx={{ display: "flex", justifyContent: "center" }}>
               <CircularProgress />
