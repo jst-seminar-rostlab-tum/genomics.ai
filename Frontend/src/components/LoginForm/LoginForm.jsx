@@ -12,9 +12,10 @@ import logo from 'assets/logo.svg';
 import styles from './loginform.module.css';
 import { BACKEND_ADDRESS } from 'shared/utils/common/constants';
 import PasswordForgetForm from '../PasswordForgetForm';
+import { useAuth } from 'shared/context/authContext';
 
 function LoginForm(props) {
-  const { setUser } = props;
+  const [user, setUser] = useAuth()
   const [loginDetails, setLoginDetails] = useState({
     email: '',
     password: '',

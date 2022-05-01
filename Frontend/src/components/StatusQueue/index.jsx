@@ -6,20 +6,18 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import StatusCard from '../StatusCard';
 import styles from './statusqueue.module.css';
-import { queryJobs } from 'shared/services/StatusQueueLogic';
-import { JOB_QUEUE_UPDATE_INTERVAL } from 'shared/utils/common/constants';
+import JobService from "shared/services/Job.service"
 
 function StatusQueue() {
   const [expandList, setExpandList] = useState(true);
   const [jobs, setJobs] = useState([]);
 
   useEffect(() => {
-    const updateJobs = () => queryJobs().then((newJobs) => setJobs(newJobs))
-      .catch((ignored) => { console.log(ignored); });
-    updateJobs();
-    const intervalId = setInterval(updateJobs, JOB_QUEUE_UPDATE_INTERVAL);
-    return (() => clearInterval(intervalId));
-  }, [setJobs]);
+    JobService.getJobs()
+      .then((jobs) => setJobs(jobs))
+      .catch(err => console.log(err))
+
+  }, []);
 
   return (
     <div className={styles.StatusQueue}>

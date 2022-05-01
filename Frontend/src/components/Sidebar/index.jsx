@@ -13,6 +13,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import SettingsIcon from '@mui/icons-material/Settings';
 import geneIcon from 'assets/gene.png';
 import styles from './sidebar.module.css';
+import { useAuth } from 'shared/context/authContext';
 
 function indexIcon(index) {
   switch (index) {
@@ -39,8 +40,8 @@ function indexIcon(index) {
   }
 }
 
-export default function Sidebar(props) {
-  const { setUser } = props;
+export default function Sidebar() {
+  const [, setUser] = useAuth();
   const routes = ['dashboard', 'projects', 'institutions', 'genemapper', 'search', 'documentation', 'help'];
   const titles = ['Dashboard', 'Projects', 'Institutions', 'Gene Mapper', 'Search', 'Documentation', 'Help'];
   const { url } = useRouteMatch();
