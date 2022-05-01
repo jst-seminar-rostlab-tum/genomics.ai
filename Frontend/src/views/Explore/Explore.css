@@ -1,9 +1,11 @@
 .cardsContainer{
-    padding-top: 1%;
+    margin-block: 1%;
+    padding: 1%;
 }
 
 .atlasContainer{
-    padding-top: 1%;
+    margin-block: 1%;
+    padding: 1%;
     overflow: scroll;
     overflow-x: hidden;
     height: 500px;

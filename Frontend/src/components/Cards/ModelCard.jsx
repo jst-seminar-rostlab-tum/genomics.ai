@@ -10,16 +10,19 @@ import { colors } from "shared/theme/colors"
  * @param link button href link  
  */
 export const OutlinedButton = ({ content, link }) => {
- return (
-   <Button
-    variant="outlined"
-    disableRipple
-    href={`/${link}`}
-    sx={{ color: "white", borderWidth: "2px", borderColor: "white", borderRadius: "1.2rem", ":hover": { borderColor: colors.secondary1[500], borderWidth: "2px" } }}
-   >
-    {content}
-   </Button>
- )
+  return (
+    <Button
+      variant="outlined"
+      disableRipple
+      href={`/${link}`}
+      sx={{
+        color: colors.primary[100], borderWidth: "2px", borderColor: colors.primary[100], borderRadius: "1.2rem",
+        ":hover": { borderColor: '#01579B', borderWidth: "2px", backgroundColor: colors.primary[100], color: '#01579B', transition: '0.5s' }
+      }}
+    >
+      {content}
+    </Button>
+  )
 }
 
 /**
@@ -31,7 +34,7 @@ export const OutlinedButton = ({ content, link }) => {
  * @param mapLink onHover button Map url
  * @param learnMoreLink onHover button Learn More url
  */
-export const ModelCard = ({ width = "100%", height = "100%", title, description, mapLink, learnMoreLink}) => {
+export const ModelCard = ({ width = "100%", height = "100%", title, description, mapLink, learnMoreLink }) => {
 
   const [hover, setHover] = useState(false)
   const ref = useRef()
@@ -41,7 +44,7 @@ export const ModelCard = ({ width = "100%", height = "100%", title, description,
 
     // checks if the parent element is wider than it is longer
     // if it is, converts the flex direction to row
-    if(ref.current.clientWidth > ref.current.clientHeight) {
+    if (ref.current.clientWidth > ref.current.clientHeight) {
       setFlexDir("row")
     }
   }, [])
@@ -55,30 +58,31 @@ export const ModelCard = ({ width = "100%", height = "100%", title, description,
     >
       <Box
         ref={ref}
-        sx={{ 
-          width: "100%", 
-          height: "100%", 
-          position: "relative", 
-          cursor: "pointer", 
-          display: "flex", 
-          flexDirection: "column", 
+        sx={{
+          width: "100%",
+          height: "100%",
+          position: "relative",
+          cursor: "pointer",
+          display: "flex",
+          flexDirection: "column",
           justifyContent: "center"
         }}
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
-        >  
+      >
         {
-          hover && 
-          <Box 
-          style={{ background: "linear-gradient(#4F83CC, #01579B)" }} 
-          sx={{ 
-            position: "absolute", 
-            width: "100%", 
-            height: "100%", 
-            borderRadius: "1.2rem",
-            p:"1rem",
-            opacity: 0.9
-          }}>
+          hover &&
+          <Box
+            style={{ background: "linear-gradient(#4F83CC, #01579B)" }}
+            sx={{
+              position: "absolute",
+              width: "100%",
+              height: "100%",
+              borderRadius: "1.2rem",
+              p: "1rem",
+              opacity: 0.9,
+              boxShadow: "0px 4px 6px 0px rgba(1, 87, 155, .20), 0px 0px 1px 0px rgba(1, 87, 155, .32)"
+            }}>
             <Box
               sx={{
                 display: "flex",
@@ -89,26 +93,26 @@ export const ModelCard = ({ width = "100%", height = "100%", title, description,
                 top: "50%",
                 left: "50%",
                 transform: "translate(-50%, -50%)"
-              }}  
-              >
-              <OutlinedButton content="Map" link={mapLink}/>
-              <OutlinedButton content="Learn More" link={learnMoreLink}/>
+              }}
+            >
+              <OutlinedButton content="Map" link={mapLink} />
+              <OutlinedButton content="Learn More" link={learnMoreLink} />
             </Box>
           </Box>
         }
-      <Box sx={{ 
-        width: '100%',
-        height: "100%",
-        display: "flex", 
-        flexDirection: "column", 
-        p: "1.2rem", 
-        boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.15)", 
-        borderRadius: "1.2rem",
-      }}
-      >
-        <Typography sx={{ fontSize: "1.4rem", fontWeight: "bold" }}>{title}</Typography>
-        <Typography sx={{ fontSize: "1rem", color: colors.neutral[800] }}>{description}</Typography>
-      </Box>
+        <Box sx={{
+          width: '100%',
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          p: "1.2rem",
+          boxShadow: hover ? "none" : "0px 0px 10px rgba(0, 0, 0, 0.15)",
+          borderRadius: "1.2rem",
+        }}
+        >
+          <Typography sx={{ fontSize: "1.4rem", fontWeight: "bold" }}>{title}</Typography>
+          <Typography sx={{ fontSize: "1rem", color: colors.neutral[800] }}>{description}</Typography>
+        </Box>
       </Box>
     </Box>
   )
