@@ -121,6 +121,7 @@ export class UmapVisualization2 {
   resize(w, h) {
     const min = getMin(w, h);
     const data = this.data;
+    const r = 0.003 * min;
 
     const xScaleHelper = d3.scaleLinear()
       .domain([d3.min(data.map(d => parseFloat(d.x))), d3.max(data.map(d => parseFloat(d.x)))])
@@ -140,6 +141,9 @@ export class UmapVisualization2 {
     this.cells
       .attr("cx", d => xScale(parseFloat(d.x)))
       .attr("cy", d => yScale(parseFloat(d.y)))
+
+      this.cells
+      .attr("r", r);
 
 
     return [xScale, yScale];
@@ -174,7 +178,6 @@ export class UmapVisualization2 {
         .style("fill", (d) => (_this.mode ? _this.colorScale(d[_this.mode]) : "black"))
         .style("opacity", cons.originalOpacity)
 
-    // after(this.cells, "cell_type", "Pancreas Beta")
 
     //Setting coordinates
     const [xScale, yScale] = this.resize(w, h);
@@ -195,11 +198,10 @@ export class UmapVisualization2 {
           .attr('r', r * 1.5)
           .style("stroke", "black")
           .style("opacity", 1)
-
         if (!_this.mode) return;
         const att = d[_this.mode];
-        const xPos = parseFloat(m.x) + 5;
-        const yPos = parseFloat(m.y) - 35;
+        const xPos = parseFloat(m.layerX) + 5;
+        const yPos = parseFloat(m.layerY) - 35;
 
         tooltip
           .style("visibility", "visible")
@@ -219,14 +221,6 @@ export class UmapVisualization2 {
           .style("stroke", "none")
           .style("opacity", 0.8)
       })
-    // .on('click', function (d, i){
-    //     const showMore = document.getElementById("moreVisul");
-    //     if(showMore.style.display === 'none') {
-    //         showMore.style.display = 'block';
-    //     } else {
-    //         showMore.style.display = 'none';
-    //     }
-    // });
 
 
     //Pan and mouse zoom

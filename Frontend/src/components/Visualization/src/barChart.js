@@ -3,29 +3,26 @@ import * as d3 from "d3";
 
 export const addBarPlot = (BarContainer, data) => {
   const svg = d3.select(BarContainer).append("svg");
-    const margin = 10;
-    // width = svg.attr("width") - margin,
-    // height = svg.attr("height") - margin
-    const width = 250 - margin;
-    const height = 400 - margin;
+    const margin = 0;
+    const w = 250;
+    const h = 250;
 
-  svg.append("text")
-    .attr("transform", "translate(100,0)")
-    .attr("x", 0)
-    .attr("y", 50)
-    .attr("font-size", "20px")
-    .text("#Gene per Percentile")
+    svg
+    .attr("width", w)
+    .attr("height", h)
 
-  const xScale = d3.scaleBand().range([0, width]).padding(0.4),
-    yScale = d3.scaleLinear().range([height, 0]);
+  // svg.append("text")
+  //   .attr("transform", "translate(100,0)")
+  //   .attr("x", 0)
+  //   .attr("y", 50)
+  //   .attr("font-size", "20px")
+  //   .text("#Gene per Percentile")
 
-  const g = svg.append("g")
-    .attr("transform", "translate(" + 100 + "," + 100 + ")");
+  const xScale = d3.scaleBand().range([0, w]) //.padding(0.4),
+    const yScale = d3.scaleLinear().range([0, h]);
 
-  // d3.csv("test_file1.csv", function (error, data) {
-  //   if (error) {
-  //     throw error;
-  //   }
+  // const g = svg.append("g")
+    // .attr("transform", "translate(" + 100 + "," + 100 + ")");
 
     let groupedByCelltypes = new Map();
     let groupedByBatch = new Map();
@@ -77,7 +74,7 @@ export const addBarPlot = (BarContainer, data) => {
     yScale.domain([0, data.length]);
 
     g.append("g")
-      .attr("transform", "translate(0," + height + ")")
+      // .attr("transform", "translate(0," + height + ")")
       .call(d3.axisBottom(xScale))
       .selectAll("text")
       .attr("transform", "translate(-10,0)rotate(-45)")
@@ -99,7 +96,8 @@ export const addBarPlot = (BarContainer, data) => {
 
     g.selectAll("rect")
       .data(data)
-      .enter().append("rect")
+      .enter()
+      .append("rect")
       .attr("class", "bar")
       .attr("x", function (d) {
         return xScale(d.cell_type);
@@ -111,7 +109,8 @@ export const addBarPlot = (BarContainer, data) => {
       })
       .attr("width", xScale.bandwidth())
       .attr("height", function (d) {
-        return height - yScale(getNum(d.cell_type));
+        // return height - yScale(getNum(d.cell_type));
+        return yScale(getNum(d.cell_type));
       })
       .attr("fill", "steelblue")
       .append('title')
