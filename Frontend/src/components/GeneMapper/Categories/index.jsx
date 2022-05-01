@@ -75,6 +75,9 @@ function Value({
 /**
  *
  * @param categories An object containing available categories and their values as key-value pairs
+ * @param setColorMode A function accepting a category to be colored
+ * @param hide A function that will hide a category value in the UMAP
+ * @param show A function that will set a category value in the UMAP visible if it was hidden
  */
 function GeneMapperCategories({
   categories, setColorMode, hide, show,
