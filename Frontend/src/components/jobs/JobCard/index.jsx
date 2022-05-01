@@ -17,7 +17,7 @@ function JobCard({ job }) {
         imageComponent={(
           <Circle sx={{ color: jobStatusColors[status], width: '32px', height: '32px' }} />
         )}
-        title={`Job ${id.substring(id.length - 4)}`}
+        title={`Job ${id}`}
         trailing={(
           <Button>See Results</Button>
         )}

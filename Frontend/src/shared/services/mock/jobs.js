@@ -14,10 +14,18 @@ export default async function queryJobs() {
 
 // forPart can be "geneMapper" or "geneCruncher"
 export async function queryTeamJobs(teamId, forPart) {
-  const allJobs = await queryJobs();
-  // pretty random, this is just mocking
-  if (forPart === 'geneMapper') {
-    return allJobs.slice(teamId, allJobs.length / 2);
-  }
-  return allJobs.slice(allJobs.length / 2, allJobs.length - teamId);
+  return mockJobs.filter((elem) => elem.forPart === forPart);
 }
+
+let mockJobs = [
+  {
+    id: "f7f7",
+    forPart: "geneMapper",
+    status: "DONE",
+  },
+  {
+    id: "f3f6",
+    forPart: "geneCruncher",
+    status: "DONE",
+  },
+];
