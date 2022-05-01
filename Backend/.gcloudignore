@@ -23,3 +23,5 @@ cloud-run-example/
 .env
 
 dev/
+
+package-lock.json
