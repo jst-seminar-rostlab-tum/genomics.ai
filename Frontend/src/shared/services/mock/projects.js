@@ -72,16 +72,16 @@ const atlases = [
   {
     _id: 1,
     name: 'Atlas 1',
-    previewPictureURL: './previewImages/atlas.jpg',
+    previewPictureURL: './previewImages/atlas.png',
     modalities: ['RNA', 'ADT'],
-    numberOfCells: 5348812,
+    numberOfCells: 53488,
     species: ['Human'],
     compatibleModels: [1, 2, 3],
   },
   {
     _id: 2,
     name: 'Atlas 2',
-    previewPictureURL: './previewImages/atlas.jpg',
+    previewPictureURL: './previewImages/atlas.png',
     modalities: ['RNA', 'ADT'],
     numberOfCells: 15981239,
     species: ['Mouse'],
@@ -90,7 +90,7 @@ const atlases = [
   {
     _id: 3,
     name: 'Atlas 3',
-    previewPictureURL: './previewImages/atlas.jpg',
+    previewPictureURL: './previewImages/atlas.png',
     modalities: ['RNA'],
     numberOfCells: 693493223,
     species: ['Human'],
@@ -99,7 +99,7 @@ const atlases = [
   {
     _id: 4,
     name: 'Atlas 4',
-    previewPictureURL: './previewImages/atlas.jpg',
+    previewPictureURL: './previewImages/atlas.png',
     modalities: ['RNA'],
     numberOfCells: 13453230,
     species: ['Human'],
@@ -108,7 +108,7 @@ const atlases = [
   {
     _id: 5,
     name: 'Atlas 5',
-    previewPictureURL: './previewImages/atlas.jpg',
+    previewPictureURL: './previewImages/atlas.png',
     modalities: ['RNA'],
     numberOfCells: 86534143,
     species: ['Human'],

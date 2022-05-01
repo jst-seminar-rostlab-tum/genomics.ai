@@ -61,17 +61,16 @@ function GeneMapperHome() {
       <ThemeProvider theme={theme}>
         <Box
           sx={{
-            marginLeft: '5%',
-            width: '85%',
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'space-between',
             paddingBottom: '2em',
+            marginTop:'10px'
           }}
           className={styles.stack}
         >
           <Stack direction="row" className="stack">
-            <Typography sx={{ fontWeight: 600, fontSize: '20px', marginTop: 0.5 }} className={styles.title}>Your Mappings </Typography>
+            <Typography sx={{ fontWeight: 500, fontSize: '22px', marginTop: 0.5 }} className={styles.title}>Your Mappings </Typography>
             <ThemeProvider theme={themeIcon}>
               <PlusIcon className={styles.plus} />
             </ThemeProvider>
