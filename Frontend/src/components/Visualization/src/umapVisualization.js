@@ -2,44 +2,18 @@ import * as d3 from "d3";
 import * as cons from "./constants";
 import { zoomM } from "./newZoom";
 import "./tooltip.css";
-import {addBarPlot} from "./barChart"
+import { addBarPlot } from "./barChart"
 
-//TODO: Fix constants
 //TODO: Refactor coloring functions
-
-//
-//Bugs:
-//AttrAdding doesn't work properly
-//Cells are overwritten - *4
-//
 
 const getMin = (w, h) => {
   return d3.min([h, w]);
 }
 
-//Hide (for every possible attribute)
-const queryAfter = (cells, category, value) => {
-  cells
-  .style("visibility", function(d){
-    // console.log((d3.select(this).attr("active")));
-    console.log("here");
-    if (d[category] == value){
-      d3.select(this)
-      .attr("active", false);
-      return "hidden";
-    }
-  });
-
-}
-
-//Show
-const queryBefore = (cells) => {
-  cells
-  .style("visibility", (d) => (d[category]===value? "hidden" : "visible"))
-}
-
-//Reference before and after
-
+// //Reference before and after
+// const refAfter = (cells) =>{
+//   after(cells, "is_reference", "No");
+// }
 
 const listColoringDomain = (data, mode) => {
   let coloringDomain = data.map(x => x[mode]).filter((x, i, a) => a.indexOf(x) == i);
@@ -72,20 +46,12 @@ const addGroup = (svg, id) => {
   return svg.append('g').attr('id', `${id}`);
 };
 
-// //TODO: Fix
-// const attrAdding = (cells, attrDom) => {
-//   for (let i = 0; i < attrDom.length; i++) {
-//     var att = attrDom[i];
-//     cells
-//       .attr(att, (d) => { return d[att] });
-//   }
-
-// }
 
 //Get the possible color modes with their values
 const getColoringModes = (data) =>
   Object.assign({},
     ...(Object.keys(data[0])
+      .map(d => d.trim())
       .filter(d => (d !== "x" && d !== "y" && d !== ""))
       .map(d => {
         var a = {};
@@ -106,7 +72,6 @@ const getColoringModes = (data) =>
             obj[d] = cons.colors[i];
             return obj;
           });
-        // console.log(colorDomain);
         a[d] = Object.assign({},
           ...colorDomain)
         return a;
@@ -115,7 +80,7 @@ const getColoringModes = (data) =>
 export class UmapVisualization2 {
 
 
-  constructor(container, data){ //, containerBar) {
+  constructor(container, data, containerBar) {
     d3.select(container).selectAll("*").remove();
     this.svg = d3.select(container).append('svg');
     this.gCells = addGroup(this.svg, 'cells');
@@ -123,15 +88,29 @@ export class UmapVisualization2 {
     this.coloringModes = getColoringModes(data);
     this.tooltip = d3.select(container).append("div");
     this.mode = undefined;
-    // this.barChart = addBarPlot(containerBar, data);
+    //TODO: add if for when the atlas doesn't contain cell_type
+    this.barChart = addBarPlot(containerBar, data);
     this.data = data;
   };
+
+  //Hide
+  after(category, value) {
+    this.cells
+      .style("visibility", (d) => { return d[category] === value ? "hidden" : "visible" });
+
+  }
+
+  //Show
+  before() {
+    this.cells
+      .style("visibility", "visible");
+  }
 
   //Set a color mode
   setColorMode(mode) {
     const colorScale = setColoring(mode, this.data);
     if (this.cells != null) {
-      
+
       this.cells.style("fill", (d) => colorScale(d[mode]));
     }
     this.mode = mode;
@@ -158,9 +137,9 @@ export class UmapVisualization2 {
       .domain([d3.min(data.map(d => parseFloat(d.y))), d3.max(data.map(d => parseFloat(d.y)))])
       .range([cons.margin, min - cons.margin]);
 
-      this.cells
-        .attr("cx", d => xScale(parseFloat(d.x)))
-        .attr("cy", d => yScale(parseFloat(d.y)))
+    this.cells
+      .attr("cx", d => xScale(parseFloat(d.x)))
+      .attr("cy", d => yScale(parseFloat(d.y)))
 
 
     return [xScale, yScale];
@@ -186,21 +165,18 @@ export class UmapVisualization2 {
     this.gCells.selectAll("*").remove();
 
     this.cells =
-    this.gCells
-      .selectAll("cell")
-      .data(data)
-      .enter()
-      .append("circle")
-      .attr("r", r)
-      .style("fill", (d) => (_this.mode ? _this.colorScale(d[_this.mode]) : "black"))
-      .style("opacity", cons.originalOpacity)
-      .attr("active", true)
+      this.gCells
+        .selectAll("cell")
+        .data(data)
+        .enter()
+        .append("circle")
+        .attr("r", r)
+        .style("fill", (d) => (_this.mode ? _this.colorScale(d[_this.mode]) : "black"))
+        .style("opacity", cons.originalOpacity)
 
-      // queryAfter(this.cells, "cell_type", "Pancreas Beta")
-    
-      // queryAfter(this.cells, "cell_type", "Pancreas Alpha")
+    // after(this.cells, "cell_type", "Pancreas Beta")
 
-    //Addiding
+    //Setting coordinates
     const [xScale, yScale] = this.resize(w, h);
 
     //tooltip
@@ -211,38 +187,38 @@ export class UmapVisualization2 {
         .style("visibility", "hidden")
 
 
-      this.cells
-        .on("mouseover", function (m, d) { //getter bigger on hover
-          d3.select(this)
-            .transition()
-            .duration(100)
-            .attr('r', r * 1.5)
-            .style("stroke", "black")
-            .style("opacity", 1)
+    this.cells
+      .on("mouseover", function (m, d) { //getter bigger on hover
+        d3.select(this)
+          .transition()
+          .duration(100)
+          .attr('r', r * 1.5)
+          .style("stroke", "black")
+          .style("opacity", 1)
 
-          if (!_this.mode) return;
-          const att = d[_this.mode];
-          const xPos = parseFloat(m.x) + 5;
-          const yPos = parseFloat(m.y) - 35;
+        if (!_this.mode) return;
+        const att = d[_this.mode];
+        const xPos = parseFloat(m.x) + 5;
+        const yPos = parseFloat(m.y) - 35;
 
-          tooltip
-            .style("visibility", "visible")
+        tooltip
+          .style("visibility", "visible")
 
-          tooltip
-            .html(att)
-            .style("top", `${yPos}px`)
-            .style("left", `${xPos}px`)
+        tooltip
+          .html(att)
+          .style("top", `${yPos}px`)
+          .style("left", `${xPos}px`)
 
-        })
-        .on("mouseout", function () {
-          tooltip.style("visibility", "hidden");
-          d3.select(this)
-            .transition()
-            .duration(100)
-            .attr('r', r)
-            .style("stroke", "none")
-            .style("opacity", 0.8)
-        })
+      })
+      .on("mouseout", function () {
+        tooltip.style("visibility", "hidden");
+        d3.select(this)
+          .transition()
+          .duration(100)
+          .attr('r', r)
+          .style("stroke", "none")
+          .style("opacity", 0.8)
+      })
     // .on('click', function (d, i){
     //     const showMore = document.getElementById("moreVisul");
     //     if(showMore.style.display === 'none') {
@@ -264,7 +240,6 @@ export class UmapVisualization2 {
       .lower()
       .call(zoomM);
 
-        console.log(this.cells)
   }
 
 }
