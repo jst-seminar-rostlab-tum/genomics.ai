@@ -20,9 +20,9 @@ export default function ProjectBarCard({
   projectId, name, status, submissionProgress, setSubmissionProgress,
 }) {
   const history = useHistory();
-  const [color, setColor] = React.useState(status === 'DONE' ? 'lightGreen' : status === 'IN PROGRESS' ? 'orange' : 'red');
-  const [typographyColor, setTypographyColor] = React.useState(status === 'UPLOAD FAILED' ? 'red' : 'black');
+  const [typographyColor, setTypographyColor] = React.useState(status === 'ABORTED' ? 'red' : 'black');
 
+  const color = status === 'DONE' ? 'lightGreen' : status === 'ABORTED' ? 'red' : 'orange';
   return (
     <Card sx={{
       marginTop: '5', marginBottom: '0.5em', borderStyle: 'solid', borderColor: '#C8C8C8', borderWidth: '0.1px',

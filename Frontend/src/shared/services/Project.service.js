@@ -10,7 +10,7 @@ const ProjectService = {
   },
 
   getProject: async (id) => {
-    const { data } = await axiosInstance.get(`/${MODEL}/${id}`);
+    const { data } = await axiosInstance.get(`/project/${id}`);
     return data;
   },
 

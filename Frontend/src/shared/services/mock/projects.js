@@ -38,7 +38,7 @@ const projects = [
     modelId: 4,
     name: 'test project 03',
     resultSize: '10000',
-    status: 'IN PROGRESS',
+    status: 'PROCESSING_PENDING',
     uploadDate: '2022-04-30T106:00:00.000Z',
   },
   {
@@ -52,7 +52,7 @@ const projects = [
     modelId: 4,
     name: 'test project 04',
     resultSize: '10000',
-    status: 'ERROR',
+    status: 'ABORTED',
     uploadDate: '2022-04-30T106:00:00.000Z',
   },
 ];
@@ -141,29 +141,29 @@ const datasets = [
   {
     _id: 1,
     name: 'Hao and Hao et al, bioRvix 2020',
-    status: 'DONE'
+    status: 'DONE',
   },
   {
     _id: 2,
     name: 'Hao and Hao et al, bioRvix 2020',
-    status: 'IN PROGRESS'
+    status: 'IN PROGRESS',
   },
   {
     _id: 3,
     name: 'Hao and Hao et al, bioRvix 2020',
-    status: 'UPLOAD FAILED'
+    status: 'UPLOAD FAILED',
   },
   {
     _id: 4,
     name: 'Hao and Hao et al, bioRvix 2020',
-    status: 'DONE'
+    status: 'DONE',
   },
   {
     _id: 5,
     name: 'Hao and Hao et al, bioRvix 2020',
-    status: 'IN PROGRESS'
+    status: 'IN PROGRESS',
   },
-]
+];
 
 const ProjectMock = {
   getProjects: async () => projects,
@@ -179,7 +179,7 @@ const ProjectMock = {
   getModels: async () => models,
 
   getDataset: async (id) => models.find((dataset) => dataset._id === Number(id)),
-  getDatasets: async () => datasets
+  getDatasets: async () => datasets,
 };
 
 export default ProjectMock;
