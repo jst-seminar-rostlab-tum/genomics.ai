@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import TextField from "@mui/material/TextField";
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import TextField from '@mui/material/TextField';
 import EditIcon from '@mui/icons-material/ModeEditOutline';
-import InstitutionMemberList from "components/institutions/InstitutionMemberList";
-import styles from "./institutionPage.module.css";
-import CircularProgress from "@mui/material/CircularProgress";
-import InstitutionTeamList from "components/institutions/InstitutionTeamList";
-import InstitutionAvatar from "components/institutions/InstitutionAvatar";
-import InstitutionBackgroundImageUploadDialog from "components/general/upload/InstitutionBackgroundImageUploadDialog";
-import { useAuth } from "shared/context/authContext";
-import InstitutionService from "shared/services/Institution.service";
-import defaultBackgroundPicture from "assets/institution-default-background.jpg";
+import InstitutionMemberList from 'components/institutions/InstitutionMemberList';
+import styles from './institutionPage.module.css';
+import CircularProgress from '@mui/material/CircularProgress';
+import InstitutionTeamList from 'components/institutions/InstitutionTeamList';
+import InstitutionAvatar from 'components/institutions/InstitutionAvatar';
+import InstitutionBackgroundImageUploadDialog from 'components/general/upload/InstitutionBackgroundImageUploadDialog';
+import { useAuth } from 'shared/context/authContext';
+import InstitutionService from 'shared/services/Institution.service';
+import defaultBackgroundPicture from 'assets/institution-default-background.jpg';
 
 function InstitutionPage() {
   const { id } = useParams();
@@ -50,8 +50,8 @@ function InstitutionPage() {
     setInstitutionLoaded(true);
   }, []);
 
-  function onLeft(team) {
-    setTeams(teams.filter((i) => i.id !== team.id));
+  function onLeft(/* team */) {
+    // setTeams(teams.filter((i) => i.id !== team.id));
   }
 
   if (!institutionLoaded) {
@@ -64,7 +64,7 @@ function InstitutionPage() {
         className={styles.background}
         style={{
           backgroundImage: `url(${institution.backgroundPictureURL || defaultBackgroundPicture})`,
-          resizeMode: "stretch",
+          resizeMode: 'stretch',
         }}
       >
         <div className={styles.institutionIcon}>
@@ -79,10 +79,10 @@ function InstitutionPage() {
         </div>
         <div
           style={{
-            display: "flex",
-            justifyContent: "center",
-            marginBottom: "10px",
-            marginTop: "10px",
+            display: 'flex',
+            justifyContent: 'center',
+            marginBottom: '10px',
+            marginTop: '10px',
           }}
         >
           <TextField
@@ -91,43 +91,43 @@ function InstitutionPage() {
             value={institution.name}
             sx={{
               input: {
-                textAlign: "center",
-                color: "white",
+                textAlign: 'center',
+                color: 'white',
                 fontSize: 40,
-                backgroundColor: "rgba(0,38,68,0.5)",
-                backdropFilter: "blur(10px)",
-                borderRadius: "34px",
+                backgroundColor: 'rgba(0,38,68,0.5)',
+                backdropFilter: 'blur(10px)',
+                borderRadius: '34px',
               },
             }}
             InputProps={{
               readOnly: !isAdmin(),
               disableUnderline: true,
             }}
-            style={{ width: "700px" }}
+            style={{ width: '700px' }}
             onChange={handleNameChange}
             variant="standard"
           />
         </div>
-        <div style={{ display: "flex", justifyContent: "center" }}>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
           <TextField
             minRows={1}
             maxRows={1}
             value={institution.country}
             sx={{
               input: {
-                textAlign: "center",
-                color: "white",
+                textAlign: 'center',
+                color: 'white',
                 fontSize: 25,
-                backgroundColor: "rgba(0,38,68,0.5)",
-                backdropFilter: "blur(10px)",
-                borderRadius: "23px",
+                backgroundColor: 'rgba(0,38,68,0.5)',
+                backdropFilter: 'blur(10px)',
+                borderRadius: '23px',
               },
             }}
             InputProps={{
               readOnly: !isAdmin(),
               disableUnderline: true,
             }}
-            style={{ width: "300px" }}
+            style={{ width: '300px' }}
             onChange={handleCountryChange}
             variant="standard"
           />
@@ -135,7 +135,7 @@ function InstitutionPage() {
         <p className={styles.imageText}>
           <span>
             {institution.memberIds?.length + institution.adminIds?.length}
-            {` Members`}
+            {' Members'}
           </span>
         </p>
         <button className={styles.bgImgEditButton} type="button" onClick={() => setBackgroundUploadOpen(true)}>
@@ -155,7 +155,7 @@ function InstitutionPage() {
             InputProps={{
               readOnly: !isAdmin(),
             }}
-            style={{ width: "100%" }}
+            style={{ width: '100%' }}
             onChange={handleDescriptionChange}
             variant="standard"
           />
@@ -181,10 +181,10 @@ function InstitutionPage() {
               setInstitution({
                 ...institution,
                 adminIds: institution.adminIds.filter(
-                  (mId) => mId !== removedMember.id
+                  (mId) => mId !== removedMember.id,
                 ),
                 memberIds: institution.memberIds.filter(
-                  (mId) => mId !== removedMember.id
+                  (mId) => mId !== removedMember.id,
                 ),
               });
             }}

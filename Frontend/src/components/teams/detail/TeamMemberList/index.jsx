@@ -5,7 +5,7 @@ import TeamMemberRemoveButton from '../TeamMemberRemoveButton';
 import styles from './teamMemberList.module.css';
 import { useAuth } from 'shared/context/authContext';
 
-function TeamMemberList({ team }) {
+function TeamMemberList({ team, onMemberRemoved }) {
   const [user] = useAuth();
 
   if (team.institutionId == null) {
