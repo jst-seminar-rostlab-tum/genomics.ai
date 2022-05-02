@@ -47,7 +47,6 @@ export default function AtlasCard({
       sx={{
         display: "flex",
         flexDirection: "row",
-        p: "1px"
       }}
     >
       <Typography
@@ -137,8 +136,8 @@ export default function AtlasCard({
           <Box component="img" src={imgLink} alt="Atlas preview img"
             sx={{
               width: "90%",
-              height: "50%",
-              margin: "auto"
+              margin: "auto",
+              objectFit: "cover"
             }}
           />
           <Box sx={{ m: "5px "}}>
