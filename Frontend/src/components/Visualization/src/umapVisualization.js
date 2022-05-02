@@ -200,8 +200,8 @@ export class UmapVisualization2 {
           .style("opacity", 1)
         if (!_this.mode) return;
         const att = d[_this.mode];
-        const xPos = parseFloat(m.layerX) + 5;
-        const yPos = parseFloat(m.layerY) - 35;
+        const xPos = parseFloat(m.x) + 5;
+        const yPos = parseFloat(m.y) - 35;
 
         tooltip
           .style("visibility", "visible")

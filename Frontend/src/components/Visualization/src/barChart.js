@@ -1,12 +1,11 @@
-// const { margin } = require("@mui/system");
 import * as d3 from "d3";
 import "./bar.css"
 
 export const addBarPlot = (BarContainer, data) => {
   const svg = d3.select(BarContainer).append("svg");
-  const margin = 10;
-  const w = 250;
-  const h = 250;
+  const margin = 80;
+  const w = 300;
+  const h = 300;
 
   svg
     .attr("width", w)
@@ -43,31 +42,54 @@ export const addBarPlot = (BarContainer, data) => {
   }
 
   //Scales
-  const info = Array.from(groupedByCelltypes).filter(d => d[0] !== undefined).map( d => [d[0],d[1].length]);
-  const labels = Array.from(groupedByCelltypes.keys()).filter( d => d!==undefined);
-  const xScale = d3.scaleBand().domain(labels).range([margin, w - margin]);
-  const yScale = d3.scaleLinear().domain([0, data.length]).range([h - margin, 0]);
+  const info = Array.from(groupedByCelltypes).filter(d => d[0] !== undefined).map(d => [d[0], d[1].length]);
+  const labels = Array.from(groupedByCelltypes.keys()).filter(d => d !== undefined);
+  const xScale = d3.scaleBand().domain(labels).range([margin, w]).padding(0.4);
+  const yScale = d3.scaleLinear().domain([0, data.length]).range([h, margin + 25]);
+
+
+  const g = svg.append("g")
+
+  //Titel of grafic
+  g.append("text")
+    .attr("class", "title")
+    .attr("x", margin + 40)
+    .attr("y", 15)
+    .attr("font-size", "15px")
+    .text("#Cells per Category")
+    .style("font-family", "inherit")
+    .style("font-weight", 640)
 
   //Axes
-  const xAxis = d3.axisBottom(xScale).ticks([labels]);
-  const yAxis = d3.axisLeft(yScale);
+  const xAxis = d3.axisBottom(xScale)
+  // .ticks([labels]);
+  const yAxis = d3.axisLeft(yScale).tickFormat(d => d).ticks(5).tickSize(-220);
 
-  svg.append("g")
-    .attr("id", "y-axis")
-    .attr("class", "tick")
-    .attr("transform", "translate(" + margin + ", 0)")
-    .call(yAxis);
 
-  svg.append("g")
+  g.append("g")
     .attr("id", "x-axis")
-    .attr("class", "tick")
-    .attr("transform", "translate( 0, " + (h - margin) + ")")
-    .call(xAxis);
+    .attr("class", "x-axis")
+    .attr("transform", "translate(0, " + (h - margin) + ")")
+    .call(xAxis)
+    .selectAll("text")
+    .attr("transform", "translate(-10,0)rotate(-45)")
+    .style("text-anchor", "end")
+    .style("color", "black")
 
-  svg
-  .append("g")
-  .attr("id", "bars")
-  .selectAll("rect")
+
+  g.append("g")
+    .attr("id", "y-axis")
+    .attr("class", "y-axis")
+    .attr("transform", "translate(" + margin + "," + (-margin) + ")")
+    .call(yAxis)
+    .selectAll("text")
+    .style("text-anchor", "end")
+    .style("color", "black")
+
+
+  g.append("g")
+    .attr("id", "bars")
+    .selectAll("rect")
     .data(info)
     .enter()
     .append("rect")
@@ -76,69 +98,9 @@ export const addBarPlot = (BarContainer, data) => {
     .attr("y", (d) => yScale(d[1]))
     .attr("width", xScale.bandwidth())
     .attr("height", (d) => {
-      console.log(h - yScale(d[1]));
-      return h - yScale(d[1])})
-    .append('title')
-    .text(d => {console.log(d[1]/data.length);
-      return d[1]/data.length;})
+      return h - yScale(d[1])
+    });
 
-    d3.select("#bars")
-    .attr("transform", "translate( 0, " + (-margin)  + ")");
-
-  // const xScale = d3.scaleBand().range([margin, w - margin]).padding(0.4);
-  // xScale.domain(data.map(function (d) {
-  //   return d.cell_type;
-  // }));
-
-  // const yScale = d3.scaleLinear().range([h - margin,0]);
-  // yScale.domain([0, data.length]);
-
-  // g.append("g")
-  //   .attr("transform", "translate(0," + (h-2*margin) + ")")
-  //   .call(d3.axisBottom(xScale))
-  //   .selectAll("text")
-  //   .attr("transform", "translate(-10,0)rotate(-45)")
-  //   .style("text-anchor", "end")
-
-
-  // g.append("g")
-  //   .call(d3.axisLeft(yScale).tickFormat(function (d) {
-  //     return d;
-  //   })
-  //     .ticks(3))
-  //   .append("text")
-  //   .attr("transform", "rotate(-90)")
-  //   .attr("y", 6)
-  //   .attr("dy", "-5.1em")
-  // // .attr("text-anchor", "end")
-  // // .attr("stroke", "black")
-  // // .text("#All Cells");
-
-  // console.log(groupedByCelltypes);
-
-  // g.selectAll("rect")
-  //   .data(data)
-  //   .enter()
-  //   .append("rect")
-  //   .attr("class", "bar")
-  //   .attr("x", function (d) {
-  //     return xScale(d.cell_type);
-  //   })
-  //   .attr("y", function (d) {
-
-  //     //TODO: switch between cells Type and Batch
-  //     return yScale(getNum(d.cell_type));
-  //   })
-  //   .attr("width", xScale.bandwidth())
-  //   .attr("height", function (d) {
-  //     // return height - yScale(getNum(d.cell_type));
-  //     return yScale(getNum(d.cell_type));
-  //   })
-  //   // .attr("fill", "steelblue")
-  //   .append('title')
-  //   .text(d => getNum(d.cell_type) / data.length)
-
-
+  d3.select("#bars")
+    .attr("transform", "translate( 0, " + (-margin) + ")")
 }
-//   );
-// }

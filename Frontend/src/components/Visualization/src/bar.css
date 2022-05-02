@@ -1,13 +1,36 @@
 .bar{
-fill:#023c68;
+fill:#3088cb;
 }
 
 .bar:hover {
-    fill: #ff5e00;
+    fill: #ff9831;
 }
 
-.tickText {
+.x-axis {
     font-style: normal;
+    font-family:inherit;
+    font-weight: 500;
+    stroke-width: 1.75;
+}
+
+.y-axis {
+    font-style: normal;
+    font-family:inherit;
+    font-weight: 500;
+    stroke-width: 1.75;
+}
+
+.tick line{
+    opacity: 25%;
+}
+
+.domain{
+    stroke: #2e2e36;
+    stroke-width: 1.75;
+}
+
+.title{
+    font-size: 15;
     font-family: inherit;
-    font-weight: 400;
+    font-weight: 650;
 }
