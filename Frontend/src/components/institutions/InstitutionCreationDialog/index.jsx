@@ -7,7 +7,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import InstitutionService from 'shared/services/mock/Institution.service';
+import InstitutionService from 'shared/services/Institution.service';
 
 export default function InstitutionCreationDialog({ open, handleClose, onCreated }) {
   const [name, setName] = useState('');

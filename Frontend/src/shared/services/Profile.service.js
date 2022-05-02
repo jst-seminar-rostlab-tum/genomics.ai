@@ -1,8 +1,11 @@
+import MockProfileService from './mock/Profile.service';
 import axiosInstance from './axiosInstance';
+
+const MOCK_PROFILE = false;
 
 let _cachedProfile;
 
-const ProfileService = {
+const ProfileService = MOCK_PROFILE ? MockProfileService : {
   getProfile: async (options) => {
     const allowCache = (options || {}).allowCache ?? true;
     if (allowCache && _cachedProfile) return _cachedProfile;
