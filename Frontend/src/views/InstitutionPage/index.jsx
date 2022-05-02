@@ -10,6 +10,7 @@ import InstitutionTeamList from "components/institutions/InstitutionTeamList";
 import InstitutionAvatar from "components/institutions/InstitutionAvatar";
 import { useAuth } from "shared/context/authContext";
 import InstitutionService from "shared/services/Institution.service";
+import defaultBackgroundPicture from "assets/institution-default-background.jpg";
 
 function InstitutionPage() {
   const { id } = useParams();
@@ -25,6 +26,20 @@ function InstitutionPage() {
     setInstitution({
       ...institution,
       description: event.target.value,
+    });
+  };
+
+  const handleCountryChange = (event) => {
+    setInstitution({
+      ...institution,
+      country: event.target.value,
+    });
+  };
+
+  const handleNameChange = (event) => {
+    setInstitution({
+      ...institution,
+      name: event.target.value,
     });
   };
 
@@ -47,7 +62,9 @@ function InstitutionPage() {
       <div
         className={styles.background}
         style={{
-          backgroundImage: `url(${institution.backgroundPictureURL})`,
+          backgroundImage: `url(${
+            institution.backgroundPictureURL || defaultBackgroundPicture
+          })`,
           resizeMode: "stretch",
         }}
       >
@@ -61,12 +78,61 @@ function InstitutionPage() {
             }}
           />
         </div>
-        <h1 className={styles.imageText}>
-          <span>{institution.name}</span>
-        </h1>
-        <h3 className={styles.imageText}>
-          <span>{institution.country}</span>
-        </h3>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginBottom: "10px",
+            marginTop: "10px",
+          }}
+        >
+          <TextField
+            minRows={1}
+            maxRows={1}
+            value={institution.name}
+            sx={{
+              input: {
+                textAlign: "center",
+                color: "white",
+                fontSize: 40,
+                backgroundColor: "rgba(0,38,68,0.5)",
+                backdropFilter: "blur(10px)",
+                borderRadius: "34px",
+              },
+            }}
+            InputProps={{
+              readOnly: !isAdmin(),
+              disableUnderline: true,
+            }}
+            style={{ width: "700px" }}
+            onChange={handleNameChange}
+            variant="standard"
+          />
+        </div>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <TextField
+            minRows={1}
+            maxRows={1}
+            value={institution.country}
+            sx={{
+              input: {
+                textAlign: "center",
+                color: "white",
+                fontSize: 25,
+                backgroundColor: "rgba(0,38,68,0.5)",
+                backdropFilter: "blur(10px)",
+                borderRadius: "23px",
+              },
+            }}
+            InputProps={{
+              readOnly: !isAdmin(),
+              disableUnderline: true,
+            }}
+            style={{ width: "300px" }}
+            onChange={handleCountryChange}
+            variant="standard"
+          />
+        </div>
         <p className={styles.imageText}>
           <span>
             {institution.memberIds?.length + institution.adminIds?.length}
@@ -79,7 +145,6 @@ function InstitutionPage() {
           <h2>Description</h2>
           <hr />
           <TextField
-            id="description"
             multiline
             minRows={3}
             maxRows={5}
