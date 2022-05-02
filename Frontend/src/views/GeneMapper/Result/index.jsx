@@ -96,7 +96,6 @@ function GeneMapperResultView() {
                 justifyContent: 'space-between',
                 alignItems: 'stretch',
                 overflow: 'hidden',
-                position: 'relative',
               }}
             >
               {rendering ? (
