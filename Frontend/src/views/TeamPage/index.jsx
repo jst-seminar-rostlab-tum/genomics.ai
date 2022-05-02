@@ -6,9 +6,9 @@ import TeamMemberList from 'components/teams/detail/TeamMemberList';
 import TeamAdminHeaderRight from 'components/teams/detail/TeamAdminHeaderRight';
 import TeamUserHeaderRight from 'components/teams/detail/TeamUserHeaderRight';
 import TeamHeaderOptions from 'components/teams/detail/TeamHeaderOptions';
+import TeamService from 'shared/services/Team.service';
+import InstitutionService from 'shared/services/Institution.service';
 import TeamInviteButton from 'components/teams/detail/TeamInviteButton';
-import { getTeam } from 'shared/services/mock/teams';
-import { getInstitution } from 'shared/services/mock/institutions';
 import TextField from '@mui/material/TextField';
 import { useAuth } from 'shared/context/authContext';
 
@@ -26,14 +26,15 @@ export default function TeamPage({ sidebarShown }) {
   };
 
   useEffect(() => {
-    getTeam(parseInt(id, 10))
+    if (id == null) return;
+    TeamService.getTeam(id)
       .then(setTeam)
       .catch((ignored) => { console.error(ignored); });
   }, [setTeam]);
 
   // Institution may be undefined
   useEffect(() => {
-    getInstitution(team.institutionId)
+    InstitutionService.getInstitution(team.institutionId)
       .then((newInstitution) => setInstitution(newInstitution));
   }, [team, setInstitution]);
 
@@ -86,7 +87,16 @@ export default function TeamPage({ sidebarShown }) {
       <section>
         <h2>Members</h2>
         <hr />
-        <TeamMemberList team={team} />
+        <TeamMemberList
+          team={team}
+          onMemberRemoved={(_team, member) => {
+            setTeam({
+              ...team,
+              memberIds: team.memberIds.filter((mId) => mId !== member.id),
+              adminIds: team.adminIds.filter((aId) => aId !== member.id),
+            });
+          }}
+        />
       </section>
       {isAdmin && <TeamInviteButton team={team} />}
     </HeaderView>

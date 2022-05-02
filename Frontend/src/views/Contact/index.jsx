@@ -18,7 +18,7 @@ const theme = createTheme({
   },
 });
 
-const Contact = (props) => {
+const Contact = () => {
   const [contactDetails, setContactDetails] = useState({
     email: '',
     firstname: '',
