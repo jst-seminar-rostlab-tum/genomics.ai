@@ -12,7 +12,7 @@ const get_model = (): Router => {
     if (!modelId) return res.status(400).send("Missing model id");
 
     try {
-      const model = ModelService.getModelById(modelId);
+      const model = await ModelService.getModelById(modelId);
       return res.status(200).json(model);
     } catch (err) {
       console.error("Error getting information about the model!");
@@ -32,7 +32,7 @@ const get_allModels = (): Router => {
 
   router.get("/models", async (req: any, res) => {
     try {
-      const models = ModelService.getAllModels();
+      const models = await ModelService.getAllModels();
       return res.status(200).json(models);
     } catch (err) {
       console.error("Error accessing the models!");

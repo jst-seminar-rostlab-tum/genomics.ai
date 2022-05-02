@@ -173,14 +173,16 @@ const join_as_member_of_institution = (): Router => {
 
 const get_institution = (): Router => {
   let router = express.Router();
-  router.get("/institution/:id", check_auth(), async (req: any, res) => {
+  router.get("/institutions/:id", check_auth(), async (req: any, res) => {
     const institutionId = req.params.id;
     try {
       const institution = await InstitutionService.getInstitutionById(institutionId);
-      return res.status(200).json(institution);
+
+      if (institution != null) return res.status(200).json(institution);
+      return res.status(404).send(`Institution ${institutionId} not found`);
     } catch (err) {
       console.error(JSON.stringify(err));
-      return res.status(404).send(`Institution ${institutionId} not found`);
+      return res.status(500).send(`Internal server error`);
     }
   });
   return router;
@@ -192,10 +194,12 @@ const get_institutions = (): Router => {
     const query = { ...req.query };
     try {
       const institutions = await InstitutionService.filterInstitutions(query);
-      return res.status(200).json(institutions);
+
+      if (institutions != null) return res.status(200).json(institutions);
+      return res.status(404).send(`No institutions found`);
     } catch (err) {
       console.error(JSON.stringify(err));
-      return res.status(404).send(`No institutions found`);
+      return res.status(500).send(`Internal server error`);
     }
   });
   return router;
@@ -248,6 +252,21 @@ const get_projects_of_institution = (): Router => {
     } catch (err) {
       console.error(JSON.stringify(err));
       return res.status(500).json({ error: "General server error" });
+    }
+  });
+  return router;
+};
+const get_users_institutions = (): Router => {
+  let router = express.Router();
+  router.get("/users/:id/institutions", check_auth(), async (req: any, res) => {
+    const userId = req.params.id;
+    try {
+      const institutions = await InstitutionService.getUsersInstitutions(userId);
+      if (institutions != null) return res.status(200).json(institutions);
+      return res.status(404).send(`No institutions found`);
+    } catch (err) {
+      console.error(JSON.stringify(err));
+      return res.status(500).send(`Internal server error`);
     }
   });
   return router;
@@ -318,5 +337,6 @@ export {
   get_members_of_institution,
   get_teams_of_institution,
   get_projects_of_institution,
+  get_users_institutions,
   disjoin_member_of_institution,
 };

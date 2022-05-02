@@ -339,6 +339,15 @@ export default class InstitutionService {
 
     return projects;
   }
+  static async getUsersInstitutions(userId: ObjectId | string): Promise<IInstitution[] | null> {
+    return await institutionModel.find({
+      $or: [
+        { memberIds: { $elemMatch: { $eq: userId } } },
+        { adminIds: { $elemMatch: { $eq: userId } } },
+      ],
+    });
+  }
+
   /**
    *  Remove the given userId from the given institution.
    *
