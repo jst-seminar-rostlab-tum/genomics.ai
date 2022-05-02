@@ -22,6 +22,10 @@
     color: #FF5F58;
 }
 
+.disabledIcon {
+    color: #CED4DA;
+}
+
 .filename {
     color: #0969DA;
     font-weight: bold !important;
@@ -45,6 +49,10 @@
 
 .goButton {
     background-color: #5676E4 !important;
+}
+
+.goButton:disabled {
+    background-color: #CED4DA !important;
 }
 
 .goButton:hover {

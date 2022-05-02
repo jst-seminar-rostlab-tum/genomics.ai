@@ -7,7 +7,7 @@ import profiledefault from '../../assets/user.png';
 import { useAuth } from 'shared/context/authContext';
 
 function NavigationBar({ sidebarShown }) {
-  const [user] = useAuth();
+  const [user, setUser] = useAuth();
   const [dropDown, setDropDown] = useState(false);
 
   const onMouseEnter = () => {

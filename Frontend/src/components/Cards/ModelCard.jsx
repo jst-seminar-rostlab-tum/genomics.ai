@@ -1,5 +1,6 @@
 import { Box, Button, Typography } from "@mui/material"
 import { useEffect, useRef, useState } from "react"
+import { useHistory } from "react-router-dom"
 import { colors } from "shared/theme/colors"
 
 // Outlined Button specific to Models and Atlases
@@ -9,12 +10,13 @@ import { colors } from "shared/theme/colors"
  * @param content text content to be displayed
  * @param link button href link  
  */
-export const OutlinedButton = ({ content, link }) => {
+export const OutlinedButton = ({ content, link = null, onClick }) => {
   return (
     <Button
       variant="outlined"
       disableRipple
-      href={`/${link}`}
+      href={link ? `#${link}` : null}
+      onClick={onClick}
       sx={{
         color: colors.primary[100], borderWidth: "2px", borderColor: colors.primary[100], borderRadius: "1.2rem",
         ":hover": { borderColor: '#01579B', borderWidth: "2px", backgroundColor: colors.primary[100], color: '#01579B', transition: '0.5s' }
@@ -34,7 +36,7 @@ export const OutlinedButton = ({ content, link }) => {
  * @param mapLink onHover button Map url
  * @param learnMoreLink onHover button Learn More url
  */
-export const ModelCard = ({ width = "100%", height = "100%", title, description, mapLink, learnMoreLink }) => {
+export const ModelCard = ({ width = "100%", height = "100%", title, description, onClick, learnMoreLink }) => {
 
   const [hover, setHover] = useState(false)
   const ref = useRef()
@@ -95,7 +97,7 @@ export const ModelCard = ({ width = "100%", height = "100%", title, description,
                 transform: "translate(-50%, -50%)"
               }}
             >
-              <OutlinedButton content="Map" link={mapLink} />
+              <OutlinedButton content="Map" onClick={onClick} />
               <OutlinedButton content="Learn More" link={learnMoreLink} />
             </Box>
           </Box>
