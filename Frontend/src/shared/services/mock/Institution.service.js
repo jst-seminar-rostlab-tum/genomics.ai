@@ -6,7 +6,7 @@ let runningId = 3;
 
 const testInstitutions = [
   {
-    id: 1,
+    id: '1',
     name: 'Helmholtz Institute',
     country: 'Germany',
     description: 'Test',
@@ -16,7 +16,7 @@ const testInstitutions = [
     avatarUrl: helmholtz,
   },
   {
-    id: 2,
+    id: '2',
     name: 'Technische Universität München',
     country: 'Germany',
     backgroundPictureURL: 'https://www.in.tum.de/fileadmin/_processed_/5/5/csm_2006_1015Bild0136_9dc504e910.jpg',
@@ -25,7 +25,7 @@ const testInstitutions = [
     memberIds: [2, 3, 4, 5],
   },
   {
-    id: 3,
+    id: '3',
     name: 'Rostlab',
     country: 'Germany',
     avatarUrl: 'https://avatars.githubusercontent.com/u/4093405?s=200&v=4',
