@@ -14,6 +14,8 @@ import Filter from 'components/SearchPageComponents/Filter';
 import querySearch from 'shared/mock/search';
 import Search from 'components/Search';
 import UserService from 'shared/services/User.service';
+import TeamService from 'shared/services/Team.service';
+import InstitutionsService from 'shared/services/Institution.service';
 
 const SearchPage = ({ sidebarShown }) => {
   /* Booleans */
@@ -59,13 +61,25 @@ const SearchPage = ({ sidebarShown }) => {
   const fetchSearchHandler = useCallback(async (_searchCategory, _searchParams) => {
     let searchResponse = [];
     const filterParams = Object.fromEntries(new URLSearchParams(_searchParams));
-    if (_searchCategory !== 'users') {
+    console.log(filterParams);
+    if (_searchCategory === 'projects') {
       searchResponse = await querySearch(
         _searchCategory,
-        (new URLSearchParams(_searchParams).get('keyword')).toLowerCase(),
+        (new URLSearchParams(_searchParams).get('keyword') || '').toLowerCase(),
       );
     } else {
-      searchResponse = await UserService.getUsers(filterParams);
+      switch (_searchCategory) {
+        case 'users':
+          searchResponse = await UserService.getUsers(filterParams);
+          break;
+        case 'teams':
+          searchResponse = await TeamService.getTeams(filterParams);
+          break;
+        case 'institutions':
+          searchResponse = await InstitutionsService.getInstitutions(filterParams);
+          break;
+        default:
+      }
     }
     setSearchRequestResult(searchResponse);
     setIsLoading(false);
