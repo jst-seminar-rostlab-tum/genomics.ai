@@ -3,7 +3,7 @@ import axiosInstance from './axiosInstance';
 const MODEL = 'models';
 
 const ModelService = {
-  getModeles: async () => {
+  getModels: async () => {
     const { data } = await axiosInstance.get(`/${MODEL}`);
     return data;
   },

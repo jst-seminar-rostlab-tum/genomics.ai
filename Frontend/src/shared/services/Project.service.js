@@ -1,7 +1,7 @@
 import axiosInstance from './axiosInstance';
 import { startOrContinueUpload } from './UploadLogic';
 
-const MODEL = 'projects';
+const MODEL = 'ownprojects';
 
 const ProjectService = {
   getProjects: async () => {
@@ -10,8 +10,10 @@ const ProjectService = {
   },
 
   getProject: async (id) => {
-    const { data } = await axiosInstance.get(`/project/${id}`);
-    return data;
+    // const { data } = await axiosInstance.get(`/project/${id}`);
+    const { data } = await axiosInstance.get(`/${MODEL}`);
+    const project = await data.find((p) => String(p._id) === String(id));
+    return { ...project, location: './testData/test_file1.csv' };
   },
 
   startOrContinueProjectUpload: async (

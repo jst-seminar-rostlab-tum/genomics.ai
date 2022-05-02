@@ -61,7 +61,7 @@ function GeneMapperHome() {
   return (
     <div>
       <ThemeProvider theme={theme}>
-        {Object.entries(submissionProgress).map(([key, value]) => <Typography>{`${key}: ${value}` }</Typography>)}
+        {/* {Object.entries(submissionProgress).map(([key, value]) => <Typography>{`${key}: ${value}` }</Typography>)} */}
         <Box
           sx={{
             display: 'flex',

@@ -99,7 +99,11 @@ export default function ProjectBarCard({
                 sx={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}
               >
                 {status === 'UPLOAD_PENDING'
-                   && <Typography variant="caption">Upload failed or cancled</Typography>}
+                   && (
+                   <Typography variant="caption">
+                     Upload failed or cancled
+                   </Typography>
+                   )}
                 {status === 'PROCESSING_PENDING'
                    && <ProcessingStatus />}
                 {status === 'ABORTED'

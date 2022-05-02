@@ -13,6 +13,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 import ModelService from 'shared/services/Model.service';
+import AtlasService from 'shared/services/Atlas.service';
 
 function AtlasModelChoice({ 
     activeStep, setActiveStep, 
@@ -30,7 +31,7 @@ function AtlasModelChoice({
     }
     
     useEffect(() => {
-        ProjectMock.getAtlases().then(a => {
+        AtlasService.getAtlases().then(a => {
             a.map(a => {
                 let numberOfCells = a.numberOfCells;
                 let dimension = ""
@@ -52,7 +53,7 @@ function AtlasModelChoice({
             })
             setAtlases(a);
         });
-        ProjectMock.getModels().then(m => setModels(m));
+        ModelService.getModels().then(m => setModels(m));
     }, []);
 
     return (
