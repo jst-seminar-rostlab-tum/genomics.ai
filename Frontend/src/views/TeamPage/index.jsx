@@ -38,7 +38,7 @@ export default function TeamPage({ sidebarShown }) {
       .then((newInstitution) => setInstitution(newInstitution));
   }, [team, setInstitution]);
 
-  const isAdmin = team.adminIds ? team.adminIds.includes(user.id) : false;
+  const isAdmin = team.adminIds ? team.adminIds.includes(user._id) : false;
 
   return (
     <HeaderView
@@ -93,6 +93,20 @@ export default function TeamPage({ sidebarShown }) {
             setTeam({
               ...team,
               memberIds: team.memberIds.filter((mId) => mId !== member.id),
+              adminIds: team.adminIds.filter((aId) => aId !== member.id),
+            });
+          }}
+          onMakeAdmin={(_team, member) => {
+            setTeam({
+              ...team,
+              memberIds: team.memberIds.filter((mId) => mId !== member.id),
+              adminIds: [...team.adminIds, member.id],
+            });
+          }}
+          onRemoveAdmin={(_team, member) => {
+            setTeam({
+              ...team,
+              memberIds: [...team.memberIds, member.id],
               adminIds: team.adminIds.filter((aId) => aId !== member.id),
             });
           }}
