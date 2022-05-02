@@ -17,6 +17,38 @@ import TeamService from 'shared/services/Team.service';
 import InstitutionService from 'shared/services/Institution.service';
 import ProjectService from 'shared/services/Project.service';
 
+// target to change, so backend will provide full data
+async function getTeams(filterParams) {
+  const searchResponse = await TeamService.getTeams(filterParams);
+  const institutionRequests = searchResponse.map(
+    (team) => InstitutionService.getInstitutionById(team.institutionId),
+  );
+  const institutionsResponse = await Promise.all(institutionRequests);
+  institutionsResponse.forEach(
+    (institution,
+      index) => {
+      searchResponse[index].institutionTitle = institution.name;
+    },
+  );
+  return searchResponse;
+}
+
+// target to change, so backend will provide full data
+async function getInstitutions(filterParams) {
+  const searchResponse = await InstitutionService.getInstitutions(filterParams);
+  const teamsRequests = searchResponse.map(
+    (team) => InstitutionService.getTeamsOfInstitutionById(team.institutionId),
+  );
+  const teamsResponse = await Promise.all(teamsRequests);
+  teamsResponse.forEach(
+    (team,
+      index) => {
+      searchResponse[index].teamsCount = team.length;
+    },
+  );
+  return searchResponse;
+}
+
 const SearchPage = ({ sidebarShown }) => {
   /* Booleans */
   const paddingL = () => (sidebarShown ? '130px' : '380px');
@@ -66,10 +98,10 @@ const SearchPage = ({ sidebarShown }) => {
         searchResponse = await UserService.getUsers(filterParams);
         break;
       case 'teams':
-        searchResponse = await TeamService.getTeams(filterParams);
+        searchResponse = await getTeams(filterParams);
         break;
       case 'institutions':
-        searchResponse = await InstitutionService.getInstitutions(filterParams);
+        searchResponse = await getInstitutions(filterParams);
         break;
       case 'projects':
         searchResponse = await ProjectService.getProjects(filterParams);

@@ -23,12 +23,12 @@ function InstitutionCard({ item: institution }) {
             size="small"
             sx={{ color: 'text.secondary' }}
           />
-          {/* <Chip
+          <Chip
             label={`${institution.teamsCount} teams`}
             variant="outlined"
             size="small"
             sx={{ color: 'text.secondary' }}
-          /> */}
+          />
         </>
       )}
     />

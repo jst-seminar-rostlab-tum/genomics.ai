@@ -1,4 +1,5 @@
 import React from 'react';
+// import { formatDate } from 'shared/utils/common/utils';
 
 // import { Chip } from '@mui/material';
 import SearchCard from '../SearchCard';
@@ -10,6 +11,7 @@ function ProjectCard({ item: project }) {
     <SearchCard
       title={project.name}
       link={`/sequencer/genemapper/result/${project._id}`}
+      // secondary={formatDate(project.uploadDate)}
       // primary={<Chip label={project.type} color="primary" size="small" />}
       // tertiary={(
       //   <>

@@ -4,7 +4,7 @@ import { Chip } from '@mui/material';
 
 // import Avatars from 'components/Avatars';
 import SearchCard from '../SearchCard';
-// import LabeledLink from '../LabeledLink';
+import LabeledLink from '../LabeledLink';
 
 import CustomButton from 'components/CustomButton';
 
@@ -33,13 +33,19 @@ const TeamCard = ({ item: team }) => {
             size="small"
             sx={{ color: 'text.secondary' }}
           />
-          {/* {team.institution && (
+          <Chip
+            label={`${team.projects.length} projects`}
+            variant="outlined"
+            size="small"
+            sx={{ color: 'text.secondary' }}
+          />
+          {team.institutionId && (
             <LabeledLink
               label="Institution"
-              content={team.institution.name}
-              to={`/sequencer/institutions/${team.institution.id}`}
+              content={team.institutionTitle}
+              to={`/sequencer/institutions/${team.institutionId}`}
             />
-          )} */}
+          )}
         </>
       )}
     />
