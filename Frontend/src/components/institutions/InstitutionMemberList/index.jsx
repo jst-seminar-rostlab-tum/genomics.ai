@@ -29,13 +29,13 @@ function InstitutionMemberList({ institution, onRemoved }) {
         </span>
       )}
       trailingBuilder={(member) => (
-        user._id === member.id ? null : (
+        institution.adminIds.indexOf(user._id) > -1 && user._id !== member.id ? (
           <InstitutionMemberRemoveButton
             institution={institution}
             member={member}
             onRemoved={onRemoved}
           />
-        )
+        ) : null
       )}
     />
   );
