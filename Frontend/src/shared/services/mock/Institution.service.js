@@ -1,8 +1,8 @@
 import helmholtz from 'assets/helmholtz-logo.jpg';
+import getMember from './members';
 
 const mockLeftIds = [];
 let runningId = 3;
-
 
 const testInstitutions = [
   {
@@ -56,7 +56,7 @@ const InstitutionService = {
     mockLeftIds.push(institution.id);
   },
 
-  async queryMyInstitutions() {
+  async getMyInstitutions() {
     return testInstitutions.filter((institution) => !mockLeftIds.includes(institution.id));
   },
 
@@ -66,6 +66,11 @@ const InstitutionService = {
 
   async getInstitution(id) {
     return testInstitutions.find((institution) => institution.id === id);
+  },
+
+  getInstitutionMembers: async (institutionId) => {
+    const institution = await InstitutionService.getInstitution(institutionId);
+    return Promise.all([...institution.adminIds, ...institution.memberIds].map(getMember));
   },
 
   async removeMemberFromInstitution(institutionId, memberId) {
