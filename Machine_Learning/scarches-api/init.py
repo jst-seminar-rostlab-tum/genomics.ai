@@ -19,7 +19,7 @@ def default_config():
         parameters.RESULTING_MODEL_PATH: 'data/model',
         parameters.OUTPUT_PATH: 'query.tsv',
 
-        parameters.USE_PRETRAINED_SCVI_MODEL: False,
+        parameters.USE_PRETRAINED_SCVI_MODEL: True,
         parameters.USE_PRETRAINED_TOTALVI_MODEL: False,
         parameters.USE_PRETRAINED_SCANVI_MODEL: False,
 
@@ -83,7 +83,7 @@ def query(user_config):
     else:
         raise ValueError(model + ' is not one of the supported models')
     configuration["attributes"] = attributes
-    if get_from_config(configuration, parameters.RUN_ASYNCHRONOUSLY):
+    if get_from_config(configuration, parameters.WEBHOOK) is not None and len(get_from_config(configuration, parameters.WEBHOOK)) > 0:
         utils.notify_backend(get_from_config(configuration, parameters.WEBHOOK), configuration)
     return configuration
 # query('data/ref/source_data.h5ad', 'data/query/target_data.h5ad', 'data/model', 'data/surgery/', 'scVI')

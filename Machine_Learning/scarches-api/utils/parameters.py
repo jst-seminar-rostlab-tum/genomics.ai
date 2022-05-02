@@ -31,7 +31,7 @@ SCVI_MAX_EPOCHS = 'scvi_max_epochs'
 # sets the number of neighbors
 NUMBER_OF_NEIGHBORS = 'n_neighbors'
 # sets the maximum number of epochs
-MAX_EPOCHS = 'n_neighbors'
+MAX_EPOCHS = 'max_epochs'
 # sets the labeles that are not of interest and should be removed
 UNWANTED_LABELS = 'unwanted_labels'
 # sets if debug messages should be printed
