@@ -7,12 +7,12 @@ import styles from "./atlasModelChoice.module.css";
 import { useHistory} from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import ProjectMock from "shared/services/mock/projects"
-import atlasPng from "assets/previewImages/atlas.png"
 
 import CancelIcon from '@mui/icons-material/Cancel';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 import ModelService from 'shared/services/Model.service';
+import AtlasService from 'shared/services/Atlas.service';
 
 function AtlasModelChoice({ 
     activeStep, setActiveStep, 
@@ -30,7 +30,7 @@ function AtlasModelChoice({
     }
     
     useEffect(() => {
-        ProjectMock.getAtlases().then(a => {
+        AtlasService.getAtlases().then(a => {
             a.map(a => {
                 let numberOfCells = a.numberOfCells;
                 let dimension = ""
@@ -52,7 +52,7 @@ function AtlasModelChoice({
             })
             setAtlases(a);
         });
-        ProjectMock.getModels().then(m => setModels(m));
+        ModelService.getModels().then(m => setModels(m));
     }, []);
 
     return (
@@ -72,7 +72,7 @@ function AtlasModelChoice({
                                 modalities={a.modalities.reduce((acc, v) => acc + ', ' + v)}
                                 cellsInReference={a.numberOfCells}
                                 species={a.species}
-                                imgLink={atlasPng}
+                                imgLink={a.previewPictureURL}
                                 selected={selectedAtlas.name===a.name}
                                 onSelect={setSelectedAtlas}
                                 atlasObject={a}

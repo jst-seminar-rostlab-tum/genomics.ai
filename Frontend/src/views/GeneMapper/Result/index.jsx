@@ -96,7 +96,6 @@ function GeneMapperResultView() {
                 justifyContent: 'space-between',
                 alignItems: 'stretch',
                 overflow: 'hidden',
-                position: 'relative',
               }}
             >
               {rendering ? (
@@ -104,7 +103,7 @@ function GeneMapperResultView() {
                   position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
                 }}
                 >
-                  <CircularProgress />
+                  <CircularProgress disableShrink />
                 </Box>
               ) : null}
               <Sidepanel title="Categories">
@@ -157,7 +156,7 @@ function GeneMapperResultView() {
             flexGrow: 1, display: 'flex', justifyContent: 'Center', alignItems: 'center',
           }}
           >
-            <CircularProgress />
+            <CircularProgress disableShrink />
           </Box>
         )}
     </Box>

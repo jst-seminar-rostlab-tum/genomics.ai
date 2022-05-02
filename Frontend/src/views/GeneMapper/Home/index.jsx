@@ -9,7 +9,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import ProjectMock from 'shared/services/mock/projects';
 import ProjectService from 'shared/services/Project.service';
 import { useSubmissionProgress } from 'shared/context/submissionProgressContext';
-import { getSubmissionProgressPercentage } from 'shared/services/UploadLogic';
+import { MULTIPART_UPLOAD_STATUS, PROJECTS_UPDATE_INTERVAL, statusIsError } from 'shared/utils/common/constants';
 
 const theme = createTheme({
   palette: {
@@ -36,23 +36,39 @@ function GeneMapperHome() {
   const [submissionProgress, setSubmissionProgress] = useSubmissionProgress();
 
   useEffect(() => {
-    console.log(getSubmissionProgressPercentage(submissionProgress));
-  }, [submissionProgress]);
-
-  useEffect(() => {
     ProjectService.getProjects().then((data) => setProjects(data));
-  }, [submissionProgress]); 
+    const timer = setInterval(() => {
+      ProjectService.getProjects().then((data) => setProjects(data));
+      if (submissionProgress.status === MULTIPART_UPLOAD_STATUS.COMPLETE
+        || submissionProgress.status === MULTIPART_UPLOAD_STATUS.CANCELING
+        || statusIsError(submissionProgress.status)) {
+        setSubmissionProgress({
+          status: MULTIPART_UPLOAD_STATUS.IDLE,
+          uploadId: '',
+          chunks: 0,
+          uploaded: 0,
+          remaining: [],
+          uploadedParts: [],
+        });
+      }
+    }, PROJECTS_UPDATE_INTERVAL);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, [submissionProgress.status]);
 
   return (
     <div>
       <ThemeProvider theme={theme}>
+        {/* {Object.entries(submissionProgress).map(([key, value]) => <Typography>{`${key}: ${value}` }</Typography>)} */}
         <Box
           sx={{
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'space-between',
             paddingBottom: '2em',
-            marginTop:'10px'
+            marginTop: '10px',
           }}
         >
           <Stack direction="row" className="stack">
@@ -80,7 +96,16 @@ function GeneMapperHome() {
             .filter((project) => (
               findString === '' || project.name.toLowerCase().includes(findString.toLowerCase())))
             .map((project) => (
-              <ProjectBarCard projectId={project._id} name={project.name} status={project.status} />
+              <ProjectBarCard
+                key={project._id}
+                projectId={project._id}
+                name={project.name}
+                status={project.status}
+                submissionProgress={submissionProgress.uploadId === project.uploadId
+                  ? submissionProgress : null}
+                setSubmissionProgress={submissionProgress.uploadId === project.uploadId
+                  ? setSubmissionProgress : () => {}}
+              />
             ))}
         </div>
 
