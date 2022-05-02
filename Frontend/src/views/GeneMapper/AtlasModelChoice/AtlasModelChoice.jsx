@@ -7,7 +7,6 @@ import styles from "./atlasModelChoice.module.css";
 import { useHistory} from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import ProjectMock from "shared/services/mock/projects"
-import atlasPng from "assets/previewImages/atlas.png"
 
 import CancelIcon from '@mui/icons-material/Cancel';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -73,7 +72,7 @@ function AtlasModelChoice({
                                 modalities={a.modalities.reduce((acc, v) => acc + ', ' + v)}
                                 cellsInReference={a.numberOfCells}
                                 species={a.species}
-                                imgLink={atlasPng}
+                                imgLink={a.previewPictureURL}
                                 selected={selectedAtlas.name===a.name}
                                 onSelect={setSelectedAtlas}
                                 atlasObject={a}
