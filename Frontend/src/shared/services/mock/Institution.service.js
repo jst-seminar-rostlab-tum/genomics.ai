@@ -1,4 +1,5 @@
 import helmholtz from 'assets/helmholtz-logo.jpg';
+import tum from 'assets/tum-logo.png';
 import getMember from './members';
 
 const mockLeftIds = [];
@@ -20,7 +21,7 @@ const testInstitutions = [
     name: 'Technische Universität München',
     country: 'Germany',
     backgroundPictureURL: 'https://www.in.tum.de/fileadmin/_processed_/5/5/csm_2006_1015Bild0136_9dc504e910.jpg',
-    avatarUrl: 'https://scalings.eu/wp-content/uploads/2019/11/tum-logo.png',
+    avatarUrl: tum,
     adminIds: [1],
     memberIds: ['626bdb1ed76c8b968a50f833', 2, 3, 4, 5],
   },
