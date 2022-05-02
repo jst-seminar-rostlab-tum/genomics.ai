@@ -4,38 +4,44 @@ import { ProjectStatus } from "../../../../database/models/project";
 import ProjectService from "../../../../database/services/project.service";
 import s3 from "../../../../util/s3";
 import express from "express";
+import { validationMdw } from "../../middleware/validation";
 
 export default function download_results_route() {
   let router = express.Router();
-  router.post("/file_download/results", check_auth(), async (req: ExtRequest, res) => {
-    let { id } = req.body;
-    if (!id) return res.status(400).send("Missing project id parameter.");
+  router.post(
+    "/file_download/results",
+    validationMdw,
+    check_auth(),
+    async (req: ExtRequest, res) => {
+      let { id } = req.body;
+      if (!id) return res.status(400).send("Missing project id parameter.");
 
-    try {
-      if (process.env.S3_BUCKET_NAME && req.user_id) {
-        const project = await ProjectService.getProjectById(id);
-        if (!project) {
-          return res.status(404).send("Project not found.");
-        }
-        if (project.status != ProjectStatus[ProjectStatus.DONE]) {
-          return res.status(400).send("Project not completed.");
-        }
-        if (project.owner != req.user_id) {
-          return res.status(400).send("User not authorized to access file.");
-        }
+      try {
+        if (process.env.S3_BUCKET_NAME && req.user_id) {
+          const project = await ProjectService.getProjectById(id);
+          if (!project) {
+            return res.status(404).send("Project not found.");
+          }
+          if (project.status != ProjectStatus[ProjectStatus.DONE]) {
+            return res.status(400).send("Project not completed.");
+          }
+          if (project.owner != req.user_id) {
+            return res.status(400).send("User not authorized to access file.");
+          }
 
-        let params: any = {
-          Bucket: process.env.S3_BUCKET_NAME!,
-          Key: String(project.resultName),
-          Expires: 60 * 60 * 24 * 7 - 1, // one week minus one second
-        };
-        let presignedUrl = await s3.getSignedUrlPromise("getObject", params);
-        res.status(200).send({ presignedUrl });
-      } else res.status(500).send("S3-BucketName is not set");
-    } catch (err) {
-      console.log(err);
-      res.status(500).send(err);
+          let params: any = {
+            Bucket: process.env.S3_BUCKET_NAME!,
+            Key: String(project.resultName),
+            Expires: 60 * 60 * 24 * 7 - 1, // one week minus one second
+          };
+          let presignedUrl = await s3.getSignedUrlPromise("getObject", params);
+          res.status(200).send({ presignedUrl });
+        } else res.status(500).send("S3-BucketName is not set");
+      } catch (err) {
+        console.log(err);
+        res.status(500).send(err);
+      }
     }
-  });
+  );
   return router;
 }

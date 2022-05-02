@@ -23,12 +23,11 @@ import upload_get_upload_url_route from "./routes/file_upload/get_upload_url";
 import download_results_route from "./routes/file_download/results";
 import upload_user_avatar_route from "./routes/upload_user_avatar";
 
-import { get_teams_of_user } from "./routes/user/userRouter";
+import { get_teams_of_user, get_users } from "./routes/user/userRouter";
 import { get_model, get_allModels } from "./routes/model/modelRouter";
 import { get_atlas, get_allAtlases } from "./routes/atlas/atlasRouter";
 import * as swaggerDocument from "../../swagger.json";
 import * as swaggerUi from "swagger-ui-express";
-import { validationMdw } from "./middleware/validation";
 
 import {
   create_institution,
@@ -37,6 +36,11 @@ import {
   join_as_member_of_institution,
   get_institutions,
   get_institution,
+  get_members_of_institution,
+  get_teams_of_institution,
+  get_projects_of_institution,
+  get_users_institutions,
+  disjoin_member_of_institution,
 } from "./routes/institution/institutionRouter";
 
 import {
@@ -48,9 +52,18 @@ import {
   remove_team_from_institution,
   add_project_to_team,
   get_teams,
+  get_users_teams,
+  disjoin_member,
+  get_team,
+  update_team,
 } from "./routes/team/teamRouter";
 
-import { get_projects, get_userProjects, get_project_by_id } from "./routes/project/projectRouter";
+import {
+  get_projects,
+  get_userProjects,
+  get_project_by_id,
+  get_users_projects,
+} from "./routes/project/projectRouter";
 
 import {
   upload_institution_backgroundpicture_route,
@@ -68,8 +81,6 @@ export function express_routes(this: REST_Host): Router {
   let router = express.Router();
 
   this.expressApp.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
-  this.expressApp.use(validationMdw);
 
   // unauthenticated routes
   this.expressApp.use(auth_route());
@@ -105,14 +116,20 @@ export function express_routes(this: REST_Host): Router {
   this.expressApp.use(add_team_to_institution());
   this.expressApp.use(remove_team_from_institution());
   this.expressApp.use(get_teams());
+  this.expressApp.use(get_users_teams());
+  this.expressApp.use(disjoin_member());
+  this.expressApp.use(get_team());
+  this.expressApp.use(update_team());
 
   // user routes
   this.expressApp.use(get_teams_of_user());
+  this.expressApp.use(get_users());
 
   // project routes
   this.expressApp.use(get_projects());
   this.expressApp.use(get_userProjects());
   this.expressApp.use(get_project_by_id());
+  this.expressApp.use(get_users_projects());
 
   // model routes
   this.expressApp.use(get_model());
@@ -141,6 +158,11 @@ export function express_routes(this: REST_Host): Router {
   this.expressApp.use(reset_institution_backgroundpicture_route());
   this.expressApp.use(make_user_admin_of_institution());
   this.expressApp.use(join_as_member_of_institution());
+  this.expressApp.use(get_members_of_institution());
+  this.expressApp.use(get_teams_of_institution());
+  this.expressApp.use(get_projects_of_institution());
+  this.expressApp.use(get_users_institutions());
+  this.expressApp.use(disjoin_member_of_institution());
 
   this.expressApp.use(/^.*_ah.*$/, (req, res) => res.status(200).send()); // always tell google everything is fine
   this.expressApp.use((req, res) => res.status(404).send("Not found."));
