@@ -62,6 +62,7 @@ const SearchPage = ({ sidebarShown }) => {
     let searchResponse = [];
     const filterParams = Object.fromEntries(new URLSearchParams(_searchParams));
     console.log(filterParams);
+    // Temporary as long projects is not supported by backend
     if (_searchCategory === 'projects') {
       searchResponse = await querySearch(
         _searchCategory,

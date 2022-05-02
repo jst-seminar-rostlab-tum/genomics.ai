@@ -2,14 +2,7 @@ import React from 'react';
 import { AvatarGroup, Avatar } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-
-// Temporary function to generate different colors,
-// change later to titleToColor(...) from feature/institutionOverview branch
-function randomColor() {
-  const hex = Math.floor(Math.random() * 0xffffff);
-  const color = `#${hex.toString(16)}`;
-  return color;
-}
+import stringToColor from 'shared/utils/stringColor';
 
 // A component displaying a common group of avatrs
 const Avatars = ({
@@ -24,7 +17,7 @@ const Avatars = ({
       {items.map((item) => (
         <Avatar
           key={item.src}
-          sx={{ bgcolor: randomColor(), width, height }}
+          sx={{ bgcolor: stringToColor(item.src), width, height }}
           alt={item.alt}
           src={item.src}
         />

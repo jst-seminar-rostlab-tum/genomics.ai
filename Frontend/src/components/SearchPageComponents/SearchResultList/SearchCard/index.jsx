@@ -9,13 +9,7 @@ import {
   Avatar,
 } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
-
-// Temporary function to generate different colors,
-// change later to titleToColor(...) from feature/institutinOverview branch
-function randomColor() {
-  const hex = Math.floor(Math.random() * 0xffffff);
-  return `#${hex.toString(16)}`;
-}
+import tittleToColor from 'shared/utils/stringColor';
 
 // Generic card component to reuse the same structure for the
 // different search card items as Institution, team, ...
@@ -27,7 +21,7 @@ function SearchCard({
     <ListItem divider alignItems="flex-start" secondaryAction={action}>
       <ListItemAvatar spacing={10}>
         <Avatar
-          sx={{ bgcolor: randomColor(), width: 45, height: 45 }}
+          sx={{ bgcolor: tittleToColor(title), width: 45, height: 45 }}
           alt={title}
           src={avatar || 'dummy.png'} // not nice, but fallback doesn't work properly and display default profile icon rather than the first letter of alt
         />
