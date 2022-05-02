@@ -21,7 +21,6 @@ import ModelsService from 'shared/services/Models.service'
 import AtlasService from 'shared/services/Atlas.service'
 
 import { useLocation } from 'react-router-dom';
-import { useAuth } from 'shared/context/authContext';
 
 const tmpObj = [
   {
@@ -70,7 +69,6 @@ const Explore = () => {
   const [isLoginFormVisible, setLoginFormVisible] = useState(false);
   const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
   const [searchValue, setSearchValue] = useState('');
-  const history = useHistory();
 
   const handleSearch = (e) => {
     setSearchValue(e);
@@ -100,12 +98,26 @@ const Explore = () => {
   }, [selectedAtlas, selectedModel])
 
   const atlasesGrid = (atlases, path) => (
-    <Box className='atlasContainer'>
+      <Box className='atlasContainer' sx={{ height: "70vh" }}>
       <Grid container spacing={3}>
         {
           atlases.map((atlas) => (
             <Grid key={atlas._id} item xs={12} sm={6} md={4} lg={3}>
-              <AtlasCard onClick={() => setSelectedAtlas(atlas)} width="300px" height="500px" imgLink={atlas.previewPictureURL} species={atlas.species} modalities={atlas.modalities} title={atlas.name} learnMoreLink={`${path}/${atlas._id}`} />
+              <AtlasCard onClick={() => setSelectedAtlas(atlas)} imgLink={atlas.previewPictureURL} species={atlas.species} modalities={atlas.modalities} title={atlas.name} learnMoreLink={`${path}/${atlas._id}`} />
+            </Grid>
+          ))
+        }
+        {
+          atlases.map((atlas) => (
+            <Grid key={atlas._id} item xs={12} sm={6} md={4} lg={3}>
+              <AtlasCard onClick={() => setSelectedAtlas(atlas)} imgLink={atlas.previewPictureURL} species={atlas.species} modalities={atlas.modalities} title={atlas.name} learnMoreLink={`${path}/${atlas._id}`} />
+            </Grid>
+          ))
+        }
+        {
+          atlases.map((atlas) => (
+            <Grid key={atlas._id} item xs={12} sm={6} md={4} lg={3}>
+              <AtlasCard onClick={() => setSelectedAtlas(atlas)} imgLink={atlas.previewPictureURL} species={atlas.species} modalities={atlas.modalities} title={atlas.name} learnMoreLink={`${path}/${atlas._id}`} />
             </Grid>
           ))
         }
@@ -114,7 +126,7 @@ const Explore = () => {
   )
 
   const modelsGrid = (models, path) => (
-    <Box className='cardsContainer'>
+    <Box className='cardsContainer' sx={{ height: "100%" }}>
       <Grid container spacing={3}>
         {
           models.map((model) => (
@@ -146,16 +158,6 @@ const Explore = () => {
     setRegistrationFormVisible(false);
   }, [setRegistrationFormVisible]);
 
-  const handleModelMapClick = (index) => {
-    setSelectedModel(models.find(model => model._id === index));
-    if (!mapperVisible) {
-      setMapperVisible(true);
-    }
-    if (selectedAtlas === null) {
-      history.push('/explore/atlases');
-    }
-  };
-
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
 
@@ -182,7 +184,7 @@ const Explore = () => {
       </Box>
 
       <Box sx={{
-        display: 'flex', flexDirection: 'column', justifyContent: 'center', alignSelf: 'center', width: '80%',
+        display: 'flex', flexDirection: 'column', alignSelf: 'center', width: '80%'
       }}
       >
         {/* /explore/atlases */}

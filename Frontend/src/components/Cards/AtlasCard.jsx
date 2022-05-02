@@ -47,7 +47,6 @@ export default function AtlasCard({
       sx={{
         display: "flex",
         flexDirection: "row",
-        p: "1px"
       }}
     >
       <Typography
@@ -93,7 +92,8 @@ export default function AtlasCard({
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
-              opacity: 0.95
+              opacity: 0.95,
+              boxShadow: "0px 4px 6px 0px rgba(1, 87, 155, .20), 0px 0px 1px 0px rgba(1, 87, 155, .32)"
             }}
           >
             <Box
@@ -119,7 +119,7 @@ export default function AtlasCard({
             padding: "1rem",
             display: "flex",
             flexDirection: "column",
-            boxShadow: "0px 4px 6px 0px rgba(33, 37, 41, .2), 0px 0px 1px 0px rgba(33, 37, 41, .32)",
+            boxShadow: isHover ? 'none' : "0px 4px 6px 0px rgba(33, 37, 41, .2), 0px 0px 1px 0px rgba(33, 37, 41, .32)",
             borderRadius: "1.2rem",
             justifyContent: "center"
           }}
@@ -136,8 +136,8 @@ export default function AtlasCard({
           <Box component="img" src={imgLink} alt="Atlas preview img"
             sx={{
               width: "90%",
-              height: "50%",
-              margin: "auto"
+              margin: "auto",
+              objectFit: "cover"
             }}
           />
           <Box sx={{ m: "5px "}}>
