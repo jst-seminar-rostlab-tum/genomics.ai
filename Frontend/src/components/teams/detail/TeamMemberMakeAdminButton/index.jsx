@@ -6,7 +6,9 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-function TeamMemberMakeAdminButton({ team, member, onMakeAdmin, onRemoveAdmin }) {
+function TeamMemberMakeAdminButton({
+  team, member, onMakeAdmin, onRemoveAdmin,
+}) {
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleOpenDialog = () => setDialogOpen(true);

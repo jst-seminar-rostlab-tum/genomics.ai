@@ -1,11 +1,11 @@
 const mockJobs = [
   {
-    id: 'f7f7',
+    _id: 'f7f7',
     forPart: 'geneMapper',
     status: 'DONE',
   },
   {
-    id: 'f3f6',
+    _id: 'f3f6',
     forPart: 'geneCruncher',
     status: 'DONE',
   },
