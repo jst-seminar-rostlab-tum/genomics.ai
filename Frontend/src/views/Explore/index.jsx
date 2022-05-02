@@ -16,7 +16,6 @@ import Mapper from 'components/Mapper';
 import LoginForm from 'components/LoginForm';
 import RegistrationForm from 'components/RegistrationForm';
 import './Explore.css';
-import { useState, useEffect, useCallback } from 'react'
 
 import ModelsService from 'shared/services/Models.service'
 import AtlasService from 'shared/services/Atlas.service'
