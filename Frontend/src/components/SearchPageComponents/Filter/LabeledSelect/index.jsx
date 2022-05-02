@@ -17,8 +17,8 @@ function LabeledSelect({
     >
       <Typography sx={{ fontWeight: 'bold' }}>{label}</Typography>
       <Select value={value || defaultValue} onChange={onChange} displayEmpty>
-        {items.map(({ itemLabel, itemValue }) => (
-          <MenuItem value={itemValue}>{itemLabel}</MenuItem>
+        {items.map((item) => (
+          <MenuItem value={item.value}>{item.label}</MenuItem>
         ))}
       </Select>
     </Stack>

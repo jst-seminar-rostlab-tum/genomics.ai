@@ -25,15 +25,13 @@ function SearchCard({
 }) {
   return (
     <ListItem divider alignItems="flex-start" secondaryAction={action}>
-      {avatar && (
-        <ListItemAvatar spacing={10}>
-          <Avatar
-            sx={{ bgcolor: randomColor(), width: 45, height: 45 }}
-            alt={title}
-            src={avatar}
-          />
-        </ListItemAvatar>
-      )}
+      <ListItemAvatar spacing={10}>
+        <Avatar
+          sx={{ bgcolor: randomColor(), width: 45, height: 45 }}
+          alt={title}
+          src={avatar || 'dummy.png'} // not nice, but fallback doesn't work properly and display default profile icon rather than the first letter of alt
+        />
+      </ListItemAvatar>
       <Stack direction="column" spacing={0.5}>
         {/* primary */}
         <Stack direction="row" spacing={2} alignItems="center">

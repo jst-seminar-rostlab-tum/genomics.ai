@@ -11,9 +11,9 @@ import styles from './search.module.css';
 import SearchTabs from 'components/SearchPageComponents/SearchTabs';
 import SearchContent from 'components/SearchPageComponents/SearchContent';
 import Filter from 'components/SearchPageComponents/Filter';
-// import { setSeachCategoryInUrl } from "shared/utils/common/utils";
 import querySearch from 'shared/mock/search';
 import Search from 'components/Search';
+import UserService from 'shared/services/User.service';
 
 const SearchPage = ({ sidebarShown }) => {
   /* Booleans */
@@ -56,19 +56,25 @@ const SearchPage = ({ sidebarShown }) => {
     setIsLoading(true);
   };
 
-  const fetchSearchHandler = useCallback(async (_searchCategory, keyword) => {
-    const searchResponse = await querySearch(
-      _searchCategory,
-      keyword.toLowerCase(),
-    );
+  const fetchSearchHandler = useCallback(async (_searchCategory, _searchParams) => {
+    let searchResponse = [];
+    const filterParams = Object.fromEntries(new URLSearchParams(_searchParams));
+    if (_searchCategory !== 'users') {
+      searchResponse = await querySearch(
+        _searchCategory,
+        (new URLSearchParams(_searchParams).get('keyword')).toLowerCase(),
+      );
+    } else {
+      searchResponse = await UserService.getUsers(filterParams);
+    }
     setSearchRequestResult(searchResponse);
     setIsLoading(false);
   }, []);
 
   useEffect(() => {
     setIsLoading(true);
-    fetchSearchHandler(searchCategory, searchedKeyword);
-  }, [fetchSearchHandler, searchCategory, searchedKeyword]);
+    fetchSearchHandler(searchCategory, search);
+  }, [fetchSearchHandler, searchCategory, search]);
 
   return (
     <Stack direction="column" sx={{ paddingLeft: paddingL }}>
