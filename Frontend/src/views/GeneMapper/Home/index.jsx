@@ -50,12 +50,13 @@ function GeneMapperHome() {
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'space-between',
-            paddingBottom: '2em',
-            marginTop:'10px'
+            paddingBottom: '1em',
+            marginTop: '1px',
           }}
         >
           <Stack direction="row" className="stack">
-            <Typography variant="h6" sx={{ marginTop: 0.5 }}>Your Mappings </Typography>
+
+            <Box sx={{ fontSize: 'h6.fontSize', padding: 3 }}>Your Mappings</Box>
             <ThemeProvider theme={themeIcon}>
               <PlusIcon />
             </ThemeProvider>
@@ -72,6 +73,7 @@ function GeneMapperHome() {
             size="small"
             value={findString}
             onChange={(e) => setFindString(e.target.value)}
+            sx={{ m: 2.5 }}
           />
         </Box>
         <div>
