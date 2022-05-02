@@ -9,6 +9,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { getInstitutionTeams } from "shared/services/mock/teams";
 import InstitutionTeamList from "components/institutions/InstitutionTeamList";
 import { useAuth } from "shared/context/authContext";
+import defaultBackgroundPicture from "assets/institution-default-background.jpg";
 
 function InstitutionPage() {
   let { id } = useParams();
@@ -60,7 +61,9 @@ function InstitutionPage() {
       <div
         className={styles.background}
         style={{
-          backgroundImage: `url(${institution.backgroundPictureURL})`,
+          backgroundImage: `url(${
+            institution.backgroundPictureURL || defaultBackgroundPicture
+          })`,
           resizeMode: "stretch",
         }}
       >
@@ -70,32 +73,57 @@ function InstitutionPage() {
             sx={{ width: 200, height: 200 }}
           />
         </div>
-        <div style={{display: 'flex', justifyContent:'center', marginBottom: '10px', marginTop: '10px'}}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginBottom: "10px",
+            marginTop: "10px",
+          }}
+        >
           <TextField
             minRows={1}
             maxRows={1}
             value={institution.name}
-            sx={{input: {textAlign: "center", color:"white",fontSize: 40, backgroundColor: 'rgba(0,38,68,0.5)', backdropFilter: 'blur(10px)', borderRadius: '34px'}}}
+            sx={{
+              input: {
+                textAlign: "center",
+                color: "white",
+                fontSize: 40,
+                backgroundColor: "rgba(0,38,68,0.5)",
+                backdropFilter: "blur(10px)",
+                borderRadius: "34px",
+              },
+            }}
             InputProps={{
               readOnly: !isAdmin(),
-              disableUnderline: true
+              disableUnderline: true,
             }}
-            style={{ width: '700px'}}
+            style={{ width: "700px" }}
             onChange={handleNameChange}
             variant="standard"
           />
         </div>
-        <div style={{display: 'flex', justifyContent:'center'}}>
+        <div style={{ display: "flex", justifyContent: "center" }}>
           <TextField
             minRows={1}
             maxRows={1}
             value={institution.country}
-            sx={{input: {textAlign: 'center', color:"white",fontSize: 25, backgroundColor: 'rgba(0,38,68,0.5)', backdropFilter: 'blur(10px)', borderRadius: '23px'}}}
+            sx={{
+              input: {
+                textAlign: "center",
+                color: "white",
+                fontSize: 25,
+                backgroundColor: "rgba(0,38,68,0.5)",
+                backdropFilter: "blur(10px)",
+                borderRadius: "23px",
+              },
+            }}
             InputProps={{
               readOnly: !isAdmin(),
-              disableUnderline: true
+              disableUnderline: true,
             }}
-            style={{ width: '300px'}}
+            style={{ width: "300px" }}
             onChange={handleCountryChange}
             variant="standard"
           />

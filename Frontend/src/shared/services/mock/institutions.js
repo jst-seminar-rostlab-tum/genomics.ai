@@ -1,5 +1,6 @@
 const mockLeftIds = [];
 let runningId = 3;
+import helmholtz from "assets/helmholtz-logo.jpg"
 
 export async function createInstitution(name, description) {
   // fake effect
@@ -26,7 +27,7 @@ const testInstitutions = [
     backgroundPictureURL: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Helmholtz_Zentrum_M%C3%BCnchen.jpg/2560px-Helmholtz_Zentrum_M%C3%BCnchen.jpg',
     adminIds: ["626bdb1ed76c8b968a50f833"],
     memberIds: [2],
-    avatarUrl: 'https://www.hzdr.de/db/Pic?pOid=55058',
+    avatarUrl: helmholtz,
   },
   {
     id: 2,
