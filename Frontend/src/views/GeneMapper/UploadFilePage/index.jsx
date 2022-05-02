@@ -139,7 +139,15 @@ function UploadFilePage({
                   <Stack direction="column">
                     {/* TODO model details */}
                     <Typography variant='h6' gutterBottom sx={{ fontWeight: 'bold' }}>{selectedModel.name}</Typography>
-                    <Typography variant='caption' gutterBottom>
+                    <Typography 
+                      variant='caption' 
+                      gutterBottom
+                      sx={{
+                        display: '-webkit-box',
+                        overflow: 'hidden',
+                        WebkitBoxOrient: 'vertical',
+                        WebkitLineClamp: 2,
+                      }}>
                       {selectedModel.description}
                     </Typography>
                     <Button size="small" disabled={!selectedModel} onClick={() => setModelInfoOpen(true)}>Learn More</Button>
