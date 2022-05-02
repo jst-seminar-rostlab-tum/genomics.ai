@@ -181,7 +181,7 @@ export default class TeamService {
     var filter: any, sortBy: any;
 
     queryParams.hasOwnProperty("keyword")
-      ? (filter = { name: queryParams.keyword })
+      ? (filter = { title: queryParams.keyword })
       : (filter = {});
     queryParams.hasOwnProperty("visibility") ? (filter.visibility = queryParams.visibility) : null;
 
@@ -191,6 +191,14 @@ export default class TeamService {
     } else sortBy = {};
 
     return await teamModel.find(filter).sort(sortBy);
+  }
+
+  static async getUsersTeams(userId: (ObjectId | string)):
+      Promise<ITeam[] | null> {
+        return await teamModel.find({ $or: [
+            {memberIds: {$elemMatch: {$eq: userId}}},
+            {adminIds: {$elemMatch: {$eq: userId}}}
+          ]});
   }
 
   /**

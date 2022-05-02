@@ -148,7 +148,7 @@ export default class ProjectService {
     var keyword: object, sortBy: any;
 
     queryParams.hasOwnProperty("keyword")
-      ? (keyword = { name: queryParams.keyword })
+      ? (keyword = { fileName: queryParams.keyword })
       : (keyword = {});
 
     if (queryParams.hasOwnProperty("sortBy")) {
