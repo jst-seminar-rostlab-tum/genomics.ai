@@ -181,7 +181,7 @@ export default class TeamService {
     var filter: any, sortBy: any;
 
     queryParams.hasOwnProperty("keyword")
-      ? (filter = { name: queryParams.keyword })
+      ? (filter = { title: queryParams.keyword })
       : (filter = {});
     queryParams.hasOwnProperty("visibility") ? (filter.visibility = queryParams.visibility) : null;
 
