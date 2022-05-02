@@ -5,7 +5,7 @@ import ListCard from 'components/general/ListCard';
 import InstitutionLeaveButton from 'components/institutionOverview/InstitutionLeaveButton';
 import styles from './institutionCard.module.css';
 
-import getUser from 'shared/services/mock/user';
+import getUser from 'shared/services/user';
 
 function InstitutionCard({ institution, onLeft }) {
   const [user, setUser] = useState({});

@@ -6,7 +6,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-import InstitutionService from 'shared/services/mock/Institution.service';
+import InstitutionService from 'shared/services/Institution.service';
 
 function InstitutionMemberRemoveButton({ institution, member, onRemoved }) {
   const [dialogOpen, setDialogOpen] = useState(false);

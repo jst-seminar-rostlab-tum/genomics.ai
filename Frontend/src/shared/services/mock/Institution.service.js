@@ -1,6 +1,6 @@
 import helmholtz from 'assets/helmholtz-logo.jpg';
 import tum from 'assets/tum-logo.png';
-import getMember from './members';
+import MemberService from './Member.service';
 
 const mockLeftIds = [];
 let runningId = 3;
@@ -68,9 +68,12 @@ const InstitutionService = {
     return testInstitutions.find((institution) => institution.id === id);
   },
 
-  getInstitutionMembers: async (institutionId) => {
+  async getMembers(institutionId) {
     const institution = await InstitutionService.getInstitution(institutionId);
-    return Promise.all([...institution.adminIds, ...institution.memberIds].map(getMember));
+    return Promise.all([
+      ...institution.adminIds,
+      ...institution.memberIds,
+    ].map(MemberService.getMember));
   },
 
   async removeMemberFromInstitution(institutionId, memberId) {

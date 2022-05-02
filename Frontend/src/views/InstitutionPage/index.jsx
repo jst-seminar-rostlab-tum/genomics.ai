@@ -64,8 +64,7 @@ function InstitutionPage() {
       <div
         className={styles.background}
         style={{
-          backgroundImage: `url(${
-            institution.backgroundPictureURL || defaultBackgroundPicture
+          backgroundImage: `url(${institution.backgroundPictureURL || defaultBackgroundPicture
           })`,
           resizeMode: 'stretch',
         }}
@@ -188,10 +187,10 @@ function InstitutionPage() {
               setInstitution({
                 ...institution,
                 adminIds: institution.adminIds.filter(
-                  (mId) => mId !== removedMember.id
+                  (mId) => mId !== removedMember.id,
                 ),
                 memberIds: institution.memberIds.filter(
-                  (mId) => mId !== removedMember.id
+                  (mId) => mId !== removedMember.id,
                 ),
               });
             }}

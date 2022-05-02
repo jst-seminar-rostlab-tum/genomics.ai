@@ -8,8 +8,8 @@ import TeamMemberList from 'components/teams/detail/TeamMemberList';
 import TeamAdminHeaderRight from 'components/teams/detail/TeamAdminHeaderRight';
 import TeamUserHeaderRight from 'components/teams/detail/TeamUserHeaderRight';
 import TeamHeaderOptions from 'components/teams/detail/TeamHeaderOptions';
-import { getTeam } from 'shared/services/mock/teams';
-import InstitutionService from 'shared/services/mock/Institution.service';
+import TeamService from 'shared/services/Team.service';
+import InstitutionService from 'shared/services/Institution.service';
 import TextField from '@mui/material/TextField';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import Fab from '@mui/material/Fab';
@@ -20,7 +20,7 @@ export default function TeamPage({ sidebarShown }) {
   const [team, setTeam] = useState({});
   const [user] = useAuth();
   const [institution, setInstitution] = useState({});
-  const [adminInstitutions, setAdminInstitutions] = useState([]);
+  const [adminInstitutions] = useState([]);
 
   function isAdmin() {
     return (team.adminIds || []).includes(user.id);
@@ -34,9 +34,10 @@ export default function TeamPage({ sidebarShown }) {
   };
 
   useEffect(() => {
-    getTeam(parseInt(id, 10))
+    if (id == null) return;
+    TeamService.getTeam(id)
       .then(setTeam)
-      .catch((ignored) => { console.error(ignored); });
+      .catch(console.error);
   }, [setTeam, isAdmin]);
 
   // Institution may be undefined
@@ -45,10 +46,10 @@ export default function TeamPage({ sidebarShown }) {
       .then((newInstitution) => setInstitution(newInstitution));
   }, [team, setInstitution]);
 
-  useEffect(() => {
-    InstitutionService.queryIsAdminInstitutions(user.id)
-      .then((newAdminInstitutions) => setAdminInstitutions(newAdminInstitutions));
-  }, [user, setAdminInstitutions]);
+  // useEffect(() => {
+  //   InstitutionService.queryIsAdminInstitutions(user.id)
+  //     .then((newAdminInstitutions) => setAdminInstitutions(newAdminInstitutions));
+  // }, [user, setAdminInstitutions]);
 
   return (
     <HeaderView
