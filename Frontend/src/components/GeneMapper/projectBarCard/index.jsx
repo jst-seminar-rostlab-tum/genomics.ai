@@ -9,7 +9,7 @@ import CircleIcon from '@mui/icons-material/Circle';
 import { useHistory } from 'react-router-dom';
 import { getSubmissionProgressPercentage } from 'shared/services/UploadLogic';
 import {
-  MULTIPART_UPLOAD_STATUS, MULTIPART_UPLOAD_STATUS as Status, statusIsError, statusIsUpload,
+  MULTIPART_UPLOAD_STATUS, MULTIPART_UPLOAD_STATUS as Status, statusIsError, statusIsUpload, PROJECT_STATUS,
 } from 'shared/utils/common/constants';
 import Clear from '@mui/icons-material/Clear';
 import ReplayIcon from '@mui/icons-material/Replay';
@@ -32,9 +32,11 @@ export default function ProjectBarCard({
 }) {
   const history = useHistory();
 
-  const color = status === 'DONE'
+  const color = status === PROJECT_STATUS.DONE
     ? 'lightGreen'
-    : status === 'ABORTED' || (!submissionProgress && status === 'UPLOAD_PENDING')
+    : status === PROJECT_STATUS.ABORTED
+    || (!submissionProgress && status === PROJECT_STATUS.UPLOAD_PENDING)
+    || status === PROJECT_STATUS.PROCESSING_FAILED
       ? 'red'
       : 'orange';
 
@@ -96,15 +98,15 @@ export default function ProjectBarCard({
               <Box
                 sx={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}
               >
-                {status === 'UPLOAD_PENDING'
+                {status === PROJECT_STATUS.UPLOAD_PENDING
                    && (
                    <Typography variant="caption">
                      Upload failed or canceled
                    </Typography>
                    )}
-                {status === 'PROCESSING_PENDING'
+                {status === PROJECT_STATUS.PROCESSING_PENDING
                    && <ProcessingStatus />}
-                {status === 'ABORTED'
+                {(status === PROJECT_STATUS.ABORTED || status === PROJECT_STATUS.PROCESSING_FAILED)
                    && <Typography variant="caption">Processing failed</Typography>}
               </Box>
             )
@@ -137,16 +139,6 @@ export default function ProjectBarCard({
           >
             See Results
           </Button>
-
-          {/* <CustomButton
-            type="primary"
-            sx={{
-              outerHeight: '70%',
-            }}
-          >
-            Create Mapping
-          </CustomButton> */}
-
         </Box>
       </Stack>
     </Card>

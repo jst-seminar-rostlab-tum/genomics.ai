@@ -9,7 +9,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import ProjectMock from 'shared/services/mock/projects';
 import ProjectService from 'shared/services/Project.service';
 import { useSubmissionProgress } from 'shared/context/submissionProgressContext';
-import { MULTIPART_UPLOAD_STATUS, statusIsError } from 'shared/utils/common/constants';
+import { MULTIPART_UPLOAD_STATUS, PROJECTS_UPDATE_INTERVAL, statusIsError } from 'shared/utils/common/constants';
 
 const theme = createTheme({
   palette: {
@@ -51,7 +51,7 @@ function GeneMapperHome() {
           uploadedParts: [],
         });
       }
-    }, 5000);
+    }, PROJECTS_UPDATE_INTERVAL);
 
     return () => {
       clearInterval(timer);
