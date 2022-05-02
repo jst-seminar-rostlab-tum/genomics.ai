@@ -22,7 +22,7 @@ const testInstitutions = [
     backgroundPictureURL: 'https://www.in.tum.de/fileadmin/_processed_/5/5/csm_2006_1015Bild0136_9dc504e910.jpg',
     avatarUrl: 'https://scalings.eu/wp-content/uploads/2019/11/tum-logo.png',
     adminIds: [1],
-    memberIds: [2, 3, 4, 5],
+    memberIds: ['626bdb1ed76c8b968a50f833', 2, 3, 4, 5],
   },
   {
     id: '3',
@@ -31,7 +31,7 @@ const testInstitutions = [
     avatarUrl: 'https://avatars.githubusercontent.com/u/4093405?s=200&v=4',
     backgroundPictureURL: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjsC9c9x8ABK8CXkzrf1cAAAAASUVORK5CYII=',
     adminIds: [1],
-    memberIds: [2, 3, 4, 5],
+    memberIds: ['626bdb1ed76c8b968a50f833', 2, 3, 4, 5],
   },
 ];
 
