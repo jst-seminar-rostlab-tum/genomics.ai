@@ -1,21 +1,21 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import LabeledSelect from '../LabeledSelect';
 
 // Teams Filter needed only in the team category
 const TeamsFilter = ({ visibility, onChange }) => {
   const visibilityItems = [
     { label: 'All', value: '' },
-    { label: 'Public', value: 'public' },
-    { label: 'Private', value: 'private' },
-    { label: 'By institution', value: 'byInstitution' },
+    { label: 'Public', value: 'PUBLIC' },
+    { label: 'Private', value: 'PRIVATE' },
+    { label: 'By institution', value: 'BYINSTITUTION' },
   ];
 
-  useEffect(
-    () => () => {
-      onChange('visibility', '');
-    },
-    [],
-  );
+  // useEffect(
+  //   () => () => {
+  //     onChange('visibility', '');
+  //   },
+  //   [],
+  // );
 
   return (
     <LabeledSelect
