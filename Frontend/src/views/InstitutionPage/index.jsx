@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import TextField from "@mui/material/TextField";
+import EditIcon from '@mui/icons-material/ModeEditOutline';
 import InstitutionMemberList from "components/institutions/InstitutionMemberList";
 import styles from "./institutionPage.module.css";
 import CircularProgress from "@mui/material/CircularProgress";
 import InstitutionTeamList from "components/institutions/InstitutionTeamList";
 import InstitutionAvatar from "components/institutions/InstitutionAvatar";
+import InstitutionBackgroundImageUploadDialog from "components/general/upload/InstitutionBackgroundImageUploadDialog";
 import { useAuth } from "shared/context/authContext";
 import InstitutionService from "shared/services/Institution.service";
 import defaultBackgroundPicture from "assets/institution-default-background.jpg";
@@ -15,6 +17,7 @@ function InstitutionPage() {
   const [institution, setInstitution] = useState({});
   const [user] = useAuth();
   const [institutionLoaded, setInstitutionLoaded] = useState(false);
+  const [backgroundUploadOpen, setBackgroundUploadOpen] = useState(false);
 
   function isAdmin() {
     return (institution.adminIds || []).includes(user._id);
@@ -135,6 +138,10 @@ function InstitutionPage() {
             {` Members`}
           </span>
         </p>
+        <button className={styles.bgImgEditButton} type="button" onClick={() => setBackgroundUploadOpen(true)}>
+          <span>Edit Background</span>
+          <EditIcon fontSize="small" />
+        </button>
       </div>
       <div className={styles.test}>
         <section>
@@ -184,6 +191,17 @@ function InstitutionPage() {
           />
         </section>
       </div>
+      <InstitutionBackgroundImageUploadDialog
+        institution={institution}
+        open={backgroundUploadOpen}
+        onClose={() => setBackgroundUploadOpen(false)}
+        onChange={(imgURL) => {
+          setInstitution({
+            ...institution,
+            backgroundPictureURL: imgURL,
+          });
+        }}
+      />
     </>
   );
 }
