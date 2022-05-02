@@ -524,6 +524,24 @@ const get_users_teams = (): Router => {
   return router;
 }
 
+const get_team = (): Router => {
+  let router = express.Router();
+  router.get("/teams/:id", check_auth(), async (req: any, res) => {
+    const teamsId = req.params.id;
+    try {
+      const team = await TeamService.getTeamById(teamsId);
+
+      if( team != null )
+        return res.status(200).json(team);
+      return res.status(404).send(`Team ${teamsId} not found`);
+    } catch (err) {
+      console.error(JSON.stringify(err));
+      return res.status(500).send(`Internal server error`);
+    }
+  });
+  return router;
+};
+
 export {
   create_team,
   invite_person_to_a_team,
@@ -534,5 +552,6 @@ export {
   add_project_to_team,
   get_teams,
   get_users_teams,
-  disjoin_member
+  disjoin_member,
+  get_team
 };
