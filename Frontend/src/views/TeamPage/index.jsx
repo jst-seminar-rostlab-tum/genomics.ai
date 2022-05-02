@@ -9,7 +9,7 @@ import TeamAdminHeaderRight from 'components/teams/detail/TeamAdminHeaderRight';
 import TeamUserHeaderRight from 'components/teams/detail/TeamUserHeaderRight';
 import TeamHeaderOptions from 'components/teams/detail/TeamHeaderOptions';
 import { getTeam } from 'shared/services/mock/teams';
-import { getInstitution, queryIsAdminInstitutions } from 'shared/services/mock/institutions';
+import InstitutionService from 'shared/services/mock/Institution.service';
 import TextField from '@mui/material/TextField';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import Fab from '@mui/material/Fab';
@@ -41,12 +41,12 @@ export default function TeamPage({ sidebarShown }) {
 
   // Institution may be undefined
   useEffect(() => {
-    getInstitution(team.institutionId)
+    InstitutionService.getInstitution(team.institutionId)
       .then((newInstitution) => setInstitution(newInstitution));
   }, [team, setInstitution]);
 
   useEffect(() => {
-    queryIsAdminInstitutions(user.id)
+    InstitutionService.queryIsAdminInstitutions(user.id)
       .then((newAdminInstitutions) => setAdminInstitutions(newAdminInstitutions));
   }, [user, setAdminInstitutions]);
 

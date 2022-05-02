@@ -6,7 +6,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-import { removeMemberFromInstitution } from 'shared/services/mock/institutions';
+import InstitutionService from 'shared/services/mock/Institution.service';
 
 function InstitutionMemberRemoveButton({ institution, member, onRemoved }) {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -15,7 +15,7 @@ function InstitutionMemberRemoveButton({ institution, member, onRemoved }) {
   const handleCloseDialog = () => setDialogOpen(false);
 
   async function remove() {
-    await removeMemberFromInstitution(institution.id, member.id);
+    await InstitutionService.removeMemberFromInstitution(institution.id, member.id);
     handleCloseDialog();
     onRemoved(institution, member);
   }

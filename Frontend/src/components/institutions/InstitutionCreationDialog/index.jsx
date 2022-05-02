@@ -7,7 +7,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { createInstitution } from 'shared/services/mock/institutions';
+import InstitutionService from 'shared/services/mock/Institution.service';
 
 export default function InstitutionCreationDialog({ open, handleClose, onCreated }) {
   const [name, setName] = useState('');
@@ -25,7 +25,7 @@ export default function InstitutionCreationDialog({ open, handleClose, onCreated
     }
     if (!name || !description) return;
     setLoading(true);
-    const newInstitution = await createInstitution(name, description);
+    const newInstitution = await InstitutionService.createInstitution(name, description);
     onCreated(newInstitution);
     setLoading(false);
     handleClose();

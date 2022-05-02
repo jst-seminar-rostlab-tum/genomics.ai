@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import TextField from "@mui/material/TextField";
-import { getInstitution } from "shared/services/mock/institutions";
 import InstitutionMemberList from "components/institutions/InstitutionMemberList";
 import styles from "./institutionPage.module.css";
 import CircularProgress from "@mui/material/CircularProgress";
-import { getInstitutionTeams } from "shared/services/mock/teams";
 import InstitutionTeamList from "components/institutions/InstitutionTeamList";
 import InstitutionAvatar from "components/institutions/InstitutionAvatar";
 import { useAuth } from "shared/context/authContext";
@@ -62,16 +60,13 @@ function InstitutionPage() {
       <div
         className={styles.background}
         style={{
-          backgroundImage: `url(${
-            institution.backgroundPictureURL || defaultBackgroundPicture
-          })`,
+          backgroundImage: `url(${institution.backgroundPictureURL || defaultBackgroundPicture})`,
           resizeMode: "stretch",
         }}
       >
         <div className={styles.institutionIcon}>
           <InstitutionAvatar
             institution={institution}
-            editable={isAdmin()}
             onChange={(newUrl) => {
               // update without reload
               setInstitution({ ...institution, avatarUrl: newUrl });
