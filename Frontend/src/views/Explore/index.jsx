@@ -4,7 +4,6 @@ import {
 } from 'react-router-dom';
 import { Box } from '@mui/material';
 import Grid from '@mui/material/Grid';
-<<<<<<< HEAD
 import { TabGroup } from 'components/Tab';
 import Search from 'components/Search';
 import { Filter } from 'components/Filter/Filter';
@@ -17,28 +16,13 @@ import Mapper from 'components/Mapper';
 import LoginForm from 'components/LoginForm';
 import RegistrationForm from 'components/RegistrationForm';
 import './Explore.css';
-import { FunctionsRounded } from '@mui/icons-material';
-=======
 import { useState, useEffect, useCallback } from 'react'
 
-import { TabGroup } from 'components/Tab'
-import Search from 'components/Search'
-import Filter from 'components/Filter'
-import NavBar from 'components/NavBar'
-import Breadcrumb from "components/Breadcrumb"
-import AtlasCard from 'components/Cards/AtlasCard'
-import DatasetCard from 'components/Cards/DatasetCard'
-import { ModelCard } from 'components/Cards/ModelCard'
-import Mapper from "components/Mapper"
-import LoginForm from 'components/LoginForm'
-import RegistrationForm from 'components/RegistrationForm'
 import ModelsService from 'shared/services/Models.service'
 import AtlasService from 'shared/services/Atlas.service'
 
-import './Explore.css'
 import { useLocation } from 'react-router-dom';
 import { useAuth } from 'shared/context/authContext';
->>>>>>> develop-frontend-2
 
 const tmpObj = [
   {
