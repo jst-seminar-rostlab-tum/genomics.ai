@@ -14,7 +14,7 @@ function InstitutionMemberList({ institution, onRemoved }) {
     setIsLoading(true);
     setMembers(await InstitutionService.getInstitutionMembers(institution.id));
     setIsLoading(false);
-  }, []);
+  }, [institution]);
 
   if (isLoading) {
     return <CircularProgress />;
