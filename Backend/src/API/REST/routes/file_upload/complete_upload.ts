@@ -58,8 +58,9 @@ export default function upload_complete_upload_route() {
             ModelService.getModelById(project.modelId),
             AtlasService.getAtlasById(project.atlasId),
           ]);
-          if (!model) {
-            return res.status(500).send("Could not find model");
+          if (!model || !atlas) {
+            await ProjectService.updateProjectById(params.UploadId, {status: ProjectStatus.PROCESSING_FAILED});
+            return res.status(500).send(`Could not find ${!model ? "model" : "atlas"}`);
           }
           let queryInfo = {
             model: model.name,

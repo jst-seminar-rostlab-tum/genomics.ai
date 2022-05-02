@@ -1,9 +1,9 @@
 {
     "email": "a@a.de",
-    "password": "a",
-    "filepath": "minio.Dockerfile",
-    "projectName": "myproject",
-    "atlasId": "atlas1",
-    "modelId": "model1",
+    "password": "abcdefg",
+    "filepath": "query.h5ad",
+    "projectName": "a project",
+    "atlasId": "0123456789abcdeffedcba98",
+    "modelId": "0123456789abcdeffedcba98",
     "chunkSize": 5242880 
 }
