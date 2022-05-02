@@ -1,5 +1,6 @@
 import { Box, Button, Typography } from "@mui/material"
 import { useEffect, useRef, useState } from "react"
+import { useHistory } from "react-router-dom"
 import { colors } from "shared/theme/colors"
 
 // Outlined Button specific to Models and Atlases
@@ -42,7 +43,7 @@ export const ModelCard = ({ width = "100%", height = "100%", title, description,
 
     // checks if the parent element is wider than it is longer
     // if it is, converts the flex direction to row
-    if(ref.current.clientWidth > ref.current.clientHeight) {
+    if (ref.current.clientWidth > ref.current.clientHeight) {
       setFlexDir("row")
     }
   }, [])
@@ -56,30 +57,30 @@ export const ModelCard = ({ width = "100%", height = "100%", title, description,
     >
       <Box
         ref={ref}
-        sx={{ 
-          width: "100%", 
-          height: "100%", 
-          position: "relative", 
-          cursor: "pointer", 
-          display: "flex", 
-          flexDirection: "column", 
+        sx={{
+          width: "100%",
+          height: "100%",
+          position: "relative",
+          cursor: "pointer",
+          display: "flex",
+          flexDirection: "column",
           justifyContent: "center"
         }}
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
-        >  
+      >
         {
-          hover && 
-          <Box 
-          style={{ background: "linear-gradient(#4F83CC, #01579B)" }} 
-          sx={{ 
-            position: "absolute", 
-            width: "100%", 
-            height: "100%", 
-            borderRadius: "1.2rem",
-            p:"1rem",
-            opacity: 0.9
-          }}>
+          hover &&
+          <Box
+            style={{ background: "linear-gradient(#4F83CC, #01579B)" }}
+            sx={{
+              position: "absolute",
+              width: "100%",
+              height: "100%",
+              borderRadius: "1.2rem",
+              p: "1rem",
+              opacity: 0.9
+            }}>
             <Box
               sx={{
                 display: "flex",
@@ -97,19 +98,19 @@ export const ModelCard = ({ width = "100%", height = "100%", title, description,
             </Box>
           </Box>
         }
-      <Box sx={{ 
-        width: '100%',
-        height: "100%",
-        display: "flex", 
-        flexDirection: "column", 
-        p: "1.2rem", 
-        boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.15)", 
-        borderRadius: "1.2rem",
-      }}
-      >
-        <Typography sx={{ fontSize: "1.4rem", fontWeight: "bold" }}>{title}</Typography>
-        <Typography sx={{ fontSize: "1rem", color: colors.neutral[800] }}>{description}</Typography>
-      </Box>
+        <Box sx={{
+          width: '100%',
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          p: "1.2rem",
+          boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.15)",
+          borderRadius: "1.2rem",
+        }}
+        >
+          <Typography sx={{ fontSize: "1.4rem", fontWeight: "bold" }}>{title}</Typography>
+          <Typography sx={{ fontSize: "1rem", color: colors.neutral[800] }}>{description}</Typography>
+        </Box>
       </Box>
     </Box>
   )
