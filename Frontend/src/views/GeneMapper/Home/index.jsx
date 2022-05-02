@@ -9,6 +9,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import ProjectMock from 'shared/services/mock/projects';
 import ProjectService from 'shared/services/Project.service';
 import { useSubmissionProgress } from 'shared/context/submissionProgressContext';
+import { MULTIPART_UPLOAD_STATUS, statusIsError } from 'shared/utils/common/constants';
 
 const theme = createTheme({
   palette: {
@@ -38,16 +39,29 @@ function GeneMapperHome() {
     ProjectService.getProjects().then((data) => setProjects(data));
     const timer = setInterval(() => {
       ProjectService.getProjects().then((data) => setProjects(data));
-    }, 1000);
+      if (submissionProgress.status === MULTIPART_UPLOAD_STATUS.COMPLETE
+        || submissionProgress.status === MULTIPART_UPLOAD_STATUS.CANCELING
+        || statusIsError(submissionProgress.status)) {
+        setSubmissionProgress({
+          status: MULTIPART_UPLOAD_STATUS.IDLE,
+          uploadId: '',
+          chunks: 0,
+          uploaded: 0,
+          remaining: [],
+          uploadedParts: [],
+        });
+      }
+    }, 5000);
 
     return () => {
       clearInterval(timer);
     };
-  }, []);
+  }, [submissionProgress.status]);
 
   return (
     <div>
       <ThemeProvider theme={theme}>
+        {Object.entries(submissionProgress).map(([key, value]) => <Typography>{`${key}: ${value}` }</Typography>)}
         <Box
           sx={{
             display: 'flex',
