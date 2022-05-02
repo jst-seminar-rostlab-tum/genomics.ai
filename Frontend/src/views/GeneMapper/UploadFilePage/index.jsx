@@ -1,14 +1,13 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 import {
-  Button, Box, Container, Divider, Stack, Typography,
+  Button, Box, Container, Divider, Grid, Stack, Typography,
 } from '@mui/material';
 import { GeneralCard as Card } from 'components/Cards/GeneralCard';
 import CustomButton from 'components/CustomButton';
 import FileUpload from 'components/FileUpload';
 import Input from 'components/Input/Input';
 import { Modal, ModalTitle } from 'components/Modal';
-import { TabGroup } from 'components/Tab';
 import React, { useState, useEffect, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import styles from './uploadfilepage.module.css';
@@ -16,32 +15,21 @@ import ProjectMock from 'shared/services/mock/projects';
 import ProjectService from 'shared/services/Project.service';
 import { useSubmissionProgress } from 'shared/context/submissionProgressContext';
 import { TabCard } from 'components/GeneMapper/TabCard';
-import { colors } from 'shared/theme/colors';
 
 function UploadFilePage({
   path, selectedAtlas, selectedModel, setActiveStep
 }) {
   const [uploadedFile, setUploadedFile] = useState();
+  const [selectedDataset, setSelectedDataset] = useState();
   const [mappingName, setMappingName] = useState('');
   const [existingDatasets, setExistingDatasets] = useState([]);
-  // const [ongoingUploads, setOngoingUploads] = useState([]);
   const [tabsValue, setTabsValue] = useState(0);
   const [requirements, setRequirements] = useState([]);
   const [open, setOpen] = useState(false);
   const [atlasInfoOpen, setAtlasInfoOpen] = useState(false);
   const [modelInfoOpen, setModelInfoOpen] = useState(false);
-  const [openUploadConfirmation, setOpenUploadConfirmation] = useState(false);
   const [submissionProgress, setSubmissionProgress] = useSubmissionProgress();
   const history = useHistory();
-
-  const [tabLabels, setTabLabels] = useState([
-    {
-      label: 'Exisiting Datasets',
-      additionalContent: (
-        <Typography>Loading datasets...</Typography>
-      ),
-    },
-  ]);
 
   useEffect(() => {
     setRequirements(selectedModel.requirements);
@@ -50,22 +38,6 @@ function UploadFilePage({
   useEffect(() => {
     ProjectMock.getDatasets().then((data) => {
       setExistingDatasets(data);
-      setTabLabels(
-        [
-          {
-            label: 'Exisiting Datasets',
-            additionalContent: (
-              <Box sx={{ flexDirection: 'column', maxHeight: '50%' }}>
-                { existingDatasets ? existingDatasets.map(data => {
-                    return <TabCard fileName={data.name} status={data.status} width='95%' height='3em' />
-                  }) :
-                  <Typography>No existing datasets available.</Typography>
-                }
-              </Box>
-            ),
-          },
-        ]
-      )
     });
   }, [existingDatasets]);
 
@@ -90,21 +62,25 @@ function UploadFilePage({
   }, [submissionProgress]);
 
   const handleSubmit = () => {
+    console.log(selectedDataset)
     // save mapping name
     setOpen(false); // opens modal to input mapping name
-    createProject(mappingName, '111122223333444455556666', '011122223333444455556666', uploadedFile[0]);
+    createProject(mappingName, '111122223333444455556666', '011122223333444455556666', uploadedFile ? uploadedFile[0] : selectedDataset);
     history.push(`${path}`); // go back to GeneMapper home
   };
+
+  const handleSelectDataset = (data) => {
+    setSelectedDataset(data);
+  }
 
   return (
     <Box sx={{ marginTop: '2.5em' }}>
       <Stack
         direction="row"
         divider={(<Divider className={styles.divider} orientation="vertical" flexItem />)}
-        justifyContent="space-between"
       >
         {/* Left side */}
-        <Container>
+        <Box width='50%' mr='3%'>
           <Stack direction="column">
             <Typography variant='h5' fontWeight='bold' pb='1em'>Your Choice</Typography>
             <Stack direction="row" spacing={2} sx={{ paddingBottom: '1.5em' }}>
@@ -167,29 +143,30 @@ function UploadFilePage({
               )}
               />
             </Stack>
-            <Card
-              bg={colors.neutral[100]}
-              children={(
-                <Box sx={{ flexDirection:'column', minHeight: '19.5em'}}>
-                  <Typography variant='h6' fontWeight='bold'>Consquent Requirements</Typography>
-                  { requirements
-                    ? requirements.map((text) => (
-                      <Typography variant='body2' gutterBottom>
-                        <li>{text}</li>
-                      </Typography>
-                    ))
-                    : (
-                      <Typography variant="body2" gutterBottom fontWeight='bold'>
-                        There are no consequent requirements!
-                      </Typography>
-                    )}
-                </Box>
-            )}
-            />
+            <Stack>
+              <Typography variant='h5' fontWeight='bold' pb='1em'>Consquent Requirements</Typography>
+              <Card
+                children={(
+                  <Box sx={{ flexDirection:'column', minHeight: '18em'}}>
+                    { requirements
+                      ? requirements.map((text, i) => (
+                        <Typography variant='body2' gutterBottom>
+                          <li key={i}>{text}</li>
+                        </Typography>
+                      ))
+                      : (
+                        <Typography variant="body2" gutterBottom fontWeight='bold'>
+                          There are no consequent requirements!
+                        </Typography>
+                      )}
+                  </Box>
+                )}
+              />
+            </Stack>
           </Stack>
-        </Container>
+        </Box>
         {/* Right side */}
-        <Container>
+        <Box width='50%' ml='3%'>
           <Modal
             isOpen={open}
             setOpen={setOpen}
@@ -201,7 +178,6 @@ function UploadFilePage({
                   placeholder="Enter name here"
                   defaultValue={mappingName}
                   onChangeEvent={setMappingName}
-                  disabledHandler
                   isRequired
                 />
                 <Stack direction="row">
@@ -211,46 +187,48 @@ function UploadFilePage({
               </Container>
             )}
           />
-          {/* Modal to confirm that file is being uploaded */}
-          <Modal
-            isOpen={openUploadConfirmation}
-            setOpen={setOpenUploadConfirmation}
-            children={(
-              <Container>
-                <ModalTitle>File Upload Confirmation</ModalTitle>
-                <Typography variant='body1' gutterBottom>
-                  { uploadedFile && 'The file \"' +  uploadedFile[0].name + '\" is being uploaded!'}
-                </Typography>
-                <Button size="large" onClick={() => setOpenUploadConfirmation(false)}>Close</Button>
-              </Container>
-            )}
-          />
-          <Stack className="flexContainer" direction="column">
+          <Stack className="flexContainer" direction="column" pb='1em'>
             <Typography variant='h5' fontWeight='bold' pb='1em'>Upload Datasets</Typography>
             <FileUpload
               height="250px"
               handleFileUpload={handleOnDropChange}
             />
           </Stack>
-          <Box>
-            <TabGroup tabsInfo={tabLabels} value={tabsValue} setValue={setTabsValue} />
-          </Box>
-        </Container>
+          <Stack mt='1em' maxHeight='50%'>
+            <Typography variant='h5' fontWeight='bold' pb='1em'>Select Existing Datasets</Typography>
+            {/* <Grid container direction='column' spacing={1} overflow='auto' wrap='nowrap'>
+                { existingDatasets ? existingDatasets.map(data => {
+                    return <TabCard fileName={data.name} status={data.status} width='95%' height='3em' />
+                  }) :
+                  <Typography>No existing datasets available.</Typography>
+                }
+            </Grid> */}
+            { existingDatasets ? existingDatasets.map(data => {
+                return <TabCard data={data} width='95%' height='3em' handleOnClick={() => handleSelectDataset(data)} selected={selectedDataset && data._id === selectedDataset._id} />
+              }) :
+              <Typography>No existing datasets available.</Typography>
+            }
+          </Stack>
+        </Box>
       </Stack>
       <Stack direction="row" justifyContent="space-between" sx={{ marginTop: '75px', marginBottom: '3em'}}>
         <CustomButton type="tertiary" onClick={() => setActiveStep(0)}>
           <ArrowBackIcon sx={{marginRight: '2px'}} />
           Back
         </CustomButton>
-        <CustomButton
-          type="primary"
-          onClick={() => {
-            setOpen(true);
-          }}
-        >
-          Create Mapping
-          <CheckCircleOutlineIcon sx={{marginLeft: '4px'}} />
-        </CustomButton>
+        <Stack direction='row' spacing={3} alignItems='center'>
+          <Typography variant='h6' fontWeight='bold'>{uploadedFile && 'Selected file: ' + uploadedFile[0].name}</Typography>
+          <CustomButton
+            type="primary"
+            disabled={!uploadedFile && !selectedDataset}
+            onClick={() => {
+              setOpen(true);
+            }}
+          >
+            Create Mapping
+            <CheckCircleOutlineIcon sx={{marginLeft: '4px'}} />
+          </CustomButton>
+        </Stack>
       </Stack>
     </Box>
   );
