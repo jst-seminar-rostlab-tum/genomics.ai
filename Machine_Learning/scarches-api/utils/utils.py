@@ -37,8 +37,8 @@ def write_full_adata_to_csv(model, source_adata, target_adata, key=None, filenam
     return write_adata_to_csv(model, adata_full, key, filename, drop_columns, cell_type_key, condition_key, neighbors)
 
 
-def write_adata_to_csv(model, adata, key=None, filename=tempfile.mktemp(), drop_columns=None, cell_type_key='',
-                       condition_key='', neighbors=8):
+def write_adata_to_csv(model, adata, key=None, filename=tempfile.mktemp(), drop_columns=None, cell_type_key='cell_type',
+                       condition_key='study', neighbors=8):
     latent = scanpy.AnnData(model.get_latent_representation(adata=adata))
     latent.obs['cell_type'] = adata.obs[cell_type_key].tolist()
     latent.obs['batch'] = adata.obs[condition_key].tolist()

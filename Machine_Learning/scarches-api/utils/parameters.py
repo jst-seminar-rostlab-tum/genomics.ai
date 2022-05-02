@@ -28,6 +28,8 @@ UNLABELED_KEY = 'unlabeled_key'
 SCANVI_MAX_EPOCHS = 'scanvi_max_epochs'
 # sets the number of max epochs for scVI
 SCVI_MAX_EPOCHS = 'scvi_max_epochs'
+# sets the number of max epochs for scVI
+SCVI_QUERY_MAX_EPOCHS = 'scvi_max_epochs_query'
 # sets the number of neighbors
 NUMBER_OF_NEIGHBORS = 'n_neighbors'
 # sets the maximum number of epochs
@@ -70,3 +72,5 @@ TOTALVI_MAX_EPOCHS_1 = 'totalvi_max_epochs_1'
 TOTALVI_MAX_EPOCHS_2 = 'totalvi_max_epochs_2'
 # sets if we need to do surgery
 SCANVI_DO_SURGERY = 'scanvi_do_surgery'
+# set dev debug level, storing almost everything that is being computed
+DEV_DEBUG = 'development-mode'

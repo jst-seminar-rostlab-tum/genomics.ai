@@ -9,6 +9,8 @@ import numpy as np
 import torch
 from utils import utils, parameters
 import logging
+import tempfile
+import sys
 
 config = {}
 
@@ -51,6 +53,7 @@ def get_scanvi_from_scvi_model(scvi_model):
 
 def get_latent(model, adata):
     reference_latent = scanpy.AnnData(model.get_latent_representation())
+    print(get_from_config(parameters.CELL_TYPE_KEY), file=sys.stderr)
     reference_latent.obs["cell_type"] = adata.obs[get_from_config(parameters.CELL_TYPE_KEY)].tolist()
     reference_latent.obs["batch"] = adata.obs[get_from_config(parameters.CONDITION_KEY)].tolist()
 
@@ -92,7 +95,7 @@ def surgery(reference_latent, source_adata, anndata):
     if get_from_config(parameters.DEBUG):
         utils.save_umap_as_pdf(surgery_latent, 'figures/surgery.pdf', color=['batch', 'cell_type'])
 
-    #utils.write_combined_csv(reference_latent, surgery_latent, key=get_from_config(parameters.OUTPUT_PATH))
+    # utils.write_combined_csv(reference_latent, surgery_latent, key=get_from_config(parameters.OUTPUT_PATH))
     utils.write_full_adata_to_csv(model, source_adata, anndata, key=get_from_config(parameters.OUTPUT_PATH),
                                   cell_type_key=get_from_config(parameters.CELL_TYPE_KEY),
                                   condition_key=get_from_config(parameters.CONDITION_KEY))
@@ -104,10 +107,23 @@ def surgery(reference_latent, source_adata, anndata):
     return model, surgery_latent
 
 
+def get_scanvi_model(reference_latent, anndata, source_adata):
+    if get_from_config(parameters.USE_PRETRAINED_SCANVI_MODEL):
+        if get_from_config(parameters.DEV_DEBUG):
+            print('use pretrained scanvi model', file=sys.stderr)
+        return scarches.models.SCANVI.load_query_data(
+            anndata,
+            'assets/scVI/',
+            freeze_dropout=True,
+        ), None
+    else:
+        pass
+
+
 def query(reference_latent, anndata, source_adata):
     model = scarches.models.SCANVI.load_query_data(
         anndata,
-        get_from_config(parameters.RESULTING_MODEL_PATH),
+        'assets/scANVI/',
         freeze_dropout=True,
     )
 
@@ -123,13 +139,21 @@ def query(reference_latent, anndata, source_adata):
         plan_kwargs=dict(weight_decay=0.0),
         check_val_every_n_epoch=10,
     )
-
+    tempdir = tempfile.mkdtemp()
+    model.save(tempdir, overwrite=True)
+    if get_from_config(parameters.DEV_DEBUG):
+        try:
+            utils.store_file_in_s3(tempdir + '/model.pt', 'scanvi-model-after-query-training.pt')
+        except Exception as e:
+            print(e, file=sys.stderr)
+    utils.delete_file(tempdir + '/model.pt')
+    os.removedirs(tempdir)
     query_latent = get_latent(model, anndata)
 
     if get_from_config(parameters.DEBUG):
         utils.save_umap_as_pdf(query_latent, 'figures/query.pdf', color=['batch', 'cell_type'])
 
-    #utils.write_combined_csv(reference_latent, query_latent, key=get_from_config(parameters.OUTPUT_PATH))
+    # utils.write_combined_csv(reference_latent, query_latent, key=get_from_config(parameters.OUTPUT_PATH))
     utils.write_full_adata_to_csv(model, source_adata, anndata, key=get_from_config(parameters.OUTPUT_PATH),
                                   cell_type_key=get_from_config(parameters.CELL_TYPE_KEY),
                                   condition_key=get_from_config(parameters.CONDITION_KEY))
@@ -195,17 +219,34 @@ def compute_scANVI(configP):
     setup_modules()
 
     source_adata, target_adata = pre_process_data()
-    scVI.set_config(configP)
 
-    vae = scVI.create_scVI_model(source_adata, target_adata)
-
-    scanvi = get_scanvi_from_scvi_model(vae)
+    scanvi = None
+    if get_from_config(parameters.USE_PRETRAINED_SCANVI_MODEL):
+        scanvi = scarches.models.SCANVI.load_query_data(
+            target_adata,
+            'assets/scANVI/',
+            freeze_dropout=True,
+        )
+    else:
+        scVI.set_config(configP)
+        vae = scVI.create_scVI_model(source_adata, target_adata)
+        scanvi = get_scanvi_from_scvi_model(vae)
 
     if get_from_config(parameters.DEBUG):
         print("Labelled Indices: ", len(scanvi._labeled_indices))
         print("Unlabelled Indices: ", len(scanvi._unlabeled_indices))
 
     scanvi.train(max_epochs=get_from_config(parameters.SCANVI_MAX_EPOCHS))
+    tempdir = tempfile.mkdtemp()
+    scanvi.save(tempdir, overwrite=True)
+    if get_from_config(parameters.DEV_DEBUG):
+        try:
+            utils.store_file_in_s3(tempdir + '/model.pt', 'scanvi-model-after-first-training.pt')
+        except Exception as e:
+            print(e, file=sys.stderr)
+
+    utils.delete_file(tempdir + '/model.pt')
+    os.removedirs(tempdir)
 
     reference_latent = get_latent(scanvi, source_adata)
 

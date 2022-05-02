@@ -21,7 +21,7 @@ def default_config():
 
         parameters.USE_PRETRAINED_SCVI_MODEL: True,
         parameters.USE_PRETRAINED_TOTALVI_MODEL: False,
-        parameters.USE_PRETRAINED_SCANVI_MODEL: False,
+        parameters.USE_PRETRAINED_SCANVI_MODEL: True,
 
         # scANVI stuff
         parameters.SCANVI_COMPARE_REFERENCE_AND_QUERY: False,
@@ -40,6 +40,7 @@ def default_config():
         parameters.UNLABELED_KEY: 'Unknown',
         parameters.SCANVI_MAX_EPOCHS: 20,
         parameters.SCVI_MAX_EPOCHS: 400,
+        parameters.SCVI_QUERY_MAX_EPOCHS: 200,
         parameters.NUMBER_OF_NEIGHBORS: 8,
         parameters.MAX_EPOCHS: 100,
         parameters.UNWANTED_LABELS: ['leiden'],
@@ -50,7 +51,9 @@ def default_config():
         # totalVI stuff
         parameters.TOTALVI_MAX_EPOCHS_1: 1,  # 400
         parameters.TOTALVI_MAX_EPOCHS_2: 1,  # 200
+
         parameters.SCANVI_DO_SURGERY: False,
+        parameters.DEV_DEBUG: False,
     }
 
 

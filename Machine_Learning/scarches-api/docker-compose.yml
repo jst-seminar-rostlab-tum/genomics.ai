@@ -10,7 +10,6 @@ services:
       - AWS_SECRET_KEY=minioadmin
     depends_on:
       - minio
-    mem_limit: 20g
 
   database:
     image: mongo
