@@ -1,4 +1,12 @@
-export const BACKEND_ADDRESS = 'https://custom-helix-329116.ey.r.appspot.com';
+import {
+  red,
+  green,
+  yellow,
+  grey,
+  blue,
+} from '@mui/material/colors';
+
+export const BACKEND_ADDRESS = 'https://devversion-dot-custom-helix-329116.ey.r.appspot.com';
 // export const BACKEND_ADDRESS = 'http://localhost:8050';
 
 export const JOB_QUEUE_UPDATE_INTERVAL = 5000;
@@ -19,3 +27,20 @@ export const MULTIPART_UPLOAD_STATUS = {
 };
 export const statusIsUpload = (status) => status.startsWith('upload_');
 export const statusIsError = (status) => status.startsWith('error_');
+
+export const jobStatusColors = {
+  UPLOAD_PENDING: yellow[600],
+  PROCESSING_PENDING: blue[300],
+  ABORTED: red[300],
+  DONE: green[300],
+  unknown: grey[500],
+};
+
+export const jobStatusTitles = {
+  UPLOAD_PENDING: 'UPLOADING',
+  UPLOAD_COMPLETE: 'UPLOADED',
+  PROCESSING_PENDING: 'PROCESSING',
+  ABORTED: 'CANCELLED',
+  DONE: 'COMPLETED',
+  unknown: 'UNKNOWN',
+};

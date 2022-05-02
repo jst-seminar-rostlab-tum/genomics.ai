@@ -146,7 +146,7 @@ export default function Tag({content, variant, isDeletable, handleDeletion=()=>{
                     height: "100%"
                 }}
             >
-                <Typography fontSize="100%" fontWeight="bold"
+                <Typography fontSize="70%" fontWeight="bold"
                     sx={{
                         color: getFontColor(),
                         margin: "auto"

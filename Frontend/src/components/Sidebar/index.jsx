@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, useEffect }  from 'react';
 import LiveHelpIcon from '@mui/icons-material/LiveHelp';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import MapIcon from '@mui/icons-material/Map';
@@ -13,6 +13,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import SettingsIcon from '@mui/icons-material/Settings';
 import geneIcon from 'assets/gene.png';
 import styles from './sidebar.module.css';
+import { useAuth } from 'shared/context/authContext';
 
 function indexIcon(index) {
   switch (index) {
@@ -41,25 +42,34 @@ function indexIcon(index) {
 
 export default function Sidebar(props) {
   const { setUser } = props;
-  const routes = ['dashboard', 'projects', 'institutions', 'genemapper', 'search', 'documentation', 'help'];
-  const titles = ['Dashboard', 'Projects', 'Institutions', 'Gene Mapper', 'Search', 'Documentation', 'Help'];
+  const routes = ['dashboard', 'teams', 'institutions', 'genemapper', 'search/teams', 'documentation', 'help'];
+  const titles = ['Dashboard', 'Teams', 'Institutions', 'Gene Mapper', 'Search', 'Documentation', 'Help'];
   const { url } = useRouteMatch();
   const location = useLocation();
   const path = location.pathname;
   const settingsPath = '/sequencer/settings';
+  const [checkPathActive, setCheckPathActive] = useState("/")
+  const pathRegex = new RegExp(".*\/sequencer\/(\\w+)(?=\/|)", "g")
+  
+  useEffect(() => {
+    const result = pathRegex.exec(path) 
+    if(result) {
+      setCheckPathActive(result[1])
+    }
+  }, [path])
 
   return (
     <Box>
       <Box className={styles.sidebarNav}>
         <Box className={styles.sidebarWrap}>
-          <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "98vh"}}>
+          <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "98vh" }}>
             <Box className={styles.iconList}>
               {routes.map((route, index) => (
                 <NavLink
                   className={styles.navlink}
                   to={`${url}/${route}`}
                   key={route.toString()}
-                  >
+                >
                   <Tooltip
                     title={titles[index]}
                     placement="right"
@@ -70,11 +80,11 @@ export default function Sidebar(props) {
                         },
                       },
                     }}
-                    >
+                  >
                     <Box
                       className={styles.navbarItemContainer}
-                      sx={{ background: path.includes(route) ? '#5676E5' : '#184060' }}
-                      >
+                      sx={{ background: checkPathActive === route ? '#5676E5' : '#184060' }}
+                    >
                       <ListItemIcon className={styles.listItemIcon}>
                         {indexIcon(index)}
                       </ListItemIcon>
@@ -87,7 +97,7 @@ export default function Sidebar(props) {
               <NavLink
                 to={settingsPath}
                 className={`${styles.navlinkIcon} ${styles.bottomIcons} ${styles.settingsIcon}`}
-                >
+              >
                 <SettingsIcon />
               </NavLink>
               <NavLink
@@ -98,7 +108,7 @@ export default function Sidebar(props) {
                   localStorage.removeItem('jwt');
                 }}
                 className={`${styles.navlinkIcon} ${styles.bottomIcons}`}
-                >
+              >
                 <LogoutIcon />
               </NavLink>
             </Box>

@@ -19,8 +19,8 @@ import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
  * @param learnMoreLink onHover button Learn More url
  */
 export default function AtlasCard({
-  width = '100%', height = '100%', title, imgLink, modalities,
-  cellsInReference, species, mapLink, learnMoreLink,
+  width = "100%", height = "100%", title, imgLink, modalities,
+  cellsInReference, species, learnMoreLink, onClick
 }) {
   // check if the mouse is hovering above the card
   const [isHover, setHover] = useState(false);
@@ -35,9 +35,36 @@ export default function AtlasCard({
   const path = history.location.pathname;
 
   useEffect(() => {
-    // each time the card is rerendered, check if the card is flat or not
-    if (boxRef.current.clientWidth > boxRef.current.clientHeight) setFlat(true);
-  }, []);
+    //each time the card is rerendered, check if the card is flat or not
+    if (boxRef.current.clientWidth > boxRef.current.clientHeight) setFlat(true)
+
+  }, [])
+
+  const showModalities = () => {
+    //TODO fix this
+    if (modalities[0].length < 10) return modalities
+    return `${modalities[0].split(",")[0]}`
+  }
+
+  const AtlasInfo = (title, data) => (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "row",
+      }}
+    >
+      <Typography
+        sx={{
+          fontSize: "1rem",
+          fontWeight: "bold"
+        }}
+      >
+        {title}
+      </Typography>
+      &nbsp;
+      <Typography>{data}</Typography>
+    </Box>
+  )
 
   return (
     <Box
@@ -63,14 +90,15 @@ export default function AtlasCard({
               background: 'linear-gradient(#4F83CC, #01579B)',
             }}
             sx={{
-              position: 'absolute',
-              width: '100%',
-              height: '100%',
-              borderRadius: '1.2rem',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
+              position: "absolute",
+              width: "100%",
+              height: "100%",
+              borderRadius: "1.2rem",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
               opacity: 0.95,
+              boxShadow: "0px 4px 6px 0px rgba(1, 87, 155, .20), 0px 0px 1px 0px rgba(1, 87, 155, .32)"
             }}
           >
             <Box
@@ -83,8 +111,8 @@ export default function AtlasCard({
                 justifyContent: 'space-evenly',
               }}
             >
-              <OutlinedButton content="Map" link={mapLink} />
-              <OutlinedButton content="Learn More" link={`#${`${path}/${title}`}`} />
+              <OutlinedButton content="Map" onClick={onClick} />
+              <OutlinedButton content="Learn More" link={learnMoreLink} />
             </Box>
           </Box>
           )
@@ -92,14 +120,14 @@ export default function AtlasCard({
 
         <Box
           sx={{
-            width: '100%',
-            height: '100%',
-            padding: '1rem',
-            display: 'flex',
-            flexDirection: 'column',
-            boxShadow: '0px 4px 6px 0px rgba(33, 37, 41, .2), 0px 0px 1px 0px rgba(33, 37, 41, .32)',
-            borderRadius: '1.2rem',
-            justifyContent: 'center',
+            width: "100%",
+            height: "100%",
+            padding: "1rem",
+            display: "flex",
+            flexDirection: "column",
+            boxShadow: isHover ? 'none' : "0px 4px 6px 0px rgba(33, 37, 41, .2), 0px 0px 1px 0px rgba(33, 37, 41, .32)",
+            borderRadius: "1.2rem",
+            justifyContent: "center"
           }}
         >
           <Typography
@@ -116,65 +144,16 @@ export default function AtlasCard({
             src={imgLink}
             alt="Atlas preview img"
             sx={{
-              width: '90%',
-              height: '50%',
-              margin: 'auto',
+              width: "90%",
+              margin: "auto",
+              objectFit: "cover"
             }}
           />
-
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-            }}
-          >
-            <Typography
-              sx={{
-                fontSize: '1rem',
-                fontWeight: 'bold',
-              }}
-            >
-              Modalities:
-            </Typography>
-            &nbsp;
-            <Typography>{modalities}</Typography>
+          <Box sx={{ m: "5px "}}>
+            {AtlasInfo("Modalities", showModalities())}
+            {AtlasInfo("Species", species)}
           </Box>
 
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-            }}
-          >
-            <Typography
-              sx={{
-                fontSize: '1rem',
-                fontWeight: 'bold',
-              }}
-            >
-              Cells in Reference:
-            </Typography>
-            &nbsp;
-            <Typography>{cellsInReference}</Typography>
-          </Box>
-
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-            }}
-          >
-            <Typography
-              sx={{
-                fontSize: '1rem',
-                fontWeight: 'bold',
-              }}
-            >
-              Species:
-            </Typography>
-            &nbsp;
-            <Typography>{species}</Typography>
-          </Box>
         </Box>
       </Box>
     </Box>

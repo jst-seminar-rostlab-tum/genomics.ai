@@ -4,47 +4,61 @@ import {
 } from 'react-router-dom';
 import Sidebar from '../Sidebar';
 import Dashboard from 'views/Dashboard';
+import TeamOverview from 'views/TeamOverview';
+import InstitutionOverview from 'views/InstitutionOverview';
+import UserProfile from 'views/UserProfile';
 import Documentation from 'views/Documentation';
 import Settings from 'views/Settings';
 import Help from 'views/Help';
 import styles from './dashboardContent.module.css';
+import SearchPage from 'views/SearchPage';
+import { useAuth } from 'shared/context/authContext';
 
-const DashboardContent = (props) => {
+const DashboardContent = () => {
   const [sidebarShown, setSidebarShown] = useState(true);
   const toggleSidebar = () => setSidebarShown(!sidebarShown);
-  const { user, setUser } = props;
+  const [user, setUser] = useAuth();
 
   const { path, url } = useRouteMatch();
 
   return (
     <div>
-      <Sidebar
-        toggleSidebar={toggleSidebar}
-        sidebarShown={sidebarShown}
-        setUser={setUser}
-      />
+      <Sidebar />
       <Switch>
         <Route exact path={`${path}/`}>
           <Redirect to={`${url}/dashboard`} />
         </Route>
         <Route path={`${path}/dashboard`}>
-          <Dashboard sidebarShown={sidebarShown} />
+          <Dashboard />
+        </Route>
+
+        <Route path={`${path}/teams`}>
+          <TeamOverview />
+        </Route>
+
+        <Route path={`${path}/institutions`}>
+          <InstitutionOverview />
+        </Route>
+
+        <Route path={`${path}/users`}>
+          <UserProfile />
         </Route>
 
         <Route path={`${path}/documentation`}>
-          <Documentation sidebarShown={sidebarShown} />
+          <Documentation />
         </Route>
 
         <Route path={`${path}/help`}>
-          <Help sidebarShown={sidebarShown} />
+          <Help />
+        </Route>
+
+        <Route path={`${path}/search/:searchCategory`}>
+          <SearchPage sidebarShown={sidebarShown} />
         </Route>
 
         <Route path={`${path}/settings`}>
           <Settings
-            className={sidebarShown ? styles.subpage : styles.subpageSidebarCollapsed}
-            user={user}
-            setUser={setUser}
-            sidebarShown={sidebarShown}
+            className={styles.subpage}
           />
         </Route>
       </Switch>

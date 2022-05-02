@@ -1,55 +1,60 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useRef, useState, useEffect } from 'react';
+import { useLocation, Link } from 'react-router-dom';
 
-import { Tab, Tabs } from '@mui/material'
+import { Tab, Tabs, Box } from '@mui/material';
 
 /**
  * Styled Tab
  * packaged the Tab from the MUI and add style to fit our mock
- * 
- * need a boolean parameter 
+ *
+ * need a boolean parameter
  * - darkBackground
  * in order to render the Tab accordingly
- * 
+ *
  * and a label, the content
- * 
+ *
  * see the example StyledTab in TabGroup below for how to combine the Tab with a Link from react-router-dom
  */
 export function StyledTab(props) {
-
-  const { darkBackground, label, component, to } = props
+  const {
+    darkBackground, label, component, to, ...rest
+  } = props;
 
   return (
-    <Tab {...props}
+    <Tab
+      {...rest}
       disableRipple
       label={label}
       component={component}
       to={to}
       sx={{
-        textTransform: "none",
-        fontWeight: "bold",
-        color: darkBackground ? "white" : "black",
+        textTransform: 'none',
+        fontWeight: 'bold',
+        color: darkBackground ? 'white' : 'black',
         opacity: 1,
-        "&.Mui-selected": {
-          fontWeight: "bold",
-          color: darkBackground ? "white" : "black",
+        '&.Mui-selected': {
+          fontWeight: 'bold',
+          color: darkBackground ? 'white' : 'black',
           opacity: 1,
-        }
+        },
       }}
     />
-  )
+  );
 }
 
 /**
  * Tab Group, the collection of Tabs
- * 
- * like the StyledTab, it also need a boolean parameter 
+ *
+ * !!! important
+ * the value state is now designed to be organizd by it's parent to make it more flexble
+ *
+ * like the StyledTab, it also need a boolean parameter
  * - darkBackground
  * to render the Tab accordingly
- * 
- * it also need an array of objects containing labels and paths
- * 
- * for example: 
+ *
+ * it also need an array of objects containing labels and paths / additionalContent
+ *
+ * for example:
  * [
  *     {
  *         label: "tab 1",
@@ -64,22 +69,73 @@ export function StyledTab(props) {
  *         path: "/tab_3"
  *     }
  * ]
+ *
+ * or:
+ * [
+ *     {
+ *         label: "tab 1",
+ *         additionalContent: (<Box>something</Box>)
+ *     },
+ *     {
+ *         label: "tab 2",
+ *         additionalContent: (<Box>something else</Box>)
+ *     }
+ * ]
+ *
+ * the default width and height is 100% of the containing block
+ * but it is also possible to customize it
+ *
  */
 export function TabGroup(props) {
+  const position = useLocation();
 
-  const { darkBackground, tabsInfo, value, setValue } = props
+  const {
+    value, setValue, darkBackground, tabsInfo, width = '100%', height = '100%',
+  } = props;
+
+  const tabsRef = useRef();
+  const [tabsHeight, setTabsHeight] = useState(0);
+
+  useEffect(() => {
+    setTabsHeight(tabsRef.current.clientHeight);
+  }, []);
 
   return (
-    <Tabs value={value} onChange={(_, newValue) => setValue(newValue)}
-      sx={{
-        "& .MuiTabs-indicator": {
-          backgroundColor: darkBackground ? "white" : "black"
-        }
-      }}
-    >
+    <Box sx={{ width, height, position: 'relative' }}>
+      <Box ref={tabsRef}>
+        <Tabs
+          value={value}
+          onChange={(_, newValue) => setValue(newValue)}
+          sx={{
+            '& .MuiTabs-indicator': {
+              backgroundColor: darkBackground ? 'white' : 'black',
+            },
+          }}
+        >
+          {
+            tabsInfo.map((tabInfo, index) => (
+              <StyledTab
+                key={tabInfo.label}
+                value={index}
+                label={tabInfo.label}
+                component={Link}
+                to={tabInfo.path ? tabInfo.path : position.pathname}
+                darkBackground={darkBackground}
+              />
+            ))
+                    }
+        </Tabs>
+      </Box>
+
       {
-        tabsInfo.map((tabInfo, index) => (<StyledTab key={index} value={index} label={tabInfo.label} component={Link} to={tabInfo.path} darkBackground={darkBackground} />))
-      }
-    </Tabs>
-  )
+                tabsInfo[value].additionalContent
+                && (
+                <Box sx={{ width: '100%', height: `calc(100% - ${tabsHeight}px)`, overflowY: 'scroll' }}>
+                  {tabsInfo[value].additionalContent}
+                </Box>
+                )
+            }
+
+    </Box>
+  );
 }

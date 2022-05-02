@@ -4,8 +4,10 @@ import { SettingsDropdown } from '../SettingsDropdown';
 import styles from './navigationBar.module.css';
 import geneIcon from '../../assets/logo-blue.png';
 import profiledefault from '../../assets/user.png';
+import { useAuth } from 'shared/context/authContext';
 
-function NavigationBar({ sidebarShown, user, setUser }) {
+function NavigationBar({ sidebarShown }) {
+  const [user, setUser] = useAuth();
   const [dropDown, setDropDown] = useState(false);
 
   const onMouseEnter = () => {
@@ -80,7 +82,7 @@ function NavigationBar({ sidebarShown, user, setUser }) {
             src={profiledefault}
             style={{ height: '40px', paddingLeft: '15px' }}
           />
-          { dropDown && <SettingsDropdown setUser={setUser} /> }
+          {dropDown && <SettingsDropdown />}
         </li>
 
       </nav>
