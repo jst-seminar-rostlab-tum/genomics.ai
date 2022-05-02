@@ -42,9 +42,6 @@ function AtlasModelChoice({
                     dimension = "M";
                 } else if (numberOfCells > 1000) {
                     numberOfCells = Math.round(numberOfCells / 1000);
-                    console.log(numberOfCells);
-                    numberOfCells = Math.round(numberOfCells);
-                    console.log(numberOfCells);
                     dimension = "K"
                 }
                 a.numberOfCells = numberOfCells + dimension;
@@ -57,7 +54,7 @@ function AtlasModelChoice({
 
     return (
         <div>
-            <Typography sx={headerStyle}>
+            <Typography variant="h5" sx={{ fontWeight: 'bold'}}>
                 Pick an Atlas <HelpIcon sx={{color:"#B1CBDE"}} />
             </Typography>
             <hr className={styles.line}/>
@@ -82,7 +79,7 @@ function AtlasModelChoice({
                 }
             </Grid>
             
-            <Typography sx={headerStyle} marginTop="32px">
+            <Typography variant="h5" sx={{ fontWeight: 'bold'}} marginTop="32px">
                 Pick a Model <HelpIcon sx={{color:"#B1CBDE"}} />
             </Typography>
             <hr className={styles.line}/>
