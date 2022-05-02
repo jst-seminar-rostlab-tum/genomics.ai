@@ -280,9 +280,25 @@
     },
     "/projects": {
       "get": {
-        "summary": "Get all projects of an owner",
+        "summary": "Get all projects that meet query params",
         "tags": [
           "Project"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "keyword",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "schema": {
+              "type": "string"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -674,7 +690,7 @@
                   }
                 },
                 "required": [
-                  "filename"
+                  "fileName"
                 ],
                 "additionalProperties": false
               }
@@ -734,6 +750,36 @@
             "description": "Failed. Bad post data."
           }
         }
+      },
+      "get": {
+        "summary": "Get all institutions that meet  query params",
+        "tags": [
+          "Institution"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "keyword",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
       }
     },
     "/institutions/{id}/invite": {
@@ -771,6 +817,60 @@
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    },
+    "/institutions/{id}/members": {
+      "get": {
+        "summary": "Get all members of an institution",
+        "tags": [
+          "Institution"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Id of the instituion",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    },
+    "/institutions/{id}/projects": {
+      "get": {
+        "summary": "Get all projects of an institution",
+        "tags": [
+          "Institution"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Id of the instituion",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -918,6 +1018,33 @@
         }
       }
     },
+    "/institutions/{id}/teams": {
+      "get": {
+        "summary": "Get teams for an institution",
+        "tags": [
+          "Institution"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Id of the instituion",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    },
     "/teams": {
       "post": {
         "summary": "Create a team",
@@ -951,6 +1078,43 @@
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all teams that meet  query params",
+        "tags": [
+          "Team"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "keyword",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "visibility",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -1006,6 +1170,51 @@
         }
       }
     },
+    "/teams/{id}/institution": {
+      "put": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "summary": "Invite person to a team",
+        "tags": [
+          "Teams"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "institutionId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "institutionId"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    },
     "/users": {
       "get": {
         "summary": "Search users",
@@ -1031,109 +1240,6 @@
         "responses": {
           "200": {
             "description": "Matching users as json array"
-          },
-          "400": {
-            "description": "Failed. Bad post data."
-          }
-        }
-      }
-    },
-    "/institutions": {
-      "get": {
-        "summary": "Get all institutions that meet  query params",
-        "tags": [
-          "Institution"
-        ],
-        "parameters": [
-          {
-            "in": "query",
-            "name": "keyword",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "sortBy",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Failed. Bad post data."
-          }
-        }
-      }
-    },
-    "/teams": {
-      "get": {
-        "summary": "Get all teams that meet  query params",
-        "tags": [
-          "Team"
-        ],
-        "parameters": [
-          {
-            "in": "query",
-            "name": "keyword",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "sortBy",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "visibility",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Failed. Bad post data."
-          }
-        }
-      }
-    },
-    "/projects": {
-      "get": {
-        "summary": "Get all projects that meet query params",
-        "tags": [
-          "Project"
-        ],
-        "parameters": [
-          {
-            "in": "query",
-            "name": "keyword",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "sortBy",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
           },
           "400": {
             "description": "Failed. Bad post data."
