@@ -15,7 +15,7 @@ export const OutlinedButton = ({ content, link = null, onClick }) => {
    <Button
     variant="outlined"
     disableRipple
-    href={link ? `/${link}` : null}
+    href={link ? `#${link}` : null}
     onClick={onClick}
     sx={{ color: "white", borderWidth: "2px", borderColor: "white", borderRadius: "1.2rem", ":hover": { borderColor: colors.secondary1[500], borderWidth: "2px" } }}
    >
@@ -33,7 +33,7 @@ export const OutlinedButton = ({ content, link = null, onClick }) => {
  * @param mapLink onHover button Map url
  * @param learnMoreLink onHover button Learn More url
  */
-export const ModelCard = ({ width = "100%", height = "100%", title, description, onClick, learnMoreLink, index}) => {
+export const ModelCard = ({ width = "100%", height = "100%", title, description, onClick, learnMoreLink}) => {
 
   const [hover, setHover] = useState(false)
   const ref = useRef()
@@ -93,7 +93,7 @@ export const ModelCard = ({ width = "100%", height = "100%", title, description,
                 transform: "translate(-50%, -50%)"
               }}  
               >
-              <OutlinedButton content="Map" onClick={() => onClick(index)}/>
+              <OutlinedButton content="Map" onClick={onClick}/>
               <OutlinedButton content="Learn More" link={learnMoreLink}/>
             </Box>
           </Box>

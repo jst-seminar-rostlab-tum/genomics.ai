@@ -16,13 +16,13 @@ function Mapper({
 
   const deleteAtlas = () => {
     history.push('/explore/atlases');
-    setSelectedAtlas(-1);
+    setSelectedAtlas(null);
     setAtlas(null);
   };
 
   const deleteModel = () => {
     history.push('/explore/models');
-    setSelectedModel(-1);
+    setSelectedModel(null);
     setModel(null);
   };
 

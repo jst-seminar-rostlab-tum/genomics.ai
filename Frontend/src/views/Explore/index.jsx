@@ -10,13 +10,13 @@ import { Filter } from 'components/Filter/Filter';
 import NavBar from 'components/NavBar';
 import Breadcrumb from 'components/Breadcrumb';
 import AtlasCard from 'components/Cards/AtlasCard';
-import DatasetCard from 'components/Cards/DatasetCard';
 import { ModelCard } from 'components/Cards/ModelCard';
 import Mapper from 'components/Mapper';
 import LoginForm from 'components/LoginForm';
 import RegistrationForm from 'components/RegistrationForm';
 import './Explore.css';
 
+import DatasetCard from 'components/Cards/DatasetCard';
 import ModelsService from 'shared/services/Models.service'
 import AtlasService from 'shared/services/Atlas.service'
 
@@ -38,43 +38,23 @@ const tmpObj = [
   }
 ]
 
-const atlasesGrid = (atlases, path) => (
-  <Box className='atlasContainer'>
-    <Grid container spacing={3}>
-      {
-        atlases.map((atlas) => (
-          <Grid item xs={12} sm={6} md={4} lg={3}>
-            <AtlasCard width="300px" height="500px" imgLink={atlas.previewPictureURL} species={atlas.species} modalities={atlas.modalities} title={atlas.title} learnMoreLink={`${path}/${atlases._id}`} />
-          </Grid>
-        ))
-      }
-      <Grid item xs={12} sm={6} md={4} lg={3}>
-        <AtlasCard width="300px" height="500px" title='Human - PBMC' imgLink='https://3-h.de/wp-content/uploads/grey-gradient-background.jpeg' modalities=' RNA, ADT' cellsInReference='161,764' species='Human' />
-      </Grid>
-    </Grid>
-  </Box >
-)
 
-const modelsGrid = (models, path) => (
-  <Box className='cardsContainer'>
-    <Grid container spacing={3}>
-      {
-        models.map((model) => (
-          <Grid item xs={12} sm={6} md={4} lg={3}>
-            <ModelCard title={`Model ${model.name}`} description={model.description} learnMoreLink={`${path}/${model._id}`} />
-          </Grid>
-        ))
-      }
-    </Grid>
-  </Box>
-)
-
+const datasets = [
+  {
+    title: "dataset 1",
+    category: "human"
+  },
+  {
+    title: "dataset 2",
+    category: "animal"
+  }
+]
 const datasetsGrid = (
   <Box className="cardsContainer">
     <Grid container spacing={3}>
-      {datasetTitles.map((title, index) => (
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          <DatasetCard title={title} category={datasetCategories[index]} />
+      {datasets.map((d, index) => (
+        <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
+          <DatasetCard title={d.title} category={d.category} />
         </Grid>
       ))}
     </Grid>
@@ -83,11 +63,9 @@ const datasetsGrid = (
 
 const Explore = () => {
 
-  const [, setUser] = useAuth()
-
   const [value, setValue] = useState(0);
-  const [selectedAtlas, setSelectedAtlas] = useState(-1);
-  const [selectedModel, setSelectedModel] = useState(-1);
+  const [selectedAtlas, setSelectedAtlas] = useState(null);
+  const [selectedModel, setSelectedModel] = useState(null);
   const [mapperVisible, setMapperVisible] = useState(false);
   const [isLoginFormVisible, setLoginFormVisible] = useState(false);
   const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
@@ -99,22 +77,10 @@ const Explore = () => {
     console.log(e);
   };
 
-  const handleAtlasMapClick = (index) => {
-    setSelectedAtlas(index);
-    if (!mapperVisible) {
-      setMapperVisible(true);
-      if (selectedModel === -1) {
-        history.push('/explore/models');
-      }
-    }
-  };
-
   const [atlases, setAtlases] = useState([])
   const [models, setModels] = useState([])
 
   const path = useLocation().pathname
-
-  console.log(path)
 
   useEffect(() => {
     AtlasService.getAtlases()
@@ -125,10 +91,41 @@ const Explore = () => {
       .then((models) => setModels(models))
       .catch((err) => console.log(err))
 
-    console.log(atlases)
-    console.log(models)
   }, [])
 
+
+  useEffect(() => {
+    if(selectedAtlas || selectedModel) setMapperVisible(true)
+    if(!selectedAtlas && !selectedModel) setMapperVisible(false)
+  }, [selectedAtlas, selectedModel])
+
+  const atlasesGrid = (atlases, path) => (
+    <Box className='atlasContainer'>
+      <Grid container spacing={3}>
+        {
+          atlases.map((atlas) => (
+            <Grid key={atlas._id} item xs={12} sm={6} md={4} lg={3}>
+              <AtlasCard onClick={() => setSelectedAtlas(atlas)} width="300px" height="500px" imgLink={atlas.previewPictureURL} species={atlas.species} modalities={atlas.modalities} title={atlas.name} learnMoreLink={`${path}/${atlas._id}`} />
+            </Grid>
+          ))
+        }
+      </Grid>
+    </Box >
+  )
+
+  const modelsGrid = (models, path) => (
+    <Box className='cardsContainer'>
+      <Grid container spacing={3}>
+        {
+          models.map((model) => (
+            <Grid key={model._id} item xs={12} sm={6} md={4} lg={3}>
+              <ModelCard onClick={() => setSelectedModel(model)} title={`Model ${model.name}`} description={model.description} learnMoreLink={`${path}/${model._id}`} />
+            </Grid>
+          ))
+        }
+      </Grid>
+    </Box>
+  )
   const onLoginClicked = useCallback(() => {
     console.log("login")
     setRegistrationFormVisible(false)
@@ -150,43 +147,14 @@ const Explore = () => {
   }, [setRegistrationFormVisible]);
 
   const handleModelMapClick = (index) => {
-    setSelectedModel(index);
+    setSelectedModel(models.find(model => model._id === index));
     if (!mapperVisible) {
       setMapperVisible(true);
     }
-    if (selectedAtlas === -1) {
+    if (selectedAtlas === null) {
       history.push('/explore/atlases');
     }
   };
-
-  const atlasesGrid = (
-    <Box className="atlasContainer">
-      <Grid container spacing={3}>
-        {atlasTitles.map((title, index) => (
-          <Grid item xs={12} sm={6} md={4} lg={3}>
-            <AtlasCard width="270px" height="500px" index={index} title={title} imgLink={atlasImgLinks[index]} modalities={atlasModalities[index]} cellsInReference={atlasCellsInReference[index]} species={atlasSpecies[index]} onClick={handleAtlasMapClick} />
-          </Grid>
-        ))}
-      </Grid>
-    </Box>
-  );
-
-  const modelsGrid = (
-    <Box className="cardsContainer">
-      <Grid container spacing={3}>
-        {modelTitles.map((title, index) => (
-          <Grid item xs={12} sm={6} md={4} lg={3}>
-            <ModelCard
-              title={title}
-              description={modelDescriptions[index]}
-              onClick={handleModelMapClick}
-              index={index}
-            />
-          </Grid>
-        ))}
-      </Grid>
-    </Box>
-  );
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
@@ -229,8 +197,8 @@ const Explore = () => {
       </Box>
 
       <Mapper
-        mapperAtlas={atlasTitles[selectedAtlas] ?? null}
-        mapperModel={modelTitles[selectedModel] ?? null}
+        mapperAtlas={selectedAtlas ? selectedAtlas.name : null}
+        mapperModel={selectedModel ? selectedModel.name : null}
         setSelectedAtlas={setSelectedAtlas}
         setSelectedModel={setSelectedModel}
         open={mapperVisible}
