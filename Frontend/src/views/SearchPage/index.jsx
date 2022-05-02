@@ -11,11 +11,11 @@ import styles from './search.module.css';
 import SearchTabs from 'components/SearchPageComponents/SearchTabs';
 import SearchContent from 'components/SearchPageComponents/SearchContent';
 import Filter from 'components/SearchPageComponents/Filter';
-import querySearch from 'shared/mock/search';
 import Search from 'components/Search';
 import UserService from 'shared/services/User.service';
 import TeamService from 'shared/services/Team.service';
-import InstitutionsService from 'shared/services/Institution.service';
+import InstitutionService from 'shared/services/Institution.service';
+import ProjectService from 'shared/services/Project.service';
 
 const SearchPage = ({ sidebarShown }) => {
   /* Booleans */
@@ -61,26 +61,20 @@ const SearchPage = ({ sidebarShown }) => {
   const fetchSearchHandler = useCallback(async (_searchCategory, _searchParams) => {
     let searchResponse = [];
     const filterParams = Object.fromEntries(new URLSearchParams(_searchParams));
-    console.log(filterParams);
-    // Temporary as long projects is not supported by backend
-    if (_searchCategory === 'projects') {
-      searchResponse = await querySearch(
-        _searchCategory,
-        (new URLSearchParams(_searchParams).get('keyword') || '').toLowerCase(),
-      );
-    } else {
-      switch (_searchCategory) {
-        case 'users':
-          searchResponse = await UserService.getUsers(filterParams);
-          break;
-        case 'teams':
-          searchResponse = await TeamService.getTeams(filterParams);
-          break;
-        case 'institutions':
-          searchResponse = await InstitutionsService.getInstitutions(filterParams);
-          break;
-        default:
-      }
+    switch (_searchCategory) {
+      case 'users':
+        searchResponse = await UserService.getUsers(filterParams);
+        break;
+      case 'teams':
+        searchResponse = await TeamService.getTeams(filterParams);
+        break;
+      case 'institutions':
+        searchResponse = await InstitutionService.getInstitutions(filterParams);
+        break;
+      case 'projects':
+        searchResponse = await ProjectService.getProjects(filterParams);
+        break;
+      default:
     }
     setSearchRequestResult(searchResponse);
     setIsLoading(false);
