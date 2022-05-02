@@ -39,7 +39,6 @@ import {
   get_members_of_institution,
   get_teams_of_institution,
   get_projects_of_institution,
-  disjoin_member_of_institution,
   get_users_institutions,
   disjoin_member_of_institution,
 } from "./routes/institution/institutionRouter";
