@@ -12,15 +12,15 @@ import MemberCard from 'components/members/MemberCard';
  * @returns list of members (or loading indicator)
  */
 function MemberList({
-  isLoading, memberIds, nextToNameBuilder, trailingBuilder,
+  isLoading, members, nextToNameBuilder, trailingBuilder,
 }) {
   return (
     <LoadingList
       isLoading={isLoading}
-      elements={memberIds.map((id) => ({ id }))}
-      cardBuilder={({ id }) => (
+      elements={members}
+      cardBuilder={(member) => (
         <MemberCard
-          memberId={id}
+          member={member}
           nextToNameBuilder={nextToNameBuilder}
           trailingBuilder={trailingBuilder}
         />

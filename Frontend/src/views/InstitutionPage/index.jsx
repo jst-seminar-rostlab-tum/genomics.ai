@@ -4,15 +4,15 @@ import TextField from "@mui/material/TextField";
 import { getInstitution } from "shared/services/mock/institutions";
 import InstitutionMemberList from "components/institutions/InstitutionMemberList";
 import styles from "./institutionPage.module.css";
-import Avatar from "@mui/material/Avatar";
 import CircularProgress from "@mui/material/CircularProgress";
 import { getInstitutionTeams } from "shared/services/mock/teams";
 import InstitutionTeamList from "components/institutions/InstitutionTeamList";
+import InstitutionAvatar from "components/institutions/InstitutionAvatar";
 import { useAuth } from "shared/context/authContext";
+import InstitutionService from "shared/services/Institution.service";
 
 function InstitutionPage() {
-  let { id } = useParams();
-  id = parseInt(id, 10);
+  const { id } = useParams();
   const [institution, setInstitution] = useState({});
   const [user] = useAuth();
   const [institutionLoaded, setInstitutionLoaded] = useState(false);
@@ -29,7 +29,8 @@ function InstitutionPage() {
   };
 
   useEffect(async () => {
-    setInstitution(await getInstitution(id));
+    console.log(await InstitutionService.getInstitution(id));
+    setInstitution(await InstitutionService.getInstitution(id));
     setInstitutionLoaded(true);
   }, []);
 
@@ -51,9 +52,13 @@ function InstitutionPage() {
         }}
       >
         <div className={styles.institutionIcon}>
-          <Avatar
-            src={institution.avatarUrl}
-            sx={{ width: 200, height: 200 }}
+          <InstitutionAvatar
+            institution={institution}
+            editable={isAdmin()}
+            onChange={(newUrl) => {
+              // update without reload
+              setInstitution({ ...institution, avatarUrl: newUrl });
+            }}
           />
         </div>
         <h1 className={styles.imageText}>

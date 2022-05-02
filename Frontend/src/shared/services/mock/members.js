@@ -1,7 +1,7 @@
-import getProfile from '../profile';
+import ProfileService from '../Profile.service';
 
 export default async function getMember(memberId) {
-  const me = await getProfile();
+  const me = await ProfileService.getProfile();
   if (me.id === memberId) return me;
   return {
     id: memberId,

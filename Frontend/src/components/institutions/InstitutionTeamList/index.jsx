@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import styles from "./institutionTeamList.module.css";
 import { getInstitutionTeams } from "shared/services/mock/teams";
-import { getInstitution } from "shared/services/mock/institutions";
 import InstitutionTeamCard from "components/institutions/InstitutionTeamCard";
 
 function InstitutionTeamList({ onLeft, institution }) {
