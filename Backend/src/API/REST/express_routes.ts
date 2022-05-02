@@ -55,6 +55,7 @@ import {
   get_users_teams,
   disjoin_member,
   get_team,
+  update_team,
 } from "./routes/team/teamRouter";
 
 import {
@@ -117,7 +118,8 @@ export function express_routes(this: REST_Host): Router {
   this.expressApp.use(get_teams());
   this.expressApp.use(get_users_teams());
   this.expressApp.use(disjoin_member());
-  this.expressApp.use(get_team);
+  this.expressApp.use(get_team());
+  this.expressApp.use(update_team());
 
   // user routes
   this.expressApp.use(get_teams_of_user());
