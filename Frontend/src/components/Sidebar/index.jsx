@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, useEffect }  from 'react';
 import LiveHelpIcon from '@mui/icons-material/LiveHelp';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import MapIcon from '@mui/icons-material/Map';
@@ -48,10 +48,15 @@ export default function Sidebar(props) {
   const location = useLocation();
   const path = location.pathname;
   const settingsPath = '/sequencer/settings';
-
+  const [checkPathActive, setCheckPathActive] = useState("/")
   const pathRegex = new RegExp(".*\/sequencer\/(\\w+)(?=\/|)", "g")
-
-  const checkPathActive = pathRegex.exec(path)[1]
+  
+  useEffect(() => {
+    const result = pathRegex.exec(path) 
+    if(result) {
+      setCheckPathActive(result[1])
+    }
+  }, [path])
 
   return (
     <Box>
