@@ -15,6 +15,11 @@ import sys
 config = {}
 
 
+def set_config(new_config):
+    global config
+    config = new_config
+
+
 def get_from_config(key):
     if key in config:
         return config[key]
@@ -53,7 +58,6 @@ def get_scanvi_from_scvi_model(scvi_model):
 
 def get_latent(model, adata):
     reference_latent = scanpy.AnnData(model.get_latent_representation())
-    print(get_from_config(parameters.CELL_TYPE_KEY), file=sys.stderr)
     reference_latent.obs["cell_type"] = adata.obs[get_from_config(parameters.CELL_TYPE_KEY)].tolist()
     reference_latent.obs["batch"] = adata.obs[get_from_config(parameters.CONDITION_KEY)].tolist()
 
@@ -208,29 +212,17 @@ def compare_adata(model, source_adata, target_adata, latent):
     utils.write_latent_csv(latent, key=get_from_config(parameters.OUTPUT_PATH))
 
 
-def compute_scANVI(configP):
-    global config
-    config = configP
-
-    if get_from_config(parameters.DEBUG):
-        logger = logging.getLogger(__name__)
-        logger.setLevel(logging.DEBUG)
-
-    setup_modules()
-
-    source_adata, target_adata = pre_process_data()
-
-    scanvi = None
+def create_model(source_adata, target_adata):
     if get_from_config(parameters.USE_PRETRAINED_SCANVI_MODEL):
-        scanvi = scarches.models.SCANVI.load_query_data(
+        return scarches.models.SCANVI.load_query_data(
             target_adata,
             'assets/scANVI/',
             freeze_dropout=True,
-        )
-    else:
-        scVI.set_config(configP)
-        vae = scVI.create_scVI_model(source_adata, target_adata)
-        scanvi = get_scanvi_from_scvi_model(vae)
+        ), None
+
+    scVI.set_config(config)
+    scvi_model, _ = scVI.create_scVI_model(source_adata, target_adata)
+    scanvi = get_scanvi_from_scvi_model(scvi_model)
 
     if get_from_config(parameters.DEBUG):
         print("Labelled Indices: ", len(scanvi._labeled_indices))
@@ -254,13 +246,23 @@ def compute_scANVI(configP):
         utils.save_umap_as_pdf(reference_latent, 'figures/reference.pdf', color=['batch', 'cell_type'])
 
     reference_latent = predict(scanvi, reference_latent)
+    return scanvi, reference_latent
 
-    # TODO check if we need this
-    scanvi.save('scanvi_model', overwrite=True)
-    utils.delete_file('scanvi_model/model.pt')
-    os.rmdir('scanvi_model')
 
-    model_query, query_latent = query(reference_latent, target_adata)
+def compute_scANVI(new_config):
+    set_config(new_config)
+
+    if get_from_config(parameters.DEBUG):
+        logger = logging.getLogger(__name__)
+        logger.setLevel(logging.DEBUG)
+
+    setup_modules()
+
+    source_adata, target_adata = pre_process_data()
+
+    scanvi, reference_latent = create_model(source_adata, target_adata)
+
+    model_query, query_latent = query(reference_latent, target_adata, source_adata)
     model = model_query
 
     if get_from_config(parameters.SCANVI_PREDICT_CELLTYPES):

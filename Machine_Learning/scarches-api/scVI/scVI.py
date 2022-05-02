@@ -49,6 +49,14 @@ def pre_process_data():
     return source_adata, target_adata
 
 
+def get_pretrained_scVI_model(anndata):
+    return sca.models.SCVI.load_query_data(
+        anndata,
+        'assets/scVI/',
+        freeze_dropout=True,
+    )
+
+
 def create_scVI_model(source_adata, target_adata):
     """
     if there is already a pretrained model, nothing happens otherwise a new one will be trained
@@ -63,11 +71,7 @@ def create_scVI_model(source_adata, target_adata):
             print('use pretrained scvi model', file=sys.stderr)
         # os.mkdir('scvi_model')
         # utils.fetch_file_from_s3(get_from_config(parameters.PRETRAINED_MODEL_PATH), 'assets/scVI/model.pt')
-        return sca.models.SCVI.load_query_data(
-            target_adata,
-            'assets/scVI/',
-            freeze_dropout=True,
-        ), None
+        return get_pretrained_scVI_model(target_adata), None
     else:
         if get_from_config(parameters.DEV_DEBUG):
             print('do not use pretrained scvi model', file=sys.stderr)
@@ -79,9 +83,6 @@ def create_scVI_model(source_adata, target_adata):
                 utils.write_adata_to_csv(vae, source_adata, key='source-adata-post-first-training.csv')
             except Exception as e:
                 print(e, file=sys.stderr)
-            # utils.write_adata_to_csv(vae, target_adata, key='query-adata-post-first-training.csv',
-            #                         cell_type_key=get_from_config(parameters.CELL_TYPE_KEY),
-            #                         condition_key=get_from_config(parameters.CONDITION_KEY))
         reference_latent = compute_latent(vae, source_adata)
         if get_from_config(parameters.DEV_DEBUG):
             try:
@@ -229,11 +230,7 @@ def compute_full_latent(source_adata, target_adata, model):
 
 def compute_scVI(new_config):
     set_config(new_config)
-    if get_from_config(parameters.DEV_DEBUG):
-        print('setup', file=sys.stderr)
     setup()
-    if get_from_config(parameters.DEV_DEBUG):
-        print('preprocess data', file=sys.stderr)
     source_adata, target_adata = pre_process_data()
     model, reference_latent = create_scVI_model(source_adata, target_adata)
     model = compute_query(target_adata, reference_latent, source_adata)
