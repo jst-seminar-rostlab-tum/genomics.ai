@@ -17,6 +17,7 @@ function TeamAdminHeaderRight({ team, setTeam }) {
       value={team.visibility}
       onChange={updateVisibility}
       variant="standard"
+      sx={{ width: '120px' }}
     >
       <MenuItem value="public">public</MenuItem>
       <MenuItem value="private">private</MenuItem>

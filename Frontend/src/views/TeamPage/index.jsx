@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import {
-  useParams,
-} from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import HeaderView from 'components/general/HeaderView';
 import TeamJobList from 'components/teams/detail/TeamJobList';
 import TeamMemberList from 'components/teams/detail/TeamMemberList';
 import TeamAdminHeaderRight from 'components/teams/detail/TeamAdminHeaderRight';
 import TeamUserHeaderRight from 'components/teams/detail/TeamUserHeaderRight';
 import TeamHeaderOptions from 'components/teams/detail/TeamHeaderOptions';
+import TeamInviteButton from 'components/teams/detail/TeamInviteButton';
 import { getTeam } from 'shared/services/mock/teams';
-import { getInstitution, queryIsAdminInstitutions } from 'shared/services/mock/institutions';
+import { getInstitution } from 'shared/services/mock/institutions';
 import TextField from '@mui/material/TextField';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import Fab from '@mui/material/Fab';
 import { useAuth } from 'shared/context/authContext';
 
 export default function TeamPage({ sidebarShown }) {
@@ -20,11 +17,6 @@ export default function TeamPage({ sidebarShown }) {
   const [team, setTeam] = useState({});
   const [user] = useAuth();
   const [institution, setInstitution] = useState({});
-  const [adminInstitutions, setAdminInstitutions] = useState([]);
-
-  function isAdmin() {
-    return (team.adminIds || []).includes(user.id);
-  }
 
   const handleDescriptionChange = (event) => {
     setTeam({
@@ -37,7 +29,7 @@ export default function TeamPage({ sidebarShown }) {
     getTeam(parseInt(id, 10))
       .then(setTeam)
       .catch((ignored) => { console.error(ignored); });
-  }, [setTeam, isAdmin]);
+  }, [setTeam]);
 
   // Institution may be undefined
   useEffect(() => {
@@ -45,10 +37,7 @@ export default function TeamPage({ sidebarShown }) {
       .then((newInstitution) => setInstitution(newInstitution));
   }, [team, setInstitution]);
 
-  useEffect(() => {
-    queryIsAdminInstitutions(user.id)
-      .then((newAdminInstitutions) => setAdminInstitutions(newAdminInstitutions));
-  }, [user, setAdminInstitutions]);
+  const isAdmin = team.adminIds ? team.adminIds.includes(user.id) : false;
 
   return (
     <HeaderView
@@ -57,10 +46,8 @@ export default function TeamPage({ sidebarShown }) {
       rightOfTitle={(
         <TeamHeaderOptions
           team={team}
-          isAdmin={isAdmin()}
+          isAdmin={isAdmin}
           institution={institution}
-          availableInstitutions={adminInstitutions}
-          setInstitution={setInstitution}
         />
       )}
       replaceHeaderRight={
@@ -101,20 +88,7 @@ export default function TeamPage({ sidebarShown }) {
         <hr />
         <TeamMemberList team={team} />
       </section>
-      <Fab
-        onClick={() => {
-          alert('invite member');
-        }}
-        color="primary"
-        aria-label="add"
-        sx={{
-          position: 'fixed',
-          bottom: '3%',
-          right: '2%',
-        }}
-      >
-        <PersonAddIcon />
-      </Fab>
+      {isAdmin && <TeamInviteButton team={team} />}
     </HeaderView>
   );
 }
