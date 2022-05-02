@@ -69,6 +69,8 @@ export default function upload_complete_upload_route() {
           //ref_path: `models/${project.modelId}/model.pt`,
           async: false,
         };
+        console.log("sending: ");
+        console.log(queryInfo);
         if (process.env.CLOUD_RUN_URL) {
           const url = `${process.env.CLOUD_RUN_URL}/query`;
           const auth = new GoogleAuth();
@@ -76,8 +78,21 @@ export default function upload_complete_upload_route() {
           //Send response before processing
           res.status(200).send("Processing started");
           //Processing is synchronous, response is sent by ML only after the result is produced, might take some time
-          await client.request({ url, method: "POST", body: JSON.stringify(queryInfo) });
-        } else if (process.env.NODE_ENV!="production") {
+          let result;
+          try {
+            result = await client.request({ url, method: "POST", body: JSON.stringify(queryInfo) });
+          } catch (e) {
+            console.log("Processing failed:");
+            console.log(e.message || e);
+            result = null;
+          }
+          if (!result || result.status != 200) {
+            await ProjectService.updateProjectByUploadId(params.UploadId, {
+              status: ProjectStatus.PROCESSING_FAILED,
+            });
+            return;
+          }
+        } else if (process.env.NODE_ENV != "production") {
           console.log(
             "CLOUD_RUN_URL not defined, falling back to dummy result with 10s processing time"
           );
