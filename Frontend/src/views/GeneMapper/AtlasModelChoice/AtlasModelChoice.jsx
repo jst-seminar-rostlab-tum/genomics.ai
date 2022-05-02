@@ -82,7 +82,7 @@ function AtlasModelChoice({
                 }
             </Grid>
             
-            <Typography sx={headerStyle} marginTop="20px">
+            <Typography sx={headerStyle} marginTop="32px">
                 Pick a Model <HelpIcon sx={{color:"#B1CBDE"}} />
             </Typography>
             <hr className={styles.line}/>
