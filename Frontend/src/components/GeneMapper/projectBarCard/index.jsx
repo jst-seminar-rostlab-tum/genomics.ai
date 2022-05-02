@@ -3,16 +3,14 @@ import Card from '@mui/material/Card';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import {
-  Box, CircularProgress, IconButton, LinearProgress, Stack,
+  Box, IconButton, LinearProgress, Stack,
 } from '@mui/material';
 import CircleIcon from '@mui/icons-material/Circle';
 import { useHistory } from 'react-router-dom';
 import { getSubmissionProgressPercentage } from 'shared/services/UploadLogic';
-import CancelIcon from '@mui/icons-material/Cancel';
 import {
   MULTIPART_UPLOAD_STATUS, MULTIPART_UPLOAD_STATUS as Status, statusIsError, statusIsUpload,
 } from 'shared/utils/common/constants';
-import { LoadingButton } from '@mui/lab';
 import Clear from '@mui/icons-material/Clear';
 import ReplayIcon from '@mui/icons-material/Replay';
 import ProjectService from 'shared/services/Project.service';
@@ -101,7 +99,7 @@ export default function ProjectBarCard({
                 {status === 'UPLOAD_PENDING'
                    && (
                    <Typography variant="caption">
-                     Upload failed or cancled
+                     Upload failed or canceled
                    </Typography>
                    )}
                 {status === 'PROCESSING_PENDING'
