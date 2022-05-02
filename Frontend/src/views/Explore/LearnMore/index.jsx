@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import NavBar from 'components/NavBar';
 import { Box, Button, Typography } from '@mui/material';
 import Breadcrumb from 'components/Breadcrumb';
 import Chip from '@mui/material/Chip';
+import CustomButton from 'components/CustomButton';
+import Search from 'components/Search';
+import { Filter } from 'components/Filter/Filter';
+import AtlasService from 'shared/services/Atlas.service';
+import Mapper from 'components/Mapper';
 
 const mockData = {
   name: 'Human - PBMC', previewPictureURL: 'url', modalities: ['RNA', 'ADT'], numberOfCells: 161.764, species: ['Human'], compatibleModels: ['ObjectId'],
@@ -87,26 +92,38 @@ const TemproaryDataSetCard2 = () => (
 
 export default function LearnMore() {
   const [value, setValue] = useState(0);
-  const id = localStorage.getItem('atlasID');
+  const id = localStorage.getItem('atlasId');
+  const [atlas, setAtlas] = useState(null);
+  
+  const [selectedAtlas, setSelectedAtlas] = useState(null);
+  const [selectedModel, setSelectedModel] = useState(null);
+  const [mapperVisible, setMapperVisible] = useState(false);
+  
+  useEffect(() => {
+    if(id)
+      AtlasService.getAtlasById(id)
+        .then((data) => setAtlas(data))
+        .catch((err) => console.log(err))
+  }, [id])
+
   // TODO: id will set in /explore/atlases page when clicked Learn More
   // atlas id will be stored localStorage.setItem('atlasID',atlasID);
   // Then we will use useEffect and fetch atlas info from backend with id
+
+  console.log(atlas)
   return (
-    <>
+    <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <NavBar />
       </Box>
-      <Box sx={{
-        display: 'flex',
-        justifyContent: 'flex-start',
-        paddingLeft: '20%',
-        alignSelf: 'center',
-        minWidth: '1200px',
-        marginTop: '8%',
-      }}
-      >
+
+      <Box sx={{ alignSelf: 'center', width: '60%', marginTop: '2%' }}>
         <Breadcrumb fontSize={1} actions={{ explore: () => setValue(0) }} />
       </Box>
+      
+      {/* <Box sx={{ alignSelf: 'center', width: '65%', marginBlock: '2%' }}>
+        <Search filterComponent={<Filter references={['test', 'test']} categories={['category1', 'category2']} />} handleSearch={(e) => console.log(e)} value={''} />
+      </Box> */}
       <Box sx={{
         display: 'flex',
         flexDirection: 'column',
@@ -122,15 +139,12 @@ export default function LearnMore() {
           display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'space-between',
         }}
         >
-          <Typography sx={{ fontSize: '36px', fontWeigth: 700 }}>{mockData.name}</Typography>
-          <Button
-            variant="contained"
-            sx={{
-              background: '#0969DA', borderRadius: '10px', width: '98px', height: '42px',
-            }}
+          <Typography sx={{ fontSize: '36px', fontWeigth: 700 }}>{atlas?.name}</Typography>
+          <CustomButton
+            type="primary"
           >
             Map
-          </Button>
+          </CustomButton>
         </Box>
         <Box>
           <Typography sx={{ fontSize: '20px', fontWeight: 600, borderBottom: '1px solid black' }}>Overview</Typography>
@@ -141,7 +155,7 @@ export default function LearnMore() {
             &nbsp;
           </Typography>
           <Typography sx={{ fontSize: '16px', fontWeight: 300 }}>
-            {mockData.modalities}
+            {atlas?.modalities}
           </Typography>
         </Box>
         <Box sx={{ display: 'flex', flexDirection: 'row' }}>
@@ -221,6 +235,14 @@ export default function LearnMore() {
           </Typography>
         </Box>
       </Box>
-    </>
+      <Mapper
+        // mapperAtlas={selectedAtlas ? selectedAtlas.name : null}
+        // mapperModel={selectedModel ? selectedModel.name : null}
+        // setSelectedAtlas={setSelectedAtlas}
+        // setSelectedModel={setSelectedModel}
+        open={mapperVisible}
+        fabOnClick={() => setMapperVisible(!mapperVisible)}
+      />
+    </Box>
   );
 }

@@ -19,7 +19,7 @@ import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
  * @param learnMoreLink onHover button Learn More url
  */
 export default function AtlasCard({
-  width = "100%", height = "100%", title, imgLink, modalities,
+  width = "100%", height = "100%", title, atlasId, imgLink, modalities,
   cellsInReference, species, learnMoreLink, onClick
 }) {
   // check if the mouse is hovering above the card
@@ -112,7 +112,7 @@ export default function AtlasCard({
               }}
             >
               <OutlinedButton content="Map" onClick={onClick} />
-              <OutlinedButton content="Learn More" link={learnMoreLink} />
+              <OutlinedButton content="Learn More" link={learnMoreLink} onClick={() => localStorage.setItem("atlasId", atlasId)} />
             </Box>
           </Box>
           )

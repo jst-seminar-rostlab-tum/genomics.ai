@@ -103,21 +103,21 @@ const Explore = () => {
         {
           atlases.map((atlas) => (
             <Grid key={atlas._id} item xs={12} sm={6} md={4} lg={3}>
-              <AtlasCard onClick={() => setSelectedAtlas(atlas)} imgLink={atlas.previewPictureURL} species={atlas.species} modalities={atlas.modalities} title={atlas.name} learnMoreLink={`${path}/${atlas._id}`} />
+              <AtlasCard onClick={() => setSelectedAtlas(atlas)} atlasId={atlas._id} imgLink={atlas.previewPictureURL} species={atlas.species} modalities={atlas.modalities} title={atlas.name} learnMoreLink={`${path}/${atlas._id}`} />
             </Grid>
           ))
         }
         {
           atlases.map((atlas) => (
             <Grid key={atlas._id} item xs={12} sm={6} md={4} lg={3}>
-              <AtlasCard onClick={() => setSelectedAtlas(atlas)} imgLink={atlas.previewPictureURL} species={atlas.species} modalities={atlas.modalities} title={atlas.name} learnMoreLink={`${path}/${atlas._id}`} />
+              <AtlasCard onClick={() => setSelectedAtlas(atlas)} atlasId={atlas._id} imgLink={atlas.previewPictureURL} species={atlas.species} modalities={atlas.modalities} title={atlas.name} learnMoreLink={`${path}/${atlas._id}`} />
             </Grid>
           ))
         }
         {
           atlases.map((atlas) => (
             <Grid key={atlas._id} item xs={12} sm={6} md={4} lg={3}>
-              <AtlasCard onClick={() => setSelectedAtlas(atlas)} imgLink={atlas.previewPictureURL} species={atlas.species} modalities={atlas.modalities} title={atlas.name} learnMoreLink={`${path}/${atlas._id}`} />
+              <AtlasCard onClick={() => setSelectedAtlas(atlas)} atlasId={atlas._id} imgLink={atlas.previewPictureURL} species={atlas.species} modalities={atlas.modalities} title={atlas.name} learnMoreLink={`${path}/${atlas._id}`} />
             </Grid>
           ))
         }
@@ -175,16 +175,16 @@ const Explore = () => {
         <NavBar position="relative" onLoginClicked={onLoginClicked} onSignUpClicked={onSignUpClicked} />
       </Box>
 
-      <Box sx={{ alignSelf: 'center', width: '65%', marginTop: '2%' }}>
+      <Box sx={{ alignSelf: 'center', width: '60%', marginTop: '2%' }}>
         <Breadcrumb fontSize={1} actions={{ explore: () => setValue(0) }} />
       </Box>
 
-      <Box sx={{ alignSelf: 'center', width: '65%', marginBlock: '2%' }}>
+      <Box sx={{ alignSelf: 'center', width: '60%', marginBlock: '2%' }}>
         <Search filterComponent={<Filter references={['test', 'test']} categories={['category1', 'category2']} />} handleSearch={handleSearch} value={searchValue} />
       </Box>
 
       <Box sx={{
-        display: 'flex', flexDirection: 'column', alignSelf: 'center', width: '80%'
+        display: 'flex', flexDirection: 'column', alignSelf: 'center', width: '60%'
       }}
       >
         {/* /explore/atlases */}

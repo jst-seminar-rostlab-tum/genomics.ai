@@ -15,6 +15,7 @@ import PasswordResetPage from './views/PasswordResetPage';
 import { theme } from "./shared/theme/theme"
 import Explore from "./views/Explore/index.jsx"
 import { useAuth } from 'shared/context/authContext';
+import LearnMore from 'views/Explore/LearnMore';
 
 function App() {
 
