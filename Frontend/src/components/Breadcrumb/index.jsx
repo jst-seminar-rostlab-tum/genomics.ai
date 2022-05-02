@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom';
 
 import { Box, Typography } from '@mui/material'
@@ -7,21 +6,30 @@ import { colors } from 'shared/theme/colors'
 import { Link } from 'react-router-dom'
 
 /**
- * Breadcrumb needs two parameters:
- * 1. fontsize
- * 2. path
- *     Format of Path should be like:
- *     - /explore/atlases
+ * Breadcrumb needs the parameter fontsize
+ * 
+ * It may also accept another parameter which is actions
+ * 
+ * the actions is the object, which summarize the action when clicking the corresponding element
+ * 
+ * for example:
+ * 
+ * the path is /explore/atlases
+ * 
+ * if you want to do something additionally than just redirect
+ * 
+ * you should give an object like this:
+ * 
+ * {
+ *      explore: ()=>{something you want to do}
+ * }
+ * 
  */
-export default function Breadcrumb({ fontSize }) {
+export default function Breadcrumb({ fontSize, actions }) {
 
     let position = useLocation()
 
-    let elements = position.pathname.split('/').map((element)=>{
-        const first = element.substring(0, 1)
-        const rest = element.substring(1)
-        return `${first.toUpperCase()}${rest}`
-    })
+    let elements = position.pathname.split('/')
 
     const iconSize = fontSize * 0.7
 
@@ -30,12 +38,18 @@ export default function Breadcrumb({ fontSize }) {
         for(let i = 1; i<=index; i++) accmulator = `${accmulator}/${elements[i]}`
         return accmulator
     }
+
+    const handleOnClick = (element) => {
+        if(!actions) return;
+        const action=actions[element]
+        if(action && typeof(action)==="function") action()
+    }
     
     const generate = (element, index) => index === 0 ? <div key={index} /> : (
         <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}} key={index}>
             { index != elements.length - 1 
-                ? <Box component={Link} to={rebuildLink(index)} sx={{cursor: "pointer", textDecoration: "none"}} onClick={()=>console.log("I'm clicked")}><Typography fontWeight="bold" fontSize={`${fontSize}em`} sx={{color: colors.neutral[500]}}>{element}</Typography></Box> 
-                : <Box><Typography fontWeight="bold" fontSize={`${fontSize}em`} sx={{color: colors.primary[800]}}>{element}</Typography></Box>}
+                ? <Box component={Link} to={rebuildLink(index)} sx={{cursor: "pointer", textDecoration: "none"}} onClick={()=>handleOnClick(element)}><Typography fontWeight="bold" fontSize={`${fontSize}em`} sx={{color: colors.neutral[500], textTransform: "capitalize"}}>{element}</Typography></Box> 
+                : <Box><Typography fontWeight="bold" fontSize={`${fontSize}em`} sx={{color: colors.primary[800], textTransform: "capitalize"}}>{element}</Typography></Box>}
             { index === elements.length - 1 ? <></> : <ArrowForwardIosIcon sx={{width: `${fontSize*iconSize}em`, height: `${fontSize*iconSize}em`, margin: `0em ${fontSize*0.2}em`}}/> }
         </Box>
     )
@@ -43,11 +57,7 @@ export default function Breadcrumb({ fontSize }) {
     return (
         <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>
             {
-                position.pathname.split('/').map((element)=>{
-                    const first = element.substring(0, 1)
-                    const rest = element.substring(1)
-                    return `${first.toUpperCase()}${rest}`
-                }).map((element, index) => generate(element, index))
+                elements.map((element, index) => generate(element, index))
             }
         </Box>
     )

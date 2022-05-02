@@ -10,20 +10,18 @@ import { colors } from "shared/theme/colors"
  * @param content text content to be displayed
  * @param link button href link  
  */
-export const OutlinedButton = ({ content, link }) => {
-
-  const history = useHistory()
-
-  return (
-    <Button
-      variant="outlined"
-      disableRipple
-      onClick={() => history.push(link)}
-      sx={{ color: "white", borderWidth: "2px", borderColor: "white", borderRadius: "1.2rem", ":hover": { borderColor: colors.secondary1[500], borderWidth: "2px" } }}
-    >
-      {content}
-    </Button>
-  )
+export const OutlinedButton = ({ content, link = null, onClick }) => {
+ return (
+   <Button
+    variant="outlined"
+    disableRipple
+    href={link ? `#${link}` : null}
+    onClick={onClick}
+    sx={{ color: "white", borderWidth: "2px", borderColor: "white", borderRadius: "1.2rem", ":hover": { borderColor: colors.secondary1[500], borderWidth: "2px" } }}
+   >
+    {content}
+   </Button>
+ )
 }
 
 /**
@@ -35,7 +33,7 @@ export const OutlinedButton = ({ content, link }) => {
  * @param mapLink onHover button Map url
  * @param learnMoreLink onHover button Learn More url
  */
-export const ModelCard = ({ width = "100%", height = "100%", title, description, mapLink, learnMoreLink }) => {
+export const ModelCard = ({ width = "100%", height = "100%", title, description, onClick, learnMoreLink}) => {
 
   const [hover, setHover] = useState(false)
   const ref = useRef()
@@ -93,10 +91,10 @@ export const ModelCard = ({ width = "100%", height = "100%", title, description,
                 top: "50%",
                 left: "50%",
                 transform: "translate(-50%, -50%)"
-              }}
-            >
-              <OutlinedButton content="Map" link={mapLink} />
-              <OutlinedButton content="Learn More" link={learnMoreLink} />
+              }}  
+              >
+              <OutlinedButton content="Map" onClick={onClick}/>
+              <OutlinedButton content="Learn More" link={learnMoreLink}/>
             </Box>
           </Box>
         }
