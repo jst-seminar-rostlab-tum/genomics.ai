@@ -67,6 +67,7 @@ function InstitutionPage() {
         <div className={styles.institutionIcon}>
           <InstitutionAvatar
             institution={institution}
+            editable={isAdmin()}
             onChange={(newUrl) => {
               // update without reload
               setInstitution({ ...institution, avatarUrl: newUrl });
