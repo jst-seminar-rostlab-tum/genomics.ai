@@ -294,7 +294,7 @@ export default class InstitutionService {
   static async filterInstitutions(query: any): Promise<IInstitution[] | null> {
     var keyword: object, sortBy: any;
 
-    query.hasOwnProperty("keyword") ? (keyword = { name: query.keyword }) : (keyword = {});
+    query.hasOwnProperty("keyword") ? (keyword = { name: { $regex : "^" +  query.keyword, $options : 'i'} }) : (keyword = {});
 
     if (query.hasOwnProperty("sortBy")) {
       let sortProperty = query.sortBy;
