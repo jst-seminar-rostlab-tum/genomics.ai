@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import MemberList from 'components/members/MemberList';
 import TeamMemberRemoveButton from '../TeamMemberRemoveButton';
+import TeamMemberMakeAdminButton from '../TeamMemberMakeAdminButton';
 import styles from './teamMemberList.module.css';
 import { useAuth } from 'shared/context/authContext';
 import TeamService from 'shared/services/Team.service';
@@ -30,9 +31,12 @@ function TeamMemberList({ team, onMemberRemoved }) {
         </span>
       )}
       trailingBuilder={(member) => (
-        team.adminIds.includes(user.id) && user.id === member.id ? null : (
-          <TeamMemberRemoveButton team={team} member={member} onRemoved={onMemberRemoved} />
-        )
+        team.adminIds.includes(user.id) && user.id !== member.id ? (
+          <div>
+            <TeamMemberMakeAdminButton team={team} member={member} />
+            <TeamMemberRemoveButton team={team} member={member} onRemoved={() => true} />
+          </div>
+        ) : null
       )}
     />
   );
