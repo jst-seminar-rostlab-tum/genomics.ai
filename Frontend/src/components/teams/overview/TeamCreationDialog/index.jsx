@@ -8,6 +8,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TeamService from 'shared/services/Team.service';
+import InstitutionChoice from 'components/institutions/InstitutionChoice';
 
 export default function TeamCreationDialog({ open, handleClose, onCreated }) {
   const [name, setName] = useState('');
@@ -15,6 +16,7 @@ export default function TeamCreationDialog({ open, handleClose, onCreated }) {
   const [loading, setLoading] = useState(false);
   const [nameError, setNameError] = useState('');
   const [descriptionError, setDescriptionError] = useState('');
+  const [institutionId, setInstitutionId] = useState(null);
 
   async function create() {
     if (!name) {
@@ -25,8 +27,8 @@ export default function TeamCreationDialog({ open, handleClose, onCreated }) {
     }
     if (!name || !description) return;
     setLoading(true);
-    const newInstitution = await TeamService.createTeam(name, description);
-    onCreated(newInstitution);
+    const newTeam = await TeamService.createTeam(name, description);
+    onCreated(newTeam);
     setLoading(false);
     handleClose();
   }
@@ -61,10 +63,21 @@ export default function TeamCreationDialog({ open, handleClose, onCreated }) {
           helperText={descriptionError}
           onChange={(evt) => { setDescription(evt.target.value); setDescriptionError(''); }}
         />
+        <br />
+        <br />
+        <InstitutionChoice onChoiceChange={setInstitutionId} />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
-        <LoadingButton onClick={() => create()} loading={loading}>Create</LoadingButton>
+        <Button onClick={handleClose}>
+          Cancel
+        </Button>
+        <LoadingButton
+          onClick={() => create()}
+          loading={loading}
+          disabled={!name || !institutionId}
+        >
+          Create
+        </LoadingButton>
       </DialogActions>
     </Dialog>
   );
