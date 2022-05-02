@@ -29,7 +29,6 @@ const testInstitutions = [
     name: 'Rostlab',
     country: 'Germany',
     avatarUrl: 'https://avatars.githubusercontent.com/u/4093405?s=200&v=4',
-    backgroundPictureURL: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjsC9c9x8ABK8CXkzrf1cAAAAASUVORK5CYII=',
     adminIds: [1],
     memberIds: ['626bdb1ed76c8b968a50f833', 2, 3, 4, 5],
   },
