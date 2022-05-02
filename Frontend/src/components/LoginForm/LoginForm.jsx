@@ -69,7 +69,7 @@ function LoginForm(props) {
     localStorage.setItem('jwt', data.jwt);
     localStorage.setItem('user', JSON.stringify(data.user));
     onClose();
-    await setUser(data.user);
+    setUser(data.user);
     history.push('/sequencer/dashboard');
   }
 
