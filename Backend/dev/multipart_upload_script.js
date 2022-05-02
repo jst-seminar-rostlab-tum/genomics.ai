@@ -126,7 +126,10 @@ async function auth(email, pwd) {
   });
   try {
     let { jwt } = JSON.parse(body);
+    if(jwt)
     console.log("Received jwt token");
+    else
+    throw new Error("No token received");
     return jwt;
   } catch (e) {
     console.error("Error while parsing response");
