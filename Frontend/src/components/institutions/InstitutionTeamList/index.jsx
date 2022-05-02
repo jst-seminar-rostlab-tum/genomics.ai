@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import styles from './institutionTeamList.module.css';
-import { getInstitutionTeams } from 'shared/services/mock/teams';
+import TeamService from 'shared/services/Team.service';
 import InstitutionTeamCard from 'components/institutions/InstitutionTeamCard';
 
 function InstitutionTeamList({ onLeft, institution }) {
@@ -9,7 +9,7 @@ function InstitutionTeamList({ onLeft, institution }) {
   const [teamsLoaded, setTeamsLoaded] = useState(false);
 
   useEffect(async () => {
-    setTeams(await getInstitutionTeams(institution.id));
+    setTeams(await TeamService.getInstitutionTeams(institution.id));
     setTeamsLoaded(true);
   }, []);
 

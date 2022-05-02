@@ -12,7 +12,7 @@ function InstitutionMemberList({ institution, onRemoved }) {
   const [isLoading, setIsLoading] = useState(true);
   useEffect(async () => {
     setIsLoading(true);
-    setMembers(await InstitutionService.getInstitutionMembers(institution.id));
+    setMembers(await InstitutionService.getMembers(institution.id));
     setIsLoading(false);
   }, [institution]);
 
