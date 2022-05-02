@@ -1,11 +1,14 @@
+import MockInstitutionService from './mock/Institution.service';
 import axiosInstance from './axiosInstance';
 import { enhanceMember } from './Member.service';
+
+const MOCK_INSTUTITIONS = true;
 
 function enhanceInstitution(institution) {
   return { ...institution, id: institution._id };
 }
 
-const InstitutionService = {
+const InstitutionService = MOCK_INSTUTITIONS ? MockInstitutionService : {
   getMyInstitutions: async () => {
     // const user = await ProfileService.getProfile();
     // TODO: change to /user/${user.id}/institutions
