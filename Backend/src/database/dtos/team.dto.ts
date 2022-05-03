@@ -9,3 +9,9 @@ export interface AddTeamDTO {
   visibility: string;
   adminIds: Array<ObjectId>;
 }
+
+export interface UpdateTeamDTO {
+  id: string;
+  description?: string;
+  visibility?: string;
+}

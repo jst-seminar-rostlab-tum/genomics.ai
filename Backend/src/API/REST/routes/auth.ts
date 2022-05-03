@@ -2,6 +2,7 @@ import express from "express";
 import jwt from "jsonwebtoken";
 import UserService from "../../../database/services/user.service";
 import bcrypt from "bcrypt";
+import { validationMdw } from "../middleware/validation";
 
 const INCORRECT_CREDENTIALS = "The email or password is incorrect";
 const JWT_SECRET = process.env.JWT_SECRET || "";
@@ -9,7 +10,7 @@ const JWT_SECRET = process.env.JWT_SECRET || "";
 export default function auth_route() {
   let router = express.Router();
 
-  router.post("/auth", async (req, res) => {
+  router.post("/auth", validationMdw, async (req, res) => {
     const { email, password } = req.body;
 
     UserService.getUserByEmail(email, true).then((user) => {
