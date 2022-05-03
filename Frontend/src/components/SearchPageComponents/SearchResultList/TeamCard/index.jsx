@@ -6,7 +6,7 @@ import { Chip } from '@mui/material';
 import SearchCard from '../SearchCard';
 import LabeledLink from '../LabeledLink';
 
-import CustomButton from 'components/CustomButton';
+// import CustomButton from 'components/CustomButton';
 
 // Card to display search result for a single team
 // eslint-disable-next-line arrow-body-style
@@ -14,7 +14,7 @@ const TeamCard = ({ item: team }) => {
   return (
     <SearchCard
       // action={<Button variant="contained">Join</Button>}
-      action={<CustomButton type="primary">Join</CustomButton>}
+      // action={<CustomButton type="primary">Join</CustomButton>}
       title={team.title}
       link={`/sequencer/teams/${team._id}`}
       primary={
