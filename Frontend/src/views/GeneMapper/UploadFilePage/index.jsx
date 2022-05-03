@@ -44,7 +44,6 @@ function UploadFilePage({
   const handleOnDropChange = (file) => {
     // console.log(file);
     setUploadedFile(file);
-    setOpenUploadConfirmation(true);
   };
 
   const createProject = useCallback((projectName, atlasId, modelId, file) => {
