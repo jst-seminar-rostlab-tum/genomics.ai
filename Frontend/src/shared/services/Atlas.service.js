@@ -1,16 +1,17 @@
-import axiosInstance from "./axiosInstance"
+import axiosInstance from './axiosInstance';
 
-const MODEL = "atlases"
+const ATLASES = 'atlases';
+const ATLAS = 'atlas';
 
 const AtlasService = {
   getAtlases: async () => {
-    const { data } = await axiosInstance.get(`/${MODEL}`)
-    return data
+    const { data } = await axiosInstance.get(`/${ATLASES}`);
+    return data;
   },
   getAtlasById: async (id) => {
-    const { data } = await axiosInstance.get(`/${MODEL}/${id}`)
-    return data
-  }
-}
+    const { data } = await axiosInstance.get(`/${ATLAS}/${id}`);
+    return data;
+  },
+};
 
-export default AtlasService
+export default AtlasService;

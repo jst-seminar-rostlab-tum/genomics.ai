@@ -34,7 +34,6 @@ function App() {
           <Route path="/contact" render={() => <Contact />} />
           <Route path="/password_reset" render={() => <PasswordResetPage />} />
           <Route path="/result" render={() => <VisualizationPage />} />
-          <Route path="/explore/atlases/:atlas" render={() => <LearnMore />} />
           <Route path="/explore" render={() => <Explore />} />
 
         </Switch>

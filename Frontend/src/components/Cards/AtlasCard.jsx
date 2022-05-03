@@ -20,7 +20,7 @@ import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
  */
 export default function AtlasCard({
   width = "100%", height = "100%", title, atlasId, imgLink, modalities,
-  cellsInReference, species, learnMoreLink, onClick
+  cellsInReference, species, learnMoreLink, onClick, atlas
 }) {
   // check if the mouse is hovering above the card
   const [isHover, setHover] = useState(false);

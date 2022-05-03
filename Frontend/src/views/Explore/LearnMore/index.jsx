@@ -7,7 +7,6 @@ import CustomButton from 'components/CustomButton';
 import Search from 'components/Search';
 import { Filter } from 'components/Filter/Filter';
 import AtlasService from 'shared/services/Atlas.service';
-import Mapper from 'components/Mapper';
 
 const mockData = {
   name: 'Human - PBMC', previewPictureURL: 'url', modalities: ['RNA', 'ADT'], numberOfCells: 161.764, species: ['Human'], compatibleModels: ['ObjectId'],
@@ -90,45 +89,31 @@ const TemproaryDataSetCard2 = () => (
   </div>
 );
 
-export default function LearnMore() {
+export default function LearnMore({ setSelectedAtlas }) {
   const [value, setValue] = useState(0);
   const id = localStorage.getItem('atlasId');
   const [atlas, setAtlas] = useState(null);
-  
-  const [selectedAtlas, setSelectedAtlas] = useState(null);
-  const [selectedModel, setSelectedModel] = useState(null);
+
+  /* const [selectedAtlas, setSelectedAtlas] = useState(null);
+  const [selectedModel, setSelectedModel] = useState(null); */
   const [mapperVisible, setMapperVisible] = useState(false);
-  
+
   useEffect(() => {
-    if(id)
+    if (id) {
       AtlasService.getAtlasById(id)
         .then((data) => setAtlas(data))
-        .catch((err) => console.log(err))
-  }, [id])
+        .catch((err) => console.log(err));
+    }
+  }, [id]);
 
-  // TODO: id will set in /explore/atlases page when clicked Learn More
-  // atlas id will be stored localStorage.setItem('atlasID',atlasID);
-  // Then we will use useEffect and fetch atlas info from backend with id
 
-  console.log(atlas)
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-        <NavBar />
-      </Box>
 
-      <Box sx={{ alignSelf: 'center', width: '60%', marginTop: '2%' }}>
-        <Breadcrumb fontSize={1} actions={{ explore: () => setValue(0) }} />
-      </Box>
-      
-      {/* <Box sx={{ alignSelf: 'center', width: '65%', marginBlock: '2%' }}>
-        <Search filterComponent={<Filter references={['test', 'test']} categories={['category1', 'category2']} />} handleSearch={(e) => console.log(e)} value={''} />
-      </Box> */}
       <Box sx={{
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-start',
-        paddingLeft: '20%',
         marginTop: '12px',
         width: '80%',
         minWidth: '1200px',
@@ -140,11 +125,12 @@ export default function LearnMore() {
         }}
         >
           <Typography sx={{ fontSize: '36px', fontWeigth: 700 }}>{atlas?.name}</Typography>
-          <CustomButton
+          <Button
             type="primary"
+            onClick={() => setSelectedAtlas(atlas)}
           >
             Map
-          </CustomButton>
+          </Button>
         </Box>
         <Box>
           <Typography sx={{ fontSize: '20px', fontWeight: 600, borderBottom: '1px solid black' }}>Overview</Typography>
@@ -164,7 +150,7 @@ export default function LearnMore() {
             &nbsp;
           </Typography>
           <Typography sx={{ fontSize: '16px', fontWeight: 300 }}>
-            {mockData.numberOfCells}
+            {atlas?.numberOfCells}
           </Typography>
         </Box>
         <Box sx={{ display: 'flex', flexDirection: 'row' }}>
@@ -173,7 +159,7 @@ export default function LearnMore() {
             &nbsp;
           </Typography>
           <Typography sx={{ fontSize: '16px', fontWeight: 300 }}>
-            {mockData.species}
+            {atlas?.species}
           </Typography>
         </Box>
         <Box sx={{ paddingTop: '25px' }}>
@@ -235,14 +221,7 @@ export default function LearnMore() {
           </Typography>
         </Box>
       </Box>
-      <Mapper
-        // mapperAtlas={selectedAtlas ? selectedAtlas.name : null}
-        // mapperModel={selectedModel ? selectedModel.name : null}
-        // setSelectedAtlas={setSelectedAtlas}
-        // setSelectedModel={setSelectedModel}
-        open={mapperVisible}
-        fabOnClick={() => setMapperVisible(!mapperVisible)}
-      />
+
     </Box>
   );
 }

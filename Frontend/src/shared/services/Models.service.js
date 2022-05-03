@@ -1,12 +1,12 @@
-import axiosInstance from "./axiosInstance"
+import axiosInstance from './axiosInstance';
 
-const MODEL = "models"
+const MODELS = 'models';
 
 const ModelsService = {
-    getModels: async () => {
-        const { data } = await axiosInstance.get(`/${MODEL}`)
-        return data
-    },
-}
+  getModels: async () => {
+    const { data } = await axiosInstance.get(`/${MODELS}`);
+    return data;
+  },
+};
 
-export default ModelsService
+export default ModelsService;
