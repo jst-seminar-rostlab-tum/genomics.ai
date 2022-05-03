@@ -74,3 +74,5 @@ TOTALVI_MAX_EPOCHS_2 = 'totalvi_max_epochs_2'
 SCANVI_DO_SURGERY = 'scanvi_do_surgery'
 # set dev debug level, storing almost everything that is being computed
 DEV_DEBUG = 'development-mode'
+# set if GPU is available
+USE_GPU

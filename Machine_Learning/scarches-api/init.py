@@ -22,6 +22,7 @@ def default_config():
         parameters.USE_PRETRAINED_SCVI_MODEL: True,
         parameters.USE_PRETRAINED_TOTALVI_MODEL: True,
         parameters.USE_PRETRAINED_SCANVI_MODEL: True,
+        parameters.USE_GPU: False,
 
         # scANVI stuff
         parameters.SCANVI_COMPARE_REFERENCE_AND_QUERY: False,
