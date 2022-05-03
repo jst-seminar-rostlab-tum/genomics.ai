@@ -88,7 +88,7 @@ function GeneMapperResultView() {
       {project
         ? (
           <>
-            <GeneMapperResultHeader projectName={project.name} />
+            <GeneMapperResultHeader project={project} />
             <Box
               sx={{
                 flexGrow: 1,

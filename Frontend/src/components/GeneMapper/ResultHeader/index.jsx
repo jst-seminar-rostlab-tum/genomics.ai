@@ -3,7 +3,8 @@ import {
   Box, Divider, IconButton, Typography,
 } from '@mui/material';
 import CustomButton from 'components/CustomButton';
-import React from 'react';
+import { Modal, ModalTitle } from 'components/Modal';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import ShareMenu from '../ShareMenu';
 
@@ -11,8 +12,9 @@ import ShareMenu from '../ShareMenu';
  *
  * @param projectName name of the visualized project
  */
-function GeneMapperResultHeader({ projectName }) {
+function GeneMapperResultHeader({ project }) {
   const history = useHistory();
+  const [showInfo, setShowInfo] = useState(false);
 
   return (
     <>
@@ -23,15 +25,19 @@ function GeneMapperResultHeader({ projectName }) {
         </CustomButton>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Typography variant="h6">
-            {projectName}
+            {project.name}
           </Typography>
-          <IconButton aria-label="learn more" size="small">
+          <IconButton aria-label="learn more" size="small" onClick={() => setShowInfo(true)}>
             <InfoOutlined fontSize="small" />
           </IconButton>
         </Box>
-        <ShareMenu projectName={projectName} url={window.location} />
+        <ShareMenu projectName={project.name} url={window.location} />
       </Box>
       <Divider sx={{ mt: 1, mb: 1 }} />
+      <Modal isOpen={showInfo} setOpen={setShowInfo}>
+        <ModalTitle>Test</ModalTitle>
+        {Object.entries(project).map(([key, value]) => (<Typography>{`${key}: ${value}`}</Typography>))}
+      </Modal>
     </>
   );
 }
