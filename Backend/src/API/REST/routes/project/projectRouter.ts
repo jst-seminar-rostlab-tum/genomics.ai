@@ -70,7 +70,7 @@ const get_project_by_id = (): Router => {
       let allowAccess = false;
 
       /* is user the owner of the project */
-      let isOwner: boolean = req.user_id! === project.owner;
+      let isOwner: boolean = req.user_id!.toString() === project.owner.toString();
       allowAccess ||= isOwner;
 
       /* is the project part of a team */

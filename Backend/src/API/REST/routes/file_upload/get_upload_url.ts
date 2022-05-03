@@ -10,23 +10,16 @@ export default function upload_get_upload_url_route() {
 
   router.get("/file_upload/get_upload_url", check_auth(), async (req: ExtRequest, res) => {
     let { partNumber, uploadId } = req.query;
-    if (!partNumber) return res.status(400).send("Missing partNumber parameter.");
-    if (!uploadId) return res.status(400).send("Missing uploadId parameter.");
+    if (!process.env.S3_BUCKET_NAME) return res.status(500).send("S3-BucketName is not set");
 
     try {
-      if (!process.env.S3_BUCKET_NAME && req.user_id)
-        return res.status(500).send("S3-BucketName is not set");
-
-      let project =
-        req.user_id === undefined
-          ? null
-          : await ProjectService.getProjectByUploadId(String(uploadId), req.user_id);
+      let project = await ProjectService.getProjectByUploadId(String(uploadId), req.user_id);
 
       if (!project) return res.status(400).send("Upload not found");
 
       let params: UploadPartRequest = {
         Bucket: process.env.S3_BUCKET_NAME!,
-        Key: String(project._id),
+        Key: `projects/${project._id}/query.h5ad`,
         PartNumber: Number(partNumber),
         UploadId: String(uploadId),
       };

@@ -6,6 +6,7 @@ import { S3 } from "aws-sdk";
 import s3 from "../../../../util/s3";
 import express from "express";
 import { validationMdw } from "../../middleware/validation";
+import { ProjectStatus } from "../../../../database/models/project";
 
 export default function upload_start_upload_route() {
   let router = express.Router();
@@ -14,33 +15,37 @@ export default function upload_start_upload_route() {
     validationMdw,
     check_auth(),
     async (req: ExtRequest, res) => {
-      let { fileName } = req.body;
-      if (!fileName) return res.status(400).send("Missing fileName parameter.");
+      let { projectName, atlasId, modelId, fileName } = req.body;
+      if (!process.env.S3_BUCKET_NAME) {
+        return res.status(500).send("S3-BucketName is not set");
+      }
 
       try {
-        if (process.env.S3_BUCKET_NAME && req.user_id) {
-          const projectToAdd: AddProjectDTO = {
-            owner: req.user_id,
-            fileName: String(fileName),
-            uploadDate: new Date(),
-            status: "UPLOAD_PENDING",
-          };
-          const project = await ProjectService.addProject(projectToAdd);
-          let params: S3.CreateMultipartUploadRequest = {
-            Bucket: process.env.S3_BUCKET_NAME,
-            Key: String(project._id),
-          };
-          s3.createMultipartUpload(params, async (err, uploadData) => {
-            if (err) {
-              console.error(err, err.stack || "Error when requesting uploadId");
-              res.status(500).send(err);
-            } else {
-              if (uploadData.UploadId !== undefined)
-                await ProjectService.updateUploadId(project._id, uploadData.UploadId);
-              res.status(200).send({ uploadId: uploadData.UploadId });
-            }
-          });
-        } else res.status(500).send("S3-BucketName is not set");
+        const projectToAdd: AddProjectDTO = {
+          owner: req.user_id!,
+          name: projectName,
+          modelId,
+          atlasId,
+          fileName: String(fileName),
+          uploadDate: new Date(),
+          status: ProjectStatus.UPLOAD_PENDING,
+        };
+        const project = await ProjectService.addProject(projectToAdd);
+        let params: S3.CreateMultipartUploadRequest = {
+          Bucket: process.env.S3_BUCKET_NAME,
+          Key: `projects/${project._id}/query.h5ad`,
+        };
+        s3.createMultipartUpload(params, async (err, uploadData) => {
+          if (err) {
+            console.error(err, err.stack || "Error when requesting uploadId");
+            res.status(500).send(err);
+          } else {
+            if (uploadData.UploadId !== undefined)
+              await ProjectService.updateUploadId(project._id, uploadData.UploadId);
+            let updatedProject = await ProjectService.getProjectById(project._id);
+            res.status(200).send(updatedProject);
+          }
+        });
       } catch (err) {
         console.log(err);
         res.status(500).send(err);
