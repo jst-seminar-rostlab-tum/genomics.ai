@@ -15,10 +15,7 @@ import { setSeachCategoryInUrl } from "shared/utils/common/utils";
 import querySearch from "shared/mock/search";
 import Search from "components/Search";
 
-const SearchPage = ({ sidebarShown }) => {
-  /* Booleans */
-  const paddingL = () => (sidebarShown ? "130px" : "380px");
-
+const SearchPage = () => {
   // state managed in path and query params
   const history = useHistory();
   const { search } = useLocation();
@@ -71,7 +68,7 @@ const SearchPage = ({ sidebarShown }) => {
   }, [fetchSearchHandler, searchCategory, searchedKeyword]);
 
   return (
-    <Stack direction="column" sx={{ paddingLeft: paddingL }}>
+    <Stack direction="column" sx={{ paddingLeft: '130px' }}>
       <div className={styles.title}>
         <h1>Search</h1>
         <Box sx={{ margin: "auto", maxWidth: 1200 }}>
