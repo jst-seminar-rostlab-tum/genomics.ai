@@ -93,7 +93,7 @@ const TemproaryDataSetCard2 = () => (
 export default function LearnMore() {
   const [value, setValue] = useState(0);
   const path = useLocation().pathname;
-  const id =  path.match("/explore/models/(.*)$")
+  const id =  path.match("/explore/models/(.*)$")[1]
   const [model, setModel] = useState(null);
 
   useEffect(() => {

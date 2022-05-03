@@ -257,6 +257,7 @@ const Explore = () => {
             render={() => atlases && tabMenu({ atlases, path })}
           />
           <Route
+          exact
             path="/explore/models"
             render={() => models && tabMenu({ models, path })}
           />
