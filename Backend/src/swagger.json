@@ -43,12 +43,8 @@
       "bearerAuth": []
     }
   ],
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
-  ],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
   "tags": [
     {
       "name": "User",
@@ -72,9 +68,7 @@
       "post": {
         "security": [],
         "summary": "Authenticate user",
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "requestBody": {
           "required": true,
           "content": {
@@ -89,10 +83,7 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "email",
-                  "password"
-                ],
+                "required": ["email", "password"],
                 "additionalProperties": false
               }
             }
@@ -157,9 +148,7 @@
     "/register": {
       "post": {
         "summary": "Register a user",
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "security": [],
         "requestBody": {
           "required": true,
@@ -184,10 +173,7 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "email",
-                  "password"
-                ],
+                "required": ["email", "password"],
                 "additionalProperties": false
               }
             }
@@ -231,17 +217,13 @@
           }
         ],
         "description": "Used by an admin to authorize a specific user",
-        "tags": [
-          "User"
-        ]
+        "tags": ["User"]
       }
     },
     "/profile": {
       "get": {
         "summary": "Get a profile information",
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "responses": {
           "200": {
             "description": "OK"
@@ -265,9 +247,7 @@
             }
           }
         ],
-        "tags": [
-          "Project"
-        ],
+        "tags": ["Project"],
         "responses": {
           "200": {
             "description": "OK"
@@ -281,9 +261,7 @@
     "/projects": {
       "get": {
         "summary": "Get all projects that meet query params",
-        "tags": [
-          "Project"
-        ],
+        "tags": ["Project"],
         "parameters": [
           {
             "in": "query",
@@ -313,9 +291,7 @@
     "/initiate_processing": {
       "post": {
         "summary": "Initiate processing",
-        "tags": [
-          "Project"
-        ],
+        "tags": ["Project"],
         "requestBody": {
           "required": true,
           "content": {
@@ -327,9 +303,7 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "uploadId"
-                ],
+                "required": ["uploadId"],
                 "additionalProperties": false
               }
             }
@@ -368,9 +342,7 @@
     "/password_reset": {
       "post": {
         "summary": "Make a request for password reset",
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "requestBody": {
           "required": true,
           "content": {
@@ -382,9 +354,7 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "email"
-                ],
+                "required": ["email"],
                 "additionalProperties": false
               }
             }
@@ -400,9 +370,7 @@
     "/password_reset/:token": {
       "post": {
         "summary": "Reset the password for given token",
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "parameters": [
           {
             "in": "path",
@@ -424,9 +392,7 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "password"
-                ],
+                "required": ["password"],
                 "additionalProperties": false
               }
             }
@@ -442,9 +408,7 @@
     "/resend": {
       "post": {
         "summary": "Reset the password for given token",
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "requestBody": {
           "required": true,
           "content": {
@@ -456,9 +420,7 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "email"
-                ],
+                "required": ["email"],
                 "additionalProperties": false
               }
             }
@@ -474,9 +436,7 @@
     "/update_profile": {
       "post": {
         "summary": "Update profile data",
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "requestBody": {
           "required": true,
           "content": {
@@ -518,9 +478,7 @@
     "/user-avatar": {
       "post": {
         "summary": "Upload new profile picture for user",
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "requestBody": {
           "$ref": "#/components/requestBodies/pictureUpload"
         },
@@ -542,9 +500,7 @@
       },
       "delete": {
         "summary": "Delete profile picture of user",
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "responses": {
           "200": {
             "description": "OK"
@@ -558,9 +514,7 @@
     "/file_download/results": {
       "post": {
         "summary": "Download results",
-        "tags": [
-          "Project"
-        ],
+        "tags": ["Project"],
         "requestBody": {
           "required": true,
           "content": {
@@ -572,9 +526,7 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "id"
-                ],
+                "required": ["id"],
                 "additionalProperties": false
               }
             }
@@ -593,9 +545,7 @@
     "/file_upload/complete_upload": {
       "post": {
         "summary": "Complete upload",
-        "tags": [
-          "Project"
-        ],
+        "tags": ["Project"],
         "requestBody": {
           "required": true,
           "content": {
@@ -621,10 +571,7 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "parts",
-                  "uploadId"
-                ],
+                "required": ["parts", "uploadId"],
                 "additionalProperties": false
               }
             }
@@ -635,9 +582,7 @@
     "/file_upload/get_upload_url": {
       "get": {
         "summary": "Get upload URL",
-        "tags": [
-          "Project"
-        ],
+        "tags": ["Project"],
         "parameters": [
           {
             "in": "query",
@@ -667,9 +612,7 @@
     "/file_upload/start_upload": {
       "post": {
         "summary": "Start upload",
-        "tags": [
-          "Project"
-        ],
+        "tags": ["Project"],
         "requestBody": {
           "required": true,
           "content": {
@@ -690,12 +633,7 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "fileName",
-                  "modelId",
-                  "atlasId",
-                  "projectName"
-                ],
+                "required": ["fileName", "modelId", "atlasId", "projectName"],
                 "additionalProperties": false
               }
             }
@@ -714,9 +652,7 @@
     "/institutions": {
       "post": {
         "summary": "Add institution",
-        "tags": [
-          "Institution"
-        ],
+        "tags": ["Institution"],
         "requestBody": {
           "required": true,
           "content": {
@@ -737,10 +673,7 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "name",
-                  "country"
-                ],
+                "required": ["name", "country"],
                 "additionalProperties": false
               }
             }
@@ -757,9 +690,7 @@
       },
       "get": {
         "summary": "Get all institutions that meet  query params",
-        "tags": [
-          "Institution"
-        ],
+        "tags": ["Institution"],
         "parameters": [
           {
             "in": "query",
@@ -789,9 +720,7 @@
     "/institutions/{id}/invite": {
       "put": {
         "summary": "Invite a user to institution",
-        "tags": [
-          "Institution"
-        ],
+        "tags": ["Institution"],
         "parameters": [
           {
             "in": "path",
@@ -813,9 +742,7 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "userId"
-                ],
+                "required": ["userId"],
                 "additionalProperties": false
               }
             }
@@ -837,9 +764,7 @@
     "/institutions/{id}/members": {
       "get": {
         "summary": "Get all members of an institution",
-        "tags": [
-          "Institution"
-        ],
+        "tags": ["Institution"],
         "parameters": [
           {
             "in": "path",
@@ -864,9 +789,7 @@
     "/institutions/{id}/projects": {
       "get": {
         "summary": "Get all projects of an institution",
-        "tags": [
-          "Institution"
-        ],
+        "tags": ["Institution"],
         "parameters": [
           {
             "in": "path",
@@ -891,9 +814,7 @@
     "/institutions/{id}/admin": {
       "put": {
         "summary": "Make a member of institution admin",
-        "tags": [
-          "Institution"
-        ],
+        "tags": ["Institution"],
         "parameters": [
           {
             "in": "path",
@@ -915,9 +836,7 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "userId"
-                ],
+                "required": ["userId"],
                 "additionalProperties": false
               }
             }
@@ -939,9 +858,7 @@
     "/institutions/{id}/join": {
       "put": {
         "summary": "Join as member of institution",
-        "tags": [
-          "Institution"
-        ],
+        "tags": ["Institution"],
         "parameters": [
           {
             "in": "path",
@@ -963,14 +880,108 @@
             "description": "Invalid autherization permission!"
           }
         }
+      },
+      "delete": {
+        "summary": "A member leaves the institution. (i.e. removes the reference that linked it with the institution)",
+        "tags": ["Institution"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "institutionId": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "user": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "country": {
+                      "type": "string"
+                    },
+                    "profilePictureURL": {
+                      "type": "string"
+                    },
+                    "adminIds": {
+                      "type": "array"
+                    },
+                    "memberIds": {
+                      "type": "array"
+                    },
+                    "invitedMemberIds": {
+                      "type": "array"
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    },
+                    "updatedAt": {
+                      "type": "string"
+                    },
+                    "__v": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing parameters."
+          },
+          "403": {
+            "description": "You are the only one admin of the institution."
+          },
+          "409": {
+            "description": [
+              "You are not member of the institution.",
+              "Institution does not exist.",
+              "Information of the user does not match.",
+              "User does not exist."
+            ]
+          },
+          "500": {
+            "description": [
+              "Internal error.",
+              "Unable to remove user from a institution.",
+              "Error when removing you from the institution."
+            ]
+          }
+        }
       }
     },
     "/institutions/:id/profilepicture": {
       "post": {
         "summary": "Upload new profile picture for institution",
-        "tags": [
-          "Institution"
-        ],
+        "tags": ["Institution"],
         "parameters": [
           {
             "in": "path",
@@ -1002,9 +1013,7 @@
       },
       "delete": {
         "summary": "Delete profile picture of institution",
-        "tags": [
-          "Institution"
-        ],
+        "tags": ["Institution"],
         "parameters": [
           {
             "in": "path",
@@ -1028,9 +1037,7 @@
     "/institutions/{id}/teams": {
       "get": {
         "summary": "Get teams for an institution",
-        "tags": [
-          "Institution"
-        ],
+        "tags": ["Institution"],
         "parameters": [
           {
             "in": "path",
@@ -1055,9 +1062,7 @@
     "/teams": {
       "post": {
         "summary": "Create a team",
-        "tags": [
-          "Teams"
-        ],
+        "tags": ["Teams"],
         "requestBody": {
           "required": true,
           "content": {
@@ -1075,11 +1080,7 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "title",
-                  "description",
-                  "visibility"
-                ],
+                "required": ["title", "description", "visibility"],
                 "additionalProperties": false
               }
             }
@@ -1096,9 +1097,7 @@
       },
       "get": {
         "summary": "Get all teams that meet  query params",
-        "tags": [
-          "Team"
-        ],
+        "tags": ["Team"],
         "parameters": [
           {
             "in": "query",
@@ -1135,9 +1134,7 @@
     "/teams/{id}": {
       "put": {
         "summary": "Update a team",
-        "tags": [
-          "Teams"
-        ],
+        "tags": ["Teams"],
         "parameters": [
           {
             "in": "path",
@@ -1160,11 +1157,7 @@
                   },
                   "visibility": {
                     "type": "string",
-                    "enum": [
-                      "PRIVATE",
-                      "PUBLIC",
-                      "BY_INSTITUTION"
-                    ]
+                    "enum": ["PRIVATE", "PUBLIC", "BY_INSTITUTION"]
                   }
                 },
                 "additionalProperties": false
@@ -1182,7 +1175,7 @@
         }
       }
     },
-    "/teams/:id/invite": {
+    "/teams/{id}/invite": {
       "post": {
         "parameters": [
           {
@@ -1195,9 +1188,7 @@
           }
         ],
         "summary": "Invite person to a team",
-        "tags": [
-          "Teams"
-        ],
+        "tags": ["Teams"],
         "requestBody": {
           "required": true,
           "content": {
@@ -1209,9 +1200,7 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "userId"
-                ],
+                "required": ["userId"],
                 "additionalProperties": false
               }
             }
@@ -1219,16 +1208,30 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Invitation has been sent successfully."
           },
           "400": {
-            "description": "Failed. Bad post data."
+            "description": [
+              "Missing parameters.",
+              "User to be invited does not exist.",
+              "Team does not exist."
+            ]
+          },
+          "409": {
+            "description": "User is already part of the team"
+          },
+          "500": {
+            "description": [
+              "Error when adding the user to members of the team.",
+              "Error when sending email. Invitation has been stored.",
+              "Unable to send invitation to the desired user."
+            ]
           }
         }
       }
     },
-    "/teams/{id}/institution": {
-      "put": {
+    "/teams/{id}/admin": {
+      "post": {
         "parameters": [
           {
             "in": "path",
@@ -1239,10 +1242,8 @@
             }
           }
         ],
-        "summary": "Invite person to a team",
-        "tags": [
-          "Teams"
-        ],
+        "summary": "Add a person to the adminIds list",
+        "tags": ["Teams"],
         "requestBody": {
           "required": true,
           "content": {
@@ -1250,13 +1251,11 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "institutionId": {
+                  "userId": {
                     "type": "string"
                   }
                 },
-                "required": [
-                  "institutionId"
-                ],
+                "required": ["userId"],
                 "additionalProperties": false
               }
             }
@@ -1264,10 +1263,408 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "User has been changed to admin."
           },
           "400": {
-            "description": "Failed. Bad post data."
+            "description": ["Missing parameters.", "User does not exist.", "Team does not exist."]
+          },
+          "409": {
+            "description": "User is not a member of the team. It should first become a member to become an admin."
+          },
+          "500": {
+            "description": [
+              "Unable to register new admin.",
+              "Error when changing to user to admin profile.",
+              "Internal error."
+            ]
+          }
+        }
+      }
+    },
+    "/teams/{id}/join": {
+      "post": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "summary": "Add a person into the team",
+        "tags": ["Teams"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userId": {
+                    "type": "string"
+                  }
+                },
+                "required": ["userId"],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated team",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "projects": {
+                  "type": "array"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "adminIds": {
+                  "type": "array"
+                },
+                "memberIds": {
+                  "type": "array"
+                },
+                "invitedMemberIds": {
+                  "type": "array"
+                },
+                "createdAt": {
+                  "type": "string"
+                },
+                "updatedAt": {
+                  "type": "string"
+                },
+                "__v": {
+                  "type": "number"
+                },
+                "institutionId": {
+                  "type": "string"
+                },
+                "visibility": {
+                  "type": "string"
+                }
+              }
+            },
+          "400": {
+            "description": [
+              "Missing parameters.", 
+              "User does not exist.", 
+              "Team does not exist."]
+          },
+          "403": {
+            "description" : "You are the only one admin of the team."
+          },
+          "409": {
+            "description": [
+              "User has not been verified.",
+              "Information of the user does not match.",
+              "User is an admin of the team.",
+              "User is already a member of the team.",
+              "Team is not associated to any institution and set-up requires it.",
+              "User does not belong to the institution of the team."
+            ]
+          },
+          "500": {
+            "description": [
+              "Internal error. Set-up",
+              "Error when joining a new member into the team.",
+              "Unable to register new admin.",
+              "Internal error."
+            ]
+          }
+        }
+      },
+      "delete": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "summary": "Remove a person from the team",
+        "tags": ["Teams"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userId": {
+                    "type": "string"
+                  }
+                },
+                "required": ["userId"],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated team",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "projects": {
+                  "type": "array"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "adminIds": {
+                  "type": "array"
+                },
+                "memberIds": {
+                  "type": "array"
+                },
+                "invitedMemberIds": {
+                  "type": "array"
+                },
+                "createdAt": {
+                  "type": "string"
+                },
+                "updatedAt": {
+                  "type": "string"
+                },
+                "__v": {
+                  "type": "number"
+                },
+                "institutionId": {
+                  "type": "string"
+                },
+                "visibility": {
+                  "type": "string"
+                }
+              }
+            },
+          "400": {
+            "description": [
+              "Missing parameters.", 
+              "User does not exist.", 
+              "Team does not exist."]
+          },
+          "403": {
+            "description" : "You are the only one admin of the team."
+          },
+          "409": {
+            "description": [
+              "You are not member of the team.",
+              "Information of the user does not match."
+            ]
+          },
+          "500": {
+            "description": [
+              "Error when removing a member from the team.",
+              "Unable to remove user from a team.",
+              "Internal error."
+            ]
+          }
+        }
+      }
+    },
+    "/teams/{id}/institution": {
+      "post": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "summary": "Associate team with an institution",
+        "tags": ["Teams"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userId": {
+                    "type": "string"
+                  }
+                },
+                "required": ["userId"],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated team",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "projects": {
+                  "type": "array"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "adminIds": {
+                  "type": "array"
+                },
+                "memberIds": {
+                  "type": "array"
+                },
+                "invitedMemberIds": {
+                  "type": "array"
+                },
+                "createdAt": {
+                  "type": "string"
+                },
+                "updatedAt": {
+                  "type": "string"
+                },
+                "__v": {
+                  "type": "number"
+                },
+                "institutionId": {
+                  "type": "string"
+                }
+              }
+            },
+          "400": {
+            "description": [
+              "Missing parameters.",
+              "Institution does not exist.",
+              "Team does not exist."
+            ]
+          },
+          "403":{
+            "description": "You are not allowed to execute this operation."
+          },
+          "409": {
+            "description": "Team has been already associated with an institution."
+          },
+          "500": {
+            "description": [
+              "Error when associating the team with the institution.",
+              "Unable to associate the team with the institution.",
+              "Internal error."
+            ]
+          }
+        }
+      },
+      "delete": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "summary": "Disassociate a team from an institution.",
+        "tags": ["Teams"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userId": {
+                    "type": "string"
+                  }
+                },
+                "required": ["userId"],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated team",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "projects": {
+                  "type": "array"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "adminIds": {
+                  "type": "array"
+                },
+                "memberIds": {
+                  "type": "array"
+                },
+                "invitedMemberIds": {
+                  "type": "array"
+                },
+                "createdAt": {
+                  "type": "string"
+                },
+                "updatedAt": {
+                  "type": "string"
+                },
+                "__v": {
+                  "type": "number"
+                }
+              }
+            },
+          "400": {
+            "description": [
+              "Missing parameters.",
+              "Institution does not exist.",
+              "Team does not exist."
+            ]
+          },
+          "403":{
+            "description": "You are not allowed to execute this operation."
+          },
+          "409": {
+            "description": "Team has not been associated with the institution."
+          },
+          "500": {
+            "description": [
+              "Error when removing the team from the institution.",
+              "Unable to register the team into the institution.",
+              "Internal error."
+            ]
           }
         }
       }
@@ -1275,9 +1672,7 @@
     "/users": {
       "get": {
         "summary": "Search users",
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "parameters": [
           {
             "in": "query",
@@ -1307,9 +1702,7 @@
     "/institutions/:id": {
       "get": {
         "summary": "Get institution with id",
-        "tags": [
-          "Institution"
-        ],
+        "tags": ["Institution"],
         "parameters": [
           {
             "in": "path",
@@ -1333,9 +1726,7 @@
     "/users/:id/institutions": {
       "get": {
         "summary": "Get all institutions that user is a member",
-        "tags": [
-          "Institution"
-        ],
+        "tags": ["Institution"],
         "parameters": [
           {
             "in": "path",
@@ -1359,9 +1750,7 @@
     "/users/:id/teams": {
       "get": {
         "summary": "Get all teams that user is a member",
-        "tags": [
-          "Team"
-        ],
+        "tags": ["Team"],
         "parameters": [
           {
             "in": "path",
@@ -1385,9 +1774,7 @@
     "/users/:id/projects": {
       "get": {
         "summary": "Get all projects of the user",
-        "tags": [
-          "Project"
-        ],
+        "tags": ["Project"],
         "parameters": [
           {
             "in": "path",
