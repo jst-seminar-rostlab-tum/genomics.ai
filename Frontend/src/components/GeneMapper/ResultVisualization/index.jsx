@@ -11,11 +11,11 @@ import Sidepanel from '../Sidepanel';
 
 /**
  *
- * @param dataURL download link for the csv data
- * @param onlyUMAP set to true if only the UMAP should be shown
+ * @param dataUrl download link for the csv data
+ * @param onlyUmap set to true if only the UMAP should be shown
  * @dataUrl url to download the data from
  */
-function ResultVisualization({ dataUrl, onlyUMAP }) {
+function ResultVisualization({ dataUrl, onlyUmap }) {
   const umapContainer = useRef(null);
   const graphContainer = useRef(null);
 
@@ -53,7 +53,7 @@ function ResultVisualization({ dataUrl, onlyUMAP }) {
   }, [umapContainer.current]);
 
   return (
-    <>
+    <Box sx={{ display: 'flex', width: '100%', height: '100%' }}>
       {!umap ? (
         <Box sx={{
           position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
@@ -62,7 +62,7 @@ function ResultVisualization({ dataUrl, onlyUMAP }) {
           <CircularProgress disableShrink />
         </Box>
       ) : null}
-      {!onlyUMAP
+      {!onlyUmap
         ? (
           <Sidepanel title="Categories">
             <GeneMapperCategories
@@ -105,12 +105,12 @@ function ResultVisualization({ dataUrl, onlyUMAP }) {
           ref={umapContainer}
         />
       </Box>
-      <Box sx={{ display: onlyUMAP ? 'none' : 'block' }}>
+      <Box sx={{ display: onlyUmap ? 'none' : 'block' }}>
         <Sidepanel title="Graphs" collapseToRight>
           <Box ref={graphContainer} />
         </Sidepanel>
       </Box>
-    </>
+    </Box>
   );
 }
 
