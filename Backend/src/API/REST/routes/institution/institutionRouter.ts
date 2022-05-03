@@ -307,7 +307,7 @@ const disjoin_member_of_institution = (): Router => {
         return res.status(409).send("Information of the user does not match.");
 
       const institution = await InstitutionService.getInstitutionById(institutionId);
-      if (!institution) return res.status(409).send("Institution does not exist.");
+      if (!institution) return res.status(400).send("Institution does not exist.");
 
       var tempUserId = String(userId);
       var tempListAdmins = institution.adminIds.map(String);

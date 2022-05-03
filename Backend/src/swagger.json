@@ -955,7 +955,11 @@
             }
           },
           "400": {
-            "description": "Missing parameters."
+            "description": [
+              "Missing parameters.",
+              "Institution does not exist.",
+              "User does not exist."
+            ]
           },
           "403": {
             "description": "You are the only one admin of the institution."
@@ -963,9 +967,7 @@
           "409": {
             "description": [
               "You are not member of the institution.",
-              "Institution does not exist.",
-              "Information of the user does not match.",
-              "User does not exist."
+              "Information of the user does not match."
             ]
           },
           "500": {
@@ -1360,7 +1362,8 @@
             "description": [
               "Missing parameters.", 
               "User does not exist.", 
-              "Team does not exist."]
+              "Team does not exist."
+            ]
           },
           "403": {
             "description" : "You are the only one admin of the team."

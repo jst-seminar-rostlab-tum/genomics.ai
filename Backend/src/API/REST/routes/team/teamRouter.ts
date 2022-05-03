@@ -214,7 +214,7 @@ const add_user_to_admin = (): Router => {
         const team_updated = await TeamService.addAdminToTeam(teamId, userId);
 
         if (!team_updated)
-          return res.status(400).send("Error when changing to user to admin profile.");
+          return res.status(500).send("Error when changing to user to admin profile.");
 
         return res.status(200).json("User has been changed to admin.");
       } catch (err) {
@@ -444,12 +444,12 @@ const disjoin_member = (): Router => {
       if (!(userId && teamId)) return res.status(400).send("Missing parameters.");
 
       const user = await UserService.getUserById(userId);
-      if (!user) return res.status(409).send("User does not exist.");
+      if (!user) return res.status(400).send("User does not exist.");
       if (userId != user_id_jwt)
         return res.status(409).send("Information of the user does not match.");
 
       const team = await TeamService.getTeamById(teamId);
-      if (!team) return res.status(409).send("Team does not exist.");
+      if (!team) return res.status(400).send("Team does not exist.");
 
       var tempUserId = String(userId);
       var tempListAdmins = team.adminIds.map(String);
