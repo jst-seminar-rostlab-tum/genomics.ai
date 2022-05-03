@@ -1118,7 +1118,7 @@
       "put": {
         "summary": "Update a team",
         "tags": [
-          "Teams"
+          "Team"
         ],
         "parameters": [
           {
@@ -1223,7 +1223,7 @@
         ],
         "summary": "Invite person to a team",
         "tags": [
-          "Teams"
+          "Team"
         ],
         "requestBody": {
           "required": true,
