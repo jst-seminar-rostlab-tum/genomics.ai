@@ -9,30 +9,26 @@ import {
   Avatar,
 } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
-
-// Temporary function to generate different colors,
-// change later to titleToColor(...) from feature/institutinOverview branch
-function randomColor() {
-  const hex = Math.floor(Math.random() * 0xffffff);
-  return `#${hex.toString(16)}`;
-}
+import tittleToColor from 'shared/utils/stringColor';
 
 // Generic card component to reuse the same structure for the
 // different search card items as Institution, team, ...
 function SearchCard({
   action, avatar, title, link,
   primary, secondary, tertiary,
+  displayAvatar = false,
 }) {
   return (
     <ListItem divider alignItems="flex-start" secondaryAction={action}>
-      {avatar && (
-        <ListItemAvatar spacing={10}>
-          <Avatar
-            sx={{ bgcolor: randomColor(), width: 45, height: 45 }}
-            alt={title}
-            src={avatar}
-          />
-        </ListItemAvatar>
+      {displayAvatar
+      && (
+      <ListItemAvatar spacing={10}>
+        <Avatar
+          sx={{ bgcolor: tittleToColor(title), width: 45, height: 45 }}
+          alt={title}
+          src={avatar || 'dummy.png'}
+        />
+      </ListItemAvatar>
       )}
       <Stack direction="column" spacing={0.5}>
         {/* primary */}

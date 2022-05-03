@@ -8,6 +8,7 @@ let mockTeams = [
     adminIds: [6, 7],
     invitedMemberIds: [],
     memberIds: [1, 2, 3, 4, 5],
+    projects: [],
     visibility: 'public',
     institutionId: 1,
   },
@@ -70,6 +71,20 @@ const TeamService = {
   async getMyTeams() {
     return mockTeams;
   },
+
+  getTeams: async (params) => {
+    let preparedTeams = mockTeams.map(
+      (team) => ({ ...team, title: team.name }
+      ),
+    );
+    if (params.keyword) {
+      preparedTeams = preparedTeams.filter(
+        (team) => team.name.toLowerCase().includes(params.keyword.toLowerCase()),
+      );
+    }
+    return preparedTeams.sort((a, b) => (`${a.title}`).localeCompare(b.title));
+  },
+
 };
 
 export default TeamService;

@@ -3,6 +3,7 @@ import axiosInstance from './axiosInstance';
 import ProfileService from './Profile.service';
 
 const MOCK_TEAMS = true;
+const MODEL = 'teams';
 
 function enhanceTeam(team) {
   return { ...team, id: team._id };
@@ -47,6 +48,11 @@ const TeamService = MOCK_TEAMS ? MockTeamService : {
     let { data } = await axiosInstance.get(`/user/${user.id}/teams`);
     data = data.map(enhanceTeam);
     return data;
+  },
+
+  getTeams: async (params) => {
+    const { data } = await axiosInstance.get(`/${MODEL}`, { params });
+    return data.map(enhanceTeam);
   },
 };
 
