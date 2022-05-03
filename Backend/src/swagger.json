@@ -827,6 +827,9 @@
           },
           "400": {
             "description": "Failed. Bad post data."
+          },
+          "500": {
+            "description": "Error: Internal Error."
           }
         }
       }
