@@ -67,12 +67,13 @@ function GeneMapperHome() {
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'space-between',
-            paddingBottom: '2em',
-            marginTop: '10px',
+            pt: 2,
+            pb: 3,
           }}
         >
-          <Stack direction="row" className="stack">
-            <Typography variant="h6" sx={{ marginTop: 0.5 }}>Your Mappings </Typography>
+          <Stack direction="row" className="stack" alignItems="Center">
+
+            <Typography variant="h5" sx={{ pr: 1 }}>Your Mappings</Typography>
             <ThemeProvider theme={themeIcon}>
               <PlusIcon />
             </ThemeProvider>
