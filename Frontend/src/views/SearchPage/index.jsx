@@ -17,23 +17,25 @@ import TeamService from 'shared/services/Team.service';
 import InstitutionService from 'shared/services/Institution.service';
 import ProjectService from 'shared/services/Project.service';
 
-// target to change, so backend will provide full data
+// definitely target to change, when backend will provide full data
 async function getTeams(filterParams) {
   const searchResponse = await TeamService.getTeams(filterParams);
-  const institutionRequests = searchResponse.map(
-    (team) => InstitutionService.getInstitutionById(team.institutionId),
+  const teamsWithInstitutions = searchResponse.filter((team) => team.institutionId);
+  const institutionRequests = teamsWithInstitutions.map(
+    (team) => InstitutionService.getInstitutionById(team.institutionId)
+    ,
   );
   const institutionsResponse = await Promise.all(institutionRequests);
   institutionsResponse.forEach(
     (institution,
       index) => {
-      searchResponse[index].institutionTitle = institution.name;
+      teamsWithInstitutions[index].institutionTitle = institution.name;
     },
   );
   return searchResponse;
 }
 
-// target to change, so backend will provide full data
+// definitely target to change, when backend will provide full data
 async function getInstitutions(filterParams) {
   const searchResponse = await InstitutionService.getInstitutions(filterParams);
   const teamsRequests = searchResponse.map(
