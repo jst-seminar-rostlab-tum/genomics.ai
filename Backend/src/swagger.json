@@ -1742,6 +1742,42 @@
         }
       }
     },
+    "/atlas/{id}/visualization": {
+      "get": {
+        "summary": "Receive a URL to the file used for visualization of an atlas",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Atlas"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful retrieval of the URL",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Atlas with id does not exist"
+          },
+          "500": {
+            "description": "Internal error"
+          }
+        }
+      }
+    },
     "/models": {
       "get": {
         "summary": "Get all available models",
@@ -1799,7 +1835,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                  "type": "object",
+                    "type": "object",
                     "properties": {
                       "_id": {
                         "type": "string"

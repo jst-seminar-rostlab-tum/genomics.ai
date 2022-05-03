@@ -25,7 +25,7 @@ import upload_user_avatar_route from "./routes/upload_user_avatar";
 
 import { get_teams_of_user, get_users } from "./routes/user/userRouter";
 import { get_model, get_allModels } from "./routes/model/modelRouter";
-import { get_atlas, get_allAtlases } from "./routes/atlas/atlasRouter";
+import { get_atlas, get_atlas_visualization, get_allAtlases } from "./routes/atlas/atlasRouter";
 import * as swaggerDocument from "../../swagger.json";
 import * as swaggerUi from "swagger-ui-express";
 
@@ -137,6 +137,7 @@ export function express_routes(this: REST_Host): Router {
 
   // atlas routes
   this.expressApp.use(get_atlas());
+  this.expressApp.use(get_atlas_visualization());
   this.expressApp.use(get_allAtlases());
 
   // upload routes
