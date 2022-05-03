@@ -7,17 +7,16 @@ const MODEL = 'ownprojects';
 const ProjectService = {
   getProjects: async () => {
     const { data } = await axiosInstance.get(`/${MODEL}`);
-    // const data = await ProjectMock.getProjects();
-    return data;
+    const mockData = await ProjectMock.getProjects();
+    return [...data, ...mockData];
   },
 
   getProject: async (id) => {
   // const { data } = await axiosInstance.get(`/project/${id}`);
-  // ProjectMock.getProject(id)
 
     const { data } = await axiosInstance.get(`/${MODEL}`);
-    const project = await data.find((p) => String(p._id) === String(id));
-    return project;
+    const project = data.find((p) => String(p._id) === String(id));
+    return project || ProjectMock.getProject(id);
   },
 
   startOrContinueProjectUpload: async (
