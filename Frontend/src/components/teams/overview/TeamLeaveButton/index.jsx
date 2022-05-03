@@ -6,7 +6,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-import { leaveTeam } from 'shared/services/mock/teams';
+import TeamService from 'shared/services/Team.service';
 
 function TeamLeaveButton({ team, onLeft }) {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -15,14 +15,14 @@ function TeamLeaveButton({ team, onLeft }) {
   const handleCloseDialog = () => setDialogOpen(false);
 
   async function leave() {
-    await leaveTeam(team);
+    await TeamService.leaveTeam(team.id);
     handleCloseDialog();
     onLeft(team);
   }
 
   return (
     <>
-      <Button variant="outlined" color="critical" onClick={handleOpenDialog}>
+      <Button variant="outlined" color="error" onClick={handleOpenDialog}>
         Leave
       </Button>
       <Dialog
@@ -43,7 +43,7 @@ function TeamLeaveButton({ team, onLeft }) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog}>Cancel</Button>
-          <Button onClick={() => leave()} color="critical" autoFocus>
+          <Button onClick={() => leave()} color="error" autoFocus>
             Leave
           </Button>
         </DialogActions>

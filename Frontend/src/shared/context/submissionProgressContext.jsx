@@ -15,6 +15,8 @@ function SubmissionProgressProvider(props) {
   });
 
   const value = [submissionProgress, setSubmissionProgress];
+
+  // eslint-disable-next-line react/jsx-props-no-spreading
   return <SubmissionProgressContext.Provider value={value} {...props} />;
 }
 

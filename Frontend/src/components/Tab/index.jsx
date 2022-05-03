@@ -1,8 +1,10 @@
+/* eslint-disable */
+
 import { useRef, useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 
-import {Tab, Tabs, Box} from '@mui/material'
+import { Tab, Tabs, Box } from '@mui/material'
 
 /**
  * Styled Tab
@@ -87,40 +89,40 @@ export function StyledTab(props) {
  */
 export function TabGroup(props) {
 
-    const position = useLocation()
+  const position = useLocation()
 
-    const {value, setValue, darkBackground, tabsInfo, width="100%", height="100%"}=props
+  const { value, setValue, darkBackground, tabsInfo, width = "100%", height = "100%" } = props
 
-    const tabsRef = useRef()
-    const [tabsHeight, setTabsHeight] = useState(0)
+  const tabsRef = useRef()
+  const [tabsHeight, setTabsHeight] = useState(0)
 
-    useEffect(()=>{
-        setTabsHeight(tabsRef.current.clientHeight)
-    }, [])
+  useEffect(() => {
+    setTabsHeight(tabsRef.current.clientHeight)
+  }, [])
 
-    return (
-        <Box sx={{width, height, position: "relative"}}>
-            <Box ref={tabsRef}>
-                <Tabs value={value} onChange={(_, newValue)=>setValue(newValue)}
-                    sx={{
-                        "& .MuiTabs-indicator": {
-                            backgroundColor: darkBackground ? "white" : "black"
-                        }
-                    }}
-                >
-                    {
-                        tabsInfo.map((tabInfo)=>(<StyledTab label={tabInfo.label} component={Link} to={tabInfo.path ? tabInfo.path : position.pathname} darkBackground={darkBackground} />))
-                    }
-                </Tabs>
-            </Box>
-            
-            {
-                tabsInfo[value].additionalContent && 
-
-                <Box sx={{width: "100%", height: `calc(100% - ${tabsHeight}px)`, overflowY: "scroll"}}>
-                    {tabsInfo[value].additionalContent}
-                </Box>
+  return (
+    <Box sx={{ width, height, position: "relative" }}>
+      <Box ref={tabsRef}>
+        <Tabs value={value} onChange={(_, newValue) => setValue(newValue)}
+          sx={{
+            "& .MuiTabs-indicator": {
+              backgroundColor: darkBackground ? "white" : "black"
             }
+          }}
+        >
+          {
+            tabsInfo.map((tabInfo) => (<StyledTab label={tabInfo.label} component={Link} to={tabInfo.path ? tabInfo.path : position.pathname} darkBackground={darkBackground} />))
+          }
+        </Tabs>
+      </Box>
+
+      {
+        tabsInfo[value].additionalContent &&
+
+        <Box sx={{ width: "100%", height: `calc(100% - ${tabsHeight}px)`, overflowY: "scroll" }}>
+          {tabsInfo[value].additionalContent}
         </Box>
-    )
+      }
+    </Box>
+  )
 }
