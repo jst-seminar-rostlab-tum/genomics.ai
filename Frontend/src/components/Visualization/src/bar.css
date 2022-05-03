@@ -34,3 +34,12 @@ fill:#3088cb;
     font-family: inherit;
     font-weight: 650;
 }
+
+.label{
+    font-style: normal;
+    font-family:inherit;
+    font-weight: 500;
+    stroke-width: 1.75;
+    text-anchor: inherit;
+    font-size: 10px;
+}

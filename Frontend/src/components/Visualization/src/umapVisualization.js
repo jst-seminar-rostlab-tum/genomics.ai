@@ -2,7 +2,7 @@ import * as d3 from "d3";
 import * as cons from "./constants";
 import { zoomM } from "./newZoom";
 import "./tooltip.css";
-import { addBarPlot } from "./barChart"
+import { addBarPlotCell, addBarPlotBatch } from "./barChart"
 import {getColoringModes, setColoring} from "./coloring"
 
 // //Reference before and after
@@ -31,8 +31,10 @@ export class UmapVisualization2 {
     this.tooltip = d3.select(container).append("div");
     this.mode = undefined;
     //TODO: add if for when the atlas doesn't contain cell_type
+    this.barChartBatch = addBarPlotBatch(containerBar, data);
     if(Object.keys(this.coloringModes).includes("cell_type")){
-      this.barChart = addBarPlot(containerBar, data);
+      d3.select(containerBar).append("div");
+      this.barChartCell = addBarPlotCell(containerBar, data);
     }
     this.data = data;
   };
@@ -63,6 +65,7 @@ export class UmapVisualization2 {
 
   //Sizing and resizing the cells
   resize(w, h) {
+
     const min = getMin(w, h);
     const data = this.data;
     const r = 0.003 * min;
