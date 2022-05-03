@@ -31,11 +31,12 @@ export default function download_results_route() {
         Expires: 60 * 60 * 24 * 7 - 1, // one week minus one second
       };
       let presignedUrl = await s3.getSignedUrlPromise("getObject", params);
-      res.status(200).send({ presignedUrl });
+      return res.status(200).send({ presignedUrl });
     } catch (err) {
       console.log(err);
-      res.status(500).send(err);
+      return res.status(500).send(err);
     }
-  );
+  })
   return router;
 }
+
