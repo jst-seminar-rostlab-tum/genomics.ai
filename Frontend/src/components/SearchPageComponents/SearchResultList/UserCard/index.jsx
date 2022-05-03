@@ -10,6 +10,7 @@ function UserCard({ item: user }) {
       title={`${user.firstName} ${user.lastName}`}
       link={`/sequencer/users/${user._id}`}
       secondary={` ${user.note}`}
+      displayAvatar
       // tertiary={`${user.email}`}
     />
   );

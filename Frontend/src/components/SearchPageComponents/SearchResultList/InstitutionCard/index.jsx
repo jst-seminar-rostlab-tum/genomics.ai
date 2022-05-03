@@ -10,6 +10,7 @@ function InstitutionCard({ item: institution }) {
     <SearchCard
       title={institution.name}
       avatar={institution.profilePictureURL}
+      displayAvatar
       link={`/sequencer/institutions/${institution._id}`}
       // secondary={`updated on ${institution.updated}`}
       tertiary={(
