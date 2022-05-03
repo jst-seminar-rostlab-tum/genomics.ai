@@ -104,8 +104,8 @@ export function express_routes(this: REST_Host): Router {
   // debugging / testing routes
   this.expressApp.use(hello_route());
   this.expressApp.use(hello_auth_route());
-  this.expressApp.use(initiate_processing_route());
-  this.expressApp.use(abort_processing_route());
+  //this.expressApp.use(initiate_processing_route());
+  //this.expressApp.use(abort_processing_route());
 
   // team routes
   this.expressApp.use(create_team());

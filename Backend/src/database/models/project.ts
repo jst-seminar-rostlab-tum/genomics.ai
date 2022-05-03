@@ -1,15 +1,21 @@
 import { Document, model, Schema } from "mongoose";
 
 export enum ProjectStatus {
-  "UPLOAD_PENDING",
-  "UPLOAD_COMPLETE",
-  "PROCESSING_PENDING",
-  "ABORTED",
-  "DONE",
+  UPLOAD_PENDING = "UPLOAD_PENDING",
+  UPLOAD_COMPLETE = "UPLOAD_COMPLETE",
+  PROCESSING_PENDING = "PROCESSING_PENDING",
+  PROCESSING_FAILED = "PROCESSING_FAILED",
+  ABORTED = "ABORTED",
+  DONE = "DONE",
 }
 
 export interface IProject extends Document {
   owner: Schema.Types.ObjectId;
+  teamId: Schema.Types.ObjectId;
+  name: string;
+
+  atlasId: Schema.Types.ObjectId;
+  modelId: Schema.Types.ObjectId;
 
   // file
   uploadId: string;
@@ -22,10 +28,6 @@ export interface IProject extends Document {
   status: string;
   resultName: string;
   resultSize: number;
-  atlasId: Schema.Types.ObjectId;
-  modelId: Schema.Types.ObjectId;
-
-  teamId: Schema.Types.ObjectId;
 }
 
 const projectSchema = new Schema<IProject>({
@@ -34,6 +36,15 @@ const projectSchema = new Schema<IProject>({
     ref: "User",
     require: true,
   },
+  teamId: {
+    type: Schema.Types.ObjectId,
+    ref: "Team",
+    required: false,
+  },
+  name: { type: String, require: true },
+
+  modelId: { type: Schema.Types.ObjectId, require: true },
+  atlasId: { type: Schema.Types.ObjectId, require: true },
 
   // file
   uploadId: { type: String, require: false },
@@ -47,12 +58,6 @@ const projectSchema = new Schema<IProject>({
 
   resultName: { type: String, require: false },
   resultSize: { type: Schema.Types.Number, require: false, default: -1 },
-
-  teamId: {
-    type: Schema.Types.ObjectId,
-    ref: "Team",
-    required: false,
-  },
 });
 
 export const projectModel = model<IProject>("Project", projectSchema);

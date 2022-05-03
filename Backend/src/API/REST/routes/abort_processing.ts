@@ -28,7 +28,7 @@ export default function abort_processing_route(): Router {
     const update_object: UpdateProjectDTO = {
       status: ProjectStatus[ProjectStatus.ABORTED],
     };
-    await ProjectService.updateProject(project._id, update_object);
+    await ProjectService.updateProjectById(project._id, update_object);
 
     project.status = ProjectStatus[ProjectStatus.ABORTED];
 

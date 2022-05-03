@@ -8,7 +8,7 @@ import { validationMdw } from "../middleware/validation";
 // Tests the Cloud Run connection
 export default function initiate_processing_route(): Router {
   let router = express.Router();
-
+  //DISABLED AT THE MOMENT probably never used? Seems to be part of the test routes?
   router.post("/initiate_processing", validationMdw, check_auth(), async (req: any, res) => {
     const { uploadId } = req.body;
 

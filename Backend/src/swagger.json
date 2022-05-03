@@ -604,7 +604,18 @@
                 "type": "object",
                 "properties": {
                   "parts": {
-                    "type": "string"
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "ETag": {
+                          "type": "string"
+                        },
+                        "PartNumber": {
+                          "type": "number"
+                        }
+                      }
+                    }
                   },
                   "uploadId": {
                     "type": "string"
@@ -643,25 +654,6 @@
             }
           }
         ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "id"
-                ],
-                "additionalProperties": false
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "OK"
@@ -685,12 +677,24 @@
               "schema": {
                 "type": "object",
                 "properties": {
+                  "projectName": {
+                    "type": "string"
+                  },
                   "fileName": {
+                    "type": "string"
+                  },
+                  "modelId": {
+                    "type": "string"
+                  },
+                  "atlasId": {
                     "type": "string"
                   }
                 },
                 "required": [
-                  "fileName"
+                  "fileName",
+                  "modelId",
+                  "atlasId",
+                  "projectName"
                 ],
                 "additionalProperties": false
               }
