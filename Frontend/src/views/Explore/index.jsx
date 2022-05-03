@@ -206,13 +206,14 @@ const Explore = () => {
     setRegistrationFormVisible(false);
   }, [setRegistrationFormVisible]);
 
+  
   const tmp_elems = useLocation().pathname.split('/')
   const elems = tmp_elems.map((elem, index) => {
-    if(index<3) return elem
-    else if(index === 3){
-      if(tmp_elems[2]==='atlases') return atlases.filter((x)=>x._id === elem)[0].name
-      else if(tmp_elems[2]==='models') return models.filter((x)=>x._id === elem)[0].name
+    if(index === 3){
+      if(tmp_elems[2]==='atlases') return atlases.filter((x)=>x._id === elem)[0] ? atlases.filter((x)=>x._id === elem)[0].name : elem
+      else if(tmp_elems[2]==='models') return models.filter((x)=>x._id === elem)[0] ? models.filter((x)=>x._id === elem)[0].name : elem
     }
+    return elem
   })
 
   return (
@@ -267,7 +268,7 @@ const Explore = () => {
           />
           <Route path="/explore/models/:id" render={() => <LearnMoreModel />} />
           <Route path="/explore/datasets" render={() => atlases && tabMenu(models, path, 'datasets')} />
-          <Route path="/explore/atlases/:id/visualization" render={() => <AtlasResult /> } />
+          <Route path="/explore/atlases/:id/visualization" render={() => <AtlasResult />} />
           <Route path="/explore/atlases/:id" render={() => <LearnMoreAtlas />} />
           <Redirect to="/explore/atlases" />
         </Switch>

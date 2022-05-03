@@ -27,38 +27,38 @@ import { Link } from 'react-router-dom'
  */
 export default function Breadcrumb({ fontSize, actions, path, elems }) {
 
-    // let position = useLocation()
+  // let position = useLocation()
 
-    let elements = elems ? elems : path.split('/')
+  let elements = elems ? elems : path.split('/')
 
-    const iconSize = fontSize * 0.7
+  const iconSize = fontSize * 0.7
 
-    const rebuildLink = (index) => {
-        let accmulator = ""
-        for(let i = 1; i<=index; i++) accmulator = `${accmulator}/${elements[i]}`
-        return accmulator
-    }
+  const rebuildLink = (index) => {
+    let accmulator = ""
+    for (let i = 1; i <= index; i++) accmulator = `${accmulator}/${elements[i]}`
+    return accmulator
+  }
 
-    const handleOnClick = (element) => {
-        if(!actions) return;
-        const action=actions[element]
-        if(action && typeof(action)==="function") action()
-    }
-    
-    const generate = (element, index) => index === 0 ? <div key={index} /> : (
-        <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}} key={index}>
-            { index != elements.length - 1 
-                ? <Box component={Link} to={rebuildLink(index)} sx={{cursor: "pointer", textDecoration: "none"}} onClick={()=>handleOnClick(element)}><Typography fontWeight="bold" fontSize={`${fontSize}em`} sx={{color: colors.neutral[500], textTransform: "capitalize"}}>{element}</Typography></Box> 
-                : <Box><Typography fontWeight="bold" fontSize={`${fontSize}em`} sx={{color: colors.primary[800], textTransform: "capitalize"}}>{element}</Typography></Box>}
-            { index === elements.length - 1 ? <></> : <ArrowForwardIosIcon sx={{width: `${fontSize*iconSize}em`, height: `${fontSize*iconSize}em`, margin: `0em ${fontSize*0.2}em`}}/> }
-        </Box>
-    )
+  const handleOnClick = (element) => {
+    if (!actions) return;
+    const action = actions[element]
+    if (action && typeof (action) === "function") action()
+  }
 
-    return (
-        <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>
-            {
-                elements.map((element, index) => generate(element, index))
-            }
-        </Box>
-    )
+  const generate = (element, index) => index === 0 ? <div key={index} /> : (
+    <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center" }} key={index}>
+      {index != elements.length - 1
+        ? <Box component={Link} to={rebuildLink(index)} sx={{ cursor: "pointer", textDecoration: "none" }} onClick={() => handleOnClick(element)}><Typography fontWeight="bold" fontSize={`${fontSize}em`} sx={{ color: colors.neutral[500], textTransform: "capitalize" }}>{element}</Typography></Box>
+        : <Box><Typography fontWeight="bold" fontSize={`${fontSize}em`} sx={{ color: colors.primary[800], textTransform: "capitalize" }}>{element}</Typography></Box>}
+      {index === elements.length - 1 ? <></> : <ArrowForwardIosIcon sx={{ width: `${fontSize * iconSize}em`, height: `${fontSize * iconSize}em`, margin: `0em ${fontSize * 0.2}em` }} />}
+    </Box>
+  )
+
+  return (
+    <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+      {
+        elements.map((element, index) => generate(element, index))
+      }
+    </Box>
+  )
 }
