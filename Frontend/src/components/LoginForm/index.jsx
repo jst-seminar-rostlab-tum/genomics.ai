@@ -65,11 +65,11 @@ function LoginForm(props) {
     return !Object.keys(currentErrors).length;
   }
 
-  async function onSuccessfulLogin(data) {
+  function onSuccessfulLogin(data) {
     localStorage.setItem('jwt', data.jwt);
     localStorage.setItem('user', JSON.stringify(data.user));
     onClose();
-    await setUser(data.user);
+    setUser(data.user);
     history.push('/sequencer/dashboard');
   }
 
@@ -104,9 +104,10 @@ function LoginForm(props) {
         password: loginDetails.password,
       }),
     };
+    console.log(BACKEND_ADDRESS)
     fetch(`${BACKEND_ADDRESS}/auth`, loginRequest)
-      .then((response) => {
-        setLoading(false);
+    .then((response) => {
+      setLoading(false);
         setSnackbarVisible(true);
         if (response.status !== 200) {
           onFailedLogin(response.status);
