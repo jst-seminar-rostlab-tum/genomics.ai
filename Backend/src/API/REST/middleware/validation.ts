@@ -21,7 +21,7 @@ for (const [path, pathObj] of Object.entries(swaggerDocument.paths)) {
 }
 
 export function validationMdw(req: Request, res: Response, next: NextFunction) {
-  const schemaName = constructSchemaName(req.path, req.method);
+  const schemaName = constructSchemaName(req.route.path, req.method);
 
   const validate = ajv.getSchema(schemaName);
 
@@ -37,6 +37,8 @@ export function validationMdw(req: Request, res: Response, next: NextFunction) {
 }
 
 function constructSchemaName(path: string, method: string) {
+  path = path.replace("{", ":");
+  path = path.replace("}", "");
   return `${path}_${method}`.toLowerCase();
 }
 

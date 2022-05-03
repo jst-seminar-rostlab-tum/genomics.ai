@@ -9,6 +9,7 @@ import { visibilityStatus } from "../../../../database/models/team";
 import check_auth from "../../middleware/check_auth";
 import { ExtRequest } from "../../../../definitions/ext_request";
 import { mailer } from "../../../../util/mailer";
+import { validationMdw } from "../../middleware/validation";
 
 const create_team = (): Router => {
   let router = express.Router();
@@ -493,8 +494,7 @@ const get_teams = (): Router => {
     try {
       const teams = await TeamService.getTeams(query);
 
-      if( teams != null )
-        return res.status(200).json(teams);
+      if (teams != null) return res.status(200).json(teams);
       return res.status(404).send(`No teams found`);
     } catch (err) {
       console.error(JSON.stringify(err));
@@ -507,22 +507,81 @@ const get_teams = (): Router => {
 
 const get_users_teams = (): Router => {
   let router = express.Router();
-  router
-      .get("/users/:id/teams", check_auth(), async (req: any, res) => {
-        const userId = req.params.id;
-        try {
-          const teams = await TeamService.getUsersTeams(userId);
+  router.get("/users/:id/teams", check_auth(), async (req: any, res) => {
+    const userId = req.params.id;
+    try {
+      const teams = await TeamService.getUsersTeams(userId);
 
-          if( teams != null)
-            return res.status(200).json(teams);
-          res.status(404).send(`No teams found`);
-        } catch (err) {
-          console.error(JSON.stringify(err));
-          return res.status(500).send(`Internal server error`);
-        }
-      })
+      if (teams != null) return res.status(200).json(teams);
+      res.status(404).send(`No teams found`);
+    } catch (err) {
+      console.error(JSON.stringify(err));
+      return res.status(500).send(`Internal server error`);
+    }
+  });
   return router;
-}
+};
+
+const get_team = (): Router => {
+  let router = express.Router();
+  router.get("/teams/:id", check_auth(), async (req: any, res) => {
+    const teamsId = req.params.id;
+    try {
+      const team = await TeamService.getTeamById(teamsId);
+
+      if (team != null) return res.status(200).json(team);
+      return res.status(404).send(`Team ${teamsId} not found`);
+    } catch (err) {
+      console.error(JSON.stringify(err));
+      return res.status(500).send(`Internal server error`);
+    }
+  });
+  return router;
+};
+
+const update_team = (): Router => {
+  let router = express.Router();
+  router.put("/teams/:id", check_auth(), validationMdw, async (req: any, res) => {
+    try {
+      const { id } = req.params;
+
+      // TODO: Discuss: Shouldn't access right cover this part?
+      const team = await TeamService.getTeamById(id);
+      const isAdmin: boolean = await TeamService.isAdmin(req.user_id, team);
+      if (!isAdmin)
+        return res.status(401).send("Unauthenticated User! The user is not admin of the team.");
+      // TODO: Discuss: Shouldn't access right cover this part?
+
+      const { visibility, description } = req.body;
+
+      if (!visibility && !description) {
+        return res.status(400).send("Missing parameters");
+      }
+
+      const resp = await TeamService.updateTeam({
+        id: id,
+        visibility,
+        description,
+      });
+
+      if (resp.modifiedCount == 1) {
+        return res.status(200).json("success");
+      }
+
+      if (resp.matchedCount == 0) {
+        return res.status(404).send(`Team with id ${id} not found`);
+      }
+
+      throw new Error(JSON.stringify(res));
+    } catch (err) {
+      console.error("req");
+      console.error(req);
+      console.error(JSON.stringify(err));
+      return res.status(500).send(`Internal server error`);
+    }
+  });
+  return router;
+};
 
 export {
   create_team,
@@ -534,5 +593,7 @@ export {
   add_project_to_team,
   get_teams,
   get_users_teams,
-  disjoin_member
+  disjoin_member,
+  get_team,
+  update_team,
 };

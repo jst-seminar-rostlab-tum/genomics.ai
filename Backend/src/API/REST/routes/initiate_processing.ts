@@ -3,12 +3,13 @@ import { GoogleAuth } from "google-auth-library";
 import { ProjectStatus } from "../../../database/models/project";
 import ProjectService from "../../../database/services/project.service";
 import check_auth from "../middleware/check_auth";
+import { validationMdw } from "../middleware/validation";
 
 // Tests the Cloud Run connection
 export default function initiate_processing_route(): Router {
   let router = express.Router();
   //DISABLED AT THE MOMENT probably never used? Seems to be part of the test routes?
-  router.post("/initiate_processing", check_auth(), async (req: any, res) => {
+  router.post("/initiate_processing", validationMdw, check_auth(), async (req: any, res) => {
     const { uploadId } = req.body;
 
     let project = await ProjectService.getProjectByUploadId(uploadId);

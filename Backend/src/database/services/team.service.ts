@@ -1,5 +1,5 @@
 import { ITeam, teamModel } from "../models/team";
-import { AddTeamDTO } from "../dtos/team.dto";
+import { AddTeamDTO, UpdateTeamDTO } from "../dtos/team.dto";
 import { ObjectId } from "mongoose";
 
 /**
@@ -19,6 +19,15 @@ export default class TeamService {
     let teamAdded: ITeam | undefined = undefined;
     teamAdded = await teamModel.create(team);
     return teamAdded;
+  }
+
+  static async updateTeam(updateTeam: UpdateTeamDTO): Promise<any> {
+    const updateObj: any = {};
+    if (updateTeam.description) updateObj.description = updateTeam.description;
+    if (updateTeam.visibility) updateObj.visibility = updateTeam.visibility;
+    const updateResult = await teamModel.updateOne({ _id: updateTeam.id }, { $set: updateObj });
+
+    return updateResult;
   }
 
   /**
@@ -181,7 +190,7 @@ export default class TeamService {
     var filter: any, sortBy: any;
 
     queryParams.hasOwnProperty("keyword")
-      ? (filter = { title: queryParams.keyword })
+      ? (filter = { title: { $regex : "^" +  queryParams.keyword, $options : 'i'} })
       : (filter = {});
     queryParams.hasOwnProperty("visibility") ? (filter.visibility = queryParams.visibility) : null;
 
@@ -193,12 +202,13 @@ export default class TeamService {
     return await teamModel.find(filter).sort(sortBy);
   }
 
-  static async getUsersTeams(userId: (ObjectId | string)):
-      Promise<ITeam[] | null> {
-        return await teamModel.find({ $or: [
-            {memberIds: {$elemMatch: {$eq: userId}}},
-            {adminIds: {$elemMatch: {$eq: userId}}}
-          ]});
+  static async getUsersTeams(userId: ObjectId | string): Promise<ITeam[] | null> {
+    return await teamModel.find({
+      $or: [
+        { memberIds: { $elemMatch: { $eq: userId } } },
+        { adminIds: { $elemMatch: { $eq: userId } } },
+      ],
+    });
   }
 
   /**

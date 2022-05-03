@@ -4,11 +4,12 @@ import PasswordResetTokenService from "../../../database/services/passwordResetT
 import { AddPasswordResetTokenDTO } from "../../../database/dtos/password_reset_token.dto";
 import bcrypt from "bcrypt";
 import { mailer } from "../../../util/mailer";
+import { validationMdw } from "../middleware/validation";
 
 export default function password_reset_route(): Router {
   let router = express.Router();
 
-  router.post("/password_reset", async (req, res) => {
+  router.post("/password_reset", validationMdw, async (req, res) => {
     const { email } = req.body;
     if (!email) return res.status(400).send("Missing parameters");
 
@@ -42,7 +43,7 @@ export default function password_reset_route(): Router {
       );
   });
 
-  router.post("/password_reset/:token", async (req, res) => {
+  router.post("/password_reset/:token", validationMdw, async (req, res) => {
     const { password } = req.body;
     if (!password) return res.status(400).send("Missing parameters");
 

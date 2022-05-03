@@ -1,6 +1,9 @@
 import { IInstitution, institutionModel } from "../models/institution";
+import { teamModel } from "../models/team";
+import ProjectService from "./project.service";
 import { AddInstitutionDTO, UpdateInstitutionDTO } from "../dtos/institution.dto";
 import { ObjectId } from "mongoose";
+import { IProject } from "../models/project";
 
 /**
  *  @class InstitutionService
@@ -291,7 +294,7 @@ export default class InstitutionService {
   static async filterInstitutions(query: any): Promise<IInstitution[] | null> {
     var keyword: object, sortBy: any;
 
-    query.hasOwnProperty("keyword") ? (keyword = { name: query.keyword }) : (keyword = {});
+    query.hasOwnProperty("keyword") ? (keyword = { name: { $regex : "^" +  query.keyword, $options : 'i'} }) : (keyword = {});
 
     if (query.hasOwnProperty("sortBy")) {
       let sortProperty = query.sortBy;
@@ -301,15 +304,49 @@ export default class InstitutionService {
     return await institutionModel.find(keyword).sort(sortBy).exec();
   }
 
-  static async getUsersInstitutions(userId: (ObjectId | string)):
-      Promise<IInstitution[] | null> {
-    return await institutionModel.find({ $or: [
-        {memberIds: {$elemMatch: {$eq: userId}}},
-        {adminIds: {$elemMatch: {$eq: userId}}}
-      ]});
+  static async getMembersOfInstitution(
+    institution_id: ObjectId | string
+  ): Promise<IInstitution | null> {
+    return await institutionModel.findById(institution_id).populate("memberIds");
   }
 
+  static async getProjectsOfInstitution(institution_id: ObjectId | string) {
+    const institution = await institutionModel.findById(institution_id);
 
+    if (!institution) return null;
+
+    let projectsOfMembers: IProject[] = [];
+    if (institution?.memberIds?.length > 0) {
+      const resp = await ProjectService.getProjects({
+        owner: { $in: institution.memberIds },
+      });
+      if (resp) {
+        projectsOfMembers = resp;
+      }
+    }
+
+    const teams = await teamModel.find({ institution_id: institution_id }).populate("projects");
+    const projectsOfTeams = teams.map((team) => team.projects).flat();
+
+    const projects = projectsOfMembers;
+    for (const projOfTeam of projectsOfTeams) {
+      const proj = projOfTeam as any;
+      if (projects.find((p) => String(p._id) == String(proj._id))) {
+        continue;
+      }
+      projects.push(proj);
+    }
+
+    return projects;
+  }
+  static async getUsersInstitutions(userId: ObjectId | string): Promise<IInstitution[] | null> {
+    return await institutionModel.find({
+      $or: [
+        { memberIds: { $elemMatch: { $eq: userId } } },
+        { adminIds: { $elemMatch: { $eq: userId } } },
+      ],
+    });
+  }
 
   /**
    *  Remove the given userId from the given institution.

@@ -28,7 +28,6 @@ import { get_model, get_allModels } from "./routes/model/modelRouter";
 import { get_atlas, get_allAtlases } from "./routes/atlas/atlasRouter";
 import * as swaggerDocument from "../../swagger.json";
 import * as swaggerUi from "swagger-ui-express";
-import { validationMdw } from "./middleware/validation";
 
 import {
   create_institution,
@@ -37,8 +36,11 @@ import {
   join_as_member_of_institution,
   get_institutions,
   get_institution,
+  get_members_of_institution,
+  get_teams_of_institution,
+  get_projects_of_institution,
   get_users_institutions,
-  disjoin_member_of_institution
+  disjoin_member_of_institution,
 } from "./routes/institution/institutionRouter";
 
 import {
@@ -51,17 +53,17 @@ import {
   add_project_to_team,
   get_teams,
   get_users_teams,
-  disjoin_member
+  disjoin_member,
+  get_team,
+  update_team,
 } from "./routes/team/teamRouter";
 
 import {
   get_projects,
   get_userProjects,
   get_project_by_id,
-  get_users_projects
+  get_users_projects,
 } from "./routes/project/projectRouter";
-
-
 
 import {
   upload_institution_backgroundpicture_route,
@@ -79,8 +81,6 @@ export function express_routes(this: REST_Host): Router {
   let router = express.Router();
 
   this.expressApp.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
-  this.expressApp.use(validationMdw);
 
   // unauthenticated routes
   this.expressApp.use(auth_route());
@@ -118,19 +118,18 @@ export function express_routes(this: REST_Host): Router {
   this.expressApp.use(get_teams());
   this.expressApp.use(get_users_teams());
   this.expressApp.use(disjoin_member());
-
+  this.expressApp.use(get_team());
+  this.expressApp.use(update_team());
 
   // user routes
   this.expressApp.use(get_teams_of_user());
   this.expressApp.use(get_users());
-
 
   // project routes
   this.expressApp.use(get_projects());
   this.expressApp.use(get_userProjects());
   this.expressApp.use(get_project_by_id());
   this.expressApp.use(get_users_projects());
-
 
   // model routes
   this.expressApp.use(get_model());
@@ -159,6 +158,9 @@ export function express_routes(this: REST_Host): Router {
   this.expressApp.use(reset_institution_backgroundpicture_route());
   this.expressApp.use(make_user_admin_of_institution());
   this.expressApp.use(join_as_member_of_institution());
+  this.expressApp.use(get_members_of_institution());
+  this.expressApp.use(get_teams_of_institution());
+  this.expressApp.use(get_projects_of_institution());
   this.expressApp.use(get_users_institutions());
   this.expressApp.use(disjoin_member_of_institution());
 

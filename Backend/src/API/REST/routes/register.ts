@@ -6,11 +6,12 @@ import { AddTokenDTO } from "../../../database/dtos/token.dto";
 import UserService from "../../../database/services/user.service";
 import TokenService from "../../../database/services/token.service";
 import { mailer } from "../../../util/mailer";
+import { validationMdw } from "../middleware/validation";
 
 export default function register_route(): Router {
   let router = express.Router();
 
-  router.post("/register", async (req: any, res) => {
+  router.post("/register", validationMdw, async (req: any, res) => {
     const { first_name, last_name, email, password, note } = req.body;
 
     if (!(first_name && email && password)) return res.status(400).send("Missing parameters");

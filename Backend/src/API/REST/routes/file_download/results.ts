@@ -4,10 +4,11 @@ import { ProjectStatus } from "../../../../database/models/project";
 import ProjectService from "../../../../database/services/project.service";
 import s3 from "../../../../util/s3";
 import express from "express";
+import { validationMdw } from "../../middleware/validation";
 
 export default function download_results_route() {
   let router = express.Router();
-  router.post("/file_download/results", check_auth(), async (req: ExtRequest, res) => {
+  router.post("/file_download/results", validationMdw, check_auth(), async (req: ExtRequest, res) => {
     let { id } = req.body;
     try {
       if (!process.env.S3_BUCKET_NAME) {
@@ -35,6 +36,6 @@ export default function download_results_route() {
       console.log(err);
       res.status(500).send(err);
     }
-  });
+  );
   return router;
 }
