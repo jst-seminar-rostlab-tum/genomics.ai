@@ -12,10 +12,13 @@ const get_projects = (): Router => {
     const query = { ...req.query };
     try {
       const projects = await ProjectService.getProjects(query);
-      return res.status(200).json(projects);
+
+      if(projects != null)
+        return res.status(200).json(projects);
+      return res.status(404).send(`No project found`);
     } catch (err) {
       console.error(JSON.stringify(err));
-      return res.status(404).send(`No project found`);
+      return res.status(500).send(`Internal server error`);
     }
   });
   return router;
@@ -118,4 +121,23 @@ const get_project_by_id = (): Router => {
   return router;
 };
 
-export { get_projects, get_userProjects, get_project_by_id };
+const get_users_projects = (): Router => {
+  let router = express.Router();
+  router
+      .get("/users/:id/projects", check_auth(), async (req: any, res) => {
+        const userId = req.params.id;
+        try {
+          const projects = await ProjectService.getProjectByOwner(userId);
+
+          if ( projects != null )
+            return res.status(200).json(projects);
+          return res.status(404).send(`No projects found`);
+        } catch (err) {
+          console.error(JSON.stringify(err));
+          return res.status(500).send(`Internal server error`);
+        }
+      })
+  return router;
+}
+
+export { get_projects, get_userProjects, get_project_by_id, get_users_projects };

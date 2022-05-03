@@ -40,7 +40,7 @@ export default class UserService {
     }
     let keywordFilter: FilterQuery<IUser> = {};
     if (keyword && keyword.length > 0) {
-      keywordFilter = { $or: [{ firstName: keyword }, { lastName: keyword }] };
+      keywordFilter = { $or: [{ firstName: { $regex : "^" +  keyword, $options : 'i'}}, { lastName: { $regex : "^" +  keyword, $options : 'i'}}] };
     }
     return await userModel
       .find(keywordFilter, {

@@ -288,9 +288,25 @@
     },
     "/projects": {
       "get": {
-        "summary": "Get all projects of an owner",
+        "summary": "Get all projects that meet query params",
         "tags": [
           "Project"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "keyword",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "schema": {
+              "type": "string"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -682,7 +698,7 @@
                   }
                 },
                 "required": [
-                  "filename"
+                  "fileName"
                 ],
                 "additionalProperties": false
               }
@@ -742,6 +758,36 @@
             "description": "Failed. Bad post data."
           }
         }
+      },
+      "get": {
+        "summary": "Get all institutions that meet  query params",
+        "tags": [
+          "Institution"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "keyword",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
       }
     },
     "/institutions/{id}/invite": {
@@ -779,6 +825,60 @@
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    },
+    "/institutions/{id}/members": {
+      "get": {
+        "summary": "Get all members of an institution",
+        "tags": [
+          "Institution"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Id of the instituion",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    },
+    "/institutions/{id}/projects": {
+      "get": {
+        "summary": "Get all projects of an institution",
+        "tags": [
+          "Institution"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Id of the instituion",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -926,6 +1026,33 @@
         }
       }
     },
+    "/institutions/{id}/teams": {
+      "get": {
+        "summary": "Get teams for an institution",
+        "tags": [
+          "Institution"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Id of the instituion",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    },
     "/teams": {
       "post": {
         "summary": "Create a team",
@@ -954,6 +1081,93 @@
                   "description",
                   "visibility"
                 ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all teams that meet  query params",
+        "tags": [
+          "Team"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "keyword",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "visibility",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    },
+    "/teams/{id}": {
+      "put": {
+        "summary": "Update a team",
+        "tags": [
+          "Teams"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "description": {
+                    "type": "string"
+                  },
+                  "visibility": {
+                    "type": "string",
+                    "enum": [
+                      "PRIVATE",
+                      "PUBLIC",
+                      "BY_INSTITUTION"
+                    ]
+                  }
+                },
                 "additionalProperties": false
               }
             }
@@ -1014,6 +1228,51 @@
         }
       }
     },
+    "/teams/{id}/institution": {
+      "put": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "summary": "Invite person to a team",
+        "tags": [
+          "Teams"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "institutionId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "institutionId"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    },
     "/users": {
       "get": {
         "summary": "Search users",
@@ -1046,76 +1305,12 @@
         }
       }
     },
-    "/ownprojects": {
+    "/institutions/:id": {
       "get": {
-        "summary": "Get all projects of an owner",
+        "summary": "Get institution with id",
         "tags": [
-          "Project"
+          "Institution"
         ],
-        "responses": {
-          "200": {
-            "description": "Getting the project list of the user successful",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "_id": {
-                        "type": "string"
-                      },
-                      "owner": {
-                        "type": "string"
-                      },
-                      "uploadId": {
-                        "type": "string"
-                      },
-                      "location": {
-                        "type": "string"
-                      },
-                      "fileName": {
-                        "type": "string"
-                      },
-                      "fileSize": {
-                        "type": "number"
-                      },
-                      "uploadDate": {
-                        "type": "object"
-                      },
-                      "status": {
-                        "type": "string"
-                      },
-                      "resultName": {
-                        "type": "string"
-                      },
-                      "resultSize": {
-                        "type": "number"
-                      },
-                      "atlasId": {
-                        "type": "string"
-                      },
-                      "modelId": {
-                        "type": "string"
-                      },
-                      "teamId": {
-                        "type": "string"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal error, cannot get the project list of the user"
-          }
-        }
-      }
-    },
-    "/project/:id": {
-      "get": {
-        "summary": "Get detailed information about a project",
         "parameters": [
           {
             "in": "path",
@@ -1126,76 +1321,22 @@
             }
           }
         ],
-        "tags": [
-          "Project"
-        ],
         "responses": {
           "200": {
-            "description": "Get project by id successful",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "_id": {
-                      "type": "string"
-                    },
-                    "owner": {
-                      "type": "string"
-                    },
-                    "uploadId": {
-                      "type": "string"
-                    },
-                    "location": {
-                      "type": "string"
-                    },
-                    "fileName": {
-                      "type": "string"
-                    },
-                    "fileSize": {
-                      "type": "number"
-                    },
-                    "uploadDate": {
-                      "type": "object"
-                    },
-                    "status": {
-                      "type": "string"
-                    },
-                    "resultName": {
-                      "type": "string"
-                    },
-                    "resultSize": {
-                      "type": "number"
-                    },
-                    "atlasId": {
-                      "type": "string"
-                    },
-                    "modelId": {
-                      "type": "string"
-                    },
-                    "teamId": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
+            "description": "OK"
           },
           "400": {
-            "description": "Missing parameters or the project does not exist"
-          },
-          "401": {
-            "description": "Access denied"
-          },
-          "500": {
-            "description": "Internal error, cannot get project by id"
+            "description": "Failed. Bad post data."
           }
         }
       }
     },
-    "/teams/:id/add_project": {
-      "put": {
-        "summary": "Adds the given project to the project list of the team",
+    "/users/:id/institutions": {
+      "get": {
+        "summary": "Get all institutions that user is a member",
+        "tags": [
+          "Institution"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -1206,90 +1347,22 @@
             }
           }
         ],
-        "tags": [
-          "Team",
-          "Project"
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "projectId": {
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "projectId"
-                ],
-                "additionalProperties": false
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
-            "description": "The project is successfully added.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": "OK"
           },
           "400": {
-            "description": "Missing parameters or the project to be added does not exist or the team does not exist"
-          },
-          "401": {
-            "description": "Unauthenticated user"
-          },
-          "500": {
-            "description": "Internal error, unable to add the project to the team"
+            "description": "Failed. Bad post data."
           }
         }
       }
     },
-    "/users/ownteams": {
+    "/users/:id/teams": {
       "get": {
-        "summary": "Returns the teams that the user belong to",
+        "summary": "Get all teams that user is a member",
         "tags": [
-          "User",
           "Team"
         ],
-        "responses": {
-          "200": {
-            "description": "Getting team list successful",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "_id": {
-                        "type": "string"
-                      },
-                      "title": {
-                        "type": "string"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal error, unable to get team list of the user"
-          }
-        }
-      }
-    },
-    "/model/:id": {
-      "get": {
-        "summary": "Get details about a model",
         "parameters": [
           {
             "in": "path",
@@ -1300,49 +1373,22 @@
             }
           }
         ],
-        "tags": [
-          "Model"
-        ],
         "responses": {
           "200": {
-            "description": "Getting model by id successful",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "_id": {
-                      "type": "string"
-                    },
-                    "name": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    },
-                    "requirements": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    }
-                  }
-                }
-              }
-            }
+            "description": "OK"
           },
           "400": {
-            "description": "Missing model id"
-          },
-          "500": {
-            "description": "Internal error, unable to retrieve information about the model"
+            "description": "Failed. Bad post data."
           }
         }
       }
     },
-    "/atlas/:id": {
+    "/users/:id/projects": {
       "get": {
-        "summary": "Get details about an atlas",
+        "summary": "Get all projects of the user",
+        "tags": [
+          "Project"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -1353,158 +1399,12 @@
             }
           }
         ],
-        "tags": [
-          "Atlas"
-        ],
         "responses": {
           "200": {
-            "description": "Getting atlas by id successful",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "_id": {
-                      "type": "string"
-                    },
-                    "name": {
-                      "type": "string"
-                    },
-                    "previewPictureURL": {
-                      "type": "string"
-                    },
-                    "modalities": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "numberOfCells": {
-                      "type": "number"
-                    },
-                    "species": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "compatibleModels": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    }
-                  }
-                }
-              }
-            }
+            "description": "OK"
           },
           "400": {
-            "description": "Missing atlas id"
-          },
-          "500": {
-            "description": "Internal error, unable to retrieve information about the atlas"
-          }
-        }
-      }
-    },
-    "/models": {
-      "get": {
-        "summary": "Get all available models",
-        "tags": [
-          "Model"
-        ],
-        "responses": {
-          "200": {
-            "description": "Getting all available models successful.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "_id": {
-                        "type": "string"
-                      },
-                      "name": {
-                        "type": "string"
-                      },
-                      "description": {
-                        "type": "string"
-                      },
-                      "requirements": {
-                        "type": "array",
-                        "items": {
-                          "type": "string"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal error, unable to retrieve information about the models"
-          }
-        }
-      }
-    },
-    "/atlases": {
-      "get": {
-        "summary": "Get all available atlases",
-        "tags": [
-          "Atlas"
-        ],
-        "responses": {
-          "200": {
-            "description": "Getting all available atlases successful.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                  "type": "object",
-                    "properties": {
-                      "_id": {
-                        "type": "string"
-                      },
-                      "name": {
-                        "type": "string"
-                      },
-                      "previewPictureURL": {
-                        "type": "string"
-                      },
-                      "modalities": {
-                        "type": "array",
-                        "items": {
-                          "type": "string"
-                        }
-                      },
-                      "numberOfCells": {
-                        "type": "number"
-                      },
-                      "species": {
-                        "type": "array",
-                        "items": {
-                          "type": "string"
-                        }
-                      },
-                      "compatibleModels": {
-                        "type": "array",
-                        "items": {
-                          "type": "string"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal error, unable to retrieve information about the atlases"
+            "description": "Failed. Bad post data."
           }
         }
       }
