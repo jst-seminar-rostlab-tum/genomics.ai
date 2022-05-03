@@ -6,11 +6,12 @@ import SearchCard from '../SearchCard';
 function UserCard({ item: user }) {
   return (
     <SearchCard
-      avatar={user.image}
-      title={user.name}
-      link={`/sequencer/users/${user.id}`}
-      secondary={` ${user.affiliation}`}
-      tertiary={`${user.email}`}
+      avatar={user.avatarUrl}
+      title={`${user.firstName} ${user.lastName}`}
+      link={`/sequencer/users/${user._id}`}
+      secondary={` ${user.note}`}
+      displayAvatar
+      // tertiary={`${user.email}`}
     />
   );
 }
