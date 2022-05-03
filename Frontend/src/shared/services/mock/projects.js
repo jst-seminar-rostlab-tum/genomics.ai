@@ -145,22 +145,22 @@ const datasets = [
   },
   {
     _id: 2,
-    name: 'Hao and Hao et al, bioRvix 2020',
+    name: 'Keller, Lennart et al, FastGenomics.ai 2022',
     status: 'IN PROGRESS'
   },
   {
     _id: 3,
-    name: 'Hao and Hao et al, bioRvix 2020',
+    name: 'Hübsch und Hübner et al, ToTheMoon.crypto 2021',
     status: 'UPLOAD FAILED'
   },
   {
     _id: 4,
-    name: 'Hao and Hao et al, bioRvix 2020',
+    name: 'Xu Fan Lu et al, BINGO 2022',
     status: 'DONE'
   },
   {
     _id: 5,
-    name: 'Hao and Hao et al, bioRvix 2020',
+    name: 'Christopher, Evan et al, TUM.UNICORN 2023',
     status: 'IN PROGRESS'
   },
 ]

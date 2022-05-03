@@ -54,7 +54,6 @@ function getStyles(type) {
  */
 const CustomButton = (props) => { 
 
-  console.log(props.size)
   return (
   <ButtonBase
     disableRipple
