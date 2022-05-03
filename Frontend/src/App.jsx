@@ -1,6 +1,6 @@
 import './app.module.css';
 import React, { useState } from 'react';
-import { ThemeProvider } from '@mui/material';
+import { ThemeProvider, createTheme } from '@mui/material';
 import {
   Route, HashRouter, Switch, Redirect,
 } from 'react-router-dom';
@@ -17,6 +17,21 @@ import Explore from "./views/Explore/index.jsx"
 import { useAuth } from 'shared/context/authContext';
 
 function App() {
+  // https://stackoverflow.com/a/69836010
+  const { palette } = createTheme();
+  const { augmentColor } = palette;
+  const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: '#01579B',
+      },
+      light: {
+        main: '#4F83CC',
+      },
+      critical: createColor('#F44336'),
+    },
+  });
 
   const [user] = useAuth()
 

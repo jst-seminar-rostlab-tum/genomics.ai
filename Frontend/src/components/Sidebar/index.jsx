@@ -93,7 +93,7 @@ export default function Sidebar(props) {
                 </NavLink>
               ))}
             </Box>
-            <Box sx={{ display: "flex", flexDirection: "column", gap: "3" }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: '3' }}>
               <NavLink
                 to={settingsPath}
                 className={`${styles.navlinkIcon} ${styles.bottomIcons} ${styles.settingsIcon}`}

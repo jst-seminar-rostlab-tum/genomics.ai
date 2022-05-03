@@ -57,7 +57,6 @@ function getStyles(type) {
  */
 const CustomButton = (props) => {
   const { type, onClick, children, disabled, sx } = props;
-  console.log(props.sx)
   return (
     <ButtonBase
       disableRipple

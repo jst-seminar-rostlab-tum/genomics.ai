@@ -31,7 +31,6 @@ function Dashboard() {
           <StatusQueue />
         </Container>
       </Stack>
-      
     </Stack>
   );
 }

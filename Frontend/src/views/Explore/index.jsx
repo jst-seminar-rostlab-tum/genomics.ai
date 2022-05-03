@@ -25,6 +25,8 @@ import ModelsService from 'shared/services/Models.service';
 import AtlasService from 'shared/services/Atlas.service';
 import LearnMoreAtlas from './LearnMoreAtlas';
 import LearnMoreModel from './LearnMoreModel';
+import ResultVisualization from 'components/GeneMapper/ResultVisualization';
+import AtlasResult from './AtlasResult';
 
 const tmpObj = [
   {
@@ -87,13 +89,15 @@ const Explore = () => {
     if (!selectedAtlas && !selectedModel) setMapperVisible(false);
   }, [selectedAtlas, selectedModel]);
 
+  const history = useHistory()
+
   const AtlasesGrid = ({ atlases, path }) => (
     <Box className="atlasContainer" sx={{ height: '70vh' }}>
       <Grid container spacing={3}>
         {atlases && atlases.map((atlas) => (
           <Grid key={atlas._id} item xs={12} sm={6} md={4} lg={3}>
             <AtlasCard
-              onClick={() => setSelectedAtlas(atlas)}
+              onClick={() => history.push(`${path}/${atlas._id}/visualization`)}
               atlasId={atlas._id}
               imgLink={atlas.previewPictureURL}
               species={atlas.species}
@@ -263,6 +267,7 @@ const Explore = () => {
           />
           <Route path="/explore/models/:id" render={() => <LearnMoreModel />} />
           <Route path="/explore/datasets" render={() => atlases && tabMenu(models, path, 'datasets')} />
+          <Route path="/explore/atlases/:id/visualization" render={() => <AtlasResult /> } />
           <Route path="/explore/atlases/:id" render={() => <LearnMoreAtlas />} />
           <Redirect to="/explore/atlases" />
         </Switch>

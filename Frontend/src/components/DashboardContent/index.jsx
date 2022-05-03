@@ -6,6 +6,7 @@ import Sidebar from '../Sidebar';
 import Dashboard from 'views/Dashboard';
 import TeamOverview from 'views/TeamOverview';
 import InstitutionOverview from 'views/InstitutionOverview';
+import GeneMapper from 'views/GeneMapper';
 import UserProfile from 'views/UserProfile';
 import Documentation from 'views/Documentation';
 import Settings from 'views/Settings';
@@ -38,6 +39,10 @@ const DashboardContent = () => {
 
         <Route path={`${path}/institutions`}>
           <InstitutionOverview />
+        </Route>
+
+        <Route path={`${path}/genemapper`}>
+          <GeneMapper sidebarShown={sidebarShown} />
         </Route>
 
         <Route path={`${path}/users`}>
