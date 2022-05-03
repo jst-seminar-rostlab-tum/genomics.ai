@@ -55,9 +55,8 @@ function AtlasModelChoice({
     return (
         <div>
             <Typography variant="h5" sx={{ fontWeight: 'bold'}}>
-                Pick an Atlas <HelpIcon sx={{color:"#B1CBDE"}} />
+                Pick an Atlas 
             </Typography>
-            <hr className={styles.line}/>
 
             <Grid container spacing={2} width="100%" overflow="auto" wrap="nowrap">
                 {
@@ -80,9 +79,8 @@ function AtlasModelChoice({
             </Grid>
             
             <Typography variant="h5" sx={{ fontWeight: 'bold'}} marginTop="32px">
-                Pick a Model <HelpIcon sx={{color:"#B1CBDE"}} />
+                Pick a Model
             </Typography>
-            <hr className={styles.line}/>
 
             <Grid container spacing={2} width="100%" overflow="auto" wrap="nowrap">
             {
