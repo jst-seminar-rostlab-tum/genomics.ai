@@ -148,7 +148,7 @@ export default class ProjectService {
     var keyword: object, sortBy: any;
 
     queryParams.hasOwnProperty("keyword")
-      ? (keyword = { fileName: { $regex : "^" +  queryParams.keyword, $options : 'i'}})
+      ? (keyword = { name : { $regex : "^" +  queryParams.keyword, $options : 'i'}})
       : (keyword = {});
 
     if (queryParams.hasOwnProperty("sortBy")) {
