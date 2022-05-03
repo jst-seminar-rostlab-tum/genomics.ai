@@ -161,7 +161,7 @@ const Explore = () => {
   );
   const tabMenu = (props) => (
     <>
-      <Box sx={{ alignSelf: 'center', width: '60%', marginBlock: '2%' }}>
+      <Box sx={{ alignSelf: 'center', width: '100%', marginBlock: '2%' }}>
         <Search
           filterComponent={(
             <Filter

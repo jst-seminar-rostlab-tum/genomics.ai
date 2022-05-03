@@ -56,17 +56,19 @@ function getStyles(type) {
  * https://www.figma.com/file/HcTwUyNxjZJksJ7yfncM9y/JST-22-Design?node-id=42%3A2
  */
 const CustomButton = (props) => {
-  const { type, onClick, children } = props;
+  const { type, onClick, children, disabled } = props;
   return (
     <ButtonBase
       disableRipple
+      disabled={disabled}
       sx={{
         ...getStyles(type),
         ...props,
       }}
       onClick={(e) => {
         e.stopPropagation();
-        onClick();
+        if(onClick)
+          onClick();
       }}
       className={styles.button}
       variant={type === 'tertiary' ? 'text' : 'contained'}

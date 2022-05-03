@@ -6,6 +6,7 @@ import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
 import CancelIcon from '@mui/icons-material/Cancel';
 import styles from './mapper.module.css';
 import { useHistory } from 'react-router-dom';
+import CustomButton from 'components/CustomButton';
 
 function Mapper({
   mapperAtlas, mapperModel, setSelectedAtlas, setSelectedModel, open, fabOnClick,
@@ -58,7 +59,7 @@ function Mapper({
         <Divider className={styles.divider} />
         <Box className={styles.buttonBox}>
           {/* Button will be disabled if selected models and atlases are incompatible with eachother, in this case it will be gray. Lets keep it enabled all the time for now. */}
-          <Button disabled={!atlas || !model} className={styles.goButton} variant="contained" disableRipple>Go</Button>
+          <CustomButton disabled={!atlas || !model} type="primary">Go</CustomButton>
         </Box>
       </Box>
       <Box className={styles.mapperBox}>
