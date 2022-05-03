@@ -5,22 +5,28 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import CustomButton from 'components/CustomButton';
 
-function TeamLeaveButton({ team, onJoin, isDisabled }) {
+function TeamMemberMakeAdminButton({ team, member }) {
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleOpenDialog = () => setDialogOpen(true);
   const handleCloseDialog = () => setDialogOpen(false);
 
-  function leave() {
+  async function addAdmin() {
     handleCloseDialog();
-    onJoin(team);
   }
+
+  async function removeAdmin() {
+    handleCloseDialog();
+  }
+
+  const isAlreadyAdmin = team.adminIds ? team.adminIds.includes(member.id) : false;
 
   return (
     <>
-      <CustomButton type="primary" disabled={isDisabled} onClick={handleOpenDialog}>Join</CustomButton>
+      <Button variant="outlined" onClick={handleOpenDialog} sx={{ marginRight: '20px', width: '145px' }}>
+        {isAlreadyAdmin ? 'Remove Admin' : 'Make Admin'}
+      </Button>
       <Dialog
         open={dialogOpen}
         onClose={handleCloseDialog}
@@ -28,19 +34,18 @@ function TeamLeaveButton({ team, onJoin, isDisabled }) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          Join
+          {isAlreadyAdmin ? 'Remove Admin' : 'Make Admin'}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Do you really want to join the team &quot;
-            {team.name}
-            &quot;?
+            {`Do you really want to ${isAlreadyAdmin ? 'remove' : 'make'} ${member.firstName} 
+            ${member.lastName} ${isAlreadyAdmin ? 'as' : ''} an admin of ${team.name}?`}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialog} color="error">Cancel</Button>
-          <Button onClick={() => leave()} autoFocus>
-            Join
+          <Button onClick={handleCloseDialog}>Cancel</Button>
+          <Button onClick={isAlreadyAdmin ? () => removeAdmin() : () => addAdmin()} color="error" autoFocus>
+            {isAlreadyAdmin ? 'Remove' : 'Make'}
           </Button>
         </DialogActions>
       </Dialog>
@@ -48,4 +53,4 @@ function TeamLeaveButton({ team, onJoin, isDisabled }) {
   );
 }
 
-export default TeamLeaveButton;
+export default TeamMemberMakeAdminButton;

@@ -5,22 +5,26 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import CustomButton from 'components/CustomButton';
 
-function TeamLeaveButton({ team, onJoin, isDisabled }) {
+import InstitutionService from 'shared/services/Institution.service';
+
+function InstitutionMemberRemoveButton({ institution, member, onRemoved }) {
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleOpenDialog = () => setDialogOpen(true);
   const handleCloseDialog = () => setDialogOpen(false);
 
-  function leave() {
+  async function remove() {
+    await InstitutionService.removeMemberFromInstitution(institution.id, member.id);
     handleCloseDialog();
-    onJoin(team);
+    onRemoved(institution, member);
   }
 
   return (
     <>
-      <CustomButton type="primary" disabled={isDisabled} onClick={handleOpenDialog}>Join</CustomButton>
+      <Button variant="outlined" color="error" onClick={handleOpenDialog}>
+        Remove
+      </Button>
       <Dialog
         open={dialogOpen}
         onClose={handleCloseDialog}
@@ -28,19 +32,21 @@ function TeamLeaveButton({ team, onJoin, isDisabled }) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          Join
+          Remove Member
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Do you really want to join the team &quot;
-            {team.name}
+            Do you really want to remove the member &quot;
+            {`${member.firstName} ${member.lastName}`}
+            &quot; from the institution &quot;
+            {institution.name}
             &quot;?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialog} color="error">Cancel</Button>
-          <Button onClick={() => leave()} autoFocus>
-            Join
+          <Button onClick={handleCloseDialog}>Cancel</Button>
+          <Button onClick={() => remove()} color="error" autoFocus>
+            Remove
           </Button>
         </DialogActions>
       </Dialog>
@@ -48,4 +54,4 @@ function TeamLeaveButton({ team, onJoin, isDisabled }) {
   );
 }
 
-export default TeamLeaveButton;
+export default InstitutionMemberRemoveButton;

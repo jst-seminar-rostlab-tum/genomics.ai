@@ -16,7 +16,7 @@ const TeamCard = ({ item: team }) => {
       // action={<Button variant="contained">Join</Button>}
       // action={<CustomButton type="primary">Join</CustomButton>}
       title={team.title}
-      link={`/sequencer/teams/${team._id}`}
+      link={`/sequencer/teams/${team.id}`}
       primary={
         //  <Tag content={team.visibility} variant="primary-default" />
         <Chip label={team.visibility.toLowerCase()} color="primary" size="small" />

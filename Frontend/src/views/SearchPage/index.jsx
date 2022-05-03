@@ -37,7 +37,7 @@ async function getTeams(filterParams) {
 async function getInstitutions(filterParams) {
   const searchResponse = await InstitutionService.getInstitutions(filterParams);
   const teamsRequests = searchResponse.map(
-    (team) => InstitutionService.getTeamsOfInstitutionById(team.institutionId),
+    (team) => InstitutionService.getTeamsOfInstitutionById(team.id),
   );
   const teamsResponse = await Promise.all(teamsRequests);
   teamsResponse.forEach(

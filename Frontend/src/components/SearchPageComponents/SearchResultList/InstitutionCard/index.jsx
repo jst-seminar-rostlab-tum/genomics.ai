@@ -11,7 +11,7 @@ function InstitutionCard({ item: institution }) {
       title={institution.name}
       avatar={institution.profilePictureURL}
       displayAvatar
-      link={`/sequencer/institutions/${institution._id}`}
+      link={`/sequencer/institutions/${institution.id}`}
       // secondary={`updated on ${institution.updated}`}
       tertiary={(
         <>

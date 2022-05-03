@@ -5,13 +5,13 @@ import ProfileImageUploadDialog from 'components/general/upload/ProfileImageUplo
 import styles from './profileImage.module.css';
 
 import stringToColor from 'shared/utils/stringColor';
-import getProfile from 'shared/services/profile';
+import ProfileService from 'shared/services/Profile.service';
 import { useAuth } from 'shared/context/authContext';
 
 function ProfileImage({ sizePixels, editable = false, overrideProfileImage = null }) {
   const [user, setUser] = useAuth();
   async function loadUser() {
-    setUser(await getProfile());
+    setUser(await ProfileService.getProfile());
   }
   useEffect(loadUser, [setUser]);
 

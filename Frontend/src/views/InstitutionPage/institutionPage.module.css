@@ -1,0 +1,70 @@
+.content {
+    padding-top: 16px;
+}
+
+.cardSpacing {
+    margin-bottom: 16px;
+}
+
+.container {
+    text-align: center;
+    justify-content: center;
+}
+
+.test {
+    padding: 10px 60px 0px 140px;
+}
+
+.imageText {
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+.imageText span {
+    color: white;
+    border-radius: 25px;
+    background: #002644;
+    padding: 10px;
+    margin: 10px;
+}
+
+.background {
+    position: relative;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: auto;
+}
+
+.institutionIcon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 20px;
+}
+
+.bgImgEditButton {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    border: none;
+    background-color: #002644A0;
+    color: white;
+    padding: 8px 12px;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.bgImgEditButton>span {
+    margin-right: 6px;
+}
+
+.inviteUsers {
+  position: fixed;
+  margin: 0;
+    top: 'auto';
+    left: 20;
+    bottom: 20;
+    right: 'auto';
+}
