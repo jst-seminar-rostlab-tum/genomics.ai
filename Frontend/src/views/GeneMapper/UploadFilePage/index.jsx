@@ -64,7 +64,7 @@ function UploadFilePage({
     console.log(selectedDataset)
     // save mapping name
     setOpen(false); // opens modal to input mapping name
-    createProject(mappingName, '111122223333444455556666', '011122223333444455556666', uploadedFile ? uploadedFile[0] : selectedDataset);
+    createProject(mappingName, selectedAtlas._id, selectedModel._id, uploadedFile ? uploadedFile[0] : selectedDataset);
     history.push(`${path}`); // go back to GeneMapper home
   };
 

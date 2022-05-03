@@ -22,7 +22,9 @@ import ProjectService from 'shared/services/Project.service';
 function GeneMapperResultView() {
   const [project, setProject] = useState(null);
   const umapContainer = useRef(null);
+  const graphContainer = useRef(null);
   const [umap, setUmap] = useState(null);
+  const [rendering, setRendering] = useState(true);
   const [rendered, setRendered] = useState(false);
   const [umapSize, setUmapSize] = useState({
     width: 0,
@@ -35,14 +37,15 @@ function GeneMapperResultView() {
     ProjectService.getProject(projectId)
       .then((data) => setProject(data))
       .catch(() => {
-        ProjectMock.getProject(projectId).then((data) => setProject(data));
+        ProjectMock.getProject(1).then((data) => setProject(data));
       });
   }, [projectId]);
 
   useEffect(() => {
     if (project?.location) {
       csv(project.location).then((data) => {
-        setUmap(new UmapVisualization2(umapContainer.current, data));
+        setRendering(true);
+        setUmap(new UmapVisualization2(umapContainer.current, data, graphContainer.current));
       });
     }
   }, [project]);
@@ -54,6 +57,7 @@ function GeneMapperResultView() {
       } else {
         umap.render(umapSize.width, umapSize.height);
         setRendered(true);
+        setRendering(false);
       }
     }
   }, [umap, umapSize, rendered]);
@@ -94,15 +98,33 @@ function GeneMapperResultView() {
                 overflow: 'hidden',
               }}
             >
+              {rendering ? (
+                <Box sx={{
+                  position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+                }}
+                >
+                  <CircularProgress disableShrink />
+                </Box>
+              ) : null}
               <Sidepanel title="Categories">
                 <GeneMapperCategories
                   categories={umap?.coloringModes}
                   setColorMode={(mode) => umap.setColorMode(mode)}
+                  hide={(category, value) => {
+                    umap.after(category, value);
+                  }}
+                  show={() => {
+                    umap.before();
+                  }}
                 />
               </Sidepanel>
               <Box
                 sx={{
-                  flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', overflow: 'hidden',
+                  flexGrow: 1,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  overflow: 'hidden',
                 }}
               >
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -123,7 +145,9 @@ function GeneMapperResultView() {
                   ref={umapContainer}
                 />
               </Box>
-              <Sidepanel title="Graphs" collapseToRight />
+              <Sidepanel title="Graphs" collapseToRight>
+                <Box ref={graphContainer} />
+              </Sidepanel>
             </Box>
           </>
         )
@@ -132,7 +156,7 @@ function GeneMapperResultView() {
             flexGrow: 1, display: 'flex', justifyContent: 'Center', alignItems: 'center',
           }}
           >
-            <CircularProgress />
+            <CircularProgress disableShrink />
           </Box>
         )}
     </Box>

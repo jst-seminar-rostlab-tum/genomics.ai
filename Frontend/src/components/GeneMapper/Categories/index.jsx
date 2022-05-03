@@ -12,7 +12,7 @@ const activatedColor = colors.primary['400'];
 const deactivatedColor = colors.primary['200'];
 
 function Category({
-  title, values, colored, toggleColored,
+  title, values, colored, toggleColored, hide, show, hiddenValue,
 }) {
   const [open, setOpen] = useState(false);
 
@@ -41,6 +41,11 @@ function Category({
               title={value}
               color={color}
               key={value}
+              visible={hiddenValue !== value}
+              setVisible={(visible) => {
+                if (visible) show();
+                else hide(value);
+              }}
             />
           ))}
         </Box>
@@ -49,15 +54,15 @@ function Category({
   );
 }
 
-function Value({ title, color }) {
-  const [visible, setVisible] = useState(true);
-
+function Value({
+  title, color, visible, setVisible,
+}) {
   return (
     <Box sx={{
       display: 'flex', alignItems: 'center', pl: 3, pr: 2,
     }}
     >
-      <IconButton onClick={() => setVisible(!visible)}>
+      <IconButton onClick={() => { setVisible(!visible); }}>
         { visible
           ? <Visibility sx={{ color }} />
           : <VisibilityOff sx={{ color: deactivatedColor }} />}
@@ -70,9 +75,15 @@ function Value({ title, color }) {
 /**
  *
  * @param categories An object containing available categories and their values as key-value pairs
+ * @param setColorMode A function accepting a category to be colored
+ * @param hide A function that will hide a category value in the UMAP
+ * @param show A function that will set a category value in the UMAP visible if it was hidden
  */
-function GeneMapperCategories({ categories, setColorMode }) {
+function GeneMapperCategories({
+  categories, setColorMode, hide, show,
+}) {
   const [coloredCategoryTitle, setColoredCategoryTitle] = useState(null);
+  const [hiddenValue, setHiddenValue] = useState(null);
 
   return (
     <>
@@ -87,6 +98,9 @@ function GeneMapperCategories({ categories, setColorMode }) {
               setColoredCategoryTitle(title);
               setColorMode(title);
             }}
+            hide={(value) => { hide(title, value); setHiddenValue(value); }}
+            show={() => { show(); setHiddenValue(null); }}
+            hiddenValue={hiddenValue}
           />
         ))
         : null}
