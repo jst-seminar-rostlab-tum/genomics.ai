@@ -7,6 +7,7 @@ import CustomButton from 'components/CustomButton';
 import Search from 'components/Search';
 import { Filter } from 'components/Filter/Filter';
 import AtlasService from 'shared/services/Atlas.service';
+import { useLocation } from 'react-router-dom';
 
 const mockData = {
   name: 'Human - PBMC', previewPictureURL: 'url', modalities: ['RNA', 'ADT'], numberOfCells: 161.764, species: ['Human'], compatibleModels: ['ObjectId'],
@@ -89,9 +90,10 @@ const TemproaryDataSetCard2 = () => (
   </div>
 );
 
-export default function LearnMore({ setSelectedAtlas }) {
+export default function LearnMore() {
   const [value, setValue] = useState(0);
-  const id = localStorage.getItem('atlasId');
+  const path = useLocation().pathname;
+  const id = path.match("/explore/atlases/(.*)$")[1]
   const [atlas, setAtlas] = useState(null);
 
   /* const [selectedAtlas, setSelectedAtlas] = useState(null);
@@ -99,7 +101,7 @@ export default function LearnMore({ setSelectedAtlas }) {
   const [mapperVisible, setMapperVisible] = useState(false);
 
   useEffect(() => {
-    if (id) {
+    if(id) {
       AtlasService.getAtlasById(id)
         .then((data) => setAtlas(data))
         .catch((err) => console.log(err));
@@ -125,12 +127,6 @@ export default function LearnMore({ setSelectedAtlas }) {
         }}
         >
           <Typography sx={{ fontSize: '36px', fontWeigth: 700 }}>{atlas?.name}</Typography>
-          <Button
-            type="primary"
-            onClick={() => setSelectedAtlas(atlas)}
-          >
-            Map
-          </Button>
         </Box>
         <Box>
           <Typography sx={{ fontSize: '20px', fontWeight: 600, borderBottom: '1px solid black' }}>Overview</Typography>
@@ -162,30 +158,14 @@ export default function LearnMore({ setSelectedAtlas }) {
             {atlas?.species}
           </Typography>
         </Box>
-        <Box sx={{ paddingTop: '25px' }}>
-          <Typography sx={{ fontSize: '16px', fontWeight: 300 }}>
-            This PBMC reference dataset was generated as part of the Hao and Hao et al,
-            bioRvix 2020 paper.
-            It is comprised of data from eight volunteers enrolled in an HIV vaccine trial
-            from which three time point samples
-            were taken at day 0, 3, and 7 following vaccination. All 24 samples were processed
-            with a CITE-seq panel of 228
-            TotalSeq A antibodies to generate single-cell RNA and ADT data. The data were then
-            integrated using metholody described
-            in the pre-print linked above to generate a weighted nearest
-            neighbor (WNN) representation
-            of the RNA and protein data jointly.
-            This WNN representation is used in the Azimuth app to assign celltypes,
-            embed in the reference UMAP, and impute protein levels for the query dataset.
-          </Typography>
-        </Box>
-        <Box sx={{ display: 'flex', columnGap: '18px', paddingTop: '18px' }}>
+        
+        {/* <Box sx={{ display: 'flex', columnGap: '18px', paddingTop: '18px' }}>
           <Chip label="App" sx={{ background: '#01579B', color: 'white', height: '26px' }} />
           <Chip label="Reference" sx={{ background: '#01579B', color: 'white', height: '26px' }} />
           <Chip label="Zenodo" sx={{ background: '#01579B', color: 'white', height: '26px' }} />
           <Chip label="Snakemake" sx={{ background: '#01579B', color: 'white', height: '26px' }} />
-        </Box>
-        <Box sx={{
+        </Box> */}
+        {/* <Box sx={{
           display: 'flex', flexDirection: 'column', width: '300px', rowGap: '18px', paddingTop: '18px',
         }}
         >
@@ -219,7 +199,8 @@ export default function LearnMore({ setSelectedAtlas }) {
           >
             Annotation Details
           </Typography>
-        </Box>
+        </Box> */}
+        <CustomButton sx={{ marginTop: "1em", padding: "0.5em 2em 0.5em 2em" }} type="primary">Map</CustomButton>
       </Box>
 
     </Box>

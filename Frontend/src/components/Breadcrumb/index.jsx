@@ -25,11 +25,11 @@ import { Link } from 'react-router-dom'
  * }
  * 
  */
-export default function Breadcrumb({ fontSize, actions }) {
+export default function Breadcrumb({ fontSize, actions, path, elems }) {
 
-    let position = useLocation()
+    // let position = useLocation()
 
-    let elements = position.pathname.split('/')
+    let elements = elems ? elems : path.split('/')
 
     const iconSize = fontSize * 0.7
 

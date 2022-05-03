@@ -18,7 +18,7 @@ export const OutlinedButton = ({ content, link = null, onClick }) => {
       href={link ? `#${link}` : null}
       onClick={onClick}
       sx={{
-        color: colors.primary[100], borderWidth: "2px", borderColor: colors.primary[100], borderRadius: "1.2rem",
+        color: colors.primary[100], borderWidth: "2px", borderColor: colors.primary[100], borderRadius: "1.2rem", justifyContent: 'center', textAlign: 'center',
         ":hover": { borderColor: '#01579B', borderWidth: "2px", backgroundColor: colors.primary[100], color: '#01579B', transition: '0.5s' }
       }}
     >
@@ -94,10 +94,11 @@ export const ModelCard = ({ width = "100%", height = "100%", title, description,
                 position: "absolute",
                 top: "50%",
                 left: "50%",
-                transform: "translate(-50%, -50%)"
+                transform: "translate(-50%, -50%)",
+                width: '70%'
               }}
             >
-              <OutlinedButton content="Map" onClick={onClick} />
+              {/* <OutlinedButton content="Map" onClick={onClick} /> */}
               <OutlinedButton content="Learn More" link={learnMoreLink} />
             </Box>
           </Box>

@@ -56,14 +56,15 @@ function getStyles(type) {
  * https://www.figma.com/file/HcTwUyNxjZJksJ7yfncM9y/JST-22-Design?node-id=42%3A2
  */
 const CustomButton = (props) => {
-  const { type, onClick, children, disabled } = props;
+  const { type, onClick, children, disabled, sx } = props;
+  console.log(props.sx)
   return (
     <ButtonBase
       disableRipple
       disabled={disabled}
       sx={{
         ...getStyles(type),
-        ...props,
+        ...sx,
       }}
       onClick={(e) => {
         e.stopPropagation();

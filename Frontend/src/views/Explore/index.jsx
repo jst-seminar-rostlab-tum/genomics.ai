@@ -23,7 +23,8 @@ import './Explore.css';
 import DatasetCard from 'components/Cards/DatasetCard';
 import ModelsService from 'shared/services/Models.service';
 import AtlasService from 'shared/services/Atlas.service';
-import LearnMore from './LearnMore';
+import LearnMoreAtlas from './LearnMoreAtlas';
+import LearnMoreModel from './LearnMoreModel';
 
 const tmpObj = [
   {
@@ -201,6 +202,15 @@ const Explore = () => {
     setRegistrationFormVisible(false);
   }, [setRegistrationFormVisible]);
 
+  const tmp_elems = useLocation().pathname.split('/')
+  const elems = tmp_elems.map((elem, index) => {
+    if(index<3) return elem
+    else if(index === 3){
+      if(tmp_elems[2]==='atlases') return atlases.filter((x)=>x._id === elem)[0].name
+      else if(tmp_elems[2]==='models') return models.filter((x)=>x._id === elem)[0].name
+    }
+  })
+
   return (
     <Box
       sx={{
@@ -228,7 +238,7 @@ const Explore = () => {
       </Box>
 
       <Box sx={{ alignSelf: 'center', width: '60%', marginTop: '2%' }}>
-        <Breadcrumb fontSize={1} actions={{ explore: () => setValue(0) }} />
+        <Breadcrumb elems={elems} fontSize={1} actions={{ explore: () => setValue(0) }} />
       </Box>
 
       <Box
@@ -250,20 +260,22 @@ const Explore = () => {
             path="/explore/models"
             render={() => models && tabMenu({ models, path })}
           />
+          <Route path="/explore/models/:id" render={() => <LearnMoreModel />} />
           <Route path="/explore/datasets" render={() => atlases && tabMenu(models, path, 'datasets')} />
-          <Route path="/explore/atlases/:id" render={() => <LearnMore setSelectedAtlas={setSelectedAtlas} setSelectedModel={setSelectedModel} />} />
+          <Route path="/explore/atlases/:id" render={() => <LearnMoreAtlas />} />
           <Redirect to="/explore/atlases" />
         </Switch>
       </Box>
-
-      <Mapper
+      
+      {/* NOT NEEDED FOR NOW */}
+      {/* <Mapper
         mapperAtlas={selectedAtlas ? selectedAtlas.name : null}
         mapperModel={selectedModel ? selectedModel.name : null}
         setSelectedAtlas={setSelectedAtlas}
         setSelectedModel={setSelectedModel}
         open={mapperVisible}
         fabOnClick={() => setMapperVisible(!mapperVisible)}
-      />
+      /> */}
     </Box>
   );
 };
