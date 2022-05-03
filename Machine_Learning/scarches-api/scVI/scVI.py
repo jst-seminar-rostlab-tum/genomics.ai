@@ -86,7 +86,7 @@ def create_scVI_model(source_adata, target_adata):
         reference_latent = compute_latent(vae, source_adata)
         if get_from_config(parameters.DEV_DEBUG):
             try:
-                utils.write_latent_csv(vae, source_adata, key='reference-latent-post-first-training.csv')
+                utils.write_adata_to_csv(vae, source_adata, key='reference-latent-post-first-training.csv')
             except Exception as e:
                 print(e, file=sys.stderr)
         tempdir = tempfile.mkdtemp()

@@ -112,19 +112,6 @@ def surgery(reference_latent, source_adata, anndata):
     return model, surgery_latent
 
 
-def get_scanvi_model(reference_latent, anndata, source_adata):
-    if get_from_config(parameters.USE_PRETRAINED_SCANVI_MODEL):
-        if get_from_config(parameters.DEV_DEBUG):
-            print('use pretrained scanvi model', file=sys.stderr)
-        return scarches.models.SCANVI.load_query_data(
-            anndata,
-            'assets/scVI/',
-            freeze_dropout=True,
-        ), None
-    else:
-        pass
-
-
 def query(reference_latent, anndata, source_adata):
     model = scarches.models.SCANVI.load_query_data(
         anndata,
