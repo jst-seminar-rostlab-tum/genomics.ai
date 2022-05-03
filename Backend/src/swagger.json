@@ -260,32 +260,6 @@
         }
       }
     },
-    "/project/:id": {
-      "get": {
-        "summary": "Get detailed information about a project",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Project"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Failed. Bad post data."
-          }
-        }
-      }
-    },
     "/projects": {
       "get": {
         "summary": "Get all projects that meet query params",
@@ -1412,6 +1386,459 @@
           },
           "400": {
             "description": "Failed. Bad post data."
+          }
+        }
+      }
+    },
+    "/ownprojects": {
+      "get": {
+        "summary": "Get all projects of an owner",
+        "tags": [
+          "Project"
+        ],
+        "responses": {
+          "200": {
+            "description": "Getting the project list of the user successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string"
+                      },
+                      "owner": {
+                        "type": "string"
+                      },
+                      "uploadId": {
+                        "type": "string"
+                      },
+                      "location": {
+                        "type": "string"
+                      },
+                      "fileName": {
+                        "type": "string"
+                      },
+                      "fileSize": {
+                        "type": "number"
+                      },
+                      "uploadDate": {
+                        "type": "object"
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "resultName": {
+                        "type": "string"
+                      },
+                      "resultSize": {
+                        "type": "number"
+                      },
+                      "atlasId": {
+                        "type": "string"
+                      },
+                      "modelId": {
+                        "type": "string"
+                      },
+                      "teamId": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error, cannot get the project list of the user"
+          }
+        }
+      }
+    },
+    "/project/{id}": {
+      "get": {
+        "summary": "Get detailed information about a project",
+        "tags": [
+          "Project"
+        ],
+        "responses": {
+          "200": {
+            "description": "Get project by id successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string"
+                    },
+                    "owner": {
+                      "type": "string"
+                    },
+                    "uploadId": {
+                      "type": "string"
+                    },
+                    "location": {
+                      "type": "string"
+                    },
+                    "fileName": {
+                      "type": "string"
+                    },
+                    "fileSize": {
+                      "type": "number"
+                    },
+                    "uploadDate": {
+                      "type": "object"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "resultName": {
+                      "type": "string"
+                    },
+                    "resultSize": {
+                      "type": "number"
+                    },
+                    "atlasId": {
+                      "type": "string"
+                    },
+                    "modelId": {
+                      "type": "string"
+                    },
+                    "teamId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing parameters or the project does not exist"
+          },
+          "401": {
+            "description": "Access denied"
+          },
+          "500": {
+            "description": "Internal error, cannot get project by id"
+          }
+        }
+      }
+    },
+    "/teams/{id}/add_project": {
+      "put": {
+        "summary": "Adds the given project to the project list of the team",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Team",
+          "Project"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "projectId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "projectId"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The project is successfully added.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing parameters or the project to be added does not exist or the team does not exist"
+          },
+          "401": {
+            "description": "Unauthenticated user"
+          },
+          "500": {
+            "description": "Internal error, unable to add the project to the team"
+          }
+        }
+      }
+    },
+    "/users/ownteams": {
+      "get": {
+        "summary": "Returns the teams that the user belong to",
+        "tags": [
+          "User",
+          "Team"
+        ],
+        "responses": {
+          "200": {
+            "description": "Getting team list successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error, unable to get team list of the user"
+          }
+        }
+      }
+    },
+    "/model/{id}": {
+      "get": {
+        "summary": "Get details about a model",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Model"
+        ],
+        "responses": {
+          "200": {
+            "description": "Getting model by id successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "requirements": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing model id"
+          },
+          "500": {
+            "description": "Internal error, unable to retrieve information about the model"
+          }
+        }
+      }
+    },
+    "/atlas/{id}": {
+      "get": {
+        "summary": "Get details about an atlas",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Atlas"
+        ],
+        "responses": {
+          "200": {
+            "description": "Getting atlas by id successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "previewPictureURL": {
+                      "type": "string"
+                    },
+                    "modalities": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "numberOfCells": {
+                      "type": "number"
+                    },
+                    "species": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "compatibleModels": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing atlas id"
+          },
+          "500": {
+            "description": "Internal error, unable to retrieve information about the atlas"
+          }
+        }
+      }
+    },
+    "/models": {
+      "get": {
+        "summary": "Get all available models",
+        "tags": [
+          "Model"
+        ],
+        "responses": {
+          "200": {
+            "description": "Getting all available models successful.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "requirements": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error, unable to retrieve information about the models"
+          }
+        }
+      }
+    },
+    "/atlases": {
+      "get": {
+        "summary": "Get all available atlases",
+        "tags": [
+          "Atlas"
+        ],
+        "responses": {
+          "200": {
+            "description": "Getting all available atlases successful.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                  "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "previewPictureURL": {
+                        "type": "string"
+                      },
+                      "modalities": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "numberOfCells": {
+                        "type": "number"
+                      },
+                      "species": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "compatibleModels": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error, unable to retrieve information about the atlases"
           }
         }
       }
