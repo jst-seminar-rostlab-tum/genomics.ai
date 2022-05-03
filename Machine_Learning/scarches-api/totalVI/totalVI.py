@@ -91,7 +91,7 @@ def train_model(adata_ref):
         vae_ref = sca.models.TOTALVI.load(adata=adata_ref, dir_path=get_from_config(parameters.PRETRAINED_MODEL_PATH))
     else:
         vae_ref = sca.models.TOTALVI(adata_ref, **arches_params)
-        vae_ref.train(get_from_config(parameters.TOTALVI_MAX_EPOCHS_1))
+        vae_ref.train(get_from_config(parameters.TOTALVI_MAX_EPOCHS_1), use_gpu=get_from_config(parameters.USE_GPU))
     vae_ref.save('totalVI-model', overwrite=True)
     return vae_ref
 
@@ -133,7 +133,7 @@ def surgery(adata_query):
         freeze_expression=True
     )
     vae_q.train(int(get_from_config(parameters.TOTALVI_MAX_EPOCHS_2)),
-                plan_kwargs=dict(weight_decay=0.0))  # , use_gpu=True)
+                plan_kwargs=dict(weight_decay=0.0), use_gpu=get_from_config(parameters.USE_GPU))
     vae_q.save('totalVI_model', overwrite=True)
     adata_query.obsm["X_totalVI"] = vae_q.get_latent_representation()
     sc.pp.neighbors(adata_query, use_rep="X_totalVI")

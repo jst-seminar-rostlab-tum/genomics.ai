@@ -75,4 +75,4 @@ SCANVI_DO_SURGERY = 'scanvi_do_surgery'
 # set dev debug level, storing almost everything that is being computed
 DEV_DEBUG = 'development-mode'
 # set if GPU is available
-USE_GPU
+USE_GPU = 'use_gpu'

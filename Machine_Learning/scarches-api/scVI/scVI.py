@@ -77,7 +77,7 @@ def create_scVI_model(source_adata, target_adata):
             print('do not use pretrained scvi model', file=sys.stderr)
         setup_anndata(source_adata)
         vae = get_model(source_adata)
-        vae.train(max_epochs=get_from_config(parameters.SCVI_MAX_EPOCHS))
+        vae.train(max_epochs=get_from_config(parameters.SCVI_MAX_EPOCHS), use_gpu=get_from_config(parameters.USE_GPU))
         if get_from_config(parameters.DEV_DEBUG):
             try:
                 utils.write_adata_to_csv(vae, source_adata, key='source-adata-post-first-training.csv')
@@ -163,6 +163,7 @@ def compute_query(anndata, reference_latent, source_adata):
         max_epochs=get_from_config(parameters.SCVI_QUERY_MAX_EPOCHS),
         plan_kwargs=dict(weight_decay=0.0),
         check_val_every_n_epoch=10,
+        use_gpu=get_from_config(parameters.USE_GPU)
     )
     tempdir = tempfile.mkdtemp()
     model.save(tempdir, overwrite=True)

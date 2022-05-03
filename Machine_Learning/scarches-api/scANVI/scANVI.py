@@ -92,6 +92,7 @@ def surgery(reference_latent, source_adata, anndata):
         max_epochs=get_from_config(parameters.SCANVI_MAX_EPOCHS),
         plan_kwargs=dict(weight_decay=0.0),
         check_val_every_n_epoch=10,
+        use_gpu=get_from_config(parameters.USE_GPU)
     )
 
     surgery_latent = get_latent(model, anndata)
@@ -142,6 +143,7 @@ def query(reference_latent, anndata, source_adata):
         max_epochs=get_from_config(parameters.SCANVI_MAX_EPOCHS),
         plan_kwargs=dict(weight_decay=0.0),
         check_val_every_n_epoch=10,
+        use_gpu=get_from_config(parameters.USE_GPU)
     )
     tempdir = tempfile.mkdtemp()
     model.save(tempdir, overwrite=True)
@@ -228,7 +230,7 @@ def create_model(source_adata, target_adata):
         print("Labelled Indices: ", len(scanvi._labeled_indices))
         print("Unlabelled Indices: ", len(scanvi._unlabeled_indices))
 
-    scanvi.train(max_epochs=get_from_config(parameters.SCANVI_MAX_EPOCHS))
+    scanvi.train(max_epochs=get_from_config(parameters.SCANVI_MAX_EPOCHS), use_gpu=get_from_config(parameters.USE_GPU))
     tempdir = tempfile.mkdtemp()
     scanvi.save(tempdir, overwrite=True)
     if get_from_config(parameters.DEV_DEBUG):
