@@ -70,7 +70,7 @@ export default function DatasetCard({ title, category, width = "100%", height = 
               height: `${0.45 * cardSize.height}px`
             }}
           >
-            <Tag content={category} variant="secondary-default" isDeletable={false} />
+            <Tag content={category} fontSize={13} variant="secondary-default" isDeletable={false} />
           </Box>
         </Box>
       </Box>

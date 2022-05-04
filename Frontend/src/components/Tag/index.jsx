@@ -44,7 +44,7 @@ const predefinedTags = [
  * Tag
  * needs content, variant(see above), whether it's deletable, meaning whether the delete icon is to shown and a function to handle the deletion
  */
-export default function Tag({ content, variant, isDeletable, handleDeletion = () => { } }) {
+export default function Tag({ content, variant, fontSize=16, isDeletable, handleDeletion = () => { } }) {
 
   //store the offset of the delete icon to make its center right on the corner of Tag
   const [deleteIconOffset, setDeleteIconOffset] = useState({ x: 0, y: 0 })
@@ -193,7 +193,8 @@ export default function Tag({ content, variant, isDeletable, handleDeletion = ()
         <Typography fontSize="100%" fontWeight="bold"
           sx={{
             color: getFontColor(),
-            margin: "auto"
+            margin: "auto",
+            fontSize:{fontSize}
           }}
         >
           {content}

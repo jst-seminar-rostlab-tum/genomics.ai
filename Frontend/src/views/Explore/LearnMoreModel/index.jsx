@@ -33,7 +33,7 @@ export const LearnMoreModelComponent = () => {
         <Typography sx={{ fontSize: '20px', fontWeight: 600, borderBottom: '1px solid black' }}>Overview</Typography>
       </Box>
       
-      <Typography>Description: {model?.description}</Typography> 
+      <Typography sx={{ width:'100%', maxWidth: '800px' }}>Description: {model?.description}</Typography> 
     </Box>
   );
 }

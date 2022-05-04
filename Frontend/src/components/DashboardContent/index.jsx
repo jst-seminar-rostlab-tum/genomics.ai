@@ -24,7 +24,7 @@ const DashboardContent = () => {
 
   return (
     <div>
-      <Sidebar />
+      <Sidebar setUser={setUser} />
       <Switch>
         <Route exact path={`${path}/`}>
           <Redirect to={`${url}/genemapper`} />
