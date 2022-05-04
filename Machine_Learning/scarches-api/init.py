@@ -1,3 +1,4 @@
+import os
 import sys
 
 from scANVI.scANVI import compute_scANVI
@@ -14,10 +15,10 @@ def default_config():
     return {
         parameters.MODEL: 'scANVI',
 
-        parameters.REFERENCE_DATA_PATH: 'data/ref/source_data.h5ad',
-        parameters.QUERY_DATA_PATH: 'data/query/target_data.h5ad',
-        parameters.RESULTING_MODEL_PATH: 'data/model',
-        parameters.OUTPUT_PATH: 'query.tsv',
+        parameters.REFERENCE_DATA_PATH: 'pancreas_source.h5ad',
+        parameters.QUERY_DATA_PATH: 'pancreas_query.h5ad',
+        parameters.RESULTING_MODEL_PATH: 'model.pt',
+        parameters.OUTPUT_PATH: 'query.csv',
 
         parameters.USE_PRETRAINED_SCVI_MODEL: True,
         parameters.USE_PRETRAINED_TOTALVI_MODEL: True,
@@ -40,6 +41,7 @@ def default_config():
         parameters.USE_BATCH_NORM: 'none',
         parameters.UNLABELED_KEY: 'Unknown',
         parameters.SCANVI_MAX_EPOCHS: 20,
+        parameters.SCANVI_MAX_EPOCHS_QUERY: 100,
         parameters.SCVI_MAX_EPOCHS: 400,
         parameters.SCVI_QUERY_MAX_EPOCHS: 200,
         parameters.NUMBER_OF_NEIGHBORS: 8,
@@ -91,4 +93,11 @@ def query(user_config):
         utils.notify_backend(get_from_config(configuration, parameters.WEBHOOK), configuration)
     return configuration
 # query('data/ref/source_data.h5ad', 'data/query/target_data.h5ad', 'data/model', 'data/surgery/', 'scVI')
-# query(None)
+
+if __name__ == "__main__":
+    os.environ["AWS_BUCKET"] = 'minio-bucket'
+    os.environ['AWS_ENDPOINT'] = 'http://127.0.0.1:9000'
+    os.environ['AWS_ACCESS_KEY'] = 'minioadmin'
+    os.environ['AWS_SECRET_KEY'] = 'minioadmin'
+
+    query({parameters.DEV_DEBUG: True})

@@ -127,13 +127,18 @@ def query(reference_latent, anndata, source_adata):
         print("Unlabelled Indices: ", len(model._unlabeled_indices))
 
     model.train(
-        max_epochs=get_from_config(parameters.SCANVI_MAX_EPOCHS),
+        max_epochs=get_from_config(parameters.SCANVI_MAX_EPOCHS_QUERY),
         plan_kwargs=dict(weight_decay=0.0),
         check_val_every_n_epoch=10,
         use_gpu=get_from_config(parameters.USE_GPU)
     )
     tempdir = tempfile.mkdtemp()
     model.save(tempdir, overwrite=True)
+    if get_from_config(parameters.DEV_DEBUG):
+        try:
+            utils.write_adata_to_csv(model, 'scanvi-query-latent-after-query-training.csv')
+        except Exception as e:
+            print(e, file=sys.stderr)
     if get_from_config(parameters.DEV_DEBUG):
         try:
             utils.store_file_in_s3(tempdir + '/model.pt', 'scanvi-model-after-query-training.pt')
@@ -221,6 +226,10 @@ def create_model(source_adata, target_adata):
     tempdir = tempfile.mkdtemp()
     scanvi.save(tempdir, overwrite=True)
     if get_from_config(parameters.DEV_DEBUG):
+        try:
+            utils.write_adata_to_csv(scanvi, 'scanvi-reference-latent-after-from-scvi-training.pt')
+        except Exception as e:
+            print(e, file=sys.stderr)
         try:
             utils.store_file_in_s3(tempdir + '/model.pt', 'scanvi-model-after-first-training.pt')
         except Exception as e:

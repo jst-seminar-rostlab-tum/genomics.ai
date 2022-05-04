@@ -88,10 +88,15 @@ def train_model(adata_ref):
     )
     vae_ref = None
     if get_from_config(parameters.USE_PRETRAINED_TOTALVI_MODEL):
-        vae_ref = sca.models.TOTALVI.load(adata=adata_ref, dir_path=get_from_config(parameters.PRETRAINED_MODEL_PATH))
+        vae_ref = sca.models.TOTALVI.load(adata=adata_ref, dir_path='assets/totalVI/')
     else:
         vae_ref = sca.models.TOTALVI(adata_ref, **arches_params)
         vae_ref.train(get_from_config(parameters.TOTALVI_MAX_EPOCHS_1), use_gpu=get_from_config(parameters.USE_GPU))
+        if get_from_config(parameters.DEV_DEBUG):
+            try:
+                utils.write_adata_to_csv(vae_ref, adata_ref, key='source-adata-post-first-training.csv')
+            except Exception as e:
+                print(e, file=sys.stderr)
     vae_ref.save('totalVI-model', overwrite=True)
     return vae_ref
 
@@ -101,14 +106,14 @@ def visualize_and_store_as_pdf(filename, adata_ref, **config):
     os.rename(args.pdfpath + 'umap.pdf', args.pdfpath + filename)
 
 
-def visualize_RNA_data(adata_ref, vae_ref):
-    adata_ref.obsm["X_totalVI"] = vae_ref.get_latent_representation()
+def visualize_RNA_data(model, adata_ref):
+    adata_ref.obsm["X_totalVI"] = model.get_latent_representation()
     sc.pp.neighbors(adata_ref, use_rep="X_totalVI")
     sc.tl.umap(adata_ref, min_dist=0.4)
-    #utils.write_latent_csv(adata_ref, key=get_from_config(parameters.OUTPUT_PATH))
-    utils.write_full_adata_to_csv(vae_ref, adata_ref, sc.AnnData(vae_ref.get_latent_representation()), key=get_from_config(parameters.OUTPUT_PATH),
-                                  cell_type_key=get_from_config(parameters.CELL_TYPE_KEY),
-                                  condition_key=get_from_config(parameters.CONDITION_KEY))
+    # utils.write_latent_csv(adata_ref, key=get_from_config(parameters.OUTPUT_PATH))
+    # utils.write_full_adata_to_csv(model, adata_ref, sc.AnnData(model.get_latent_representation()), key=get_from_config(parameters.OUTPUT_PATH),
+    #                              cell_type_key=get_from_config(parameters.CELL_TYPE_KEY),
+    #                              condition_key=get_from_config(parameters.CONDITION_KEY))
     if get_from_config(parameters.DEBUG):
         visualize_and_store_as_pdf("firstumap.pdf",
                                    adata_ref,
@@ -120,7 +125,7 @@ def visualize_RNA_data(adata_ref, vae_ref):
 
 
 def surgery(adata_query):
-    #utils.fetch_file_from_s3(get_from_config(parameters.PRETRAINED_MODEL_PATH), 'assets/totalVI/model.pt')
+    # utils.fetch_file_from_s3(get_from_config(parameters.PRETRAINED_MODEL_PATH), 'assets/totalVI/model.pt')
     dir_path = 'assets/totalVI'
     # vae_q_file = exists(dir_path + args.fname)
     # vae_q = None
@@ -134,6 +139,11 @@ def surgery(adata_query):
     )
     vae_q.train(int(get_from_config(parameters.TOTALVI_MAX_EPOCHS_2)),
                 plan_kwargs=dict(weight_decay=0.0), use_gpu=get_from_config(parameters.USE_GPU))
+    if get_from_config(parameters.DEV_DEBUG):
+        try:
+            utils.write_adata_to_csv(vae_q, adata_query, key='query-adata-post-second-training.csv')
+        except Exception as e:
+            print(e, file=sys.stderr)
     vae_q.save('totalVI_model', overwrite=True)
     adata_query.obsm["X_totalVI"] = vae_q.get_latent_representation()
     sc.pp.neighbors(adata_query, use_rep="X_totalVI")
@@ -178,6 +188,7 @@ def latent_ref_representation(adata_query, adata_ref, vae_q):
 def compute_final_umaps(adata_full_new, imputed_proteins_all):
     perm_inds = np.random.permutation(np.arange(adata_full_new.n_obs))
 
+    utils.write_latent_csv(adata_full_new[perm_inds], key=get_from_config(parameters.OUTPUT_PATH))
     if get_from_config(parameters.DEBUG):
         visualize_and_store_as_pdf("thirdumap.pdf",
                                    adata_full_new[perm_inds],
@@ -187,6 +198,8 @@ def compute_final_umaps(adata_full_new, imputed_proteins_all):
                                    title="Reference and query",
                                    save=True
                                    )
+        # TODO Gustav, do we need this?
+        """
         ax = visualize_and_store_as_pdf("forthumap.pdf",
                                         adata_full_new,
                                         color="batch",
@@ -205,6 +218,7 @@ def compute_final_umaps(adata_full_new, imputed_proteins_all):
                                    vmax="p99",
                                    save=True
                                    )
+        """
 
 
 def computeTotalVI(new_configuration):
@@ -224,13 +238,9 @@ def computeTotalVI(new_configuration):
     data = prepare_data()
     adata_ref = data[0]
     adata_query = data[1]
-    vae_ref = train_model(adata_ref)
-    visualize_RNA_data(adata_ref, vae_ref)
+    model_ref = train_model(adata_ref)
+    visualize_RNA_data(model_ref, adata_ref)
     vae_q = surgery(adata_query)
     impute_proteins(vae_q, adata_query)
     reps = latent_ref_representation(adata_query, adata_ref, vae_q)
     compute_final_umaps(reps[0], reps[1])
-
-
-if __name__ == "__main__":
-    main()

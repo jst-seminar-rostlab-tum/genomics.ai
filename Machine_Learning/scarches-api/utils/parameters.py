@@ -26,9 +26,11 @@ USE_BATCH_NORM = 'use_batch_norm'
 UNLABELED_KEY = 'unlabeled_key'
 # sets the number of max epochs for scanvi
 SCANVI_MAX_EPOCHS = 'scanvi_max_epochs'
+# sets the number of max epochs for scanvi query
+SCANVI_MAX_EPOCHS_QUERY = 'scanvi_max_epochs_query'
 # sets the number of max epochs for scVI
 SCVI_MAX_EPOCHS = 'scvi_max_epochs'
-# sets the number of max epochs for scVI
+# sets the number of max epochs for scVI query
 SCVI_QUERY_MAX_EPOCHS = 'scvi_max_epochs_query'
 # sets the number of neighbors
 NUMBER_OF_NEIGHBORS = 'n_neighbors'
