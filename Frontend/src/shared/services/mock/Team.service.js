@@ -1,4 +1,5 @@
 import MemberService from './Member.service';
+import ProfileService from './Profile.service';
 
 let mockTeams = [
   {
@@ -31,7 +32,7 @@ const TeamService = {
     mockTeams = mockTeams.filter((t) => t.id !== team.id);
   },
 
-  async createTeam(name, description) {
+  async createTeam(name, description, institutionId) {
     // fake effect
     await new Promise((resolve) => setTimeout(resolve, 1000));
     runningId += 1;
@@ -46,6 +47,7 @@ const TeamService = {
         adminIds: [1], // TODO: make sure that the backend puts my user ID here
         memberIds: [],
         visibility: 'private',
+        institutionId,
       },
     );
     return mockTeams[mockTeams.length - 1];
@@ -83,6 +85,11 @@ const TeamService = {
     return mockTeams;
   },
 
+  async getMyAdminTeams() {
+    const myTeams = await TeamService.getMyTeams();
+    const user = await ProfileService.getProfile();
+    return myTeams.filter((t) => t.adminIds.includes(user.id));
+  },
   getTeams: async (params) => {
     let preparedTeams = mockTeams.map(
       (team) => ({ ...team, title: team.name }
