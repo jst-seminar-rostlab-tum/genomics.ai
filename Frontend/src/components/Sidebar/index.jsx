@@ -1,6 +1,4 @@
-/* eslint-disable */
-
-import React from 'react';
+import { useState, useEffect }  from 'react';
 import LiveHelpIcon from '@mui/icons-material/LiveHelp';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import MapIcon from '@mui/icons-material/Map';
@@ -15,6 +13,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import SettingsIcon from '@mui/icons-material/Settings';
 import geneIcon from 'assets/gene.png';
 import styles from './sidebar.module.css';
+import { useAuth } from 'shared/context/authContext';
 
 function indexIcon(index) {
   switch (index) {
@@ -47,6 +46,15 @@ export default function Sidebar(props) {
   const location = useLocation();
   const path = location.pathname;
   const settingsPath = '/sequencer/settings';
+  const [checkPathActive, setCheckPathActive] = useState("/")
+  const pathRegex = new RegExp(".*\/sequencer\/(\\w+)(?=\/|)", "g")
+  
+  useEffect(() => {
+    const result = pathRegex.exec(path) 
+    if(result) {
+      setCheckPathActive(result[1])
+    }
+  }, [path])
 
   return (
     <Box>
@@ -73,7 +81,7 @@ export default function Sidebar(props) {
                   >
                     <Box
                       className={styles.navbarItemContainer}
-                      sx={{ background: path.includes(route) ? '#5676E5' : '#184060' }}
+                      sx={{ background: checkPathActive === route ? '#5676E5' : '#184060' }}
                     >
                       <ListItemIcon className={styles.listItemIcon}>
                         {indexIcon(index)}

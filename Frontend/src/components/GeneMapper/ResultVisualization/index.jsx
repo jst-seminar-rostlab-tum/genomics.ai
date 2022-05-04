@@ -62,22 +62,20 @@ function ResultVisualization({ dataUrl, onlyUmap }) {
           <CircularProgress disableShrink />
         </Box>
       ) : null}
-      {!onlyUmap
-        ? (
-          <Sidepanel title="Categories">
-            <GeneMapperCategories
-              categories={umap?.coloringModes}
-              setColorMode={(mode) => umap.setColorMode(mode)}
-              hide={(category, value) => {
-                umap.after(category, value);
-              }}
-              show={() => {
-                umap.before();
-              }}
-            />
-          </Sidepanel>
-        )
-        : null}
+      <Box sx={{ display: onlyUmap ? 'none' : 'block' }}>
+        <Sidepanel title="Categories">
+          <GeneMapperCategories
+            categories={umap?.coloringModes}
+            setColorMode={(mode) => umap.setColorMode(mode)}
+            hide={(category, value) => {
+              umap.after(category, value);
+            }}
+            show={() => {
+              umap.before();
+            }}
+          />
+        </Sidepanel>
+      </Box>
       <Box
         sx={{
           flexGrow: 1,

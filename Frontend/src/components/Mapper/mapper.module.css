@@ -1,77 +1,85 @@
 .container {
-    max-width: 400px;
-    margin: 12px;
-    position: absolute;
-    z-index: 100;
-    right: 2%;
-    bottom: 2%;
+  max-width: 400px;
+  /* margin: 12px; */
+  position: absolute;
+  z-index: 100;
+  right: 1em;
+  bottom: 1em;
 }
 
 .borderContainer {
-    border-radius: 20px;
-    padding: 16px 32px;
-    position: relative;
-    background-color: white;
+  border-radius: 20px;
+  padding: 16px 32px;
+  position: relative;
+  background-color: white;
 }
 
 .input {
-    display: none !important;
+  display: none !important;
 }
 
 .icon {
-    color: #FF5F58;
+  color: #FF5F58;
+}
+
+.disabledIcon {
+  color: #CED4DA;
 }
 
 .filename {
-    color: #0969DA;
-    font-weight: bold !important;
-    width: 256px;
-    height: 100%;
-    margin: auto 0px !important;
+  color: #0969DA;
+  font-weight: bold !important;
+  width: 256px;
+  height: 100%;
+  margin: auto 0px !important;
 }
 
 .title {
-    font-weight: bold !important;
-    width: 100%;
-    text-align: center;
-    margin: 4px !important;
+  font-weight: bold !important;
+  width: 100%;
+  text-align: center;
+  margin: 4px !important;
 }
 
 .buttonBox {
-    display: flex;
-    justify-content: center;
-    margin: 16px 0 8px 0;
+  display: flex;
+  justify-content: center;
+  margin: 16px 0 8px 0;
 }
 
 .goButton {
-    background-color: #5676E4 !important;
+  background-color: #5676E4 !important;
+}
+
+.goButton:disabled {
+  background-color: #CED4DA !important;
 }
 
 .goButton:hover {
-    background-color: #0969DA !important;
+  background-color: #0969DA !important;
 }
 
 .divider {
-    margin: 12px 0 !important;
+  margin: 12px 0 !important;
 }
 
 .mapIcon {
-    z-index: 3;
-    background-color: black !important;
-    color: white !important;
-    position: relative;
+  z-index: 3;
+  background-color: black !important;
+  color: white !important;
+  position: relative;
 }
 
 .mapIcon:hover {
-    background-color: #0969DA !important;
+  background-color: #0969DA !important;
 }
 
 .mapperBox {
-    display: flex;
-    justify-content: flex-end;
-    margin: 12px;
+  display: flex;
+  justify-content: end;
+  margin: 12px;
 }
 
 .iconButton {
-    padding: 4px !important;
+  padding: 4px !important;
 }
