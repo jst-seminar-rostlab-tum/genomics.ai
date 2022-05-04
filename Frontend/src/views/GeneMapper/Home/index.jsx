@@ -10,6 +10,8 @@ import ProjectService from 'shared/services/Project.service';
 import { useSubmissionProgress } from 'shared/context/submissionProgressContext';
 import { MULTIPART_UPLOAD_STATUS, PROJECTS_UPDATE_INTERVAL, statusIsError } from 'shared/utils/common/constants';
 import ProjectMock from 'shared/services/mock/projects';
+import AtlasService from 'shared/services/Atlas.service';
+import ModelService from 'shared/services/Model.service';
 
 const theme = createTheme({
   palette: {
@@ -32,6 +34,9 @@ const themeIcon = createTheme({
 
 function GeneMapperHome() {
   const [projects, setProjects] = useState([]);
+  const [atlases, setAtlases] = useState([]);
+  const [models, setModels] = useState([]);
+
   const [findString, setFindString] = useState('');
   const [submissionProgress, setSubmissionProgress] = useSubmissionProgress();
 
@@ -66,6 +71,11 @@ function GeneMapperHome() {
       clearInterval(timer);
     };
   }, [submissionProgress.status]);
+
+  useEffect(() => {
+    AtlasService.getAtlases().then((data) => setAtlases(data));
+    ModelService.getModels().then((data) => setModels(data));
+  }, []);
 
   return (
     <div>
@@ -110,9 +120,9 @@ function GeneMapperHome() {
             .map((project) => (
               <ProjectBarCard
                 key={project._id}
-                projectId={project._id}
-                name={project.name}
-                status={project.status}
+                project={project}
+                atlas={atlases.find((atlas) => String(atlas._id) === String(project.atlasId))}
+                model={models.find((model) => String(model._id) === String(project.modelId))}
                 handleDelete={() => handleDeleteItem(project._id)}
                 submissionProgress={submissionProgress.uploadId === project.uploadId
                   ? submissionProgress : null}

@@ -3,7 +3,7 @@ import Card from '@mui/material/Card';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import {
-  Box, IconButton, LinearProgress, Stack, CardActionArea, FormControl, InputLabel, MenuItem, Select, Collapse, List, ListItemButton, ListItemIcon, ListItemText,
+  Box, IconButton, LinearProgress, Stack, CardActionArea, FormControl, InputLabel, MenuItem, Select, Collapse, List, ListItemButton, ListItemIcon, ListItemText, Divider,
 } from '@mui/material';
 import CircleIcon from '@mui/icons-material/Circle';
 import { useHistory } from 'react-router-dom';
@@ -30,15 +30,15 @@ function ProcessingStatus() {
 }
 
 export default function ProjectBarCard({
-  projectId, name, status, submissionProgress, setSubmissionProgress, handleDelete
+  project, atlas, model, submissionProgress, setSubmissionProgress, handleDelete,
 }) {
   const history = useHistory();
 
-  const color = status === PROJECT_STATUS.DONE
+  const color = project.status === PROJECT_STATUS.DONE
     ? 'lightGreen'
-    : status === PROJECT_STATUS.ABORTED
-    || (!submissionProgress && status === PROJECT_STATUS.UPLOAD_PENDING)
-    || status === PROJECT_STATUS.PROCESSING_FAILED
+    : project.status === PROJECT_STATUS.ABORTED
+    || (!submissionProgress && project.status === PROJECT_STATUS.UPLOAD_PENDING)
+    || project.status === PROJECT_STATUS.PROCESSING_FAILED
       ? 'red'
       : 'orange';
 
@@ -61,28 +61,46 @@ export default function ProjectBarCard({
   }, []);
 
   return (
-    <Card sx={{
-      marginTop: '5', marginBottom: '0.5em', borderStyle: 'solid', borderColor: '#C8C8C8', borderWidth: '0.1px',
-    }}
-    >
+    <>
+      <Card sx={{
+        p: 1,
+        marginTop: '5',
+        marginBottom: '0.5em',
+        borderStyle: 'solid',
+        borderColor: '#C8C8C8',
+        borderWidth: '0.1px',
+      }}
+      >
 
-      <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
+        <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center' }} onClick={handleClickCard}>
 
-        <CardActionArea disableTaouchRipple onClick={handleClickCard}>
+          {/* <CardActionArea disableTaouchRipple > */}
           <Stack
             direction="row"
-            spacing={4}
+            // spacing={4}
             sx={{ alignItems: 'center', flexGrow: 1 }}
           >
+            <Box sx={{ flexDirection: 'row', ml: 1, alignItems: 'center' }}>
+              {open ? (
+                <ExpandLess sx={{
+                  fontSize: 30,
+                  transform: 'rotate(180deg)',
+                }}
+                />
+              ) : (
+                <ExpandMore sx={{
+                  fontSize: 30,
+                  transform: 'rotate(-90deg)',
+                }}
+                />
+              )}
+            </Box>
             <CircleIcon sx={{
-              fontSize: 30, marginLeft: '3%', color,
+              fontSize: 30, color, mr: 1, ml: 1,
             }}
             />
             <Typography noWrap sx={{ width: '30%' }}>
-              {name}
-            </Typography>
-            <Typography>
-              {team}
+              {project.name}
             </Typography>
             {submissionProgress ? (
               <Box
@@ -126,112 +144,108 @@ export default function ProjectBarCard({
                 <Box
                   sx={{ flexGrow: 1, display: 'flex' }}
                 >
-                  {status === PROJECT_STATUS.UPLOAD_PENDING
+                  {project.status === PROJECT_STATUS.UPLOAD_PENDING
                    && (
                    <Typography variant="caption">
                      Upload failed or canceled
                    </Typography>
                    )}
-                  {status === PROJECT_STATUS.PROCESSING_PENDING
+                  {project.status === PROJECT_STATUS.PROCESSING_PENDING
                    && <ProcessingStatus />}
-                  {(status === PROJECT_STATUS.ABORTED || status === PROJECT_STATUS.PROCESSING_FAILED)
+                  {(project.status === PROJECT_STATUS.ABORTED
+                  || project.status === PROJECT_STATUS.PROCESSING_FAILED)
                    && <Typography variant="caption">Processing failed</Typography>}
                 </Box>
               )
               : null}
-            {open ? (
-              <Box sx={{ flexDirection: 'row' }}>
-                <ExpandLess sx={{
-                  fontSize: 30, marginLeft: '3%',
-                }}
-                />
-              </Box>
-            ) : (
-              <Box sx={{ flexDirection: 'row' }}>
-                <ExpandMore sx={{
-                  fontSize: 30, marginLeft: '3%',
-                }}
-                />
-              </Box>
-            )}
-
           </Stack>
-          <Collapse in={open} timeout="auto" unmountOnExit collapsedSize="100px" sx={{}}>
-            <Typography>More Infomation</Typography>
-          </Collapse>
-        </CardActionArea>
+          {/* </CardActionArea> */}
 
-        <Box sx={{
-          p: 0.1, bgcolor: 'background.paper', borderRadius: 3, width: 'flex', mr: 3, display: 'flex', alignItems: 'center',
-        }}
-        >
-          <Button
-            variant="outlined"
-            size="small"
-            sx={{
-              borderRadius: 100,
-              mr: 2,
-              m: 1,
-            }}
-            style={{ textTransform: 'none' }}
-            onClick={handleOpen}
+          <Box sx={{
+            p: 0.1, bgcolor: 'background.paper', borderRadius: 3, width: 'flex', mr: 1, display: 'flex', alignItems: 'center',
+          }}
           >
-            Add To Team
-          </Button>
+            {team
+              ? (
+                <Typography sx={{ mr: 2 }}>
+                  {team}
+                </Typography>
+              )
+              : (
+                <Button
+                  variant="outlined"
+                  sx={{
+                    borderRadius: 100,
+                    mr: 1,
+                  }}
+                  style={{ textTransform: 'none' }}
+                  onClick={handleOpen}
+                >
+                  Add To Team
+                </Button>
+              )}
 
-          <Button
-            variant="contained"
-            color="secondary"
-            sx={{
-              borderRadius: 100,
-              mr: 2,
-            }}
-            style={{ textTransform: 'none' }}
-            onClick={() => history.push(`./genemapper/result/${projectId}`)}
-            disabled={status !== 'DONE'}
-          >
-            See Results
-          </Button>
-          <IconButton>
-            <DeleteOutlineIcon color="error" />
-          </IconButton>
-        </Box>
+            <Button
+              variant="contained"
+              color="secondary"
+              sx={{
+                borderRadius: 100,
+                mr: 1,
+              }}
+              style={{ textTransform: 'none' }}
+              onClick={() => history.push(`./genemapper/result/${project._id}`)}
+              disabled={project.status !== 'DONE'}
+            >
+              See Results
+            </Button>
+            <IconButton>
+              <DeleteOutlineIcon color="error" />
+            </IconButton>
+          </Box>
 
-      </Stack>
+        </Stack>
 
+        <Collapse in={open} timeout="auto">
+          <Divider sx={{ mt: 1, mb: 1 }} />
+          <Box sx={{ pl: 10.5 }}>
+            <Typography>{`Atlas: ${atlas.name}`}</Typography>
+            <Typography>{`Model: ${model.name}`}</Typography>
+            <Typography>{`Dataset: ${project.fileName}`}</Typography>
+          </Box>
+        </Collapse>
+
+      </Card>
       <Modal
         isOpen={addTeam}
         setOpen={setAddTeam}
-        children={(
-          <Box>
-            <Typography variant="h6" sx={{ paddingBottom: 1 }}>
-              Select A Team
-            </Typography>
-            <div>
-              <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-                <InputLabel id="demo-simple-select-standard-label">Team</InputLabel>
-                <Select
-                  labelId="demo-simple-select-standard-label"
-                  id="demo-simple-select-standard"
-                  value={team}
-                  onChange={handleChange}
-                  label="Team"
-                >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  <MenuItem value="Team 1">Team 1</MenuItem>
-                  <MenuItem value="Team 2">Team 2</MenuItem>
-                  <MenuItem value="Team 3">Team 3</MenuItem>
-                </Select>
-              </FormControl>
-            </div>
-            <Button size="small" onClick={() => setAddTeam(false)}>Close</Button>
-            <Button size="small" onClick={() => setAddTeam(false)}>Confirm</Button>
-          </Box>
-)}
-      />
-
-    </Card>
+      >
+        <Box>
+          <Typography variant="h6" sx={{ paddingBottom: 1 }}>
+            Select A Team
+          </Typography>
+          <div>
+            <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+              <InputLabel id="demo-simple-select-standard-label">Team</InputLabel>
+              <Select
+                labelId="demo-simple-select-standard-label"
+                id="demo-simple-select-standard"
+                value={team}
+                onChange={handleChange}
+                label="Team"
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                <MenuItem value="Team 1">Team 1</MenuItem>
+                <MenuItem value="Team 2">Team 2</MenuItem>
+                <MenuItem value="Team 3">Team 3</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
+          <Button size="small" onClick={() => setAddTeam(false)}>Close</Button>
+          <Button size="small" onClick={() => setAddTeam(false)}>Confirm</Button>
+        </Box>
+      </Modal>
+    </>
   );
 }
