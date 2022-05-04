@@ -36,7 +36,7 @@ let mockTeams = [
     institutionId: '3',
   },
 ];
-let runningId = 1;
+let runningId = 2;
 
 const TeamService = {
   async leaveTeam(team) {
@@ -47,21 +47,21 @@ const TeamService = {
     // fake effect
     await new Promise((resolve) => setTimeout(resolve, 1000));
     runningId += 1;
-    mockTeams.push(
-      {
-        id: runningId.toString(),
-        name,
-        country: null,
-        description,
-        avatarUrl: null,
-        backgroundPictureURL: null,
-        adminIds: [1], // TODO: make sure that the backend puts my user ID here
-        memberIds: [],
-        visibility: 'private',
-        institutionId,
-      },
-    );
-    return mockTeams[mockTeams.length - 1];
+    const newTeam = {
+      id: runningId.toString(),
+      name,
+      country: null,
+      description,
+      avatarUrl: null,
+      backgroundPictureURL: null,
+      adminIds: [1], // TODO: make sure that the backend puts my user ID here
+      memberIds: [],
+      invitedMemberIds: [],
+      visibility: 'private',
+      institutionId,
+    };
+    mockTeams = [...mockTeams, newTeam];
+    return newTeam;
   },
 
   async removeMemberFromTeam(teamId, memberId) {
