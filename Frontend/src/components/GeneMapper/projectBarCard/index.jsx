@@ -16,7 +16,7 @@ import ReplayIcon from '@mui/icons-material/Replay';
 import ProgressBar from 'components/ProgressBar';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { ExpandLess, ExpandMore, StarBorder } from '@mui/icons-material';
-import { Modal } from 'components/Modal';
+import { Modal, ModalTitle } from 'components/Modal';
 
 function ProcessingStatus() {
   return (
@@ -208,9 +208,9 @@ export default function ProjectBarCard({
         <Collapse in={open} timeout="auto">
           <Divider variant="middle" />
           <Box sx={{ pl: 11.5, pb: 1, pt: 1 }}>
-            <Typography>{`Atlas: ${atlas.name}`}</Typography>
-            <Typography>{`Model: ${model.name}`}</Typography>
-            <Typography>{`Dataset: ${project.fileName}`}</Typography>
+            <Typography>{`Atlas: ${atlas?.name}`}</Typography>
+            <Typography>{`Model: ${model?.name}`}</Typography>
+            <Typography>{`Dataset: ${project?.fileName}`}</Typography>
           </Box>
         </Collapse>
 
@@ -219,10 +219,11 @@ export default function ProjectBarCard({
         isOpen={addTeam}
         setOpen={setAddTeam}
       >
+        <ModalTitle>
+          Select A Team
+        </ModalTitle>
         <Box>
-          <Typography variant="h6" sx={{ paddingBottom: 1 }}>
-            Select A Team
-          </Typography>
+
           <div>
             <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
               <InputLabel id="demo-simple-select-standard-label">Team</InputLabel>
