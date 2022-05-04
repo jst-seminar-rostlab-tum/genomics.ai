@@ -27,10 +27,11 @@ const DashboardContent = () => {
       <Sidebar />
       <Switch>
         <Route exact path={`${path}/`}>
-          <Redirect to={`${url}/dashboard`} />
+          <Redirect to={`${url}/genemapper`} />
         </Route>
-        <Route path={`${path}/dashboard`}>
-          <Dashboard />
+
+        <Route path={`${path}/genemapper`}>
+          <GeneMapper sidebarShown={sidebarShown} />
         </Route>
 
         <Route path={`${path}/teams`}>
@@ -39,10 +40,6 @@ const DashboardContent = () => {
 
         <Route path={`${path}/institutions`}>
           <InstitutionOverview />
-        </Route>
-
-        <Route path={`${path}/genemapper`}>
-          <GeneMapper sidebarShown={sidebarShown} />
         </Route>
 
         <Route path={`${path}/users`}>

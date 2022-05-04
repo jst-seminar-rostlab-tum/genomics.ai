@@ -69,8 +69,8 @@ function LoginForm(props) {
     localStorage.setItem('jwt', data.jwt);
     localStorage.setItem('user', JSON.stringify(data.user));
     onClose();
-    setUser(data.user);
-    history.push('/sequencer/dashboard');
+    await setUser(data.user);
+    history.push('/sequencer/genemapper');
   }
 
   function onFailedLogin(code) {

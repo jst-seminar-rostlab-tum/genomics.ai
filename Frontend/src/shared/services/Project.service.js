@@ -1,22 +1,24 @@
 import axiosInstance from './axiosInstance';
-import ProjectMock from './mock/projects';
 import { startOrContinueUpload } from './UploadLogic';
+import MockProjectService from './mock/Project.service';
 
-const MODEL = 'ownprojects';
+const MODEL = 'projects';
+const MOCK_PROJECTS = false;
 
-const ProjectService = {
-  getProjects: async () => {
-    const { data } = await axiosInstance.get(`/${MODEL}`);
-    const mockData = await ProjectMock.getProjects();
-    return [...data, ...mockData];
+const ProjectService = MOCK_PROJECTS ? MockProjectService : {
+  getProjects: async (params) => {
+    const { data } = await axiosInstance.get(`/${MODEL}`, { params });
+    return data;
+  },
+
+  getOwnProjects: async () => {
+    const { data } = await axiosInstance.get('/ownprojects');
+    return data;
   },
 
   getProject: async (id) => {
-  // const { data } = await axiosInstance.get(`/project/${id}`);
-
-    const { data } = await axiosInstance.get(`/${MODEL}`);
-    const project = data.find((p) => String(p._id) === String(id));
-    return project || ProjectMock.getProject(id);
+    const { data } = await axiosInstance.get(`/project/${id}`);
+    return data;
   },
 
   startOrContinueProjectUpload: async (
@@ -28,6 +30,9 @@ const ProjectService = {
     submissionProgress,
     setSubmissionProgress,
     projectData),
+
+  // Temporary solution for search to use backend data while teampage uses mock
+  getTeamProjects: async (teamId, forPart) => MockProjectService.getTeamProjects(teamId, forPart),
 };
 
 export default ProjectService;

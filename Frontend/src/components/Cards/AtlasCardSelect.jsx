@@ -143,7 +143,7 @@ export default function AtlasCardSelect({
               Modalities:
             </Typography>
             &nbsp;
-            <Typography>{modalities}</Typography>
+            <Typography noWrap>{modalities}</Typography>
           </Box>
 
           <Box

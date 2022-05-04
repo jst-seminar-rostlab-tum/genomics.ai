@@ -11,9 +11,45 @@ import styles from './search.module.css';
 import SearchTabs from 'components/SearchPageComponents/SearchTabs';
 import SearchContent from 'components/SearchPageComponents/SearchContent';
 import Filter from 'components/SearchPageComponents/Filter';
-// import { setSeachCategoryInUrl } from "shared/utils/common/utils";
-import querySearch from 'shared/mock/search';
 import Search from 'components/Search';
+import UserService from 'shared/services/User.service';
+import TeamService from 'shared/services/Team.service';
+import InstitutionService from 'shared/services/Institution.service';
+import ProjectService from 'shared/services/Project.service';
+
+// definitely target to change, when backend will provide full data
+async function getTeams(filterParams) {
+  const searchResponse = await TeamService.getTeams(filterParams);
+  const teamsWithInstitutions = searchResponse.filter((team) => team.institutionId);
+  const institutionRequests = teamsWithInstitutions.map(
+    (team) => InstitutionService.getInstitutionById(team.institutionId)
+    ,
+  );
+  const institutionsResponse = await Promise.all(institutionRequests);
+  institutionsResponse.forEach(
+    (institution,
+      index) => {
+      teamsWithInstitutions[index].institutionTitle = institution.name;
+    },
+  );
+  return searchResponse;
+}
+
+// definitely target to change, when backend will provide full data
+async function getInstitutions(filterParams) {
+  const searchResponse = await InstitutionService.getInstitutions(filterParams);
+  const teamsRequests = searchResponse.map(
+    (team) => InstitutionService.getTeamsOfInstitutionById(team.id),
+  );
+  const teamsResponse = await Promise.all(teamsRequests);
+  teamsResponse.forEach(
+    (team,
+      index) => {
+      searchResponse[index].teamsCount = team.length;
+    },
+  );
+  return searchResponse;
+}
 
 const SearchPage = ({ sidebarShown }) => {
   /* Booleans */
@@ -56,19 +92,32 @@ const SearchPage = ({ sidebarShown }) => {
     setIsLoading(true);
   };
 
-  const fetchSearchHandler = useCallback(async (_searchCategory, keyword) => {
-    const searchResponse = await querySearch(
-      _searchCategory,
-      keyword.toLowerCase(),
-    );
+  const fetchSearchHandler = useCallback(async (_searchCategory, _searchParams) => {
+    let searchResponse = [];
+    const filterParams = Object.fromEntries(new URLSearchParams(_searchParams));
+    switch (_searchCategory) {
+      case 'users':
+        searchResponse = await UserService.getUsers(filterParams);
+        break;
+      case 'teams':
+        searchResponse = await getTeams(filterParams);
+        break;
+      case 'institutions':
+        searchResponse = await getInstitutions(filterParams);
+        break;
+      case 'projects':
+        searchResponse = await ProjectService.getProjects(filterParams);
+        break;
+      default:
+    }
     setSearchRequestResult(searchResponse);
     setIsLoading(false);
   }, []);
 
   useEffect(() => {
     setIsLoading(true);
-    fetchSearchHandler(searchCategory, searchedKeyword);
-  }, [fetchSearchHandler, searchCategory, searchedKeyword]);
+    fetchSearchHandler(searchCategory, search);
+  }, [fetchSearchHandler, searchCategory, search]);
 
   return (
     <Stack direction="column" sx={{ paddingLeft: '130px' }}>

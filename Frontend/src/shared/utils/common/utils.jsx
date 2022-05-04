@@ -36,3 +36,9 @@ export function createUrl(path, pathParam, value) {
 export function setSeachCategoryInUrl(path, value) {
   return createUrl(path, 'searchCategory', value);
 }
+
+export function formatDate(rawDate) {
+  const date = new Date(Date.parse(rawDate));
+  const monthNameLong = date.toLocaleString('en-US', { month: 'long' });
+  return date.getDate(`${date}th ${monthNameLong}`);
+}

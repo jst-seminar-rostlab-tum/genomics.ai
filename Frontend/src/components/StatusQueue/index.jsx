@@ -6,15 +6,15 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import StatusCard from '../StatusCard';
 import styles from './statusqueue.module.css';
-import JobService from 'shared/services/Job.service';
+import ProjectService from 'shared/services/Project.service';
 
 function StatusQueue() {
   const [expandList, setExpandList] = useState(true);
-  const [jobs, setJobs] = useState([]);
+  const [projects, setProjects] = useState([]);
 
   useEffect(() => {
-    JobService.getJobs()
-      .then(setJobs)
+    ProjectService.getProjects()
+      .then(setProjects)
       .catch(console.error);
   }, []);
 
@@ -44,8 +44,8 @@ function StatusQueue() {
             width: '100%', alignItems: 'center', justifyContent: 'center', flexDirection: 'column',
           }}
           >
-            {jobs.map((job) => (
-              <StatusCard key={job._id} id={job._id} status={job.status} log={job.fileName} sx={{ alignItems: 'center' }} location={encodeURIComponent(job.location)} />
+            {projects.map((project) => (
+              <StatusCard key={project._id} id={project._id} status={project.status} log={project.fileName} sx={{ alignItems: 'center' }} location={encodeURIComponent(project.location)} />
             ))}
           </List>
         </Collapse>

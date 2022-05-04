@@ -1,11 +1,13 @@
 import helmholtz from 'assets/helmholtz-logo.jpg';
 import tum from 'assets/tum-logo.png';
 import MemberService from './Member.service';
+import ProfileService from './Profile.service';
+import TeamService from './Team.service';
 
 const mockLeftIds = [];
 let runningId = 3;
 
-const testInstitutions = [
+let mockInstitutions = [
   {
     id: '1',
     name: 'Helmholtz Institute',
@@ -40,7 +42,7 @@ const InstitutionService = {
     // fake effect
     await new Promise((resolve) => setTimeout(resolve, 1000));
     runningId += 1;
-    return {
+    const newInstitution = {
       id: runningId,
       name,
       country: null,
@@ -50,6 +52,8 @@ const InstitutionService = {
       adminIds: [1], // TODO: make sure that the backend puts my user ID here
       memberIds: [],
     };
+    mockInstitutions = [...mockInstitutions, newInstitution];
+    return newInstitution;
   },
 
   async leaveInstitution(institution) {
@@ -57,15 +61,17 @@ const InstitutionService = {
   },
 
   async getMyInstitutions() {
-    return testInstitutions.filter((institution) => !mockLeftIds.includes(institution.id));
+    return mockInstitutions.filter((institution) => !mockLeftIds.includes(institution.id));
   },
 
-  queryIsAdminInstitutions(userId) {
-    return testInstitutions.filter((institution) => institution.adminIds.includes(userId));
+  async getMyAdminInstitutions() {
+    const myInstitutions = await InstitutionService.getMyInstitutions();
+    const user = await ProfileService.getProfile();
+    return myInstitutions.filter((i) => i.adminIds.includes(user.id));
   },
 
   async getInstitution(id) {
-    return testInstitutions.find((institution) => institution.id === id);
+    return mockInstitutions.find((institution) => institution.id === id);
   },
 
   async getMembers(institutionId) {
@@ -77,12 +83,28 @@ const InstitutionService = {
   },
 
   async removeMemberFromInstitution(institutionId, memberId) {
-    const institution = testInstitutions.find((i) => i.id === institutionId);
+    const institution = mockInstitutions.find((i) => i.id === institutionId);
     if (!institution) {
       throw new Error('Institution not found');
     }
     institution.memberIds = institution.memberIds.filter((id) => id !== memberId);
   },
+
+  getInstitutionById: async (id) => InstitutionService.getInstitution(`${id}`),
+
+  getInstitutions: async (params) => {
+    let preparedInstitution = mockInstitutions;
+    if (params.keyword) {
+      preparedInstitution = preparedInstitution.filter(
+        (team) => team.name.toLowerCase().includes(params.keyword.toLowerCase()),
+      );
+    }
+    return preparedInstitution.sort((a, b) => (`${a.name}`).localeCompare(b.name));
+  },
+
+  getTeamsOfInstitutionById: async (id) => TeamService.getInstitutionTeams(+id)
+  ,
+
 };
 
 export default InstitutionService;
