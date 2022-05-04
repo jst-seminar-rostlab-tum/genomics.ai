@@ -40,6 +40,8 @@ export default function TeamPage({ sidebarShown }) {
 
   const isAdmin = team.adminIds ? team.adminIds.includes(user._id) : false;
 
+  if (!team) return <></>;
+
   return (
     <HeaderView
       sidebarShown={sidebarShown}
