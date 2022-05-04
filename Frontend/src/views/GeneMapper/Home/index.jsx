@@ -12,6 +12,7 @@ import { MULTIPART_UPLOAD_STATUS, PROJECTS_UPDATE_INTERVAL, statusIsError } from
 import ProjectMock from 'shared/services/mock/projects';
 import AtlasService from 'shared/services/Atlas.service';
 import ModelService from 'shared/services/Model.service';
+import TeamService from 'shared/services/Team.service';
 
 const theme = createTheme({
   palette: {
@@ -36,6 +37,7 @@ function GeneMapperHome() {
   const [projects, setProjects] = useState([]);
   const [atlases, setAtlases] = useState([]);
   const [models, setModels] = useState([]);
+  const [userTeams, setUserTeams] = useState([]);
 
   const [findString, setFindString] = useState('');
   const [submissionProgress, setSubmissionProgress] = useSubmissionProgress();
@@ -47,6 +49,16 @@ function GeneMapperHome() {
 
     window.localStorage.setItem('DeletedProjects', `${deleted},${id}`);
     // ProjectMock.deleteProject(id);
+  };
+
+  const addProjectToTeam = async (teamId, projectId) => {
+    const projectTeams = JSON.parse(window.localStorage.getItem('projectTeams')) || {};
+    window.localStorage.setItem('projectTeams', JSON.stringify({ ...projectTeams, [projectId]: teamId }));
+  };
+
+  const teamOfProject = (projectId) => {
+    const projectTeams = JSON.parse(window.localStorage.getItem('projectTeams')) || {};
+    return projectTeams[projectId];
   };
 
   useEffect(() => {
@@ -75,6 +87,7 @@ function GeneMapperHome() {
   useEffect(() => {
     AtlasService.getAtlases().then((data) => setAtlases(data));
     ModelService.getModels().then((data) => setModels(data));
+    TeamService.getMyTeams().then((teams) => setUserTeams(teams));
   }, []);
 
   return (
@@ -117,19 +130,25 @@ function GeneMapperHome() {
             .filter((project) => (
               (findString === '' || project.name.toLowerCase().includes(findString.toLowerCase())))
               && !(window.localStorage.getItem('DeletedProjects') ?? []).includes(project._id))
-            .map((project) => (
-              <ProjectBarCard
-                key={project._id}
-                project={project}
-                atlas={atlases.find((atlas) => String(atlas._id) === String(project.atlasId))}
-                model={models.find((model) => String(model._id) === String(project.modelId))}
-                handleDelete={() => handleDeleteItem(project._id)}
-                submissionProgress={submissionProgress.uploadId === project.uploadId
-                  ? submissionProgress : null}
-                setSubmissionProgress={submissionProgress.uploadId === project.uploadId
-                  ? setSubmissionProgress : () => {}}
-              />
-            ))}
+            .map((project) => {
+              const projectTeamId = teamOfProject(project._id);
+              return (
+                <ProjectBarCard
+                  key={project._id}
+                  project={projectTeamId ? { ...project, teamId: projectTeamId } : project}
+                  atlas={atlases.find((atlas) => String(atlas._id) === String(project.atlasId))}
+                  model={models.find((model) => String(model._id) === String(project.modelId))}
+                  userTeams={userTeams}
+                  addProjectToTeam={(teamId) => addProjectToTeam(teamId, project._id)}
+                  handleDelete={() => handleDeleteItem(project._id)}
+                  submissionProgress={submissionProgress.uploadId === project.uploadId
+                    ? submissionProgress : null}
+                  setSubmissionProgress={submissionProgress.uploadId === project.uploadId
+                    ? setSubmissionProgress : () => {}}
+                />
+
+              );
+            })}
         </div>
 
       </ThemeProvider>

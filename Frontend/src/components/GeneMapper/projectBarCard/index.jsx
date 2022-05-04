@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import Card from '@mui/material/Card';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -17,6 +17,8 @@ import ProgressBar from 'components/ProgressBar';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { ExpandLess, ExpandMore, StarBorder } from '@mui/icons-material';
 import { Modal, ModalTitle } from 'components/Modal';
+import TeamService from 'shared/services/Team.service';
+import CustomButton from 'components/CustomButton';
 
 function ProcessingStatus() {
   return (
@@ -30,7 +32,7 @@ function ProcessingStatus() {
 }
 
 export default function ProjectBarCard({
-  project, atlas, model, submissionProgress, setSubmissionProgress, handleDelete,
+  project, atlas, model, submissionProgress, setSubmissionProgress, handleDelete, userTeams, addProjectToTeam,
 }) {
   const history = useHistory();
 
@@ -42,23 +44,23 @@ export default function ProjectBarCard({
       ? 'red'
       : 'orange';
 
-  const [addTeam, setAddTeam] = React.useState(false);
-  const [team, setTeam] = React.useState('');
+  const [projectTeamName, setProjectTeamName] = useState('');
+  const [addTeam, setAddTeam] = useState(false);
+  const [selectedTeam, setSelectedTeam] = useState('');
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (project.teamId) {
+      TeamService.getTeam(project.teamId).then((team) => setProjectTeamName(team.name));
+    }
+  }, [project.teamId]);
+
   const handleOpen = () => setAddTeam(true);
   const handleClose = () => setAddTeam(false);
-  const [open, setOpen] = React.useState(false);
-  const handleChange = (event) => {
-    setTeam(event.target.value);
-    window.localStorage.setItem('Team', event.target.value);
-  };
 
   const handleClickCard = () => {
     setOpen(!open);
   };
-
-  React.useEffect(() => {
-    if (window.localStorage.getItem('Team')) { setTeam(window.localStorage.getItem('Team')); }
-  }, []);
 
   return (
     <>
@@ -164,10 +166,10 @@ export default function ProjectBarCard({
               p: 0.1, bgcolor: 'background.paper', borderRadius: 3, width: 'flex', mr: 1, display: 'flex', alignItems: 'center',
             }}
             >
-              {team
+              {projectTeamName
                 ? (
                   <Typography sx={{ mr: 2 }}>
-                    {team}
+                    {projectTeamName}
                   </Typography>
                 )
                 : (
@@ -230,21 +232,27 @@ export default function ProjectBarCard({
               <Select
                 labelId="demo-simple-select-standard-label"
                 id="demo-simple-select-standard"
-                value={team}
-                onChange={handleChange}
+                value={selectedTeam}
+                onChange={(e) => setSelectedTeam(e.target.value)}
                 label="Team"
               >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                <MenuItem value="Team 1">Team 1</MenuItem>
-                <MenuItem value="Team 2">Team 2</MenuItem>
-                <MenuItem value="Team 3">Team 3</MenuItem>
+                {userTeams.map(
+                  (team) => (<MenuItem value={team?._id || team?.id}>{team.name}</MenuItem>),
+                )}
               </Select>
             </FormControl>
           </div>
-          <Button size="small" onClick={() => setAddTeam(false)}>Close</Button>
-          <Button size="small" onClick={() => setAddTeam(false)}>Confirm</Button>
+          <CustomButton type="tertiary" onClick={() => setAddTeam(false)}>Close</CustomButton>
+          <CustomButton
+            type="primary"
+            onClick={() => {
+              addProjectToTeam(selectedTeam);
+              setAddTeam(false);
+            }}
+          >
+            Confirm
+
+          </CustomButton>
         </Box>
       </Modal>
     </>
