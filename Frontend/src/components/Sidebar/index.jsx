@@ -31,10 +31,8 @@ function indexIcon(index) {
     case 2:
       return (<AccountBalanceIcon className={styles.coloredIcon} />);
     case 3:
-      return (<MapIcon className={styles.coloredIcon} />);
-    case 4:
       return (<SearchIcon className={styles.coloredIcon} />);
-    case 5:
+    case 4:
       return (<MenuBookIcon className={styles.coloredIcon} />);
     default:
       return (<LiveHelpIcon className={styles.coloredIcon} />);
