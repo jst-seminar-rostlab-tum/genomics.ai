@@ -36,7 +36,7 @@ function GeneMapperResultHeader({ project }) {
       <Divider sx={{ mt: 1, mb: 1 }} />
       <Modal isOpen={showInfo} setOpen={setShowInfo}>
         <ModalTitle>Test</ModalTitle>
-        {Object.entries(project).map(([key, value]) => (<Typography>{`${key}: ${value}`}</Typography>))}
+        {Object.entries(project).map(([key, value]) => (<Typography key={key}>{`${key}: ${value}`}</Typography>))}
       </Modal>
     </>
   );
