@@ -63,7 +63,6 @@ export default function ProjectBarCard({
   return (
     <>
       <Card sx={{
-        p: 1,
         marginTop: '5',
         marginBottom: '0.5em',
         borderStyle: 'solid',
@@ -72,43 +71,44 @@ export default function ProjectBarCard({
       }}
       >
 
-        <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center' }} onClick={handleClickCard}>
+        <CardActionArea disableTouchRipple sx={{ p: 1 }}>
+          <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
 
-          {/* <CardActionArea disableTaouchRipple > */}
-          <Stack
-            direction="row"
+            <Stack
+              direction="row"
             // spacing={4}
-            sx={{ alignItems: 'center', flexGrow: 1 }}
-          >
-            <Box sx={{ flexDirection: 'row', ml: 1, alignItems: 'center' }}>
-              {open ? (
-                <ExpandLess sx={{
-                  fontSize: 30,
-                  transform: 'rotate(180deg)',
-                }}
-                />
-              ) : (
-                <ExpandMore sx={{
-                  fontSize: 30,
-                  transform: 'rotate(-90deg)',
-                }}
-                />
-              )}
-            </Box>
-            <CircleIcon sx={{
-              fontSize: 30, color, mr: 1, ml: 1,
-            }}
-            />
-            <Typography noWrap sx={{ width: '30%' }}>
-              {project.name}
-            </Typography>
-            {submissionProgress ? (
-              <Box
-                sx={{
-                  flexGrow: 1, display: 'flex', alignItems: 'center',
-                }}
-              >
-                {statusIsUpload(submissionProgress.status)
+              sx={{ alignItems: 'center', flexGrow: 1 }}
+              onClick={handleClickCard}
+            >
+              <Box sx={{ flexDirection: 'row', ml: 1, alignItems: 'center' }}>
+                {open ? (
+                  <ExpandLess sx={{
+                    fontSize: 30,
+                    transform: 'rotate(180deg)',
+                  }}
+                  />
+                ) : (
+                  <ExpandMore sx={{
+                    fontSize: 30,
+                    transform: 'rotate(-90deg)',
+                  }}
+                  />
+                )}
+              </Box>
+              <CircleIcon sx={{
+                fontSize: 30, color, mr: 1, ml: 1,
+              }}
+              />
+              <Typography noWrap sx={{ width: '30%' }}>
+                {project.name}
+              </Typography>
+              {submissionProgress ? (
+                <Box
+                  sx={{
+                    flexGrow: 1, display: 'flex', alignItems: 'center',
+                  }}
+                >
+                  {statusIsUpload(submissionProgress.status)
                   && (
                   <>
                     <Box sx={{ pr: 2, flexGrow: 1 }}>
@@ -126,7 +126,7 @@ export default function ProjectBarCard({
                     </IconButton>
                   </>
                   )}
-                {statusIsError(submissionProgress.status)
+                  {statusIsError(submissionProgress.status)
               && (
               <>
                 <Typography>{submissionProgress.status}</Typography>
@@ -135,79 +135,79 @@ export default function ProjectBarCard({
                 </IconButton>
               </>
               )}
-                {submissionProgress.status === MULTIPART_UPLOAD_STATUS.COMPLETE
+                  {submissionProgress.status === MULTIPART_UPLOAD_STATUS.COMPLETE
                    && <ProcessingStatus />}
-              </Box>
-            ) : null}
-            {!submissionProgress
-              ? (
-                <Box
-                  sx={{ flexGrow: 1, display: 'flex' }}
-                >
-                  {project.status === PROJECT_STATUS.UPLOAD_PENDING
+                </Box>
+              ) : null}
+              {!submissionProgress
+                ? (
+                  <Box
+                    sx={{ flexGrow: 1, display: 'flex' }}
+                  >
+                    {project.status === PROJECT_STATUS.UPLOAD_PENDING
                    && (
                    <Typography variant="caption">
                      Upload failed or canceled
                    </Typography>
                    )}
-                  {project.status === PROJECT_STATUS.PROCESSING_PENDING
+                    {project.status === PROJECT_STATUS.PROCESSING_PENDING
                    && <ProcessingStatus />}
-                  {(project.status === PROJECT_STATUS.ABORTED
+                    {(project.status === PROJECT_STATUS.ABORTED
                   || project.status === PROJECT_STATUS.PROCESSING_FAILED)
                    && <Typography variant="caption">Processing failed</Typography>}
-                </Box>
-              )
-              : null}
-          </Stack>
-          {/* </CardActionArea> */}
+                  </Box>
+                )
+                : null}
+            </Stack>
 
-          <Box sx={{
-            p: 0.1, bgcolor: 'background.paper', borderRadius: 3, width: 'flex', mr: 1, display: 'flex', alignItems: 'center',
-          }}
-          >
-            {team
-              ? (
-                <Typography sx={{ mr: 2 }}>
-                  {team}
-                </Typography>
-              )
-              : (
-                <Button
-                  variant="outlined"
-                  sx={{
-                    borderRadius: 100,
-                    mr: 1,
-                  }}
-                  style={{ textTransform: 'none' }}
-                  onClick={handleOpen}
-                >
-                  Add To Team
-                </Button>
-              )}
-
-            <Button
-              variant="contained"
-              color="secondary"
-              sx={{
-                borderRadius: 100,
-                mr: 1,
-              }}
-              style={{ textTransform: 'none' }}
-              onClick={() => history.push(`./genemapper/result/${project._id}`)}
-              disabled={project.status !== 'DONE'}
+            <Box sx={{
+              p: 0.1, bgcolor: 'background.paper', borderRadius: 3, width: 'flex', mr: 1, display: 'flex', alignItems: 'center',
+            }}
             >
-              See Results
-            </Button>
-            <IconButton>
-              <DeleteOutlineIcon color="error" />
-            </IconButton>
-          </Box>
+              {team
+                ? (
+                  <Typography sx={{ mr: 2 }}>
+                    {team}
+                  </Typography>
+                )
+                : (
+                  <Button
+                    variant="outlined"
+                    sx={{
+                      borderRadius: 100,
+                      mr: 1,
+                    }}
+                    style={{ textTransform: 'none' }}
+                    onClick={handleOpen}
+                  >
+                    Add To Team
+                  </Button>
+                )}
 
-        </Stack>
+              <Button
+                variant="contained"
+                color="secondary"
+                sx={{
+                  borderRadius: 100,
+                  mr: 1,
+                }}
+                style={{ textTransform: 'none' }}
+                onClick={() => history.push(`./genemapper/result/${project._id}`)}
+                disabled={project.status !== 'DONE'}
+              >
+                See Results
+              </Button>
+              <IconButton onClick={() => handleDelete()}>
+                <DeleteOutlineIcon color="error" />
+              </IconButton>
+            </Box>
+
+          </Stack>
+        </CardActionArea>
 
         <Collapse in={open} timeout="auto">
-          <Divider sx={{ mt: 1, mb: 1 }} />
-          <Box sx={{ pl: 10.5 }}>
+          <Divider variant="middle" />
+          <Box sx={{ pl: 11.5, pb: 1, pt: 1 }}>
             <Typography>{`Atlas: ${atlas.name}`}</Typography>
             <Typography>{`Model: ${model.name}`}</Typography>
             <Typography>{`Dataset: ${project.fileName}`}</Typography>
