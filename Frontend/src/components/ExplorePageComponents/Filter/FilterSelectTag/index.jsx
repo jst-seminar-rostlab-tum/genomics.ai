@@ -7,27 +7,27 @@ import Tag from 'components/Tag';
 // General filter that is needed in all categories
 export default function FilterSelectTag(props) {
   const [category, setCategory] = useState('');
-  const [selectedIndexes, setSelectedIndexes] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
   const { categories, onChange, label } = props;
 
   const handleCategoryChange = (event) => {
     setCategory(event.target.value);
   };
 
-  const handleIndexesAppend = (newValue) => {
-    setSelectedIndexes((array) => [...array, newValue]);
-    onChange(selectedIndexes);
+  const handleCategoriesAppend = (newValue) => {
+    setSelectedCategories((array) => [...array, newValue]);
+    onChange(selectedCategories);
   };
 
   const addCategory = () => {
-    if (!selectedIndexes.includes(category) && category !== '') {
-      handleIndexesAppend(category);
+    if (!selectedCategories.includes(category) && category !== '') {
+      handleCategoriesAppend(category);
     }
   };
 
-  const removeTag = (selectedIndex) => {
-    setSelectedIndexes(selectedIndexes.filter((item) => item !== selectedIndex));
-    onChange(selectedIndexes);
+  const removeTag = (selectedCategory) => {
+    setSelectedCategories(selectedCategories.filter((item) => item !== selectedCategory));
+    onChange(selectedCategories);
   };
   return (
     <Box>
@@ -45,8 +45,8 @@ export default function FilterSelectTag(props) {
           select
           variant="standard"
         >
-          {categories.map((categoryItem, index) => (
-            <MenuItem key={index} value={index}>{categoryItem}</MenuItem>
+          {categories.map((categoryItem) => (
+            <MenuItem key={categoryItem} value={categoryItem}>{categoryItem}</MenuItem>
           ))}
         </TextField>
         <Button variant="contained" onClick={addCategory}>Add</Button>
@@ -55,13 +55,13 @@ export default function FilterSelectTag(props) {
         direction="column"
         spacing={2}
       >
-        {selectedIndexes.map((selectedIndex, index) => (
+        {selectedCategories.map((sCategory, index) => (
           <Tag
             key={index}
-            content={categories[selectedIndex]}
+            content={sCategory}
             variant="primary-default"
             isDeletable
-            handleDeletion={() => removeTag(selectedIndex)}
+            handleDeletion={() => removeTag(sCategory)}
           />
         ))}
       </Stack>

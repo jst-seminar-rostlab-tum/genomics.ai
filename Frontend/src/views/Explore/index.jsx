@@ -70,8 +70,6 @@ const Explore = () => {
   const searchedKeyword = searchParams.get('keyword') || '';
   const { path } = useRouteMatch();
   const history = useHistory();
-  const compatibleModels = ['scVI', 'scanVI', 'totalVI'];
-
   const [atlases, setAtlases] = useState([]);
   const [models, setModels] = useState([]);
 
@@ -127,11 +125,6 @@ const Explore = () => {
       });
     } else if (searchParams.get('sortBy') === 'numberOfCells') {
       searchedAtlases.sort((a, b) => a.numberOfCells - b.numberOfCells);
-    }
-    if (searchParams.get('compatibleModels')) {
-      searchedAtlases = searchedAtlases.filter(
-        (item) => item.compatibleModels.every((v) => searchParams.get('compatibleModels').includes(compatibleModels.indexOf(v))),
-      );
     }
     return searchedAtlases;
   }
@@ -238,7 +231,6 @@ const Explore = () => {
               searchParams={searchParams}
               updateQueryParams={updateQueryParams}
               path={path}
-              compatibleModels={compatibleModels}
             />
 )}
           handleSearch={searchedKeywordChangeHandler}

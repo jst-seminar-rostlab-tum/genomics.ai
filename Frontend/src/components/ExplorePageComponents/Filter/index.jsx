@@ -9,14 +9,13 @@ import AtlasFilter from './AtlasFilter';
 const FilterItem = ({ children }) => <Box sx={{ margin: 0.5 }}>{children}</Box>;
 
 // Component storing the necessary filter
-const Filter = ({ path, searchParams, updateQueryParams, compatibleModels }) => (
+const Filter = ({ path, searchParams, updateQueryParams }) => (
   <GeneralCard>
     <FormGroup>
       <Route path="/explore/atlases">
         <AtlasFilter
           sortBy={searchParams.get('sortBy')}
           onChange={(param, value) => updateQueryParams(param, value)}
-          compatibleModels={compatibleModels}
         />
       </Route>
       <Route path="/explore/models">
