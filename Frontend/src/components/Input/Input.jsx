@@ -32,7 +32,7 @@ import { colors } from 'shared/theme/colors';
 const Input = (props) => { 
 
   const {helperText, placeholder, errorHandler, disabledHandler, isRequired=true, defaultValue, multiline=false, onChangeEvent=null, label='Required', maxLength=40, type='text'} = props
-
+  
   return (
   <Box
     component="form"
@@ -44,7 +44,6 @@ const Input = (props) => {
     autoComplete="off"
   >
     <TextField
-      sx={{ ...props }}
       error={errorHandler}
       required={isRequired}
       disabled={disabledHandler}
