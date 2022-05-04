@@ -42,8 +42,8 @@ def default_config():
         parameters.UNLABELED_KEY: 'Unknown',
         parameters.SCANVI_MAX_EPOCHS: 20,
         parameters.SCANVI_MAX_EPOCHS_QUERY: 100,
-        parameters.SCVI_MAX_EPOCHS: 1,
-        parameters.SCVI_QUERY_MAX_EPOCHS: 2,
+        parameters.SCVI_MAX_EPOCHS: 400,
+        parameters.SCVI_QUERY_MAX_EPOCHS: 200,
         parameters.NUMBER_OF_NEIGHBORS: 8,
         parameters.MAX_EPOCHS: 100,
         parameters.UNWANTED_LABELS: ['leiden'],
@@ -56,7 +56,7 @@ def default_config():
         parameters.TOTALVI_MAX_EPOCHS_2: 1,  # 200
 
         parameters.SCANVI_DO_SURGERY: False,
-        parameters.DEV_DEBUG: True,
+        parameters.DEV_DEBUG: False,
     }
 
 
@@ -99,4 +99,5 @@ if __name__ == "__main__":
     os.environ['AWS_ENDPOINT'] = 'http://127.0.0.1:9000'
     os.environ['AWS_ACCESS_KEY'] = 'minioadmin'
     os.environ['AWS_SECRET_KEY'] = 'minioadmin'
-    query({})
+
+    query({parameters.DEV_DEBUG: True})
