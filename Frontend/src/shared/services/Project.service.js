@@ -2,7 +2,6 @@ import axiosInstance from './axiosInstance';
 import { startOrContinueUpload } from './UploadLogic';
 import MockProjectService from './mock/Project.service';
 
-
 const MODEL = 'projects';
 const MOCK_PROJECTS = false;
 
@@ -20,10 +19,6 @@ const ProjectService = MOCK_PROJECTS ? MockProjectService : {
   getProject: async (id) => {
     const { data } = await axiosInstance.get(`/project/${id}`);
     return data;
-  },
-
-  deleteItem: async (id) => {
-    return ProjectService.deleteItem(id);
   },
 
   startOrContinueProjectUpload: async (
