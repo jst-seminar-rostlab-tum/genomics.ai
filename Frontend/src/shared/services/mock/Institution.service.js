@@ -7,7 +7,7 @@ import TeamService from './Team.service';
 const mockLeftIds = [];
 let runningId = 3;
 
-const testInstitutions = [
+let mockInstitutions = [
   {
     id: '1',
     name: 'Helmholtz Institute',
@@ -42,7 +42,7 @@ const InstitutionService = {
     // fake effect
     await new Promise((resolve) => setTimeout(resolve, 1000));
     runningId += 1;
-    return {
+    const newInstitution = {
       id: runningId,
       name,
       country: null,
@@ -52,6 +52,8 @@ const InstitutionService = {
       adminIds: [1], // TODO: make sure that the backend puts my user ID here
       memberIds: [],
     };
+    mockInstitutions = [...mockInstitutions, newInstitution];
+    return newInstitution;
   },
 
   async leaveInstitution(institution) {
@@ -59,7 +61,7 @@ const InstitutionService = {
   },
 
   async getMyInstitutions() {
-    return testInstitutions.filter((institution) => !mockLeftIds.includes(institution.id));
+    return mockInstitutions.filter((institution) => !mockLeftIds.includes(institution.id));
   },
 
   async getMyAdminInstitutions() {
@@ -69,7 +71,7 @@ const InstitutionService = {
   },
 
   async getInstitution(id) {
-    return testInstitutions.find((institution) => institution.id === id);
+    return mockInstitutions.find((institution) => institution.id === id);
   },
 
   async getMembers(institutionId) {
@@ -81,7 +83,7 @@ const InstitutionService = {
   },
 
   async removeMemberFromInstitution(institutionId, memberId) {
-    const institution = testInstitutions.find((i) => i.id === institutionId);
+    const institution = mockInstitutions.find((i) => i.id === institutionId);
     if (!institution) {
       throw new Error('Institution not found');
     }
@@ -91,7 +93,7 @@ const InstitutionService = {
   getInstitutionById: async (id) => InstitutionService.getInstitution(`${id}`),
 
   getInstitutions: async (params) => {
-    let preparedInstitution = testInstitutions;
+    let preparedInstitution = mockInstitutions;
     if (params.keyword) {
       preparedInstitution = preparedInstitution.filter(
         (team) => team.name.toLowerCase().includes(params.keyword.toLowerCase()),

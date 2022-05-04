@@ -55,8 +55,6 @@ function getStyles(type) {
  * https://www.figma.com/file/HcTwUyNxjZJksJ7yfncM9y/JST-22-Design?node-id=42%3A2
  */
 const CustomButton = (props) => {
-
-  console.log(props.size)
   return (
     <ButtonBase
       disableRipple
