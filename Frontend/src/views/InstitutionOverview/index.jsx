@@ -10,7 +10,7 @@ import InstitutionCreationDialog from 'components/institutions/InstitutionCreati
 import InstitutionList from 'components/institutions/InstitutionList';
 import InstitutionService from 'shared/services/Institution.service';
 
-function InstitutionOverview() {
+function InstitutionOverview({ sidebarShown }) {
   const [institutions, setInstitutions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   useEffect(async () => {
