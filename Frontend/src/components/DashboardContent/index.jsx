@@ -6,6 +6,7 @@ import Sidebar from '../Sidebar';
 import Dashboard from 'views/Dashboard';
 import TeamOverview from 'views/TeamOverview';
 import InstitutionOverview from 'views/InstitutionOverview';
+import GeneMapper from 'views/GeneMapper';
 import UserProfile from 'views/UserProfile';
 import Documentation from 'views/Documentation';
 import Settings from 'views/Settings';
@@ -31,10 +32,11 @@ const DashboardContent = () => {
       />
       <Switch>
         <Route exact path={`${path}/`}>
-          <Redirect to={`${url}/dashboard`} />
+          <Redirect to={`${url}/genemapper`} />
         </Route>
-        <Route path={`${path}/dashboard`}>
-          <Dashboard sidebarShown={sidebarShown} />
+
+        <Route path={`${path}/genemapper`}>
+          <GeneMapper sidebarShown={sidebarShown} />
         </Route>
 
         <Route path={`${path}/teams`}>

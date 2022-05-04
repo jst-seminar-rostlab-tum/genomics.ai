@@ -70,7 +70,7 @@ function LoginForm(props) {
     localStorage.setItem('user', JSON.stringify(data.user));
     onClose();
     await setUser(data.user);
-    history.push('/sequencer/dashboard');
+    history.push('/sequencer/genemapper');
   }
 
   function onFailedLogin(code) {

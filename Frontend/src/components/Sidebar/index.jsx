@@ -31,10 +31,8 @@ function indexIcon(index) {
     case 2:
       return (<AccountBalanceIcon className={styles.coloredIcon} />);
     case 3:
-      return (<MapIcon className={styles.coloredIcon} />);
-    case 4:
       return (<SearchIcon className={styles.coloredIcon} />);
-    case 5:
+    case 4:
       return (<MenuBookIcon className={styles.coloredIcon} />);
     default:
       return (<LiveHelpIcon className={styles.coloredIcon} />);
@@ -43,8 +41,8 @@ function indexIcon(index) {
 
 export default function Sidebar(props) {
   const { setUser } = props;
-  const routes = ['dashboard', 'teams', 'institutions', 'genemapper', 'search/teams', 'documentation', 'help'];
-  const titles = ['Dashboard', 'Teams', 'Institutions', 'Gene Mapper', 'Search', 'Documentation', 'Help'];
+  const routes = ['genemapper', 'teams', 'institutions', 'search/teams', 'documentation', 'help'];
+  const titles = ['Gene Mapper', 'Teams', 'Institutions', 'Search', 'Documentation', 'Help'];
   const { url } = useRouteMatch();
   const location = useLocation();
   const path = location.pathname;

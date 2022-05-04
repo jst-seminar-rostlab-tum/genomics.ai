@@ -7,6 +7,12 @@ const UserService = {
     const { data } = await axiosInstance.get(`/${MODEL}`, { params });
     return data;
   },
+
+  getOwnTeams: async () => {
+    const { data } = await axiosInstance.get(`/${MODEL}/ownteams`);
+    return data;
+  },
+
   getUser: async (id) => {
     const { data } = await axiosInstance.get(`${MODEL}`)
   }
