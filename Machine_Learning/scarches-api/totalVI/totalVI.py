@@ -188,8 +188,8 @@ def latent_ref_representation(adata_query, adata_ref, vae_q):
 def compute_final_umaps(adata_full_new, imputed_proteins_all):
     perm_inds = np.random.permutation(np.arange(adata_full_new.n_obs))
 
+    utils.write_latent_csv(adata_full_new[perm_inds], key=get_from_config(parameters.OUTPUT_PATH))
     if get_from_config(parameters.DEBUG):
-        utils.write_latent_csv(adata_full_new[perm_inds], key=get_from_config(parameters.OUTPUT_PATH))
         visualize_and_store_as_pdf("thirdumap.pdf",
                                    adata_full_new[perm_inds],
                                    color=["batch"],

@@ -13,10 +13,10 @@ def default_config():
     :return: dict containing all the default values
     """
     return {
-        parameters.MODEL: 'totalVI',
+        parameters.MODEL: 'scANVI',
 
-        parameters.REFERENCE_DATA_PATH: 'pbmc_ref.h5ad',
-        parameters.QUERY_DATA_PATH: 'pbmc_query.h5ad',
+        parameters.REFERENCE_DATA_PATH: 'pancreas_source.h5ad',
+        parameters.QUERY_DATA_PATH: 'pancreas_query.h5ad',
         parameters.RESULTING_MODEL_PATH: 'model.pt',
         parameters.OUTPUT_PATH: 'query.csv',
 
