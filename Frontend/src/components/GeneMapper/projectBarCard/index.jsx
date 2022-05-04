@@ -26,7 +26,7 @@ function ProcessingStatus() {
       <Box sx={{ pr: 2, flexGrow: 1 }}>
         <LinearProgress />
       </Box>
-      <Typography variant="caption" noWrap>Processing by scArches...</Typography>
+      <Typography variant="caption" noWrap sx={{ pr: 2 }}>Processing by scArches...</Typography>
     </>
   );
 }
@@ -144,7 +144,9 @@ export default function ProjectBarCard({
               {!submissionProgress
                 ? (
                   <Box
-                    sx={{ flexGrow: 1, display: 'flex' }}
+                    sx={{
+                      flexGrow: 1, display: 'flex', alignItems: 'center',
+                    }}
                   >
                     {project.status === PROJECT_STATUS.UPLOAD_PENDING
                    && (
