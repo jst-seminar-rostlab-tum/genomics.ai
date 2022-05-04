@@ -1,16 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {
-  Switch,
-  Route,
-  Redirect,
-  useHistory,
-  useLocation,
+  Switch, Route, Redirect, useHistory, useLocation, useParams,
+  useRouteMatch,
 } from 'react-router-dom';
 import { Box } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { TabGroup } from 'components/Tab';
 import Search from 'components/Search';
-import { Filter } from 'components/Filter/Filter';
+import Filter from 'components/ExplorePageComponents/Filter';
 import NavBar from 'components/NavBar';
 import Breadcrumb from 'components/Breadcrumb';
 import AtlasCard from 'components/Cards/AtlasCard';
@@ -62,34 +59,48 @@ const Explore = () => {
   const [mapperVisible, setMapperVisible] = useState(false);
   const [isLoginFormVisible, setLoginFormVisible] = useState(false);
   const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
-  const [searchValue, setSearchValue] = useState('');
-
-  const handleSearch = (e) => {
-    setSearchValue(e);
-    console.log(e);
-  };
-
+  const { search } = useLocation();
+  const searchParams = new URLSearchParams(search);
+  const searchedKeyword = searchParams.get('keyword') || '';
+  const { path } = useRouteMatch();
+  const history = useHistory();
   const [atlases, setAtlases] = useState([]);
   const [models, setModels] = useState([]);
 
-  const path = useLocation().pathname;
+  // function to update the state in the URL
+  const updateQueryParams = (param, value) => {
+    const params = new URLSearchParams(history.location.search);
+    if (value) {
+      params.set(param, value);
+    } else {
+      params.delete(param);
+    }
+    history.push({
+      pathname: history.location.pathname,
+      search: params.toString(),
+    });
+    };
 
   useEffect(() => {
     AtlasService.getAtlases()
-      .then((atlases) => setAtlases(atlases))
+      .then((newAtlases) => setAtlases(newAtlases))
       .catch((err) => console.log(err));
 
     ModelsService.getModels()
-      .then((models) => setModels(models))
+      .then((newModels) => setModels(newModels))
       .catch((err) => console.log(err));
   }, []);
+
+  const searchedKeywordChangeHandler = (value) => {
+    updateQueryParams('keyword', value);
+  };
+
 
   useEffect(() => {
     if (selectedAtlas || selectedModel) setMapperVisible(true);
     if (!selectedAtlas && !selectedModel) setMapperVisible(false);
   }, [selectedAtlas, selectedModel]);
 
-  const history = useHistory()
 
   const AtlasesGrid = ({ atlases, path }) => (
     <Box className="atlasContainer" sx={{ height: '70vh' }}>
@@ -166,26 +177,90 @@ const Explore = () => {
   );
   const tabMenu = (props) => (
     <>
-      <Box sx={{ alignSelf: 'center', width: '100%', marginBlock: '2%' }}>
-        <Search
-          filterComponent={(
-            <Filter
-              references={['test', 'test']}
-              categories={['category1', 'category2']}
-            />
-)}
-          handleSearch={handleSearch}
-          value={searchValue}
-        />
-      </Box>
       <TabGroup value={value} setValue={setValue} tabsInfo={tmpObj} />
       {value === 0 ? <AtlasesGrid atlases={props.atlases} path={props.path} /> : null }
       {value === 1 ? <ModelsGrid models={props.models} path={props.path} /> : null }
       {value === 2 ? <DataSetGrids /> : null }
-
     </>
 
   );
+
+  function applyAtlasFilters() {
+    let searchedAtlases = atlases.filter(
+      (item) => item.name.toLowerCase().includes(searchedKeyword),
+    );
+    if (searchParams.get('sortBy') === 'name' || searchParams.get('sortBy') === null) {
+      searchedAtlases.sort((a, b) => {
+        const nameA = a.name.toUpperCase();
+        const nameB = b.name.toUpperCase();
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+        return 0;
+      });
+    } else if (searchParams.get('sortBy') === 'numberOfCells') {
+      searchedAtlases.sort((a, b) => a.numberOfCells - b.numberOfCells);
+    }
+    return searchedAtlases;
+  }
+
+  function atlasesGrid() {
+    const searchedAtlases = applyAtlasFilters();
+    return (
+      <Box className="atlasContainer" sx={{ height: '70vh' }}>
+        <Grid container spacing={3}>
+          {
+            searchedAtlases.map((atlas) => (
+              <Grid key={atlas._id} item xs={12} sm={6} md={4} lg={3}>
+                <AtlasCard onClick={() => setSelectedAtlas(atlas)} imgLink={atlas.previewPictureURL} species={atlas.species} modalities={atlas.modalities} title={atlas.name} learnMoreLink={`${path}/${atlas._id}`} />
+              </Grid>
+            ))
+          }
+        </Grid>
+      </Box>
+    );
+  }
+
+  function applyModelFilters() {
+    const searchedModels = models.filter(
+      (item) => item.name.toLowerCase().includes(searchedKeyword),
+    );
+    if (searchParams.get('sortBy') === 'name' || searchParams.get('sortBy') === null) {
+      searchedModels.sort((a, b) => {
+        const nameA = a.name.toUpperCase();
+        const nameB = b.name.toUpperCase();
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+        return 0;
+      });
+    }
+    return searchedModels;
+  }
+
+  function modelsGrid() {
+    const searchedModels = applyModelFilters();
+    return (
+      <Box className="cardsContainer" sx={{ height: '100%' }}>
+        <Grid container spacing={3}>
+          {
+            searchedModels.map((model) => (
+              <Grid key={model._id} item xs={12} sm={6} md={4} lg={3}>
+                <ModelCard onClick={() => setSelectedModel(model)} title={`Model ${model.name}`} description={model.description} learnMoreLink={`${path}/${model._id}`} />
+              </Grid>
+            ))
+          }
+        </Grid>
+      </Box>
+    );
+  }
+
   const onLoginClicked = useCallback(() => {
     console.log('login');
     setRegistrationFormVisible(false);
@@ -253,7 +328,20 @@ const Explore = () => {
           alignSelf: 'center',
           width: '60%',
         }}
-      >
+      >      
+        <Box sx={{ alignSelf: 'center', width: '100%', marginBlock: '2%' }}>
+          <Search
+            filterComponent={(
+              <Filter
+                searchParams={searchParams}
+                updateQueryParams={updateQueryParams}
+                path={path}
+              />
+            )}
+            handleSearch={searchedKeywordChangeHandler}
+            value={searchedKeyword}
+          />
+        </Box>
         {/* /explore/atlases */}
         <Switch>
           <Route

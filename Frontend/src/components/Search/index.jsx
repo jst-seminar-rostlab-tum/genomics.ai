@@ -36,6 +36,8 @@ const Search = ({ filterComponent, handleSearch, value }) => {
   const [filterEnabled, setFilterEnabled] = useState(false)
   const filterBox = useRef()
 
+  console.log(filterComponent)
+
   useEffect(() => {
     // TODO
     /*
@@ -44,15 +46,15 @@ const Search = ({ filterComponent, handleSearch, value }) => {
      *          works when clicking outside, but when you click a child component inside filter
      *          it still closes. 
      */
-    const handleFilterClose = (e) => {
-      if (filterBox.current && !filterBox.current.contains(e.target)) {
-        // setFilterEnabled(false)
-      }
-    }
-    window.addEventListener("click", handleFilterClose, true)
-    return () => {
-      window.removeEventListener("click", handleFilterClose, true);
-    }
+    // const handleFilterClose = (e) => {
+    //   if (filterBox.current && !filterBox.current.contains(e.target)) {
+    //     // setFilterEnabled(false)
+    //   }
+    // }
+    // window.addEventListener("click", handleFilterClose, true)
+    // return () => {
+    //   window.removeEventListener("click", handleFilterClose, true);
+    // }
   }, [])
 
   return (
