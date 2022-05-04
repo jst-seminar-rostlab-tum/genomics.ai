@@ -70,6 +70,7 @@ const Explore = () => {
   const searchedKeyword = searchParams.get('keyword') || '';
   const { path } = useRouteMatch();
   const history = useHistory();
+  const compatibleModels = ['scVI', 'scanVI', 'totalVI'];
 
   const [atlases, setAtlases] = useState([]);
   const [models, setModels] = useState([]);
@@ -108,12 +109,12 @@ const Explore = () => {
     if (!selectedAtlas && !selectedModel) setMapperVisible(false);
   }, [selectedAtlas, selectedModel]);
 
-  function atlasesGrid() {
+  function applyAtlasFilters() {
     let searchedAtlases = atlases.filter(
       (item) => item.name.toLowerCase().includes(searchedKeyword),
     );
     if (searchParams.get('sortBy') === 'name' || searchParams.get('sortBy') === null) {
-      searchedAtlases = searchedAtlases.sort((a, b) => {
+      searchedAtlases.sort((a, b) => {
         const nameA = a.name.toUpperCase();
         const nameB = b.name.toUpperCase();
         if (nameA < nameB) {
@@ -124,7 +125,19 @@ const Explore = () => {
         }
         return 0;
       });
+    } else if (searchParams.get('sortBy') === 'numberOfCells') {
+      searchedAtlases.sort((a, b) => a.numberOfCells - b.numberOfCells);
     }
+    if (searchParams.get('compatibleModels')) {
+      searchedAtlases = searchedAtlases.filter(
+        (item) => item.compatibleModels.every((v) => searchParams.get('compatibleModels').includes(compatibleModels.indexOf(v))),
+      );
+    }
+    return searchedAtlases;
+  }
+
+  function atlasesGrid() {
+    const searchedAtlases = applyAtlasFilters();
     return (
       <Box className="atlasContainer" sx={{ height: '70vh' }}>
         <Grid container spacing={3}>
@@ -140,12 +153,12 @@ const Explore = () => {
     );
   }
 
-  function modelsGrid() {
-    let searchedModels = models.filter(
+  function applyModelFilters() {
+    const searchedModels = models.filter(
       (item) => item.name.toLowerCase().includes(searchedKeyword),
     );
     if (searchParams.get('sortBy') === 'name' || searchParams.get('sortBy') === null) {
-      searchedModels = searchedModels.sort((a, b) => {
+      searchedModels.sort((a, b) => {
         const nameA = a.name.toUpperCase();
         const nameB = b.name.toUpperCase();
         if (nameA < nameB) {
@@ -157,6 +170,11 @@ const Explore = () => {
         return 0;
       });
     }
+    return searchedModels;
+  }
+
+  function modelsGrid() {
+    const searchedModels = applyModelFilters();
     return (
       <Box className="cardsContainer" sx={{ height: '100%' }}>
         <Grid container spacing={3}>
@@ -220,6 +238,7 @@ const Explore = () => {
               searchParams={searchParams}
               updateQueryParams={updateQueryParams}
               path={path}
+              compatibleModels={compatibleModels}
             />
 )}
           handleSearch={searchedKeywordChangeHandler}
