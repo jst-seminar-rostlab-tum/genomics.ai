@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React, { useState } from 'react';
 import FormGroup from '@mui/material/FormGroup';
 import Box from '@mui/material/Box';
@@ -10,11 +11,10 @@ import styles from './filter.module.css';
 import { Divider, Stack, TextField } from '@mui/material';
 import Tag from '../Tag';
 
-export default function Filter(props) {
+function Filter({ references, categories }) {
   const [reference, setReference] = useState('');
   const [category, setCategory] = useState('');
   const [selectedIndexes, setSelectedIndexes] = useState([]);
-  const { references, categories } = props;
 
   const handleReferenceChange = (event) => {
     setReference(event.target.value);
@@ -39,12 +39,13 @@ export default function Filter(props) {
   };
 
   return (
-    <Box className={styles.container}
+    <Box
+      className={styles.container}
       sx={{
-        backgroundColor: "white",
-        borderRadius: "20px",
-        boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.15), 0px 0px 1px rgba(0, 0, 0, 0.4)",
-        zIndex: "100"
+        backgroundColor: 'white',
+        borderRadius: '20px',
+        boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.15), 0px 0px 1px rgba(0, 0, 0, 0.4)',
+        zIndex: '100',
       }}
     >
       <FormGroup>
@@ -107,7 +108,11 @@ export default function Filter(props) {
           className={styles.tagStack}
         >
           {selectedIndexes.map((selectedIndex, index) => (
-            <Tag key={index} text={categories[selectedIndex]} handleClick={() => removeTag(selectedIndex)} />
+            <Tag
+              key={index}
+              text={categories[selectedIndex]}
+              handleClick={() => removeTag(selectedIndex)}
+            />
           ))}
         </Stack>
       </FormGroup>
@@ -115,3 +120,5 @@ export default function Filter(props) {
     </Box>
   );
 }
+
+export default Filter;

@@ -1,19 +1,19 @@
-import React from "react";
-import LabeledSelect from "../LabeledSelect";
+import React from 'react';
+import LabeledSelect from '../LabeledSelect';
 
 // General filter that is needed in all categories
-const GeneralFilter = ({  sortBy, onChange }) => {
+const GeneralFilter = ({ sortBy, onChange }) => {
   const sortItems = [
-    { label: "Name", value: "name" },
-    { label: "Last updated", value: "lastUpdated" },
+    { label: 'Name', value: 'name' },
+    { label: 'Last updated', value: 'lastUpdated' },
   ];
 
   return (
     <LabeledSelect
       label="Sort by"
       value={sortBy}
-      defaultValue={"name"}
-      onChange={(event) => onChange("sortBy", event.target.value)}
+      defaultValue="name"
+      onChange={(event) => onChange('sortBy', event.target.value)}
       items={sortItems}
     />
   );

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import * as React from 'react';
 import { ButtonBase } from '@mui/material';
 import { colors } from 'shared/theme/colors';

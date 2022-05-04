@@ -1,9 +1,8 @@
 import { useLocation } from 'react-router-dom';
 
-import { Box, Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { colors } from 'shared/theme/colors'
-import { Link } from 'react-router-dom'
+import { colors } from 'shared/theme/colors';
 
 /**
  * Breadcrumb needs the parameter fontsize

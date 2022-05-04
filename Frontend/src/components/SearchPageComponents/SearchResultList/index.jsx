@@ -1,18 +1,21 @@
-import React from "react";
+import React from 'react';
 
-import { List } from "@mui/material";
+import { List } from '@mui/material';
 
 // display the listing of the searched item
-const SearchResultList = (props) => {
-  const ListItemWrapper = props.listItemWrapper;
-
+function SearchResultList({ listItemWrapper, searchResult }) {
+  const ListItemWrapper = listItemWrapper;
   return (
-    <List style={{ display: "flex", flexDirection: "column" }}>
-      {props.searchResult.map((searchedItem) => (
+    <List style={{
+      display: 'flex',
+      flexDirection: 'column',
+    }}
+    >
+      {searchResult.map((searchedItem) => (
         <ListItemWrapper key={searchedItem.id} item={searchedItem} />
       ))}
     </List>
   );
-};
+}
 
 export default SearchResultList;

@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import ListCard from 'components/general/ListCard';
-import { CircularProgress } from '@mui/material';
-import getMember from 'shared/services/mock/members';
 
 /**
  * @param {int} memberId
@@ -11,25 +9,16 @@ import getMember from 'shared/services/mock/members';
  * @returns the card for the member
  */
 function MemberCard({
-  memberId, nextToNameBuilder, trailingBuilder, overrideProfilePicture = null,
+  member, nextToNameBuilder, trailingBuilder, overrideProfilePicture = null,
 }) {
-  const [isLoading, setIsLoading] = useState(true);
-  const [member, setMember] = useState({});
-
-  useEffect(async () => {
-    setIsLoading(true);
-    setMember(await getMember(memberId));
-    setIsLoading(false);
-  }, [memberId, setMember, setIsLoading]);
-
   return (
     <ListCard
       imageURL={overrideProfilePicture || member.avatarUrl}
       enforceImage
-      title={isLoading ? '...' : `${member.firstName} ${member.lastName}`}
-      description={isLoading ? '...' : member.email}
-      nextToTitle={(isLoading || !nextToNameBuilder) ? null : nextToNameBuilder(member)}
-      trailing={isLoading ? <CircularProgress /> : (trailingBuilder || (() => null))(member)}
+      title={`${member.firstName} ${member.lastName}`}
+      description={member.email}
+      nextToTitle={nextToNameBuilder ? nextToNameBuilder(member) : null}
+      trailing={(trailingBuilder || (() => null))(member)}
     />
   );
 }

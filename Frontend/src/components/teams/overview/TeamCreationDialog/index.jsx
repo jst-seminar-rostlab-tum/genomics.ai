@@ -7,7 +7,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { createTeam } from 'shared/services/mock/teams';
+import TeamService from 'shared/services/Team.service';
 
 export default function TeamCreationDialog({ open, handleClose, onCreated }) {
   const [name, setName] = useState('');
@@ -25,7 +25,7 @@ export default function TeamCreationDialog({ open, handleClose, onCreated }) {
     }
     if (!name || !description) return;
     setLoading(true);
-    const newInstitution = await createTeam(name, description);
+    const newInstitution = await TeamService.createTeam(name, description);
     onCreated(newInstitution);
     setLoading(false);
     handleClose();

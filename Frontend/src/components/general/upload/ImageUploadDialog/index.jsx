@@ -58,7 +58,7 @@ export default function ImageUploadDialog({
             maxFileSize={maxFileSizeMB * 1024 * 1024}
             filesLimit={1}
             showPreviews={!croppable}
-            showPreviewsInDropzone={false}
+            showPreviewsInDropzone={!preview}
           />
         )}
         {imgURL && croppable && (
@@ -79,7 +79,7 @@ export default function ImageUploadDialog({
         )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
+        <Button onClick={() => { setImgURL(null); onClose(); }}>Cancel</Button>
         {additionalButtons.map(({ text, func }) => (
           <Button
             key={text}

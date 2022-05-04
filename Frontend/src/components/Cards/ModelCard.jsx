@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { Box, Button, Typography } from "@mui/material"
 import { useEffect, useRef, useState } from "react"
 import { useHistory } from "react-router-dom"

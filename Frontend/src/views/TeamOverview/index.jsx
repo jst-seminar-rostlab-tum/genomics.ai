@@ -7,15 +7,15 @@ import HeaderView from 'components/general/HeaderView';
 import TeamCard from 'components/teams/TeamCard';
 import TeamPage from 'views/TeamPage';
 import styles from './teamOverview.module.css';
-import queryMyTeams from 'shared/services/mock/teams';
+import TeamService from 'shared/services/Team.service';
 import TeamCreationDialog from 'components/teams/overview/TeamCreationDialog';
 
 function TeamOverview() {
   const [teams, setTeams] = useState([]);
   useEffect(() => {
-    queryMyTeams()
-      .then((newTeams) => setTeams(newTeams))
-      .catch((ignored) => { console.log(ignored); });
+    TeamService.getMyTeams()
+      .then(setTeams)
+      .catch(console.log);
   }, [setTeams]);
 
   function onLeft(team) {

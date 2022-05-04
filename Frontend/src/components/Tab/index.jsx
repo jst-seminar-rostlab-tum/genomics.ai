@@ -123,18 +123,18 @@ export function TabGroup(props) {
                 darkBackground={darkBackground}
               />
             ))
-                    }
+          }
         </Tabs>
       </Box>
 
       {
-                tabsInfo[value].additionalContent
-                && (
-                <Box sx={{ width: '100%', height: `calc(100% - ${tabsHeight}px)`, overflowY: 'scroll' }}>
-                  {tabsInfo[value].additionalContent}
-                </Box>
-                )
-            }
+        tabsInfo[value].additionalContent
+        && (
+          <Box sx={{ width: '100%', height: `calc(100% - ${tabsHeight}px)`, overflowY: 'scroll' }}>
+            {tabsInfo[value].additionalContent}
+          </Box>
+        )
+      }
 
     </Box>
   );
