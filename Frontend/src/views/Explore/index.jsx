@@ -149,13 +149,13 @@ const Explore = () => {
           {atlasesFiltered && atlasesFiltered.map((atlas) => (
             <Grid key={atlas._id} item xs={12} sm={6} md={4} lg={3}>
               <AtlasCard
-                onClick={() => history.push({ pathname: `${path}/${atlas._id}/visualization` })}
+                onClick={() => history.push(`${path}/atlases/${atlas._id}/visualization`)}
                 atlasId={atlas._id}
                 imgLink={atlas.previewPictureURL}
                 species={atlas.species}
                 modalities={atlas.modalities}
                 title={atlas.name}
-                learnMoreLink={`${path}/${atlas._id}`}
+                learnMoreLink={`${path}/atlases/${atlas._id}`}
               />
             </Grid>
           ))}
@@ -168,7 +168,7 @@ const Explore = () => {
                 species={atlas.species}
                 modalities={atlas.modalities}
                 title={atlas.name}
-                learnMoreLink={`${path}/${atlas._id}`}
+                learnMoreLink={`${path}/atlases/${atlas._id}`}
               />
             </Grid>
           ))}
@@ -181,7 +181,7 @@ const Explore = () => {
                 species={atlas.species}
                 modalities={atlas.modalities}
                 title={atlas.name}
-                learnMoreLink={`${path}/${atlas._id}`}
+                learnMoreLink={`${path}/atlases/${atlas._id}`}
               />
             </Grid>
           ))}
@@ -201,7 +201,7 @@ const Explore = () => {
                 onClick={() => setSelectedModel(model)}
                 title={`Model ${model.name}`}
                 description={model.description}
-                learnMoreLink={`${path}/${model._id}`}
+                learnMoreLink={`${path}/models/${model._id}`}
               />
             </Grid>
           ))}
@@ -220,11 +220,11 @@ const Explore = () => {
       </Grid>
     </Box>
   );
-  const tabMenu = (props) => (
+  const tabMenu = () => (
     <>
       <TabGroup value={value} setValue={setValue} tabsInfo={tmpObj} />
-      {value === 0 ? <AtlasesGrid path={props.path} /> : null }
-      {value === 1 ? <ModelsGrid path={props.path} /> : null }
+      {value === 0 ? <AtlasesGrid /> : null }
+      {value === 1 ? <ModelsGrid /> : null }
       {value === 2 ? <DataSetGrids /> : null }
     </>
 
@@ -315,17 +315,17 @@ const Explore = () => {
           <Route
             exact
             path="/explore/atlases"
-            render={() => atlases && tabMenu({ path })}
+            render={() => atlases && tabMenu()}
           />
           <Route
             exact
             path="/explore/models"
-            render={() => models && tabMenu({ path })}
+            render={() => models && tabMenu()}
           />
-          <Route path="/explore/models/:id" render={() => <LearnMoreModel />} />
-          <Route path="/explore/datasets" render={() => atlases && tabMenu(models, path, 'datasets')} />
-          <Route path="/explore/atlases/:id/visualization" render={() => <AtlasResult />} />
-          <Route path="/explore/atlases/:id" render={() => <LearnMoreAtlas />} />
+          <Route exact path="/explore/models/:id" render={() => <LearnMoreModel />} />
+          <Route exact path="/explore/datasets" render={() => atlases && tabMenu()} />
+          <Route exact path="/explore/atlases/:id/visualization" render={() => <AtlasResult />} />
+          <Route exact path="/explore/atlases/:id" render={() => <LearnMoreAtlas />} />
           <Redirect to="/explore/atlases" />
         </Switch>
       </Box>

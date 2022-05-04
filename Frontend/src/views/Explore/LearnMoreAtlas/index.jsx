@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import CustomButton from 'components/CustomButton';
 import AtlasService from 'shared/services/Atlas.service';
-import { useParams } from 'react-router-dom';
-
+import { useParams, useHistory, useLocation } from 'react-router-dom';
 
 export const LearnMoreAtlasComponent = ({ onClick, id }) => {
   const [atlas, setAtlas] = useState(null);
@@ -65,11 +64,12 @@ export const LearnMoreAtlasComponent = ({ onClick, id }) => {
       <CustomButton sx={{ marginTop: "1em", padding: "0.5em 2em 0.5em 2em" }} type="primary" onClick={onClick}>Map</CustomButton>
     </Box>
   );
-}
+};
 
 export default function LearnMore() {
-
-  const { id } = useParams()
+  const history = useHistory();
+  const path = useLocation();
+  const { id } = useParams();
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
       <Box sx={{
@@ -78,9 +78,8 @@ export default function LearnMore() {
         minWidth: '1200px',
       }}
       >
-        <LearnMoreAtlasComponent id={id} onClick={() => console.log("hey")} />
+        <LearnMoreAtlasComponent id={id} onClick={() => history.push(`${path.pathname}/visualization`)} />
       </Box>
     </Box>
-  )
-
+  );
 }
