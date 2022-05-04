@@ -19,6 +19,7 @@ import { ExpandLess, ExpandMore, StarBorder } from '@mui/icons-material';
 import { Modal, ModalTitle } from 'components/Modal';
 import TeamService from 'shared/services/Team.service';
 import CustomButton from 'components/CustomButton';
+import { TabCard } from '../TabCard';
 
 function ProcessingStatus() {
   return (
@@ -229,24 +230,16 @@ export default function ProjectBarCard({
           Select A Team
         </ModalTitle>
         <Box>
-
-          <div>
-            <FormControl variant="standard" fullWidth>
-              <InputLabel id="demo-simple-select-standard-label">Team</InputLabel>
-              <Select
-                labelId="demo-simple-select-standard-label"
-                id="demo-simple-select-standard"
-                value={selectedTeam}
-                onChange={(e) => setSelectedTeam(e.target.value)}
-                label="Team"
-              >
-                {userTeams.map(
-                  (team) => (<MenuItem value={team?._id || team?.id}>{team.name}</MenuItem>),
-                )}
-              </Select>
-            </FormControl>
-          </div>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', pt: 2 }}>
+          {userTeams.map(
+            (team) => (
+              <TabCard
+                data={{ name: team.name }}
+                selected={team?._id === selectedTeam || team?.id === selectedTeam}
+                handleOnClick={() => setSelectedTeam(team?._id || team?.id)}
+              />
+            ),
+          )}
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', pt: 4 }}>
             <CustomButton
               type="tertiary"
               onClick={() => {
