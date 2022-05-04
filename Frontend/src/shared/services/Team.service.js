@@ -14,10 +14,11 @@ const TeamService = MOCK_TEAMS ? MockTeamService : {
     await axiosInstance.delete(`/teams/${teamId}/join`);
   },
 
-  async createTeam(name, description) {
+  async createTeam(name, description, institutionId) {
     const { data } = await axiosInstance.post('/teams', {
       name,
       description,
+      institutionId,
     });
     return enhanceTeam(data);
   },

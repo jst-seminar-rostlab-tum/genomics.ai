@@ -26,11 +26,11 @@ function TeamCard({ team, onLeft }) {
       description={description}
       nextToTitle={(
         <span className={styles.accessRightIndicator}>
-          {adminIds.indexOf(user.id) !== -1 ? 'admin' : 'member'}
+          {adminIds.indexOf(user._id) !== -1 ? 'admin' : 'member'}
         </span>
       )}
       trailing={[
-        adminIds.indexOf(user.id) !== -1 ? (
+        adminIds.indexOf(user._id) !== -1 ? (
           <Button
             key="settings"
             endIcon={<SettingsIcon />}

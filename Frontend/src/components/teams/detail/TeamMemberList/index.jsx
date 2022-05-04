@@ -7,7 +7,9 @@ import styles from './teamMemberList.module.css';
 import { useAuth } from 'shared/context/authContext';
 import TeamService from 'shared/services/Team.service';
 
-function TeamMemberList({ team, onMemberRemoved }) {
+function TeamMemberList({
+  team, onMemberRemoved, onMakeAdmin, onRemoveAdmin,
+}) {
   const [user] = useAuth();
   const [members, setMembers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -31,10 +33,19 @@ function TeamMemberList({ team, onMemberRemoved }) {
         </span>
       )}
       trailingBuilder={(member) => (
-        team.adminIds.includes(user.id) && user.id !== member.id ? (
+        team.adminIds.includes(user._id) && user._id !== member.id ? (
           <div>
-            <TeamMemberMakeAdminButton team={team} member={member} />
-            <TeamMemberRemoveButton team={team} member={member} onRemoved={() => true} />
+            <TeamMemberMakeAdminButton
+              team={team}
+              member={member}
+              onMakeAdmin={onMakeAdmin}
+              onRemoveAdmin={onRemoveAdmin}
+            />
+            <TeamMemberRemoveButton
+              team={team}
+              member={member}
+              onRemoved={onMemberRemoved}
+            />
           </div>
         ) : null
       )}

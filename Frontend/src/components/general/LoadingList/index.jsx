@@ -23,7 +23,7 @@ function LoadingList({
     loadingWrapper(
       elements.length ? (
         elements.map((elem) => (
-          <div key={elem.id}>
+          <div key={elem.id || elem._id}>
             {cardBuilder(elem)}
             <SpaceBetweenCards />
           </div>
