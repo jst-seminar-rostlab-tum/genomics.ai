@@ -9,6 +9,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import ProjectService from 'shared/services/Project.service';
 import { useSubmissionProgress } from 'shared/context/submissionProgressContext';
 import { MULTIPART_UPLOAD_STATUS, PROJECTS_UPDATE_INTERVAL, statusIsError } from 'shared/utils/common/constants';
+import ProjectMock from 'shared/services/mock/projects';
 
 const theme = createTheme({
   palette: {
@@ -33,6 +34,15 @@ function GeneMapperHome() {
   const [projects, setProjects] = useState([]);
   const [findString, setFindString] = useState('');
   const [submissionProgress, setSubmissionProgress] = useSubmissionProgress();
+
+  const handleDeleteItem = (id) => {
+    setProjects(projects.filter((object) => object._id != id));
+    const deleted = window.localStorage.getItem('DeletedProjects') ?? '';
+    console.log(deleted);
+
+    window.localStorage.setItem('DeletedProjects', `${deleted},${id}`);
+    // ProjectMock.deleteProject(id);
+  };
 
   useEffect(() => {
     ProjectService.getOwnProjects().then((data) => setProjects(data));
@@ -95,13 +105,15 @@ function GeneMapperHome() {
         <div>
           {projects
             .filter((project) => (
-              findString === '' || project.name.toLowerCase().includes(findString.toLowerCase())))
+              (findString === '' || project.name.toLowerCase().includes(findString.toLowerCase())))
+              && !(window.localStorage.getItem('DeletedProjects') ?? []).includes(project._id))
             .map((project) => (
               <ProjectBarCard
                 key={project._id}
                 projectId={project._id}
                 name={project.name}
                 status={project.status}
+                handleDelete={() => handleDeleteItem(project._id)}
                 submissionProgress={submissionProgress.uploadId === project.uploadId
                   ? submissionProgress : null}
                 setSubmissionProgress={submissionProgress.uploadId === project.uploadId

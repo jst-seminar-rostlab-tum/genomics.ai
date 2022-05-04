@@ -28,7 +28,7 @@ function ProcessingStatus() {
 }
 
 export default function ProjectBarCard({
-  projectId, name, status, submissionProgress, setSubmissionProgress,
+  projectId, name, status, submissionProgress, setSubmissionProgress, handleDelete
 }) {
   const history = useHistory();
 
@@ -52,9 +52,7 @@ export default function ProjectBarCard({
   const handleClickCard = () => {
     setfoldOut(true);
   };
-  //   const handleDelete = () => {
-  // set
-  //   };
+
   React.useEffect(() => {
     if (window.localStorage.getItem('Team')) { setTeam(window.localStorage.getItem('Team')); }
   }, []);
@@ -64,7 +62,7 @@ export default function ProjectBarCard({
       marginTop: '5', marginBottom: '0.5em', borderStyle: 'solid', borderColor: '#C8C8C8', borderWidth: '0.1px',
     }}
     >
-      <CardActionArea onClick={handleClickCard}>
+      {/* <CardActionArea onClick={handleClickCard}> */}
         <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
           <Stack
             direction="row"
@@ -168,16 +166,16 @@ export default function ProjectBarCard({
             >
               See Results
             </Button>
-            <IconButton>
+            <IconButton onClick={handleDelete}>
               <DeleteOutlineIcon color="error" />
             </IconButton>
           </Box>
         </Stack>
 
-      </CardActionArea>
+      {/* </CardActionArea> */}
       <Modal
         open={addTeam}
-        OnClose={handleClose}
+        onClose={handleClose}
       >
         <Box sx={{
           backgroundColor: 'background.paper',

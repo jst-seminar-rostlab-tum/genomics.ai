@@ -19,6 +19,10 @@ const ProjectService = {
     return data;
   },
 
+  deleteItem: async (id) => {
+    return ProjectService.deleteItem(id);
+  },
+
   startOrContinueProjectUpload: async (
     selectedFile,
     submissionProgress,
