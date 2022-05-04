@@ -40,6 +40,7 @@ def default_config():
         parameters.USE_BATCH_NORM: 'none',
         parameters.UNLABELED_KEY: 'Unknown',
         parameters.SCANVI_MAX_EPOCHS: 20,
+        parameters.SCANVI_MAX_EPOCHS_QUERY: 100,
         parameters.SCVI_MAX_EPOCHS: 400,
         parameters.SCVI_QUERY_MAX_EPOCHS: 200,
         parameters.NUMBER_OF_NEIGHBORS: 8,
