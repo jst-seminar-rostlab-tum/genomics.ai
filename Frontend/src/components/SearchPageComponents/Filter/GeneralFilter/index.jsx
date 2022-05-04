@@ -5,7 +5,7 @@ import LabeledSelect from '../LabeledSelect';
 const GeneralFilter = ({ sortBy, onChange }) => {
   const sortItems = [
     { label: 'Name', value: 'name' },
-    { label: 'Last updated', value: 'lastUpdated' },
+    { label: 'Last updated', value: 'updatedAt' },
   ];
 
   return (

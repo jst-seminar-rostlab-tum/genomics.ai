@@ -8,13 +8,15 @@ const ResultStatus = ({ count, searchedEntity, searchedKeyword }) => {
   const keywordText = searchedKeyword && searchedKeyword !== '' && (
     <>
       matching
+      {' '}
       <b>{searchedKeyword}</b>
     </>
   );
   return (
     <Box sx={{ m: 2 }}>
       <Typography>
-        {`${countText} for ${entityText} ${keywordText}`}
+        {`${countText} for ${entityText} `}
+        {keywordText}
       </Typography>
     </Box>
   );

@@ -59,3 +59,12 @@
 .bgImgEditButton>span {
     margin-right: 6px;
 }
+
+.inviteUsers {
+  position: fixed;
+  margin: 0;
+    top: 'auto';
+    left: 20;
+    bottom: 20;
+    right: 'auto';
+}

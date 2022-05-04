@@ -2,6 +2,7 @@ import helmholtz from 'assets/helmholtz-logo.jpg';
 import tum from 'assets/tum-logo.png';
 import MemberService from './Member.service';
 import ProfileService from './Profile.service';
+import TeamService from './Team.service';
 
 const mockLeftIds = [];
 let runningId = 3;
@@ -86,6 +87,22 @@ const InstitutionService = {
     }
     institution.memberIds = institution.memberIds.filter((id) => id !== memberId);
   },
+
+  getInstitutionById: async (id) => InstitutionService.getInstitution(`${id}`),
+
+  getInstitutions: async (params) => {
+    let preparedInstitution = testInstitutions;
+    if (params.keyword) {
+      preparedInstitution = preparedInstitution.filter(
+        (team) => team.name.toLowerCase().includes(params.keyword.toLowerCase()),
+      );
+    }
+    return preparedInstitution.sort((a, b) => (`${a.name}`).localeCompare(b.name));
+  },
+
+  getTeamsOfInstitutionById: async (id) => TeamService.getInstitutionTeams(+id)
+  ,
+
 };
 
 export default InstitutionService;

@@ -11,6 +11,7 @@ import InstitutionBackgroundImageUploadDialog from 'components/general/upload/In
 import { useAuth } from 'shared/context/authContext';
 import InstitutionService from 'shared/services/Institution.service';
 import defaultBackgroundPicture from 'assets/institution-default-background.jpg';
+import InstitutionInviteButton from 'components/institutions/InstitutionInviteButton';
 
 function InstitutionPage() {
   const { id } = useParams();
@@ -63,7 +64,8 @@ function InstitutionPage() {
       <div
         className={styles.background}
         style={{
-          backgroundImage: `url(${institution.backgroundPictureURL || defaultBackgroundPicture})`,
+          backgroundImage: `url(${institution.backgroundPictureURL || defaultBackgroundPicture
+          })`,
           resizeMode: 'stretch',
         }}
       >
@@ -138,7 +140,11 @@ function InstitutionPage() {
             {' Members'}
           </span>
         </p>
-        <button className={styles.bgImgEditButton} type="button" onClick={() => setBackgroundUploadOpen(true)}>
+        <button
+          className={styles.bgImgEditButton}
+          type="button"
+          onClick={() => setBackgroundUploadOpen(true)}
+        >
           <span>Edit Background</span>
           <EditIcon fontSize="small" />
         </button>
@@ -191,6 +197,7 @@ function InstitutionPage() {
           />
         </section>
       </div>
+      {isAdmin() && <InstitutionInviteButton institution={institution} />}
       <InstitutionBackgroundImageUploadDialog
         institution={institution}
         open={backgroundUploadOpen}
