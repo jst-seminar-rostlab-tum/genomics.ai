@@ -1,3 +1,4 @@
+import os
 import sys
 
 from scANVI.scANVI import compute_scANVI
@@ -12,12 +13,12 @@ def default_config():
     :return: dict containing all the default values
     """
     return {
-        parameters.MODEL: 'scANVI',
+        parameters.MODEL: 'scVI',
 
-        parameters.REFERENCE_DATA_PATH: 'data/ref/source_data.h5ad',
-        parameters.QUERY_DATA_PATH: 'data/query/target_data.h5ad',
-        parameters.RESULTING_MODEL_PATH: 'data/model',
-        parameters.OUTPUT_PATH: 'query.tsv',
+        parameters.REFERENCE_DATA_PATH: 'pancreas_source.h5ad',
+        parameters.QUERY_DATA_PATH: 'pancreas_query.h5ad',
+        parameters.RESULTING_MODEL_PATH: 'model.pt',
+        parameters.OUTPUT_PATH: 'query.csv',
 
         parameters.USE_PRETRAINED_SCVI_MODEL: True,
         parameters.USE_PRETRAINED_TOTALVI_MODEL: True,
@@ -41,8 +42,8 @@ def default_config():
         parameters.UNLABELED_KEY: 'Unknown',
         parameters.SCANVI_MAX_EPOCHS: 20,
         parameters.SCANVI_MAX_EPOCHS_QUERY: 100,
-        parameters.SCVI_MAX_EPOCHS: 400,
-        parameters.SCVI_QUERY_MAX_EPOCHS: 200,
+        parameters.SCVI_MAX_EPOCHS: 1,
+        parameters.SCVI_QUERY_MAX_EPOCHS: 2,
         parameters.NUMBER_OF_NEIGHBORS: 8,
         parameters.MAX_EPOCHS: 100,
         parameters.UNWANTED_LABELS: ['leiden'],
@@ -55,7 +56,7 @@ def default_config():
         parameters.TOTALVI_MAX_EPOCHS_2: 1,  # 200
 
         parameters.SCANVI_DO_SURGERY: False,
-        parameters.DEV_DEBUG: False,
+        parameters.DEV_DEBUG: True,
     }
 
 
@@ -92,4 +93,10 @@ def query(user_config):
         utils.notify_backend(get_from_config(configuration, parameters.WEBHOOK), configuration)
     return configuration
 # query('data/ref/source_data.h5ad', 'data/query/target_data.h5ad', 'data/model', 'data/surgery/', 'scVI')
-# query(None)
+
+if __name__ == "__main__":
+    os.environ["AWS_BUCKET"] = 'minio-bucket'
+    os.environ['AWS_ENDPOINT'] = 'http://127.0.0.1:9000'
+    os.environ['AWS_ACCESS_KEY'] = 'minioadmin'
+    os.environ['AWS_SECRET_KEY'] = 'minioadmin'
+    query({})

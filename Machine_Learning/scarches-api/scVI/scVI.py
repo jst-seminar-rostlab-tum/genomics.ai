@@ -143,11 +143,12 @@ def compute_latent(model, adata):
     sc.pp.neighbors(reference_latent, n_neighbors=get_from_config(parameters.NUMBER_OF_NEIGHBORS))
     sc.tl.leiden(reference_latent)
     sc.tl.umap(reference_latent)
-    sc.pl.umap(reference_latent,
-               color=['batch', 'cell_type'],
-               frameon=False,
-               wspace=0.6,
-               )
+    # no need to show scatterplot during computation
+    #sc.pl.umap(reference_latent,
+    #           color=['batch', 'cell_type'],
+    #           frameon=False,
+    #           wspace=0.6,
+    #           )
 
     return reference_latent
 
