@@ -65,7 +65,7 @@ function LoginForm(props) {
     return !Object.keys(currentErrors).length;
   }
 
-  function onSuccessfulLogin(data) {
+  async function onSuccessfulLogin(data) {
     localStorage.setItem('jwt', data.jwt);
     localStorage.setItem('user', JSON.stringify(data.user));
     onClose();
