@@ -2,43 +2,32 @@ import * as d3 from "d3";
 
 export const zoomInN = () => {
 
-  d3.select('svg')
+  d3.select('svg g')
+  .style("transform-origin", "20% 20% 0")
     .transition()
-    .call(zoomM2.scaleBy, 1.75);
+    .call(zoomM.scaleBy, 1.75);
 }
 
 export const zoomOutN = () => {
-  d3.select('svg')
-    .transition()
-    .call(zoomM2.scaleBy, 0.5);
-}
-
-
-export const zoomM2 =
-  d3.zoom()
-    .scaleExtent([0.5, 16])
-    .on('zoom', handleZoom2);
-
-function handleZoom2(e) {
   d3.select('svg g')
-    .style("transform-origin", "50% 50% 0")
-    .attr('transform', e.transform)
-
+  .style("transform-origin", "20% 20% 0")
+    .transition()
+    .call(zoomM.scaleBy, 0.5);
 }
 
-export const zoomM =
+export let zoomM =
   d3.zoom()
     .scaleExtent([0.5, 16])
     .on('zoom', handleZoom);
 
-function handleZoom(e) {
+export function handleZoom(e) {
   d3.select('svg g')
-    .style('transform-origin', null)
+    .style("transform-origin", null)
     .attr('transform', e.transform);
 }
 
 export const resetZoom = () => {
-  d3.select('svg')
+  d3.select('svg g')
     .transition()
     .call(zoomM.scaleTo, 1);
 }
