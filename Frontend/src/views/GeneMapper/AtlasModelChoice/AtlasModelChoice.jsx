@@ -67,7 +67,7 @@ function AtlasModelChoice({
 
     return (
         <div>
-            <Typography variant="h5" sx={{ fontWeight: 'bold'}}>
+            <Typography variant="h5" sx={{ fontWeight: 'bold', pb: "1em", mt: "1.5em"}}>
                 Pick an Atlas 
             </Typography>
 
@@ -91,7 +91,7 @@ function AtlasModelChoice({
                 }
             </Grid>
             
-            <Typography variant="h5" sx={{ fontWeight: 'bold'}} marginTop="32px">
+            <Typography variant="h5" sx={{ fontWeight: 'bold', pb: "1em" }} marginTop="32px">
                 Pick a Model
             </Typography>
 
