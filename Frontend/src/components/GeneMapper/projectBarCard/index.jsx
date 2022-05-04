@@ -44,14 +44,14 @@ export default function ProjectBarCard({
       ? 'red'
       : 'orange';
 
-  const [projectTeamName, setProjectTeamName] = useState('');
+  const [projectTeam, setProjectTeam] = useState({});
   const [addTeam, setAddTeam] = useState(false);
   const [selectedTeam, setSelectedTeam] = useState('');
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (project.teamId) {
-      TeamService.getTeam(project.teamId).then((team) => setProjectTeamName(team.name));
+      TeamService.getTeam(project.teamId).then((team) => setProjectTeam(team));
     }
   }, [project.teamId]);
 
@@ -166,11 +166,13 @@ export default function ProjectBarCard({
               p: 0.1, bgcolor: 'background.paper', borderRadius: 3, width: 'flex', mr: 1, display: 'flex', alignItems: 'center',
             }}
             >
-              {projectTeamName
+              {projectTeam?.name
                 ? (
-                  <Typography sx={{ mr: 2 }}>
-                    {projectTeamName}
-                  </Typography>
+                  <CustomButton type="tertiary" sx={{ mr: 2 }} onClick={() => history.push(`/sequencer/teams/${projectTeam._id || projectTeam.id}`)}>
+                    <Typography>
+                      {projectTeam.name}
+                    </Typography>
+                  </CustomButton>
                 )
                 : (
                   <Button
@@ -227,7 +229,7 @@ export default function ProjectBarCard({
         <Box>
 
           <div>
-            <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+            <FormControl variant="standard" fullWidth>
               <InputLabel id="demo-simple-select-standard-label">Team</InputLabel>
               <Select
                 labelId="demo-simple-select-standard-label"
@@ -242,17 +244,29 @@ export default function ProjectBarCard({
               </Select>
             </FormControl>
           </div>
-          <CustomButton type="tertiary" onClick={() => setAddTeam(false)}>Close</CustomButton>
-          <CustomButton
-            type="primary"
-            onClick={() => {
-              addProjectToTeam(selectedTeam);
-              setAddTeam(false);
-            }}
-          >
-            Confirm
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', pt: 2 }}>
+            <CustomButton
+              type="tertiary"
+              onClick={() => {
+                setSelectedTeam('');
+                setAddTeam(false);
+              }}
+            >
+              Close
 
-          </CustomButton>
+            </CustomButton>
+            <CustomButton
+              type="primary"
+              onClick={() => {
+                addProjectToTeam(selectedTeam);
+                setAddTeam(false);
+                setSelectedTeam('');
+              }}
+              disabled={selectedTeam === ''}
+            >
+              Confirm
+            </CustomButton>
+          </Box>
         </Box>
       </Modal>
     </>
