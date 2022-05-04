@@ -1,7 +1,7 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 import {
-  Button, Box, Container, Divider, Grid, Stack, Typography,
+  Button, Box, Container, Divider, Stack, Typography,
 } from '@mui/material';
 import { GeneralCard as Card } from 'components/Cards/GeneralCard';
 import CustomButton from 'components/CustomButton';
@@ -23,7 +23,6 @@ function UploadFilePage({
   const [selectedDataset, setSelectedDataset] = useState();
   const [mappingName, setMappingName] = useState('');
   const [existingDatasets, setExistingDatasets] = useState([]);
-  const [tabsValue, setTabsValue] = useState(0);
   const [requirements, setRequirements] = useState([]);
   const [open, setOpen] = useState(false);
   const [atlasInfoOpen, setAtlasInfoOpen] = useState(false);
@@ -42,7 +41,6 @@ function UploadFilePage({
   }, [existingDatasets]);
 
   const handleOnDropChange = (file) => {
-    // console.log(file);
     setUploadedFile(file);
   };
 
@@ -143,7 +141,7 @@ function UploadFilePage({
               />
             </Stack>
             <Stack>
-              <Typography variant='h5' fontWeight='bold' pb='1em'>Consquent Requirements</Typography>
+              <Typography variant='h5' fontWeight='bold' pb='1em'>Consequent Requirements</Typography>
               <Card
                 children={(
                   <Box sx={{ flexDirection:'column', minHeight: '18em'}}>
@@ -195,13 +193,6 @@ function UploadFilePage({
           </Stack>
           <Stack mt='1em' maxHeight='50%'>
             <Typography variant='h5' fontWeight='bold' pb='1em'>Select Existing Datasets</Typography>
-            {/* <Grid container direction='column' spacing={1} overflow='auto' wrap='nowrap'>
-                { existingDatasets ? existingDatasets.map(data => {
-                    return <TabCard fileName={data.name} status={data.status} width='95%' height='3em' />
-                  }) :
-                  <Typography>No existing datasets available.</Typography>
-                }
-            </Grid> */}
             { existingDatasets ? existingDatasets.map(data => {
                 return <TabCard data={data} width='95%' height='3em' handleOnClick={() => handleSelectDataset(data)} selected={selectedDataset && data._id === selectedDataset._id} />
               }) :

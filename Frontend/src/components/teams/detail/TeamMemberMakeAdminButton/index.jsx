@@ -6,17 +6,21 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-function TeamMemberMakeAdminButton({ team, member }) {
+function TeamMemberMakeAdminButton({
+  team, member, onMakeAdmin, onRemoveAdmin,
+}) {
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleOpenDialog = () => setDialogOpen(true);
   const handleCloseDialog = () => setDialogOpen(false);
 
   async function addAdmin() {
+    onMakeAdmin(team, member);
     handleCloseDialog();
   }
 
   async function removeAdmin() {
+    onRemoveAdmin(team, member);
     handleCloseDialog();
   }
 

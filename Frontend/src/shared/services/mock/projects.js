@@ -149,6 +149,11 @@ const ProjectMock = {
 
   getDataset: async (id) => models.find((dataset) => dataset._id === Number(id)),
   getDatasets: async () => datasets,
+
+  deleteProject: async (id) => {
+    let i = projects.findIndex((project) => project._id === Number(id));
+    return i > -1 ? projects.splice(i, 1) : false;
+  },
 };
 
 export default ProjectMock;

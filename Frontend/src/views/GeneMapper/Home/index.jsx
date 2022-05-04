@@ -9,6 +9,10 @@ import SearchIcon from '@mui/icons-material/Search';
 import ProjectService from 'shared/services/Project.service';
 import { useSubmissionProgress } from 'shared/context/submissionProgressContext';
 import { MULTIPART_UPLOAD_STATUS, PROJECTS_UPDATE_INTERVAL, statusIsError } from 'shared/utils/common/constants';
+import ProjectMock from 'shared/services/mock/projects';
+import AtlasService from 'shared/services/Atlas.service';
+import ModelService from 'shared/services/Model.service';
+import TeamService from 'shared/services/Team.service';
 
 const theme = createTheme({
   palette: {
@@ -31,8 +35,31 @@ const themeIcon = createTheme({
 
 function GeneMapperHome() {
   const [projects, setProjects] = useState([]);
+  const [atlases, setAtlases] = useState([]);
+  const [models, setModels] = useState([]);
+  const [userTeams, setUserTeams] = useState([]);
+
   const [findString, setFindString] = useState('');
   const [submissionProgress, setSubmissionProgress] = useSubmissionProgress();
+
+  const handleDeleteItem = (id) => {
+    setProjects(projects.filter((object) => object._id != id));
+    const deleted = window.localStorage.getItem('DeletedProjects') ?? '';
+    console.log(deleted);
+
+    window.localStorage.setItem('DeletedProjects', `${deleted},${id}`);
+    // ProjectMock.deleteProject(id);
+  };
+
+  const addProjectToTeam = async (teamId, projectId) => {
+    const projectTeams = JSON.parse(window.localStorage.getItem('projectTeams')) || {};
+    window.localStorage.setItem('projectTeams', JSON.stringify({ ...projectTeams, [projectId]: teamId }));
+  };
+
+  const teamOfProject = (projectId) => {
+    const projectTeams = JSON.parse(window.localStorage.getItem('projectTeams')) || {};
+    return projectTeams[projectId];
+  };
 
   useEffect(() => {
     ProjectService.getOwnProjects().then((data) => setProjects(data));
@@ -57,6 +84,12 @@ function GeneMapperHome() {
     };
   }, [submissionProgress.status]);
 
+  useEffect(() => {
+    AtlasService.getAtlases().then((data) => setAtlases(data));
+    ModelService.getModels().then((data) => setModels(data));
+    TeamService.getMyTeams().then((teams) => setUserTeams(teams));
+  }, []);
+
   return (
     <div>
       <ThemeProvider theme={theme}>
@@ -67,12 +100,13 @@ function GeneMapperHome() {
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'space-between',
-            paddingBottom: '2em',
-            marginTop: '10px',
+            pt: 2,
+            pb: 3,
           }}
         >
-          <Stack direction="row" className="stack">
-            <Typography variant="h6" sx={{ marginTop: 0.5 }}>Your Mappings </Typography>
+          <Stack direction="row" className="stack" alignItems="Center">
+
+            <Typography variant="h5" sx={{ pr: 1 }}>Your Mappings</Typography>
             <ThemeProvider theme={themeIcon}>
               <PlusIcon />
             </ThemeProvider>
@@ -94,19 +128,27 @@ function GeneMapperHome() {
         <div>
           {projects
             .filter((project) => (
-              findString === '' || project.name.toLowerCase().includes(findString.toLowerCase())))
-            .map((project) => (
-              <ProjectBarCard
-                key={project._id}
-                projectId={project._id}
-                name={project.name}
-                status={project.status}
-                submissionProgress={submissionProgress.uploadId === project.uploadId
-                  ? submissionProgress : null}
-                setSubmissionProgress={submissionProgress.uploadId === project.uploadId
-                  ? setSubmissionProgress : () => {}}
-              />
-            ))}
+              (findString === '' || project.name.toLowerCase().includes(findString.toLowerCase())))
+              && !(window.localStorage.getItem('DeletedProjects') ?? []).includes(project._id))
+            .map((project) => {
+              const projectTeamId = teamOfProject(project._id);
+              return (
+                <ProjectBarCard
+                  key={project._id}
+                  project={projectTeamId ? { ...project, teamId: projectTeamId } : project}
+                  atlas={atlases.find((atlas) => String(atlas._id) === String(project.atlasId))}
+                  model={models.find((model) => String(model._id) === String(project.modelId))}
+                  userTeams={userTeams}
+                  addProjectToTeam={(teamId) => addProjectToTeam(teamId, project._id)}
+                  handleDelete={() => handleDeleteItem(project._id)}
+                  submissionProgress={submissionProgress.uploadId === project.uploadId
+                    ? submissionProgress : null}
+                  setSubmissionProgress={submissionProgress.uploadId === project.uploadId
+                    ? setSubmissionProgress : () => {}}
+                />
+
+              );
+            })}
         </div>
 
       </ThemeProvider>

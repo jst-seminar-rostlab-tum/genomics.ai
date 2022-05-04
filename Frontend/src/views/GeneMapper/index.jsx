@@ -25,7 +25,7 @@ function GeneMapper({ sidebarShown }) {
     <div>
       <HeaderView
         sidebarShown={sidebarShown}
-        title="Gene Mapper"
+        title="ScArches Gene Mapper"
       >
         <Switch>
           <Route exact path={`${path}`}>
