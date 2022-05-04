@@ -43,9 +43,9 @@ const InstitutionService = {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     runningId += 1;
     const newInstitution = {
-      id: runningId,
+      id: runningId.toString(),
       name,
-      country: null,
+      country: 'Germany',
       description,
       avatarUrl: null,
       backgroundPictureURL: null,
