@@ -8,10 +8,21 @@ let mockTeams = [
     description: 'Biotechnology Team bla bla',
     adminIds: [6, 7],
     invitedMemberIds: [],
-    memberIds: [1, 2, 3, 4, 5],
+    memberIds: ['626bdb1ed76c8b968a50f833', 2, 3, 4, 5],
     projects: [],
     visibility: 'public',
-    institutionId: 1,
+    institutionId: '2',
+  },
+  {
+    id: '2',
+    name: 'Genomics Team',
+    description: 'Genomics Team bla bla',
+    adminIds: ['626bdb1ed76c8b968a50f833'],
+    invitedMemberIds: [],
+    memberIds: [3, 4, 5],
+    projects: [],
+    visibility: 'public',
+    institutionId: '3',
   },
 ];
 let runningId = 1;

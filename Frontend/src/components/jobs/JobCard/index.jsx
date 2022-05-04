@@ -9,7 +9,7 @@ function JobCard({ job }) {
   const navigateToJob = () => window.open(job.location, '_blank');
 
   const {
-    id, status,
+    _id, status,
   } = job;
   return (
     <div onClick={navigateToJob} onKeyPress={navigateToJob} role="button" tabIndex={-1}>
@@ -17,7 +17,7 @@ function JobCard({ job }) {
         imageComponent={(
           <Circle sx={{ color: jobStatusColors[status], width: '32px', height: '32px' }} />
         )}
-        title={`Job ${id}`}
+        title={`Job ${_id}`}
         trailing={(
           <CustomButton type="primary">See Results</CustomButton>
         )}
