@@ -1,7 +1,6 @@
 export const width = 1860;
 export const height = 965;
 export const margin = 20;
-export const originalOpacity = 0.85;
 export const initialPointRadius = 2;
 export const increasedPointRadius = 4;
 export const cornerRadius = 5;
@@ -20,6 +19,9 @@ export const textLabelHeight = 12;
 export const textHeight = 20;
 export const offset = 11;
 export const searchRadius = 0.02;
+
+//New
+export const originalOpacity = 0.85;
 export const fill = '#000000';
 export const gradientColors = ["#42e91f", "#0a43c8"];
 export const colors = [
