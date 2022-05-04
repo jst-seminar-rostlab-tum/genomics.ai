@@ -13,7 +13,6 @@ import {
 } from 'shared/utils/common/constants';
 import Clear from '@mui/icons-material/Clear';
 import ReplayIcon from '@mui/icons-material/Replay';
-import ProjectService from 'shared/services/Project.service';
 import ProgressBar from 'components/ProgressBar';
 
 function ProcessingStatus() {
@@ -62,13 +61,16 @@ export default function ProjectBarCard({
           {submissionProgress ? (
             <Box
               sx={{
-                flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                flexGrow: 1, display: 'flex', alignItems: 'center',
               }}
             >
               {statusIsUpload(submissionProgress.status)
                   && (
                   <>
-                    <ProgressBar value={getSubmissionProgressPercentage(submissionProgress)} />
+                    <Box sx={{ pr: 2, flexGrow: 1 }}>
+                      <LinearProgress variant="determinate" value={getSubmissionProgressPercentage(submissionProgress)} />
+                    </Box>
+                    <Typography variant="caption">Uploading...</Typography>
                     <IconButton
                       onClick={() => {
                         setSubmissionProgress((prevState) => (

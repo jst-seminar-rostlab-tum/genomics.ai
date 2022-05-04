@@ -1,23 +1,22 @@
 import axiosInstance from './axiosInstance';
-import ProjectMock from './mock/projects';
 import { startOrContinueUpload } from './UploadLogic';
 
-const MODEL = 'ownprojects';
+const MODEL = 'projects';
 
 const ProjectService = {
-  getProjects: async () => {
-    const { data } = await axiosInstance.get(`/${MODEL}`);
-    // const data = await ProjectMock.getProjects();
+  getProjects: async (params) => {
+    const { data } = await axiosInstance.get(`/${MODEL}`, { params });
+    return data;
+  },
+
+  getOwnProjects: async () => {
+    const { data } = await axiosInstance.get('/ownprojects');
     return data;
   },
 
   getProject: async (id) => {
-  // const { data } = await axiosInstance.get(`/project/${id}`);
-  // ProjectMock.getProject(id)
-
-    const { data } = await axiosInstance.get(`/${MODEL}`);
-    const project = await data.find((p) => String(p._id) === String(id));
-    return project;
+    const { data } = await axiosInstance.get(`/project/${id}`);
+    return data;
   },
 
   startOrContinueProjectUpload: async (

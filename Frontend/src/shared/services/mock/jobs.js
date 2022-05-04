@@ -1,6 +1,19 @@
 import { BACKEND_ADDRESS } from '../../utils/common/constants';
 import { getAuthAndJsonHeader } from '../../utils/common/utils';
 
+const mockJobs = [
+  {
+    id: 'f7f7',
+    forPart: 'geneMapper',
+    status: 'DONE',
+  },
+  {
+    id: 'f3f6',
+    forPart: 'geneCruncher',
+    status: 'DONE',
+  },
+];
+
 export default async function queryJobs() {
   return fetch(`${BACKEND_ADDRESS}/jobs`, {
     headers: getAuthAndJsonHeader(),
@@ -14,10 +27,5 @@ export default async function queryJobs() {
 
 // forPart can be "geneMapper" or "geneCruncher"
 export async function queryTeamJobs(teamId, forPart) {
-  const allJobs = await queryJobs();
-  // pretty random, this is just mocking
-  if (forPart === 'geneMapper') {
-    return allJobs.slice(teamId, allJobs.length / 2);
-  }
-  return allJobs.slice(allJobs.length / 2, allJobs.length - teamId);
+  return mockJobs.filter((elem) => elem.forPart === forPart);
 }

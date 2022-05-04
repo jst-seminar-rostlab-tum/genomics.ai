@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Button from '@mui/material/Button';
@@ -6,14 +6,10 @@ import ListCard from 'components/general/ListCard';
 import InstitutionLeaveButton from 'components/institutions/InstitutionLeaveButton';
 import styles from './institutionCard.module.css';
 
-import getUser from 'shared/services/mock/user';
+import { useAuth } from 'shared/context/authContext';
 
 function InstitutionCard({ institution, onLeft }) {
-  const [user, setUser] = useState({});
-  useEffect(() => {
-    getUser()
-      .then(setUser);
-  }, [setUser]);
+  const [user] = useAuth();
 
   const history = useHistory();
   const navigateToInstitution = () => {
@@ -21,12 +17,12 @@ function InstitutionCard({ institution, onLeft }) {
   };
 
   const {
-    name, profilePictureURL, adminIds,
+    name, avatarUrl, adminIds,
   } = institution;
   return (
     <ListCard
       title={name}
-      imageURL={profilePictureURL}
+      imageURL={avatarUrl}
       enforceImage
       nextToTitle={(
         <span className={styles.accessRightIndicator}>
