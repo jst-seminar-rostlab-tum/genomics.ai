@@ -19,6 +19,10 @@ const ProjectService = {
     return project || ProjectMock.getProject(id);
   },
 
+  deleteItem: async (id) => {
+    return ProjectService.deleteItem(id);
+  },
+
   startOrContinueProjectUpload: async (
     selectedFile,
     submissionProgress,

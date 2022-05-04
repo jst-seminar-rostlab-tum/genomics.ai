@@ -35,8 +35,22 @@ function GeneMapperHome() {
   const [findString, setFindString] = useState('');
   const [submissionProgress, setSubmissionProgress] = useSubmissionProgress();
 
+  const handleDeleteItem = (id) => {
+    setProjects(projects.filter((object) => object._id != id));
+    ProjectMock.deleteProject(id);
+  }
+
   useEffect(() => {
-    ProjectService.getProjects().then((data) => setProjects(data));
+    let projectIds = []
+    ProjectService.getProjects().then(
+      (data) => {
+        setProjects(data)
+        data.map((d) => {
+          projectIds.push(d._id);
+        })
+        console.log(projects)
+        localStorage.setItem('project_Ids', projectIds)
+      });
     const timer = setInterval(() => {
       ProjectService.getProjects().then((data) => setProjects(data));
       if (submissionProgress.status === MULTIPART_UPLOAD_STATUS.COMPLETE
@@ -102,6 +116,7 @@ function GeneMapperHome() {
                 projectId={project._id}
                 name={project.name}
                 status={project.status}
+                handleDelete={() => handleDeleteItem(project._id)}
                 submissionProgress={submissionProgress.uploadId === project.uploadId
                   ? submissionProgress : null}
                 setSubmissionProgress={submissionProgress.uploadId === project.uploadId
