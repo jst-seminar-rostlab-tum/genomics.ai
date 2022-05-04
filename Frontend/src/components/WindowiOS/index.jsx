@@ -6,7 +6,7 @@ import rostlab from 'assets/landing-illustrations/rostlab.png';
 import helmholtz from 'assets/landing-illustrations/helmholtz.png';
 import CustomButton from "components/CustomButton";
 
-const WindowiOS = () => {
+const WindowiOS = ({ onSignUpClicked }) => {
   return (
     <Box
       sx={{
@@ -46,7 +46,7 @@ const WindowiOS = () => {
         <Typography fontSize="1.2rem" fontWeight="light" color="#8193B2">
           Genomics.ai helps you visualize all of your single-cell sequencing data in a fast and easy way using neural networks.
         </Typography>
-        <CustomButton marginTop="1em">Sign up for genomics.ai</CustomButton>
+        <CustomButton marginTop="1em" onClick={onSignUpClicked} >Sign up for genomics.ai</CustomButton>
         
         {/* DIVIDER */}
         <Box sx={{ marginTop: "3em", display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>

@@ -16,11 +16,14 @@ import graphic3 from 'assets/landing-illustrations/processing.png';
 import graphic4 from 'assets/landing-illustrations/results.png';
 import CustomButton from "components/CustomButton";
 import Input from 'components/Input/Input'
+import { useHistory } from "react-router-dom";
 
 const Home = () => {
   
   const [isLoginFormVisible, setLoginFormVisible] = useState(false);
   const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
+
+  const history = useHistory();
 
   const onLoginClicked = useCallback(() => {
     console.log("login")
@@ -65,7 +68,7 @@ const Home = () => {
           <Navbar position="fixed" setNavbarHeight={setNavbarHeight} onLoginClicked={onLoginClicked} onSignUpClicked={onSignUpClicked} executeScroll={executeScroll} />
         </Box>
         {/* IOS WINDOW */}
-        <WindowiOS />
+        <WindowiOS onSignUpClicked={onSignUpClicked} />
       </Box>
       {/* the Eclipse */}
       <Box
@@ -100,7 +103,7 @@ const Home = () => {
             <Box sx={{ width: {xs: "100%", sm: "50%", md: "50%", lg: "50%", xl: "50%"}  }}>
               <Typography fontSize="1.2em" fontWeight="bold">genomics.ai</Typography>
               <Typography margin="2em 0 2em 0">We help you visualize all of your single-cell sequencing data in a fast and easy way with the help of neural networks.</Typography>
-              <CustomButton>Explore</CustomButton>
+              <CustomButton onClick={()=>history.push('/explore')}>Explore</CustomButton>
             </Box>
           </Box>
         </Box>
