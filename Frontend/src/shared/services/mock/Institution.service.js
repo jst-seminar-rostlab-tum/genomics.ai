@@ -1,6 +1,7 @@
 import helmholtz from 'assets/helmholtz-logo.jpg';
 import tum from 'assets/tum-logo.png';
 import MemberService from './Member.service';
+import ProfileService from './Profile.service';
 import TeamService from './Team.service';
 
 const mockLeftIds = [];
@@ -61,8 +62,10 @@ const InstitutionService = {
     return testInstitutions.filter((institution) => !mockLeftIds.includes(institution.id));
   },
 
-  queryIsAdminInstitutions(userId) {
-    return testInstitutions.filter((institution) => institution.adminIds.includes(userId));
+  async getMyAdminInstitutions() {
+    const myInstitutions = await InstitutionService.getMyInstitutions();
+    const user = await ProfileService.getProfile();
+    return myInstitutions.filter((i) => i.adminIds.includes(user.id));
   },
 
   async getInstitution(id) {
