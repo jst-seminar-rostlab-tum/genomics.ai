@@ -7,6 +7,11 @@ const UserService = {
     const { data } = await axiosInstance.get(`/${MODEL}`, { params });
     return data;
   },
+
+  getOwnTeams: async () => {
+    const { data } = await axiosInstance.get(`/${MODEL}/ownteams`);
+    return data;
+  },
 };
 
 export default UserService;

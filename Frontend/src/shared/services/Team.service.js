@@ -54,6 +54,11 @@ const TeamService = MOCK_TEAMS ? MockTeamService : {
     const { data } = await axiosInstance.get(`/${MODEL}`, { params });
     return data.map(enhanceTeam);
   },
+
+  addProject: async (teamId, projectId) => {
+    const { data } = await axiosInstance.put(`/${MODEL}/${teamId}/add_project`, { projectId });
+    return data;
+  },
 };
 
 export default TeamService;
