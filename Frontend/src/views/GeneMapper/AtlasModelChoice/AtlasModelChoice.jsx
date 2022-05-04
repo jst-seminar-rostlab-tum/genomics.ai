@@ -8,6 +8,7 @@ import { useHistory} from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import ProjectMock from "shared/services/mock/projects"
 
+import Clear from '@mui/icons-material/Clear';
 import CancelIcon from '@mui/icons-material/Cancel';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
@@ -112,7 +113,7 @@ function AtlasModelChoice({
             </Grid>
             <Stack direction='row' justifyContent='space-between' sx={{ marginTop:'20px'}}>
                 <CustomButton type='tertiary' onClick={() => history.push(`${path}`)}>
-                <CancelIcon/>&nbsp; Cancel
+                <Clear/>&nbsp; Cancel
                 </CustomButton>
                 <CustomButton type='primary' disabled={!selectedAtlas || !selectedModel} onClick={() => setActiveStep(1)}>
                     Confirm&nbsp;<ArrowForwardIcon/>
