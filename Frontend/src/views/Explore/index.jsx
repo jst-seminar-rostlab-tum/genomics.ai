@@ -7,7 +7,7 @@ import { Box } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { TabGroup } from 'components/Tab';
 import Search from 'components/Search';
-import { Filter } from 'components/Filter/Filter';
+import Filter from 'components/ExplorePageComponents/Filter';
 import NavBar from 'components/NavBar';
 import Breadcrumb from 'components/Breadcrumb';
 import AtlasCard from 'components/Cards/AtlasCard';
@@ -109,9 +109,22 @@ const Explore = () => {
   }, [selectedAtlas, selectedModel]);
 
   function atlasesGrid() {
-    const searchedAtlases = atlases.filter(
+    let searchedAtlases = atlases.filter(
       (item) => item.name.toLowerCase().includes(searchedKeyword),
     );
+    if (searchParams.get('sortBy') === 'name' || searchParams.get('sortBy') === null) {
+      searchedAtlases = searchedAtlases.sort((a, b) => {
+        const nameA = a.name.toUpperCase();
+        const nameB = b.name.toUpperCase();
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+        return 0;
+      });
+    }
     return (
       <Box className="atlasContainer" sx={{ height: '70vh' }}>
         <Grid container spacing={3}>
@@ -128,9 +141,22 @@ const Explore = () => {
   }
 
   function modelsGrid() {
-    const searchedModels = models.filter(
+    let searchedModels = models.filter(
       (item) => item.name.toLowerCase().includes(searchedKeyword),
     );
+    if (searchParams.get('sortBy') === 'name' || searchParams.get('sortBy') === null) {
+      searchedModels = searchedModels.sort((a, b) => {
+        const nameA = a.name.toUpperCase();
+        const nameB = b.name.toUpperCase();
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+        return 0;
+      });
+    }
     return (
       <Box className="cardsContainer" sx={{ height: '100%' }}>
         <Grid container spacing={3}>
@@ -188,7 +214,17 @@ const Explore = () => {
       </Box>
 
       <Box sx={{ alignSelf: 'center', width: '65%', marginBlock: '2%' }}>
-        <Search filterComponent={<Filter references={['test', 'test']} categories={['category1', 'category2']} />} handleSearch={searchedKeywordChangeHandler} value={searchedKeyword} />
+        <Search
+          filterComponent={(
+            <Filter
+              searchParams={searchParams}
+              updateQueryParams={updateQueryParams}
+              path={path}
+            />
+)}
+          handleSearch={searchedKeywordChangeHandler}
+          value={searchedKeyword}
+        />
       </Box>
 
       <Box sx={{
