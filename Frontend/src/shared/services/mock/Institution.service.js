@@ -1,8 +1,8 @@
 import helmholtz from 'assets/helmholtz-logo.jpg';
 import tum from 'assets/tum-logo.png';
-import MemberService from './Member.service';
-import ProfileService from './Profile.service';
-import TeamService from './Team.service';
+import MemberService from '../Member.service';
+import ProfileService from '../Profile.service';
+import TeamService from '../Team.service';
 
 const mockLeftIds = [];
 let runningId = 3;
@@ -24,8 +24,8 @@ let mockInstitutions = [
     country: 'Germany',
     backgroundPictureURL: 'https://www.in.tum.de/fileadmin/_processed_/5/5/csm_2006_1015Bild0136_9dc504e910.jpg',
     avatarUrl: tum,
-    adminIds: [1],
-    memberIds: ['626bdb1ed76c8b968a50f833', 2, 3, 4, 5],
+    adminIds: ['626bdb1ed76c8b968a50f833'],
+    memberIds: [1, 2, 3, 4, 5],
   },
   {
     id: '3',
@@ -41,6 +41,7 @@ const InstitutionService = {
   async createInstitution(name, description) {
     // fake effect
     await new Promise((resolve) => setTimeout(resolve, 1000));
+    const user = await ProfileService.getProfile();
     runningId += 1;
     const newInstitution = {
       id: runningId,
@@ -49,7 +50,7 @@ const InstitutionService = {
       description,
       avatarUrl: null,
       backgroundPictureURL: null,
-      adminIds: [1], // TODO: make sure that the backend puts my user ID here
+      adminIds: [user.id], // TODO: make sure that the backend puts my user ID here
       memberIds: [],
     };
     mockInstitutions = [...mockInstitutions, newInstitution];
