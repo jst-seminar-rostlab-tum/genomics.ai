@@ -31,7 +31,12 @@ function UploadFilePage({
   const history = useHistory();
 
   useEffect(() => {
-    setRequirements(selectedModel.requirements);
+    setRequirements(selectedModel.requirements || [
+      // source: https://beta.fastgenomics.org/analyses/scarches
+      'Ensure your data is in h5ad format',
+      'Make sure your .X layer has raw counts (i.e. integers, so no normalization, no log-transformation)',
+      'If your dataset contains multiple batches, specify these in the .obs layer under .obs["dataset"]',
+    ]);
   }, [selectedModel]);
 
   useEffect(() => {
@@ -67,7 +72,11 @@ function UploadFilePage({
   };
 
   const handleSelectDataset = (data) => {
-    setSelectedDataset(data);
+    if (data.name === selectedDataset?.name) {
+      setSelectedDataset(null);
+    } else {
+      setSelectedDataset(data);
+    }
   };
 
   return (
@@ -191,7 +200,7 @@ function UploadFilePage({
             )}
           />
           <Stack className="flexContainer" direction="column" pb="1em">
-            <Typography variant="h5" fontWeight="bold" pb="1em">Upload Datasets</Typography>
+            <Typography variant="h5" fontWeight="bold" pb="1em">Select Datasets for Upload</Typography>
             <FileUpload
               height="250px"
               handleFileUpload={handleOnDropChange}
