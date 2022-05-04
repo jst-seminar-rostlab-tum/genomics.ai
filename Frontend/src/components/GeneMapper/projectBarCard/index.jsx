@@ -3,7 +3,7 @@ import Card from '@mui/material/Card';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import {
-  Box, IconButton, LinearProgress, Stack, CardActionArea, FormControl, InputLabel, MenuItem, Modal, Select,
+  Box, IconButton, LinearProgress, Stack, CardActionArea, FormControl, InputLabel, MenuItem, Select, Collapse, List, ListItemButton, ListItemIcon, ListItemText,
 } from '@mui/material';
 import CircleIcon from '@mui/icons-material/Circle';
 import { useHistory } from 'react-router-dom';
@@ -15,6 +15,8 @@ import Clear from '@mui/icons-material/Clear';
 import ReplayIcon from '@mui/icons-material/Replay';
 import ProgressBar from 'components/ProgressBar';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { ExpandLess, ExpandMore, StarBorder } from '@mui/icons-material';
+import { Modal } from 'components/Modal';
 
 function ProcessingStatus() {
   return (
@@ -42,15 +44,16 @@ export default function ProjectBarCard({
 
   const [addTeam, setAddTeam] = React.useState(false);
   const [team, setTeam] = React.useState('');
-  const [foldOut, setfoldOut] = React.useState(false);
   const handleOpen = () => setAddTeam(true);
   const handleClose = () => setAddTeam(false);
+  const [open, setOpen] = React.useState(false);
   const handleChange = (event) => {
     setTeam(event.target.value);
     window.localStorage.setItem('Team', event.target.value);
   };
+
   const handleClickCard = () => {
-    setfoldOut(true);
+    setOpen(!open);
   };
 
   React.useEffect(() => {
@@ -62,14 +65,15 @@ export default function ProjectBarCard({
       marginTop: '5', marginBottom: '0.5em', borderStyle: 'solid', borderColor: '#C8C8C8', borderWidth: '0.1px',
     }}
     >
-      {/* <CardActionArea onClick={handleClickCard}> */}
-        <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
+
+      <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
+
+        <CardActionArea disableTaouchRipple onClick={handleClickCard}>
           <Stack
             direction="row"
             spacing={4}
             sx={{ alignItems: 'center', flexGrow: 1 }}
           >
-
             <CircleIcon sx={{
               fontSize: 30, marginLeft: '3%', color,
             }}
@@ -120,7 +124,7 @@ export default function ProjectBarCard({
             {!submissionProgress
               ? (
                 <Box
-                  sx={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}
+                  sx={{ flexGrow: 1, display: 'flex' }}
                 >
                   {status === PROJECT_STATUS.UPLOAD_PENDING
                    && (
@@ -135,85 +139,98 @@ export default function ProjectBarCard({
                 </Box>
               )
               : null}
+            {open ? (
+              <Box sx={{ flexDirection: 'row' }}>
+                <ExpandLess sx={{
+                  fontSize: 30, marginLeft: '3%',
+                }}
+                />
+              </Box>
+            ) : (
+              <Box sx={{ flexDirection: 'row' }}>
+                <ExpandMore sx={{
+                  fontSize: 30, marginLeft: '3%',
+                }}
+                />
+              </Box>
+            )}
+
           </Stack>
-          <Box sx={{
-            p: 0.1, bgcolor: 'background.paper', borderRadius: 3, width: 'flex', mr: 3, display: 'flex', m: 2, alignItems: 'center',
-          }}
-          >
-            <Button
-              variant="outlined"
-            // size="small"
-              sx={{
-                borderRadius: 100,
-                mr: 2,
-              }}
-              style={{ textTransform: 'none' }}
-              onClick={handleOpen}
-            >
-              Add To Team
-            </Button>
+          <Collapse in={open} timeout="auto" unmountOnExit collapsedSize="100px" sx={{}}>
+            <Typography>More Infomation</Typography>
+          </Collapse>
+        </CardActionArea>
 
-            <Button
-              variant="contained"
-              color="secondary"
-              sx={{
-                borderRadius: 100,
-                mr: 2,
-              }}
-              style={{ textTransform: 'none' }}
-              onClick={() => history.push(`./genemapper/result/${projectId}`)}
-              disabled={status !== 'DONE'}
-            >
-              See Results
-            </Button>
-            <IconButton onClick={handleDelete}>
-              <DeleteOutlineIcon color="error" />
-            </IconButton>
-          </Box>
-        </Stack>
-
-      {/* </CardActionArea> */}
-      <Modal
-        open={addTeam}
-        onClose={handleClose}
-      >
         <Box sx={{
-          backgroundColor: 'background.paper',
-          position: 'absolute',
-          top: '30%',
-          left: '50%',
-          p: '5%',
-          borderRadius: 5,
-          transform: 'translate(-50%, -50%)',
-
+          p: 0.1, bgcolor: 'background.paper', borderRadius: 3, width: 'flex', mr: 3, display: 'flex', alignItems: 'center',
         }}
         >
-          <Typography variant="h6" sx={{ paddingBottom: 1 }}>
-            Select A Team
-          </Typography>
-          <div>
-            <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-              <InputLabel id="demo-simple-select-standard-label">Team</InputLabel>
-              <Select
-                labelId="demo-simple-select-standard-label"
-                id="demo-simple-select-standard"
-                value={team}
-                onChange={handleChange}
-                label="Team"
-              >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                <MenuItem value="Team 1">Team 1</MenuItem>
-                <MenuItem value="Team 2">Team 2</MenuItem>
-                <MenuItem value="Team 3">Team 3</MenuItem>
-              </Select>
-            </FormControl>
-          </div>
-          <Button sx={{ paddingTop: 4 }} size="small" onClick={() => setAddTeam(false)}>Confirm</Button>
-          <Button sx={{ paddingTop: 4 }} size="small" onClick={() => setAddTeam(false)}>Close</Button>
+          <Button
+            variant="outlined"
+            size="small"
+            sx={{
+              borderRadius: 100,
+              mr: 2,
+              m: 1,
+            }}
+            style={{ textTransform: 'none' }}
+            onClick={handleOpen}
+          >
+            Add To Team
+          </Button>
+
+          <Button
+            variant="contained"
+            color="secondary"
+            sx={{
+              borderRadius: 100,
+              mr: 2,
+            }}
+            style={{ textTransform: 'none' }}
+            onClick={() => history.push(`./genemapper/result/${projectId}`)}
+            disabled={status !== 'DONE'}
+          >
+            See Results
+          </Button>
+          <IconButton>
+            <DeleteOutlineIcon color="error" />
+          </IconButton>
         </Box>
-      </Modal>
+
+      </Stack>
+
+      <Modal
+        isOpen={addTeam}
+        setOpen={setAddTeam}
+        children={(
+          <Box>
+            <Typography variant="h6" sx={{ paddingBottom: 1 }}>
+              Select A Team
+            </Typography>
+            <div>
+              <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+                <InputLabel id="demo-simple-select-standard-label">Team</InputLabel>
+                <Select
+                  labelId="demo-simple-select-standard-label"
+                  id="demo-simple-select-standard"
+                  value={team}
+                  onChange={handleChange}
+                  label="Team"
+                >
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  <MenuItem value="Team 1">Team 1</MenuItem>
+                  <MenuItem value="Team 2">Team 2</MenuItem>
+                  <MenuItem value="Team 3">Team 3</MenuItem>
+                </Select>
+              </FormControl>
+            </div>
+            <Button size="small" onClick={() => setAddTeam(false)}>Close</Button>
+            <Button size="small" onClick={() => setAddTeam(false)}>Confirm</Button>
+          </Box>
+)}
+      />
 
     </Card>
   );
