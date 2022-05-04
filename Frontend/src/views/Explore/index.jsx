@@ -51,7 +51,6 @@ const datasets = [
   },
 ];
 
-
 const Explore = () => {
   const [value, setValue] = useState(0);
   const [selectedAtlas, setSelectedAtlas] = useState(null);
@@ -79,7 +78,7 @@ const Explore = () => {
       pathname: history.location.pathname,
       search: params.toString(),
     });
-    };
+  };
 
   useEffect(() => {
     AtlasService.getAtlases()
@@ -95,25 +94,62 @@ const Explore = () => {
     updateQueryParams('keyword', value);
   };
 
-
   useEffect(() => {
     if (selectedAtlas || selectedModel) setMapperVisible(true);
     if (!selectedAtlas && !selectedModel) setMapperVisible(false);
   }, [selectedAtlas, selectedModel]);
 
+  function applyAtlasFilters() {
+    const searchedAtlases = atlases.filter(
+      (item) => item.name.toLowerCase().includes(searchedKeyword.toLowerCase()),
+    );
+    if (searchParams.get('sortBy') === 'name' || searchParams.get('sortBy') === null) {
+      searchedAtlases.sort((a, b) => {
+        const nameA = a.name.toUpperCase();
+        const nameB = b.name.toUpperCase();
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+        return 0;
+      });
+    } else if (searchParams.get('sortBy') === 'numberOfCells') {
+      searchedAtlases.sort((a, b) => a.numberOfCells - b.numberOfCells);
+    }
+    return searchedAtlases;
+  }
 
-  const AtlasesGrid = ({ path }) => {
-    const atlases = applyAtlasFilters()
+  function applyModelFilters() {
+    const searchedModels = models.filter(
+      (item) => item.name.toLowerCase().includes(searchedKeyword.toLowerCase()),
+    );
+    if (searchParams.get('sortBy') === 'name' || searchParams.get('sortBy') === null) {
+      searchedModels.sort((a, b) => {
+        const nameA = a.name.toUpperCase();
+        const nameB = b.name.toUpperCase();
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+        return 0;
+      });
+    }
+    return searchedModels;
+  }
 
-    
-
+  const AtlasesGrid = () => {
+    const atlasesFiltered = applyAtlasFilters();
     return (
       <Box className="atlasContainer" sx={{ height: '70vh' }}>
         <Grid container spacing={3}>
-          {atlases && atlases.map((atlas) => (
+          {atlasesFiltered && atlasesFiltered.map((atlas) => (
             <Grid key={atlas._id} item xs={12} sm={6} md={4} lg={3}>
               <AtlasCard
-                onClick={() => history.push({ pathname: `${path}/${atlas._id}/visualization`})}
+                onClick={() => history.push({ pathname: `${path}/${atlas._id}/visualization` })}
                 atlasId={atlas._id}
                 imgLink={atlas.previewPictureURL}
                 species={atlas.species}
@@ -123,7 +159,7 @@ const Explore = () => {
               />
             </Grid>
           ))}
-          {atlases && atlases.map((atlas) => (
+          {atlasesFiltered && atlasesFiltered.map((atlas) => (
             <Grid key={atlas._id} item xs={12} sm={6} md={4} lg={3}>
               <AtlasCard
                 onClick={() => setSelectedAtlas(atlas)}
@@ -136,7 +172,7 @@ const Explore = () => {
               />
             </Grid>
           ))}
-          {atlases && atlases.map((atlas) => (
+          {atlasesFiltered && atlasesFiltered.map((atlas) => (
             <Grid key={atlas._id} item xs={12} sm={6} md={4} lg={3}>
               <AtlasCard
                 onClick={() => setSelectedAtlas(atlas)}
@@ -152,16 +188,14 @@ const Explore = () => {
         </Grid>
       </Box>
     );
-  }
+  };
 
-  const ModelsGrid = ({ path }) => {
-
-    const models = applyModelFilters();
-
+  const ModelsGrid = () => {
+    const modelsFiltered = applyModelFilters();
     return (
       <Box className="cardsContainer">
         <Grid container spacing={3}>
-          {models && models.map((model) => (
+          {modelsFiltered && modelsFiltered.map((model) => (
             <Grid key={model._id} item xs={12} sm={6} md={4} lg={3}>
               <ModelCard
                 onClick={() => setSelectedModel(model)}
@@ -174,7 +208,7 @@ const Explore = () => {
         </Grid>
       </Box>
     );
-  }
+  };
   const DataSetGrids = () => (
     <Box className="cardsContainer">
       <Grid container spacing={3}>
@@ -196,97 +230,6 @@ const Explore = () => {
 
   );
 
-  function applyAtlasFilters() {
-    let searchedAtlases = atlases.filter(
-      (item) => item.name.toLowerCase().includes(searchedKeyword),
-    );
-    if (searchParams.get('sortBy') === 'name' || searchParams.get('sortBy') === null) {
-      searchedAtlases.sort((a, b) => {
-        const nameA = a.name.toUpperCase();
-        const nameB = b.name.toUpperCase();
-        if (nameA < nameB) {
-          return -1;
-        }
-        if (nameA > nameB) {
-          return 1;
-        }
-        return 0;
-      });
-    } else if (searchParams.get('sortBy') === 'numberOfCells') {
-      searchedAtlases.sort((a, b) => a.numberOfCells - b.numberOfCells);
-    }
-    return searchedAtlases;
-  }
-
-  function atlasesGrid({ path }) {
-    const searchedAtlases = applyAtlasFilters();
-    return (
-      <Box className="atlasContainer" sx={{ height: '70vh' }}>
-        <Grid container spacing={3}>
-          {
-            searchedAtlases &&
-            searchedAtlases.map((atlas) => (
-              <Grid key={atlas._id} item xs={12} sm={6} md={4} lg={3}>
-                <AtlasCard
-                  onClick={() => history.push(`${path}/${atlas._id}/visualization`)}
-                  atlasId={atlas._id}
-                  imgLink={atlas.previewPictureURL}
-                  species={atlas.species}
-                  modalities={atlas.modalities}
-                  title={atlas.name}
-                  learnMoreLink={`${path}/${atlas._id}`}
-                />
-              </Grid>
-            ))
-          }
-        </Grid>
-      </Box>
-    );
-  }
-  
-  function applyModelFilters() {
-    const searchedModels = models.filter(
-      (item) => item.name.toLowerCase().includes(searchedKeyword),
-    );
-    if (searchParams.get('sortBy') === 'name' || searchParams.get('sortBy') === null) {
-      searchedModels.sort((a, b) => {
-        const nameA = a.name.toUpperCase();
-        const nameB = b.name.toUpperCase();
-        if (nameA < nameB) {
-          return -1;
-        }
-        if (nameA > nameB) {
-          return 1;
-        }
-        return 0;
-      });
-    }
-    return searchedModels;
-  }
-
-  function modelsGrid() {
-    const searchedModels = applyModelFilters();
-    return (
-      <Box className="cardsContainer" sx={{ height: '100%' }}>
-        <Grid container spacing={3}>
-          {
-            searchedModels &&
-            searchedModels.map((model) => (
-              <Grid key={model._id} item xs={12} sm={6} md={4} lg={3}>
-                <ModelCard
-                  onClick={() => setSelectedModel(model)}
-                  title={`Model ${model.name}`}
-                  description={model.description}
-                  learnMoreLink={`${path}/${model._id}`}
-                />
-              </Grid>
-            ))
-          }
-        </Grid>
-      </Box>
-    );
-  }
-
   const onLoginClicked = useCallback(() => {
     console.log('login');
     setRegistrationFormVisible(false);
@@ -307,15 +250,14 @@ const Explore = () => {
     setRegistrationFormVisible(false);
   }, [setRegistrationFormVisible]);
 
-  
-  const tmp_elems = useLocation().pathname.split('/')
+  const tmp_elems = useLocation().pathname.split('/');
   const elems = tmp_elems.map((elem, index) => {
-    if(index === 3){
-      if(tmp_elems[2]==='atlases') return atlases.filter((x)=>x._id === elem)[0] ? atlases.filter((x)=>x._id === elem)[0].name : elem
-      else if(tmp_elems[2]==='models') return models.filter((x)=>x._id === elem)[0] ? models.filter((x)=>x._id === elem)[0].name : elem
+    if (index === 3) {
+      if (tmp_elems[2] === 'atlases') return atlases.filter((x) => x._id === elem)[0] ? atlases.filter((x) => x._id === elem)[0].name : elem;
+      if (tmp_elems[2] === 'models') return models.filter((x) => x._id === elem)[0] ? models.filter((x) => x._id === elem)[0].name : elem;
     }
-    return elem
-  })
+    return elem;
+  });
 
   return (
     <Box
@@ -354,7 +296,7 @@ const Explore = () => {
           alignSelf: 'center',
           width: '60%',
         }}
-      >      
+      >
         <Box sx={{ alignSelf: 'center', width: '100%', marginBlock: '2%' }}>
           <Search
             filterComponent={(
@@ -387,7 +329,7 @@ const Explore = () => {
           <Redirect to="/explore/atlases" />
         </Switch>
       </Box>
-      
+
       {/* NOT NEEDED FOR NOW */}
       {/* <Mapper
         mapperAtlas={selectedAtlas ? selectedAtlas.name : null}
