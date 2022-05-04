@@ -5,8 +5,7 @@ import AtlasService from 'shared/services/Atlas.service';
 import { useParams } from 'react-router-dom';
 
 
-export const LearnMoreAtlasComponent = ({ onClick }) => {
-  const { id } = useParams()
+export const LearnMoreAtlasComponent = ({ onClick, id }) => {
   const [atlas, setAtlas] = useState(null);
 
   useEffect(() => {
@@ -70,6 +69,7 @@ export const LearnMoreAtlasComponent = ({ onClick }) => {
 
 export default function LearnMore() {
 
+  const { id } = useParams()
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
       <Box sx={{
@@ -78,7 +78,7 @@ export default function LearnMore() {
         minWidth: '1200px',
       }}
       >
-        <LearnMoreAtlasComponent onClick={() => console.log("hey")} />
+        <LearnMoreAtlasComponent id={id} onClick={() => console.log("hey")} />
       </Box>
     </Box>
   )

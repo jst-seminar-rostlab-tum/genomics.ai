@@ -102,68 +102,79 @@ const Explore = () => {
   }, [selectedAtlas, selectedModel]);
 
 
-  const AtlasesGrid = ({ atlases, path }) => (
-    <Box className="atlasContainer" sx={{ height: '70vh' }}>
-      <Grid container spacing={3}>
-        {atlases && atlases.map((atlas) => (
-          <Grid key={atlas._id} item xs={12} sm={6} md={4} lg={3}>
-            <AtlasCard
-              onClick={() => history.push(`${path}/${atlas._id}/visualization`)}
-              atlasId={atlas._id}
-              imgLink={atlas.previewPictureURL}
-              species={atlas.species}
-              modalities={atlas.modalities}
-              title={atlas.name}
-              learnMoreLink={`${path}/${atlas._id}`}
-            />
-          </Grid>
-        ))}
-        {atlases && atlases.map((atlas) => (
-          <Grid key={atlas._id} item xs={12} sm={6} md={4} lg={3}>
-            <AtlasCard
-              onClick={() => setSelectedAtlas(atlas)}
-              atlasId={atlas._id}
-              imgLink={atlas.previewPictureURL}
-              species={atlas.species}
-              modalities={atlas.modalities}
-              title={atlas.name}
-              learnMoreLink={`${path}/${atlas._id}`}
-            />
-          </Grid>
-        ))}
-        {atlases && atlases.map((atlas) => (
-          <Grid key={atlas._id} item xs={12} sm={6} md={4} lg={3}>
-            <AtlasCard
-              onClick={() => setSelectedAtlas(atlas)}
-              atlasId={atlas._id}
-              imgLink={atlas.previewPictureURL}
-              species={atlas.species}
-              modalities={atlas.modalities}
-              title={atlas.name}
-              learnMoreLink={`${path}/${atlas._id}`}
-            />
-          </Grid>
-        ))}
-      </Grid>
-    </Box>
-  );
+  const AtlasesGrid = ({ path }) => {
+    const atlases = applyAtlasFilters()
 
-  const ModelsGrid = ({ models, path }) => (
-    <Box className="cardsContainer">
-      <Grid container spacing={3}>
-        {models && models.map((model) => (
-          <Grid key={model._id} item xs={12} sm={6} md={4} lg={3}>
-            <ModelCard
-              onClick={() => setSelectedModel(model)}
-              title={`Model ${model.name}`}
-              description={model.description}
-              learnMoreLink={`${path}/${model._id}`}
-            />
-          </Grid>
-        ))}
-      </Grid>
-    </Box>
-  );
+    
+
+    return (
+      <Box className="atlasContainer" sx={{ height: '70vh' }}>
+        <Grid container spacing={3}>
+          {atlases && atlases.map((atlas) => (
+            <Grid key={atlas._id} item xs={12} sm={6} md={4} lg={3}>
+              <AtlasCard
+                onClick={() => history.push({ pathname: `${path}/${atlas._id}/visualization`})}
+                atlasId={atlas._id}
+                imgLink={atlas.previewPictureURL}
+                species={atlas.species}
+                modalities={atlas.modalities}
+                title={atlas.name}
+                learnMoreLink={`${path}/${atlas._id}`}
+              />
+            </Grid>
+          ))}
+          {atlases && atlases.map((atlas) => (
+            <Grid key={atlas._id} item xs={12} sm={6} md={4} lg={3}>
+              <AtlasCard
+                onClick={() => setSelectedAtlas(atlas)}
+                atlasId={atlas._id}
+                imgLink={atlas.previewPictureURL}
+                species={atlas.species}
+                modalities={atlas.modalities}
+                title={atlas.name}
+                learnMoreLink={`${path}/${atlas._id}`}
+              />
+            </Grid>
+          ))}
+          {atlases && atlases.map((atlas) => (
+            <Grid key={atlas._id} item xs={12} sm={6} md={4} lg={3}>
+              <AtlasCard
+                onClick={() => setSelectedAtlas(atlas)}
+                atlasId={atlas._id}
+                imgLink={atlas.previewPictureURL}
+                species={atlas.species}
+                modalities={atlas.modalities}
+                title={atlas.name}
+                learnMoreLink={`${path}/${atlas._id}`}
+              />
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
+    );
+  }
+
+  const ModelsGrid = ({ path }) => {
+
+    const models = applyModelFilters();
+
+    return (
+      <Box className="cardsContainer">
+        <Grid container spacing={3}>
+          {models && models.map((model) => (
+            <Grid key={model._id} item xs={12} sm={6} md={4} lg={3}>
+              <ModelCard
+                onClick={() => setSelectedModel(model)}
+                title={`Model ${model.name}`}
+                description={model.description}
+                learnMoreLink={`${path}/${model._id}`}
+              />
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
+    );
+  }
   const DataSetGrids = () => (
     <Box className="cardsContainer">
       <Grid container spacing={3}>
@@ -178,8 +189,8 @@ const Explore = () => {
   const tabMenu = (props) => (
     <>
       <TabGroup value={value} setValue={setValue} tabsInfo={tmpObj} />
-      {value === 0 ? <AtlasesGrid atlases={props.atlases} path={props.path} /> : null }
-      {value === 1 ? <ModelsGrid models={props.models} path={props.path} /> : null }
+      {value === 0 ? <AtlasesGrid path={props.path} /> : null }
+      {value === 1 ? <ModelsGrid path={props.path} /> : null }
       {value === 2 ? <DataSetGrids /> : null }
     </>
 
@@ -207,15 +218,24 @@ const Explore = () => {
     return searchedAtlases;
   }
 
-  function atlasesGrid() {
+  function atlasesGrid({ path }) {
     const searchedAtlases = applyAtlasFilters();
     return (
       <Box className="atlasContainer" sx={{ height: '70vh' }}>
         <Grid container spacing={3}>
           {
+            searchedAtlases &&
             searchedAtlases.map((atlas) => (
               <Grid key={atlas._id} item xs={12} sm={6} md={4} lg={3}>
-                <AtlasCard onClick={() => setSelectedAtlas(atlas)} imgLink={atlas.previewPictureURL} species={atlas.species} modalities={atlas.modalities} title={atlas.name} learnMoreLink={`${path}/${atlas._id}`} />
+                <AtlasCard
+                  onClick={() => history.push(`${path}/${atlas._id}/visualization`)}
+                  atlasId={atlas._id}
+                  imgLink={atlas.previewPictureURL}
+                  species={atlas.species}
+                  modalities={atlas.modalities}
+                  title={atlas.name}
+                  learnMoreLink={`${path}/${atlas._id}`}
+                />
               </Grid>
             ))
           }
@@ -223,7 +243,7 @@ const Explore = () => {
       </Box>
     );
   }
-
+  
   function applyModelFilters() {
     const searchedModels = models.filter(
       (item) => item.name.toLowerCase().includes(searchedKeyword),
@@ -250,9 +270,15 @@ const Explore = () => {
       <Box className="cardsContainer" sx={{ height: '100%' }}>
         <Grid container spacing={3}>
           {
+            searchedModels &&
             searchedModels.map((model) => (
               <Grid key={model._id} item xs={12} sm={6} md={4} lg={3}>
-                <ModelCard onClick={() => setSelectedModel(model)} title={`Model ${model.name}`} description={model.description} learnMoreLink={`${path}/${model._id}`} />
+                <ModelCard
+                  onClick={() => setSelectedModel(model)}
+                  title={`Model ${model.name}`}
+                  description={model.description}
+                  learnMoreLink={`${path}/${model._id}`}
+                />
               </Grid>
             ))
           }
@@ -347,12 +373,12 @@ const Explore = () => {
           <Route
             exact
             path="/explore/atlases"
-            render={() => atlases && tabMenu({ atlases, path })}
+            render={() => atlases && tabMenu({ path })}
           />
           <Route
-          exact
+            exact
             path="/explore/models"
-            render={() => models && tabMenu({ models, path })}
+            render={() => models && tabMenu({ path })}
           />
           <Route path="/explore/models/:id" render={() => <LearnMoreModel />} />
           <Route path="/explore/datasets" render={() => atlases && tabMenu(models, path, 'datasets')} />
