@@ -108,7 +108,11 @@ def surgery(reference_latent, source_adata, anndata, configuration):
 
 
 def query(pretrained_model, reference_latent, anndata, source_adata, configuration):
-    model = pretrained_model
+    model = scarches.models.SCANVI.load_query_data(
+        anndata,
+        'assets/scANVI/',
+        freeze_dropout=True,
+    )
 
     model._unlabeled_indices = np.arange(anndata.n_obs)
     model._labeled_indices = []
@@ -257,7 +261,8 @@ def compute_scANVI(configuration):
     if get_from_config(configuration, parameters.SCANVI_PREDICT_CELLTYPES):
         predict_latent(predict(model_query, query_latent))
 
-    #if get_from_config(configuration, parameters.SCANVI_DO_SURGERY):
+    print("completed query and stored it in: " + get_from_config(configuration, parameters.OUTPUT_PATH))
+    # if get_from_config(configuration, parameters.SCANVI_DO_SURGERY):
     #    model_surgery, surgery_latent = surgery(reference_latent, target_adata, configuration)
     #
     #    if get_from_config(configuration, parameters.SCANVI_PREDICT_CELLTYPES):
@@ -266,10 +271,10 @@ def compute_scANVI(configuration):
     full_latent = None
 
     # TODO check if needed at all
-    #if get_from_config(configuration, parameters.SCANVI_COMPARE_REFERENCE_AND_QUERY):
+    # if get_from_config(configuration, parameters.SCANVI_COMPARE_REFERENCE_AND_QUERY):
     #    full_latent = both_adata(source_adata, target_adata, configuration)
 
-    #if get_from_config(configuration, parameters.SCANVI_COMPARE_OBSERVED_AND_PREDICTED_CELLTYPES):
+    # if get_from_config(configuration, parameters.SCANVI_COMPARE_OBSERVED_AND_PREDICTED_CELLTYPES):
     #    if full_latent is None:
     #        full_latent = both_adata(source_adata, target_adata, configuration)
     #    if model is None:

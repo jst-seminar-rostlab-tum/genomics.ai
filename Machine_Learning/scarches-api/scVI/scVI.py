@@ -156,7 +156,11 @@ def compute_query(pretrained_model, anndata, reference_latent, source_adata, con
     :param anndata:
     :return:
     """
-    model = pretrained_model
+    model = sca.models.SCVI.load_query_data(
+        anndata,
+        'assets/scVI/',
+        freeze_dropout=True,
+    )
     model.train(
         max_epochs=get_from_config(configuration, parameters.SCVI_QUERY_MAX_EPOCHS),
         plan_kwargs=dict(weight_decay=0.0),
@@ -233,6 +237,7 @@ def compute_scVI(configuration):
     source_adata, target_adata = pre_process_data(configuration)
     model, reference_latent = create_scVI_model(source_adata, target_adata, configuration)
     model = compute_query(model, target_adata, reference_latent, source_adata, configuration)
+    print("completed query and stored it in: " + get_from_config(configuration, parameters.OUTPUT_PATH))
     # TODO figure out if we need to do this
     # compute_full_latent(source_adata, target_adata, model)
     # model.save('resulting_model', overwrite=True)

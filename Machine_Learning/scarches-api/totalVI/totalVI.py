@@ -223,3 +223,4 @@ def computeTotalVI(configuration):
     impute_proteins(vae_q, adata_query, configuration)
     reps = latent_ref_representation(adata_query, adata_ref, vae_q)
     compute_final_umaps(reps[0], reps[1], configuration)
+    print("completed query and stored it in: " + get_from_config(configuration, parameters.OUTPUT_PATH))
