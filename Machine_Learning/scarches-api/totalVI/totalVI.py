@@ -94,7 +94,7 @@ def train_model(adata_ref):
         vae_ref.train(get_from_config(parameters.TOTALVI_MAX_EPOCHS_1), use_gpu=get_from_config(parameters.USE_GPU))
         if get_from_config(parameters.DEV_DEBUG):
             try:
-                utils.write_adata_to_csv(vae, source_adata, key='source-adata-post-first-training.csv')
+                utils.write_adata_to_csv(vae_ref, adata_ref, key='source-adata-post-first-training.csv')
             except Exception as e:
                 print(e, file=sys.stderr)
     vae_ref.save('totalVI-model', overwrite=True)
@@ -141,7 +141,7 @@ def surgery(adata_query):
                 plan_kwargs=dict(weight_decay=0.0), use_gpu=get_from_config(parameters.USE_GPU))
     if get_from_config(parameters.DEV_DEBUG):
             try:
-                utils.write_adata_to_csv(vae, source_adata, key='source-adata-post-second-training.csv')
+                utils.write_adata_to_csv(vae_q, adata_query, key='query-adata-post-second-training.csv')
             except Exception as e:
                 print(e, file=sys.stderr)
     vae_q.save('totalVI_model', overwrite=True)
