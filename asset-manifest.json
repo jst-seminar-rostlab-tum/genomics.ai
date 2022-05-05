@@ -1,20 +1,24 @@
 {
   "files": {
-    "main.css": "/genomics.ai/static/css/main.8b967fdb.chunk.css",
-    "main.js": "/genomics.ai/static/js/main.2efd1968.chunk.js",
-    "main.js.map": "/genomics.ai/static/js/main.2efd1968.chunk.js.map",
+    "main.css": "/genomics.ai/static/css/main.ca2743bd.chunk.css",
+    "main.js": "/genomics.ai/static/js/main.101e5d3c.chunk.js",
+    "main.js.map": "/genomics.ai/static/js/main.101e5d3c.chunk.js.map",
     "runtime-main.js": "/genomics.ai/static/js/runtime-main.5abe02ae.js",
     "runtime-main.js.map": "/genomics.ai/static/js/runtime-main.5abe02ae.js.map",
-    "static/js/2.2b63c4ca.chunk.js": "/genomics.ai/static/js/2.2b63c4ca.chunk.js",
-    "static/js/2.2b63c4ca.chunk.js.map": "/genomics.ai/static/js/2.2b63c4ca.chunk.js.map",
+    "static/css/2.325324c8.chunk.css": "/genomics.ai/static/css/2.325324c8.chunk.css",
+    "static/js/2.f0590e97.chunk.js": "/genomics.ai/static/js/2.f0590e97.chunk.js",
+    "static/js/2.f0590e97.chunk.js.map": "/genomics.ai/static/js/2.f0590e97.chunk.js.map",
     "index.html": "/genomics.ai/index.html",
-    "static/css/main.8b967fdb.chunk.css.map": "/genomics.ai/static/css/main.8b967fdb.chunk.css.map",
-    "static/js/2.2b63c4ca.chunk.js.LICENSE.txt": "/genomics.ai/static/js/2.2b63c4ca.chunk.js.LICENSE.txt",
+    "static/css/2.325324c8.chunk.css.map": "/genomics.ai/static/css/2.325324c8.chunk.css.map",
+    "static/css/main.ca2743bd.chunk.css.map": "/genomics.ai/static/css/main.ca2743bd.chunk.css.map",
+    "static/js/2.f0590e97.chunk.js.LICENSE.txt": "/genomics.ai/static/js/2.f0590e97.chunk.js.LICENSE.txt",
     "static/media/allClusterLabels.06044daf.png": "/genomics.ai/static/media/allClusterLabels.06044daf.png",
     "static/media/clusterDetails.3b8b8559.png": "/genomics.ai/static/media/clusterDetails.3b8b8559.png",
     "static/media/clusterLabel.30c9dce8.png": "/genomics.ai/static/media/clusterLabel.30c9dce8.png",
     "static/media/csvformat.fb7de25a.png": "/genomics.ai/static/media/csvformat.fb7de25a.png",
+    "static/media/helmholtz-logo.afeb6aa4.jpg": "/genomics.ai/static/media/helmholtz-logo.afeb6aa4.jpg",
     "static/media/helmholtz.a1f90967.png": "/genomics.ai/static/media/helmholtz.a1f90967.png",
+    "static/media/institution-default-background.f2294d54.jpg": "/genomics.ai/static/media/institution-default-background.f2294d54.jpg",
     "static/media/logo.a8b3a51b.svg": "/genomics.ai/static/media/logo.a8b3a51b.svg",
     "static/media/processing.ed520e72.png": "/genomics.ai/static/media/processing.ed520e72.png",
     "static/media/results.24ccf56c.png": "/genomics.ai/static/media/results.24ccf56c.png",
@@ -28,8 +32,9 @@
   },
   "entrypoints": [
     "static/js/runtime-main.5abe02ae.js",
-    "static/js/2.2b63c4ca.chunk.js",
-    "static/css/main.8b967fdb.chunk.css",
-    "static/js/main.2efd1968.chunk.js"
+    "static/css/2.325324c8.chunk.css",
+    "static/js/2.f0590e97.chunk.js",
+    "static/css/main.ca2743bd.chunk.css",
+    "static/js/main.101e5d3c.chunk.js"
   ]
 }
