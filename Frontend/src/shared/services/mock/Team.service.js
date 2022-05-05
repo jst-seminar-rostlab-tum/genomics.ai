@@ -11,7 +11,7 @@ let mockTeams = [
     memberIds: ['626bdb1ed76c8b968a50f833', 2, 3, 4, 5],
     projects: [],
     visibility: 'public',
-    institutionId: '2',
+    institutionId: '1',
   },
   {
     id: '2',
