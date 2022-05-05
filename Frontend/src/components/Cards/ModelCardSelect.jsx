@@ -13,12 +13,15 @@ import { LearnMoreModelComponent } from "views/Explore/LearnMoreModel"
  */
 export const OutlinedButtonSelect = ({ content, onSelect }) => {
  return (
-   <Button
+  <Button
     variant="outlined"
     disableRipple
     onClick={onSelect}
-    sx={{ color: "white", borderWidth: "2px", borderColor: "white", borderRadius: "1.2rem", ":hover": { borderColor: colors.secondary1[500], borderWidth: "2px" } }}
-   >
+    sx={{
+      color: colors.primary[100], borderWidth: "2px", borderColor: colors.primary[100], borderRadius: "1.2rem", justifyContent: 'center', textAlign: 'center',
+      ":hover": { borderColor: '#01579B', borderWidth: "2px", backgroundColor: colors.primary[100], color: '#01579B', transition: '0.5s' }
+    }}
+  >
     {content}
    </Button>
  )
