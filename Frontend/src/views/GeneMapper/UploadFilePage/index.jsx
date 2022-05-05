@@ -1,3 +1,4 @@
+/* eslint-disable react/no-children-prop */
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 import {
@@ -188,7 +189,6 @@ function UploadFilePage({
                 <Divider className={styles.divider} orientation="horizontal" flexItem />
                 <Input
                   placeholder="Enter name here"
-                  defaultValue={mappingName}
                   onChangeEvent={setMappingName}
                   isRequired
                 />

@@ -120,7 +120,7 @@ const SearchPage = ({ sidebarShown }) => {
   }, [fetchSearchHandler, searchCategory, search]);
 
   return (
-    <Stack direction="column" sx={{ paddingLeft: paddingL }}>
+    <Stack direction="column" sx={{ paddingLeft: '130px' }}>
       <div className={styles.title}>
         <h1>Search</h1>
         <Box sx={{ margin: 'auto', maxWidth: 1200 }}>

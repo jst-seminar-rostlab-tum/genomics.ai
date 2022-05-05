@@ -12,7 +12,7 @@ import TeamInviteButton from 'components/teams/detail/TeamInviteButton';
 import TextField from '@mui/material/TextField';
 import { useAuth } from 'shared/context/authContext';
 
-export default function TeamPage({ sidebarShown }) {
+export default function TeamPage() {
   const { id } = useParams();
   const [team, setTeam] = useState({});
   const [user] = useAuth();
@@ -44,7 +44,6 @@ export default function TeamPage({ sidebarShown }) {
 
   return (
     <HeaderView
-      sidebarShown={sidebarShown}
       title={team.name}
       rightOfTitle={(
         <TeamHeaderOptions
