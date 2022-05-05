@@ -256,6 +256,7 @@ export default function ProjectBarCard({
                 addProjectToTeam(selectedTeam);
                 setAddTeam(false);
                 setSelectedTeam('');
+                TeamService.getTeam(selectedTeam).then((team) => setProjectTeam(team));
               }}
               disabled={selectedTeam === ''}
             >
