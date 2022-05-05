@@ -12,6 +12,7 @@ from os.path import exists
 import logging
 import argparse
 from utils import utils, parameters
+import tempfile
 
 
 def get_from_config(configuration, key):
@@ -74,15 +75,24 @@ def train_model(adata_ref, configuration):
                       use_gpu=get_from_config(configuration, parameters.USE_GPU))
         if get_from_config(configuration, parameters.DEV_DEBUG):
             try:
-                utils.write_adata_to_csv(vae_ref, adata_ref, key='source-adata-post-first-training.csv')
+                utils.write_adata_to_csv(vae_ref, adata_ref, key='totalvi-source-adata-post-first-training.csv')
             except Exception as e:
                 print(e, file=sys.stderr)
-    vae_ref.save('totalVI-model', overwrite=True)
+        tempdir = tempfile.mkdtemp()
+        vae_ref.save(tempdir, overwrite=True)
+        if get_from_config(configuration, parameters.DEV_DEBUG):
+            try:
+                utils.store_file_in_s3(tempdir + '/model.pt', 'totalvi-model-after-first-training.pt')
+            except Exception as e:
+                print(e, file=sys.stderr)
+        utils.delete_file(tempdir + '/model.pt')
+        os.removedirs(tempdir)
     return vae_ref
 
 
 def visualize_and_store_as_pdf(filename, adata_ref, **config):
     sc.pl.umap(adata_ref, **config)
+    os.rename('figures/umap.pdf', 'figures/' + filename)
     # os.rename(args.pdfpath + 'umap.pdf', args.pdfpath + filename)
 
 
@@ -124,7 +134,15 @@ def surgery(adata_query, configuration):
             utils.write_adata_to_csv(vae_q, adata_query, key='query-adata-post-second-training.csv')
         except Exception as e:
             print(e, file=sys.stderr)
-    vae_q.save('totalVI_model', overwrite=True)
+    tempdir = tempfile.mkdtemp()
+    vae_q.save(tempdir, overwrite=True)
+    if get_from_config(configuration, parameters.DEV_DEBUG):
+        try:
+            utils.store_file_in_s3(tempdir + '/model.pt', 'totalvi-model-after-query-training.pt')
+        except Exception as e:
+            print(e, file=sys.stderr)
+    utils.delete_file(tempdir + '/model.pt')
+    os.removedirs(tempdir)
     adata_query.obsm["X_totalVI"] = vae_q.get_latent_representation()
     sc.pp.neighbors(adata_query, use_rep="X_totalVI")
     sc.tl.umap(adata_query, min_dist=0.4)
