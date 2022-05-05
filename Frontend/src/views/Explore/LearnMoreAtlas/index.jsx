@@ -4,7 +4,7 @@ import CustomButton from 'components/CustomButton';
 import AtlasService from 'shared/services/Atlas.service';
 import { useParams, useHistory, useLocation } from 'react-router-dom';
 
-export const LearnMoreAtlasComponent = ({ onClick, id }) => {
+export const LearnMoreAtlasComponent = ({ onClick, id, isMap = false }) => {
   const [atlas, setAtlas] = useState(null);
 
   useEffect(() => {
@@ -60,8 +60,10 @@ export const LearnMoreAtlasComponent = ({ onClick, id }) => {
           {atlas?.species}
         </Typography>
       </Box>
-
-      <CustomButton sx={{ marginTop: "1em", padding: "0.5em 2em 0.5em 2em" }} type="primary" onClick={onClick}>Map</CustomButton>
+      { 
+        isMap &&
+        <CustomButton sx={{ marginTop: "1em", padding: "0.5em 2em 0.5em 2em" }} type="primary" onClick={onClick}>Map</CustomButton>
+      }
     </Box>
   );
 };
@@ -78,7 +80,7 @@ export default function LearnMore() {
         minWidth: '1200px',
       }}
       >
-        <LearnMoreAtlasComponent id={id} onClick={() => history.push(`${path.pathname}/visualization`)} />
+        <LearnMoreAtlasComponent id={id} isMap={true} onClick={() => history.push(`${path.pathname}/visualization`)} />
       </Box>
     </Box>
   );

@@ -111,7 +111,7 @@ function AtlasModelChoice({
                 </Grid>)
             }
             </Grid>
-            <Stack direction='row' justifyContent='space-between' sx={{ marginTop:'20px'}}>
+            <Stack direction='row' justifyContent='space-between' sx={{ marginTop:'20px', marginBottom: "3em"}}>
                 <CustomButton type='tertiary' onClick={() => history.push(`${path}`)}>
                 <Clear/>&nbsp; Cancel
                 </CustomButton>
