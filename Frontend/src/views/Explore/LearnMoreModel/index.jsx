@@ -3,8 +3,8 @@ import { Box, Typography } from '@mui/material';
 import ModelsService from 'shared/services/Models.service';
 import { useParams } from 'react-router-dom';
 
-export const LearnMoreModelComponent = () => {
-  const { id } = useParams()
+export const LearnMoreModelComponent = ({ id }) => {
+  
   const [model, setModel] = useState(null);
   
   useEffect(() => {
@@ -39,6 +39,7 @@ export const LearnMoreModelComponent = () => {
 }
 
 export default function LearnMore() {
+  const { id } = useParams();
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
@@ -48,7 +49,7 @@ export default function LearnMore() {
         minWidth: '1200px',
       }}
       >
-        <LearnMoreModelComponent />
+        <LearnMoreModelComponent id={id} />
       </Box>
     </Box>
   )

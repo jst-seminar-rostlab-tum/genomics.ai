@@ -16,6 +16,8 @@ import ProjectMock from 'shared/services/mock/projects';
 import ProjectService from 'shared/services/Project.service';
 import { useSubmissionProgress } from 'shared/context/submissionProgressContext';
 import { TabCard } from 'components/GeneMapper/TabCard';
+import { LearnMoreAtlasComponent } from 'views/Explore/LearnMoreAtlas';
+import { LearnMoreModelComponent } from 'views/Explore/LearnMoreModel';
 
 function UploadFilePage({
   path, selectedAtlas, selectedModel, setActiveStep,
@@ -105,14 +107,14 @@ function UploadFilePage({
                       setOpen={setAtlasInfoOpen}
                       children={(
                         <Container>
-                          <ModalTitle>{selectedAtlas.name}</ModalTitle>
-                          <Typography variant="body1" gutterBottom>
+                          {/* <ModalTitle>{selectedAtlas.name}</ModalTitle> */}
+                          <LearnMoreAtlasComponent id={selectedAtlas._id} onClick={() => history.push(`/explore/atlases/${selectedAtlas._id}/visualization`)} />
+                          {/* <Typography variant="body1" gutterBottom>
                             {
-                              /* Atlas information here */
                               Object.keys(selectedAtlas).map((key, i) => (<li key={i}>{`${key} : ${selectedAtlas[key]}`}</li>))
                             }
                           </Typography>
-                          <Button size="large" onClick={() => setAtlasInfoOpen(false)}>Close</Button>
+                          <Button size="large" onClick={() => setAtlasInfoOpen(false)}>Close</Button> */}
                         </Container>
                     )}
                     />
@@ -139,14 +141,14 @@ function UploadFilePage({
                       setOpen={setModelInfoOpen}
                       children={(
                         <Container>
-                          <ModalTitle>{selectedModel.name}</ModalTitle>
+                          <LearnMoreModelComponent id={selectedModel._id} />
+                          {/* <ModalTitle>{selectedModel.name}</ModalTitle>
                           <Typography variant="body1" gutterBottom>
                             {
-                              /* Model information here */
                               Object.keys(selectedModel).map((key, i) => (<li key={i}>{`${key} : ${selectedModel[key]}`}</li>))
                             }
                           </Typography>
-                          <Button size="large" onClick={() => setModelInfoOpen(false)}>Close</Button>
+                          <Button size="large" onClick={() => setModelInfoOpen(false)}>Close</Button> */}
                         </Container>
                     )}
                     />
