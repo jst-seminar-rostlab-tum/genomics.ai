@@ -1,0 +1,20 @@
+.tooltip {
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    vertical-align: middle;
+    width: auto;
+    height: auto;
+    max-width: 300px;
+    line-break: anywhere;
+    padding: 2px;
+    background: white;
+    border: 2.1px solid #023c68;
+    pointer-events: none;
+    font-weight: 550;
+    font-style: normal;
+    font-family: inherit;
+    font-size: 15px;
+    border-radius: 5px;
+}

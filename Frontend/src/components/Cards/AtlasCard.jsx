@@ -1,46 +1,75 @@
-/* eslint-disable */
+/* eslint-disable react/react-in-jsx-scope */
+import { useState, useRef, useEffect } from 'react';
 
-import { useState, useRef, useEffect } from "react"
+import { Box, Typography } from '@mui/material';
 
-import { Box, Typography } from '@mui/material'
-
-import { OutlinedButton } from './ModelCard'
+import { OutlinedButton } from './ModelCard';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 /**
- * Atlas Card 
+ * Atlas Card
  * @param width default value is 100% of parent
  * @param height default value is 100% of parent
  * @param title title of AtlasCard
  * @param imgLink thumbnail photo url
- * @param modalities 
+ * @param modalities
  * @param cellsInReference
  * @param species
  * @param mapLink onHover button Map url
  * @param learnMoreLink onHover button Learn More url
  */
 export default function AtlasCard({
-  width = "100%", height = "100%", title, imgLink, modalities,
-  cellsInReference, species, mapLink, learnMoreLink
+  width = "100%", height = "100%", title, atlasId, imgLink, modalities,
+  cellsInReference, species, learnMoreLink, onClick, atlas
 }) {
+  // check if the mouse is hovering above the card
+  const [isHover, setHover] = useState(false);
 
-  //check if the mouse is hovering above the card
-  const [isHover, setHover] = useState(false)
+  // check if the card is flat(width > height)
+  const [isFlat, setFlat] = useState(false);
 
-  //check if the card is flat(width > height)
-  const [isFlat, setFlat] = useState(false)
+  // ref to get the out most Box
+  const boxRef = useRef();
 
-  //ref to get the out most Box
-  const boxRef = useRef()
+  const history = useHistory();
+  const path = history.location.pathname;
 
   useEffect(() => {
     //each time the card is rerendered, check if the card is flat or not
     if (boxRef.current.clientWidth > boxRef.current.clientHeight) setFlat(true)
-  }, [])
+
+  })
+
+  const showModalities = () => {
+    //TODO fix this
+    if (modalities[0].length < 10) return modalities
+    return `${modalities[0].split(",")[0]}`
+  }
+
+  const AtlasInfo = (title, data) => (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: data.length > 10 ? "column" : 'row',
+        gap: "5%"
+      }}
+    >
+      <Typography
+        sx={{
+          fontSize: "1rem",
+          fontWeight: "bold"
+        }}
+      >
+        {title}
+      </Typography>
+      <Typography>{data}</Typography>
+    </Box>
+  )
 
   return (
     <Box
       sx={{
-        width, height
+        width, height,
       }}
     >
       <Box
@@ -48,42 +77,45 @@ export default function AtlasCard({
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
         sx={{
-          width: "100%",
-          height: "100%",
-          position: "relative",
+          width: '100%',
+          height: '100%',
+          position: 'relative',
         }}
       >
         {
-          isHover &&
-          <Box
-            style={{
-              background: "linear-gradient(#4F83CC, #01579B)"
-            }}
-            sx={{
-              position: "absolute",
-              width: "100%",
-              height: "100%",
-              borderRadius: "1.2rem",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              opacity: 0.95
-            }}
-          >
+          isHover
+          && (
             <Box
+              style={{
+                background: 'linear-gradient(#4F83CC, #01579B)',
+              }}
               sx={{
-                margin: "auto",
-                width: isFlat ? "70%" : "60%",
-                height: isFlat ? "auto" : "40%",
+                position: "absolute",
+                width: "100%",
+                height: "100%",
+                borderRadius: "1.2rem",
                 display: "flex",
-                flexDirection: isFlat ? "row" : "column",
-                justifyContent: "space-evenly",
+                flexDirection: "column",
+                justifyContent: "center",
+                opacity: 0.95,
+                boxShadow: "0px 4px 6px 0px rgba(1, 87, 155, .20), 0px 0px 1px 0px rgba(1, 87, 155, .32)"
               }}
             >
-              <OutlinedButton content="Map" link={mapLink} />
-              <OutlinedButton content="Learn More" link={learnMoreLink} />
+              <Box
+                sx={{
+                  margin: 'auto',
+                  width: isFlat ? '70%' : '70%',
+                  height: isFlat ? 'auto' : '40%',
+                  display: 'flex',
+                  flexDirection: isFlat ? 'row' : 'column',
+                  justifyContent: 'space-evenly',
+                }}
+              >
+                <OutlinedButton content="Map" onClick={onClick} />
+                <OutlinedButton content="Learn More" link={learnMoreLink} onClick={() => localStorage.setItem("atlasId", atlasId)} />
+              </Box>
             </Box>
-          </Box>
+          )
         }
 
         <Box
@@ -93,83 +125,36 @@ export default function AtlasCard({
             padding: "1rem",
             display: "flex",
             flexDirection: "column",
-            boxShadow: "0px 4px 6px 0px rgba(33, 37, 41, .2), 0px 0px 1px 0px rgba(33, 37, 41, .32)",
-            borderRadius: "1.2rem",
-            justifyContent: "center"
+            boxShadow: isHover ? 'none' : "0px 4px 6px 0px rgba(33, 37, 41, .2), 0px 0px 1px 0px rgba(33, 37, 41, .32)",
+            borderRadius: "1.2rem"
           }}
         >
           <Typography
             sx={{
-              fontSize: "1.4rem",
-              fontWeight: "bold"
+              fontSize: '1.4rem',
+              fontWeight: 'bold',
             }}
           >
             {title}
           </Typography>
 
-          <Box component="img" src={imgLink} alt="Atlas preview img"
+          <Box
+            component="img"
+            src={imgLink}
+            alt="Atlas preview img"
             sx={{
               width: "90%",
-              height: "50%",
-              margin: "auto"
+              objectFit: "cover", 
+              alignSelf: 'center'
             }}
           />
-
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-            }}
-          >
-            <Typography
-              sx={{
-                fontSize: "1rem",
-                fontWeight: "bold"
-              }}
-            >
-              Modalities:
-            </Typography>
-            &nbsp;
-            <Typography>{modalities}</Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'column', m: "5px ", justifyContent:'space-evenly', height:'100%'}}>
+            {AtlasInfo("Modalities", showModalities())}
+            {AtlasInfo("Species", species)}
           </Box>
 
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-            }}
-          >
-            <Typography
-              sx={{
-                fontSize: "1rem",
-                fontWeight: "bold"
-              }}
-            >
-              Cells in Reference:
-            </Typography>
-            &nbsp;
-            <Typography>{cellsInReference}</Typography>
-          </Box>
-
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-            }}
-          >
-            <Typography
-              sx={{
-                fontSize: "1rem",
-                fontWeight: "bold"
-              }}
-            >
-              Species:
-            </Typography>
-            &nbsp;
-            <Typography>{species}</Typography>
-          </Box>
         </Box>
       </Box>
     </Box>
-  )
+  );
 }

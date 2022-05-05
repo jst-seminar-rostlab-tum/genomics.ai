@@ -31,10 +31,13 @@ const FilterButton = ({ onClick }) => (
   </ButtonBase>
 );
 
-const Search = ({ filterComponent, handleSearch }) => {
-  const [active, setActive] = useState(false);
-  const [filterEnabled, setFilterEnabled] = useState(false);
-  const filterBox = useRef();
+const Search = ({ filterComponent, handleSearch, value }) => {
+
+  const [active, setActive] = useState(false)
+  const [filterEnabled, setFilterEnabled] = useState(false)
+  const filterBox = useRef()
+
+  console.log(filterComponent)
 
   useEffect(() => {
     // TODO
@@ -44,16 +47,16 @@ const Search = ({ filterComponent, handleSearch }) => {
      *          works when clicking outside, but when you click a child component inside filter
      *          it still closes.
      */
-    const handleFilterClose = (e) => {
-      if (filterBox.current && !filterBox.current.contains(e.target)) {
-        // setFilterEnabled(false)
-      }
-    };
-    window.addEventListener('click', handleFilterClose, true);
-    return () => {
-      window.removeEventListener('click', handleFilterClose, true);
-    };
-  }, []);
+    // const handleFilterClose = (e) => {
+    //   if (filterBox.current && !filterBox.current.contains(e.target)) {
+    //     // setFilterEnabled(false)
+    //   }
+    // }
+    // window.addEventListener("click", handleFilterClose, true)
+    // return () => {
+    //   window.removeEventListener("click", handleFilterClose, true);
+    // }
+  }, [])
 
   return (
     <Stack
@@ -67,9 +70,9 @@ const Search = ({ filterComponent, handleSearch }) => {
       }}
     >
       {/* Left part */}
-      <Stack direction="row" alignItems="center" gap="5px" sx={{ marginLeft: '20px', width: '100%' }}>
-        <SearchIcon sx={{ color: active ? 'primary.light' : 'primary.main' }} />
-        <SearchInput onChange={(e) => handleSearch(e.target.value)} placeholder="Search" onMouseEnter={() => setActive(true)} onMouseLeave={() => setActive(false)} />
+      <Stack direction="row" alignItems="center" gap="5px" sx={{ marginLeft: "20px", width: "100%" }}>
+        <SearchIcon sx={{ color: active ? "primary.light" : "primary.main" }} />
+        <SearchInput onChange={(e) => handleSearch(e.target.value)} placeholder="Search" onMouseEnter={() => setActive(true)} onMouseLeave={() => setActive(false)} value={value}/>
       </Stack>
       {/* Right part */}
       <Stack direction="row" sx={{ marginRight: '20px' }}>
