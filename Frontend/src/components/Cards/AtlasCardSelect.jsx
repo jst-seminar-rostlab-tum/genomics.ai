@@ -1,10 +1,13 @@
 import { useState, useRef, useEffect } from "react"
 
-import { Box, Typography } from '@mui/material'
+import { Box, Container, Typography } from '@mui/material'
 
 import { OutlinedButtonSelect } from './ModelCardSelect'
 
 import { borders } from "@mui/system"
+import { Modal } from "components/Modal"
+import { LearnMoreAtlasComponent } from "views/Explore/LearnMoreAtlas"
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min"
 
 /**
  * Atlas Card 
@@ -29,8 +32,12 @@ export default function AtlasCardSelect({
   //check if the card is flat(width > height)
   const [isFlat, setFlat] = useState(false)
 
+
+  const [atlasInfoOpen, setAtlasInfoOpen] = useState(false);
+
   //ref to get the out most Box
   const boxRef = useRef()
+  const history = useHistory();
 
   useEffect(() => {
     //each time the card is rerendered, check if the card is flat or not
@@ -81,7 +88,7 @@ export default function AtlasCardSelect({
               }}
             >
               <OutlinedButtonSelect content="Select" onSelect={() => onSelect(atlasObject)} />
-              <OutlinedButtonSelect content="Learn More" />
+              <OutlinedButtonSelect content="Learn More" onSelect={() => setAtlasInfoOpen(true)} />
             </Box>
           </Box>
         }
@@ -143,7 +150,7 @@ export default function AtlasCardSelect({
               Modalities:
             </Typography>
             &nbsp;
-            <Typography>{modalities}</Typography>
+            <Typography noWrap>{modalities}</Typography>
           </Box>
 
           <Box
@@ -183,6 +190,17 @@ export default function AtlasCardSelect({
           </Box>
         </Box>
       </Box>
+      <Modal
+        isOpen={atlasInfoOpen}
+        setOpen={setAtlasInfoOpen}
+        children={(
+          <Container>
+            <LearnMoreAtlasComponent id={atlasObject._id} onClick={() => history.push(`/explore/atlases/${atlasObject._id}/visualization`)} />
+
+          </Container>
+        )}
+      />
     </Box>
+
   )
 }

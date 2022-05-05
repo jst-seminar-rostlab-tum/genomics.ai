@@ -1,18 +1,33 @@
 import React, { useState } from 'react';
 import {
   TextField, Dialog, DialogActions, DialogContent,
-  DialogContentText, DialogTitle, Button, Fab,
+  DialogContentText, DialogTitle, Button, Fab, Snackbar, Alert,
 } from '@mui/material';
 import PersonAddOutlinedIcon from '@mui/icons-material/PersonAddOutlined';
 
 function TeamInviteButton({ team }) {
   const [dialogOpen, setDialogOpen] = useState(false);
-  console.log(dialogOpen);
+  const [open, setOpen] = useState(false);
+  const [invitedMailAdress, setInvitedMailAdress] = useState('');
+
+  const [mailError, setMailError] = useState('');
 
   const handleCloseDialog = () => setDialogOpen(false);
 
   const handleTeamInvite = () => {
+    if (!invitedMailAdress) {
+      setMailError('Please enter an e-mail address.');
+      return;
+    }
+    setOpen(true);
     handleCloseDialog();
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
   };
 
   return (
@@ -21,6 +36,8 @@ function TeamInviteButton({ team }) {
       <Fab
         onClick={() => {
           setDialogOpen(true);
+          setInvitedMailAdress('');
+          setMailError('');
         }}
         color="primary"
         aria-label="add"
@@ -48,12 +65,16 @@ function TeamInviteButton({ team }) {
           </DialogContentText>
           <TextField
             autoFocus
+            required
             margin="dense"
             id="name"
             label="Email Address"
             type="email"
             fullWidth
             variant="standard"
+            error={!!mailError}
+            helperText={mailError}
+            onChange={(evt) => { setInvitedMailAdress(evt.target.value); setMailError(''); }}
           />
         </DialogContent>
         <DialogActions>
@@ -63,6 +84,21 @@ function TeamInviteButton({ team }) {
           </Button>
         </DialogActions>
       </Dialog>
+      <Snackbar
+        open={open}
+        autoHideDuration={3000}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+      >
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          {'Invite to '}
+          {invitedMailAdress}
+          {' sent successfully!'}
+        </Alert>
+      </Snackbar>
     </div>
 
   );

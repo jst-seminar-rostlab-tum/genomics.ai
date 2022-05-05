@@ -8,11 +8,14 @@ import styles from './institutionCard.module.css';
 
 import { useAuth } from 'shared/context/authContext';
 
-function InstitutionCard({ institution, onLeft }) {
+function InstitutionCard({
+  institution, onLeft, replaceTrailing, disableLink,
+}) {
   const [user] = useAuth();
 
   const history = useHistory();
   const navigateToInstitution = () => {
+    if (disableLink) return;
     history.push(`/sequencer/institutions/${institution.id}`);
   };
 
@@ -26,11 +29,11 @@ function InstitutionCard({ institution, onLeft }) {
       enforceImage
       nextToTitle={(
         <span className={styles.accessRightIndicator}>
-          {adminIds.indexOf(user.id) !== -1 ? 'admin' : 'member'}
+          {adminIds.indexOf(user._id) !== -1 ? 'admin' : 'member'}
         </span>
       )}
-      trailing={[
-        adminIds.indexOf(user.id) !== -1 ? (
+      trailing={replaceTrailing ? replaceTrailing(institution) : [
+        adminIds.indexOf(user._id) !== -1 ? (
           <Button
             key="settings"
             endIcon={<SettingsIcon />}

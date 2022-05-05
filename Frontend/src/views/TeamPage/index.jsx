@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import HeaderView from 'components/general/HeaderView';
-import TeamJobList from 'components/teams/detail/TeamJobList';
+import TeamProjectList from 'components/teams/detail/TeamProjectList';
 import TeamMemberList from 'components/teams/detail/TeamMemberList';
 import TeamAdminHeaderRight from 'components/teams/detail/TeamAdminHeaderRight';
 import TeamUserHeaderRight from 'components/teams/detail/TeamUserHeaderRight';
@@ -12,7 +12,7 @@ import TeamInviteButton from 'components/teams/detail/TeamInviteButton';
 import TextField from '@mui/material/TextField';
 import { useAuth } from 'shared/context/authContext';
 
-export default function TeamPage({ sidebarShown }) {
+export default function TeamPage() {
   const { id } = useParams();
   const [team, setTeam] = useState({});
   const [user] = useAuth();
@@ -38,11 +38,12 @@ export default function TeamPage({ sidebarShown }) {
       .then((newInstitution) => setInstitution(newInstitution));
   }, [team, setInstitution]);
 
-  const isAdmin = team.adminIds ? team.adminIds.includes(user.id) : false;
+  const isAdmin = team.adminIds ? team.adminIds.includes(user._id) : false;
+
+  if (!team) return <></>;
 
   return (
     <HeaderView
-      sidebarShown={sidebarShown}
       title={team.name}
       rightOfTitle={(
         <TeamHeaderOptions
@@ -77,12 +78,12 @@ export default function TeamPage({ sidebarShown }) {
       <section>
         <h2>GeneMapper</h2>
         <hr />
-        <TeamJobList team={team} forPart="geneMapper" />
+        <TeamProjectList team={team} forPart="geneMapper" />
       </section>
       <section>
         <h2>GeneCruncher</h2>
         <hr />
-        <TeamJobList team={team} forPart="geneCruncher" />
+        <TeamProjectList team={team} forPart="geneCruncher" />
       </section>
       <section>
         <h2>Members</h2>
@@ -93,6 +94,20 @@ export default function TeamPage({ sidebarShown }) {
             setTeam({
               ...team,
               memberIds: team.memberIds.filter((mId) => mId !== member.id),
+              adminIds: team.adminIds.filter((aId) => aId !== member.id),
+            });
+          }}
+          onMakeAdmin={(_team, member) => {
+            setTeam({
+              ...team,
+              memberIds: team.memberIds.filter((mId) => mId !== member.id),
+              adminIds: [...team.adminIds, member.id],
+            });
+          }}
+          onRemoveAdmin={(_team, member) => {
+            setTeam({
+              ...team,
+              memberIds: [...team.memberIds, member.id],
               adminIds: team.adminIds.filter((aId) => aId !== member.id),
             });
           }}

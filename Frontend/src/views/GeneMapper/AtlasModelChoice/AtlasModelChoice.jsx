@@ -8,6 +8,7 @@ import { useHistory} from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import ProjectMock from "shared/services/mock/projects"
 
+import Clear from '@mui/icons-material/Clear';
 import CancelIcon from '@mui/icons-material/Cancel';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
@@ -32,6 +33,7 @@ function AtlasModelChoice({
     useEffect(() => {
         AtlasService.getAtlases().then(a => {
             a.map(a => {
+                //adjust numberOfCells
                 let numberOfCells = a.numberOfCells;
                 let dimension = ""
                 if (numberOfCells > 1000000000) {
@@ -42,12 +44,21 @@ function AtlasModelChoice({
                     dimension = "M";
                 } else if (numberOfCells > 1000) {
                     numberOfCells = Math.round(numberOfCells / 1000);
-                    console.log(numberOfCells);
-                    numberOfCells = Math.round(numberOfCells);
-                    console.log(numberOfCells);
                     dimension = "K"
                 }
                 a.numberOfCells = numberOfCells + dimension;
+
+                //adjust modalities
+                if (!(typeof a.modalities === "string")) {
+                    //modalities ist array of strings
+                    if (a.modalities.length == 0) {
+                        a.modalities = "None";
+                    } else if (a.modalities.length == 1) {
+                        a.modalities = a.modalities[0];
+                    } else {
+                        a.modalities = a.modalities[0] + ', ...';
+                    }
+                }
                 return a;
             })
             setAtlases(a);
@@ -57,10 +68,9 @@ function AtlasModelChoice({
 
     return (
         <div>
-            <Typography sx={headerStyle}>
-                Pick an Atlas <HelpIcon sx={{color:"#B1CBDE"}} />
+            <Typography variant="h5" sx={{ fontWeight: 'bold', pb: "1em", mt: "1.5em"}}>
+                Pick an Atlas 
             </Typography>
-            <hr className={styles.line}/>
 
             <Grid container spacing={2} width="100%" overflow="auto" wrap="nowrap">
                 {
@@ -69,7 +79,7 @@ function AtlasModelChoice({
                             <AtlasCardSelect width="225px"
                                 height="97%"
                                 title={a.name}
-                                modalities={a.modalities.reduce((acc, v) => acc + ', ' + v)}
+                                modalities={a.modalities}
                                 cellsInReference={a.numberOfCells}
                                 species={a.species}
                                 imgLink={a.previewPictureURL}
@@ -82,10 +92,9 @@ function AtlasModelChoice({
                 }
             </Grid>
             
-            <Typography sx={headerStyle} marginTop="20px">
-                Pick a Model <HelpIcon sx={{color:"#B1CBDE"}} />
+            <Typography variant="h5" sx={{ fontWeight: 'bold', pb: "1em" }} marginTop="32px">
+                Pick a Model
             </Typography>
-            <hr className={styles.line}/>
 
             <Grid container spacing={2} width="100%" overflow="auto" wrap="nowrap">
             {
@@ -102,9 +111,9 @@ function AtlasModelChoice({
                 </Grid>)
             }
             </Grid>
-            <Stack direction='row' justifyContent='space-between' sx={{ marginTop:'20px'}}>
+            <Stack direction='row' justifyContent='space-between' sx={{ marginTop:'20px', marginBottom: "3em"}}>
                 <CustomButton type='tertiary' onClick={() => history.push(`${path}`)}>
-                <CancelIcon/>&nbsp; Cancel
+                <Clear/>&nbsp; Cancel
                 </CustomButton>
                 <CustomButton type='primary' disabled={!selectedAtlas || !selectedModel} onClick={() => setActiveStep(1)}>
                     Confirm&nbsp;<ArrowForwardIcon/>

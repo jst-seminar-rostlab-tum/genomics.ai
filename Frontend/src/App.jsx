@@ -33,6 +33,7 @@ function App() {
           <Route path="/password_reset" render={() => <PasswordResetPage />} />
           <Route path="/result" render={() => <VisualizationPage />} />
           <Route path="/explore" render={() => <Explore />} />
+
         </Switch>
       </HashRouter>
     </ThemeProvider>

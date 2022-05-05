@@ -2,83 +2,25 @@ import * as d3 from "d3";
 import * as cons from "./constants";
 import { zoomM } from "./newZoom";
 import "./tooltip.css";
-import { addBarPlot } from "./barChart"
-
-//TODO: Refactor coloring functions
-
-const getMin = (w, h) => {
-  return d3.min([h, w]);
-}
+import { addBarPlotCell, addBarPlotBatch } from "./barChart"
+import {getColoringModes, setColoring} from "./coloring"
 
 // //Reference before and after
 // const refAfter = (cells) =>{
 //   after(cells, "is_reference", "No");
 // }
 
-const listColoringDomain = (data, mode) => {
-  let coloringDomain = data.map(x => x[mode]).filter((x, i, a) => a.indexOf(x) == i);
-  return coloringDomain;
-}
-
 //Create a color scale based on the chosen mode and its values
-const setColoring = (mode, data) => {
-  let colorScale;
-  if (!parseFloat(data[0][mode])) {
-    let colorDomain = listColoringDomain(data, mode).sort();
-    colorScale =
-      d3.scaleOrdinal()
-        .domain(colorDomain)
-        .range(cons.colors.slice(0, colorDomain.length));
 
-  }
-  else {
-    var colorDomain = data.map(d => parseFloat(d[mode]));
-    colorScale =
-      d3.scaleLinear()
-        .domain([d3.min(colorDomain), d3.max(colorDomain)])
-        .range(cons.gradientColors);
-
-  }
-  return colorScale;
+const getMin = (w, h) => {
+  return d3.min([h, w]);
 }
 
 const addGroup = (svg, id) => {
   return svg.append('g').attr('id', `${id}`);
 };
 
-
-//Get the possible color modes with their values
-const getColoringModes = (data) =>
-  Object.assign({},
-    ...(Object.keys(data[0])
-      .map(d => d.trim())
-      .filter(d => (d !== "x" && d !== "y" && d !== ""))
-      .map(d => {
-        var a = {};
-        if (parseFloat(data[0][d])) {
-          const max = d3.max(data.map(val => parseFloat(val[d])));
-          const min = d3.min(data.map(val => parseFloat(val[d])));
-          a[d] = Object.assign({}, ...listColoringDomain(data, d).map(val => parseFloat(val)).filter(val => val == max || val == min).sort((a, b) => a - b)
-            .map((d, i) => {
-              const obj = new Object();
-              obj[d] = cons.gradientColors[i];
-              return obj;
-            }));
-          return a;
-        }
-        const colorDomain = listColoringDomain(data, d).sort()
-          .map((d, i) => {
-            const obj = new Object();
-            obj[d] = cons.colors[i];
-            return obj;
-          });
-        a[d] = Object.assign({},
-          ...colorDomain)
-        return a;
-      })));
-
 export class UmapVisualization2 {
-
 
   constructor(container, data, containerBar) {
     d3.select(container).selectAll("*").remove();
@@ -89,7 +31,11 @@ export class UmapVisualization2 {
     this.tooltip = d3.select(container).append("div");
     this.mode = undefined;
     //TODO: add if for when the atlas doesn't contain cell_type
-    this.barChart = addBarPlot(containerBar, data);
+    this.barChartBatch = addBarPlotBatch(containerBar, data);
+    if(Object.keys(this.coloringModes).includes("cell_type")){
+      d3.select(containerBar).append("div");
+      this.barChartCell = addBarPlotCell(containerBar, data);
+    }
     this.data = data;
   };
 
@@ -119,8 +65,10 @@ export class UmapVisualization2 {
 
   //Sizing and resizing the cells
   resize(w, h) {
+
     const min = getMin(w, h);
     const data = this.data;
+    const r = 0.003 * min;
 
     const xScaleHelper = d3.scaleLinear()
       .domain([d3.min(data.map(d => parseFloat(d.x))), d3.max(data.map(d => parseFloat(d.x)))])
@@ -140,6 +88,9 @@ export class UmapVisualization2 {
     this.cells
       .attr("cx", d => xScale(parseFloat(d.x)))
       .attr("cy", d => yScale(parseFloat(d.y)))
+
+      this.cells
+      .attr("r", r);
 
 
     return [xScale, yScale];
@@ -174,7 +125,6 @@ export class UmapVisualization2 {
         .style("fill", (d) => (_this.mode ? _this.colorScale(d[_this.mode]) : "black"))
         .style("opacity", cons.originalOpacity)
 
-    // after(this.cells, "cell_type", "Pancreas Beta")
 
     //Setting coordinates
     const [xScale, yScale] = this.resize(w, h);
@@ -195,7 +145,6 @@ export class UmapVisualization2 {
           .attr('r', r * 1.5)
           .style("stroke", "black")
           .style("opacity", 1)
-
         if (!_this.mode) return;
         const att = d[_this.mode];
         const xPos = parseFloat(m.x) + 5;
@@ -219,14 +168,6 @@ export class UmapVisualization2 {
           .style("stroke", "none")
           .style("opacity", 0.8)
       })
-    // .on('click', function (d, i){
-    //     const showMore = document.getElementById("moreVisul");
-    //     if(showMore.style.display === 'none') {
-    //         showMore.style.display = 'block';
-    //     } else {
-    //         showMore.style.display = 'none';
-    //     }
-    // });
 
 
     //Pan and mouse zoom

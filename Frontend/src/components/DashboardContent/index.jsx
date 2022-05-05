@@ -24,42 +24,34 @@ const DashboardContent = () => {
 
   return (
     <div>
-      <Sidebar
-        toggleSidebar={toggleSidebar}
-        sidebarShown={sidebarShown}
-        user={user}
-        setUser={setUser}
-      />
+      <Sidebar setUser={setUser} />
       <Switch>
         <Route exact path={`${path}/`}>
-          <Redirect to={`${url}/dashboard`} />
-        </Route>
-        <Route path={`${path}/dashboard`}>
-          <Dashboard sidebarShown={sidebarShown} />
-        </Route>
-
-        <Route path={`${path}/teams`}>
-          <TeamOverview sidebarShown={sidebarShown} />
-        </Route>
-
-        <Route path={`${path}/institutions`}>
-          <InstitutionOverview sidebarShown={sidebarShown} />
+          <Redirect to={`${url}/genemapper`} />
         </Route>
 
         <Route path={`${path}/genemapper`}>
           <GeneMapper sidebarShown={sidebarShown} />
         </Route>
 
+        <Route path={`${path}/teams`}>
+          <TeamOverview />
+        </Route>
+
+        <Route path={`${path}/institutions`}>
+          <InstitutionOverview />
+        </Route>
+
         <Route path={`${path}/users`}>
-          <UserProfile sidebarShown={sidebarShown} />
+          <UserProfile />
         </Route>
 
         <Route path={`${path}/documentation`}>
-          <Documentation sidebarShown={sidebarShown} />
+          <Documentation />
         </Route>
 
         <Route path={`${path}/help`}>
-          <Help sidebarShown={sidebarShown} />
+          <Help />
         </Route>
 
         <Route path={`${path}/search/:searchCategory`}>
@@ -68,8 +60,7 @@ const DashboardContent = () => {
 
         <Route path={`${path}/settings`}>
           <Settings
-            className={sidebarShown ? styles.subpage : styles.subpageSidebarCollapsed}
-            sidebarShown={sidebarShown}
+            className={styles.subpage}
           />
         </Route>
       </Switch>

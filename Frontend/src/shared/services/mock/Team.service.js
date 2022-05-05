@@ -1,43 +1,68 @@
-import MemberService from './Member.service';
+import MemberService from '../Member.service';
+import ProfileService from '../Profile.service';
 
 let mockTeams = [
   {
     id: '1',
     name: 'Biotechnology Team',
-    description: 'Biotechnology Team bla bla',
+    description: 'The Biotechnology Team works in integration of natural sciences and engineering sciences in order to achieve the application of organisms, cells, parts thereof and molecular analogues for products and services.',
     adminIds: [6, 7],
     invitedMemberIds: [],
-    memberIds: [1, 2, 3, 4, 5],
+    memberIds: ['626bdb1ed76c8b968a50f833', 2, 3, 4, 5],
     projects: [],
     visibility: 'public',
-    institutionId: 1,
+    institutionId: '1',
+  },
+  {
+    id: '2',
+    name: 'Genomics Team',
+    description: 'The Genomics Team works in field of biology focusing on the structure, function, evolution, mapping, and editing of genomes.',
+    adminIds: ['626bdb1ed76c8b968a50f833'],
+    invitedMemberIds: [],
+    memberIds: [2, 3, 4, 5],
+    projects: [],
+    visibility: 'public',
+    institutionId: '3',
+  },
+  {
+    id: '3',
+    name: 'Heinig Lab',
+    description: 'Heinig Lab bla bla',
+    adminIds: ['626bdb1ed76c8b968a50f833'],
+    invitedMemberIds: [],
+    memberIds: [3, 4, 5],
+    projects: [],
+    visibility: 'private',
+    institutionId: '3',
   },
 ];
-let runningId = 1;
+let runningId = 2;
 
 const TeamService = {
   async leaveTeam(team) {
     mockTeams = mockTeams.filter((t) => t.id !== team.id);
   },
 
-  async createTeam(name, description) {
+  async createTeam(name, description, institutionId) {
     // fake effect
     await new Promise((resolve) => setTimeout(resolve, 1000));
     runningId += 1;
-    mockTeams.push(
-      {
-        id: runningId.toString(),
-        name,
-        country: null,
-        description,
-        avatarUrl: null,
-        backgroundPictureURL: null,
-        adminIds: [1], // TODO: make sure that the backend puts my user ID here
-        memberIds: [],
-        visibility: 'private',
-      },
-    );
-    return mockTeams[mockTeams.length - 1];
+    const user = await ProfileService.getProfile();
+    const newTeam = {
+      id: runningId.toString(),
+      name,
+      country: null,
+      description,
+      avatarUrl: null,
+      backgroundPictureURL: null,
+      adminIds: [user.id], // TODO: make sure that the backend puts my user ID here
+      memberIds: [],
+      invitedMemberIds: [],
+      visibility: 'private',
+      institutionId,
+    };
+    mockTeams = [...mockTeams, newTeam];
+    return newTeam;
   },
 
   async removeMemberFromTeam(teamId, memberId) {
@@ -72,6 +97,11 @@ const TeamService = {
     return mockTeams;
   },
 
+  async getMyAdminTeams() {
+    const myTeams = await TeamService.getMyTeams();
+    const user = await ProfileService.getProfile();
+    return myTeams.filter((t) => t.adminIds.includes(user.id));
+  },
   getTeams: async (params) => {
     let preparedTeams = mockTeams.map(
       (team) => ({ ...team, title: team.name }
@@ -82,7 +112,16 @@ const TeamService = {
         (team) => team.name.toLowerCase().includes(params.keyword.toLowerCase()),
       );
     }
-    return preparedTeams.sort((a, b) => (`${a.title}`).localeCompare(b.title));
+    if (params.visibility) {
+      preparedTeams = preparedTeams.filter(
+        (team) => team.visibility.toUpperCase().includes(params.visibility),
+      );
+    }
+
+    if (!params.sortBy || params.sortBy === 'name') {
+      preparedTeams = preparedTeams.sort((a, b) => (`${a.name}`).localeCompare(b.name));
+    }
+    return preparedTeams;
   },
 
 };

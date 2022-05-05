@@ -2887,7 +2887,7 @@ atob@^2.1.2:
   resolved "https://registry.npmjs.org/atob/-/atob-2.1.2.tgz"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
 
-attr-accept@^2.0.0, attr-accept@^2.2.2:
+attr-accept@^2.0.0:
   version "2.2.2"
   resolved "https://registry.npmjs.org/attr-accept/-/attr-accept-2.2.2.tgz"
   integrity sha512-7prDjvt9HmqiZ0cl5CRjtS84sEyhsHP2coDkaZKRKVfCDo9s7iw7ChVmar78Gu9pC4SoR/28wFu/G5JJhTnqEg==
@@ -5619,13 +5619,6 @@ file-selector@^0.1.12:
   dependencies:
     tslib "^2.0.1"
 
-file-selector@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/file-selector/-/file-selector-0.4.0.tgz#59ec4f27aa5baf0841e9c6385c8386bef4d18b17"
-  integrity sha512-iACCiXeMYOvZqlF1kTiYINzgepRBymz1wwjiuup9u9nayhb6g4fSwiyJ/6adli+EPwrWtpgQAh2PoS7HukEGEg==
-  dependencies:
-    tslib "^2.0.3"
-
 file-uri-to-path@1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/file-uri-to-path/-/file-uri-to-path-1.0.0.tgz"
@@ -7826,15 +7819,6 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
-material-ui-dropzone@^3.5.0:
-  version "3.5.0"
-  resolved "https://registry.npmjs.org/material-ui-dropzone/-/material-ui-dropzone-3.5.0.tgz"
-  integrity sha512-3BC6mz/4OEM4ZpbqMfuMN065JQyqfEbifT6/VzIua7Zj4b0DaR5YPCgpN+fL/e8yBgTs9MGBZJQY06p5pfKwvw==
-  dependencies:
-    "@babel/runtime" "^7.4.4"
-    clsx "^1.0.2"
-    react-dropzone "^10.2.1"
-
 md5.js@^1.3.4:
   version "1.3.5"
   resolved "https://registry.npmjs.org/md5.js/-/md5.js-1.3.5.tgz"
@@ -8105,6 +8089,15 @@ ms@2.1.2, ms@^2.1.1:
   version "2.1.2"
   resolved "https://registry.npmjs.org/ms/-/ms-2.1.2.tgz"
   integrity sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==
+
+mui-file-dropzone@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/mui-file-dropzone/-/mui-file-dropzone-4.0.1.tgz#59b759b5266d923b0579c918396b341bd77322e3"
+  integrity sha512-lbrXQICXwiOiSI2eDtBysVprZ2ZJUXnZ2ARX/FPn4A1ejj4Ta+mDf/6m1dTweVthvkAKUeCmvmgCqz092r7zzQ==
+  dependencies:
+    "@babel/runtime" "^7.4.4"
+    clsx "^1.0.2"
+    react-dropzone "^10.2.1"
 
 multicast-dns-service-types@^1.1.0:
   version "1.1.0"
@@ -9613,15 +9606,6 @@ prop-types@^15.6.2, prop-types@^15.7.2:
     object-assign "^4.1.1"
     react-is "^16.8.1"
 
-prop-types@^15.8.1:
-  version "15.8.1"
-  resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
-  integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
-  dependencies:
-    loose-envify "^1.4.0"
-    object-assign "^4.1.1"
-    react-is "^16.13.1"
-
 proxy-addr@~2.0.5:
   version "2.0.7"
   resolved "https://registry.npmjs.org/proxy-addr/-/proxy-addr-2.0.7.tgz"
@@ -9832,15 +9816,6 @@ react-dropzone@^10.2.1:
     file-selector "^0.1.12"
     prop-types "^15.7.2"
 
-react-dropzone@^12.0.5:
-  version "12.0.5"
-  resolved "https://registry.yarnpkg.com/react-dropzone/-/react-dropzone-12.0.5.tgz#f9b557484a8afd6267f670f96a770ddd3948838b"
-  integrity sha512-zUjZigD0VJ91CSm9T1h7ErxFReBLaa9sjS2dUL0+inb0RROZpSJTNDHPY1rrBES5V2NXhF8v0kghmaHc81BMFg==
-  dependencies:
-    attr-accept "^2.2.2"
-    file-selector "^0.4.0"
-    prop-types "^15.8.1"
-
 react-error-overlay@^6.0.9:
   version "6.0.9"
   resolved "https://registry.npmjs.org/react-error-overlay/-/react-error-overlay-6.0.9.tgz"
@@ -9851,7 +9826,14 @@ react-icons@^4.3.1:
   resolved "https://registry.npmjs.org/react-icons/-/react-icons-4.3.1.tgz"
   integrity sha512-cB10MXLTs3gVuXimblAdI71jrJx8njrJZmNMEMC+sQu5B/BIOmlsAjskdqpn81y8UBVEGuHODd7/ci5DvoSzTQ==
 
-react-is@^16.13.1, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1:
+react-image-crop@^10.0.0:
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/react-image-crop/-/react-image-crop-10.0.0.tgz#0d9c0a74b2aa1a6d856d9acb77d70c9d095ea45e"
+  integrity sha512-KyNIY66R6T5LqDKDivXcFkvgy6MOjRvZQxURQDhGfW5AFDx/Mw+I32kGlR8g4657ArxHAHKPFhNsao440yAdow==
+  dependencies:
+    clsx "^1.1.1"
+
+react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1:
   version "16.13.1"
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
