@@ -1,6 +1,8 @@
-import { Box, Button, Typography } from "@mui/material"
+import { Box, Button, Container, Typography } from "@mui/material"
+import { Modal } from "components/Modal"
 import { useEffect, useRef, useState } from "react"
 import { colors } from "shared/theme/colors"
+import { LearnMoreModelComponent } from "views/Explore/LearnMoreModel"
 
 // Outlined Button specific to Models and Atlases
 /**
@@ -36,6 +38,7 @@ export const ModelCardSelect = ({ width = "100%", height = "100%", title, descri
   const [hover, setHover] = useState(false)
   const ref = useRef()
   const [flexDir, setFlexDir] = useState("column")
+  const [modelInfoOpen, setModelInfoOpen] = useState(false);
 
   useEffect(() => {
 
@@ -92,7 +95,7 @@ export const ModelCardSelect = ({ width = "100%", height = "100%", title, descri
               }}  
               >
               <OutlinedButtonSelect content="Select" onSelect={() => onSelect(modelObject)}/>
-              <OutlinedButtonSelect content="Learn More"/>
+              <OutlinedButtonSelect content="Learn More" onSelect={() => setModelInfoOpen(true)}/>
             </Box>
           </Box>
         }
@@ -131,6 +134,15 @@ export const ModelCardSelect = ({ width = "100%", height = "100%", title, descri
           }}>{description}</Typography>
       </Box>
       </Box>
+      <Modal
+        isOpen={modelInfoOpen}
+        setOpen={setModelInfoOpen}
+        children={(
+          <Container>
+            <LearnMoreModelComponent id={modelObject._id} />
+          </Container>
+      )}
+      />
     </Box>
   )
 }

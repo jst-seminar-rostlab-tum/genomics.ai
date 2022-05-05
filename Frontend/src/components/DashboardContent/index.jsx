@@ -24,12 +24,7 @@ const DashboardContent = () => {
 
   return (
     <div>
-      <Sidebar
-        toggleSidebar={toggleSidebar}
-        sidebarShown={sidebarShown}
-        user={user}
-        setUser={setUser}
-      />
+      <Sidebar setUser={setUser} />
       <Switch>
         <Route exact path={`${path}/`}>
           <Redirect to={`${url}/genemapper`} />
@@ -40,23 +35,23 @@ const DashboardContent = () => {
         </Route>
 
         <Route path={`${path}/teams`}>
-          <TeamOverview sidebarShown={sidebarShown} />
+          <TeamOverview />
         </Route>
 
         <Route path={`${path}/institutions`}>
-          <InstitutionOverview sidebarShown={sidebarShown} />
+          <InstitutionOverview />
         </Route>
 
         <Route path={`${path}/users`}>
-          <UserProfile sidebarShown={sidebarShown} />
+          <UserProfile />
         </Route>
 
         <Route path={`${path}/documentation`}>
-          <Documentation sidebarShown={sidebarShown} />
+          <Documentation />
         </Route>
 
         <Route path={`${path}/help`}>
-          <Help sidebarShown={sidebarShown} />
+          <Help />
         </Route>
 
         <Route path={`${path}/search/:searchCategory`}>
@@ -65,8 +60,7 @@ const DashboardContent = () => {
 
         <Route path={`${path}/settings`}>
           <Settings
-            className={sidebarShown ? styles.subpage : styles.subpageSidebarCollapsed}
-            sidebarShown={sidebarShown}
+            className={styles.subpage}
           />
         </Route>
       </Switch>

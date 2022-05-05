@@ -29,6 +29,8 @@ export default function InstitutionCreationDialog({ open, handleClose, onCreated
     onCreated(newInstitution);
     setLoading(false);
     handleClose();
+    setName('');
+    setDescription('');
   }
 
   return (

@@ -5,7 +5,7 @@ import OpacityIcon from '@mui/icons-material/Opacity';
 import {
   Box, Collapse, IconButton, ListItem, ListItemButton, Typography,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { colors } from 'shared/theme/colors';
 
 const activatedColor = colors.primary['400'];
@@ -85,6 +85,25 @@ function GeneMapperCategories({
   const [coloredCategoryTitle, setColoredCategoryTitle] = useState(null);
   const [hiddenValue, setHiddenValue] = useState(null);
 
+  const handleSetColorMode = (colorMode) => {
+    setColoredCategoryTitle(colorMode);
+    setColorMode(colorMode);
+  };
+
+  useEffect(() => {
+    if (categories) {
+      const coloringModes = Object.keys(categories);
+
+      if (coloringModes.includes('cell_type')) {
+        handleSetColorMode('cell_type');
+      } else if (coloringModes.includes('batch')) {
+        handleSetColorMode('batch');
+      } else if (coloringModes.length) {
+        handleSetColorMode(coloringModes[0]);
+      }
+    }
+  }, [categories]);
+
   return (
     <>
       { categories
@@ -94,10 +113,7 @@ function GeneMapperCategories({
             title={title}
             values={values}
             colored={title === coloredCategoryTitle}
-            toggleColored={() => {
-              setColoredCategoryTitle(title);
-              setColorMode(title);
-            }}
+            toggleColored={() => handleSetColorMode(title)}
             hide={(value) => { hide(title, value); setHiddenValue(value); }}
             show={() => { show(); setHiddenValue(null); }}
             hiddenValue={hiddenValue}
