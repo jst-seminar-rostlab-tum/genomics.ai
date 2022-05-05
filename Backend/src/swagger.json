@@ -1304,7 +1304,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Matching users as json array"
+            "description": "Returned the user requested sucessfully!"
           },
           "400": {
             "description": "Failed. Bad post data."
