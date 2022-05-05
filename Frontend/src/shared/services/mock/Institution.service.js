@@ -95,16 +95,23 @@ const InstitutionService = {
   getInstitutionById: async (id) => InstitutionService.getInstitution(`${id}`),
 
   getInstitutions: async (params) => {
-    let preparedInstitution = mockInstitutions;
+    let preparedInstitution = mockInstitutions.map((institution) => ({
+      ...institution,
+      profilePictureURL: institution.avatarUrl,
+    }));
     if (params.keyword) {
       preparedInstitution = preparedInstitution.filter(
         (team) => team.name.toLowerCase().includes(params.keyword.toLowerCase()),
       );
     }
-    return preparedInstitution.sort((a, b) => (`${a.name}`).localeCompare(b.name));
+
+    if (!params.sortBy || params.sortBy === 'name') {
+      preparedInstitution = preparedInstitution.sort((a, b) => (`${a.name}`).localeCompare(b.name));
+    }
+    return preparedInstitution;
   },
 
-  getTeamsOfInstitutionById: async (id) => TeamService.getInstitutionTeams(+id)
+  getTeamsOfInstitutionById: async (id) => TeamService.getInstitutionTeams(id)
   ,
 
 };

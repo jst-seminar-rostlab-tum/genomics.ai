@@ -24,6 +24,17 @@ let mockTeams = [
     visibility: 'public',
     institutionId: '3',
   },
+  {
+    id: '3',
+    name: 'Heinig Lab',
+    description: 'Heinig Lab bla bla',
+    adminIds: ['626bdb1ed76c8b968a50f833'],
+    invitedMemberIds: [],
+    memberIds: [3, 4, 5],
+    projects: [],
+    visibility: 'private',
+    institutionId: '3',
+  },
 ];
 let runningId = 2;
 
@@ -100,7 +111,16 @@ const TeamService = {
         (team) => team.name.toLowerCase().includes(params.keyword.toLowerCase()),
       );
     }
-    return preparedTeams.sort((a, b) => (`${a.title}`).localeCompare(b.title));
+    if (params.visibility) {
+      preparedTeams = preparedTeams.filter(
+        (team) => team.visibility.toUpperCase().includes(params.visibility),
+      );
+    }
+
+    if (!params.sortBy || params.sortBy === 'name') {
+      preparedTeams = preparedTeams.sort((a, b) => (`${a.name}`).localeCompare(b.name));
+    }
+    return preparedTeams;
   },
 
 };
