@@ -1286,6 +1286,35 @@
         }
       }
     },
+    "/users/{id}": {
+      "get": {
+        "summary": "Get user by id",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Matching users as json array"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      }
+    },
     "/institutions/:id": {
       "get": {
         "summary": "Get institution with id",
