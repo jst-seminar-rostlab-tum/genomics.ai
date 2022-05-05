@@ -171,7 +171,7 @@ export default function ProjectBarCard({
             >
               {projectTeam?.name
                 ? (
-                  <CustomButton type="tertiary" sx={{ mr: 2 }} onClick={() => history.push(`/sequencer/teams/${projectTeam._id || projectTeam.id}`)}>
+                  <CustomButton type="tertiary" sx={{ mr: 1 }} onClick={() => history.push(`/sequencer/teams/${projectTeam._id || projectTeam.id}`)}>
                     <Typography>
                       {projectTeam.name}
                     </Typography>
