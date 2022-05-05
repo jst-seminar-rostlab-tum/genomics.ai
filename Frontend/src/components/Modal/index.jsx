@@ -3,10 +3,11 @@ import { Dialog, DialogTitle } from "@mui/material"
 /**
  * Modal
  * @param isOpen boolean state passed as prop, if false returns null
+ * @param setOpen function to set boolean state of isOpen
  * @param children mui dialog title / dialog content / dialog actions children component
  */
-const Modal = ({
-  isOpen, children
+export const Modal = ({
+  isOpen, setOpen, children
 }) => {
   return (
     <Dialog
@@ -40,5 +41,3 @@ export const ModalTitle = ({ children }) => {
     </DialogTitle>
   )
 }
-
-export default Modal

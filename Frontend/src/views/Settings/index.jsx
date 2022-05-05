@@ -147,7 +147,7 @@ function Settings({ sidebarShown }) {
         direction="column"
         sx={{
           paddingTop: '100px',
-          paddingLeft: paddingL,
+          paddingLeft: '130px',
           display: 'flex',
           width: '100%',
           justifyContent: 'center',

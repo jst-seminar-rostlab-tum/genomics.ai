@@ -4,15 +4,13 @@ import Uploader from 'components/Uploader';
 import StatusQueue from 'components/StatusQueue';
 import styles from './dashboard.module.css';
 
-function Dashboard({ sidebarShown }) {
-  const paddingL = useCallback(() => (sidebarShown ? '100px' : '350px'), [sidebarShown]);
-
+function Dashboard() {
   return (
     <Stack
       direction="column"
       sx={{
         paddingTop: '100px',
-        paddingLeft: paddingL,
+        paddingLeft: '100px',
         display: 'flex',
         width: '100%',
         justifyContent: 'center',
@@ -33,7 +31,6 @@ function Dashboard({ sidebarShown }) {
           <StatusQueue />
         </Container>
       </Stack>
-
     </Stack>
   );
 }

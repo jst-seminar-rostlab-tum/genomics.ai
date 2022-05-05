@@ -16,11 +16,16 @@ import graphic1 from 'assets/landing-illustrations/science.png';
 import graphic2 from 'assets/landing-illustrations/upload.png';
 import graphic3 from 'assets/landing-illustrations/processing.png';
 import graphic4 from 'assets/landing-illustrations/results.png';
+import CustomButton from "components/CustomButton";
+import Input from 'components/Input/Input'
+import { useHistory } from "react-router-dom";
 
-const Home = ({ setUser }) => {
-
+const Home = () => {
+  
   const [isLoginFormVisible, setLoginFormVisible] = useState(false);
   const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
+
+  const history = useHistory();
 
   const onLoginClicked = useCallback(() => {
     console.log("login")
@@ -54,18 +59,18 @@ const Home = ({ setUser }) => {
   return (
     <Box style={{ overflow: "hidden" }} sx={{ position: "relative" }}>
 
-      {isLoginFormVisible && <LoginForm setUser={setUser} visible={isLoginFormVisible} onClose={onLoginFormClosed} />}
-      {isRegistrationFormVisible && <RegistrationForm setUser={setUser} visible={isRegistrationFormVisible} onClose={setRegistrationFormVisible} />}
+      {isLoginFormVisible && <LoginForm visible={isLoginFormVisible} onClose={onLoginFormClosed} />}
+      {isRegistrationFormVisible && <RegistrationForm visible={isRegistrationFormVisible} onClose={setRegistrationFormVisible} />}
 
       {/* STARTING PAGE */}
       <Box sx={{ width: window.width, bgcolor: colors.primary[800], position: "relative", paddingBottom: "4em" }}>
         {/* NAVBAR HERE */}
         {/* the Box that contains the Navbar will collapse, so we reset the height */}
-        <Box sx={{ height: navbarHeight, position: "relative" }}>
-          <Navbar setUser={setUser} setNavbarHeight={setNavbarHeight} onLoginClicked={onLoginClicked} onSignUpClicked={onSignUpClicked} executeScroll={executeScroll} />
+        <Box sx={{height: navbarHeight, position: "relative"}}>
+          <Navbar position="fixed" setNavbarHeight={setNavbarHeight} onLoginClicked={onLoginClicked} onSignUpClicked={onSignUpClicked} executeScroll={executeScroll} />
         </Box>
         {/* IOS WINDOW */}
-        <WindowiOS />
+        <WindowiOS onSignUpClicked={onSignUpClicked} />
       </Box>
       {/* the Eclipse */}
       <Box
@@ -100,8 +105,7 @@ const Home = ({ setUser }) => {
             <Box sx={{ width: { xs: "100%", sm: "50%", md: "50%", lg: "50%", xl: "50%" } }}>
               <Typography fontSize="1.2em" fontWeight="bold">genomics.ai</Typography>
               <Typography margin="2em 0 2em 0">We help you visualize all of your single-cell sequencing data in a fast and easy way with the help of neural networks.</Typography>
-              {/* WILL BE REPLACED BY FUTURE BUTTONS */}
-              <Button variant="contained">Explore</Button>
+              <CustomButton onClick={()=>history.push('/explore')}>Explore</CustomButton>
             </Box>
           </Box>
         </Box>
@@ -180,14 +184,14 @@ const Home = ({ setUser }) => {
           }}>
             <Stack sx={{ width: "80%", margin: "auto" }} direction="column" spacing={4}>
               <Stack direction="row" justifyContent="space-between" spacing={2}>
-                {/* TODO replace with future textfields */}
-                <TextField fullWidth id="email" label="Email" type="email" variant="standard" required />
-                <TextField fullWidth id="first-name" label="First Name" type="text" variant="standard" required />
-                <TextField fullWidth id="last-name" label="Last Name" type="text" variant="standard" required />
+                <Input isRequired label="Email" />
+                <Input isRequired label="First Name" />
+                <Input isRequired label="Last Name" />
               </Stack>
-              <TextareaAutosize aria-label="message" placeholder="Message" minRows={5} sx={{ width: "80%", maxWidth: "80%" }} />
-              {/* TODO Replace with future buttons */}
-              <Button variant="contained" sx={{ borderRadius: "20px", width: "20%", alignSelf: "center", backgroundColor: colors.primary[400] }}>Send</Button>
+              <Input isRequired label="Message" multiline maxLength={1000} />
+              <Box sx={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
+                <CustomButton>Send</CustomButton>
+              </Box>
             </Stack>
           </Box>
         </Box>

@@ -70,7 +70,7 @@ function LoginForm(props) {
     localStorage.setItem('user', JSON.stringify(data.user));
     onClose();
     await setUser(data.user);
-    history.push('/sequencer/dashboard');
+    history.push('/sequencer/genemapper');
   }
 
   function onFailedLogin(code) {
@@ -104,9 +104,10 @@ function LoginForm(props) {
         password: loginDetails.password,
       }),
     };
+    console.log(BACKEND_ADDRESS)
     fetch(`${BACKEND_ADDRESS}/auth`, loginRequest)
-      .then((response) => {
-        setLoading(false);
+    .then((response) => {
+      setLoading(false);
         setSnackbarVisible(true);
         if (response.status !== 200) {
           onFailedLogin(response.status);

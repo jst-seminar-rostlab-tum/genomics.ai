@@ -11,7 +11,7 @@ let mockTeams = [
     memberIds: ['626bdb1ed76c8b968a50f833', 2, 3, 4, 5],
     projects: [],
     visibility: 'public',
-    institutionId: '2',
+    institutionId: '1',
   },
   {
     id: '2',
@@ -22,6 +22,17 @@ let mockTeams = [
     memberIds: [2, 3, 4, 5],
     projects: [],
     visibility: 'public',
+    institutionId: '3',
+  },
+  {
+    id: '3',
+    name: 'Heinig Lab',
+    description: 'Heinig Lab bla bla',
+    adminIds: ['626bdb1ed76c8b968a50f833'],
+    invitedMemberIds: [],
+    memberIds: [3, 4, 5],
+    projects: [],
+    visibility: 'private',
     institutionId: '3',
   },
 ];
@@ -101,7 +112,16 @@ const TeamService = {
         (team) => team.name.toLowerCase().includes(params.keyword.toLowerCase()),
       );
     }
-    return preparedTeams.sort((a, b) => (`${a.title}`).localeCompare(b.title));
+    if (params.visibility) {
+      preparedTeams = preparedTeams.filter(
+        (team) => team.visibility.toUpperCase().includes(params.visibility),
+      );
+    }
+
+    if (!params.sortBy || params.sortBy === 'name') {
+      preparedTeams = preparedTeams.sort((a, b) => (`${a.name}`).localeCompare(b.name));
+    }
+    return preparedTeams;
   },
 
 };

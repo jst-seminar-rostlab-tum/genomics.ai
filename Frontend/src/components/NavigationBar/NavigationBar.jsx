@@ -82,7 +82,7 @@ function NavigationBar({ sidebarShown }) {
             src={profiledefault}
             style={{ height: '40px', paddingLeft: '15px' }}
           />
-          {dropDown && <SettingsDropdown setUser={setUser} />}
+          {dropDown && <SettingsDropdown />}
         </li>
 
       </nav>
