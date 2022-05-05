@@ -4,12 +4,15 @@ import './index.css';
 import { CssBaseline } from '@mui/material';
 import App from './App';
 import { AuthProvider } from 'shared/context/authContext';
+import { SubmissionProgressProvider } from 'shared/context/submissionProgressContext';
 
 ReactDOM.render(
   <>
     <CssBaseline />
     <AuthProvider>
-      <App />
+      <SubmissionProgressProvider>
+        <App />
+      </SubmissionProgressProvider>
     </AuthProvider>
   </>,
   document.getElementById('root'),

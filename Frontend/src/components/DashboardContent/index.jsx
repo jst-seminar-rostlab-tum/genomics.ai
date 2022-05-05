@@ -6,6 +6,7 @@ import Sidebar from '../Sidebar';
 import Dashboard from 'views/Dashboard';
 import TeamOverview from 'views/TeamOverview';
 import InstitutionOverview from 'views/InstitutionOverview';
+import GeneMapper from 'views/GeneMapper';
 import UserProfile from 'views/UserProfile';
 import Documentation from 'views/Documentation';
 import Settings from 'views/Settings';
@@ -23,38 +24,34 @@ const DashboardContent = () => {
 
   return (
     <div>
-      <Sidebar
-        toggleSidebar={toggleSidebar}
-        sidebarShown={sidebarShown}
-        user={user}
-        setUser={setUser}
-      />
+      <Sidebar setUser={setUser} />
       <Switch>
         <Route exact path={`${path}/`}>
-          <Redirect to={`${url}/dashboard`} />
+          <Redirect to={`${url}/genemapper`} />
         </Route>
-        <Route path={`${path}/dashboard`}>
-          <Dashboard sidebarShown={sidebarShown} />
+
+        <Route path={`${path}/genemapper`}>
+          <GeneMapper sidebarShown={sidebarShown} />
         </Route>
 
         <Route path={`${path}/teams`}>
-          <TeamOverview sidebarShown={sidebarShown} />
+          <TeamOverview />
         </Route>
 
         <Route path={`${path}/institutions`}>
-          <InstitutionOverview sidebarShown={sidebarShown} />
+          <InstitutionOverview />
         </Route>
 
         <Route path={`${path}/users`}>
-          <UserProfile sidebarShown={sidebarShown} />
+          <UserProfile />
         </Route>
 
         <Route path={`${path}/documentation`}>
-          <Documentation sidebarShown={sidebarShown} />
+          <Documentation />
         </Route>
 
         <Route path={`${path}/help`}>
-          <Help sidebarShown={sidebarShown} />
+          <Help />
         </Route>
 
         <Route path={`${path}/search/:searchCategory`}>
@@ -63,8 +60,7 @@ const DashboardContent = () => {
 
         <Route path={`${path}/settings`}>
           <Settings
-            className={sidebarShown ? styles.subpage : styles.subpageSidebarCollapsed}
-            sidebarShown={sidebarShown}
+            className={styles.subpage}
           />
         </Route>
       </Switch>

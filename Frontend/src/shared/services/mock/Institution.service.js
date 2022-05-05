@@ -12,7 +12,7 @@ let mockInstitutions = [
     id: '1',
     name: 'Helmholtz Institute',
     country: 'Germany',
-    description: 'Test',
+    description: 'The primary objective of Helmholtz Zentrum München in its role as German Center for Environmental Health is to improve the health of each individual, but also the health of society as a whole (public health). \n\nTo achieve this goal, the Center conducts research on the interaction of genetics, environmental factors and lifestyle and applies the insights gained from this research to develop individualized strategies for the diagnosis, treatment and prevention of serious common diseases such as diabetes mellitus, allergies and lung diseases.',
     backgroundPictureURL: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Helmholtz_Zentrum_M%C3%BCnchen.jpg/2560px-Helmholtz_Zentrum_M%C3%BCnchen.jpg',
     adminIds: ['626bdb1ed76c8b968a50f833'],
     memberIds: [2],
@@ -22,6 +22,7 @@ let mockInstitutions = [
     id: '2',
     name: 'Technische Universität München',
     country: 'Germany',
+    description: 'The Technical University of Munich (TUM) is one of Europe’s top universities. It is committed to excellence in research and teaching, interdisciplinary education and the active promotion of promising young scientists. The university also forges strong links with companies and scientific institutions across the world. \nTUM was one of the first universities in Germany to be named a University of Excellence. Moreover, TUM regularly ranks among the best European universities in international rankings.',
     backgroundPictureURL: 'https://www.in.tum.de/fileadmin/_processed_/5/5/csm_2006_1015Bild0136_9dc504e910.jpg',
     avatarUrl: tum,
     adminIds: [1],
@@ -31,6 +32,7 @@ let mockInstitutions = [
     id: '3',
     name: 'Rostlab',
     country: 'Germany',
+    description: 'The lab\'s research is driven by a conviction that protein and DNA sequences encode a significant core of information about the ultimate structure and function of genetic material and its gene products. \nResearch goals of the lab involve using protein and DNA sequences along with evolutionary information to predict a protein\'s: overall function, interaction partners, secondary structure, disordered regions, subcellular localization, membrane spanning protein structure, intra-chain residue contacts, cell cycle control, and domain boundaries. \nAnother significant research focus is to improve the effectiveness and efficiency of structural genomics projects\' ability to determine the structures of proteins on a large scale.',
     avatarUrl: 'https://avatars.githubusercontent.com/u/4093405?s=200&v=4',
     adminIds: [1],
     memberIds: ['626bdb1ed76c8b968a50f833', 2, 3, 4, 5],
@@ -43,9 +45,9 @@ const InstitutionService = {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     runningId += 1;
     const newInstitution = {
-      id: runningId,
+      id: runningId.toString(),
       name,
-      country: null,
+      country: 'Germany',
       description,
       avatarUrl: null,
       backgroundPictureURL: null,
