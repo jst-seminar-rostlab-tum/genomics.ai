@@ -77,13 +77,13 @@ def create_scVI_model(source_adata, target_adata, configuration):
                   use_gpu=get_from_config(configuration, parameters.USE_GPU))
         if get_from_config(configuration, parameters.DEV_DEBUG):
             try:
-                utils.write_adata_to_csv(vae, source_adata, key='source-adata-post-first-training.csv')
+                utils.write_adata_to_csv(vae, source_adata, key='scvi-source-adata-post-first-training.csv')
             except Exception as e:
                 print(e, file=sys.stderr)
         reference_latent = compute_latent(vae, source_adata, configuration)
         if get_from_config(configuration, parameters.DEV_DEBUG):
             try:
-                utils.write_adata_to_csv(vae, source_adata, key='reference-latent-post-first-training.csv')
+                utils.write_adata_to_csv(vae, source_adata, key='scvi-reference-latent-post-first-training.csv')
             except Exception as e:
                 print(e, file=sys.stderr)
         tempdir = tempfile.mkdtemp()
