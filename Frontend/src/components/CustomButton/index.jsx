@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import * as React from 'react';
 import { ButtonBase } from '@mui/material';
 import { colors } from 'shared/theme/colors';
@@ -52,18 +54,18 @@ function getStyles(type) {
  * change size with sx prop
  * https://www.figma.com/file/HcTwUyNxjZJksJ7yfncM9y/JST-22-Design?node-id=42%3A2
  */
-const CustomButton = (props) => { 
+const CustomButton = (props) => {
 
   return (
-  <ButtonBase
-    disableRipple
-    {...props}
-    sx={getStyles(props.type)}
-    className={styles.button}
-    variant={props.type === 'tertiary' ? 'text' : 'contained'}
-  >
-    {props.children}
-  </ButtonBase>
+    <ButtonBase
+      disableRipple
+      {...props}
+      sx={getStyles(props.type)}
+      className={styles.button}
+      variant={props.type === 'tertiary' ? 'text' : 'contained'}
+    >
+      {props.children}
+    </ButtonBase>
   )
 };
 

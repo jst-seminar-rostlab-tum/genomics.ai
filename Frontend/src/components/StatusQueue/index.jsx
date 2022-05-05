@@ -6,7 +6,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import StatusCard from '../StatusCard';
 import styles from './statusqueue.module.css';
-import JobService from "shared/services/Job.service"
+import JobService from 'shared/services/Job.service';
 
 function StatusQueue() {
   const [expandList, setExpandList] = useState(true);
@@ -14,9 +14,8 @@ function StatusQueue() {
 
   useEffect(() => {
     JobService.getJobs()
-      .then((jobs) => setJobs(jobs))
-      .catch(err => console.log(err))
-
+      .then(setJobs)
+      .catch(console.error);
   }, []);
 
   return (

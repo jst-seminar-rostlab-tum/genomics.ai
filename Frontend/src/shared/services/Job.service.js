@@ -1,12 +1,13 @@
-import axiosInstance from "./axiosInstance"
+import axiosInstance from './axiosInstance';
+import MockJobService from './mock/Job.service';
 
-const MODEL = "jobs"
+const MOCK_JOBS = true;
 
-const JobService = {
-    getJobs: async () => {
-        const { data } = await axiosInstance.get(`/${MODEL}`)
-        return data
-    },
-}
+const JobService = MOCK_JOBS ? MockJobService : {
+  getJobs: async () => {
+    const { data } = await axiosInstance.get('/jobs');
+    return data;
+  },
+};
 
-export default JobService
+export default JobService;

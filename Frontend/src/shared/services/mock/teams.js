@@ -5,9 +5,19 @@ let mockTeams = [
     description: 'Biotechnology Team bla bla',
     adminIds: [6, 7],
     invitedMemberIds: [],
-    memberIds: [1, 2, 3, 4, 5],
+    memberIds: ["626bdb1ed76c8b968a50f833", 2, 3, 4, 5],
     visibility: 'public',
     institutionId: 2,
+  },
+  {
+    id: 2,
+    name: 'Genomics Team',
+    description: 'Genomics Team bla bla',
+    adminIds: ["626bdb1ed76c8b968a50f833"],
+    invitedMemberIds: [],
+    memberIds: [3, 4, 5],
+    visibility: 'public',
+    institutionId: 3,
   },
 ];
 let runningId = 1;
@@ -26,7 +36,7 @@ export async function createTeam(name, description) {
       name,
       country: null,
       description,
-      profilePictureURL: null,
+      avatarUrl: null,
       backgroundPictureURL: null,
       adminIds: [1], // TODO: make sure that the backend puts my user ID here
       memberIds: [],
@@ -44,8 +54,8 @@ export async function removeMemberFromTeam(teamId, memberId) {
 }
 
 export async function getTeam(id) {
-  console.log(mockTeams.find((team) => team.id === parseInt(id, 10)));
-  return mockTeams.find((team) => team.id === parseInt(id, 10));
+  console.log(mockTeams.find((team) => team.id === id));
+  return mockTeams.find((team) => team.id === id);
 }
 
 export default async function queryMyTeams() {

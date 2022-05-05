@@ -1,29 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import {
-  useParams,
-} from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import HeaderView from 'components/general/HeaderView';
 import TeamJobList from 'components/teams/detail/TeamJobList';
 import TeamMemberList from 'components/teams/detail/TeamMemberList';
 import TeamAdminHeaderRight from 'components/teams/detail/TeamAdminHeaderRight';
 import TeamUserHeaderRight from 'components/teams/detail/TeamUserHeaderRight';
 import TeamHeaderOptions from 'components/teams/detail/TeamHeaderOptions';
-import { getTeam } from 'shared/services/mock/teams';
-import getUser from 'shared/services/mock/user';
-import { getInstitution, queryIsAdminInstitutions } from 'shared/services/mock/institutions';
+import TeamService from 'shared/services/Team.service';
+import InstitutionService from 'shared/services/Institution.service';
+import TeamInviteButton from 'components/teams/detail/TeamInviteButton';
 import TextField from '@mui/material/TextField';
+import { useAuth } from 'shared/context/authContext';
 
 export default function TeamPage({ sidebarShown }) {
   const { id } = useParams();
   const [team, setTeam] = useState({});
-  const [user, setUser] = useState({});
+  const [user] = useAuth();
   const [institution, setInstitution] = useState({});
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [adminInstitutions, setAdminInstitutions] = useState([]);
-
-  function updateIsAdmin() {
-    setIsAdmin((team.adminIds || []).includes(user.id));
-  }
 
   const handleDescriptionChange = (event) => {
     setTeam({
@@ -33,26 +26,19 @@ export default function TeamPage({ sidebarShown }) {
   };
 
   useEffect(() => {
-    getUser()
-      .then((newUser) => { setUser(newUser); updateIsAdmin(); });
-  }, [setUser, isAdmin]);
-
-  useEffect(() => {
-    getTeam(id)
-      .then((newTeam) => { setTeam(newTeam); updateIsAdmin(); })
+    if (id == null) return;
+    TeamService.getTeam(id)
+      .then(setTeam)
       .catch((ignored) => { console.error(ignored); });
-  }, [setTeam, isAdmin]);
+  }, [setTeam]);
 
   // Institution may be undefined
   useEffect(() => {
-    getInstitution(team.institutionId)
+    InstitutionService.getInstitution(team.institutionId)
       .then((newInstitution) => setInstitution(newInstitution));
   }, [team, setInstitution]);
 
-  useEffect(() => {
-    queryIsAdminInstitutions(user.id)
-      .then((newAdminInstitutions) => setAdminInstitutions(newAdminInstitutions));
-  }, [user, setAdminInstitutions]);
+  const isAdmin = team.adminIds ? team.adminIds.includes(user.id) : false;
 
   return (
     <HeaderView
@@ -63,8 +49,6 @@ export default function TeamPage({ sidebarShown }) {
           team={team}
           isAdmin={isAdmin}
           institution={institution}
-          availableInstitutions={adminInstitutions}
-          setInstitution={setInstitution}
         />
       )}
       replaceHeaderRight={
@@ -103,8 +87,18 @@ export default function TeamPage({ sidebarShown }) {
       <section>
         <h2>Members</h2>
         <hr />
-        <TeamMemberList team={team} />
+        <TeamMemberList
+          team={team}
+          onMemberRemoved={(_team, member) => {
+            setTeam({
+              ...team,
+              memberIds: team.memberIds.filter((mId) => mId !== member.id),
+              adminIds: team.adminIds.filter((aId) => aId !== member.id),
+            });
+          }}
+        />
       </section>
+      {isAdmin && <TeamInviteButton team={team} />}
     </HeaderView>
   );
 }

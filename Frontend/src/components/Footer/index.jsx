@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { Box, IconButton, Typography } from "@mui/material"
 import CopyrightIcon from '@mui/icons-material/Copyright';
 import { Link } from "react-router-dom"

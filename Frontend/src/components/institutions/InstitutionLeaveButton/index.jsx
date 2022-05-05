@@ -6,7 +6,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-import { leaveInstitution } from 'shared/services/mock/institutions';
+import InstitutionService from 'shared/services/Institution.service';
 
 function InstitutionLeaveButton({ institution, onLeft }) {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -15,14 +15,14 @@ function InstitutionLeaveButton({ institution, onLeft }) {
   const handleCloseDialog = () => setDialogOpen(false);
 
   async function leave() {
-    await leaveInstitution(institution);
+    await InstitutionService.leaveInstitution(institution);
     handleCloseDialog();
     onLeft(institution);
   }
 
   return (
     <>
-      <Button variant="outlined" color="critical" onClick={handleOpenDialog}>
+      <Button variant="outlined" color="error" onClick={handleOpenDialog}>
         Leave
       </Button>
       <Dialog
@@ -43,7 +43,7 @@ function InstitutionLeaveButton({ institution, onLeft }) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog}>Cancel</Button>
-          <Button onClick={() => leave()} color="critical" autoFocus>
+          <Button onClick={() => leave()} color="error" autoFocus>
             Leave
           </Button>
         </DialogActions>

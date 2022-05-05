@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React from 'react';
 import LiveHelpIcon from '@mui/icons-material/LiveHelp';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
@@ -41,8 +43,8 @@ function indexIcon(index) {
 
 export default function Sidebar(props) {
   const { setUser } = props;
-  const routes = ['dashboard', 'teams', 'institutions', 'genemapper', 'documentation', 'help'];
-  const titles = ['Dashboard', 'Teams', 'Institutions', 'Gene Mapper', 'Documentation', 'Help'];
+  const routes = ['dashboard', 'teams', 'institutions', 'genemapper', 'search/teams', 'documentation', 'help'];
+  const titles = ['Dashboard', 'Teams', 'Institutions', 'Gene Mapper', 'Search', 'Documentation', 'Help'];
   const { url } = useRouteMatch();
   const location = useLocation();
   const path = location.pathname;
@@ -52,10 +54,7 @@ export default function Sidebar(props) {
     <Box>
       <Box className={styles.sidebarNav}>
         <Box className={styles.sidebarWrap}>
-          <Box sx={{
-            display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '98vh',
-          }}
-          >
+          <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "98vh" }}>
             <Box className={styles.iconList}>
               {routes.map((route, index) => (
                 <NavLink

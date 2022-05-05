@@ -5,6 +5,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import CustomButton from 'components/CustomButton';
 
 function TeamLeaveButton({ team, onJoin, isDisabled }) {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -19,9 +20,7 @@ function TeamLeaveButton({ team, onJoin, isDisabled }) {
 
   return (
     <>
-      <Button variant="outlined" disabled={isDisabled} onClick={handleOpenDialog}>
-        Join
-      </Button>
+      <CustomButton type="primary" disabled={isDisabled} onClick={handleOpenDialog}>Join</CustomButton>
       <Dialog
         open={dialogOpen}
         onClose={handleCloseDialog}
@@ -39,7 +38,7 @@ function TeamLeaveButton({ team, onJoin, isDisabled }) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialog} color="critical">Cancel</Button>
+          <Button onClick={handleCloseDialog} color="error">Cancel</Button>
           <Button onClick={() => leave()} autoFocus>
             Join
           </Button>

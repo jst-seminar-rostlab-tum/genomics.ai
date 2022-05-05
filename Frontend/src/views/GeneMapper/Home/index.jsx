@@ -6,7 +6,6 @@ import {
 import PlusIcon from 'components/GeneMapper/plusIcon';
 import ProjectBarCard from 'components/GeneMapper/projectBarCard';
 import SearchIcon from '@mui/icons-material/Search';
-import ProjectMock from 'shared/services/mock/projects';
 import ProjectService from 'shared/services/Project.service';
 import { useSubmissionProgress } from 'shared/context/submissionProgressContext';
 import { MULTIPART_UPLOAD_STATUS, PROJECTS_UPDATE_INTERVAL, statusIsError } from 'shared/utils/common/constants';
@@ -41,18 +40,9 @@ function GeneMapperHome() {
   }
 
   useEffect(() => {
-    let projectIds = []
-    ProjectService.getProjects().then(
-      (data) => {
-        setProjects(data)
-        data.map((d) => {
-          projectIds.push(d._id);
-        })
-        console.log(projects)
-        localStorage.setItem('project_Ids', projectIds)
-      });
+    ProjectService.getOwnProjects().then((data) => setProjects(data));
     const timer = setInterval(() => {
-      ProjectService.getProjects().then((data) => setProjects(data));
+      ProjectService.getOwnProjects().then((data) => setProjects(data));
       if (submissionProgress.status === MULTIPART_UPLOAD_STATUS.COMPLETE
         || submissionProgress.status === MULTIPART_UPLOAD_STATUS.CANCELING
         || statusIsError(submissionProgress.status)) {
@@ -75,7 +65,8 @@ function GeneMapperHome() {
   return (
     <div>
       <ThemeProvider theme={theme}>
-        {/* {Object.entries(submissionProgress).map(([key, value]) => <Typography>{`${key}: ${value}` }</Typography>)} */}
+        {/* {Object.entries(submissionProgress)
+          .map(([key, value]) => <Typography>{`${key}: ${value}` }</Typography>)} */}
         <Box
           sx={{
             display: 'flex',

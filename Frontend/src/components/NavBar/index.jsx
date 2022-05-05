@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { Box, IconButton, Typography, Drawer, List } from "@mui/material"
 import ListIcon from '@mui/icons-material/List';
 import { Link } from "react-router-dom"
@@ -8,27 +10,27 @@ import { useEffect, useRef, useState } from "react";
 
 //In styled(), we cannot use different width to fix different resolution
 //we have to use sx
-function Appbar(props){
+function Appbar(props) {
   return (
     <Box {...props} sx={{
-      width: {xs: "90%", sm: "90%", md: "61.8%", lg: "61.8%", xl: "61.8%"},
+      width: { xs: "90%", sm: "90%", md: "61.8%", lg: "61.8%", xl: "61.8%" },
       display: "flex",
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
       backgroundColor: colors.primary[800],
-      padding: "0.8em" ,
+      padding: "0.8em",
       margin: "auto",
       position: "relative"
     }}></Box>
   )
 }
 
-function Leftbar(props){
+function Leftbar(props) {
   return (
     <Box {...props} sx={{
-      width: {xs: "100%", sm: "486px", md: "389px", lg: "519px", xl: "664px"},
-      display: {xs: "none", sm: "flex", md: "flex", lg: "flex", xl: "flex"},
+      width: { xs: "100%", sm: "486px", md: "389px", lg: "519px", xl: "664px" },
+      display: { xs: "none", sm: "flex", md: "flex", lg: "flex", xl: "flex" },
       flexDirection: "row",
       flexWrap: "warp",
       justifyContent: "space-between",
@@ -39,52 +41,52 @@ function Leftbar(props){
 }
 
 //the DrawerBar will be displayed, if the screen is small, otherwise the Leftbar will be displayed
-function DrawerBar({ open, setOpen, executeScroll }){
+function DrawerBar({ open, setOpen, executeScroll }) {
   return (
-      <Box 
-        sx={{
-          zIndex: "1",
-          width: "40%", 
-          display: {xs: "flex", sm: "none", md: "none", lg: "none", xl: "none"},
-          flexDirection: "row",
-          flexWrap: "warp",
-          justifyContent: "left",
-          alignItems: "center",
-          gap: "7%"
-        }} 
-      >
-        <LinkBox to="/" sx={{ display: "flex", alignItems: "center", gap: "0.7em" }}>
-          <IconButton
-            disableRipple
-            sx={{
-              bgcolor: "white",
-              ":hover": { bgcolor: "primary.dark" }
-            }}
-            > 
-            <img width={28} alt="logo" src={logo} />
-          </IconButton>
-        </LinkBox>
+    <Box
+      sx={{
+        zIndex: "1",
+        width: "40%",
+        display: { xs: "flex", sm: "none", md: "none", lg: "none", xl: "none" },
+        flexDirection: "row",
+        flexWrap: "warp",
+        justifyContent: "left",
+        alignItems: "center",
+        gap: "7%"
+      }}
+    >
+      <LinkBox to="/" sx={{ display: "flex", alignItems: "center", gap: "0.7em" }}>
+        <IconButton
+          disableRipple
+          sx={{
+            bgcolor: "white",
+            ":hover": { bgcolor: "primary.dark" }
+          }}
+        >
+          <img width={28} alt="logo" src={logo} />
+        </IconButton>
+      </LinkBox>
 
-        <Box sx={{position: "relative", width: "24px", height: "24px", borderRadius: "5px", bgcolor: colors.primary[400]}}>
-          <ListIcon onClick={()=>setOpen(!open)} sx={{position: "absolute", top: "4px", left: "4px", width: "16px", height: "16px", color: "white"}} />
+      <Box sx={{ position: "relative", width: "24px", height: "24px", borderRadius: "5px", bgcolor: colors.primary[400] }}>
+        <ListIcon onClick={() => setOpen(!open)} sx={{ position: "absolute", top: "4px", left: "4px", width: "16px", height: "16px", color: "white" }} />
 
-          <Drawer open={open} anchor="bottom" onClose={()=>setOpen(false)}>
-            <Box sx={{width: "100vw", height: "25vh", bgcolor: "white", display: "flex", flexDirection: "column", justifyContent: "space-evenly", alignItems: "center"}}>
-              <LinkBox to="/about"><DrawerNavlink>About us</DrawerNavlink></LinkBox>
-              <LinkBox to="/docs"><DrawerNavlink>Docs</DrawerNavlink></LinkBox>
-              <Box onClick={executeScroll} sx={{cursor: "pointer"}}><DrawerNavlink>Contact us</DrawerNavlink></Box>
-              <LinkBox to="/explore"><DrawerNavlink>Explore</DrawerNavlink></LinkBox>
-            </Box>
-          </Drawer>
-        </Box>
+        <Drawer open={open} anchor="bottom" onClose={() => setOpen(false)}>
+          <Box sx={{ width: "100vw", height: "25vh", bgcolor: "white", display: "flex", flexDirection: "column", justifyContent: "space-evenly", alignItems: "center" }}>
+            <LinkBox to="/about"><DrawerNavlink>About us</DrawerNavlink></LinkBox>
+            <LinkBox to="/docs"><DrawerNavlink>Docs</DrawerNavlink></LinkBox>
+            <Box onClick={executeScroll} sx={{ cursor: "pointer" }}><DrawerNavlink>Contact us</DrawerNavlink></Box>
+            <LinkBox to="/explore"><DrawerNavlink>Explore</DrawerNavlink></LinkBox>
+          </Box>
+        </Drawer>
       </Box>
+    </Box>
   )
 }
 
-function Rightbar(props){
+function Rightbar(props) {
   return (
     <Box {...props} sx={{
-      width: {xs: "50%", sm: "216px", md: "166px", lg: "222px", xl: "284px"},
+      width: { xs: "50%", sm: "216px", md: "166px", lg: "222px", xl: "284px" },
       display: "flex",
       flexDirection: "row",
       alignItems: "center",
@@ -95,12 +97,12 @@ function Rightbar(props){
   )
 }
 
-function Navlink(props){
+function Navlink(props) {
   return (
     <Box {...props}>
       <Typography {...props} sx={{
         fontWeight: "bold",
-        fontSize: {xs: "0.6em", sm: "0.8em", md: "0.8em", lg: "1.2em", xl: "1.2em"},
+        fontSize: { xs: "0.6em", sm: "0.8em", md: "0.8em", lg: "1.2em", xl: "1.2em" },
         color: "white",
         ":hover": {
           color: colors.secondary1[200]
@@ -111,7 +113,7 @@ function Navlink(props){
   )
 }
 
-function DrawerNavlink(props){
+function DrawerNavlink(props) {
   return (
     <Box {...props}>
       <Typography textAlign="center" {...props} sx={{
@@ -127,7 +129,7 @@ function DrawerNavlink(props){
   )
 }
 
-function Login(props){
+function Login(props) {
   return (
     <Box {...props} sx={{
       borderRadius: "10px",
@@ -137,7 +139,7 @@ function Login(props){
     >
       <Typography {...props} sx={{
         fontWeight: "bold",
-        fontSize: {xs: "0.6em", sm: "0.8em", md: "0.8em", lg: "1.2em", xl: "1.2em"},
+        fontSize: { xs: "0.6em", sm: "0.8em", md: "0.8em", lg: "1.2em", xl: "1.2em" },
         color: "white",
         ":hover": {
           textDecoration: "underline"
@@ -148,7 +150,7 @@ function Login(props){
   )
 }
 
-function Signup(props){
+function Signup(props) {
   return (
     <Box {...props} sx={{
       cursor: "pointer",
@@ -163,7 +165,7 @@ function Signup(props){
     >
       <Typography {...props} sx={{
         fontWeight: "bold",
-        fontSize: {xs: "0.6em", sm: "0.8em", md: "0.8em", lg: "1.2em", xl: "1.2em"},
+        fontSize: { xs: "0.6em", sm: "0.8em", md: "0.8em", lg: "1.2em", xl: "1.2em" },
         color: "white",
         ":hover": {
           color: colors.primary[400],
@@ -175,22 +177,22 @@ function Signup(props){
   )
 }
 
-function LinkBox(props){
+function LinkBox(props) {
   return (
     <Box {...props} component={Link} style={{ textDecoration: "none" }}></Box>
   )
 }
 
-export default function Navbar({ 
-  onLoginClicked, 
-  onSignUpClicked, 
-  executeScroll, 
-  setNavbarHeight 
+export default function Navbar({
+  onLoginClicked,
+  onSignUpClicked,
+  executeScroll,
+  setNavbarHeight
 }) {
 
-  const [drawerOpen, setDrawerOpen]=useState(false)
+  const [drawerOpen, setDrawerOpen] = useState(false)
 
-  function handleClickContactUsInDrawer(){
+  function handleClickContactUsInDrawer() {
     console.log("clicked", drawerOpen)
     setDrawerOpen(false)
     console.log("after set", drawerOpen)
@@ -200,13 +202,13 @@ export default function Navbar({
   //we get the ref of the box that contains the Navbar here
   const boxRef = useRef()
 
-  useEffect(()=>{
+  useEffect(() => {
     //use the set function from Home page to set the height, so that we can use it later
     setNavbarHeight(boxRef.current.clientHeight)
   })
 
   return (
-    <Box ref={boxRef} sx={{width: "100%", bgcolor: colors.primary[800], position: "fixed", zIndex: "3"}}>
+    <Box ref={boxRef} sx={{ width: "100%", bgcolor: colors.primary[800], position: "fixed", zIndex: "3" }}>
       <Appbar>
         <DrawerBar open={drawerOpen} setOpen={setDrawerOpen} executeScroll={handleClickContactUsInDrawer} />
         <Leftbar>
@@ -217,14 +219,14 @@ export default function Navbar({
                 bgcolor: "white",
                 ":hover": { bgcolor: "primary.dark" }
               }}
-              > 
+            >
               <img width={28} alt="logo" src={logo} />
             </IconButton>
             <Navlink>genomics.ai</Navlink>
           </LinkBox>
           <LinkBox to="/about"><Navlink>About us</Navlink></LinkBox>
           <LinkBox to="/docs"><Navlink>Docs </Navlink></LinkBox>
-          <Box sx={{cursor: "pointer"}} onClick={executeScroll}><Navlink>Contact us</Navlink></Box>
+          <Box sx={{ cursor: "pointer" }} onClick={executeScroll}><Navlink>Contact us</Navlink></Box>
           <LinkBox to="/explore"><Navlink>Explore</Navlink></LinkBox>
         </Leftbar>
         <Rightbar>
