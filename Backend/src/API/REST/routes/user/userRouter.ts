@@ -44,4 +44,27 @@ const get_users = (): Router => {
   return router;
 };
 
-export { get_teams_of_user, get_users };
+const get_user_by_id = (): Router => {
+  let router = express.Router();
+
+  router.get("/users/:id", check_auth(), async (req: ExtRequest, res: any) => {
+    try {
+      const user_id = req.params.id;
+      const user = await UserService.getUserById(user_id);
+
+      if (!user) {
+        return res.status(404).send("User with user id: " + user_id + " was not found!");
+      }
+
+      return res.status(200).json(user);
+    } catch (e) {
+      console.error("Error in /users/:id");
+      console.error(JSON.stringify(e));
+      console.error(e);
+      return res.status(500).send("Internal error.");
+    }
+  });
+  return router;
+};
+
+export { get_teams_of_user, get_users, get_user_by_id };
