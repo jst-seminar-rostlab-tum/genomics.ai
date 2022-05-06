@@ -26,11 +26,10 @@ export class UmapVisualization2 {
     d3.select(container).selectAll("*").remove();
     this.svg = d3.select(container).append('svg');
     this.gCells = addGroup(this.svg, 'cells');
-    this.gLabels = addGroup(this.svg, 'labels');
+    // this.gLabels = addGroup(this.svg, 'labels');
     this.coloringModes = getColoringModes(data);
     this.tooltip = d3.select(container).append("div");
     this.mode = undefined;
-    //TODO: add if for when the atlas doesn't contain cell_type
     this.barChartBatch = addBarPlotBatch(containerBar, data);
     if(Object.keys(this.coloringModes).includes("cell_type")){
       d3.select(containerBar).append("div");
