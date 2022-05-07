@@ -89,6 +89,7 @@ def query(user_config):
     else:
         raise ValueError(model + ' is not one of the supported models')
     configuration["attributes"] = attributes
+    print("completed query and stored it in: " + get_from_config(configuration, parameters.OUTPUT_PATH))
     if get_from_config(configuration, parameters.WEBHOOK) is not None and len(get_from_config(configuration, parameters.WEBHOOK)) > 0:
         utils.notify_backend(get_from_config(configuration, parameters.WEBHOOK), configuration)
     return configuration

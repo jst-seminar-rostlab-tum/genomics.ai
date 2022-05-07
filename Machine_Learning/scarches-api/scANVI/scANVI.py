@@ -260,8 +260,6 @@ def compute_scANVI(configuration):
 
     if get_from_config(configuration, parameters.SCANVI_PREDICT_CELLTYPES):
         predict_latent(predict(model_query, query_latent))
-
-    print("completed query and stored it in: " + get_from_config(configuration, parameters.OUTPUT_PATH))
     # if get_from_config(configuration, parameters.SCANVI_DO_SURGERY):
     #    model_surgery, surgery_latent = surgery(reference_latent, target_adata, configuration)
     #

@@ -58,6 +58,7 @@ def prepare_data(configuration):
 
 
 def train_model(adata_ref, configuration):
+    print("in train_model")
     sca.models.TOTALVI.setup_anndata(
         adata_ref,
         batch_key="batch",
@@ -115,6 +116,7 @@ def visualize_RNA_data(model, adata_ref, configuration):
 
 
 def surgery(adata_query, configuration):
+    print("in totalVI surgery")
     # utils.fetch_file_from_s3(get_from_config(configuration, parameters.PRETRAINED_MODEL_PATH), 'assets/totalVI/model.pt')
     dir_path = 'assets/totalVI'
     # vae_q_file = exists(dir_path + args.fname)
@@ -150,6 +152,7 @@ def surgery(adata_query, configuration):
 
 
 def impute_proteins(vae_q, adata_query, configuration):
+    print("before calling vae_q.get_normalized_expression: ")
     # TODO API crashes here if not sufficient memory available
     _, imputed_proteins = vae_q.get_normalized_expression(
         adata_query,
@@ -157,6 +160,7 @@ def impute_proteins(vae_q, adata_query, configuration):
         return_mean=True,
         transform_batch=["PBMC10k", "PBMC5k"],
     )
+    print("after calling vae_q.get_normalized_expression: ")
     adata_query.obs = pd.concat([adata_query.obs, imputed_proteins], axis=1)
     if get_from_config(configuration, parameters.DEBUG):
         visualize_and_store_as_pdf("secondumap.pdf",
@@ -168,6 +172,7 @@ def impute_proteins(vae_q, adata_query, configuration):
 
 
 def latent_ref_representation(adata_query, adata_ref, vae_q):
+    print("in latent_ref_representation")
     adata_full_new = adata_query.concatenate(adata_ref, batch_key="none")
     adata_full_new.obsm["X_totalVI"] = vae_q.get_latent_representation(adata_full_new)
     sc.pp.neighbors(adata_full_new, use_rep="X_totalVI")

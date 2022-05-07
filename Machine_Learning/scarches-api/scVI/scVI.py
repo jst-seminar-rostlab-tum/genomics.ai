@@ -237,7 +237,6 @@ def compute_scVI(configuration):
     source_adata, target_adata = pre_process_data(configuration)
     model, reference_latent = create_scVI_model(source_adata, target_adata, configuration)
     model = compute_query(model, target_adata, reference_latent, source_adata, configuration)
-    print("completed query and stored it in: " + get_from_config(configuration, parameters.OUTPUT_PATH))
     # TODO figure out if we need to do this
     # compute_full_latent(source_adata, target_adata, model)
     # model.save('resulting_model', overwrite=True)
