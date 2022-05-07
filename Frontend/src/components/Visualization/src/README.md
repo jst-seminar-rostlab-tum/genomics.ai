@@ -45,6 +45,7 @@ constructor(container, data, containerBar) {
 Provides all zoom functionalities
 * _zoomM_ - the scale for the zoom functionalities and responsible for mouse zoom and pat
 * _zoomInN_, _zoomOutN_, _resetZoom_ - resposible for zooming in, out and resetting the zoom scale
+-> the mouse wheel zoom is called in umapVisualization, the button zoom is called in the various front end files
 
 ***
 ## coloring
@@ -56,3 +57,10 @@ Provides all coloring functionalities
 ## barChart
 Provides the functionalities for all additional diagrams
 * _groupBy_ - groups the data according to the given _cat_, category, attribute
+
+## How to run:
+You have to install node on your computer. If you use a Mac and Homebrew, you can simply do brew install node@16 . If not, I think you can download it from here: https://nodejs.org/en/ (pick the LTS version)
+Then, you go into the Frontend folder inside the repo and run npm install . You only have to do this once. This will probably modify the package-lock.json and yarn.json files, but you can revert these changes, they are irrelevant.
+also in the Frontend folder, run npm start  then the frontend is reachable on http://localhost:3000
+Node.js® is a JavaScript runtime built on Chrome's V8 JavaScript engine.
+For 2.: You actually have to run npm install  every time any 3rd party dependency changes. This can only happen if you switch branches or merge branches into yours. So basically, whenever you do git pull/merge/checkout and something isn’t working (and probably says something like “can’t find….“), then run npm install and try again
