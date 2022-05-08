@@ -13,7 +13,8 @@ import logging
 import argparse
 from utils import utils, parameters
 import tempfile
-
+import gc
+import time
 
 def get_from_config(configuration, key):
     if key in configuration:
@@ -237,13 +238,17 @@ def computeTotalVI(configuration):
     #    exit()
 
     setup_modules()
-    data = prepare_data(configuration)
-    adata_ref = data[0]
-    adata_query = data[1]
+    adata_ref, adata_query = prepare_data(configuration)
     model_ref = train_model(adata_ref, configuration)
     visualize_RNA_data(model_ref, adata_ref, configuration)
     vae_q = surgery(adata_query, configuration)
+    print("invoke garbage collector after surgery")
+    gc.collect()
     impute_proteins(vae_q, adata_query, configuration)
+    print("invoke garbage collector after impute_proteins")
+    gc.collect()
+    print("sleep for a minute to let the cpu rest")
+    time.sleep(60)
     reps = latent_ref_representation(adata_query, adata_ref, vae_q)
     compute_final_umaps(reps[0], reps[1], configuration)
     print("completed query and stored it in: " + get_from_config(configuration, parameters.OUTPUT_PATH))
