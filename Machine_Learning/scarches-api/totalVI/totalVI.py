@@ -185,7 +185,10 @@ def latent_ref_representation(adata_query, adata_ref, vae_q):
     time.sleep(120)
     gc.collect()
     print("about to run vae_q.get_latent_representation(adata_full_new)")
-    adata_full_new.obsm["X_totalVI"] = vae_q.get_latent_representation(adata_full_new)
+    try:
+        adata_full_new.obsm["X_totalVI"] = vae_q.get_latent_representation(adata=adata_full_new)
+    except Exception as e:
+        print(e, file=sys.stderr)
     print("got latent_representation")
     sc.pp.neighbors(adata_full_new, use_rep="X_totalVI")
     print("calculated neighbors")
