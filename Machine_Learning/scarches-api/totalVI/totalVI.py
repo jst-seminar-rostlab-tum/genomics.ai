@@ -179,6 +179,12 @@ def latent_ref_representation(adata_query, adata_ref, vae_q):
     del adata_query
     del adata_ref
     print("concatenated adata")
+    print("invoke garbage collector after concatenating adata")
+    gc.collect()
+    print("sleep for two minutes to let the cpu rest")
+    time.sleep(120)
+    gc.collect()
+    print("about to run vae_q.get_latent_representation(adata_full_new)")
     adata_full_new.obsm["X_totalVI"] = vae_q.get_latent_representation(adata_full_new)
     print("got latent_representation")
     sc.pp.neighbors(adata_full_new, use_rep="X_totalVI")
