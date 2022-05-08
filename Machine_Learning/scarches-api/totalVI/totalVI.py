@@ -1,20 +1,15 @@
 import os
 import sys
-import warnings
-import scanpy as sc
-import anndata
-import torch
-import scarches as sca
-import numpy as np
-import scvi as scv
-import pandas as pd
-from os.path import exists
-import logging
-import argparse
-from utils import utils, parameters
 import tempfile
-import gc
-import time
+import warnings
+
+import anndata
+import numpy as np
+import pandas as pd
+import scanpy as sc
+import scarches as sca
+import torch
+from utils import utils, parameters
 
 
 def get_from_config(configuration, key):
@@ -60,7 +55,6 @@ def prepare_data(configuration):
 
 
 def train_model(adata_ref, configuration):
-    print("in train_model")
     sca.models.TOTALVI.setup_anndata(
         adata_ref,
         batch_key="batch",
@@ -118,7 +112,6 @@ def visualize_RNA_data(model, adata_ref, configuration):
 
 
 def surgery(adata_query, configuration):
-    print("in totalVI surgery")
     # utils.fetch_file_from_s3(get_from_config(configuration, parameters.PRETRAINED_MODEL_PATH), 'assets/totalVI/model.pt')
     dir_path = 'assets/totalVI'
     # vae_q_file = exists(dir_path + args.fname)
@@ -154,15 +147,12 @@ def surgery(adata_query, configuration):
 
 
 def impute_proteins(vae_q, adata_query, configuration):
-    print("before calling vae_q.get_normalized_expression: ")
-    # TODO API crashes here if not sufficient memory available
     _, imputed_proteins = vae_q.get_normalized_expression(
         adata_query,
         n_samples=25,
         return_mean=True,
         transform_batch=["PBMC10k", "PBMC5k"],
     )
-    print("after calling vae_q.get_normalized_expression: ")
     adata_query.obs = pd.concat([adata_query.obs, imputed_proteins], axis=1)
     if get_from_config(configuration, parameters.DEBUG):
         visualize_and_store_as_pdf("secondumap.pdf",
@@ -174,51 +164,24 @@ def impute_proteins(vae_q, adata_query, configuration):
 
 
 def latent_ref_representation(adata_query, adata_ref, vae_q):
-    print("in latent_ref_representation")
     adata_full_new = adata_query.concatenate(adata_ref, batch_key="none")
-    del adata_query
-    del adata_ref
-    print("concatenated adata")
-    print("invoke garbage collector after concatenating adata")
-    gc.collect()
-    print("sleep for two minutes to let the cpu rest")
-    time.sleep(120)
-    gc.collect()
-    print("about to run vae_q.get_latent_representation(adata_full_new)")
-    try:
-        adata_full_new.obsm["X_totalVI"] = vae_q.get_latent_representation(adata=adata_full_new)
-    except Exception as e:
-        print(e, file=sys.stderr)
-    print("got latent_representation")
+    adata_full_new.obsm["X_totalVI"] = vae_q.get_latent_representation(adata=adata_full_new)
     sc.pp.neighbors(adata_full_new, use_rep="X_totalVI")
-    print("calculated neighbors")
     sc.tl.umap(adata_full_new, min_dist=0.3)
-    print("calculated umap")
-    print("invoke garbage collector after impute_proteins")
-    gc.collect()
-    print("sleep for a minute to let the cpu rest")
-    time.sleep(60)
-    print("up again")
     _, imputed_proteins_all = vae_q.get_normalized_expression(
         adata_full_new,
         n_samples=25,
         return_mean=True,
         transform_batch=["PBMC10k", "PBMC5k"],
     )
-    print("got normalized expression")
     for i, p in enumerate(imputed_proteins_all.columns):
         adata_full_new.obs[p] = imputed_proteins_all[p].to_numpy().copy()
-    print("completed for loop")
     return adata_full_new, imputed_proteins_all
 
 
 def compute_final_umaps(adata_full_new, imputed_proteins_all, configuration):
-    print("in compute_final_umaps")
     perm_inds = np.random.permutation(np.arange(adata_full_new.n_obs))
-    print("did np.random.permutation")
-
     utils.write_latent_csv(adata_full_new[perm_inds], key=get_from_config(configuration, parameters.OUTPUT_PATH))
-    print("wrote result")
     if get_from_config(configuration, parameters.DEBUG):
         visualize_and_store_as_pdf("thirdumap.pdf",
                                    adata_full_new[perm_inds],
@@ -268,14 +231,6 @@ def computeTotalVI(configuration):
     model_ref = train_model(adata_ref, configuration)
     visualize_RNA_data(model_ref, adata_ref, configuration)
     vae_q = surgery(adata_query, configuration)
-    print("invoke garbage collector after surgery")
-    gc.collect()
     impute_proteins(vae_q, adata_query, configuration)
-    print("invoke garbage collector after impute_proteins")
-    gc.collect()
-    print("sleep for a minute to let the cpu rest")
-    time.sleep(60)
-    print("up again")
     adata_full_new, imputed_proteins_all = latent_ref_representation(adata_query, adata_ref, vae_q)
     compute_final_umaps(adata_full_new, imputed_proteins_all, configuration)
-    print("completed query and stored it in: " + get_from_config(configuration, parameters.OUTPUT_PATH))
