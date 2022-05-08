@@ -16,6 +16,7 @@ import tempfile
 import gc
 import time
 
+
 def get_from_config(configuration, key):
     if key in configuration:
         return configuration[key]
@@ -175,24 +176,40 @@ def impute_proteins(vae_q, adata_query, configuration):
 def latent_ref_representation(adata_query, adata_ref, vae_q):
     print("in latent_ref_representation")
     adata_full_new = adata_query.concatenate(adata_ref, batch_key="none")
+    del adata_query
+    del adata_ref
+    print("concatenated adata")
     adata_full_new.obsm["X_totalVI"] = vae_q.get_latent_representation(adata_full_new)
+    print("got latent_representation")
     sc.pp.neighbors(adata_full_new, use_rep="X_totalVI")
+    print("calculated neighbors")
     sc.tl.umap(adata_full_new, min_dist=0.3)
+    print("calculated umap")
+    print("invoke garbage collector after impute_proteins")
+    gc.collect()
+    print("sleep for a minute to let the cpu rest")
+    time.sleep(60)
+    print("up again")
     _, imputed_proteins_all = vae_q.get_normalized_expression(
         adata_full_new,
         n_samples=25,
         return_mean=True,
         transform_batch=["PBMC10k", "PBMC5k"],
     )
+    print("got normalized expression")
     for i, p in enumerate(imputed_proteins_all.columns):
         adata_full_new.obs[p] = imputed_proteins_all[p].to_numpy().copy()
+    print("completed for loop")
     return adata_full_new, imputed_proteins_all
 
 
 def compute_final_umaps(adata_full_new, imputed_proteins_all, configuration):
+    print("in compute_final_umaps")
     perm_inds = np.random.permutation(np.arange(adata_full_new.n_obs))
+    print("did np.random.permutation")
 
     utils.write_latent_csv(adata_full_new[perm_inds], key=get_from_config(configuration, parameters.OUTPUT_PATH))
+    print("wrote result")
     if get_from_config(configuration, parameters.DEBUG):
         visualize_and_store_as_pdf("thirdumap.pdf",
                                    adata_full_new[perm_inds],
@@ -249,6 +266,7 @@ def computeTotalVI(configuration):
     gc.collect()
     print("sleep for a minute to let the cpu rest")
     time.sleep(60)
-    reps = latent_ref_representation(adata_query, adata_ref, vae_q)
-    compute_final_umaps(reps[0], reps[1], configuration)
+    print("up again")
+    adata_full_new, imputed_proteins_all = latent_ref_representation(adata_query, adata_ref, vae_q)
+    compute_final_umaps(adata_full_new, imputed_proteins_all, configuration)
     print("completed query and stored it in: " + get_from_config(configuration, parameters.OUTPUT_PATH))
