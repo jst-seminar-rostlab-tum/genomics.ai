@@ -52,7 +52,7 @@ export default function ProfileImageUploadDialog({
       maxFileSizeMB={1}
       croppable
       preview={(imgURL) => (
-        <MemberCard memberId={user.id} overrideProfilePicture={imgURL} />
+        <MemberCard member={user} overrideProfilePicture={imgURL} />
       )}
       additionalButtons={[
         { text: 'Reset', func: reset },
