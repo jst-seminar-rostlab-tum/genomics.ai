@@ -18,7 +18,8 @@ import AtlasService from 'shared/services/Atlas.service';
 function AtlasModelChoice({ 
     activeStep, setActiveStep, 
     selectedAtlas, setSelectedAtlas, 
-    selectedModel, setSelectedModel, steps, path
+    selectedModel, setSelectedModel, steps, path,
+    compatibleModels
 }) {
     let [atlases, setAtlases] = useState([]);
     let [models, setModels] = useState([]);
@@ -107,6 +108,7 @@ function AtlasModelChoice({
                             selected={selectedModel.name===m.name}
                             onSelect={setSelectedModel}
                             modelObject={m}
+                            disabled={!compatibleModels.map(m => m.toLowerCase()).includes(m.name.toLowerCase()) || compatibleModels.length == 0}
                     />               
                 </Grid>)
             }
