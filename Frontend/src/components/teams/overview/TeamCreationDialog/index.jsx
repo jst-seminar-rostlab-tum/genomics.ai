@@ -1,7 +1,6 @@
 /* eslint-disable no-return-assign */
 import React, { useState } from 'react';
-import Button from '@mui/material/Button';
-import LoadingButton from '@mui/lab/LoadingButton';
+import Button from 'components/CustomButton';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -9,6 +8,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TeamService from 'shared/services/Team.service';
 import InstitutionChoice from 'components/institutions/InstitutionChoice';
+import { CircularProgress } from '@mui/material';
 
 export default function TeamCreationDialog({ open, handleClose, onCreated }) {
   const [name, setName] = useState('');
@@ -68,16 +68,18 @@ export default function TeamCreationDialog({ open, handleClose, onCreated }) {
         <InstitutionChoice onChoiceChange={setInstitutionId} />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>
+        <Button onClick={handleClose} type="tertiary">
           Cancel
         </Button>
-        <LoadingButton
-          onClick={() => create()}
-          loading={loading}
-          disabled={!name || !institutionId}
-        >
-          Create
-        </LoadingButton>
+        {
+          loading ? (
+            <CircularProgress />
+          ) : (
+            <Button onClick={() => create()} disabled={!name || !institutionId}>
+              Create
+            </Button>
+          )
+        }
       </DialogActions>
     </Dialog>
   );

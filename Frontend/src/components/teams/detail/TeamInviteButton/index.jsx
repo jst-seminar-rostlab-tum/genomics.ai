@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import {
   TextField, Dialog, DialogActions, DialogContent,
-  DialogContentText, DialogTitle, Button, Fab, Snackbar, Alert,
+  DialogContentText, DialogTitle, Fab, Snackbar, Alert,
 } from '@mui/material';
+import Button from 'components/CustomButton';
 import PersonAddOutlinedIcon from '@mui/icons-material/PersonAddOutlined';
 
 function TeamInviteButton({ team }) {
@@ -78,7 +79,7 @@ function TeamInviteButton({ team }) {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialog}>Cancel</Button>
+          <Button type="tertiary" onClick={handleCloseDialog}>Cancel</Button>
           <Button onClick={handleTeamInvite} autoFocus>
             Confirm
           </Button>

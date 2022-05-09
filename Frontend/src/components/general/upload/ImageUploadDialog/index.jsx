@@ -1,7 +1,6 @@
 /* eslint-disable no-return-assign */
 import React, { useState, useEffect } from 'react';
-import Button from '@mui/material/Button';
-import LoadingButton from '@mui/lab/LoadingButton';
+import Button from 'components/CustomButton';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -79,16 +78,27 @@ export default function ImageUploadDialog({
         )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => { setImgURL(null); onClose(); }}>Cancel</Button>
+        <Button type="tertiary" onClick={() => { setImgURL(null); onClose(); }}>
+          Cancel
+        </Button>
         {additionalButtons.map(({ text, func }) => (
           <Button
             key={text}
+            type="secondary"
             onClick={async () => { setLoading(true); await func(); setLoading(false); }}
           >
             {text}
           </Button>
         ))}
-        <LoadingButton onClick={() => upload()} loading={loading}>Upload</LoadingButton>
+        {
+          loading ? (
+            <Button disabled>Uploading...</Button>
+          ) : (
+            <Button onClick={() => upload()} disabled={!croppedImgBlob}>
+              Upload
+            </Button>
+          )
+        }
       </DialogActions>
     </Dialog>
   );

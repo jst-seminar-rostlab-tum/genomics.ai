@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Button from '@mui/material/Button';
+import Button from 'components/CustomButton';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -28,7 +28,7 @@ function TeamMemberMakeAdminButton({
 
   return (
     <>
-      <Button variant="outlined" onClick={handleOpenDialog} sx={{ marginRight: '6px', width: '145px' }}>
+      <Button type="secondary" onClick={handleOpenDialog}>
         {isAlreadyAdmin ? 'Remove Admin' : 'Make Admin'}
       </Button>
       <Dialog
@@ -47,8 +47,8 @@ function TeamMemberMakeAdminButton({
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialog}>Cancel</Button>
-          <Button onClick={isAlreadyAdmin ? () => removeAdmin() : () => addAdmin()} color="error" autoFocus>
+          <Button type="tertiary" onClick={handleCloseDialog}>Cancel</Button>
+          <Button type="critical" onClick={isAlreadyAdmin ? () => removeAdmin() : () => addAdmin()} autoFocus>
             {isAlreadyAdmin ? 'Remove' : 'Make'}
           </Button>
         </DialogActions>

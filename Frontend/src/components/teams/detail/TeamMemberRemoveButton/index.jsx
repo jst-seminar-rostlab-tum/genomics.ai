@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Button from '@mui/material/Button';
+import Button from 'components/CustomButton';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -22,7 +22,7 @@ function TeamMemberRemoveButton({ team, member, onRemoved }) {
 
   return (
     <>
-      <Button variant="outlined" color="error" onClick={handleOpenDialog}>
+      <Button type="critical" onClick={handleOpenDialog}>
         Remove
       </Button>
       <Dialog
@@ -44,8 +44,8 @@ function TeamMemberRemoveButton({ team, member, onRemoved }) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialog}>Cancel</Button>
-          <Button onClick={() => remove()} color="error" autoFocus>
+          <Button type="tertiary" onClick={handleCloseDialog}>Cancel</Button>
+          <Button type="critical" onClick={() => remove()} autoFocus>
             Remove
           </Button>
         </DialogActions>

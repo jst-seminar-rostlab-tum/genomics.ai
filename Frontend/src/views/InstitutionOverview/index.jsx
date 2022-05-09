@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   Switch, Route, useRouteMatch,
 } from 'react-router-dom';
-import Button from '@mui/material/Button';
+import Button from 'components/CustomButton';
 import HeaderView from 'components/general/HeaderView';
 import InstitutionPage from 'views/InstitutionPage';
 import styles from './institutionOverview.module.css';
@@ -36,7 +36,7 @@ function InstitutionOverview({ sidebarShown }) {
             sidebarShown={sidebarShown}
             title="My Institutions"
             replaceHeaderRight={(
-              <Button onClick={() => setCreateOpen(true)}>Create</Button>
+              <Button onClick={() => setCreateOpen(true)}>Add +</Button>
             )}
           >
             <div className={styles.content}>

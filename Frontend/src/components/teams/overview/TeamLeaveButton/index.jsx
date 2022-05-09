@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Button from '@mui/material/Button';
+import Button from 'components/CustomButton';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -22,7 +22,7 @@ function TeamLeaveButton({ team, onLeft }) {
 
   return (
     <>
-      <Button variant="outlined" color="error" onClick={handleOpenDialog}>
+      <Button variant="outlined" type="critical" onClick={handleOpenDialog}>
         Leave
       </Button>
       <Dialog

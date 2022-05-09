@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Button from '@mui/material/Button';
+import Button from 'components/CustomButton';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -22,7 +22,7 @@ function InstitutionLeaveButton({ institution, onLeft }) {
 
   return (
     <>
-      <Button variant="outlined" color="error" onClick={handleOpenDialog}>
+      <Button type="critical" onClick={handleOpenDialog}>
         Leave
       </Button>
       <Dialog
@@ -43,7 +43,7 @@ function InstitutionLeaveButton({ institution, onLeft }) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog}>Cancel</Button>
-          <Button onClick={() => leave()} color="error" autoFocus>
+          <Button onClick={() => leave()} type="critical" autoFocus>
             Leave
           </Button>
         </DialogActions>

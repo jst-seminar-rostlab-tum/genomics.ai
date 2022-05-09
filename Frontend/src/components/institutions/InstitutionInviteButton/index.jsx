@@ -6,12 +6,12 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Button,
   Fab,
   Snackbar,
   Alert,
 } from '@mui/material';
 import PersonAddOutlinedIcon from '@mui/icons-material/PersonAddOutlined';
+import Button from 'components/CustomButton';
 
 function InstitutionInviteButton({ institution }) {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -83,7 +83,7 @@ function InstitutionInviteButton({ institution }) {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialog}>Cancel</Button>
+          <Button type="tertiary" onClick={handleCloseDialog}>Cancel</Button>
           <Button onClick={handleTeamInvite} autoFocus>
             Confirm
           </Button>

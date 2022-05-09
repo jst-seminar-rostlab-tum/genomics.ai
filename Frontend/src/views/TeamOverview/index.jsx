@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   Switch, Route, useRouteMatch,
 } from 'react-router-dom';
-import Button from '@mui/material/Button';
+import Button from 'components/CustomButton';
 import HeaderView from 'components/general/HeaderView';
 import TeamCard from 'components/teams/TeamCard';
 import TeamPage from 'views/TeamPage';
@@ -33,7 +33,7 @@ function TeamOverview() {
           <HeaderView
             title="My Teams"
             replaceHeaderRight={(
-              <Button onClick={() => setCreateOpen(true)}>Create</Button>
+              <Button onClick={() => setCreateOpen(true)}>Add +</Button>
             )}
           >
             <div className={styles.content}>
