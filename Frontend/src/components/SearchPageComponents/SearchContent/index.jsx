@@ -5,7 +5,6 @@ import SearchResultList from '../SearchResultList';
 import TeamCard from '../SearchResultList/TeamCard';
 import InstitutionCard from '../SearchResultList/InstitutionCard';
 import UserCard from '../SearchResultList/UserCard';
-import ProjectCard from '../SearchResultList/ProjectCard';
 import ResultStatus from '../ResultStatus';
 import { setSeachCategoryInUrl } from 'shared/utils/common/utils';
 
@@ -36,9 +35,6 @@ function SearchContent({ searchResult, searchCategory, searchedKeyword }) {
         </Route>
         <Route path={setSeachCategoryInUrl(path, 'users')}>
           {renderSearchResultsList(UserCard)}
-        </Route>
-        <Route path={setSeachCategoryInUrl(path, 'projects')}>
-          {renderSearchResultsList(ProjectCard)}
         </Route>
       </Switch>
     </>

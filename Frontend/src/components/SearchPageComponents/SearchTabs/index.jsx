@@ -5,7 +5,7 @@ import { setSeachCategoryInUrl } from 'shared/utils/common/utils';
 const SearchTabs = ({
   value, onChange, searchParams, path,
 }) => {
-  let categories = ['teams', 'institutions', 'users', 'projects'];
+  let categories = ['teams', 'institutions', 'users'];
   categories = categories.map((category) => ({
     label: category.toUpperCase(),
     path: `${setSeachCategoryInUrl(path, category)}?${searchParams}`,

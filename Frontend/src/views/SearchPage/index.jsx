@@ -51,10 +51,7 @@ async function getInstitutions(filterParams) {
   return searchResponse;
 }
 
-const SearchPage = ({ sidebarShown }) => {
-  /* Booleans */
-  const paddingL = () => (sidebarShown ? '130px' : '380px');
-
+const SearchPage = () => {
   // state managed in path and query params
   const history = useHistory();
   const { search } = useLocation();
@@ -133,7 +130,7 @@ const SearchPage = ({ sidebarShown }) => {
               />
             )}
             handleSearch={searchedKeywordChangeHandler}
-            value={searchedKeyword} // currently two-way-binding missing
+            value={searchedKeyword}
           />
           <SearchTabs
             value={searchCategory}
