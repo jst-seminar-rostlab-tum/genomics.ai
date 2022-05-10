@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 import * as cons from "./constants";
-import { zoomM } from "./newZoom";
+import { initZoom, zoom } from "./newZoom";
 import "./tooltip.css";
 import { addBarPlotCell, addBarPlotBatch } from "./barChart"
 import {getColoringModes, setColoring} from "./coloring"
@@ -170,7 +170,7 @@ export class UmapVisualization2 {
 
 
     //Pan and mouse zoom
-    this.svg
+    this.gCells
       .attr('class', 'mouse-capture')
       .attr('x', -w)
       .attr('y', -h)
@@ -178,8 +178,8 @@ export class UmapVisualization2 {
       .attr('height', h)
       .style('fill', 'white')
       .lower()
-      .call(zoomM);
-
+      .call(zoom);
+    initZoom();
   }
 
 }
