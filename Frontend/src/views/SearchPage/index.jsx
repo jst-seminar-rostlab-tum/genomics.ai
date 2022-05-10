@@ -15,7 +15,6 @@ import Search from 'components/Search';
 import UserService from 'shared/services/User.service';
 import TeamService from 'shared/services/Team.service';
 import InstitutionService from 'shared/services/Institution.service';
-import ProjectService from 'shared/services/Project.service';
 
 // definitely target to change, when backend will provide full data
 async function getTeams(filterParams) {
@@ -59,12 +58,15 @@ const SearchPage = () => {
 
   const searchParams = new URLSearchParams(search);
 
-  // category of the searched items (teams/institutions/users/projects)
+  // category of the searched items (teams/institutions/users)
   const { searchCategory } = useParams();
   const searchedKeyword = searchParams.get('keyword') || '';
 
   const [searchRequestResult, setSearchRequestResult] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [loadedCategory, setLoadedCategory] = useState('');
+
+  // check if searchRequestResult is of the requested category
+  const isLoading = loadedCategory !== searchCategory;
 
   // function to update the state in the URL
   const updateQueryParams = (param, value) => {
@@ -85,10 +87,6 @@ const SearchPage = () => {
     updateQueryParams('keyword', value);
   };
 
-  const changedTabHandler = () => {
-    setIsLoading(true);
-  };
-
   const fetchSearchHandler = useCallback(async (_searchCategory, _searchParams) => {
     let searchResponse = [];
     const filterParams = Object.fromEntries(new URLSearchParams(_searchParams));
@@ -102,17 +100,13 @@ const SearchPage = () => {
       case 'institutions':
         searchResponse = await getInstitutions(filterParams);
         break;
-      case 'projects':
-        searchResponse = await ProjectService.getProjects(filterParams);
-        break;
       default:
     }
     setSearchRequestResult(searchResponse);
-    setIsLoading(false);
+    setLoadedCategory(_searchCategory);
   }, []);
 
   useEffect(() => {
-    setIsLoading(true);
     fetchSearchHandler(searchCategory, search);
   }, [fetchSearchHandler, searchCategory, search]);
 
@@ -134,7 +128,6 @@ const SearchPage = () => {
           />
           <SearchTabs
             value={searchCategory}
-            onChange={changedTabHandler}
             searchParams={searchParams}
             path={path}
           />

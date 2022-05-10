@@ -3,7 +3,7 @@ import { TabGroup } from 'components/Tab';
 import { setSeachCategoryInUrl } from 'shared/utils/common/utils';
 
 const SearchTabs = ({
-  value, onChange, searchParams, path,
+  value, searchParams, path, onChange = () => {},
 }) => {
   let categories = ['teams', 'institutions', 'users'];
   categories = categories.map((category) => ({

@@ -32,12 +32,11 @@ const FilterButton = ({ onClick }) => (
 );
 
 const Search = ({ filterComponent, handleSearch, value }) => {
+  const [active, setActive] = useState(false);
+  const [filterEnabled, setFilterEnabled] = useState(false);
+  const filterBox = useRef();
 
-  const [active, setActive] = useState(false)
-  const [filterEnabled, setFilterEnabled] = useState(false)
-  const filterBox = useRef()
-
-  console.log(filterComponent)
+  // console.log(filterComponent)
 
   useEffect(() => {
     // TODO
@@ -56,7 +55,7 @@ const Search = ({ filterComponent, handleSearch, value }) => {
     // return () => {
     //   window.removeEventListener("click", handleFilterClose, true);
     // }
-  }, [])
+  }, []);
 
   return (
     <Stack
@@ -70,9 +69,9 @@ const Search = ({ filterComponent, handleSearch, value }) => {
       }}
     >
       {/* Left part */}
-      <Stack direction="row" alignItems="center" gap="5px" sx={{ marginLeft: "20px", width: "100%" }}>
-        <SearchIcon sx={{ color: active ? "primary.light" : "primary.main" }} />
-        <SearchInput onChange={(e) => handleSearch(e.target.value)} placeholder="Search" onMouseEnter={() => setActive(true)} onMouseLeave={() => setActive(false)} value={value}/>
+      <Stack direction="row" alignItems="center" gap="5px" sx={{ marginLeft: '20px', width: '100%' }}>
+        <SearchIcon sx={{ color: active ? 'primary.light' : 'primary.main' }} />
+        <SearchInput onChange={(e) => handleSearch(e.target.value)} placeholder="Search" onMouseEnter={() => setActive(true)} onMouseLeave={() => setActive(false)} value={value} />
       </Stack>
       {/* Right part */}
       <Stack direction="row" sx={{ marginRight: '20px' }}>
