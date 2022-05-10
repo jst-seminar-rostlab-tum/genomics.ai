@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Chip } from '@mui/material';
+import { Chip, Tooltip } from '@mui/material';
 
 // import Avatars from 'components/Avatars';
 import SearchCard from '../SearchCard';
@@ -11,16 +11,34 @@ import LabeledLink from '../LabeledLink';
 // Card to display search result for a single team
 // eslint-disable-next-line arrow-body-style
 const TeamCard = ({ item: team }) => {
+  const visibility = team.visibility.toLowerCase();
+  let visibilityTooltip;
+
+  switch (visibility) {
+    case 'public':
+      visibilityTooltip = 'Anybody can join the project!';
+      break;
+    case 'private':
+      visibilityTooltip = 'Only invited members can join the project!';
+      break;
+    case 'by institution':
+      visibilityTooltip = 'Only institution members can join the project!';
+      break;
+    default:
+      visibilityTooltip = 'unknown';
+  }
+
   return (
     <SearchCard
-      // action={<Button variant="contained">Join</Button>}
       // action={<CustomButton type="primary">Join</CustomButton>}
       title={team.title}
       link={`/sequencer/teams/${team.id}`}
-      primary={
-        //  <Tag content={team.visibility} variant="primary-default" />
-        <Chip label={team.visibility.toLowerCase()} color="primary" size="small" />
-      }
+      primary={(
+        // <Tag content={team.visibility} variant="primary-default" />
+        <Tooltip title={visibilityTooltip} placement="right-end">
+          <Chip label={visibility} color="primary" size="small" />
+        </Tooltip>
+        )}
       // secondary={`updated on ${team.updated}`}
       tertiary={(
         <>
@@ -42,6 +60,7 @@ const TeamCard = ({ item: team }) => {
           {team.institutionId && (
             <LabeledLink
               label="Institution"
+              tooltip="The institution managing the team."
               content={team.institutionTitle}
               to={`/sequencer/institutions/${team.institutionId}`}
             />
