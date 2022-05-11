@@ -58,6 +58,7 @@ export default function ImageUploadDialog({
             filesLimit={1}
             showPreviews={!croppable}
             showPreviewsInDropzone={!preview}
+            alertSnackbarProps={{ autoHideDuration: 3000 }}
           />
         )}
         {imgURL && croppable && (
