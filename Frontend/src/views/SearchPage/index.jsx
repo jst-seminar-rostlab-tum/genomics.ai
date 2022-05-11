@@ -30,7 +30,7 @@ async function getTeams(filterParams) {
   institutionsResponse.forEach(
     (institution,
       index) => {
-      teamsWithInstitutions[index].institutionTitle = institution.name;
+      teamsWithInstitutions[index].institution = institution;
     },
   );
   return searchResponse;
@@ -91,10 +91,10 @@ const SearchPage = () => {
     updateQueryParams('keyword', value);
   };
 
-  const fetchSearchHandler = useCallback(async (_searchCategory, _searchParams) => {
+  const fetchSearchHandler = useCallback(async () => {
     let searchResponse = [];
-    const filterParams = Object.fromEntries(new URLSearchParams(_searchParams));
-    switch (_searchCategory) {
+    const filterParams = Object.fromEntries(new URLSearchParams(search));
+    switch (searchCategory) {
       case 'users':
         searchResponse = await UserService.getUsers(filterParams);
         break;
@@ -107,12 +107,12 @@ const SearchPage = () => {
       default:
     }
     setSearchRequestResult(searchResponse);
-    setLoadedCategory(_searchCategory);
-  }, []);
+    setLoadedCategory(searchCategory);
+  }, [searchCategory, search]);
 
   useEffect(() => {
-    fetchSearchHandler(searchCategory, search);
-  }, [fetchSearchHandler, searchCategory, search]);
+    fetchSearchHandler();
+  }, [fetchSearchHandler]);
 
   return (
     <Stack direction="column" sx={{ paddingLeft: '130px' }}>
@@ -146,6 +146,7 @@ const SearchPage = () => {
               searchCategory={searchCategory}
               searchedKeyword={searchedKeyword}
               user={user}
+              fetchSearchHandler={fetchSearchHandler}
             />
           )}
         </Box>

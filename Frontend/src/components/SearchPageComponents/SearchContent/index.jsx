@@ -10,7 +10,7 @@ import { setSeachCategoryInUrl } from 'shared/utils/common/utils';
 
 // wrapper component to display the searched items
 function SearchContent({
-  searchResult, searchCategory, searchedKeyword, user,
+  searchResult, searchCategory, searchedKeyword, user, fetchSearchHandler,
 }) {
   const { path } = useRouteMatch();
 
@@ -19,6 +19,7 @@ function SearchContent({
       listItemWrapper={listItemWrapper}
       searchResult={searchResult}
       user={user}
+      fetchSearchHandler={fetchSearchHandler}
     />
   );
 
