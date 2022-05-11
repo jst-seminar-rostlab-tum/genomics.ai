@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Chip } from '@mui/material';
+import { Chip, Tooltip } from '@mui/material';
 
 // import Avatars from 'components/Avatars';
 import SearchCard from '../SearchCard';
@@ -9,16 +9,30 @@ import LabeledLink from '../LabeledLink';
 import TeamJoinButton from 'components/teams/detail/TeamJoinButton';
 import TeamService from 'shared/services/Team.service';
 
-import { useAuth } from 'shared/context/authContext';
-
 // Card to display search result for a single team
 // eslint-disable-next-line arrow-body-style
-const TeamCard = ({ item: team }) => {
-  const joinTeam = (team) => {
-    TeamService.joinTeam(team.id);
+const TeamCard = ({ item: team, user }) => {
+  const joinTeam = (teamToJoin) => {
+    TeamService.joinTeam(teamToJoin.id);
   };
 
-  const [user] = useAuth();
+  const visibility = team.visibility.toLowerCase();
+  let visibilityTooltip;
+
+  switch (visibility) {
+    case 'public':
+      visibilityTooltip = 'Anybody can join the project!';
+      break;
+    case 'private':
+      visibilityTooltip = 'Only invited members can join the project!';
+      break;
+    case 'by institution':
+      visibilityTooltip = 'Only institution members can join the project!';
+      break;
+    default:
+      visibilityTooltip = 'unknown';
+  }
+
   const isMember = team.memberIds.includes(user._id);
 
   return (
@@ -26,9 +40,12 @@ const TeamCard = ({ item: team }) => {
       action={!isMember && <TeamJoinButton team={team} onJoin={joinTeam} />}
       title={team.title}
       link={`/sequencer/teams/${team.id}`}
-      primary={
-        <Chip label={team.visibility.toLowerCase()} color="primary" size="small" />
-      }
+      primary={(
+        // <Tag content={team.visibility} variant="primary-default" />
+        <Tooltip title={visibilityTooltip} placement="right-end">
+          <Chip label={visibility} color="primary" size="small" />
+        </Tooltip>
+        )}
       // secondary={`updated on ${team.updated}`}
       tertiary={(
         <>
@@ -50,6 +67,7 @@ const TeamCard = ({ item: team }) => {
           {team.institutionId && (
             <LabeledLink
               label="Institution"
+              tooltip="The institution managing the team."
               content={team.institutionTitle}
               to={`/sequencer/institutions/${team.institutionId}`}
             />
