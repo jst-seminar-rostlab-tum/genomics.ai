@@ -2,10 +2,9 @@
 import React, { useState } from 'react';
 import Button from 'components/CustomButton';
 import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
+import { Modal, ModalTitle } from 'components/Modal';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
 import InstitutionService from 'shared/services/Institution.service';
 import { CircularProgress } from '@mui/material';
 
@@ -34,8 +33,8 @@ export default function InstitutionCreationDialog({ open, handleClose, onCreated
   }
 
   return (
-    <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>Create an Institution</DialogTitle>
+    <Modal isOpen={open} setOpen={(o) => !o && handleClose()}>
+      <ModalTitle>Create an Institution</ModalTitle>
       <DialogContent>
         <TextField
           autoFocus
@@ -71,6 +70,6 @@ export default function InstitutionCreationDialog({ open, handleClose, onCreated
           )
         }
       </DialogActions>
-    </Dialog>
+    </Modal>
   );
 }

@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import {
   TextField,
-  Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle,
   Fab,
   Snackbar,
   Alert,
 } from '@mui/material';
+import { Modal, ModalTitle } from 'components/Modal';
 import PersonAddOutlinedIcon from '@mui/icons-material/PersonAddOutlined';
 import Button from 'components/CustomButton';
 
@@ -56,14 +55,14 @@ function InstitutionInviteButton({ institution }) {
       >
         <PersonAddOutlinedIcon />
       </Fab>
-      <Dialog
-        open={dialogOpen}
-        onClose={handleCloseDialog}
+      <Modal
+        isOpen={dialogOpen}
+        setOpen={(o) => !o && handleCloseDialog()}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
         fullWidth
       >
-        <DialogTitle id="alert-dialog-title">Invite User</DialogTitle>
+        <ModalTitle id="alert-dialog-title">Invite User</ModalTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             {`Invite a user to your institution "${institution.name}"`}
@@ -88,7 +87,7 @@ function InstitutionInviteButton({ institution }) {
             Confirm
           </Button>
         </DialogActions>
-      </Dialog>
+      </Modal>
       <Snackbar
         open={open}
         autoHideDuration={3000}

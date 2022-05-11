@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import Button from 'components/CustomButton';
-import Dialog from '@mui/material/Dialog';
+import { Modal, ModalTitle } from 'components/Modal';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
 
 function TeamMemberMakeAdminButton({
   team, member, onMakeAdmin, onRemoveAdmin,
@@ -31,15 +30,15 @@ function TeamMemberMakeAdminButton({
       <Button type="secondary" onClick={handleOpenDialog}>
         {isAlreadyAdmin ? 'Remove Admin' : 'Make Admin'}
       </Button>
-      <Dialog
-        open={dialogOpen}
-        onClose={handleCloseDialog}
+      <Modal
+        isOpen={dialogOpen}
+        setOpen={(o) => !o && handleCloseDialog()}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
+        <ModalTitle id="alert-dialog-title">
           {isAlreadyAdmin ? 'Remove Admin' : 'Make Admin'}
-        </DialogTitle>
+        </ModalTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             {`Do you really want to ${isAlreadyAdmin ? 'remove' : 'make'} ${member.firstName} 
@@ -52,7 +51,7 @@ function TeamMemberMakeAdminButton({
             {isAlreadyAdmin ? 'Remove' : 'Make'}
           </Button>
         </DialogActions>
-      </Dialog>
+      </Modal>
     </>
   );
 }

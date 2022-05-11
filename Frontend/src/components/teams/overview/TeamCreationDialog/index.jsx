@@ -2,10 +2,9 @@
 import React, { useState } from 'react';
 import Button from 'components/CustomButton';
 import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
+import { Modal, ModalTitle } from 'components/Modal';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
 import TeamService from 'shared/services/Team.service';
 import InstitutionChoice from 'components/institutions/InstitutionChoice';
 import { CircularProgress } from '@mui/material';
@@ -34,8 +33,10 @@ export default function TeamCreationDialog({ open, handleClose, onCreated }) {
   }
 
   return (
-    <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>Create a Team</DialogTitle>
+    <Modal
+      isOpen={open}
+      setOpen={(o) => !o && handleClose()}>
+      <ModalTitle>Create a Team</ModalTitle>
       <DialogContent>
         <TextField
           autoFocus
@@ -81,6 +82,6 @@ export default function TeamCreationDialog({ open, handleClose, onCreated }) {
           )
         }
       </DialogActions>
-    </Dialog>
+    </Modal >
   );
 }

@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import Button from 'components/CustomButton';
-import Dialog from '@mui/material/Dialog';
+import { Modal, ModalTitle } from 'components/Modal';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
 
 import TeamService from 'shared/services/Team.service';
 
@@ -25,17 +24,15 @@ function TeamLeaveButton({ team, onLeft }) {
       <Button variant="outlined" type="critical" onClick={handleOpenDialog}>
         Leave
       </Button>
-      <Dialog
-        open={dialogOpen}
-        onClose={handleCloseDialog}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
+      <Modal
+        isOpen={dialogOpen}
+        setOpen={(o) => !o && handleCloseDialog()}
       >
-        <DialogTitle id="alert-dialog-title">
+        <ModalTitle>
           Leave
-        </DialogTitle>
+        </ModalTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
+          <DialogContentText>
             Do you really want to leave the team &quot;
             {team.name}
             &quot;?
@@ -47,7 +44,7 @@ function TeamLeaveButton({ team, onLeft }) {
             Leave
           </Button>
         </DialogActions>
-      </Dialog>
+      </Modal>
     </>
   );
 }

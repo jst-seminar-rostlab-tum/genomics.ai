@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import Button from 'components/CustomButton';
-import Dialog from '@mui/material/Dialog';
+import { Modal, ModalTitle } from 'components/Modal';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
 
 import TeamService from 'shared/services/Team.service';
 
@@ -25,17 +24,15 @@ function TeamMemberRemoveButton({ team, member, onRemoved }) {
       <Button type="critical" onClick={handleOpenDialog}>
         Remove
       </Button>
-      <Dialog
-        open={dialogOpen}
-        onClose={handleCloseDialog}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
+      <Modal
+        isOpen={dialogOpen}
+        setOpen={(o) => !o && handleCloseDialog()}
       >
-        <DialogTitle id="alert-dialog-title">
+        <ModalTitle>
           Remove Member
-        </DialogTitle>
+        </ModalTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
+          <DialogContentText>
             Do you really want to remove the member &quot;
             {`${member.firstName} ${member.lastName}`}
             &quot; from the team &quot;
@@ -49,7 +46,7 @@ function TeamMemberRemoveButton({ team, member, onRemoved }) {
             Remove
           </Button>
         </DialogActions>
-      </Dialog>
+      </Modal>
     </>
   );
 }

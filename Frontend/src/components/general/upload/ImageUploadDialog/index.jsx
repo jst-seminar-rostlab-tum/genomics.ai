@@ -1,10 +1,9 @@
 /* eslint-disable no-return-assign */
 import React, { useState, useEffect } from 'react';
 import Button from 'components/CustomButton';
-import Dialog from '@mui/material/Dialog';
+import { Modal, ModalTitle } from 'components/Modal';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
 import { DropzoneArea } from 'mui-file-dropzone';
 import CropImage from '../CropImage';
 
@@ -46,8 +45,8 @@ export default function ImageUploadDialog({
   }
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>{title}</DialogTitle>
+    <Modal isOpen={open} setOpen={(o) => !o && onClose()} maxWidth="sm" fullWidth>
+      <ModalTitle>{title}</ModalTitle>
       <DialogContent>
         {description && (<p>{description}</p>)}
         {!imgURL && (
@@ -101,6 +100,6 @@ export default function ImageUploadDialog({
           )
         }
       </DialogActions>
-    </Dialog>
+    </Modal>
   );
 }
