@@ -6,7 +6,7 @@ const MOCK_TEAMS = false;
 const MODEL = 'teams';
 
 function enhanceTeam(team) {
-  return { ...team, id: team._id };
+  return { ...team, id: team._id, name: team.title };
 }
 
 const TeamService = MOCK_TEAMS ? MockTeamService : {
@@ -21,9 +21,10 @@ const TeamService = MOCK_TEAMS ? MockTeamService : {
 
   async createTeam(name, description, institutionId) {
     const { data } = await axiosInstance.post('/teams', {
-      name,
+      title: name,
       description,
       institutionId,
+      visibility: 'PRIVATE',
     });
     return enhanceTeam(data);
   },
@@ -31,7 +32,7 @@ const TeamService = MOCK_TEAMS ? MockTeamService : {
   async removeMemberFromTeam(teamId, memberId) {
     const team = await TeamService.getTeam(teamId);
     team.memberIds = team.memberIds.filter((mId) => mId !== memberId);
-    await axiosInstance.post(`/teams/${teamId}`, team);
+    await axiosInstance.post(`/teams/${teamId}`, { data: team });
   },
 
   async getTeam(teamId) {
