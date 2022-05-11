@@ -47,6 +47,7 @@ function InstitutionCard({
         <InstitutionLeaveButton key="leave" institution={institution} onLeft={onLeft} />,
       ]}
       onClick={navigateToInstitution}
+      sx={{ pointer: 'cursor' }}
     />
   );
 }
