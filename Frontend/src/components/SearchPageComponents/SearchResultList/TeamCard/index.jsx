@@ -6,19 +6,27 @@ import { Chip } from '@mui/material';
 import SearchCard from '../SearchCard';
 import LabeledLink from '../LabeledLink';
 
-// import CustomButton from 'components/CustomButton';
+import TeamJoinButton from 'components/teams/detail/TeamJoinButton';
+import TeamService from 'shared/services/Team.service';
+
+import { useAuth } from 'shared/context/authContext';
 
 // Card to display search result for a single team
 // eslint-disable-next-line arrow-body-style
 const TeamCard = ({ item: team }) => {
+  const joinTeam = (team) => {
+    TeamService.joinTeam(team.id);
+  };
+
+  const [user] = useAuth();
+  const isMember = team.memberIds.includes(user._id);
+
   return (
     <SearchCard
-      // action={<Button variant="contained">Join</Button>}
-      // action={<CustomButton type="primary">Join</CustomButton>}
+      action={!isMember && <TeamJoinButton team={team} onJoin={joinTeam} />}
       title={team.title}
       link={`/sequencer/teams/${team.id}`}
       primary={
-        //  <Tag content={team.visibility} variant="primary-default" />
         <Chip label={team.visibility.toLowerCase()} color="primary" size="small" />
       }
       // secondary={`updated on ${team.updated}`}
