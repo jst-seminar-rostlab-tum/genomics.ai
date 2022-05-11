@@ -107,7 +107,14 @@ function UploadFilePage({
                       setOpen={setAtlasInfoOpen}
                       children={(
                         <Container>
+                          {/* <ModalTitle>{selectedAtlas.name}</ModalTitle> */}
                           <LearnMoreAtlasComponent id={selectedAtlas._id} onClick={() => history.push(`/explore/atlases/${selectedAtlas._id}/visualization`)} />
+                          {/* <Typography variant="body1" gutterBottom>
+                            {
+                              Object.keys(selectedAtlas).map((key, i) => (<li key={i}>{`${key} : ${selectedAtlas[key]}`}</li>))
+                            }
+                          </Typography>
+                          <Button size="large" onClick={() => setAtlasInfoOpen(false)}>Close</Button> */}
                         </Container>
                     )}
                     />
@@ -135,6 +142,13 @@ function UploadFilePage({
                       children={(
                         <Container>
                           <LearnMoreModelComponent id={selectedModel._id} />
+                          {/* <ModalTitle>{selectedModel.name}</ModalTitle>
+                          <Typography variant="body1" gutterBottom>
+                            {
+                              Object.keys(selectedModel).map((key, i) => (<li key={i}>{`${key} : ${selectedModel[key]}`}</li>))
+                            }
+                          </Typography>
+                          <Button size="large" onClick={() => setModelInfoOpen(false)}>Close</Button> */}
                         </Container>
                     )}
                     />
@@ -180,7 +194,10 @@ function UploadFilePage({
                   onChangeEvent={setMappingName}
                   isRequired
                 />
-                <Button size="large" onClick={handleSubmit}>Done</Button>
+                <Stack direction="row">
+                  <Button size="large" onClick={() => setOpen(false)}>Close</Button>
+                  <Button size="large" onClick={handleSubmit}>Done</Button>
+                </Stack>
               </Container>
             )}
           />
