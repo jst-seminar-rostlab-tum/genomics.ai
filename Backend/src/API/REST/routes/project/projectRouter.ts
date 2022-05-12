@@ -5,6 +5,12 @@ import ProjectService from "../../../../database/services/project.service";
 import TeamService from "../../../../database/services/team.service";
 import InstitutionService from "../../../../database/services/institution.service";
 import { ObjectId } from "mongoose";
+import { validationMdw } from "../../middleware/validation";
+import ProjectUpdateTokenService from "../../../../database/services/project_update_token.service";
+import s3 from "../../../../util/s3";
+import { UpdateProjectDTO } from "../../../../database/dtos/project.dto";
+import { ProjectStatus } from "../../../../database/models/project";
+import { result_path } from "../file_upload/bucket_filepaths";
 
 const get_projects = (): Router => {
   let router = express.Router();
@@ -13,8 +19,7 @@ const get_projects = (): Router => {
     try {
       const projects = await ProjectService.getProjects(query);
 
-      if(projects != null)
-        return res.status(200).json(projects);
+      if (projects != null) return res.status(200).json(projects);
       return res.status(404).send(`No project found`);
     } catch (err) {
       console.error(JSON.stringify(err));
@@ -123,21 +128,54 @@ const get_project_by_id = (): Router => {
 
 const get_users_projects = (): Router => {
   let router = express.Router();
-  router
-      .get("/users/:id/projects", check_auth(), async (req: any, res) => {
-        const userId = req.params.id;
-        try {
-          const projects = await ProjectService.getProjectByOwner(userId);
+  router.get("/users/:id/projects", check_auth(), async (req: any, res) => {
+    const userId = req.params.id;
+    try {
+      const projects = await ProjectService.getProjectByOwner(userId);
 
-          if ( projects != null )
-            return res.status(200).json(projects);
-          return res.status(404).send(`No projects found`);
-        } catch (err) {
-          console.error(JSON.stringify(err));
-          return res.status(500).send(`Internal server error`);
-        }
-      })
+      if (projects != null) return res.status(200).json(projects);
+      return res.status(404).send(`No projects found`);
+    } catch (err) {
+      console.error(JSON.stringify(err));
+      return res.status(500).send(`Internal server error`);
+    }
+  });
   return router;
-}
+};
 
-export { get_projects, get_userProjects, get_project_by_id, get_users_projects };
+const update_project_results = (): Router => {
+  let router = express.Router();
+  router.post("/projects/updateresults/:token", validationMdw, async (req, res) => {
+    try {
+      const updateToken = req.params.token;
+      let tokenObject = await ProjectUpdateTokenService.getTokenByToken(updateToken);
+      let project = await ProjectService.getProjectById(tokenObject._projectId);
+      if (project.status === ProjectStatus.PROCESSING_PENDING) {
+        let params: any = {
+          Bucket: process.env.S3_BUCKET_NAME!,
+          Key: result_path(project._id),
+          Expires: 60 * 60 * 24 * 7 - 1, // one week minus one second
+        };
+        let presignedUrl = await s3.getSignedUrlPromise("getObject", params);
+        const updateLocationAndStatus: UpdateProjectDTO = {
+          location: presignedUrl,
+          status: ProjectStatus.DONE,
+        };
+        await ProjectService.updateProjectByUploadId(params.UploadId, updateLocationAndStatus);
+      }
+      return res.status(200).send("OK");
+    } catch (e) {
+      console.error(e);
+      return res.status(500).send("Internal server error");
+    }
+  });
+  return router;
+};
+
+export {
+  get_projects,
+  get_userProjects,
+  get_project_by_id,
+  get_users_projects,
+  update_project_results,
+};

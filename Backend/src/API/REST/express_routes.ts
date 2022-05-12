@@ -63,6 +63,7 @@ import {
   get_userProjects,
   get_project_by_id,
   get_users_projects,
+  update_project_results,
 } from "./routes/project/projectRouter";
 
 import {
@@ -131,6 +132,7 @@ export function express_routes(this: REST_Host): Router {
   this.expressApp.use(get_userProjects());
   this.expressApp.use(get_project_by_id());
   this.expressApp.use(get_users_projects());
+  this.expressApp.use(update_project_results());
 
   // model routes
   this.expressApp.use(get_model());

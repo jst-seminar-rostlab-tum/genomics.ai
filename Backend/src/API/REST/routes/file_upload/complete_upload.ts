@@ -17,6 +17,8 @@ import AtlasService from "../../../../database/services/atlas.service";
 import ModelService from "../../../../database/services/model.service";
 
 import { validationMdw } from "../../middleware/validation";
+import ProjectUpdateTokenService from "../../../../database/services/project_update_token.service";
+import { query_path, result_model_path, result_path } from "./bucket_filepaths";
 
 export default function upload_complete_upload_route() {
   let router = express.Router();
@@ -37,7 +39,7 @@ export default function upload_complete_upload_route() {
         //Complete multipart upload
         let params: CompleteMultipartUploadRequest = {
           Bucket: process.env.S3_BUCKET_NAME,
-          Key: `projects/${project._id}/query.h5ad`,
+          Key: query_path(project._id),
           MultipartUpload: { Parts: parts },
           UploadId: String(uploadId),
         };
@@ -71,14 +73,20 @@ export default function upload_complete_upload_route() {
               });
               return res.status(500).send(`Could not find ${!model ? "model" : "atlas"}`);
             }
+
+            //Create a token, which can be used later to update the projects status
+            let { token: updateToken } = await ProjectUpdateTokenService.addToken({
+              _projectId: project._id,
+            });
             let queryInfo = {
               model: model.name,
-              query_data: `projects/${project.id}/query.h5ad`,
-              output_path: `results/${project.id}/query.tsv`,
-              model_path: `results/${project.id}/model.pt`,
+              query_data: query_path(project.id),
+              output_path: result_path(project.id),
+              model_path: result_model_path(project.id),
               reference_data: `atlas/${project.atlasId}/data.h5ad`,
               //ref_path: `models/${project.modelId}/model.pt`,
               async: false,
+              webhook: `${process.env.API_URL}/projects/results/${updateToken}`,
             };
             console.log("sending: ");
             console.log(queryInfo);
@@ -146,17 +154,6 @@ export default function upload_complete_upload_route() {
           }
 
           //Processing finished, http response has already be sent before processing, update database entry now
-          let params2: any = {
-            Bucket: process.env.S3_BUCKET_NAME!,
-            Key: `results/${project!.id}/query.tsv`,
-            Expires: 60 * 60 * 24 * 7 - 1, // one week minus one second
-          };
-          let presignedUrl = await s3.getSignedUrlPromise("getObject", params2);
-          const updateLocationAndStatus: UpdateProjectDTO = {
-            location: presignedUrl,
-            status: ProjectStatus.DONE,
-          };
-          await ProjectService.updateProjectByUploadId(params.UploadId, updateLocationAndStatus);
         } catch (err) {
           console.log(err);
           try {
