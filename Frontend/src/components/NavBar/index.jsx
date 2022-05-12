@@ -231,10 +231,10 @@ export default function Navbar({
             </IconButton>
             <Navlink>genomics.ai</Navlink>
           </LinkBox>
-          <LinkBox to="/about"><Navlink>About us</Navlink></LinkBox>
-          <LinkBox to="/docs"><Navlink>Docs </Navlink></LinkBox>
-          <Box sx={{ cursor: "pointer" }} onClick={executeScroll}><Navlink>Contact us</Navlink></Box>
           <LinkBox to="/explore"><Navlink>Explore</Navlink></LinkBox>
+          <LinkBox to="/about"><Navlink>About us</Navlink></LinkBox>
+          <Box sx={{ cursor: "pointer" }} onClick={executeScroll}><Navlink>Contact us</Navlink></Box>
+          <LinkBox to="/docs"><Navlink>Docs </Navlink></LinkBox>
         </Leftbar>
         <Rightbar>
             {!user && <Login onClick={onLoginClicked}>Log In</Login>}
