@@ -2,7 +2,7 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 import {
-  Button, Box, Container, Divider, Stack, Typography, DialogActions, TextField,
+  Button, Box, Container, Divider, Stack, Tooltip, Typography, DialogActions, TextField,
 } from '@mui/material';
 import { GeneralCard as Card } from 'components/Cards/GeneralCard';
 import CustomButton from 'components/CustomButton';
@@ -70,7 +70,8 @@ function UploadFilePage({
     console.log(selectedDataset);
     // save mapping name
     setOpen(false); // opens modal to input mapping name
-    createProject(mappingName, selectedAtlas._id, selectedModel._id, uploadedFile ? uploadedFile[0] : selectedDataset);
+    createProject(mappingName, selectedAtlas._id, selectedModel._id,
+      uploadedFile ? uploadedFile[0] : selectedDataset);
     history.push(`${path}`); // go back to GeneMapper home
   };
 
@@ -97,26 +98,32 @@ function UploadFilePage({
                 width="50%"
                 children={(
                   <Stack direction="column">
+                    <Typography variant="caption" fontWeight="bold">Atlas</Typography>
                     <Typography gutterBottom variant="h6" fontWeight="bold">{selectedAtlas.name}</Typography>
-                    <Typography gutterBottom variant="caption">
-                      { `Species: ${selectedAtlas.species}` }
+                    <Typography gutterBottom variant="caption"
+                      sx={{
+                        whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '200px',
+                      }}
+                    >
+                      {`Modalities:  ${selectedAtlas.modalities}`}
                     </Typography>
-                    <Button size="small" disabled={!selectedAtlas} onClick={() => setAtlasInfoOpen(true)}>Learn More</Button>
+                    <Typography gutterBottom variant="caption">{`Cells in Reference:  ${selectedAtlas.numberOfCells}`}</Typography>
+                    <Typography gutterBottom variant="caption">{`Species: ${selectedAtlas.species}`}</Typography>
+                    <Button size='small' variant="outlined" onClick={() => setAtlasInfoOpen(true)}
+                      sx={{
+                        borderRadius: 100, width: '50%', ml: '50%', mt:'1em', textTransform: 'none'
+                      }} 
+                    >
+                      Learn more
+                    </Button>
                     <Modal
                       isOpen={atlasInfoOpen}
                       setOpen={setAtlasInfoOpen}
                       children={(
                         <Container>
-                          {/* <ModalTitle>{selectedAtlas.name}</ModalTitle> */}
                           <LearnMoreAtlasComponent id={selectedAtlas._id} onClick={() => history.push(`/explore/atlases/${selectedAtlas._id}/visualization`)} />
-                          {/* <Typography variant="body1" gutterBottom>
-                            {
-                              Object.keys(selectedAtlas).map((key, i) => (<li key={i}>{`${key} : ${selectedAtlas[key]}`}</li>))
-                            }
-                          </Typography>
-                          <Button size="large" onClick={() => setAtlasInfoOpen(false)}>Close</Button> */}
                         </Container>
-                    )}
+                      )}
                     />
                   </Stack>
                 )}
@@ -125,32 +132,37 @@ function UploadFilePage({
                 width="50%"
                 children={(
                   <Stack direction="column">
+                    <Typography variant="caption" fontWeight="bold">Model</Typography>
                     <Typography gutterBottom variant="h6" fontWeight="bold">{selectedModel.name}</Typography>
                     <Typography
                       gutterBottom
                       variant="caption"
                       sx={{
-                        whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '200px',
+                        display: 'block',
+                        textOverflow: 'ellipsis',
+                        wordWrap: 'break-word',
+                        overflow: 'hidden',
+                        maxHeight: '5.7em',
+                        lineHeight: '1.9em'
                       }}
                     >
                       {selectedModel.description}
                     </Typography>
-                    <Button size="small" disabled={!selectedModel} onClick={() => setModelInfoOpen(true)}>Learn More</Button>
+                    <Button size='small' variant="outlined" onClick={() => setModelInfoOpen(true)}
+                      sx={{
+                        borderRadius: 100, width: '50%', ml: '50%', mt:'1em', textTransform: 'none'
+                      }} 
+                    >
+                      Learn more
+                    </Button>
                     <Modal
                       isOpen={modelInfoOpen}
                       setOpen={setModelInfoOpen}
                       children={(
                         <Container>
                           <LearnMoreModelComponent id={selectedModel._id} />
-                          {/* <ModalTitle>{selectedModel.name}</ModalTitle>
-                          <Typography variant="body1" gutterBottom>
-                            {
-                              Object.keys(selectedModel).map((key, i) => (<li key={i}>{`${key} : ${selectedModel[key]}`}</li>))
-                            }
-                          </Typography>
-                          <Button size="large" onClick={() => setModelInfoOpen(false)}>Close</Button> */}
                         </Container>
-                    )}
+                      )}
                     />
                   </Stack>
               )}
@@ -161,9 +173,9 @@ function UploadFilePage({
               <Card>
                 <Box sx={{ flexDirection: 'column', minHeight: '18em' }}>
                   {requirements
-                    ? requirements.map((text) => (
+                    ? requirements.map((text, index) => (
                       <Box key={text} sx={{ display: 'flex' }}>
-                        <Typography variant="body2" sx={{ pr: 1, fontWeight: 'bold' }}>-</Typography>
+                        <Typography variant="body2" sx={{ pr: 1, fontWeight: 'bold' }}>{++index}</Typography>
                         <Typography variant="body2">
                           {text}
                         </Typography>
@@ -197,13 +209,25 @@ function UploadFilePage({
                     required
                     label="Mapping name"
                   />
-                  <Stack direction="row">
-                    <Button size="large" onClick={() => setOpen(false)}>Close</Button>
-                    <Button size="large" type="submit">Done</Button>
+                  <Stack direction="row" justifyContent="space-between" mt='1.5em'>
+                    <CustomButton
+                      type="tertiary"
+                      onClick={() => {
+                        setOpen(false);
+                      }}
+                    >
+                      Close
+                    </CustomButton>
+                    <CustomButton
+                      type="primary"
+                      onClick={handleSubmit}
+                    >
+                      Submit
+                    </CustomButton>
                   </Stack>
                 </form>
               </Container>
-      )}
+            )}
           />
           <Stack className="flexContainer" direction="column" pb="1em">
             <Typography variant="h5" fontWeight="bold" pb="1em">Select Datasets for Upload</Typography>
@@ -226,16 +250,20 @@ function UploadFilePage({
         </CustomButton>
         <Stack direction="row" spacing={3} alignItems="center">
           <Typography variant="h6" fontWeight="bold">{uploadedFile && `Selected file: ${uploadedFile[0].name}`}</Typography>
-          <CustomButton
-            type="primary"
-            disabled={!uploadedFile && !selectedDataset}
-            onClick={() => {
-              setOpen(true);
-            }}
-          >
-            Create Mapping
-            <CheckCircleOutlineIcon sx={{ marginLeft: '4px' }} />
-          </CustomButton>
+          <Tooltip title={(!uploadedFile && !selectedDataset) ? "You haven't selected or uploaded a dataset!" : ""} placement='top'>
+            <span>
+              <CustomButton
+                type="primary"
+                disabled={!uploadedFile && !selectedDataset}
+                onClick={() => {
+                  setOpen(true);
+                }}
+              >
+                Create Mapping
+                <CheckCircleOutlineIcon sx={{ marginLeft: '4px' }} />
+              </CustomButton>
+            </span>
+          </Tooltip>
         </Stack>
       </Stack>
     </Box>
