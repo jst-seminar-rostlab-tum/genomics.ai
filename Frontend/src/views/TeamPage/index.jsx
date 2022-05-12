@@ -25,6 +25,13 @@ export default function TeamPage() {
     });
   };
 
+  async function updateVisibility(newVisibility) {
+    await TeamService.changeTeamVisibility(id, newVisibility);
+    TeamService.getTeam(id)
+      .then(setTeam)
+      .catch((ignored) => { console.error(ignored); });
+  }
+
   useEffect(() => {
     if (id == null) return;
     TeamService.getTeam(id)
@@ -53,7 +60,7 @@ export default function TeamPage() {
         />
       )}
       replaceHeaderRight={
-        (isAdmin && <TeamAdminHeaderRight team={team} setTeam={setTeam} />)
+        (isAdmin && <TeamAdminHeaderRight team={team} updateVisibility={updateVisibility} />)
         || <TeamUserHeaderRight institution={institution} team={team} user={user} />
       }
     >
