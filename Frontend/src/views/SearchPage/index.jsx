@@ -19,6 +19,8 @@ import ProjectService from 'shared/services/Project.service';
 import AtlasService from 'shared/services/Atlas.service';
 import ModelService from 'shared/services/Model.service';
 
+import { applyModelFilters, applyAtlasFilters } from 'shared/utils/filter';
+
 // definitely target to change, when backend will provide full data
 async function getTeams(filterParams) {
   const searchResponse = await TeamService.getTeams(filterParams);
@@ -96,7 +98,8 @@ const SearchPage = ({ sidebarShown }) => {
 
   const fetchSearchHandler = useCallback(async (_searchCategory, _searchParams) => {
     let searchResponse = [];
-    const filterParams = Object.fromEntries(new URLSearchParams(_searchParams));
+    const urlParams = new URLSearchParams(_searchParams);
+    const filterParams = Object.fromEntries(urlParams);
     switch (_searchCategory) {
       case 'users':
         searchResponse = await UserService.getUsers(filterParams);
@@ -112,9 +115,11 @@ const SearchPage = ({ sidebarShown }) => {
         break;
       case 'atlases':
         searchResponse = await AtlasService.getAtlases();
+        searchResponse = applyAtlasFilters(searchResponse, filterParams.keyword || '', urlParams);
         break;
       case 'models':
         searchResponse = await ModelService.getModels();
+        searchResponse = applyModelFilters(searchResponse, filterParams.keyword || '', urlParams);
         break;
       default:
     }

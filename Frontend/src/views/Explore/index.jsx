@@ -26,6 +26,7 @@ import ResultVisualization from 'components/GeneMapper/ResultVisualization';
 import AtlasResult from './AtlasResult';
 import AtlasesGrid from 'components/Grids/AtlasesGrid';
 import ModelsGrid from 'components/Grids/ModelsGrid';
+import { applyModelFilters, applyAtlasFilters } from 'shared/utils/filter';
 
 const tmpObj = [
   {
@@ -115,8 +116,8 @@ const Explore = () => {
   const tabMenu = () => (
     <>
       <TabGroup value={value} setValue={setValue} tabsInfo={tmpObj} />
-      {value === 0 ? <AtlasesGrid  atlases={atlases} searchedKeyword={searchedKeyword} path={path} /> : null }
-      {value === 1 ? <ModelsGrid models={models} searchedKeyword={searchedKeyword} path={path} /> : null }
+      {value === 0 ? <AtlasesGrid  atlases={applyAtlasFilters(atlases, searchedKeyword, searchParams)} path={path} /> : null }
+      {value === 1 ? <ModelsGrid models={applyModelFilters(models, searchedKeyword, searchParams)} searchedKeyword={searchedKeyword} path={path} /> : null }
       {value === 2 ? <DataSetGrids /> : null }
     </>
 
