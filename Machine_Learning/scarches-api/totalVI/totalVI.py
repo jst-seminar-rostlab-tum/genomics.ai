@@ -40,8 +40,8 @@ def prepare_data(configuration):
                                                           data=data)
     adata_full = anndata.concat([adata_ref, adata_query])
 
-    adata_ref = adata_full[np.logical_or(adata_full.obs.batch == "PBMC5k", adata_full.obs.batch == "PBMC10k")].copy()
-    adata_query = adata_full[adata_full.obs.batch == "PBMC 10k (RNA only)"].copy()
+    # adata_ref = adata_full[np.logical_or(adata_full.obs.batch == "PBMC5k", adata_full.obs.batch == "PBMC10k")].copy()
+    # adata_query = adata_full[adata_full.obs.batch == "PBMC 10k (RNA only)"].copy()
 
     sc.pp.highly_variable_genes(
         adata_ref,
