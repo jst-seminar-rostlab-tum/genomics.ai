@@ -33,7 +33,7 @@ const AtlasesGrid = ({ atlases, searchedKeyword, path }) => {
   const searchParams = new URLSearchParams(search);
   const atlasesFiltered = applyAtlasFilters(atlases, searchedKeyword, searchParams);
   return (
-    <Box className="atlasContainer" sx={{ height: '70vh' }}>
+    <Box className={styles.atlasContainer} sx={{ height: '70vh' }}>
       <Grid container spacing={3}>
         {atlasesFiltered && atlasesFiltered.map((atlas) => (
           <Grid key={atlas._id} item xs={12} sm={6} md={4} lg={3}>
@@ -51,7 +51,7 @@ const AtlasesGrid = ({ atlases, searchedKeyword, path }) => {
         {atlasesFiltered && atlasesFiltered.map((atlas) => (
           <Grid key={atlas._id} item xs={12} sm={6} md={4} lg={3}>
             <AtlasCard
-              onClick={() => history.push(`${path}/atlases/${atlas._id}/visualization`)}
+              onClick={() => history.push(`${path}/atlases/${atlas._id}/visualization`)} // removed setSelectedAtlas=> feels outdated
               atlasId={atlas._id}
               imgLink={atlas.previewPictureURL}
               species={atlas.species}
@@ -64,7 +64,7 @@ const AtlasesGrid = ({ atlases, searchedKeyword, path }) => {
         {atlasesFiltered && atlasesFiltered.map((atlas) => (
           <Grid key={atlas._id} item xs={12} sm={6} md={4} lg={3}>
             <AtlasCard
-              onClick={() => history.push(`${path}/atlases/${atlas._id}/visualization`)}
+              onClick={() => history.push(`${path}/atlases/${atlas._id}/visualization`)} // removed setSelectedAtlas=> feels outdated
               atlasId={atlas._id}
               imgLink={atlas.previewPictureURL}
               species={atlas.species}

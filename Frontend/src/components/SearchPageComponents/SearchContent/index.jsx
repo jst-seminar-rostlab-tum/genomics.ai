@@ -12,6 +12,7 @@ import AtlasResult from 'views/Explore/AtlasResult';
 import LearnMoreAtlas from 'views/Explore/LearnMoreAtlas';
 import { setSeachCategoryInUrl } from 'shared/utils/common/utils';
 import AtlasesGrid from 'components/Grids/AtlasesGrid';
+import ModelsGrid from 'components/Grids/ModelsGrid';
 
 // wrapper component to display the searched items
 function SearchContent({
@@ -54,7 +55,7 @@ function SearchContent({
         <Route
           exact
           path="/sequencer/search/models"
-          render={() => <p>Hello models!</p>}
+          render={() => <ModelsGrid models={searchResult} searchedKeyword={searchedKeyword} path="/sequencer/search" />}
         />
         <Route exact path="/sequencer/search/models/:id" render={() => <LearnMoreModel />} />
         <Route exact path="/sequencer/search/atlases/:id/visualization" render={() => <AtlasResult />} />

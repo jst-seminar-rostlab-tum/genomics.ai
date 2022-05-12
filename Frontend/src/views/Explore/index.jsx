@@ -25,6 +25,7 @@ import LearnMoreModel from './LearnMoreModel';
 import ResultVisualization from 'components/GeneMapper/ResultVisualization';
 import AtlasResult from './AtlasResult';
 import AtlasesGrid from 'components/Grids/AtlasesGrid';
+import ModelsGrid from 'components/Grids/ModelsGrid';
 
 const tmpObj = [
   {
@@ -100,45 +101,6 @@ const Explore = () => {
     if (!selectedAtlas && !selectedModel) setMapperVisible(false);
   }, [selectedAtlas, selectedModel]);
 
-  function applyModelFilters() {
-    const searchedModels = models.filter(
-      (item) => item.name.toLowerCase().includes(searchedKeyword.toLowerCase()),
-    );
-    if (searchParams.get('sortBy') === 'name' || searchParams.get('sortBy') === null) {
-      searchedModels.sort((a, b) => {
-        const nameA = a.name.toUpperCase();
-        const nameB = b.name.toUpperCase();
-        if (nameA < nameB) {
-          return -1;
-        }
-        if (nameA > nameB) {
-          return 1;
-        }
-        return 0;
-      });
-    }
-    return searchedModels;
-  }
-
-  const ModelsGrid = () => {
-    const modelsFiltered = applyModelFilters();
-    return (
-      <Box className="cardsContainer">
-        <Grid container spacing={3}>
-          {modelsFiltered && modelsFiltered.map((model) => (
-            <Grid key={model._id} item xs={12} sm={6} md={4} lg={3}>
-              <ModelCard
-                onClick={() => setSelectedModel(model)}
-                title={`Model ${model.name}`}
-                description={model.description}
-                learnMoreLink={`${path}/models/${model._id}`}
-              />
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
-    );
-  };
   const DataSetGrids = () => (
     <Box className="cardsContainer">
       <Grid container spacing={3}>
@@ -153,9 +115,8 @@ const Explore = () => {
   const tabMenu = () => (
     <>
       <TabGroup value={value} setValue={setValue} tabsInfo={tmpObj} />
-      {value === 0 ? <AtlasesGrid  atlases={atlases}
-       searchedKeyword={searchedKeyword} path={path} /> : null }
-      {value === 1 ? <ModelsGrid /> : null }
+      {value === 0 ? <AtlasesGrid  atlases={atlases} searchedKeyword={searchedKeyword} path={path} /> : null }
+      {value === 1 ? <ModelsGrid models={models} searchedKeyword={searchedKeyword} path={path} /> : null }
       {value === 2 ? <DataSetGrids /> : null }
     </>
 

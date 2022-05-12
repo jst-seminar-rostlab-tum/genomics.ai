@@ -17,6 +17,7 @@ import TeamService from 'shared/services/Team.service';
 import InstitutionService from 'shared/services/Institution.service';
 import ProjectService from 'shared/services/Project.service';
 import AtlasService from 'shared/services/Atlas.service';
+import ModelService from 'shared/services/Model.service';
 
 // definitely target to change, when backend will provide full data
 async function getTeams(filterParams) {
@@ -111,6 +112,9 @@ const SearchPage = ({ sidebarShown }) => {
         break;
       case 'atlases':
         searchResponse = await AtlasService.getAtlases();
+        break;
+      case 'models':
+        searchResponse = await ModelService.getModels();
         break;
       default:
     }
