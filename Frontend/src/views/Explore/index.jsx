@@ -24,6 +24,7 @@ import LearnMoreAtlas from './LearnMoreAtlas';
 import LearnMoreModel from './LearnMoreModel';
 import ResultVisualization from 'components/GeneMapper/ResultVisualization';
 import AtlasResult from './AtlasResult';
+import AtlasesGrid from 'components/Grids/AtlasesGrid';
 
 const tmpObj = [
   {
@@ -99,28 +100,6 @@ const Explore = () => {
     if (!selectedAtlas && !selectedModel) setMapperVisible(false);
   }, [selectedAtlas, selectedModel]);
 
-  function applyAtlasFilters() {
-    const searchedAtlases = atlases.filter(
-      (item) => item.name.toLowerCase().includes(searchedKeyword.toLowerCase()),
-    );
-    if (searchParams.get('sortBy') === 'name' || searchParams.get('sortBy') === null) {
-      searchedAtlases.sort((a, b) => {
-        const nameA = a.name.toUpperCase();
-        const nameB = b.name.toUpperCase();
-        if (nameA < nameB) {
-          return -1;
-        }
-        if (nameA > nameB) {
-          return 1;
-        }
-        return 0;
-      });
-    } else if (searchParams.get('sortBy') === 'numberOfCells') {
-      searchedAtlases.sort((a, b) => a.numberOfCells - b.numberOfCells);
-    }
-    return searchedAtlases;
-  }
-
   function applyModelFilters() {
     const searchedModels = models.filter(
       (item) => item.name.toLowerCase().includes(searchedKeyword.toLowerCase()),
@@ -140,55 +119,6 @@ const Explore = () => {
     }
     return searchedModels;
   }
-
-  const AtlasesGrid = () => {
-    const atlasesFiltered = applyAtlasFilters();
-    return (
-      <Box className="atlasContainer" sx={{ height: '70vh' }}>
-        <Grid container spacing={3}>
-          {atlasesFiltered && atlasesFiltered.map((atlas) => (
-            <Grid key={atlas._id} item xs={12} sm={6} md={4} lg={3}>
-              <AtlasCard
-                onClick={() => history.push(`${path}/atlases/${atlas._id}/visualization`)}
-                atlasId={atlas._id}
-                imgLink={atlas.previewPictureURL}
-                species={atlas.species}
-                modalities={atlas.modalities}
-                title={atlas.name}
-                learnMoreLink={`${path}/atlases/${atlas._id}`}
-              />
-            </Grid>
-          ))}
-          {atlasesFiltered && atlasesFiltered.map((atlas) => (
-            <Grid key={atlas._id} item xs={12} sm={6} md={4} lg={3}>
-              <AtlasCard
-                onClick={() => setSelectedAtlas(atlas)}
-                atlasId={atlas._id}
-                imgLink={atlas.previewPictureURL}
-                species={atlas.species}
-                modalities={atlas.modalities}
-                title={atlas.name}
-                learnMoreLink={`${path}/atlases/${atlas._id}`}
-              />
-            </Grid>
-          ))}
-          {atlasesFiltered && atlasesFiltered.map((atlas) => (
-            <Grid key={atlas._id} item xs={12} sm={6} md={4} lg={3}>
-              <AtlasCard
-                onClick={() => setSelectedAtlas(atlas)}
-                atlasId={atlas._id}
-                imgLink={atlas.previewPictureURL}
-                species={atlas.species}
-                modalities={atlas.modalities}
-                title={atlas.name}
-                learnMoreLink={`${path}/atlases/${atlas._id}`}
-              />
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
-    );
-  };
 
   const ModelsGrid = () => {
     const modelsFiltered = applyModelFilters();
@@ -223,7 +153,8 @@ const Explore = () => {
   const tabMenu = () => (
     <>
       <TabGroup value={value} setValue={setValue} tabsInfo={tmpObj} />
-      {value === 0 ? <AtlasesGrid /> : null }
+      {value === 0 ? <AtlasesGrid  atlases={atlases}
+       searchedKeyword={searchedKeyword} path={path} /> : null }
       {value === 1 ? <ModelsGrid /> : null }
       {value === 2 ? <DataSetGrids /> : null }
     </>
