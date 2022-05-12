@@ -48,7 +48,9 @@ const WindowiOS = ({ onSignUpClicked }) => {
         <Typography fontSize="1.2rem" fontWeight="light" color="#8193B2">
           Genomics.ai helps you visualize all of your single-cell sequencing data in a fast and easy way using neural networks.
         </Typography>
-        <CustomButton marginTop="1em" onClick={onSignUpClicked} >Sign up for genomics.ai</CustomButton>
+        <Box sx={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
+          <CustomButton sx={{marginTop: "2em"}} onClick={onSignUpClicked} >Sign up for genomics.ai</CustomButton>
+        </Box>
         
         {/* DIVIDER */}
         <Box sx={{ marginTop: "3em", display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>

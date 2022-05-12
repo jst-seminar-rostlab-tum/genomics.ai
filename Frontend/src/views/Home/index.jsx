@@ -18,7 +18,7 @@ import graphic3 from 'assets/landing-illustrations/processing.png';
 import graphic4 from 'assets/landing-illustrations/results.png';
 import CustomButton from "components/CustomButton";
 import Input from 'components/Input/Input'
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 
 const Home = () => {
   
@@ -26,6 +26,7 @@ const Home = () => {
   const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
 
   const history = useHistory();
+  const location = useLocation();
 
   const onLoginClicked = useCallback(() => {
     console.log("login")
@@ -50,6 +51,10 @@ const Home = () => {
   //here we get the ref of the contact us, in order to be able to scroll to it
   const contactUsBoxRef = useRef()
   const executeScroll = () => contactUsBoxRef.current.scrollIntoView()
+
+  useEffect(()=>{
+    if(location.state && location.state.contact_us) contactUsBoxRef.current.scrollIntoView()
+  }, [])
 
   //we store the actual height of the Navbar, since we set the Navbar's position to fixed
   //it jumps out from the document flow => the height collapse
