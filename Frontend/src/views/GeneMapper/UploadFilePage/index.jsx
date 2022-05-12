@@ -2,12 +2,11 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 import {
-  Button, Box, Container, Divider, Stack, Typography,
+  Button, Box, Container, Divider, Stack, Typography, DialogActions, TextField,
 } from '@mui/material';
 import { GeneralCard as Card } from 'components/Cards/GeneralCard';
 import CustomButton from 'components/CustomButton';
 import FileUpload from 'components/FileUpload';
-import Input from 'components/Input/Input';
 import { Modal, ModalTitle } from 'components/Modal';
 import React, { useState, useEffect, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -66,7 +65,8 @@ function UploadFilePage({
     );
   }, [submissionProgress]);
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     console.log(selectedDataset);
     // save mapping name
     setOpen(false); // opens modal to input mapping name
@@ -188,18 +188,22 @@ function UploadFilePage({
             children={(
               <Container>
                 <ModalTitle>Give your mapping a name </ModalTitle>
-                <Divider className={styles.divider} orientation="horizontal" flexItem />
-                <Input
-                  placeholder="Enter name here"
-                  onChangeEvent={setMappingName}
-                  isRequired
-                />
-                <Stack direction="row">
-                  <Button size="large" onClick={() => setOpen(false)}>Close</Button>
-                  <Button size="large" onClick={handleSubmit}>Done</Button>
-                </Stack>
+                <form onSubmit={handleSubmit}>
+                  <TextField
+                    variant="standard"
+                    placeholder="Enter name here"
+                    fullWidth
+                    onChange={(e) => setMappingName(e.target.value)}
+                    required
+                    label="Mapping name"
+                  />
+                  <Stack direction="row">
+                    <Button size="large" onClick={() => setOpen(false)}>Close</Button>
+                    <Button size="large" type="submit">Done</Button>
+                  </Stack>
+                </form>
               </Container>
-            )}
+      )}
           />
           <Stack className="flexContainer" direction="column" pb="1em">
             <Typography variant="h5" fontWeight="bold" pb="1em">Select Datasets for Upload</Typography>
