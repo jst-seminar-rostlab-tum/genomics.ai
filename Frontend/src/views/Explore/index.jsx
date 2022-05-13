@@ -1,31 +1,24 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {
-  Switch, Route, Redirect, useHistory, useLocation, useParams,
-  useRouteMatch, Link
+  useHistory, useLocation,
+  useRouteMatch,
 } from 'react-router-dom';
 import { Box } from '@mui/material';
-import Grid from '@mui/material/Grid';
 import { TabGroup } from 'components/Tab';
 import Search from 'components/Search';
 import Filter from 'components/ExplorePageComponents/Filter';
 import NavBar from 'components/NavBar';
 import Breadcrumb from 'components/Breadcrumb';
-import AtlasCard from 'components/Cards/AtlasCard';
-import { ModelCard } from 'components/Cards/ModelCard';
-import Mapper from 'components/Mapper';
 import LoginForm from 'components/LoginForm';
 import RegistrationForm from 'components/RegistrationForm';
 import './Explore.css';
 
 import ModelsService from 'shared/services/Models.service';
 import AtlasService from 'shared/services/Atlas.service';
-import LearnMoreAtlas from './LearnMoreAtlas';
-import LearnMoreModel from './LearnMoreModel';
-import ResultVisualization from 'components/GeneMapper/ResultVisualization';
-import AtlasResult from './AtlasResult';
 import AtlasesGrid from 'components/Grids/AtlasesGrid';
 import ModelsGrid from 'components/Grids/ModelsGrid';
 import { applyModelFilters, applyAtlasFilters } from 'shared/utils/filter';
+import ExploreRoutes from 'components/ExplorePageComponents/ExploreRoutes';
 
 const tmpObj = [
   {
@@ -35,9 +28,8 @@ const tmpObj = [
   {
     label: 'MODELS',
     path: '/explore/models',
-  }
+  },
 ];
-
 
 const Explore = () => {
   const [value, setValue] = useState(0);
@@ -90,8 +82,19 @@ const Explore = () => {
   const tabMenu = () => (
     <>
       <TabGroup value={value} setValue={setValue} tabsInfo={tmpObj} />
-      {value === 0 ? <AtlasesGrid  atlases={applyAtlasFilters(atlases, searchedKeyword, searchParams)} path={path} /> : null }
-      {value === 1 ? <ModelsGrid models={applyModelFilters(models, searchedKeyword, searchParams)} searchedKeyword={searchedKeyword} path={path} /> : null }
+      {value === 0 ? (
+        <AtlasesGrid
+          atlases={applyAtlasFilters(atlases, searchedKeyword, searchParams)}
+          path={path}
+        />
+      ) : null }
+      {value === 1 ? (
+        <ModelsGrid
+          models={applyModelFilters(models, searchedKeyword, searchParams)}
+          searchedKeyword={searchedKeyword}
+          path={path}
+        />
+      ) : null }
     </>
 
   );
@@ -177,22 +180,7 @@ const Explore = () => {
           />
         </Box>
         {/* /explore/atlases */}
-        <Switch>
-          <Route
-            exact
-            path="/explore/atlases"
-            render={() => atlases && tabMenu()}
-          />
-          <Route
-            exact
-            path="/explore/models"
-            render={() => models && tabMenu()}
-          />
-          <Route exact path="/explore/models/:id" render={() => <LearnMoreModel />} />
-          <Route exact path="/explore/atlases/:id/visualization" render={() => <AtlasResult />} />
-          <Route exact path="/explore/atlases/:id" render={() => <LearnMoreAtlas />} />
-          <Redirect to="/explore/atlases" />
-        </Switch>
+        <ExploreRoutes atlases={atlases && tabMenu()} models={models && tabMenu()} path="/explore" />
       </Box>
 
       {/* NOT NEEDED FOR NOW */}
