@@ -13,10 +13,11 @@ import { useHistory } from 'react-router-dom';
 import styles from './uploadfilepage.module.css';
 import ProjectMock from 'shared/services/mock/projects';
 import ProjectService from 'shared/services/Project.service';
-import { useSubmissionProgress } from 'shared/context/submissionProgressContext';
+import { initSubmissionProgress, useSubmissionProgress } from 'shared/context/submissionProgressContext';
 import { TabCard } from 'components/GeneMapper/TabCard';
 import { LearnMoreAtlasComponent } from 'views/Explore/LearnMoreAtlas';
 import { LearnMoreModelComponent } from 'views/Explore/LearnMoreModel';
+import { uploadMultipartFile } from 'shared/services/UploadLogic';
 
 function UploadFilePage({
   path, selectedAtlas, selectedModel, setActiveStep,
@@ -52,21 +53,28 @@ function UploadFilePage({
   };
 
   const createProject = useCallback((projectName, atlasId, modelId, file) => {
-    ProjectService.startOrContinueProjectUpload(
-      file,
-      submissionProgress,
-      setSubmissionProgress,
-      {
-        projectName,
-        atlasId,
-        modelId,
-        fileName: file.name,
-      },
-    );
+    ProjectService.createProject(
+      projectName,
+      atlasId,
+      modelId,
+      file.name,
+    ).then((project) => {
+      uploadMultipartFile(
+        project.uploadId,
+        file,
+        initSubmissionProgress(project.uploadId),
+        (update) => {
+          setSubmissionProgress((prev) => ({
+            ...prev,
+            [project._id]: update(prev[project._id] ?? initSubmissionProgress(project.uploadId)),
+          }));
+        },
+      );
+    });
   }, [submissionProgress]);
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    e?.preventDefault();
     console.log(selectedDataset);
     // save mapping name
     setOpen(false); // opens modal to input mapping name
@@ -100,7 +108,9 @@ function UploadFilePage({
                   <Stack direction="column">
                     <Typography variant="caption" fontWeight="bold">Atlas</Typography>
                     <Typography gutterBottom variant="h6" fontWeight="bold">{selectedAtlas.name}</Typography>
-                    <Typography gutterBottom variant="caption"
+                    <Typography
+                      gutterBottom
+                      variant="caption"
                       sx={{
                         whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '200px',
                       }}
@@ -109,10 +119,13 @@ function UploadFilePage({
                     </Typography>
                     <Typography gutterBottom variant="caption">{`Cells in Reference:  ${selectedAtlas.numberOfCells}`}</Typography>
                     <Typography gutterBottom variant="caption">{`Species: ${selectedAtlas.species}`}</Typography>
-                    <Button size='small' variant="outlined" onClick={() => setAtlasInfoOpen(true)}
+                    <Button
+                      size="small"
+                      variant="outlined"
+                      onClick={() => setAtlasInfoOpen(true)}
                       sx={{
-                        borderRadius: 100, width: '50%', ml: '50%', mt:'1em', textTransform: 'none'
-                      }} 
+                        borderRadius: 100, width: '50%', ml: '50%', mt: '1em', textTransform: 'none',
+                      }}
                     >
                       Learn more
                     </Button>
@@ -143,15 +156,18 @@ function UploadFilePage({
                         wordWrap: 'break-word',
                         overflow: 'hidden',
                         maxHeight: '5.7em',
-                        lineHeight: '1.9em'
+                        lineHeight: '1.9em',
                       }}
                     >
                       {selectedModel.description}
                     </Typography>
-                    <Button size='small' variant="outlined" onClick={() => setModelInfoOpen(true)}
+                    <Button
+                      size="small"
+                      variant="outlined"
+                      onClick={() => setModelInfoOpen(true)}
                       sx={{
-                        borderRadius: 100, width: '50%', ml: '50%', mt:'1em', textTransform: 'none'
-                      }} 
+                        borderRadius: 100, width: '50%', ml: '50%', mt: '1em', textTransform: 'none',
+                      }}
                     >
                       Learn more
                     </Button>
@@ -209,7 +225,7 @@ function UploadFilePage({
                     required
                     label="Mapping name"
                   />
-                  <Stack direction="row" justifyContent="space-between" mt='1.5em'>
+                  <Stack direction="row" justifyContent="space-between" mt="1.5em">
                     <CustomButton
                       type="tertiary"
                       onClick={() => {
@@ -250,7 +266,7 @@ function UploadFilePage({
         </CustomButton>
         <Stack direction="row" spacing={3} alignItems="center">
           <Typography variant="h6" fontWeight="bold">{uploadedFile && `Selected file: ${uploadedFile[0].name}`}</Typography>
-          <Tooltip title={(!uploadedFile && !selectedDataset) ? "You haven't selected or uploaded a dataset!" : ""} placement='top'>
+          <Tooltip title={(!uploadedFile && !selectedDataset) ? "You haven't selected or uploaded a dataset!" : ''} placement="top">
             <span>
               <CustomButton
                 type="primary"
