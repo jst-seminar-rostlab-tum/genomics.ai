@@ -326,7 +326,7 @@ export default class InstitutionService {
     }
 
     const teams = await teamModel.find({ institution_id: institution_id }).populate("projects");
-    const projectsOfTeams = teams.map((team) => team.projects).flat();
+    const projectsOfTeams = teams.map((team) => ProjectService.getProjectsByTeam(team.id)).flat();
 
     const projects = projectsOfMembers;
     for (const projOfTeam of projectsOfTeams) {

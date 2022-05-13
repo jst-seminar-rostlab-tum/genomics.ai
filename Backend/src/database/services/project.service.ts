@@ -54,6 +54,18 @@ export default class ProjectService {
   }
 
   /**
+   *  Search for projects with the given team id
+   *
+   *  @param   team_id
+   *  @returns projects or null
+   */
+  static async getProjectsByTeam(
+    team_id: ObjectId
+  ): Promise<(IProject & { _id: ObjectId })[]> {
+    return await projectModel.find({ teamId: team_id }).exec();
+  }
+
+  /**
    *  Adds given project to the database.
    *
    *  @param    project
