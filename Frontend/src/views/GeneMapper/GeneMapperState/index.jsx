@@ -1,5 +1,5 @@
 import {
-  Box, Container, Step, StepLabel, Stepper,
+  Box, Container, Step, StepButton, Stepper,
 } from '@mui/material';
 import { useState } from 'react';
 import AtlasModelChoice from '../AtlasModelChoice/AtlasModelChoice';
@@ -11,15 +11,19 @@ function GeneMapperState({ path }) {
   const [activeStep, setActiveStep] = useState(0);
   const steps = ['Pick Atlas and Model', 'Choose File and Project details'];
 
+  const handleStep = (step) => () => {
+    setActiveStep(step);
+  }
+
   return (
     <Container>
       <Box width="500px" margin="auto" sx={{ marginTop: '1%', marginBottom: '1%' }}>
         <Stepper activeStep={activeStep}>
           {steps.map((labelText, index) => (
             <Step index={index}>
-              <StepLabel>
+              <StepButton color="inherit" onClick={handleStep(index)}>
                 {labelText}
-              </StepLabel>
+              </StepButton>
             </Step>
           ))}
         </Stepper>
