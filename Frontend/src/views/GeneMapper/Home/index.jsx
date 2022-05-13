@@ -65,18 +65,18 @@ function GeneMapperHome() {
     ProjectService.getOwnProjects().then((data) => setProjects(data));
     const timer = setInterval(() => {
       ProjectService.getOwnProjects().then((data) => setProjects(data));
-      if (submissionProgress.status === MULTIPART_UPLOAD_STATUS.COMPLETE
-        || submissionProgress.status === MULTIPART_UPLOAD_STATUS.CANCELING
-        || statusIsError(submissionProgress.status)) {
-        setSubmissionProgress({
-          status: MULTIPART_UPLOAD_STATUS.IDLE,
-          uploadId: '',
-          chunks: 0,
-          uploaded: 0,
-          remaining: [],
-          uploadedParts: [],
-        });
-      }
+      // if (submissionProgress.status === MULTIPART_UPLOAD_STATUS.COMPLETE
+      //   || submissionProgress.status === MULTIPART_UPLOAD_STATUS.CANCELING
+      //   || statusIsError(submissionProgress.status)) {
+      //   setSubmissionProgress({
+      //     status: MULTIPART_UPLOAD_STATUS.IDLE,
+      //     uploadId: '',
+      //     chunks: 0,
+      //     uploaded: 0,
+      //     remaining: [],
+      //     uploadedParts: [],
+      //   });
+      // }
     }, PROJECTS_UPDATE_INTERVAL);
 
     return () => {
@@ -93,8 +93,9 @@ function GeneMapperHome() {
   return (
     <div>
       <ThemeProvider theme={theme}>
-        {/* {Object.entries(submissionProgress)
-          .map(([key, value]) => <Typography>{`${key}: ${value}` }</Typography>)} */}
+        <pre>
+          {JSON.stringify(submissionProgress, null, 2)}
+        </pre>
         <Box
           sx={{
             display: 'flex',
@@ -141,10 +142,10 @@ function GeneMapperHome() {
                   userTeams={userTeams}
                   addProjectToTeam={(teamId) => addProjectToTeam(teamId, project._id)}
                   handleDelete={() => handleDeleteItem(project._id)}
-                  submissionProgress={submissionProgress.uploadId === project.uploadId
-                    ? submissionProgress : null}
-                  setSubmissionProgress={submissionProgress.uploadId === project.uploadId
-                    ? setSubmissionProgress : () => {}}
+                  // submissionProgress={submissionProgress.uploadId === project.uploadId
+                  //   ? submissionProgress : null}
+                  // setSubmissionProgress={submissionProgress.uploadId === project.uploadId
+                  //   ? setSubmissionProgress : () => {}}
                 />
 
               );

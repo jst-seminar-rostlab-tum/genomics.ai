@@ -80,14 +80,14 @@ function finishUpload(chunkCount, promiseArray, submissionProgress, setSubmissio
     .then(async (promises) => {
       if (localStorage.getItem('cancelUpload')) {
         localStorage.removeItem('cancelUpload');
-        setSubmissionProgress({
+        setSubmissionProgress(() => ({
           status: Status.IDLE,
           uploadId: '',
           chunks: 0,
           uploaded: 0,
           remaining: [],
           uploadedParts: [],
-        });
+        }));
         return;
       }
       if (submissionProgress.remaining.length > 0) {
@@ -126,7 +126,7 @@ function finishUpload(chunkCount, promiseArray, submissionProgress, setSubmissio
     }).catch((err) => console.log(err));
 }
 
-async function uploadMultipartFile(uploadId, selectedFile,
+export async function uploadMultipartFile(uploadId, selectedFile,
   submissionProgress, setSubmissionProgress) {
   const chunkCount = Math.floor(selectedFile.size / UPLOAD_CHUNK_SIZE) + 1;
   const promiseArray = [];
