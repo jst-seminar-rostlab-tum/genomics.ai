@@ -11,14 +11,17 @@ import InstitutionService from 'shared/services/Institution.service';
 import TeamInviteButton from 'components/teams/detail/TeamInviteButton';
 import TextField from '@mui/material/TextField';
 import { useAuth } from 'shared/context/authContext';
+import Button from 'components/CustomButton';
 
 export default function TeamPage() {
   const { id } = useParams();
   const [team, setTeam] = useState({});
   const [user] = useAuth();
   const [institution, setInstitution] = useState({});
+  const [descriptionChanged, setDescriptionChanged] = useState(false);
 
   const handleDescriptionChange = (event) => {
+    setDescriptionChanged(true);
     setTeam({
       ...team,
       description: event.target.value,
@@ -32,6 +35,14 @@ export default function TeamPage() {
       .catch((ignored) => { console.error(ignored); });
   }
 
+  async function updateDescription(newDescription) {
+    await TeamService.changeTeamDescription(id, newDescription);
+    TeamService.getTeam(id)
+      .then(setTeam)
+      .catch((ignored) => { console.error(ignored); });
+    setDescriptionChanged(false);
+  }
+
   useEffect(() => {
     if (id == null) return;
     TeamService.getTeam(id)
@@ -42,7 +53,8 @@ export default function TeamPage() {
   // Institution may be undefined
   useEffect(() => {
     InstitutionService.getInstitution(team.institutionId)
-      .then((newInstitution) => setInstitution(newInstitution));
+      .then((newInstitution) => setInstitution(newInstitution))
+      .catch((ignored) => { console.error(ignored); });
   }, [team, setInstitution]);
 
   const isAdmin = team.adminIds ? team.adminIds.includes(user._id) : false;
@@ -68,19 +80,27 @@ export default function TeamPage() {
       <section>
         <h2>Description</h2>
         <hr />
-        <TextField
-          id="description"
-          multiline
-          minRows={3}
-          maxRows={5}
-          value={team.description}
-          InputProps={{
-            readOnly: !isAdmin,
-          }}
-          fullWidth
-          onChange={handleDescriptionChange}
-          variant="standard"
-        />
+        <div>
+          <TextField
+            id="description"
+            multiline
+            minRows={3}
+            maxRows={5}
+            value={team.description}
+            InputProps={{
+              readOnly: !isAdmin,
+            }}
+            fullWidth
+            onChange={handleDescriptionChange}
+            variant="standard"
+          />
+          {descriptionChanged
+            && (
+              <Button variant="outlined" type="secondary" onClick={() => updateDescription(team.description)}>
+                Submit
+              </Button>
+            )}
+        </div>
       </section>
       <section>
         <h2>GeneMapper</h2>
