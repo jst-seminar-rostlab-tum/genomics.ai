@@ -81,9 +81,6 @@ function GeneMapperHome() {
   return (
     <div>
       <ThemeProvider theme={theme}>
-        <pre>
-          {JSON.stringify(submissionProgress, null, 2)}
-        </pre>
         <Box
           sx={{
             display: 'flex',
@@ -139,7 +136,7 @@ function GeneMapperHome() {
                         status: MULTIPART_UPLOAD_STATUS.CANCELING,
                       },
                     }));
-                    localStorage.setItem('cancelUpload', '1'); // worst design ever
+                    localStorage.setItem(`cancelUpload_${project.uploadId}`, '1');
                   }}
                 />
 

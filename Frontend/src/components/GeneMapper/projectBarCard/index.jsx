@@ -128,7 +128,10 @@ export default function ProjectBarCard({
                     </Box>
                     <Typography variant="caption">Uploading...</Typography>
                     <IconButton
-                      onClick={cancelUpload}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        cancelUpload();
+                      }}
                     >
                       <Clear color="error" />
                     </IconButton>

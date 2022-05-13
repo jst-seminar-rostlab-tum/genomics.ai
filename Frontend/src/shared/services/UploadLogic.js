@@ -31,7 +31,7 @@ function getAuthAndJsonHeader() {
 async function uploadChunks(chunkCount, remaining, selectedFile, uploadId,
   submissionProgress, setSubmissionProgress, promiseArray) {
   for (let index = 1;
-    index < chunkCount + 1 && !localStorage.getItem('cancelUpload');
+    index < chunkCount + 1 && !localStorage.getItem(`cancelUpload_${uploadId}`);
     index += 1) {
     if (!remaining.includes(index)) {
       console.log(`Skipping chunk ${index}`);
@@ -78,8 +78,8 @@ function finishUpload(chunkCount, promiseArray, submissionProgress, setSubmissio
   selectedFile, uploadId) {
   Promise.all(promiseArray.map((promise) => promise.catch((e) => e)))
     .then(async (promises) => {
-      if (localStorage.getItem('cancelUpload')) {
-        localStorage.removeItem('cancelUpload');
+      if (localStorage.getItem(`cancelUpload_${uploadId}`)) {
+        localStorage.removeItem(`cancelUpload_${uploadId}`);
         return;
       }
       if (submissionProgress.remaining.length > 0) {
