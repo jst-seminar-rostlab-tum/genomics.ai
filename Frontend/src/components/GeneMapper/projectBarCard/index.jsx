@@ -51,6 +51,7 @@ export default function ProjectBarCard({
     || (!submissionProgress && project.status === PROJECT_STATUS.UPLOAD_PENDING)
     || project.status === PROJECT_STATUS.PROCESSING_FAILED
     || submissionProgress?.status === MULTIPART_UPLOAD_STATUS.CANCELING
+    || statusIsError(submissionProgress?.status)
       ? 'red'
       : 'orange';
 
@@ -138,14 +139,7 @@ export default function ProjectBarCard({
                   </>
                   )}
                   {statusIsError(submissionProgress.status)
-                  && (
-                  <>
-                    <Typography>{submissionProgress.status}</Typography>
-                    <IconButton onClick={() => {}}>
-                      <ReplayIcon />
-                    </IconButton>
-                  </>
-                  )}
+                  && <CanceldOrFailedStatus />}
                   {submissionProgress.status === MULTIPART_UPLOAD_STATUS.CANCELING
                   && <CanceldOrFailedStatus />}
                   {submissionProgress.status === MULTIPART_UPLOAD_STATUS.COMPLETE
