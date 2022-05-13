@@ -8,6 +8,11 @@ export function enhanceMember(member) {
 }
 
 const MemberService = MOCK_MEMBERS ? MockMemberService : {
+
+  async getTeamMembers(teamId) {
+    const { data } = await axiosInstance.get(`/teams/${teamId}/members`);
+    return enhanceMember(data);
+  },
 };
 
 export default MemberService;
