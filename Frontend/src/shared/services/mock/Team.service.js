@@ -1,27 +1,38 @@
-import MemberService from './Member.service';
-import ProfileService from './Profile.service';
+import MemberService from '../Member.service';
+import ProfileService from '../Profile.service';
 
 let mockTeams = [
   {
     id: '1',
     name: 'Biotechnology Team',
-    description: 'Biotechnology Team bla bla',
+    description: 'The Biotechnology Team works in integration of natural sciences and engineering sciences in order to achieve the application of organisms, cells, parts thereof and molecular analogues for products and services.',
     adminIds: [6, 7],
     invitedMemberIds: [],
     memberIds: ['626bdb1ed76c8b968a50f833', 2, 3, 4, 5],
     projects: [],
     visibility: 'public',
-    institutionId: '2',
+    institutionId: '1',
   },
   {
     id: '2',
     name: 'Genomics Team',
-    description: 'Genomics Team bla bla',
+    description: 'The Genomics Team works in field of biology focusing on the structure, function, evolution, mapping, and editing of genomes.',
+    adminIds: ['626bdb1ed76c8b968a50f833'],
+    invitedMemberIds: [],
+    memberIds: [2, 3, 4, 5],
+    projects: [],
+    visibility: 'public',
+    institutionId: '3',
+  },
+  {
+    id: '3',
+    name: 'Heinig Lab',
+    description: 'Heinig Lab bla bla',
     adminIds: ['626bdb1ed76c8b968a50f833'],
     invitedMemberIds: [],
     memberIds: [3, 4, 5],
     projects: [],
-    visibility: 'public',
+    visibility: 'private',
     institutionId: '3',
   },
 ];
@@ -36,6 +47,7 @@ const TeamService = {
     // fake effect
     await new Promise((resolve) => setTimeout(resolve, 1000));
     runningId += 1;
+    const user = await ProfileService.getProfile();
     const newTeam = {
       id: runningId.toString(),
       name,
@@ -43,7 +55,7 @@ const TeamService = {
       description,
       avatarUrl: null,
       backgroundPictureURL: null,
-      adminIds: [1], // TODO: make sure that the backend puts my user ID here
+      adminIds: [user.id], // TODO: make sure that the backend puts my user ID here
       memberIds: [],
       invitedMemberIds: [],
       visibility: 'private',
@@ -100,7 +112,16 @@ const TeamService = {
         (team) => team.name.toLowerCase().includes(params.keyword.toLowerCase()),
       );
     }
-    return preparedTeams.sort((a, b) => (`${a.title}`).localeCompare(b.title));
+    if (params.visibility) {
+      preparedTeams = preparedTeams.filter(
+        (team) => team.visibility.toUpperCase().includes(params.visibility),
+      );
+    }
+
+    if (!params.sortBy || params.sortBy === 'name') {
+      preparedTeams = preparedTeams.sort((a, b) => (`${a.name}`).localeCompare(b.name));
+    }
+    return preparedTeams;
   },
 
 };

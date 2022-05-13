@@ -28,7 +28,7 @@ function TeamMemberMakeAdminButton({
 
   return (
     <>
-      <Button variant="outlined" onClick={handleOpenDialog} sx={{ marginRight: '20px', width: '145px' }}>
+      <Button variant="outlined" onClick={handleOpenDialog} sx={{ marginRight: '6px', width: '145px' }}>
         {isAlreadyAdmin ? 'Remove Admin' : 'Make Admin'}
       </Button>
       <Dialog
