@@ -18,13 +18,13 @@ code {
 }
 
 ::-webkit-scrollbar-track {
-    background: #F8F9FA;
+    background: #F8F9FA; /* Second Option: '700': '#184060',*/
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #7187D5;
+    background: #7187D5; 
     border-radius: 10vw;
-    border: .2em solid #F8F9FA;
+    border: .2em solid #F8F9FA; /* Second Option: '700': '#184060',*/
 }
 
 ::-webkit-scrollbar-thumb:hover {
