@@ -1,4 +1,5 @@
 import { ArrowBackIos, InfoOutlined } from '@mui/icons-material';
+import DownloadIcon from '@mui/icons-material/Download';
 import {
   Box, Divider, IconButton, Typography,
 } from '@mui/material';
@@ -31,7 +32,13 @@ function GeneMapperResultHeader({ project }) {
             <InfoOutlined fontSize="small" />
           </IconButton>
         </Box>
-        <ShareMenu projectName={project.name} url={window.location} />
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <ShareMenu projectName={project.name} url={window.location} />
+          <Divider orientation="vertical" flexItem variant="middle" />
+          <IconButton href={project.location} download={`${project.name}.tsv`}>
+            <DownloadIcon />
+          </IconButton>
+        </Box>
       </Box>
       <Divider sx={{ mt: 1, mb: 1 }} />
       <Modal isOpen={showInfo} setOpen={setShowInfo}>

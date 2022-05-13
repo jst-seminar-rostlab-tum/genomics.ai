@@ -6,6 +6,7 @@ import {
   Box, IconButton, LinearProgress, Stack, CardActionArea, FormControl, InputLabel, MenuItem, Select, Collapse, List, ListItemButton, ListItemIcon, ListItemText, Divider,
 } from '@mui/material';
 import CircleIcon from '@mui/icons-material/Circle';
+import DownloadIcon from '@mui/icons-material/Download';
 import { useHistory } from 'react-router-dom';
 import { getSubmissionProgressPercentage } from 'shared/services/UploadLogic';
 import {
@@ -205,6 +206,13 @@ export default function ProjectBarCard({
               >
                 See Results
               </Button>
+              <IconButton
+                href={project.location}
+                download={`${project.name}.tsv`}
+                disabled={project.status !== 'DONE'}
+              >
+                <DownloadIcon />
+              </IconButton>
               <IconButton onClick={() => handleDelete()}>
                 <DeleteOutlineIcon color="error" />
               </IconButton>
