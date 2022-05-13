@@ -6,7 +6,7 @@ function TeamUserHeaderRight({ institution, team, user }) {
   const [isMember, setIsMember] = useState(false);
 
   function updateIsMember() {
-    setIsMember((team.memberIds || []).includes(user.id));
+    setIsMember((team.memberIds || []).includes(user._id));
   }
 
   const onLeft = () => {
@@ -29,8 +29,8 @@ function TeamUserHeaderRight({ institution, team, user }) {
 
   return (
     <TeamJoinButton
-      isDisabled={(team.visibility === 'private' && (!team.invitedMemberIds.includes(user.id)))
-      || (team.visibility === 'by institution' && (!institution.memberIds.includes(user.id) && !institution.adminIds.includes(user.id)))}
+      isDisabled={(team.visibility === 'private' && (!team.invitedMemberIds.includes(user._id)))
+      || (team.visibility === 'by institution' && (!institution.memberIds.includes(user._id) && !institution.adminIds.includes(user._id)))}
       team={team}
       onJoin={onJoin}
     />

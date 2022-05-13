@@ -16,6 +16,8 @@ import ProjectMock from 'shared/services/mock/projects';
 import ProjectService from 'shared/services/Project.service';
 import { useSubmissionProgress } from 'shared/context/submissionProgressContext';
 import { TabCard } from 'components/GeneMapper/TabCard';
+import { LearnMoreAtlasComponent } from 'views/Explore/LearnMoreAtlas';
+import { LearnMoreModelComponent } from 'views/Explore/LearnMoreModel';
 
 function UploadFilePage({
   path, selectedAtlas, selectedModel, setActiveStep,
@@ -32,9 +34,14 @@ function UploadFilePage({
   const history = useHistory();
 
   useEffect(() => {
-    setRequirements(selectedModel.requirements);
-  }, []);
-  
+    setRequirements(selectedModel.requirements || [
+      // source: https://beta.fastgenomics.org/analyses/scarches
+      'Ensure your data is in h5ad format',
+      'Make sure your .X layer has raw counts (i.e. integers, so no normalization, no log-transformation)',
+      'If your dataset contains multiple batches, specify these in the .obs layer under .obs["dataset"]',
+    ]);
+  }, [selectedModel]);
+
   useEffect(() => {
     ProjectMock.getDatasets().then((data) => {
       setExistingDatasets(data);
@@ -68,7 +75,11 @@ function UploadFilePage({
   };
 
   const handleSelectDataset = (data) => {
-    setSelectedDataset(data);
+    if (data.name === selectedDataset?.name) {
+      setSelectedDataset(null);
+    } else {
+      setSelectedDataset(data);
+    }
   };
 
   return (
@@ -96,14 +107,14 @@ function UploadFilePage({
                       setOpen={setAtlasInfoOpen}
                       children={(
                         <Container>
-                          <ModalTitle>{selectedAtlas.name}</ModalTitle>
-                          <Typography variant="body1" gutterBottom>
+                          {/* <ModalTitle>{selectedAtlas.name}</ModalTitle> */}
+                          <LearnMoreAtlasComponent id={selectedAtlas._id} onClick={() => history.push(`/explore/atlases/${selectedAtlas._id}/visualization`)} />
+                          {/* <Typography variant="body1" gutterBottom>
                             {
-                              /* Atlas information here */
                               Object.keys(selectedAtlas).map((key, i) => (<li key={i}>{`${key} : ${selectedAtlas[key]}`}</li>))
                             }
                           </Typography>
-                          <Button size="large" onClick={() => setAtlasInfoOpen(false)}>Close</Button>
+                          <Button size="large" onClick={() => setAtlasInfoOpen(false)}>Close</Button> */}
                         </Container>
                     )}
                     />
@@ -130,14 +141,14 @@ function UploadFilePage({
                       setOpen={setModelInfoOpen}
                       children={(
                         <Container>
-                          <ModalTitle>{selectedModel.name}</ModalTitle>
+                          <LearnMoreModelComponent id={selectedModel._id} />
+                          {/* <ModalTitle>{selectedModel.name}</ModalTitle>
                           <Typography variant="body1" gutterBottom>
                             {
-                              /* Model information here */
                               Object.keys(selectedModel).map((key, i) => (<li key={i}>{`${key} : ${selectedModel[key]}`}</li>))
                             }
                           </Typography>
-                          <Button size="large" onClick={() => setModelInfoOpen(false)}>Close</Button>
+                          <Button size="large" onClick={() => setModelInfoOpen(false)}>Close</Button> */}
                         </Container>
                     )}
                     />
@@ -147,23 +158,25 @@ function UploadFilePage({
             </Stack>
             <Stack>
               <Typography variant="h5" fontWeight="bold" pb="1em">Consequent Requirements</Typography>
-              <Card
-                children={(
-                  <Box sx={{ flexDirection: 'column', minHeight: '18em' }}>
-                    { requirements
-                      ? requirements.map((text, i) => (
-                        <Typography variant="body2" gutterBottom>
-                          <li key={i}>{text}</li>
+              <Card>
+                <Box sx={{ flexDirection: 'column', minHeight: '18em' }}>
+                  {requirements
+                    ? requirements.map((text) => (
+                      <Box key={text} sx={{ display: 'flex' }}>
+                        <Typography variant="body2" sx={{ pr: 1, fontWeight: 'bold' }}>-</Typography>
+                        <Typography variant="body2">
+                          {text}
                         </Typography>
-                      ))
-                      : (
-                        <Typography variant="body2" gutterBottom fontWeight="bold">
-                          There are no consequent requirements!
-                        </Typography>
-                      )}
-                  </Box>
-                )}
-              />
+                      </Box>
+                    ))
+                    : (
+                      <Typography variant="body2" gutterBottom>
+                        There are no consequent requirements!
+                      </Typography>
+                    )}
+                </Box>
+
+              </Card>
             </Stack>
           </Stack>
         </Box>
@@ -189,7 +202,7 @@ function UploadFilePage({
             )}
           />
           <Stack className="flexContainer" direction="column" pb="1em">
-            <Typography variant="h5" fontWeight="bold" pb="1em">Upload Datasets</Typography>
+            <Typography variant="h5" fontWeight="bold" pb="1em">Select Datasets for Upload</Typography>
             <FileUpload
               height="250px"
               handleFileUpload={handleOnDropChange}

@@ -13,7 +13,7 @@ def default_config():
     :return: dict containing all the default values
     """
     return {
-        parameters.MODEL: 'scANVI',
+        parameters.MODEL: 'scVI',
 
         parameters.REFERENCE_DATA_PATH: 'pancreas_source.h5ad',
         parameters.QUERY_DATA_PATH: 'pancreas_query.h5ad',
@@ -52,8 +52,8 @@ def default_config():
         parameters.ATTRIBUTES: None,
 
         # totalVI stuff
-        parameters.TOTALVI_MAX_EPOCHS_1: 1,  # 400
-        parameters.TOTALVI_MAX_EPOCHS_2: 1,  # 200
+        parameters.TOTALVI_MAX_EPOCHS_1: 400,
+        parameters.TOTALVI_MAX_EPOCHS_2: 200,
 
         parameters.SCANVI_DO_SURGERY: False,
         parameters.DEV_DEBUG: False,
