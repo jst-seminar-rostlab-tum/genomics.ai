@@ -80,14 +80,6 @@ function finishUpload(chunkCount, promiseArray, submissionProgress, setSubmissio
     .then(async (promises) => {
       if (localStorage.getItem('cancelUpload')) {
         localStorage.removeItem('cancelUpload');
-        setSubmissionProgress(() => ({
-          status: Status.IDLE,
-          uploadId: '',
-          chunks: 0,
-          uploaded: 0,
-          remaining: [],
-          uploadedParts: [],
-        }));
         return;
       }
       if (submissionProgress.remaining.length > 0) {

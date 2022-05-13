@@ -64,13 +64,10 @@ function UploadFilePage({
         file,
         initSubmissionProgress(project.uploadId),
         (update) => {
-          setSubmissionProgress((prev) => {
-            console.log(update(prev[project._id] ?? initSubmissionProgress(project.uploadId)));
-            return {
-              ...prev,
-              [project._id]: update(prev[project._id] ?? initSubmissionProgress(project.uploadId)),
-            };
-          });
+          setSubmissionProgress((prev) => ({
+            ...prev,
+            [project._id]: update(prev[project._id] ?? initSubmissionProgress(project.uploadId)),
+          }));
         },
       );
     });

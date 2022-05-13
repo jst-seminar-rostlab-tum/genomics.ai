@@ -32,8 +32,16 @@ function ProcessingStatus() {
   );
 }
 
+function CanceldOrFailedStatus() {
+  return (
+    <Typography variant="caption">
+      Upload failed or canceled
+    </Typography>
+  );
+}
+
 export default function ProjectBarCard({
-  project, atlas, model, submissionProgress, setSubmissionProgress, handleDelete, userTeams, addProjectToTeam,
+  project, atlas, model, submissionProgress, cancelUpload, handleDelete, userTeams, addProjectToTeam,
 }) {
   const history = useHistory();
 
@@ -42,6 +50,7 @@ export default function ProjectBarCard({
     : project.status === PROJECT_STATUS.ABORTED
     || (!submissionProgress && project.status === PROJECT_STATUS.UPLOAD_PENDING)
     || project.status === PROJECT_STATUS.PROCESSING_FAILED
+    || submissionProgress?.status === MULTIPART_UPLOAD_STATUS.CANCELING
       ? 'red'
       : 'orange';
 
@@ -119,26 +128,25 @@ export default function ProjectBarCard({
                     </Box>
                     <Typography variant="caption">Uploading...</Typography>
                     <IconButton
-                      onClick={() => {
-                        setSubmissionProgress((prevState) => (
-                          { ...prevState, status: Status.CANCELING }));
-                        localStorage.setItem('cancelUpload', '1'); // worst design ever
-                      }}
+                      onClick={cancelUpload}
                     >
                       <Clear color="error" />
                     </IconButton>
                   </>
                   )}
                   {statusIsError(submissionProgress.status)
-              && (
-              <>
-                <Typography>{submissionProgress.status}</Typography>
-                <IconButton onClick={() => {}}>
-                  <ReplayIcon />
-                </IconButton>
-              </>
-              )}
+                  && (
+                  <>
+                    <Typography>{submissionProgress.status}</Typography>
+                    <IconButton onClick={() => {}}>
+                      <ReplayIcon />
+                    </IconButton>
+                  </>
+                  )}
+                  {submissionProgress.status === MULTIPART_UPLOAD_STATUS.CANCELING
+                  && <CanceldOrFailedStatus />}
                   {submissionProgress.status === MULTIPART_UPLOAD_STATUS.COMPLETE
+                   && project.status !== PROJECT_STATUS.DONE
                    && <ProcessingStatus />}
                 </Box>
               ) : null}
@@ -150,11 +158,7 @@ export default function ProjectBarCard({
                     }}
                   >
                     {project.status === PROJECT_STATUS.UPLOAD_PENDING
-                   && (
-                   <Typography variant="caption">
-                     Upload failed or canceled
-                   </Typography>
-                   )}
+                   && <CanceldOrFailedStatus />}
                     {project.status === PROJECT_STATUS.PROCESSING_PENDING
                    && <ProcessingStatus />}
                     {(project.status === PROJECT_STATUS.ABORTED
