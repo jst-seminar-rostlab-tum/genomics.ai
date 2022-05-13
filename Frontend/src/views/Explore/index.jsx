@@ -17,7 +17,6 @@ import LoginForm from 'components/LoginForm';
 import RegistrationForm from 'components/RegistrationForm';
 import './Explore.css';
 
-import DatasetCard from 'components/Cards/DatasetCard';
 import ModelsService from 'shared/services/Models.service';
 import AtlasService from 'shared/services/Atlas.service';
 import LearnMoreAtlas from './LearnMoreAtlas';
@@ -36,23 +35,9 @@ const tmpObj = [
   {
     label: 'MODELS',
     path: '/explore/models',
-  },
-  {
-    label: 'DATASETS',
-    path: '/explore/datasets',
-  },
+  }
 ];
 
-const datasets = [
-  {
-    title: 'dataset 1',
-    category: 'human',
-  },
-  {
-    title: 'dataset 2',
-    category: 'animal',
-  },
-];
 
 const Explore = () => {
   const [value, setValue] = useState(0);
@@ -102,23 +87,11 @@ const Explore = () => {
     if (!selectedAtlas && !selectedModel) setMapperVisible(false);
   }, [selectedAtlas, selectedModel]);
 
-  const DataSetGrids = () => (
-    <Box className="cardsContainer">
-      <Grid container spacing={3}>
-        {datasets.map((d, index) => (
-          <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
-            <DatasetCard title={d.title} category={d.category} />
-          </Grid>
-        ))}
-      </Grid>
-    </Box>
-  );
   const tabMenu = () => (
     <>
       <TabGroup value={value} setValue={setValue} tabsInfo={tmpObj} />
       {value === 0 ? <AtlasesGrid  atlases={applyAtlasFilters(atlases, searchedKeyword, searchParams)} path={path} /> : null }
       {value === 1 ? <ModelsGrid models={applyModelFilters(models, searchedKeyword, searchParams)} searchedKeyword={searchedKeyword} path={path} /> : null }
-      {value === 2 ? <DataSetGrids /> : null }
     </>
 
   );
@@ -216,7 +189,6 @@ const Explore = () => {
             render={() => models && tabMenu()}
           />
           <Route exact path="/explore/models/:id" render={() => <LearnMoreModel />} />
-          <Route exact path="/explore/datasets" render={() => atlases && tabMenu()} />
           <Route exact path="/explore/atlases/:id/visualization" render={() => <AtlasResult />} />
           <Route exact path="/explore/atlases/:id" render={() => <LearnMoreAtlas />} />
           <Redirect to="/explore/atlases" />
