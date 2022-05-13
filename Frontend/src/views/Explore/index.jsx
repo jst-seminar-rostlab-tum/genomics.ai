@@ -15,7 +15,6 @@ import { ModelCard } from 'components/Cards/ModelCard';
 import Mapper from 'components/Mapper';
 import LoginForm from 'components/LoginForm';
 import RegistrationForm from 'components/RegistrationForm';
-import './Explore.css';
 
 import ModelsService from 'shared/services/Models.service';
 import AtlasService from 'shared/services/Atlas.service';
