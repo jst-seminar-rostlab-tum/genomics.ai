@@ -67,6 +67,12 @@ export default class TeamService {
       .exec();
   }
 
+  static async getMembersOfTeam(
+    team_id: ObjectId | string
+  ): Promise<ITeam| null> {
+    return await teamModel.findById(team_id).populate("memberIds");
+  }
+
   /**
    *  Add the given userId to the invitation list of the given team.
    *

@@ -1,4 +1,4 @@
-import express, { Router } from "express";
+import express, { Router, Request, Response } from "express";
 import ProjectService from "../../../../database/services/project.service";
 import TeamService from "../../../../database/services/team.service";
 import { AddTeamDTO } from "../../../../database/dtos/team.dto";
@@ -579,6 +579,24 @@ const update_team = (): Router => {
   return router;
 };
 
+const get_members_of_team = (): Router => {
+  let router = express.Router();
+  router.get("/teams/:id/members", check_auth(), async (req: Request, res: Response) => {
+    const teamId = req.params.id;
+    try {
+      const team = await TeamService.getMembersOfTeam(teamId);
+      if (team == null) {
+        return res.status(404).send(`Team ${teamId} not found`);
+      }
+      return res.status(200).send(team.memberIds);
+    } catch (err) {
+      console.error(JSON.stringify(err));
+      return res.status(500).json({ error: "General server error" });
+    }
+  });
+  return router;
+};
+
 export {
   create_team,
   invite_person_to_a_team,
@@ -592,4 +610,5 @@ export {
   disjoin_member,
   get_team,
   update_team,
+  get_members_of_team,
 };
