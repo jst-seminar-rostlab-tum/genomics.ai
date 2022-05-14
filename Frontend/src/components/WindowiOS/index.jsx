@@ -1,14 +1,17 @@
 /* eslint-disable */
 
 import { Circle } from "@mui/icons-material"
-import { Box, Button, Typography } from "@mui/material"
+import { Box, Typography } from "@mui/material"
 import { colors } from "shared/theme/colors"
 import tum from 'assets/landing-illustrations/tum-logo.png';
 import rostlab from 'assets/landing-illustrations/rostlab.png';
 import helmholtz from 'assets/landing-illustrations/helmholtz.png';
 import CustomButton from "components/CustomButton";
+import { useHistory } from "react-router-dom";
 
 const WindowiOS = ({ onSignUpClicked }) => {
+  const history = useHistory()
+
   return (
     <Box
       sx={{
@@ -48,8 +51,10 @@ const WindowiOS = ({ onSignUpClicked }) => {
         <Typography fontSize="1.2rem" fontWeight="light" color="#8193B2">
           Genomics.ai helps you visualize all of your single-cell sequencing data in a fast and easy way using neural networks.
         </Typography>
-        <Box sx={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
-          <CustomButton sx={{marginTop: "2em"}} onClick={onSignUpClicked} >Sign up for genomics.ai</CustomButton>
+        <CustomButton sx={{ marginTop: "2em", ml: "10px" }} onClick={onSignUpClicked} >Sign up for genomics.ai</CustomButton>
+        <Box sx={{ m: "10px", borderRadius: "10px", display: "flex", flexDirection: "row", gap: "10px", alignItems: "center" }}>
+          <Typography sx={{ color: colors.neutral[200] }}>Test out our GeneMapper. No need to sign up.</Typography>
+          <CustomButton type="secondary" onClick={() => history.push("/explore")} sx={{ color: colors.secondary1[700] }}>Explore</CustomButton>
         </Box>
         
         {/* DIVIDER */}
