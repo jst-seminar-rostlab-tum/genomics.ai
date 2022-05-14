@@ -1,0 +1,109 @@
+{
+  "/file_upload/complete_upload": {
+    "post": {
+      "summary": "Complete upload",
+      "tags": ["Project"],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "parts": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "ETag": {
+                        "type": "string"
+                      },
+                      "PartNumber": {
+                        "type": "number"
+                      }
+                    }
+                  }
+                },
+                "uploadId": {
+                  "type": "string"
+                }
+              },
+              "required": ["parts", "uploadId"],
+              "additionalProperties": false
+            }
+          }
+        }
+      }
+    }
+  },
+  "/file_upload/get_upload_url": {
+    "get": {
+      "summary": "Get upload URL",
+      "tags": ["Project"],
+      "parameters": [
+        {
+          "in": "query",
+          "name": "partNumber",
+          "schema": {
+            "type": "number"
+          }
+        },
+        {
+          "in": "query",
+          "name": "uploadId",
+          "schema": {
+            "type": "number"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK"
+        },
+        "400": {
+          "description": "Failed. Bad post data."
+        }
+      }
+    }
+  },
+  "/file_upload/start_upload": {
+    "post": {
+      "summary": "Start upload",
+      "tags": ["Project"],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "projectName": {
+                  "type": "string"
+                },
+                "fileName": {
+                  "type": "string"
+                },
+                "modelId": {
+                  "type": "string"
+                },
+                "atlasId": {
+                  "type": "string"
+                }
+              },
+              "required": ["fileName", "modelId", "atlasId", "projectName"],
+              "additionalProperties": false
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "OK"
+        },
+        "400": {
+          "description": "Failed. Bad post data."
+        }
+      }
+    }
+  }
+}

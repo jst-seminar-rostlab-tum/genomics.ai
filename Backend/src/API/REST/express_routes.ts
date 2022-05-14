@@ -26,8 +26,10 @@ import upload_user_avatar_route from "./routes/upload_user_avatar";
 import { get_teams_of_user, get_users, get_user_by_id } from "./routes/user/userRouter";
 import { get_model, get_allModels } from "./routes/model/modelRouter";
 import { get_atlas, get_atlas_visualization, get_allAtlases } from "./routes/atlas/atlasRouter";
-import * as swaggerDocument from "../../swagger.json";
+
 import * as swaggerUi from "swagger-ui-express";
+
+import { loadSwaggerDocument } from "../../swagger/load-swagger";
 
 import {
   create_institution,
@@ -80,7 +82,7 @@ import reset_user_avatar_route from "./routes/reset_user_avatar";
 export function express_routes(this: REST_Host): Router {
   let router = express.Router();
 
-  this.expressApp.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+  this.expressApp.use("/api-docs", swaggerUi.serve, swaggerUi.setup(loadSwaggerDocument()));
 
   // unauthenticated routes
   this.expressApp.use(auth_route());

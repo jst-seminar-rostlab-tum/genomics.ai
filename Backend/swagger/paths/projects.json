@@ -1,0 +1,100 @@
+{
+  "/projects": {
+    "get": {
+      "summary": "Get all projects that meet query params",
+      "tags": ["Project"],
+      "parameters": [
+        {
+          "in": "query",
+          "name": "keyword",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "in": "query",
+          "name": "sortBy",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK"
+        },
+        "400": {
+          "description": "Failed. Bad post data."
+        }
+      }
+    }
+  },
+  "/project/{id}": {
+    "get": {
+      "summary": "Get detailed information about a project",
+      "tags": ["Project"],
+      "responses": {
+        "200": {
+          "description": "Get project by id successful",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string"
+                  },
+                  "owner": {
+                    "type": "string"
+                  },
+                  "uploadId": {
+                    "type": "string"
+                  },
+                  "location": {
+                    "type": "string"
+                  },
+                  "fileName": {
+                    "type": "string"
+                  },
+                  "fileSize": {
+                    "type": "number"
+                  },
+                  "uploadDate": {
+                    "type": "object"
+                  },
+                  "status": {
+                    "type": "string"
+                  },
+                  "resultName": {
+                    "type": "string"
+                  },
+                  "resultSize": {
+                    "type": "number"
+                  },
+                  "atlasId": {
+                    "type": "string"
+                  },
+                  "modelId": {
+                    "type": "string"
+                  },
+                  "teamId": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Missing parameters or the project does not exist"
+        },
+        "401": {
+          "description": "Access denied"
+        },
+        "500": {
+          "description": "Internal error, cannot get project by id"
+        }
+      }
+    }
+  }
+}
