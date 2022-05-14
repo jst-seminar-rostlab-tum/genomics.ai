@@ -75,16 +75,16 @@ function MemberCard(props){
 
 function MemberSection({name, data}){
   return (
-    <Box sx={{marginBottom: "5em", position: "relative", width: "70%"}}>
+    <Box sx={{marginBottom: "5em", position: "relative", width: { xs: "90%", sm: "90%", md: "70%", lg: "70%", xl: "70%" }}}>
       <Box sx={{ marginBottom: "3em", display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
         <Box sx={{ height: "1px", width: { xs: "25%", sm: "37%", md: "35%", lg: "40%", xl: "40%" }, backgroundColor: "black" }} />
         <Typography fontWeight="bold" fontSize={{ xs: "1.2em", sm: "1em", md: "1.4em", lg: "1.7em", xl: "2em" }} >{name}</Typography>
         <Box sx={{ height: "1px", width: { xs: "25%", sm: "37%", md: "35%", lg: "40%", xl: "40%" }, backgroundColor: "black" }} />
       </Box>
-      <Grid container>
+      <Grid container rowSpacing={7} columnSpacing={{ xs: 2, sm: 2, md: 3, lg: 4, xl: 4 }}>
         {
           data.map(member => (
-            <Grid lg={3}>
+            <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
               <MemberCard {...member} />
             </Grid>)
           )
@@ -137,11 +137,11 @@ export default function About(props){
         />
       </Box>
 
-      <Box sx={{margin: "3em 0em", display: "flex", flexDirection: "column", alignItems: "center"}}>
+      <Box sx={{margin: "3em auto", display: "flex", flexDirection: "column", alignItems: "center", width: { xs: "90%", sm: "90%", md: "70%", lg: "70%", xl: "70%" }}}>
         <Typography fontWeight="bold" fontSize="1.4em">Our Team</Typography>
       </Box>
 
-      <Box sx={{margin: "3em 0em", display: "flex", flexDirection: "column", alignItems: "center"}}>
+      <Box sx={{margin: "3em auto", display: "flex", flexDirection: "column", alignItems: "center", width: { xs: "90%", sm: "90%", md: "70%", lg: "70%", xl: "70%" }}}>
         <Typography fontWeight="bold" fontSize="1em">Genomics.ai was developed by a team of 12 students from the Technical University of Munich (TUM) under the guidance of Dr. Guy Yachdav.</Typography>
       </Box>
 
