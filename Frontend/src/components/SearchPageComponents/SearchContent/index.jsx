@@ -1,6 +1,8 @@
 import React from 'react';
 
-import { useRouteMatch, Switch, Route } from 'react-router-dom';
+import {
+  useRouteMatch, Switch, Route, Redirect,
+} from 'react-router-dom';
 import SearchResultList from '../SearchResultList';
 import TeamCard from '../SearchResultList/TeamCard';
 import InstitutionCard from '../SearchResultList/InstitutionCard';
@@ -13,6 +15,7 @@ import LearnMoreAtlas from 'views/Explore/LearnMoreAtlas';
 import { setSeachCategoryInUrl } from 'shared/utils/common/utils';
 import AtlasesGrid from 'components/Grids/AtlasesGrid';
 import ModelsGrid from 'components/Grids/ModelsGrid';
+import ExploreRoutes from 'components/ExplorePageComponents/ExploreRoutes';
 
 // wrapper component to display the searched items
 function SearchContent({
@@ -27,6 +30,8 @@ function SearchContent({
     />
   );
 
+  const atlases = <AtlasesGrid atlases={searchResult} searchedKeyword={searchedKeyword} path="/sequencer/search" />;
+  const models = <ModelsGrid models={searchResult} searchedKeyword={searchedKeyword} path="/sequencer/search" />;
   return (
     <>
       <ResultStatus
@@ -47,19 +52,9 @@ function SearchContent({
         <Route path={setSeachCategoryInUrl(path, 'projects')}>
           {renderSearchResultsList(ProjectCard)}
         </Route>
-        <Route
-          exact
-          path="/sequencer/search/atlases"
-          render={() => <AtlasesGrid atlases={searchResult} searchedKeyword={searchedKeyword} path="/sequencer/search" />}
-        />
-        <Route
-          exact
-          path="/sequencer/search/models"
-          render={() => <ModelsGrid models={searchResult} searchedKeyword={searchedKeyword} path="/sequencer/search" />}
-        />
-        <Route exact path="/sequencer/search/models/:id" render={() => <LearnMoreModel />} />
-        <Route exact path="/sequencer/search/atlases/:id/visualization" render={() => <AtlasResult />} />
-        <Route exact path="/sequencer/search/atlases/:id" render={() => <LearnMoreAtlas />} />
+        <Route>
+          <ExploreRoutes atlases={atlases} models={models} path="/sequencer/search" />
+        </Route>
       </Switch>
     </>
   );
