@@ -317,9 +317,7 @@ export default class InstitutionService {
 
     let projectsOfMembers: IProject[] = [];
     if (institution?.memberIds?.length > 0) {
-      const resp = await ProjectService.getProjects({
-        owner: { $in: institution.memberIds },
-      });
+      const resp = await ProjectService.getProjectsOfUsers(institution.memberIds);
       if (resp) {
         projectsOfMembers = resp;
       }
