@@ -126,7 +126,7 @@ export default function About(props){
   return (
     <Box>
       {isLoginFormVisible && <LoginForm visible={isLoginFormVisible} onClose={onLoginFormClosed} />}
-      {isRegistrationFormVisible && <RegistrationForm visible={isRegistrationFormVisible} onClose={setRegistrationFormVisible} />}
+      {isRegistrationFormVisible && <RegistrationForm visible={isRegistrationFormVisible} onClose={onRegistrationFormClosed} />}
 
       <Box>
         <NavBar
