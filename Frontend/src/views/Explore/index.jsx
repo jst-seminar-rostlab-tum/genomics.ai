@@ -11,7 +11,6 @@ import NavBar from 'components/NavBar';
 import Breadcrumb from 'components/Breadcrumb';
 import LoginForm from 'components/LoginForm';
 import RegistrationForm from 'components/RegistrationForm';
-import './Explore.css';
 
 import ModelsService from 'shared/services/Models.service';
 import AtlasService from 'shared/services/Atlas.service';
@@ -80,7 +79,7 @@ const Explore = () => {
   }, [selectedAtlas, selectedModel]);
 
   const tabMenu = () => (
-    <>
+    <Box height="50px">
       <TabGroup value={value} setValue={setValue} tabsInfo={tmpObj} />
       {value === 0 ? (
         <AtlasesGrid
@@ -95,7 +94,7 @@ const Explore = () => {
           path={path}
         />
       ) : null }
-    </>
+    </Box>
 
   );
 
@@ -133,7 +132,11 @@ const Explore = () => {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
+        "::-webkit-scrollbar": {
+          display: "none"
+        },
+        height: "100vh",
+        overflow: "hidden"
       }}
     >
       {isLoginFormVisible && (
@@ -163,7 +166,7 @@ const Explore = () => {
           display: 'flex',
           flexDirection: 'column',
           alignSelf: 'center',
-          width: '60%',
+          width: { xs: '90%', md: '60%' },
         }}
       >
         <Box sx={{ alignSelf: 'center', width: '100%', marginBlock: '2%' }}>
