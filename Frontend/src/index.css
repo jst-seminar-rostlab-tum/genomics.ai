@@ -1,34 +1,40 @@
 body {
-    margin: 0;
-    font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Oxygen',
-        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-        sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    overflow: auto;
+  margin: 0;
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: auto;
 }
 
 code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-        monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
 }
 
 ::-webkit-scrollbar {
-    width: 1em;
+  width: 0.6em;
 }
 
-::-webkit-scrollbar-track {
-    background: #F8F9FA; /* Second Option: '700': '#184060',*/
+::-webkit-scrollbar-track{
+  background: none;
+  /* Second Option: '700': '#184060',*/
+  background-color: rgba(193, 193, 193, 0.441);
+}
+
+div::-webkit-scrollbar-track {
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #7187D5; 
-    border-radius: 10vw;
-    border: .2em solid #F8F9FA; /* Second Option: '700': '#184060',*/
+  background: #7187D5;
+  border-radius: 10px;
+  /* Second Option: '700': '#184060',*/
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #445AA7; 
+  background: #445AA7;
 }
 
 /* colors selected for scrollbar
