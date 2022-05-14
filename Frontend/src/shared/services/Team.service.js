@@ -2,7 +2,7 @@ import MockTeamService from './mock/Team.service';
 import axiosInstance from './axiosInstance';
 import ProfileService from './Profile.service';
 
-const MOCK_TEAMS = false;
+const MOCK_TEAMS = true;
 const MODEL = 'teams';
 
 function enhanceTeam(team) {

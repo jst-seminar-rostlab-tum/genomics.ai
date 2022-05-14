@@ -3,7 +3,7 @@ import axiosInstance from './axiosInstance';
 import { enhanceMember } from './Member.service';
 import ProfileService from './Profile.service';
 
-const MOCK_INSTUTITIONS = false;
+const MOCK_INSTUTITIONS = true;
 
 const MODEL = 'institutions';
 
