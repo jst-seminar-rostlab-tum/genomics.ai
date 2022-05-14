@@ -54,15 +54,17 @@ export default class ProjectService {
   }
 
   /**
-   *  Search for projects with the given team id
+   *  Returns projects of the given team ids,
+   *  where the teams of the projects are in
+   *  the given team list.
    *
-   *  @param   team_id
+   *  @param   teamIds as ObjectId array
    *  @returns projects or null
    */
-  static async getProjectsByTeam(
-    team_id: ObjectId
+  static async getProjectsOfTeams(
+    teamIds: ObjectId[]
   ): Promise<(IProject & { _id: ObjectId })[]> {
-    return await projectModel.find({ teamId: team_id }).exec();
+    return await projectModel.find({ teamId: { $in: teamIds } }).exec();
   }
 
   /**
