@@ -597,6 +597,24 @@ const get_members_of_team = (): Router => {
   return router;
 };
 
+const get_projects_of_team = (): Router => {
+  let router = express.Router();
+  router.get("/teams/:id/projects", check_auth(), async (req: Request, res: Response) => {
+    const teamId = req.params.id;
+    try {
+      const projects = await ProjectService.getProjectsOfTeams([teamId]);
+      if (projects == null) {
+        return res.status(404).send(`Team ${teamId} not found`);
+      }
+      return res.status(200).send(projects);
+    } catch (err) {
+      console.error(JSON.stringify(err));
+      return res.status(500).json({ error: "General server error" });
+    }
+  });
+  return router;
+};
+
 export {
   create_team,
   invite_person_to_a_team,
@@ -611,4 +629,5 @@ export {
   get_team,
   update_team,
   get_members_of_team,
+  get_projects_of_team,
 };
