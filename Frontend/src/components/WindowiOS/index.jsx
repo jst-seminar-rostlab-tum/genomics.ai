@@ -51,8 +51,11 @@ const WindowiOS = ({ onSignUpClicked }) => {
         <Typography fontSize="1.2rem" fontWeight="light" color="#8193B2">
           Genomics.ai helps you visualize all of your single-cell sequencing data in a fast and easy way using neural networks.
         </Typography>
-        <CustomButton sx={{ marginTop: "2em", ml: "10px" }} onClick={onSignUpClicked} >Sign up for genomics.ai</CustomButton>
-        <Box sx={{ m: "10px", borderRadius: "10px", display: "flex", flexDirection: "row", gap: "10px", alignItems: "center" }}>
+        <Box sx={{ margin: "2em 0 0 10px", display: "flex", flexDirection: "row", gap: "10px", alignItems: "center" }}>
+          <Typography sx={{ color: colors.neutral[200] }}>Sign up for genomics.ai right now!</Typography>
+          <CustomButton onClick={onSignUpClicked} >Sign up</CustomButton>
+        </Box>
+        <Box sx={{ margin: "10px", display: "flex", flexDirection: "row", gap: "10px", alignItems: "center" }}>
           <Typography sx={{ color: colors.neutral[200] }}>Test out our GeneMapper. No need to sign up.</Typography>
           <CustomButton type="secondary" onClick={() => history.push("/explore")} sx={{ color: colors.secondary1[700] }}>Explore</CustomButton>
         </Box>
