@@ -1,17 +1,14 @@
 /* eslint-disable */
 import {
   Alert,
-  Avatar,
   Box,
   Checkbox,
   FormControlLabel,
   Grid,
   Snackbar,
-  TextField,
   Typography,
   Link,
 } from "@mui/material";
-import LoadingButton from "@mui/lab/LoadingButton";
 import React, { useCallback, useState } from "react";
 import validator from "validator";
 import CloseIcon from "@mui/icons-material/Close";
@@ -24,6 +21,7 @@ import { useAuth } from "shared/context/authContext";
 import { Modal, ModalTitle } from "components/Modal";
 import Input from "components/Input/Input";
 import CustomButton from "components/CustomButton";
+import { colors } from 'shared/theme/colors';
 
 function LoginForm(props) {
   const [, setUser] = useAuth();
@@ -187,29 +185,31 @@ function LoginForm(props) {
               isRequired={true}
               onChangeEvent={handleTextChange}
             />
-            <Box sx={{paddingLeft:2}}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  id="remember"
-                  color="primary"
-                  onChange={handleCheckedChange}
-                />
-              }
-              label="Remember me"
-            />
-            <CustomButton type="contained" sx={{ mr: 1 }} onClick={doLogin}>
-              <Typography>Sign in</Typography>
-            </CustomButton>
-            <Typography mt={1}>
-              <Link
-                href="#"
-                onClick={handlepasswordForget}
-                className={styles.pwReminderLink}
-              >
-                Forgot password?
-              </Link>
-            </Typography>
+            <Box sx={{ paddingLeft: 1, display: "flex", flexDirection: "column", gap: "4   px" }}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    id="remember"
+                    sx={{ color: colors.primary[400], '& .MuiSvgIcon-root': { color: colors.primary[400] } }}
+                    onChange={handleCheckedChange}
+                    disableRipple
+                    disableFocusRipple
+                  />
+                }
+                label="Remember me"
+              />
+              <CustomButton type="primary" onClick={doLogin}>
+                <Typography>Sign in</Typography>
+              </CustomButton>
+              <Typography mt={1}>
+                <Link
+                  href="#"
+                  onClick={handlepasswordForget}
+                  className={styles.pwReminderLink}
+                >
+                  Forgot password?
+                </Link>
+              </Typography>
             </Box>
           </Grid>
 

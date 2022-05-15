@@ -1,14 +1,10 @@
 import {
-  Avatar, Typography, Box, Grid, Snackbar, TextField,
+  Typography, Box, Grid, Snackbar, TextField,
 } from '@mui/material';
-import LoadingButton from '@mui/lab/LoadingButton';
 import React, { useCallback, useState } from 'react';
 import validator from 'validator';
-import CloseIcon from '@mui/icons-material/Close';
 import { Alert } from '@mui/lab';
 import { BACKEND_ADDRESS } from 'shared/utils/common/constants';
-import logo from 'assets/logo.svg';
-import styles from './registrationform.module.css';
 import { useAuth } from 'shared/context/authContext';
 import Input from 'components/Input/Input';
 import { Modal, ModalTitle } from 'components/Modal';
@@ -65,12 +61,12 @@ function RegistrationForm(props) {
     });
     setErrors({});
     setLoading(false);
-    props.onClose();
+    onClose();
   }, [setUserDetails, setErrors, setLoading, props, setUser]);
 
   function onSuccessfulRegistration() {
     onClose();
-    props.onSuccessfulRegistration();
+    setSnackbarVisible(true)
   }
 
   function onFailedRegistration(response) {
@@ -126,8 +122,8 @@ function RegistrationForm(props) {
         isOpen={visible}
       >
         <ModalTitle>Register new user</ModalTitle>
-        <Box sx={{ width: 340 }}>
-          <Grid sx={{ width: 320 }}>
+        <Box sx={{ width: 500 }}>
+          <Grid sx={{ width: "90%", margin: "auto"}}>
             <Input
               id="email"
               type="email"
@@ -188,7 +184,7 @@ function RegistrationForm(props) {
               onChangeEvent={handleTextChange}
             />
             <Box mt={1}>
-              <CustomButton type="contained" sx={{ mr: 1 }} onClick={doRegistration}>
+              <CustomButton type="primary" sx={{ mr: "auto", width: "100%" }} onClick={doRegistration}>
                 <Typography>Sign up</Typography>
               </CustomButton>
             </Box>
