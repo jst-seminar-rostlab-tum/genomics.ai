@@ -62,7 +62,7 @@ export default class ProjectService {
    *  @returns projects or null
    */
   static async getProjectsOfTeams(
-    teamIds: ObjectId[] | string[]
+    teamIds: ObjectId[]
   ): Promise<(IProject & { _id: ObjectId })[]> {
     return await projectModel.find({ teamId: { $in: teamIds } }).exec();
   }

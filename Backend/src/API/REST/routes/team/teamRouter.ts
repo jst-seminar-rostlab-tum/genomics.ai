@@ -600,7 +600,8 @@ const get_members_of_team = (): Router => {
 const get_projects_of_team = (): Router => {
   let router = express.Router();
   router.get("/teams/:id/projects", check_auth(), async (req: Request, res: Response) => {
-    const teamId = req.params.id;
+    const { ObjectId } = require('mongodb');
+    const teamId = ObjectId(req.params.id);
     try {
       const projects = await ProjectService.getProjectsOfTeams([teamId]);
       if (projects == null) {
