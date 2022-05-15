@@ -59,8 +59,8 @@ const InstitutionService = {
     return newInstitution;
   },
 
-  async leaveInstitution(institutionId) {
-    mockLeftIds.push(institutionId);
+  async leaveInstitution(institution) {
+    mockLeftIds.push(institution.id);
   },
 
   async getMyInstitutions() {

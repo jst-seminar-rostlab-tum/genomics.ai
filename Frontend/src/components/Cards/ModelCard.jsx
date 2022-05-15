@@ -96,8 +96,7 @@ export const ModelCard = ({ width = "100%", height = "100%", title, description,
                 position: "absolute",
                 top: "50%",
                 left: "50%",
-                transform: "translate(-50%, -50%)",
-                width: '70%'
+                transform: "translate(-50%, -50%)"
               }}
             >
               {/* <OutlinedButton content="Map" onClick={onClick} /> */}

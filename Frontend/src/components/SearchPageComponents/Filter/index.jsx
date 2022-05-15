@@ -1,12 +1,11 @@
 import React from 'react';
-import { FormGroup } from '@mui/material';
+import { FormGroup, Box } from '@mui/material';
 import { Route } from 'react-router-dom';
 import { setSeachCategoryInUrl } from 'shared/utils/common/utils';
 import { GeneralCard } from 'components/Cards/GeneralCard';
 import GeneralFilter from './GeneralFilter';
 import TeamsFilter from './TeamsFilter';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { Box } from '@mui/system';
+import AtlasFilter from 'components/ExplorePageComponents/Filter/AtlasFilter';
 
 const FilterItem = ({ children }) => <Box sx={{ margin: 0.5 }}>{children}</Box>;
 
@@ -15,19 +14,31 @@ function Filter({ path, searchParams, updateQueryParams }) {
   return (
     <GeneralCard>
       <FormGroup>
-        <FilterItem>
-          <GeneralFilter
-            sortBy={searchParams.get('sortBy')}
-            onChange={(param, value) => updateQueryParams(param, value)}
-          />
-        </FilterItem>
-        <Route path={setSeachCategoryInUrl(path, 'teams')}>
+        <Route path={[setSeachCategoryInUrl(path, 'teams'),
+          setSeachCategoryInUrl(path, 'institutions'),
+          setSeachCategoryInUrl(path, 'users'),
+          setSeachCategoryInUrl(path, 'models')]}
+        >
           <FilterItem>
-            <TeamsFilter
-              visibility={searchParams.get('visibility')}
+            <GeneralFilter
+              sortBy={searchParams.get('sortBy')}
               onChange={(param, value) => updateQueryParams(param, value)}
             />
           </FilterItem>
+          <Route path={setSeachCategoryInUrl(path, 'teams')}>
+            <FilterItem>
+              <TeamsFilter
+                visibility={searchParams.get('visibility')}
+                onChange={(param, value) => updateQueryParams(param, value)}
+              />
+            </FilterItem>
+          </Route>
+        </Route>
+        <Route path={setSeachCategoryInUrl(path, 'atlases')}>
+          <AtlasFilter
+            sortBy={searchParams.get('sortBy')}
+            onChange={(param, value) => updateQueryParams(param, value)}
+          />
         </Route>
       </FormGroup>
     </GeneralCard>

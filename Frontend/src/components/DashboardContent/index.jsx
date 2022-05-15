@@ -12,6 +12,7 @@ import Help from 'views/Help';
 import styles from './dashboardContent.module.css';
 import SearchPage from 'views/SearchPage';
 import { useAuth } from 'shared/context/authContext';
+import Explore from 'views/Explore';
 import InstitutionPage from 'views/InstitutionPage';
 import TeamPage from 'views/TeamPage';
 
@@ -58,6 +59,8 @@ const DashboardContent = () => {
         <Route path={`${path}/search/:searchCategory`}>
           <SearchPage sidebarShown={sidebarShown} />
         </Route>
+
+        <Route path={`${path}/explore`} render={() => <Explore />} />
 
         <Route path={`${path}/settings`}>
           <Settings

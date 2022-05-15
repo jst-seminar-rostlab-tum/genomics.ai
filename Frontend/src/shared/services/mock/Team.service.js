@@ -10,7 +10,7 @@ let mockTeams = [
     invitedMemberIds: [],
     memberIds: ['626bdb1ed76c8b968a50f833', 2, 3, 4, 5],
     projects: [],
-    visibility: 'PUBLIC',
+    visibility: 'public',
     institutionId: '1',
   },
   {
@@ -21,7 +21,7 @@ let mockTeams = [
     invitedMemberIds: [],
     memberIds: [2, 3, 4, 5],
     projects: [],
-    visibility: 'PUBLIC',
+    visibility: 'public',
     institutionId: '3',
   },
   {
@@ -32,7 +32,7 @@ let mockTeams = [
     invitedMemberIds: [],
     memberIds: [3, 4, 5],
     projects: [],
-    visibility: 'PRIVATE',
+    visibility: 'private',
     institutionId: '3',
   },
 ];

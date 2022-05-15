@@ -72,7 +72,7 @@ export default function TeamPage() {
         />
       )}
       replaceHeaderRight={
-        (isAdmin && <TeamAdminHeaderRight team={team} updateVisibility={updateVisibility} />)
+        (isAdmin && <TeamAdminHeaderRight team={team} setTeam={setTeam} />)
         || <TeamUserHeaderRight institution={institution} team={team} user={user} />
       }
     >
