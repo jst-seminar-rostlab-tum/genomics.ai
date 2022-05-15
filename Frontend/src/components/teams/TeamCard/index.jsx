@@ -1,9 +1,9 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import SettingsIcon from '@mui/icons-material/Settings';
-import Button from '@mui/material/Button';
 import ListCard from 'components/general/ListCard';
 import TeamLeaveButton from 'components/teams/overview/TeamLeaveButton';
+import Button from 'components/CustomButton';
 import styles from './teamCard.module.css';
 import { useAuth } from 'shared/context/authContext';
 

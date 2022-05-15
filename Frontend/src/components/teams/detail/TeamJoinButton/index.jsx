@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
+import { Modal, ModalTitle } from 'components/Modal';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
 import CustomButton from 'components/CustomButton';
 
 function TeamLeaveButton({ team, onJoin, isDisabled }) {
@@ -21,17 +20,15 @@ function TeamLeaveButton({ team, onJoin, isDisabled }) {
   return (
     <>
       <CustomButton type="primary" disabled={isDisabled} onClick={handleOpenDialog}>Join</CustomButton>
-      <Dialog
-        open={dialogOpen}
-        onClose={handleCloseDialog}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
+      <Modal
+        isOpen={dialogOpen}
+        setOpen={(o) => !o && handleCloseDialog()}
       >
-        <DialogTitle id="alert-dialog-title">
+        <ModalTitle>
           Join
-        </DialogTitle>
+        </ModalTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
+          <DialogContentText>
             Do you really want to join the team &quot;
             {team.name}
             &quot;?
@@ -43,7 +40,7 @@ function TeamLeaveButton({ team, onJoin, isDisabled }) {
             Join
           </Button>
         </DialogActions>
-      </Dialog>
+      </Modal>
     </>
   );
 }

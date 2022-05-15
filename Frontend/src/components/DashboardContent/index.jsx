@@ -3,9 +3,7 @@ import {
   Switch, Route, Redirect, useRouteMatch,
 } from 'react-router-dom';
 import Sidebar from '../Sidebar';
-import Dashboard from 'views/Dashboard';
-import TeamOverview from 'views/TeamOverview';
-import InstitutionOverview from 'views/InstitutionOverview';
+import CommunityOverview from 'views/CommunityOverview';
 import GeneMapper from 'views/GeneMapper';
 import UserProfile from 'views/UserProfile';
 import Documentation from 'views/Documentation';
@@ -14,11 +12,12 @@ import Help from 'views/Help';
 import styles from './dashboardContent.module.css';
 import SearchPage from 'views/SearchPage';
 import { useAuth } from 'shared/context/authContext';
+import InstitutionPage from 'views/InstitutionPage';
+import TeamPage from 'views/TeamPage';
 
 const DashboardContent = () => {
-  const [sidebarShown, setSidebarShown] = useState(true);
-  const toggleSidebar = () => setSidebarShown(!sidebarShown);
-  const [user, setUser] = useAuth();
+  const [sidebarShown] = useState(true);
+  const [, setUser] = useAuth();
 
   const { path, url } = useRouteMatch();
 
@@ -34,12 +33,14 @@ const DashboardContent = () => {
           <GeneMapper sidebarShown={sidebarShown} />
         </Route>
 
-        <Route path={`${path}/teams`}>
-          <TeamOverview />
+        <Route path={`${path}/community`}>
+          <CommunityOverview />
         </Route>
-
-        <Route path={`${path}/institutions`}>
-          <InstitutionOverview />
+        <Route path={`${path}/institutions/:id`}>
+          <InstitutionPage />
+        </Route>
+        <Route path={`${path}/teams/:id`}>
+          <TeamPage />
         </Route>
 
         <Route path={`${path}/users`}>
