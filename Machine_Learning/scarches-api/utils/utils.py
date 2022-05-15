@@ -53,6 +53,27 @@ def write_adata_to_csv(model, adata=None, key=None, filename=tempfile.mktemp(), 
     return write_latent_csv(latent, key, filename)
 
 
+def scanvi_write_full_adata_to_csv(model, source_adata, target_adata, key=None, filename=tempfile.mktemp(), drop_columns=None,
+                            cell_type_key='', condition_key='', prediction_key='', neighbors=8):
+    adata_full = source_adata.concatenate(target_adata)
+    return scanvi_write_adata_to_csv(model, adata_full, key, filename, drop_columns, cell_type_key, condition_key, prediction_key, neighbors)
+
+def scanvi_write_adata_to_csv(model, adata=None, key=None, filename=tempfile.mktemp(), drop_columns=None, cell_type_key='cell_type',
+                       condition_key='study', prediction_key='predict', neighbors=8):
+    anndata = None
+    if adata is None:
+        anndata = scanpy.AnnData(model.get_latent_representation())
+    else:
+        anndata = scanpy.AnnData(model.get_latent_representation(adata=adata))
+    latent = anndata
+    latent.obs['cell_type'] = adata.obs[cell_type_key].tolist()
+    latent.obs['batch'] = adata.obs[condition_key].tolist()
+   # latent.obs['predict'] = adata.obs[prediction_key].tolist()
+    scanpy.pp.neighbors(latent, n_neighbors=neighbors)
+    scanpy.tl.leiden(latent)
+    scanpy.tl.umap(latent)
+    return write_latent_csv(latent, key, filename)
+
 def write_combined_csv(latent_ref, latent_query, key=None, filename=tempfile.mktemp(), drop_columns=None):
     """
     stores a given latent in a file, and if a key is given also in an s3 bucket
@@ -70,6 +91,7 @@ def write_combined_csv(latent_ref, latent_query, key=None, filename=tempfile.mkt
     query["y"] = list(map(lambda p: float(p[1]), latent_query.obsm["X_umap"]))
     query["is_reference"] = ['No'] * len(latent_query.obsm["X_umap"])
     query.to_csv(filename)
+
     reference = latent_ref.obs.drop(columns=drop_columns)
     reference["x"] = list(map(lambda p: float(p[0]), latent_ref.obsm["X_umap"]))
     reference["y"] = list(map(lambda p: float(p[1]), latent_ref.obsm["X_umap"]))
