@@ -40,7 +40,7 @@ let mockInstitutions = [
 ];
 
 const InstitutionService = {
-  async createInstitution(name, description) {
+  async createInstitution(name, country) {
     // fake effect
     await new Promise((resolve) => setTimeout(resolve, 1000));
     const user = await ProfileService.getProfile();
@@ -48,8 +48,8 @@ const InstitutionService = {
     const newInstitution = {
       id: runningId.toString(),
       name,
-      country: 'Germany',
-      description,
+      country,
+      description: '',
       avatarUrl: null,
       backgroundPictureURL: null,
       adminIds: [user.id], // TODO: make sure that the backend puts my user ID here
