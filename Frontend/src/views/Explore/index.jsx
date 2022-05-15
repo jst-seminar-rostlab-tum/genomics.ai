@@ -127,6 +127,8 @@ const Explore = () => {
     return elem;
   });
 
+  const executeScroll = () => history.push({pathname: '/', state: {contact_us: true}})
+
   return (
     <Box
       sx={{
@@ -154,6 +156,7 @@ const Explore = () => {
           position="relative"
           onLoginClicked={onLoginClicked}
           onSignUpClicked={onSignUpClicked}
+          executeScroll={executeScroll}
         />
       </Box>
 
