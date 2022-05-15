@@ -1,5 +1,6 @@
 import os
 import time
+
 startTime = time.time()
 
 from scANVI.scANVI import compute_scANVI
@@ -92,10 +93,14 @@ def query(user_config):
         raise ValueError(model + ' is not one of the supported models')
     configuration["attributes"] = attributes
     run_time = (time.time() - start_time)
-    print('completed query ' + str(run_time) + 'and stored it in: ' + get_from_config(configuration, parameters.OUTPUT_PATH))
-    if get_from_config(configuration, parameters.WEBHOOK) is not None and len(get_from_config(configuration, parameters.WEBHOOK)) > 0:
+    print('completed query in ' + str(run_time) + 's and stored it in: ' + get_from_config(configuration,
+                                                                                           parameters.OUTPUT_PATH))
+    if get_from_config(configuration, parameters.WEBHOOK) is not None and len(
+            get_from_config(configuration, parameters.WEBHOOK)) > 0:
         utils.notify_backend(get_from_config(configuration, parameters.WEBHOOK), configuration)
     return configuration
+
+
 # query('data/ref/source_data.h5ad', 'data/query/target_data.h5ad', 'data/model', 'data/surgery/', 'scVI')
 
 if __name__ == "__main__":

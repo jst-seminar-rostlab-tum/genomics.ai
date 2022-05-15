@@ -33,6 +33,8 @@ def setup_modules():
 def pre_process_data(configuration):
     source_adata = utils.read_h5ad_file_from_s3(get_from_config(configuration, parameters.REFERENCE_DATA_PATH))
     target_adata = utils.read_h5ad_file_from_s3(get_from_config(configuration, parameters.QUERY_DATA_PATH))
+    source_adata.obs["type"] = "reference"
+    target_adata.obs["type"] = "query"
     source_adata = remove_sparsity(source_adata)
     target_adata = remove_sparsity(target_adata)
 
@@ -145,8 +147,6 @@ def query(pretrained_model, reference_latent, anndata, source_adata, configurati
 
     if get_from_config(configuration, parameters.DEBUG):
         utils.save_umap_as_pdf(query_latent, 'figures/query.pdf', color=['batch', 'cell_type'])
-
-    # utils.write_combined_csv(reference_latent, query_latent, key=get_from_config(configuration, parameters.OUTPUT_PATH))
     utils.write_full_adata_to_csv(model, source_adata, anndata,
                                   key=get_from_config(configuration, parameters.OUTPUT_PATH),
                                   cell_type_key=get_from_config(configuration, parameters.CELL_TYPE_KEY),
@@ -220,7 +220,7 @@ def create_model(source_adata, target_adata, configuration):
     scanvi.train(max_epochs=get_from_config(configuration, parameters.SCANVI_MAX_EPOCHS),
                  use_gpu=get_from_config(configuration, parameters.USE_GPU))
     tempdir = tempfile.mkdtemp()
-    scanvi.save(tempdir, overwrite=True)
+    scanvi.save(tempdir, overwrite=True, save_anndata=True)
     if get_from_config(configuration, parameters.DEV_DEBUG):
         try:
             utils.write_adata_to_csv(scanvi, 'scanvi-reference-latent-after-from-scvi-training.pt')
@@ -228,10 +228,12 @@ def create_model(source_adata, target_adata, configuration):
             print(e, file=sys.stderr)
         try:
             utils.store_file_in_s3(tempdir + '/model.pt', 'scanvi-model-after-first-training.pt')
+            utils.store_file_in_s3(tempdir + '/adata.h5ad', 'scanvi-adata-after-first-training.pt')
         except Exception as e:
             print(e, file=sys.stderr)
 
     utils.delete_file(tempdir + '/model.pt')
+    utils.delete_file(tempdir + '/adata.h5ad')
     os.removedirs(tempdir)
 
     reference_latent = get_latent(scanvi, source_adata, configuration)
