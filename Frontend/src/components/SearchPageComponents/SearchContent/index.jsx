@@ -1,17 +1,13 @@
 import React from 'react';
 
 import {
-  useRouteMatch, Switch, Route, Redirect,
+  useRouteMatch, Switch, Route,
 } from 'react-router-dom';
 import SearchResultList from '../SearchResultList';
 import TeamCard from '../SearchResultList/TeamCard';
 import InstitutionCard from '../SearchResultList/InstitutionCard';
 import UserCard from '../SearchResultList/UserCard';
-import ProjectCard from '../SearchResultList/ProjectCard';
 import ResultStatus from '../ResultStatus';
-import LearnMoreModel from 'views/Explore/LearnMoreModel';
-import AtlasResult from 'views/Explore/AtlasResult';
-import LearnMoreAtlas from 'views/Explore/LearnMoreAtlas';
 import { setSeachCategoryInUrl } from 'shared/utils/common/utils';
 import AtlasesGrid from 'components/Grids/AtlasesGrid';
 import ModelsGrid from 'components/Grids/ModelsGrid';
@@ -19,7 +15,7 @@ import ExploreRoutes from 'components/ExplorePageComponents/ExploreRoutes';
 
 // wrapper component to display the searched items
 function SearchContent({
-  searchResult, searchCategory, searchedKeyword,
+  searchResult, searchCategory, searchedKeyword, user, fetchSearchHandler,
 }) {
   const { path } = useRouteMatch();
 
@@ -27,6 +23,8 @@ function SearchContent({
     <SearchResultList
       listItemWrapper={listItemWrapper}
       searchResult={searchResult}
+      user={user}
+      fetchSearchHandler={fetchSearchHandler}
     />
   );
 
@@ -48,9 +46,6 @@ function SearchContent({
         </Route>
         <Route path={setSeachCategoryInUrl(path, 'users')}>
           {renderSearchResultsList(UserCard)}
-        </Route>
-        <Route path={setSeachCategoryInUrl(path, 'projects')}>
-          {renderSearchResultsList(ProjectCard)}
         </Route>
         <Route>
           <ExploreRoutes atlases={atlases} models={models} path="/sequencer/search" />
