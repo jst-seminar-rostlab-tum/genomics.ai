@@ -43,7 +43,8 @@ def setup_anndata_for_scanvi(anndata, configuration):
     scarches.models.SCANVI.setup_anndata(anndata,
                                          unlabeled_category=get_from_config(configuration, parameters.UNLABELED_KEY),
                                          batch_key=get_from_config(configuration, parameters.CONDITION_KEY),
-                                         labels_key=get_from_config(configuration, parameters.CELL_TYPE_KEY))
+                                         labels_key=get_from_config(configuration, parameters.CELL_TYPE_KEY),
+                                         prediction_key=get_from_config(configuration, parameters.SCANVI_PREDICT_CELLTYPES)) # TODO check if needed
 
 
 def get_scanvi_from_scvi_model(scvi_model, configuration):
@@ -63,8 +64,8 @@ def get_latent(model, adata, configuration):
 
 
 def predict(model, latent):
-    latent.obs['predictions'] = model.predict()
-    print("Acc: {}".format(np.mean(latent.obs.predictions == latent.obs.cell_type)))
+    latent.obs['predict'] = model.predict()
+    print("Acc: {}".format(np.mean(latent.obs.predict == latent.obs.cell_type)))
     return latent
 
 
@@ -98,9 +99,9 @@ def surgery(reference_latent, source_adata, anndata, configuration):
     utils.write_full_adata_to_csv(model, source_adata, anndata,
                                   key=get_from_config(configuration, parameters.OUTPUT_PATH),
                                   cell_type_key=get_from_config(configuration, parameters.CELL_TYPE_KEY),
-                                  condition_key=get_from_config(configuration, parameters.CONDITION_KEY))
+                                  condition_key=get_from_config(configuration, parameters.CONDITION_KEY)) # TODO check if needed
 
-    model.save('scvi_model', overwrite=True)  # TODO check if we need this, for now, we delete it
+    model.save('scvi_model', overwrite=True)  # TODO check path
     utils.delete_file('scvi_model/model.pt')
     os.rmdir('scvi_model')
 
@@ -131,7 +132,7 @@ def query(pretrained_model, reference_latent, anndata, source_adata, configurati
     model.save(tempdir, overwrite=True)
     if get_from_config(configuration, parameters.DEV_DEBUG):
         try:
-            utils.write_adata_to_csv(model, 'scanvi-query-latent-after-query-training.csv')
+            utils.scanvi_write_adata_to_csv(model, 'scanvi-query-latent-after-query-training.csv')
         except Exception as e:
             print(e, file=sys.stderr)
     if get_from_config(configuration, parameters.DEV_DEBUG):
@@ -150,13 +151,13 @@ def query(pretrained_model, reference_latent, anndata, source_adata, configurati
     utils.write_full_adata_to_csv(model, source_adata, anndata,
                                   key=get_from_config(configuration, parameters.OUTPUT_PATH),
                                   cell_type_key=get_from_config(configuration, parameters.CELL_TYPE_KEY),
-                                  condition_key=get_from_config(configuration, parameters.CONDITION_KEY))
+                                  condition_key=get_from_config(configuration, parameters.CONDITION_KEY))  # TODO check if needed
 
     return model, query_latent
 
 
 def predict_latent(latent):
-    df = latent.obs.groupby(["cell_type", "predictions"]).size().unstack(fill_value=0)
+    df = latent.obs.groupby(["cell_type", "predict"]).size().unstack(fill_value=0)
     norm_df = df / df.sum(axis=0)
 
     figure = plt.figure(figsize=(8, 8), frameon=False)
@@ -166,7 +167,7 @@ def predict_latent(latent):
     _ = plt.yticks(np.arange(0.5, len(df.index), 1), df.index)
     plt.xlabel("Predicted")
     plt.ylabel("Observed")
-    figure.savefig('figures/predict.png')
+    figure.savefig('predict.png')
 
 
 def both_adata(source_adata, target_adata, configuration):
@@ -174,10 +175,13 @@ def both_adata(source_adata, target_adata, configuration):
     full_latent = scanpy.AnnData(scarches.models.SCANVI.get_latent_representation(adata=adata_full))
     full_latent.obs['cell_type'] = adata_full.obs[get_from_config(configuration, parameters.CELL_TYPE_KEY)].tolist()
     full_latent.obs['batch'] = adata_full.obs[get_from_config(configuration, parameters.CONDITION_KEY)].tolist()
+    # TODO add predictions to csv
+    full_latent.obs['predictions'] = adata_full.obs[get_from_config(configuration, parameters.SCANVI_PREDICT_CELLTYPES)].tolist()
 
     scanpy.pp.neighbors(full_latent)
     scanpy.tl.leiden(full_latent)
     scanpy.tl.umap(full_latent)
+
 
     if get_from_config(configuration, parameters.DEBUG):
         utils.save_umap_as_pdf(full_latent, 'figures/both.pdf', color=['batch', 'cell_type'])
@@ -223,7 +227,7 @@ def create_model(source_adata, target_adata, configuration):
     scanvi.save(tempdir, overwrite=True)
     if get_from_config(configuration, parameters.DEV_DEBUG):
         try:
-            utils.write_adata_to_csv(scanvi, 'scanvi-reference-latent-after-from-scvi-training.pt')
+            utils.scanvi_write_adata_to_csv(scanvi, 'scanvi-reference-latent-after-from-scvi-training.pt')
         except Exception as e:
             print(e, file=sys.stderr)
         try:
@@ -239,8 +243,8 @@ def create_model(source_adata, target_adata, configuration):
     if get_from_config(configuration, parameters.DEBUG):
         utils.save_umap_as_pdf(reference_latent, 'figures/reference.pdf', color=['batch', 'cell_type'])
 
-    # TODO check if needed
-    # reference_latent = predict(scanvi, reference_latent)
+        # TODO check if needed
+    reference_latent = predict(scanvi, reference_latent)
     return scanvi, reference_latent
 
 
@@ -260,22 +264,23 @@ def compute_scANVI(configuration):
 
     if get_from_config(configuration, parameters.SCANVI_PREDICT_CELLTYPES):
         predict_latent(predict(model_query, query_latent))
-    # if get_from_config(configuration, parameters.SCANVI_DO_SURGERY):
-    #    model_surgery, surgery_latent = surgery(reference_latent, target_adata, configuration)
-    #
-    #    if get_from_config(configuration, parameters.SCANVI_PREDICT_CELLTYPES):
-    #        predict_latent(predict(model_surgery, surgery_latent))
+    # TODO check if need
+    #if get_from_config(configuration, parameters.SCANVI_DO_SURGERY):
+        #model_surgery, surgery_latent = surgery(reference_latent, target_adata, configuration)
+
+    #if get_from_config(configuration, parameters.SCANVI_PREDICT_CELLTYPES):
+        #predict_latent(predict(model_surgery, surgery_latent))
 
     full_latent = None
 
     # TODO check if needed at all
-    # if get_from_config(configuration, parameters.SCANVI_COMPARE_REFERENCE_AND_QUERY):
-    #    full_latent = both_adata(source_adata, target_adata, configuration)
+    if get_from_config(configuration, parameters.SCANVI_COMPARE_REFERENCE_AND_QUERY):
+        full_latent = both_adata(source_adata, target_adata, configuration)
 
-    # if get_from_config(configuration, parameters.SCANVI_COMPARE_OBSERVED_AND_PREDICTED_CELLTYPES):
-    #    if full_latent is None:
-    #        full_latent = both_adata(source_adata, target_adata, configuration)
-    #    if model is None:
-    #        model_query, query_latent = query(None, reference_latent, target_adata, configuration)
-    #        model = model_query
-    #    compare_adata(model, source_adata, target_adata, full_latent, configuration)
+    if get_from_config(configuration, parameters.SCANVI_COMPARE_OBSERVED_AND_PREDICTED_CELLTYPES):
+        if full_latent is None:
+            full_latent = both_adata(source_adata, target_adata, configuration)
+        if model is None:
+            model_query, query_latent = query(None, reference_latent, target_adata, configuration)
+            model = model_query
+        compare_adata(model, source_adata, target_adata, full_latent, configuration)
