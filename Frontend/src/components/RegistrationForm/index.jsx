@@ -1,5 +1,5 @@
 import {
-  Avatar, Box, Grid, Modal, Snackbar, TextField,
+  Avatar, Typography, Box, Grid, Snackbar, TextField,
 } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import React, { useCallback, useState } from 'react';
@@ -10,6 +10,9 @@ import { BACKEND_ADDRESS } from 'shared/utils/common/constants';
 import logo from 'assets/logo.svg';
 import styles from './registrationform.module.css';
 import { useAuth } from 'shared/context/authContext';
+import Input from 'components/Input/Input';
+import { Modal, ModalTitle } from 'components/Modal';
+import CustomButton from 'components/CustomButton';
 
 function RegistrationForm(props) {
   const [, setUser] = useAuth();
@@ -114,122 +117,80 @@ function RegistrationForm(props) {
       });
   }, [userDetails, setErrors, setLoading, props, setSnackbarVisible, setUser]);
 
-  const boxStyle = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    boxShadow: 24,
-    p: 4,
-    borderRadius: 3,
-  };
-
   const { close, visible } = props;
 
   return (
     <div>
       <Modal
-        onClose={close}
-        open={visible}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
+        setOpen={(o) => !o && onClose()}
+        isOpen={visible}
       >
-        <Box sx={boxStyle}>
-          <Grid>
-            <Grid container direction="row" justifyContent="center">
-              <Grid xs item />
-              <Grid align="center">
-                <Avatar src={logo} sx={{ width: 72, height: 72 }} />
-                <h2>Register new account</h2>
-              </Grid>
-              <Grid xs align="right" item>
-                <CloseIcon onClick={onClose} className={styles.closeImg} />
-              </Grid>
-            </Grid>
-            <TextField
+        <ModalTitle>Register new user</ModalTitle>
+        <Box sx={{ width: 340 }}>
+          <Grid sx={{ width: 320 }}>
+            <Input
               id="email"
               type="email"
               error={!!errors.email}
               helperText={errors.email}
               label="E-mail"
               placeholder="Enter e-mail address"
-              fullWidth
-              required
-              margin="dense"
-              onChange={handleTextChange}
+              isRequired
+              onChangeEvent={handleTextChange}
             />
-            <TextField
+            <Input
               id="firstname"
               type="text"
               error={!!errors.firstname}
               helperText={errors.firstname}
               label="First name"
               placeholder="Enter your first name"
-              margin="dense"
-              fullWidth
-              required
-              onChange={handleTextChange}
+              isRequired
+              onChangeEvent={handleTextChange}
             />
-            <TextField
+            <Input
               id="lastname"
               type="text"
               error={!!errors.lastname}
               helperText={errors.lastname}
               label="Last name"
               placeholder="Enter your last name"
-              margin="dense"
-              fullWidth
-              required
-              onChange={handleTextChange}
+              isRequired
+              onChangeEvent={handleTextChange}
             />
-            <TextField
+            <Input
               id="affiliation"
               error={!!errors.affiliation}
               helperText={errors.affiliation}
               label="Academic affiliation"
               type="text"
               placeholder="Enter your university, company or etc."
-              margin="dense"
-              fullWidth
-              onChange={handleTextChange}
+              onChangeEvent={handleTextChange}
             />
-            <TextField
+            <Input
               id="password"
               error={!!errors.password}
               helperText={errors.password}
               label="Password"
               type="password"
               placeholder="Enter password"
-              margin="dense"
-              fullWidth
-              required
-              onChange={handleTextChange}
+              isRequired
+              onChangeEvent={handleTextChange}
             />
-            <TextField
+            <Input
               id="passwordAgain"
               error={!!errors.passwordAgain}
               helperText={errors.passwordAgain}
               label="Password again"
               type="password"
               placeholder="Enter your password again"
-              margin="dense"
-              fullWidth
-              required
-              onChange={handleTextChange}
+              isRequired
+              onChangeEvent={handleTextChange}
             />
             <Box mt={1}>
-              <LoadingButton
-                loading={loading}
-                type="submit"
-                color="primary"
-                variant="contained"
-                fullWidth
-                onClick={doRegistration}
-              >
-                Sign up
-              </LoadingButton>
+              <CustomButton type="contained" sx={{ mr: 1 }} onClick={doRegistration}>
+                <Typography>Sign up</Typography>
+              </CustomButton>
             </Box>
           </Grid>
         </Box>
