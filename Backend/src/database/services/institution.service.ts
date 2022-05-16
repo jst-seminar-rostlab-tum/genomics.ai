@@ -3,7 +3,7 @@ import { teamModel } from "../models/team";
 import ProjectService from "./project.service";
 import { AddInstitutionDTO, UpdateInstitutionDTO } from "../dtos/institution.dto";
 import { ObjectId } from "mongoose";
-import { IProject } from "../models/project";
+import { IProject, projectModel } from "../models/project";
 
 /**
  *  @class InstitutionService
@@ -294,7 +294,9 @@ export default class InstitutionService {
   static async filterInstitutions(query: any): Promise<IInstitution[] | null> {
     var keyword: object, sortBy: any;
 
-    query.hasOwnProperty("keyword") ? (keyword = { name: { $regex : "^" +  query.keyword, $options : 'i'} }) : (keyword = {});
+    query.hasOwnProperty("keyword")
+      ? (keyword = { name: { $regex: "^" + query.keyword, $options: "i" } })
+      : (keyword = {});
 
     if (query.hasOwnProperty("sortBy")) {
       let sortProperty = query.sortBy;
@@ -338,6 +340,7 @@ export default class InstitutionService {
 
     return projects;
   }
+
   static async getUsersInstitutions(userId: ObjectId | string): Promise<IInstitution[] | null> {
     return await institutionModel.find({
       $or: [
