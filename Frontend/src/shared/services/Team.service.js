@@ -52,7 +52,7 @@ const TeamService = MOCK_TEAMS ? MockTeamService : {
 
   async getMyTeams() {
     const user = await ProfileService.getProfile();
-    let { data } = await axiosInstance.get(`/user/${user.id}/teams`);
+    let { data } = await axiosInstance.get(`/users/${user.id}/teams`);
     data = data.map(enhanceTeam);
     return data;
   },
