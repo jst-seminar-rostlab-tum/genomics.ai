@@ -317,16 +317,15 @@ export default class InstitutionService {
 
     let projectsOfMembers: IProject[] = [];
     if (institution?.memberIds?.length > 0) {
-      const resp = await ProjectService.getProjects({
-        owner: { $in: institution.memberIds },
-      });
+      const resp = await ProjectService.getProjectsOfUsers(institution.memberIds);
       if (resp) {
         projectsOfMembers = resp;
       }
     }
 
-    const teams = await teamModel.find({ institution_id: institution_id }).populate("projects");
-    const projectsOfTeams = teams.map((team) => team.projects).flat();
+    const teams = await teamModel.find({ institution_id: institution_id });
+    const teamIds = teams.map( (team) => team._id );
+    const projectsOfTeams = await ProjectService.getProjectsOfTeams(teamIds);
 
     const projects = projectsOfMembers;
     for (const projOfTeam of projectsOfTeams) {

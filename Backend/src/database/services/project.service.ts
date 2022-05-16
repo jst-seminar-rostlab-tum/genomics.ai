@@ -54,6 +54,34 @@ export default class ProjectService {
   }
 
   /**
+   *  Returns projects of the given team ids,
+   *  where the teams of the projects are in
+   *  the given team list.
+   *
+   *  @param   teamIds as ObjectId array
+   *  @returns projects or null
+   */
+  static async getProjectsOfTeams(
+    teamIds: ObjectId[]
+  ): Promise<(IProject & { _id: ObjectId })[]> {
+    return await projectModel.find({ teamId: { $in: teamIds } }).exec();
+  }
+
+  /**
+   *  Returns projects of the given user ids,
+   *  where the owners of the projects are in
+   *  the given user list.
+   *
+   *  @param   userIds as ObjectId array
+   *  @returns projects or null
+   */
+  static async getProjectsOfUsers(
+    userIds: ObjectId[]
+  ): Promise<(IProject & { _id: ObjectId })[]> {
+    return await projectModel.find({ owner: { $in: userIds } }).exec();
+  }
+
+  /**
    *  Adds given project to the database.
    *
    *  @param    project
