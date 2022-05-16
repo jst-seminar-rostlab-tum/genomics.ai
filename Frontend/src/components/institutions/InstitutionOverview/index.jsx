@@ -16,7 +16,7 @@ function InstitutionOverview() {
         setInstitutions(newInstitutions);
         setIsLoading(false);
       });
-  }, [setInstitutions, setIsLoading]);
+  }, []);
 
   function onLeft(institution) {
     setInstitutions(institutions.filter((i) => i.id !== institution.id));

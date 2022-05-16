@@ -30,7 +30,7 @@ export default function TeamPage() {
     TeamService.getTeam(id)
       .then(setTeam)
       .catch((ignored) => { console.error(ignored); });
-  }, [setTeam]);
+  }, []);
 
   // Institution may be undefined
   useEffect(() => {
