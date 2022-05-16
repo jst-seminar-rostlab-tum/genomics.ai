@@ -1,0 +1,30 @@
+{
+  "/resend": {
+    "post": {
+      "summary": "Reset the password for given token",
+      "tags": ["User"],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string"
+                }
+              },
+              "required": ["email"],
+              "additionalProperties": false
+            }
+          }
+        }
+      },
+      "responses": {
+        "404": {
+          "description": "Could not find user with this e-mail. Please register."
+        }
+      }
+    }
+  }
+}
