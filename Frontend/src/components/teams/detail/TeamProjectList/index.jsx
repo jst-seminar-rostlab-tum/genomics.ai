@@ -6,10 +6,13 @@ function TeamProjectList({ team, forPart }) { // forPart can be "geneMapper" or 
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(async () => {
+  useEffect(() => {
     setLoading(true);
-    setProjects(await ProjectService.getTeamProjects(team.id, forPart));
-    setLoading(false);
+    ProjectService.getTeamProjects(team.id, forPart)
+      .then((newProjects) => {
+        setProjects(newProjects);
+        setLoading(false);
+      });
   }, [team, forPart]);
 
   return <ProjectList isLoading={loading} projects={projects} />;

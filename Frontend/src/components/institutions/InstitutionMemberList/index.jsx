@@ -10,10 +10,13 @@ function InstitutionMemberList({ institution, onRemoved }) {
   const [user] = useAuth();
   const [members, setMembers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  useEffect(async () => {
+  useEffect(() => {
     setIsLoading(true);
-    setMembers(await InstitutionService.getMembers(institution.id));
-    setIsLoading(false);
+    InstitutionService.getMembers(institution.id)
+      .then((newMembers) => {
+        setMembers(newMembers);
+        setIsLoading(false);
+      });
   }, [institution]);
 
   if (isLoading) {
