@@ -25,14 +25,6 @@ const theme = createTheme({
   },
 });
 
-const themeIcon = createTheme({
-  palette: {
-    primary: {
-      main: '#5676E4',
-    },
-  },
-});
-
 function GeneMapperHome() {
   const [projects, setProjects] = useState([]);
   const [atlases, setAtlases] = useState([]);
@@ -93,12 +85,11 @@ function GeneMapperHome() {
           <Stack direction="row" className="stack" alignItems="Center">
 
             <Typography variant="h5" sx={{ pr: 1 }}>Your Mappings</Typography>
-            <ThemeProvider theme={themeIcon}>
-              <PlusIcon />
-            </ThemeProvider>
+            <PlusIcon />
           </Stack>
           <TextField
             id="outlined-basic"
+            sx={{ width: '32.7ch' }}
             label={(
               <Stack direction="row">
                 <SearchIcon />
