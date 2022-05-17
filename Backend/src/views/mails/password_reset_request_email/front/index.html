@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            emailBg: "#F8FBFF",
+            head: "#002644",
+            content: "#184060",
+            primary: "#5676E4",
+            primaryHover: "#445AA7",
+            primaryFocus: "#7187D5",
+            secondary: "#7DD181",
+            secondaryHover: "#6FB169",
+            secondaryFocus: "#A0E69E",
+            footer: "#212529"
+          }
+        }
+      }
+    }
+  </script>
+  <title>Password Reset Request</title>
+</head>
+<body>
+  <div class="bg-emailBg">
+    <div class="w-3/4 m-auto">
+      <a href="https://www.genecruncher.com" class="mt-10 flex flex-row gap-4 items-center">
+        <img src="./logo.svg">
+        <div class="font-semibold text-xl text-content">genomics.ai</div>
+      </a>
+      <div class="title text-3xl font-bold text-head mt-10">Hey {{firstname}},</div>
+      <div class="content text-xl text-content my-10 w-100">
+        <p class="my-20">We heard that you have lost your GeneCruncher password. Sorry about that! But don't worry, you can use the following button to reset your password:</p>
+        <a href="{{link}}" class="bg-secondary text-white font-bold px-32 py-5 rounded-full hover:bg-secondaryHover hover:drop-shadow-md focus:outline-none focus:bg-secondaryFocus m-auto">Reset Password</a>
+        <p class="mt-20">
+          If you don't use this link within 3 hours, it will expire. To get a new password reset link, click <a href="https://www.genecruncher.com/password_reset" class="text-primary underline">here</a>.
+        </p>
+        <p class="mt-10">Thanks,</p> 
+        <p>The GeneCruncher Team.</p> 
+      </div>
+    </div>
+    <div class="flex flex-row justify-between w-100 bg-footer text-white p-5 px-10 font-semibold">
+      <div class="">© Copyright TUM 2022</div>
+      <div class=""><a href="https://www.genecruncher.com">genecruncher.com</a></div>
+    </div>
+  </div>
+</body>
+</html>
