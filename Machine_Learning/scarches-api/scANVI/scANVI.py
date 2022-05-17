@@ -100,7 +100,7 @@ def surgery(reference_latent, source_adata, anndata, configuration):
                                   key=get_from_config(configuration, parameters.OUTPUT_PATH),
                                   cell_type_key=get_from_config(configuration, parameters.CELL_TYPE_KEY),
                                   condition_key=get_from_config(configuration,
-                                                                parameters.CONDITION_KEY))  # TODO check if needed
+                                                                parameters.CONDITION_KEY), predictScanvi=True)
 
     model.save('scvi_model', overwrite=True)  # TODO check path
     utils.delete_file('scvi_model/model.pt')
@@ -160,8 +160,7 @@ def query(pretrained_model, reference_latent, anndata, source_adata, configurati
                                   key=get_from_config(configuration, parameters.OUTPUT_PATH),
                                   cell_type_key=get_from_config(configuration, parameters.CELL_TYPE_KEY),
                                   condition_key=get_from_config(configuration,
-                                                                parameters.CONDITION_KEY))  # TODO check if needed
-
+                                                                parameters.CONDITION_KEY), predictScanvi=True)  # TODO check if needed
     return model, query_latent
 
 

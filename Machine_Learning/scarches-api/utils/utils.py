@@ -32,13 +32,14 @@ def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=
 
 
 def write_full_adata_to_csv(model, source_adata, target_adata, key=None, filename=tempfile.mktemp(), drop_columns=None,
-                            cell_type_key='', condition_key='', neighbors=8):
+                            cell_type_key='', condition_key='', neighbors=8, predictScanvi=False):
     adata_full = source_adata.concatenate(target_adata)
-    return write_adata_to_csv(model, adata_full, key, filename, drop_columns, cell_type_key, condition_key, neighbors)
+    return write_adata_to_csv(model, adata_full, key, filename, drop_columns, cell_type_key, condition_key, neighbors, predictScanvi)
 
 
-def write_adata_to_csv(model, adata=None, key=None, filename=tempfile.mktemp(), drop_columns=None, cell_type_key='cell_type',
-                       condition_key='study', neighbors=8):
+def write_adata_to_csv(model, adata=None, key=None, filename=tempfile.mktemp(), drop_columns=None,
+                       cell_type_key='cell_type',
+                       condition_key='study', neighbors=8, predictScanvi=False):
     anndata = None
     if adata is None:
         anndata = scanpy.AnnData(model.get_latent_representation())
@@ -51,7 +52,8 @@ def write_adata_to_csv(model, adata=None, key=None, filename=tempfile.mktemp(), 
     scanpy.pp.neighbors(latent, n_neighbors=neighbors)
     scanpy.tl.leiden(latent)
     scanpy.tl.umap(latent)
-    latent.obs['predictions'] = model.predict(adata=adata)
+    if predictScanvi:
+        latent.obs['predictions'] = model.predict(adata=adata)
     return write_latent_csv(latent, key, filename)
 
 

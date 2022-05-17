@@ -3,6 +3,7 @@ import warnings
 
 import scanpy as sc
 import scarches as sca
+import scvi
 import torch
 from scarches.dataset.trvae.data_handling import remove_sparsity
 
@@ -75,6 +76,10 @@ def create_scVI_model(source_adata, target_adata, configuration):
         vae = get_model(source_adata, configuration)
         vae.train(max_epochs=get_from_config(configuration, parameters.SCVI_MAX_EPOCHS),
                   use_gpu=get_from_config(configuration, parameters.USE_GPU))
+
+        #TODO check predict cell
+
+
         if get_from_config(configuration, parameters.DEV_DEBUG):
             try:
                 utils.write_adata_to_csv(vae, source_adata, key='scvi-source-adata-post-first-training.csv')
@@ -241,3 +246,4 @@ def compute_scVI(configuration):
     # compute_full_latent(source_adata, target_adata, model)
     # model.save('resulting_model', overwrite=True)
     # utils.store_file_in_s3('resulting_model/model.pt', get_from_config(configuration, parameters.RESULTING_MODEL_PATH) + '_new')
+
