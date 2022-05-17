@@ -1,46 +1,55 @@
 import express from "express";
-import {ExtRequest} from "../../../definitions/ext_request";
+import { ExtRequest } from "../../../definitions/ext_request";
 import jwt from "jsonwebtoken";
-import {userModel} from "../../../database/models/user";
+import UserService from "../../../database/services/user.service";
 
-export default function check_auth(){
-    let router = express.Router();
+const JWT_SECRET = process.env.JWT_SECRET || "";
 
-    router.use((req : ExtRequest, res, next) => {
-        req.is_authenticated = false;
-        if(req.header("auth")){
-            // TODO: Secret => REDIS
-            try{
-                jwt.verify(req.header("auth")!, "SECRET", async function(err, decoded){
-                    if(err || !decoded || !decoded.email){
-                        if(err?.name == "TokenExpiredError")
-                           return res.status(440).send("JWT authentication token expired. Please log in again")
+export default function check_auth() {
+  let router = express.Router();
 
-                        return res.status(401).send("Invalid authentication");
-                    }
+  router.use((req: ExtRequest, res, next) => {
+    req.is_authenticated = false;
 
-                    userModel.findOne({_id: decoded.id}).exec((err, result)=>{
-                        if(err){
-                            console.error(err);
-                            return res.status(500).send("Error during authentication: Failed to fetch user")
-                        }
-                        req.is_authenticated = true;
-                        req.user_id = decoded.id;
-                        req.email = result!.email;
-                        req.is_administrator = result!.isAdministrator;
-                        req.is_authorized = result!.isAuthorized;
-                        req.is_verified = result!.isEmailVerified;
-                        next();
-                    })
-                });
-            }catch(e){
-                return console.error(e); // abort on error;
+    if (req.header("auth") || req.header("Authorization")) {
+      const jwtToken = req.header("auth") || req.header("Authorization")?.split(" ")[1] || "";
+      try {
+        jwt.verify(jwtToken, JWT_SECRET, async function (err, decoded) {
+          if (err || !decoded || !decoded.email || !decoded.id) {
+            console.log(err?.name);
+            if (err?.name == "TokenExpiredError")
+              return res.status(440).send("JWT authentication token expired. Please log in again");
+
+            return res.status(401).send("Invalid authentication");
+          }
+
+          UserService.getUserById(decoded.id).then(
+            (result) => {
+              if (!result) {
+                return res
+                  .status(401)
+                  .send("JWT authentication token invalid. Please log in again");
+              }
+              req.is_authenticated = true;
+              req.user_id = decoded.id;
+              req.email = result!.email;
+              req.is_administrator = result!.isAdministrator;
+              req.is_verified = result!.isEmailVerified;
+              next();
+            },
+            (err) => {
+              console.error(err);
+              return res.status(500).send("Error during authentication: Failed to fetch user");
             }
-        }
-        else {
-            return res.status(403).send("JWT missing.");
-        }
-    })
+          );
+        });
+      } catch (e) {
+        return console.error(e); // abort on error;
+      }
+    } else {
+      return res.status(403).send("JWT missing.");
+    }
+  });
 
-    return router;
+  return router;
 }

@@ -1,0 +1,16 @@
+{
+  "/profile": {
+    "get": {
+      "summary": "Get a profile information",
+      "tags": ["User"],
+      "responses": {
+        "200": {
+          "description": "OK"
+        },
+        "400": {
+          "description": "Failed. Bad post data."
+        }
+      }
+    }
+  }
+}
