@@ -28,7 +28,7 @@ def default_config():
 
         # scANVI stuff
         parameters.SCANVI_COMPARE_REFERENCE_AND_QUERY: False,
-        parameters.SCANVI_COMPARE_OBSERVED_AND_PREDICTED_CELLTYPES: True,
+        parameters.SCANVI_COMPARE_OBSERVED_AND_PREDICTED_CELLTYPES: False,
         parameters.SCANVI_PREDICT_CELLTYPES: True,
 
         parameters.CONDITION_KEY: 'study',
