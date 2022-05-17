@@ -4,7 +4,9 @@ import Grid from '@mui/material/Grid';
 import AtlasCard from 'components/Cards/AtlasCard';
 import styles from './atlasesGrid.module.css';
 
-const AtlasesGrid = ({ atlases, path }) => (
+const AtlasesGrid = ({
+  atlases, path, selectedAtlas, setSelectedAtlas,
+}) => (
   <Box className={styles.atlasContainer} maxHeight="50vh" mb="2em">
     <Grid container spacing={3}>
       {atlases && atlases.map((atlas) => (
@@ -16,6 +18,8 @@ const AtlasesGrid = ({ atlases, path }) => (
             modalities={atlas.modalities}
             title={atlas.name}
             learnMoreLink={`${path}/atlases/${atlas._id}`}
+            onSelect={setSelectedAtlas}
+            selected={selectedAtlas === atlas.name}
           />
         </Grid>
       ))}

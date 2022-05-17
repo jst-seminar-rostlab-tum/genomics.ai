@@ -64,7 +64,6 @@ const Explore = () => {
     AtlasService.getAtlases()
       .then((newAtlases) => setAtlases(newAtlases))
       .catch((err) => console.log(err));
-
     ModelsService.getModels()
       .then((newModels) => setModels(newModels))
       .catch((err) => console.log(err));
@@ -86,13 +85,16 @@ const Explore = () => {
         <AtlasesGrid
           atlases={applyAtlasFilters(atlases, searchedKeyword, searchParams)}
           path={path}
+          setSelectedAtlas={setSelectedAtlas}
+          selectedAtlas={selectedAtlas}
         />
       ) : null }
       {value === 1 ? (
         <ModelsGrid
           models={applyModelFilters(models, searchedKeyword, searchParams)}
-          searchedKeyword={searchedKeyword}
           path={path}
+          setSelectedModel={setSelectedModel}
+          selectedModel={selectedModel}
         />
       ) : null }
     </Box>
@@ -197,8 +199,8 @@ const Explore = () => {
       </Box>
 
       <Mapper
-        mapperAtlas={selectedAtlas ? selectedAtlas.name : null}
-        mapperModel={selectedModel ? selectedModel.name : null}
+        mapperAtlas={selectedAtlas || null}
+        mapperModel={selectedModel || null}
         setSelectedAtlas={setSelectedAtlas}
         setSelectedModel={setSelectedModel}
         open={mapperVisible}

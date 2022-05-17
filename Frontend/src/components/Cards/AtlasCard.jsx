@@ -71,7 +71,7 @@ export default function AtlasCard({
       sx={{
         width, height,
       }}
-      onClick={onSelect}
+      onClick={() => {onSelect(title)}}
     >
       <Box
         ref={boxRef}
