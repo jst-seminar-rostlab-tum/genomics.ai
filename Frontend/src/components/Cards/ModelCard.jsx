@@ -101,7 +101,7 @@ export const ModelCard = ({ width = "100%", height = "100%", title, description,
               }}
             >
               {/* <OutlinedButton content="Map" onClick={onClick} /> */}
-              <OutlinedButton content="Learn More" link={learnMoreLink} />
+              <OutlinedButton content="Learn More" onClick={(e) => e.stopPropagation()} link={learnMoreLink} />
             </Box>
           </Box>
         }
