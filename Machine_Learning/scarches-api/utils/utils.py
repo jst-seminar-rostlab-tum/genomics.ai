@@ -47,10 +47,11 @@ def write_adata_to_csv(model, adata=None, key=None, filename=tempfile.mktemp(), 
     latent = anndata
     latent.obs['cell_type'] = adata.obs[cell_type_key].tolist()
     latent.obs['batch'] = adata.obs[condition_key].tolist()
-    latent.obs['predictions'] = adata.obs['predictions'].tolist()
+
     scanpy.pp.neighbors(latent, n_neighbors=neighbors)
     scanpy.tl.leiden(latent)
     scanpy.tl.umap(latent)
+    latent.obs['predictions'] = model.predict(adata=adata)
     return write_latent_csv(latent, key, filename)
 
 
