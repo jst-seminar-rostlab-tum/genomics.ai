@@ -30,8 +30,10 @@ def setup_modules():
 def prepare_data(configuration):
     # scv.data.pbmcs_10x_cite_seq()
     adata_ref = utils.read_h5ad_file_from_s3(get_from_config(configuration, parameters.REFERENCE_DATA_PATH))
+    adata_ref.obs["type"] = "reference"
     # scv.data.dataset_10x("pbmc_10k_v3")
     adata_query = utils.read_h5ad_file_from_s3(get_from_config(configuration, parameters.QUERY_DATA_PATH))
+    adata_query.obs["type"] = "query"
 
     adata_query.obs["batch"] = "PBMC 10k (RNA only)"
     pro_exp = adata_ref.obsm["protein_expression"]  # put matrix of zeros for protein expression (considered missing)

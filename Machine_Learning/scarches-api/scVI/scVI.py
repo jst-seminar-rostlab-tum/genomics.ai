@@ -39,8 +39,9 @@ def pre_process_data(configuration):
     source_adata = utils.read_h5ad_file_from_s3(get_from_config(configuration, parameters.REFERENCE_DATA_PATH))
     target_adata = utils.read_h5ad_file_from_s3(get_from_config(configuration, parameters.QUERY_DATA_PATH))
     source_adata = remove_sparsity(source_adata)
+    source_adata.obs["type"] = "reference"
+    target_adata.obs["type"] = "query"
     target_adata = remove_sparsity(target_adata)
-
     return source_adata, target_adata
 
 
