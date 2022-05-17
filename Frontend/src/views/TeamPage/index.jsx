@@ -21,6 +21,7 @@ export default function TeamPage() {
   const [descriptionChanged, setDescriptionChanged] = useState(false);
 
   const handleDescriptionChange = (event) => {
+    event.preventDefault();
     setDescriptionChanged(true);
     setTeam({
       ...team,
@@ -103,14 +104,9 @@ export default function TeamPage() {
         </div>
       </section>
       <section>
-        <h2>GeneMapper</h2>
+        <h2>Projects</h2>
         <hr />
-        <TeamProjectList team={team} forPart="geneMapper" />
-      </section>
-      <section>
-        <h2>GeneCruncher</h2>
-        <hr />
-        <TeamProjectList team={team} forPart="geneCruncher" />
+        <TeamProjectList team={team} />
       </section>
       <section>
         <h2>Members</h2>
