@@ -4,7 +4,7 @@ import { Schema, ObjectId } from "mongoose";
 
 import InstitutionService from "../../../../database/services/institution.service";
 import TeamsService from "../../../../database/services/team.service";
-import { AddInstitutionDTO } from "../../../../database/dtos/institution.dto";
+import { AddInstitutionDTO, UpdateInstitutionDTO } from "../../../../database/dtos/institution.dto";
 import UserService from "../../../../database/services/user.service";
 
 import check_auth from "../../middleware/check_auth";
@@ -45,6 +45,50 @@ const create_institution = (): Router => {
       return res.status(500).send("Unable to create institution. (DB-error)");
     }
   });
+
+  return router;
+};
+
+const update_institution = (): Router => {
+  let router = express.Router();
+
+  router.put(
+    "/institutions/:id",
+    validationMdw,
+    check_auth(),
+    institution_admin_auth,
+    async (req: any, res) => {
+      const { name, country } = req.body;
+      const institution_to_be_updated_id = req.params.id;
+
+      if (!(name || country)) return res.status(400).send("Missing parameters");
+
+      try {
+        const institution = await InstitutionService.getInstitutionByName(name);
+        if (institution)
+          return res.status(409).send("Institution with the given name already exists!");
+
+        const institutionToUpdate: UpdateInstitutionDTO = {
+          name,
+          country,
+        };
+        await InstitutionService.updateInstitution(
+          institution_to_be_updated_id,
+          institutionToUpdate
+        );
+
+        const updatedInstitution = await InstitutionService.getInstitutionById(
+          institution_to_be_updated_id
+        );
+        return res.status(202).send(updatedInstitution); // 202 error code is: request was accepted
+      } catch (err) {
+        console.error("Error updating institution!");
+        console.error(JSON.stringify(err));
+        console.error(err);
+        return res.status(500).send("Unable to update institution. (DB-error)");
+      }
+    }
+  );
 
   return router;
 };
@@ -347,6 +391,7 @@ const disjoin_member_of_institution = (): Router => {
 
 export {
   create_institution,
+  update_institution,
   invite_to_institution,
   make_user_admin_of_institution,
   join_as_member_of_institution,

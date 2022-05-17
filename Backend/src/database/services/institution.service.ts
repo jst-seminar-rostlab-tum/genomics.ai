@@ -294,7 +294,9 @@ export default class InstitutionService {
   static async filterInstitutions(query: any): Promise<IInstitution[] | null> {
     var keyword: object, sortBy: any;
 
-    query.hasOwnProperty("keyword") ? (keyword = { name: { $regex : "^" +  query.keyword, $options : 'i'} }) : (keyword = {});
+    query.hasOwnProperty("keyword")
+      ? (keyword = { name: { $regex: "^" + query.keyword, $options: "i" } })
+      : (keyword = {});
 
     if (query.hasOwnProperty("sortBy")) {
       let sortProperty = query.sortBy;
@@ -324,7 +326,7 @@ export default class InstitutionService {
     }
 
     const teams = await teamModel.find({ institution_id: institution_id });
-    const teamIds = teams.map( (team) => team._id );
+    const teamIds = teams.map((team) => team._id);
     const projectsOfTeams = await ProjectService.getProjectsOfTeams(teamIds);
 
     const projects = projectsOfMembers;

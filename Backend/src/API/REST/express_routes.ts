@@ -43,6 +43,7 @@ import {
   get_projects_of_institution,
   get_users_institutions,
   disjoin_member_of_institution,
+  update_institution,
 } from "./routes/institution/institutionRouter";
 
 import {
@@ -153,6 +154,7 @@ export function express_routes(this: REST_Host): Router {
 
   // institution routes
   this.expressApp.use(create_institution());
+  this.expressApp.use(update_institution());
   this.expressApp.use(invite_to_institution());
   this.expressApp.use(get_institution());
   this.expressApp.use(get_institutions());
