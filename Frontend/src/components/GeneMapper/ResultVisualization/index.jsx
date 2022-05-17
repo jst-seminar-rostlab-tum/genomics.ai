@@ -2,7 +2,7 @@ import CenterFocusWeakIcon from '@mui/icons-material/CenterFocusWeak';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import ZoomOutIcon from '@mui/icons-material/ZoomOut';
 import { Box, CircularProgress, IconButton } from '@mui/material';
-import { resetZoom, zoomInN, zoomOutN } from 'components/Visualization/src/newZoom';
+import { resetZoom, zoomIn, zoomOut } from 'components/Visualization/src/newZoom';
 import { UmapVisualization2 } from 'components/Visualization/src/umapVisualization';
 import { csv } from 'd3';
 import React, { useEffect, useRef, useState } from 'react';
@@ -86,13 +86,13 @@ function ResultVisualization({ dataUrl, onlyUmap }) {
         }}
       >
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          <IconButton onClick={() => zoomInN()}>
+          <IconButton onClick={zoomIn}>
             <ZoomInIcon />
           </IconButton>
-          <IconButton onClick={() => zoomOutN()}>
+          <IconButton onClick={zoomOut}>
             <ZoomOutIcon />
           </IconButton>
-          <IconButton onClick={() => resetZoom()}>
+          <IconButton onClick={resetZoom}>
             <CenterFocusWeakIcon />
           </IconButton>
         </Box>
