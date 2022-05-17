@@ -59,7 +59,7 @@ export const ModelCard = ({ width = "100%", height = "100%", title, description,
         width: width,
         height: height
       }}
-      onClick={() => {onSelect(title)}}
+      onClick={onSelect}
     >
       <Box
         ref={ref}

@@ -73,6 +73,11 @@ const Explore = () => {
     updateQueryParams('keyword', value);
   };
 
+  const onValueChange = (newValue) => {
+    setValue(newValue);
+    searchedKeywordChangeHandler('');
+  };
+
   useEffect(() => {
     if (selectedAtlas || selectedModel) setMapperVisible(true);
     if (!selectedAtlas && !selectedModel) setMapperVisible(false);
@@ -80,7 +85,7 @@ const Explore = () => {
 
   const tabMenu = () => (
     <Box height="50px">
-      <TabGroup value={value} setValue={setValue} tabsInfo={tmpObj} />
+      <TabGroup value={value} onValueChange={onValueChange} tabsInfo={tmpObj} />
       {value === 0 ? (
         <AtlasesGrid
           atlases={applyAtlasFilters(atlases, searchedKeyword, searchParams)}
@@ -199,8 +204,8 @@ const Explore = () => {
       </Box>
 
       <Mapper
-        mapperAtlas={selectedAtlas || null}
-        mapperModel={selectedModel || null}
+        mapperAtlas={selectedAtlas ? selectedAtlas.name : null}
+        mapperModel={selectedModel ? selectedModel.name : null}
         setSelectedAtlas={setSelectedAtlas}
         setSelectedModel={setSelectedModel}
         open={mapperVisible}

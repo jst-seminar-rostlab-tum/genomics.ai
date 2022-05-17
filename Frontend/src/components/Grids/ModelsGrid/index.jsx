@@ -14,8 +14,8 @@ const ModelsGrid = ({ models, path, selectedModel, setSelectedModel }) => (
             title={model.name}
             description={model.description}
             learnMoreLink={`${path}/models/${model._id}`}
-            onSelect={setSelectedModel}
-            selected={selectedModel === model.name}
+            onSelect={() => setSelectedModel(model)}
+            selected={selectedModel && selectedModel.name === model.name}
           />
         </Grid>
       ))}

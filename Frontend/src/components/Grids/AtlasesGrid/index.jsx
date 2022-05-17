@@ -18,8 +18,8 @@ const AtlasesGrid = ({
             modalities={atlas.modalities}
             title={atlas.name}
             learnMoreLink={`${path}/atlases/${atlas._id}`}
-            onSelect={setSelectedAtlas}
-            selected={selectedAtlas === atlas.name}
+            onSelect={() => setSelectedAtlas(atlas)}
+            selected={selectedAtlas && selectedAtlas.name === atlas.name}
           />
         </Grid>
       ))}
