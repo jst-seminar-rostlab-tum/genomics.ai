@@ -5,7 +5,7 @@ import { ModelCard } from 'components/Cards/ModelCard';
 
 import styles from './modelsGrid.module.css';
 
-const ModelsGrid = ({ models, path, selectedModel, setSelectedModel }) => (
+const ModelsGrid = ({ models, path, selectedModel, handleModelSelection }) => (
   <Box className={styles.cardsContainer} maxHeight="50vh" mb="2em">
     <Grid container spacing={3}>
       {models && models.map((model) => (
@@ -14,7 +14,7 @@ const ModelsGrid = ({ models, path, selectedModel, setSelectedModel }) => (
             title={model.name}
             description={model.description}
             learnMoreLink={`${path}/models/${model._id}`}
-            onSelect={() => setSelectedModel(model)}
+            onSelect={() => handleModelSelection(model)}
             selected={selectedModel && selectedModel.name === model.name}
           />
         </Grid>

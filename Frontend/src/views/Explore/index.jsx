@@ -60,6 +60,28 @@ const Explore = () => {
     });
   };
 
+  const handleAtlasSelection = (newAtlas) => {
+    setSelectedAtlas(newAtlas);
+    if (newAtlas) {
+      updateQueryParams('atlas', newAtlas._id);
+    }
+    if (!selectedModel) {
+      history.push(`${path}/models`);
+      setValue(1);
+    }
+  };
+
+  const handleModelSelection = (newModel) => {
+    setSelectedModel(newModel);
+    if (newModel) {
+      updateQueryParams('model', newModel._id);
+    }
+    if (!selectedAtlas) {
+      history.push(`${path}/atlases`);
+      setValue(0);
+    }
+  };
+
   useEffect(() => {
     AtlasService.getAtlases()
       .then((newAtlases) => setAtlases(newAtlases))
@@ -90,7 +112,7 @@ const Explore = () => {
         <AtlasesGrid
           atlases={applyAtlasFilters(atlases, searchedKeyword, searchParams)}
           path={path}
-          setSelectedAtlas={setSelectedAtlas}
+          handleAtlasSelection={handleAtlasSelection}
           selectedAtlas={selectedAtlas}
         />
       ) : null }
@@ -98,7 +120,7 @@ const Explore = () => {
         <ModelsGrid
           models={applyModelFilters(models, searchedKeyword, searchParams)}
           path={path}
-          setSelectedModel={setSelectedModel}
+          handleModelSelection={handleModelSelection}
           selectedModel={selectedModel}
         />
       ) : null }
@@ -206,8 +228,8 @@ const Explore = () => {
       <Mapper
         mapperAtlas={selectedAtlas ? selectedAtlas.name : null}
         mapperModel={selectedModel ? selectedModel.name : null}
-        setSelectedAtlas={setSelectedAtlas}
-        setSelectedModel={setSelectedModel}
+        handleAtlasSelection={handleAtlasSelection}
+        handleModelSelection={handleModelSelection}
         open={mapperVisible}
         fabOnClick={() => setMapperVisible(!mapperVisible)}
       />
