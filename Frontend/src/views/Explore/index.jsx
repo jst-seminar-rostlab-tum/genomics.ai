@@ -90,7 +90,7 @@ const Explore = () => {
     <>
       <TabGroup value={value} setValue={setValue} tabsInfo={tmpObj} />
       {value === 0 ? <AtlasesGrid  atlases={applyAtlasFilters(atlases, searchedKeyword, searchParams)} path={path} /> : null }
-      {value === 1 ? <ModelsGrid models={applyModelFilters(models, searchedKeyword, searchParams)} searchedKeyword={searchedKeyword} path={path} /> : null }
+      {value === 1 ? <ModelsGrid models={applyModelFilters(models, searchedKeyword, searchParams)} selectedAtlas={atlases[0]} searchedKeyword={searchedKeyword} path={path} /> : null }
     </>
 
   );
