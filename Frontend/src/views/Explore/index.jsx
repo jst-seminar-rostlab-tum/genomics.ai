@@ -62,9 +62,6 @@ const Explore = () => {
 
   const handleAtlasSelection = (newAtlas) => {
     setSelectedAtlas(newAtlas);
-    if (newAtlas) {
-      updateQueryParams('atlas', newAtlas._id);
-    }
     if (!selectedModel) {
       history.push(`${path}/models`);
       setValue(1);
@@ -73,9 +70,6 @@ const Explore = () => {
 
   const handleModelSelection = (newModel) => {
     setSelectedModel(newModel);
-    if (newModel) {
-      updateQueryParams('model', newModel._id);
-    }
     if (!selectedAtlas) {
       history.push(`${path}/atlases`);
       setValue(0);
@@ -110,7 +104,7 @@ const Explore = () => {
       <TabGroup value={value} onValueChange={onValueChange} tabsInfo={tmpObj} />
       {value === 0 ? (
         <AtlasesGrid
-          atlases={applyAtlasFilters(atlases, searchedKeyword, searchParams)}
+          atlases={applyAtlasFilters(atlases, searchedKeyword, searchParams, selectedModel)}
           path={path}
           handleAtlasSelection={handleAtlasSelection}
           selectedAtlas={selectedAtlas}
@@ -118,7 +112,7 @@ const Explore = () => {
       ) : null }
       {value === 1 ? (
         <ModelsGrid
-          models={applyModelFilters(models, searchedKeyword, searchParams)}
+          models={applyModelFilters(models, searchedKeyword, searchParams, selectedAtlas)}
           path={path}
           handleModelSelection={handleModelSelection}
           selectedModel={selectedModel}

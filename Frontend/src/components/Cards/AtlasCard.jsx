@@ -98,6 +98,7 @@ export default function AtlasCard({
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
+                cursor: "pointer",
                 opacity: 0.95,
                 boxShadow: "0px 4px 6px 0px rgba(1, 87, 155, .20), 0px 0px 1px 0px rgba(1, 87, 155, .32)"
               }}
