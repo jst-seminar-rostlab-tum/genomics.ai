@@ -1,19 +1,19 @@
 import HelpIcon from '@mui/icons-material/Help';
-import { Grid, Typography, Stack } from "@mui/material";
+import { Grid, Typography, Stack, Alert, Box, Container } from "@mui/material";
 import AtlasCardSelect from "components/Cards/AtlasCardSelect";
 import { ModelCardSelect } from "components/Cards/ModelCardSelect";
 import CustomButton from 'components/CustomButton';
-import styles from "./atlasModelChoice.module.css";
 import { useHistory} from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import ProjectMock from "shared/services/mock/projects"
 
 import Clear from '@mui/icons-material/Clear';
-import CancelIcon from '@mui/icons-material/Cancel';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 import ModelService from 'shared/services/Model.service';
 import AtlasService from 'shared/services/Atlas.service';
+
+import { colors } from 'shared/theme/colors';
 
 function AtlasModelChoice({ 
     activeStep, setActiveStep, 
@@ -23,6 +23,7 @@ function AtlasModelChoice({
 }) {
     let [atlases, setAtlases] = useState([]);
     let [models, setModels] = useState([]);
+    const [showWarning, setShowWarning] = useState(false);
     const history = useHistory();
 
     let headerStyle = {
@@ -69,7 +70,17 @@ function AtlasModelChoice({
 
     return (
         <div>
-            <Typography variant="h5" sx={{ fontWeight: 'bold', pb: "1em", mt: "1.5em"}}>
+            {showWarning &&
+            <Alert severity="error">
+                Pick an Atlas and a fitting Model before continuing
+            </Alert>}
+            <Typography 
+            variant="h5" 
+            sx={{ 
+                fontWeight: 'bold', 
+                pb: "1em", 
+                mt: "1.5em",
+            }}>
                 Pick an Atlas 
             </Typography>
 
@@ -117,9 +128,17 @@ function AtlasModelChoice({
                 <CustomButton type='tertiary' onClick={() => history.push(`${path}`)}>
                 <Clear/>&nbsp; Cancel
                 </CustomButton>
-                <CustomButton type='primary' disabled={!selectedAtlas || !selectedModel} onClick={() => setActiveStep(1)}>
+                <Box
+                    onClick={!selectedAtlas || !selectedModel ? () => setShowWarning(true) : ()=>{}}
+                >
+                    <CustomButton 
+                        type='primary' 
+                        disabled={!selectedAtlas || !selectedModel} 
+                        onClick={() => setActiveStep(1)}
+                    >
                     Confirm&nbsp;<ArrowForwardIcon/>
-                </CustomButton>
+                    </CustomButton>
+                </Box>
             </Stack>
         </div>
     )
