@@ -20,7 +20,7 @@ import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
  */
 export default function AtlasCard({
   width = "100%", height = "100%", title, atlasId, imgLink, modalities,
-  cellsInReference, species, learnMoreLink, onClick, atlas
+  cellsInReference, species, learnMoreLink, onSelect, atlas, selected=false,
 }) {
   // check if the mouse is hovering above the card
   const [isHover, setHover] = useState(false);
@@ -71,6 +71,7 @@ export default function AtlasCard({
       sx={{
         width, height,
       }}
+      onClick={onSelect}
     >
       <Box
         ref={boxRef}
@@ -111,7 +112,7 @@ export default function AtlasCard({
                   justifyContent: 'space-evenly',
                 }}
               >
-                <OutlinedButton content="Map" onClick={onClick} />
+                <OutlinedButton content="Visualize" onClick={() => history.push(`${path}/${atlasId}/visualization`)} />
                 <OutlinedButton content="Learn More" link={learnMoreLink} onClick={() => localStorage.setItem("atlasId", atlasId)} />
               </Box>
             </Box>
@@ -126,7 +127,11 @@ export default function AtlasCard({
             display: "flex",
             flexDirection: "column",
             boxShadow: isHover ? 'none' : "0px 4px 6px 0px rgba(33, 37, 41, .2), 0px 0px 1px 0px rgba(33, 37, 41, .32)",
-            borderRadius: "1.2rem"
+            borderRadius: "1.2rem",
+            justifyContent: "center",
+            borderStyle:"solid",
+            borderColor: selected ? "#008BF5" : 'transparent',
+            borderWidth:"4px"
           }}
         >
           <Typography
