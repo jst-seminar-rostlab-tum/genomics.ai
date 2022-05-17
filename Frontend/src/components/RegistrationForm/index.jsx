@@ -61,7 +61,7 @@ function RegistrationForm(props) {
     });
     setErrors({});
     setLoading(false);
-    onClose();
+    props.onClose();
   }, [setUserDetails, setErrors, setLoading, props, setUser]);
 
   function onSuccessfulRegistration() {
