@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 import * as cons from "./constants";
-import { initZoom, zoom } from "./newZoom";
+import { zoomM } from "./newZoom";
 import "./tooltip.css";
 import { addBarPlotCell, addBarPlotBatch } from "./barChart"
 import {getColoringModes, setColoring} from "./coloring"
@@ -26,10 +26,11 @@ export class UmapVisualization2 {
     d3.select(container).selectAll("*").remove();
     this.svg = d3.select(container).append('svg');
     this.gCells = addGroup(this.svg, 'cells');
-    // this.gLabels = addGroup(this.svg, 'labels');
+    this.gLabels = addGroup(this.svg, 'labels');
     this.coloringModes = getColoringModes(data);
     this.tooltip = d3.select(container).append("div");
     this.mode = undefined;
+    //TODO: add if for when the atlas doesn't contain cell_type
     this.barChartBatch = addBarPlotBatch(containerBar, data);
     if(Object.keys(this.coloringModes).includes("cell_type")){
       d3.select(containerBar).append("div");
@@ -170,7 +171,7 @@ export class UmapVisualization2 {
 
 
     //Pan and mouse zoom
-    this.gCells
+    this.svg
       .attr('class', 'mouse-capture')
       .attr('x', -w)
       .attr('y', -h)
@@ -178,8 +179,8 @@ export class UmapVisualization2 {
       .attr('height', h)
       .style('fill', 'white')
       .lower()
-      .call(zoom);
-    initZoom();
+      .call(zoomM);
+
   }
 
 }
