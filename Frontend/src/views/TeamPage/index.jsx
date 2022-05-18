@@ -27,26 +27,26 @@ export default function TeamPage() {
     setNewDescription(event.target.value);
   };
 
-  async function updateVisibility(newVisibility) {
-    await TeamService.changeTeamVisibility(id, newVisibility);
+  function updateTeam() {
     TeamService.getTeam(id)
       .then(setTeam)
       .catch((ignored) => { console.error(ignored); });
+  };
+
+  async function updateVisibility(newVisibility) {
+    await TeamService.changeTeamVisibility(id, newVisibility);
+    updateTeam()
   }
 
   async function updateDescription(newDescription) {
     await TeamService.changeTeamDescription(id, newDescription);
-    TeamService.getTeam(id)
-      .then(setTeam)
-      .catch((ignored) => { console.error(ignored); });
+    updateTeam()
     setDescriptionChanged(false);
   }
 
   useEffect(() => {
     if (id == null) return;
-    TeamService.getTeam(id)
-      .then(setTeam)
-      .catch((ignored) => { console.error(ignored); });
+    updateTeam()
   }, [setTeam]);
 
   useEffect(() => {
@@ -76,7 +76,7 @@ export default function TeamPage() {
       )}
       replaceHeaderRight={
         (isAdmin && <TeamAdminHeaderRight team={team} updateVisibility={updateVisibility} />)
-        || <TeamUserHeaderRight institution={institution} team={team} user={user} />
+        || <TeamUserHeaderRight institution={institution} team={team} user={user} updateTeam={updateTeam} />
       }
     >
       <br />

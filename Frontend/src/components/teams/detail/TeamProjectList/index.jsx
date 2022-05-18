@@ -36,6 +36,8 @@ function TeamProjectList({ teamId }) {
     }
   }, [submissionProgress.status]);
 
+  if (projects.length === 0) return (<span>No projects.</span>);
+
   return projects
     .map((project) => {
       return (

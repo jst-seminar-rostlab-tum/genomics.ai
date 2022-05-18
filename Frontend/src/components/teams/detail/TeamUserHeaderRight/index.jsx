@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import TeamLeaveButton from 'components/teams/overview/TeamLeaveButton';
 import TeamJoinButton from 'components/teams/detail/TeamJoinButton';
 
-function TeamUserHeaderRight({ institution, team, user }) {
+function TeamUserHeaderRight({ institution, team, user, updateTeam }) {
   const [isMember, setIsMember] = useState(false);
 
   function updateIsMember() {
@@ -10,11 +10,11 @@ function TeamUserHeaderRight({ institution, team, user }) {
   }
 
   const onLeft = () => {
-    setIsMember(false);
+    updateTeam()
   };
 
   const onJoin = () => {
-    setIsMember(true);
+    updateTeam()
   };
 
   useEffect(() => {
