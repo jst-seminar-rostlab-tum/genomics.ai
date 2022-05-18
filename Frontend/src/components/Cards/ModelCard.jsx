@@ -2,6 +2,7 @@
 
 import { Box, Button, Typography } from "@mui/material"
 import { useEffect, useRef, useState } from "react"
+import { FaLessThanEqual } from "react-icons/fa"
 import { useHistory } from "react-router-dom"
 import { colors } from "shared/theme/colors"
 
@@ -38,7 +39,7 @@ export const OutlinedButton = ({ content, link = null, onClick }) => {
  * @param mapLink onHover button Map url
  * @param learnMoreLink onHover button Learn More url
  */
-export const ModelCard = ({ width = "100%", height = "100%", title, description, onClick, learnMoreLink }) => {
+export const ModelCard = ({ width = "100%", height = "100%", title, description, onClick, learnMoreLink, disabled = false }) => {
 
   const [hover, setHover] = useState(false)
   const ref = useRef()
@@ -66,7 +67,7 @@ export const ModelCard = ({ width = "100%", height = "100%", title, description,
           width: "100%",
           height: "100%",
           position: "relative",
-          cursor: "pointer",
+          cursor: disabled ? "pointer": "initial",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center"
@@ -75,7 +76,7 @@ export const ModelCard = ({ width = "100%", height = "100%", title, description,
         onMouseLeave={() => setHover(false)}
       >
         {
-          hover &&
+          !disabled && hover &&
           <Box
             style={{ background: "linear-gradient(#4F83CC, #01579B)" }}
             sx={{
@@ -101,10 +102,52 @@ export const ModelCard = ({ width = "100%", height = "100%", title, description,
             >
               {/* <OutlinedButton content="Map" onClick={onClick} /> */}
               <OutlinedButton content="Learn More" link={learnMoreLink} />
+              {
+                disabled &&
+                <Typography sx={{ color: colors.primary[900], fontSize: "12px", textDecoration: 'underline', textAlign: "center" }}>
+                  Model unavailable for mapping
+                </Typography>
+              }
             </Box>
           </Box>
         }
-        <Box sx={{
+        {/* DISABLED OVERLAY BOX */}
+        {
+          disabled &&
+          <Box
+            style={{ background: "linear-gradient(#e7e7e7, #d0d0d0)" }}
+            sx={{
+              position: "absolute",
+              width: "100%",
+              height: "100%",
+              borderRadius: "1.2rem",
+              p: "1rem",
+              opacity: 0.9,
+              // boxShadow: "0px 4px 6px 0px rgba(1, 87, 155, .20), 0px 0px 1px 0px rgba(1, 87, 155, .32)"
+            }}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: flexDir,
+                gap: "1rem",
+                // styles below center the buttons to the very center of the component
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)"
+              }}
+            >
+
+              <Typography sx={{ color: colors.neutral[900], textAlign: "center" }}>
+                Not Compatible
+              </Typography>
+            
+            </Box>
+          </Box>
+        }
+        { 
+          !disabled &&
+          <Box sx={{
           width: '100%',
           height: "100%",
           display: "flex",
@@ -112,11 +155,27 @@ export const ModelCard = ({ width = "100%", height = "100%", title, description,
           p: "1.2rem",
           boxShadow: hover ? "none" : "0px 0px 10px rgba(0, 0, 0, 0.15)",
           borderRadius: "1.2rem",
+
         }}
         >
           <Typography sx={{ fontSize: "1.4rem", fontWeight: "bold" }}>{title}</Typography>
           <Typography sx={{ fontSize: "1rem", color: colors.neutral[800] }}>{description}</Typography>
-        </Box>
+        </Box>}
+        { 
+          disabled &&
+          <Box sx={{
+            width: '100%',
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            p: "1.2rem",
+            borderRadius: "1.2rem",
+          }}
+          >
+            <Typography sx={{ fontSize: "1.4rem", fontWeight: "bold" }}>{title}</Typography>
+            <Typography sx={{ fontSize: "1rem", color: colors.neutral[800] }}>{description}</Typography>
+          </Box>
+        }
       </Box>
     </Box>
   )
