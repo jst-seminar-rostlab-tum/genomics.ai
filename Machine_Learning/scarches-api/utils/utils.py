@@ -10,6 +10,21 @@ import scanpy
 import fileinput
 from pathlib import Path
 
+UNWANTED_LABELS = ['leiden','','_scvi_labels', '_scvi_batch']
+
+def get_from_config(configuration, key):
+    if key in configuration:
+        return configuration[key]
+    return None
+
+def to_drop(adata_obs):
+    drop_list = []
+    print(adata_obs)
+    for attr in UNWANTED_LABELS:
+        if attr in adata_obs:
+            drop_list.append(attr)
+    print(drop_list)
+    return drop_list
 
 def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=None):
     """
@@ -20,8 +35,10 @@ def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=
     :param drop_columns: not needed columns
     :return:
     """
-    if drop_columns is None:
-        drop_columns = []
+    
+    drop_columns = to_drop(latent.obs_keys())
+    # if drop_columns is None:
+    #     drop_columns = []
     final = latent.obs.drop(columns=drop_columns)
     final["x"] = list(map(lambda p: p[0], latent.obsm["X_umap"]))
     final["y"] = list(map(lambda p: p[1], latent.obsm["X_umap"]))

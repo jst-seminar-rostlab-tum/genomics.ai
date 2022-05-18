@@ -36,8 +36,8 @@ NUMBER_OF_NEIGHBORS = 'n_neighbors'
 MAX_EPOCHS = 'max_epochs'
 # sets the labeles that are not of interest and should be removed
 UNWANTED_LABELS = 'unwanted_labels'
-# sets the labeles that are not of interest and should be removed from totalVI
-UNWANTED_LABELS_TOTALVI = 'unwanted_labels_totalvi'
+# # sets the labeles that are not of interest and should be removed from totalVI
+# UNWANTED_LABELS_TOTALVI = 'unwanted_labels_totalvi'
 # sets if debug messages should be printed
 DEBUG = 'debug'
 # sets the attributes

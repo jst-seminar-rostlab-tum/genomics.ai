@@ -34,7 +34,6 @@ def default_config():
 
         parameters.CONDITION_KEY: 'study',
         parameters.CELL_TYPE_KEY: 'cell_type',
-        parameters.TARGET_CONDITIONS: ['Pancreas CelSeq2', 'Pancreas SS2'],
         parameters.PRETRAINED_MODEL_PATH: '',
         parameters.NUMBER_OF_LAYERS: 2,
         parameters.ENCODE_COVARIATES: True,
