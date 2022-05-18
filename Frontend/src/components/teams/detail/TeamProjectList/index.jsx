@@ -14,8 +14,6 @@ function TeamProjectList({ team }) {
   const [userTeams, setUserTeams] = useState([]);
   const [submissionProgress, setSubmissionProgress] = useSubmissionProgress();
 
-  console.log(projects, team._id);
-
   useEffect(() => {
     AtlasService.getAtlases().then((data) => setAtlases(data));
     ModelService.getModels().then((data) => setModels(data));
@@ -23,7 +21,7 @@ function TeamProjectList({ team }) {
   }, []);
 
   useEffect(() => {
-    ProjectService.getTeamProjects(team._id).then((data) => { console.log(data); setProjects(data); });
+    ProjectService.getTeamProjects(team._id).then((data) => setProjects(data));
     if (submissionProgress.status === MULTIPART_UPLOAD_STATUS.COMPLETE
       || submissionProgress.status === MULTIPART_UPLOAD_STATUS.CANCELING
       || statusIsError(submissionProgress.status)) {
@@ -40,7 +38,6 @@ function TeamProjectList({ team }) {
 
   return projects
     .map((project) => {
-      console.log("im here!");
       return (
         <ProjectBarCard
           key={project._id}

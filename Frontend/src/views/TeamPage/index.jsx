@@ -56,7 +56,7 @@ export default function TeamPage() {
     InstitutionService.getInstitution(team.institutionId)
       .then((newInstitution) => setInstitution(newInstitution))
       .catch((ignored) => { console.error(ignored); });
-  }, [team, setInstitution]);
+  }, [setInstitution]);
 
   const isAdmin = team.adminIds ? team.adminIds.includes(user._id) : false;
 

@@ -32,7 +32,10 @@ const ProjectService = MOCK_PROJECTS ? MockProjectService : {
     projectData),
 
   // Temporary solution for search to use backend data while teampage uses mock
-  getTeamProjects: async (teamId) => MockProjectService.getTeamProjects(teamId),
+  getTeamProjects: async (teamId) => {
+    const { data } = await axiosInstance.get(`/teams/${teamId}/projects`);
+    return data;
+  }
 };
 
 export default ProjectService;
