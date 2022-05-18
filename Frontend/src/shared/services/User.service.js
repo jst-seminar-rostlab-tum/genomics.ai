@@ -14,7 +14,16 @@ const UserService = {
   },
 
   getUser: async (id) => {
-    const { data } = await axiosInstance.get(`${MODEL}`)
+    const { data } = await axiosInstance.get(`${MODEL}/${id}`)
+    return data;
+  },
+  getUserInstitutions: async (id) => {
+    const { data } = await axiosInstance.get(`${MODEL}/${id}/institutions`)
+    return data;
+  },
+  getUserTeams: async (id) => {
+    const { data } = await axiosInstance.get(`${MODEL}/${id}/teams`)
+    return data;
   }
 };
 
