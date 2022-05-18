@@ -89,15 +89,7 @@ const invite_person_to_a_team = (): Router => {
           return res.status(400).send("Error when adding the user to members of the team.");
 
         try {
-          await mailer.send(
-            user.email,
-            "[GeneCruncher] Invitation to a team",
-            "invitation_to_team",
-            {
-              firstname: user.firstName,
-              teamname: team.title,
-            }
-          );
+          await mailer.send_invitation_to_team_mail(user.firstName, user.email, team.title);
         } catch (e) {
           console.error("Error when sending invitation of user to a team.");
           console.error(JSON.stringify(e));

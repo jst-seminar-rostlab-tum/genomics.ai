@@ -80,15 +80,11 @@ const invite_to_institution = (): Router => {
 
         if (updatedInstitution) {
           try {
-            await mailer.send(
+            await mailer.send_invitation_to_institution_mail(
+              user.firstName,
               user.email,
-              "[GeneCruncher] Invitation to an institution",
-              "invitation_to_institution",
-              {
-                institution: updatedInstitution.name,
-                country: updatedInstitution.country,
-                firstname: user.firstName,
-              }
+              updatedInstitution.name,
+              updatedInstitution.country
             );
           } catch (e) {
             console.error("Error when sending invitation of user to an institution.");

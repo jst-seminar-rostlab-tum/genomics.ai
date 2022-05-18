@@ -4,32 +4,13 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.tailwindcss.com"></script>  
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            emailBg: "#F8FBFF",
-            head: "#002644",
-            content: "#184060",
-            primary: "#5676E4",
-            primaryHover: "#445AA7",
-            primaryFocus: "#7187D5",
-            secondary: "#7DD181",
-            footer: "#212529"
-          }
-        }
-      }
-    }
-  </script>
   <title>Sign Up Confirmation</title>
 </head>
 <body>
   <div class="bg-emailBg">
     <div class="w-3/4 m-auto pt-10">
       <a href="https://www.genecruncher.com" class="flex flex-row gap-4 items-center">
-        <img src="./logo.svg">
+        <img src="{{genecruncher_logo}}">
         <div class="font-semibold text-xl text-content">genomics.ai</div>
       </a>
       <div class="title text-3xl font-bold text-head mt-10">Welcome {{firstname}}!</div>
