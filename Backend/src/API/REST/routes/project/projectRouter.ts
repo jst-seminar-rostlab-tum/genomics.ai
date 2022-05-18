@@ -215,7 +215,7 @@ const restore_deleted_project = (): Router => {
 
 const cleanup_old_projects = (): Router => {
   let router = express.Router();
-  router.post("/clean-recyclebin", async (req: ExtRequest, res) => {
+  router.get("/clean-recyclebin", async (req: ExtRequest, res) => {
     try {
       let oldprojects = await DeletedProjectService.getProjectsOverLifetime();
       for (const project of oldprojects) {
