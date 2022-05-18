@@ -1,0 +1,54 @@
+{
+  "/deletedprojects": {
+    "get": {
+      "summary": "Get all project in the authenticated user's recycle bin",
+      "tags": [
+        "Project"
+      ],
+      "parameters": [],
+      "responses": {
+        "200": {
+          "description": "OK",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/DeletedProject"
+                }
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Invalid authentication"
+        },
+        "500": {
+          "description": "Internal server error"
+        }
+      }
+    }
+  },
+  "/deletedprojects/{id}/restore": {
+    "post": {
+      "summary": "Restores the project with id from the recycle bin",
+      "tags": [
+        "Project"
+      ],
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK"
+        }
+      }
+    }
+  }
+}
