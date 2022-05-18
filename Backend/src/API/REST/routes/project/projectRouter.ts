@@ -148,7 +148,7 @@ const delete_project = (): Router => {
   router.delete("/project/:id", check_auth(), validationMdw, async (req, res) => {
     try {
       const projectId = req.params.id;
-      const project = await ProjectService.getProjectById(projectId);
+      const project = (await ProjectService.getProjectById(projectId))?.toObject();
       if (project == null) return res.status(404).send("Project not found");
 
       const deletedProject = {
@@ -194,13 +194,16 @@ const restore_deleted_project = (): Router => {
     validationMdw,
     async (req: ExtRequest, res) => {
       try {
-        let project = await DeletedProjectService.getDeletedProjectById(req.params.id);
+        let project = (
+          await DeletedProjectService.getDeletedProjectById(req.params.id)
+        )?.toObject();
         if (!project) {
           return res.status(404).send("Project not found");
         }
         let { deletedAt, ...restoredProject } = project;
         await ProjectService.addProject(restoredProject);
         await DeletedProjectService.deleteDeletedProjectById(project._id);
+        return res.status(200).send("OK");
       } catch (err) {
         console.error(err);
         return res.status(500).send("Internal server error");
@@ -220,7 +223,7 @@ const cleanup_old_projects = (): Router => {
         try_delete_object_from_s3(result_model_path(project.id));
         try_delete_object_from_s3(query_path(project.id));
       }
-      let ids = oldprojects.map(p => p.id);
+      let ids = oldprojects.map((p) => p.id);
       await DeletedProjectService.deleteProjectsByIds(ids);
       return res.status(200).send("OK");
     } catch (err) {
