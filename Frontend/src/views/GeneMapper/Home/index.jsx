@@ -113,7 +113,7 @@ function GeneMapperHome() {
         </Box>
         { projects.filter(p => !(window.localStorage.getItem('DeletedProjects') ?? []).includes(p._id)).length == 0 &&
         <Alert severity="info">
-          You have not created any mappings yet. Create one by clicking on the Plus-Icon or learn more about ScArches by clicking on the Help-Icon next to the title
+          You have not created any mappings yet. Create one by clicking the Plus-Icon or learn more about ScArches by clicking the Help-Icon next to the title.
         </Alert>
         }
         <div>
