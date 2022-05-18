@@ -72,7 +72,7 @@ function AtlasModelChoice({
         <div>
             {showWarning &&
             <Alert severity="error">
-                Pick an Atlas and a fitting Model before continuing
+                Select an Atlas and a fitting Model before continuing
             </Alert>}
             <Typography 
             variant="h5" 
