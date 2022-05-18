@@ -18,15 +18,13 @@ export default function TeamPage() {
   const [team, setTeam] = useState({});
   const [user] = useAuth();
   const [institution, setInstitution] = useState({});
+  const [newDescription, setNewDescription] = useState("");
   const [descriptionChanged, setDescriptionChanged] = useState(false);
 
   const handleDescriptionChange = (event) => {
     event.preventDefault();
     setDescriptionChanged(true);
-    setTeam({
-      ...team,
-      description: event.target.value,
-    });
+    setNewDescription(event.target.value);
   };
 
   async function updateVisibility(newVisibility) {
@@ -51,12 +49,16 @@ export default function TeamPage() {
       .catch((ignored) => { console.error(ignored); });
   }, [setTeam]);
 
+  useEffect(() => {
+    setNewDescription(team.description);
+  }, [team])
+
   // Institution may be undefined
   useEffect(() => {
     InstitutionService.getInstitution(team.institutionId)
       .then((newInstitution) => setInstitution(newInstitution))
       .catch((ignored) => { console.error(ignored); });
-  }, [setInstitution]);
+  }, [team, setInstitution]);
 
   const isAdmin = team.adminIds ? team.adminIds.includes(user._id) : false;
 
@@ -87,7 +89,7 @@ export default function TeamPage() {
             multiline
             minRows={3}
             maxRows={5}
-            value={team.description}
+            value={newDescription}
             InputProps={{
               readOnly: !isAdmin,
             }}
@@ -97,7 +99,7 @@ export default function TeamPage() {
           />
           {descriptionChanged
             && (
-              <Button variant="outlined" type="secondary" onClick={() => updateDescription(team.description)}>
+              <Button variant="outlined" type="secondary" onClick={() => updateDescription(newDescription)}>
                 Submit
               </Button>
             )}
@@ -106,7 +108,7 @@ export default function TeamPage() {
       <section>
         <h2>Projects</h2>
         <hr />
-        <TeamProjectList team={team} />
+        <TeamProjectList teamId={id} />
       </section>
       <section>
         <h2>Members</h2>

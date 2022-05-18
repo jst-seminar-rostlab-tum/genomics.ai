@@ -7,7 +7,7 @@ import TeamService from 'shared/services/Team.service';
 import { useSubmissionProgress } from 'shared/context/submissionProgressContext';
 import { MULTIPART_UPLOAD_STATUS, PROJECTS_UPDATE_INTERVAL, statusIsError } from 'shared/utils/common/constants';
 
-function TeamProjectList({ team }) {
+function TeamProjectList({ teamId }) {
   const [projects, setProjects] = useState([]);
   const [atlases, setAtlases] = useState([]);
   const [models, setModels] = useState([]);
@@ -21,7 +21,7 @@ function TeamProjectList({ team }) {
   }, []);
 
   useEffect(() => {
-    ProjectService.getTeamProjects(team._id).then((data) => setProjects(data));
+    ProjectService.getTeamProjects(teamId).then((data) => setProjects(data));
     if (submissionProgress.status === MULTIPART_UPLOAD_STATUS.COMPLETE
       || submissionProgress.status === MULTIPART_UPLOAD_STATUS.CANCELING
       || statusIsError(submissionProgress.status)) {
