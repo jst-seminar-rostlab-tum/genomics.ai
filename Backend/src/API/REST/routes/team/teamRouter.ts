@@ -15,7 +15,7 @@ const create_team = (): Router => {
   let router = express.Router();
 
   router.post("/teams", check_auth(), async (req: any, res) => {
-    const { title, description, visibility } = req.body;
+    const { title, description, visibility, institutionId } = req.body;
     const admin_user_id = req.user_id;
 
     if (!(title && description && visibility && admin_user_id))
@@ -34,19 +34,42 @@ const create_team = (): Router => {
     //     return res.status(409).send("Team with the given name already exists!");
     // // Is it not possible that there exists teams with same names?
 
+    console.log("Ive arrived here. This is the institution_id");
+    console.log(institutionId);
+
+    if (institutionId) {
+      const instObj = await InstitutionService.getInstitutionById(institutionId);
+
+      if (!instObj) return res.status(404).send("Institution does not exist");
+    }
+
     const admin = await UserService.getUserById(admin_user_id);
     if (!admin) return res.status(404).send("Admin that you are trying to assign does not exists!");
 
     try {
-      const teamToAdd: AddTeamDTO = {
-        title,
-        description,
-        visibility,
-        adminIds: [admin_user_id],
-      };
-      const project = await TeamService.addTeam(teamToAdd);
+      if (!institutionId) {
+        const teamToAdd: AddTeamDTO = {
+          title,
+          description,
+          visibility,
+          adminIds: [admin_user_id],
+        };
 
-      return res.status(201).json(project);
+        const newTeam = await TeamService.addTeam(teamToAdd);
+
+        return res.status(201).json(newTeam);
+      } else {
+        const teamToAdd: AddTeamDTO = {
+          title,
+          description,
+          visibility,
+          adminIds: [admin_user_id],
+          institutionId: institutionId,
+        };
+        const newTeam = await TeamService.addTeam(teamToAdd);
+
+        return res.status(201).json(newTeam);
+      }
     } catch (err) {
       console.error("Error registering team!");
       console.error(JSON.stringify(err));
