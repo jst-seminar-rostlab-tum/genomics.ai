@@ -24,7 +24,7 @@ import TeamService from 'shared/services/Team.service';
 import CustomButton from 'components/CustomButton';
 import { TabCard } from '../TabCard';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import { GeneralCard } from 'components/GeneMapper/GeneralCardVariant';
+import { GeneralCard } from 'components/Cards/GeneralCard';
 
 function ProcessingStatus() {
   return (
@@ -80,10 +80,14 @@ export default function ProjectBarCard({
   };
 
   return (
-    <>
-
-      <GeneralCard>
-        <CardActionArea disableTouchRipple sx={{ p: 0, height: '4em', borderRadius: '0.625rem' }}>
+    <Box sx={{ mb: 1.5 }}>
+      <GeneralCard padding={0}>
+        <CardActionArea
+          disableTouchRipple
+          sx={{
+            p: 1, borderRadius: 'inherit',
+          }}
+        >
           <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
 
             <Stack
@@ -301,6 +305,6 @@ export default function ProjectBarCard({
         </Box>
       </Modal>
 
-    </>
+    </Box>
   );
 }

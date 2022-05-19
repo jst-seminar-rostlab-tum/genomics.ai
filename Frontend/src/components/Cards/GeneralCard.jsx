@@ -15,7 +15,7 @@ import { Box } from "@mui/material"
  *    Your components
  *  </GeneralCard>
  */
-export const GeneralCard = ({ width = "100%", height = "100%", children, flex = "column", bg = "white", hoverStyles = {} }) => {
+export const GeneralCard = ({ width = "100%", height = "100%", children, flex = "column", bg = "white", hoverStyles = {}, padding = "1.5em" }) => {
 
   return (
     <Box
@@ -27,7 +27,7 @@ export const GeneralCard = ({ width = "100%", height = "100%", children, flex = 
         ":hover": hoverStyles
       }}
     >
-      <Box sx={{ boxShadow: "0px 0px 4px rgba(0,0,0, 0.25)", p: "1.5em", borderRadius: "0.625rem", display: "flex", flexDirection: flex }}>
+      <Box sx={{ boxShadow: "0px 0px 4px rgba(0,0,0, 0.25)", p: padding, borderRadius: "0.625rem", display: "flex", flexDirection: flex }}>
         {children}
       </Box>
     </Box>
