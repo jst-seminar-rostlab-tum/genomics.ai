@@ -86,6 +86,7 @@ export default function Sidebar(props) {
                   </Tooltip>
                 </NavLink>
               ))}
+              </Box>
 
               <NavLink
                 to="/"
@@ -95,6 +96,7 @@ export default function Sidebar(props) {
                   localStorage.removeItem('jwt');
                 }}
                 className={styles.navlinkIcon}
+                style={{ marginBottom: "1em" }}
               >
                 <Tooltip
                   title="Logout"
@@ -108,16 +110,18 @@ export default function Sidebar(props) {
                   }}
                 >
                   <Box
-                    className={styles.navbarItemContainer}
-                    sx={{ background: '#184060' }}
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}  
                   >
-                    <ListItemIcon className={styles.listItemIcon}>
-                      <LogoutIcon className={styles.coloredIcon} />
+                    <ListItemIcon sx={{ justifyContent: "center" }}>
+                      <LogoutIcon sx={{ color: "white" }} />
                     </ListItemIcon>
                   </Box>
                 </Tooltip>
               </NavLink>
-            </Box>
           </Box>
         </Box>
       </Box>
