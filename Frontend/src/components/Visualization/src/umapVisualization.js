@@ -46,6 +46,14 @@ export class UmapVisualization2 {
       .style("visibility", "visible");
   }
 
+  showReference() {
+    this.before();
+  }
+
+  showQuery() {
+    this.before();
+  }
+
   hideQuery() {
     this.before();
     this.after("type", "query");
