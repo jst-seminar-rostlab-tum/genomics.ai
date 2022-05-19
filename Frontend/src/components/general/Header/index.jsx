@@ -15,7 +15,7 @@ function Header({
         <h1 className={styles.title}>{title}</h1>
         {rightOfTitle}
       </div>
-      <Stack direction="row" spacing={2} alignItems="center">
+      <Stack direction="row" spacing={4} alignItems="center">
         {replaceRight}
         <Link to="/sequencer/settings">
           <ProfileImage sizePixels={42} />
