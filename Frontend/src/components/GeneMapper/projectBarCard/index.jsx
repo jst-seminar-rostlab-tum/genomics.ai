@@ -184,7 +184,7 @@ export default function ProjectBarCard({
                   ? (
                     <CustomButton type="tertiary" sx={{ mr: 1 }} onClick={() => history.push(`/sequencer/teams/${projectTeam._id || projectTeam.id}`)}>
                       <Typography>
-                        {projectTeam.name}
+                        {projectTeam.title}
                       </Typography>
                     </CustomButton>
                   )
@@ -275,7 +275,7 @@ export default function ProjectBarCard({
           {userTeams.map(
             (team) => (
               <TabCard
-                data={{ name: team.name, visibility: team.visibility }}
+                data={{ name: team.title, visibility: team.visibility.toLowerCase() }}
                 selected={team?._id === selectedTeam || team?.id === selectedTeam}
                 handleOnClick={() => setSelectedTeam(team?._id || team?.id)}
               />
