@@ -60,7 +60,7 @@ export const ModelCard = ({ width = "100%", height = "100%", title, description,
         width: width,
         height: height
       }}
-      onClick={onSelect}
+      onClick={!disabled && onSelect}
     >
       <Box
         ref={ref}
@@ -68,7 +68,7 @@ export const ModelCard = ({ width = "100%", height = "100%", title, description,
           width: "100%",
           height: "100%",
           position: "relative",
-          cursor: disabled ? "pointer": "initial",
+          cursor: disabled ? "default": "pointer",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center"
