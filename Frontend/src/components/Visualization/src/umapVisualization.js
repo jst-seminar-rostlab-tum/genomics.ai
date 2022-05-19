@@ -2,13 +2,8 @@ import * as d3 from "d3";
 import * as cons from "./constants";
 import { zoomM } from "./newZoom";
 import "./tooltip.css";
-import { addBarPlotCell, addBarPlotBatch } from "./barChart"
+import { addBarPlotCell, addBarPlotBatch, addBarPlotPredict } from "./barChart"
 import {getColoringModes, setColoring} from "./coloring"
-
-// //Reference before and after
-// const refAfter = (cells) =>{
-//   after(cells, "is_reference", "No");
-// }
 
 //Create a color scale based on the chosen mode and its values
 
@@ -24,13 +19,13 @@ export class UmapVisualization2 {
 
   constructor(container, data, containerBar) {
     d3.select(container).selectAll("*").remove();
-    this.svg = d3.select(container).append('svg');
+    this.svg = d3.select(container).append('svg')
+        .attr('id', 'vis_svg');
     this.gCells = addGroup(this.svg, 'cells');
-    this.gLabels = addGroup(this.svg, 'labels');
+    // this.gLabels = addGroup(this.svg, 'labels');
     this.coloringModes = getColoringModes(data);
     this.tooltip = d3.select(container).append("div");
     this.mode = undefined;
-    //TODO: add if for when the atlas doesn't contain cell_type
     this.barChartBatch = addBarPlotBatch(containerBar, data);
     if(Object.keys(this.coloringModes).includes("cell_type")){
       d3.select(containerBar).append("div");
@@ -43,13 +38,22 @@ export class UmapVisualization2 {
   after(category, value) {
     this.cells
       .style("visibility", (d) => { return d[category] === value ? "hidden" : "visible" });
-
   }
 
   //Show
   before() {
     this.cells
       .style("visibility", "visible");
+  }
+
+  hideQuery() {
+    this.before();
+    this.after("type", "query");
+  }
+
+  hideReference() {
+    this.before();
+    this.after("type", "query");
   }
 
   //Set a color mode
@@ -179,8 +183,7 @@ export class UmapVisualization2 {
       .attr('height', h)
       .style('fill', 'white')
       .lower()
-      .call(zoomM);
-
+      .call(zoomM)
   }
 
 }
