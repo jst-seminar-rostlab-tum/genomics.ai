@@ -3,7 +3,7 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import { Box, Typography, Grid, IconButton, Divider} from '@mui/material';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import {
   Switch, Route, Redirect, useHistory, useLocation, useParams,
   useRouteMatch, Link
@@ -18,6 +18,8 @@ import organizationData from './organization.json'
 import frontendData from './frontend.json';
 import backendData from './backend.json';
 import visualizationData from './visualization.json';
+
+import frontend1Data from './frontend_1.json'
 
 function FbItem({link}) {
   return (
@@ -51,6 +53,24 @@ function TwitterItem({link}) {
   );
 }
 
+function CustomImg({src}){
+
+  const ref = useRef()
+
+  const [imgHeight, setImgHeight] = useState()
+
+  useEffect(() => {
+    setImgHeight(ref.current.clientHeight)
+    console.log(src, imgHeight)
+  })
+
+  return (
+    <Box alt="Member" width="80px" height="80px" sx={{position: "relative", borderRadius: "100%", overflow: "hidden", bgcolor: "white"}} >
+      <Box ref={ref} component="img" src={src} sx={{position: "absolute", width: "80px", top: `calc(40px - ${imgHeight/2}px)`}} />
+    </Box>
+  )
+}
+
 function MemberCard(props){
 
   const fontColor = colors.primary[800]
@@ -59,7 +79,8 @@ function MemberCard(props){
 
   return (
     <Box sx={{width, display: "flex", flexDirection: "column", gap: "0.3em", alignItems: "center"}}>
-      <Box component="img" src={img} alt="Member" width="80px" height="80px" sx={{borderRadius: "100%"}} />
+      {/* <Box component="img" src={img} alt="Member" width="80px" height="80px" sx={{borderRadius: "100%"}} /> */}
+      <CustomImg src={img} />
       <Typography sx={{color: fontColor, textAlign: "center"}} fontWeight="bold" fontSize="1.2em" >{name}</Typography>
       <Typography sx={{color: fontColor, textAlign: "center"}} fontSize="0.9em">{role}</Typography>
       <Typography sx={{color: fontColor, textAlign: "center"}} fontSize="0.9em">{dscp}</Typography>
@@ -84,7 +105,7 @@ function MemberSection({name, data}){
       <Grid container rowSpacing={7} columnSpacing={{ xs: 2, sm: 2, md: 3, lg: 4, xl: 4 }}>
         {
           data.map(member => (
-            <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
+            <Grid item xs={12} sm={6} md={4} lg={3} xl={2} >
               <MemberCard {...member} />
             </Grid>)
           )
@@ -124,7 +145,7 @@ export default function About(props){
   const executeScroll = () => history.push({pathname: '/', state: {contact_us: true}})
 
   return (
-    <Box>
+    <Box sx={{overflowX: "hidden"}}>
       {isLoginFormVisible && <LoginForm visible={isLoginFormVisible} onClose={onLoginFormClosed} />}
       {isRegistrationFormVisible && <RegistrationForm visible={isRegistrationFormVisible} onClose={onRegistrationFormClosed} />}
 
@@ -141,13 +162,14 @@ export default function About(props){
         <Typography fontWeight="bold" fontSize="1.4em">Our Team</Typography>
       </Box>
 
-      <Box sx={{margin: "3em auto", display: "flex", flexDirection: "column", alignItems: "center", width: { xs: "90%", sm: "90%", md: "70%", lg: "70%", xl: "70%" }}}>
+      <Box sx={{margin: "3em auto", display: "flex", flexDirection: "column", alignItems: "center", width: { xs: "90%", sm: "90%", md: "70%", lg: "70%", xl: "70%" }, textAlign: "center"}}>
         <Typography fontWeight="bold" fontSize="1em">Genomics.ai was developed by a team of 12 students from the Technical University of Munich (TUM) under the guidance of Dr. Guy Yachdav.</Typography>
       </Box>
 
       <Box sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
         <MemberSection name="Organisation" data={organizationData} />
         <MemberSection name="Frontend" data={frontendData} />
+        <MemberSection name="Frontend 1" data={frontend1Data} />
         <MemberSection name="Backend" data={backendData} />
         <MemberSection name="Visualisation" data={visualizationData} />
       </Box>
