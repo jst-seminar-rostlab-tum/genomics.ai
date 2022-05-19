@@ -4,12 +4,17 @@ import {
 import { useState } from 'react';
 import AtlasModelChoice from '../AtlasModelChoice/AtlasModelChoice';
 import UploadFilePage from '../UploadFilePage';
+import { useEffect } from 'react';
 
 function GeneMapperState({ path }) {
   const [selectedAtlas, setSelectedAtlas] = useState('');
   const [selectedModel, setSelectedModel] = useState('');
   const [activeStep, setActiveStep] = useState(0);
   const steps = ['Pick Atlas and Model', 'Choose File and Project details'];
+
+  useEffect(() => {
+    setSelectedModel('');
+  }, [selectedAtlas]);
 
   const handleStep = (step) => () => {
     setActiveStep(step);
@@ -40,6 +45,7 @@ function GeneMapperState({ path }) {
               setSelectedAtlas={setSelectedAtlas}
               setSelectedModel={setSelectedModel}
               setActiveStep={setActiveStep}
+              compatibleModels={selectedAtlas ? selectedAtlas.compatibleModels : []}
             />
           )
           : (
