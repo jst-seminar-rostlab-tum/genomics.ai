@@ -7,7 +7,7 @@ import PlusIcon from 'components/GeneMapper/plusIcon';
 import ProjectBarCard from 'components/GeneMapper/projectBarCard';
 import SearchIcon from '@mui/icons-material/Search';
 import ProjectService from 'shared/services/Project.service';
-import { useSubmissionProgress } from 'shared/context/submissionProgressContext';
+import { initSubmissionProgress, useSubmissionProgress } from 'shared/context/submissionProgressContext';
 import { MULTIPART_UPLOAD_STATUS, PROJECTS_UPDATE_INTERVAL, statusIsError } from 'shared/utils/common/constants';
 import ProjectMock from 'shared/services/mock/projects';
 import AtlasService from 'shared/services/Atlas.service';
@@ -20,14 +20,6 @@ const theme = createTheme({
       main: '#000000',
     },
     secondary: {
-      main: '#5676E4',
-    },
-  },
-});
-
-const themeIcon = createTheme({
-  palette: {
-    primary: {
       main: '#5676E4',
     },
   },
@@ -65,24 +57,12 @@ function GeneMapperHome() {
     ProjectService.getOwnProjects().then((data) => setProjects(data));
     const timer = setInterval(() => {
       ProjectService.getOwnProjects().then((data) => setProjects(data));
-      if (submissionProgress.status === MULTIPART_UPLOAD_STATUS.COMPLETE
-        || submissionProgress.status === MULTIPART_UPLOAD_STATUS.CANCELING
-        || statusIsError(submissionProgress.status)) {
-        setSubmissionProgress({
-          status: MULTIPART_UPLOAD_STATUS.IDLE,
-          uploadId: '',
-          chunks: 0,
-          uploaded: 0,
-          remaining: [],
-          uploadedParts: [],
-        });
-      }
     }, PROJECTS_UPDATE_INTERVAL);
 
     return () => {
       clearInterval(timer);
     };
-  }, [submissionProgress.status]);
+  }, []);
 
   useEffect(() => {
     AtlasService.getAtlases().then((data) => setAtlases(data));
@@ -93,8 +73,6 @@ function GeneMapperHome() {
   return (
     <div>
       <ThemeProvider theme={theme}>
-        {/* {Object.entries(submissionProgress)
-          .map(([key, value]) => <Typography>{`${key}: ${value}` }</Typography>)} */}
         <Box
           sx={{
             display: 'flex',
@@ -107,12 +85,11 @@ function GeneMapperHome() {
           <Stack direction="row" className="stack" alignItems="Center">
 
             <Typography variant="h5" sx={{ pr: 1 }}>Your Mappings</Typography>
-            <ThemeProvider theme={themeIcon}>
-              <PlusIcon />
-            </ThemeProvider>
+            <PlusIcon />
           </Stack>
           <TextField
             id="outlined-basic"
+            sx={{ width: '32.7ch' }}
             label={(
               <Stack direction="row">
                 <SearchIcon />
@@ -141,10 +118,17 @@ function GeneMapperHome() {
                   userTeams={userTeams}
                   addProjectToTeam={(teamId) => addProjectToTeam(teamId, project._id)}
                   handleDelete={() => handleDeleteItem(project._id)}
-                  submissionProgress={submissionProgress.uploadId === project.uploadId
-                    ? submissionProgress : null}
-                  setSubmissionProgress={submissionProgress.uploadId === project.uploadId
-                    ? setSubmissionProgress : () => {}}
+                  submissionProgress={submissionProgress[project._id]}
+                  cancelUpload={() => {
+                    setSubmissionProgress((prev) => ({
+                      ...prev,
+                      [project._id]: {
+                        ...(prev[project._id] ?? initSubmissionProgress(project.uploadId)),
+                        status: MULTIPART_UPLOAD_STATUS.CANCELING,
+                      },
+                    }));
+                    localStorage.setItem(`cancelUpload_${project.uploadId}`, '1');
+                  }}
                 />
 
               );

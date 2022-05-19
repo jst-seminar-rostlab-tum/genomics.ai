@@ -15,11 +15,15 @@ import Clear from '@mui/icons-material/Clear';
 import ReplayIcon from '@mui/icons-material/Replay';
 import ProgressBar from 'components/ProgressBar';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import { ExpandLess, ExpandMore, StarBorder } from '@mui/icons-material';
+import {
+  ExpandLess, ExpandMore, InfoOutlined, StarBorder,
+} from '@mui/icons-material';
 import { Modal, ModalTitle } from 'components/Modal';
 import TeamService from 'shared/services/Team.service';
 import CustomButton from 'components/CustomButton';
 import { TabCard } from '../TabCard';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import { GeneralCard } from 'components/GeneMapper/GeneralCardVariant';
 
 function ProcessingStatus() {
   return (
@@ -32,8 +36,16 @@ function ProcessingStatus() {
   );
 }
 
+function CanceldOrFailedStatus() {
+  return (
+    <Typography variant="caption">
+      Upload failed or canceled
+    </Typography>
+  );
+}
+
 export default function ProjectBarCard({
-  project, atlas, model, submissionProgress, setSubmissionProgress, handleDelete, userTeams, addProjectToTeam,
+  project, atlas, model, submissionProgress, cancelUpload, handleDelete, userTeams, addProjectToTeam,
 }) {
   const history = useHistory();
 
@@ -42,6 +54,8 @@ export default function ProjectBarCard({
     : project.status === PROJECT_STATUS.ABORTED
     || (!submissionProgress && project.status === PROJECT_STATUS.UPLOAD_PENDING)
     || project.status === PROJECT_STATUS.PROCESSING_FAILED
+    || submissionProgress?.status === MULTIPART_UPLOAD_STATUS.CANCELING
+    || statusIsError(submissionProgress?.status)
       ? 'red'
       : 'orange';
 
@@ -49,6 +63,7 @@ export default function ProjectBarCard({
   const [addTeam, setAddTeam] = useState(false);
   const [selectedTeam, setSelectedTeam] = useState('');
   const [open, setOpen] = useState(false);
+  const [showInfo, setShowInfo] = useState(false);
 
   useEffect(() => {
     if (project.teamId) {
@@ -65,16 +80,9 @@ export default function ProjectBarCard({
 
   return (
     <>
-      <Card sx={{
-        marginTop: '5',
-        marginBottom: '0.5em',
-        borderStyle: 'solid',
-        borderColor: '#C8C8C8',
-        borderWidth: '0.1px',
-      }}
-      >
 
-        <CardActionArea disableTouchRipple sx={{ p: 1 }}>
+      <GeneralCard>
+        <CardActionArea disableTouchRipple sx={{ p: 0, height: '4em', borderRadius: '0.625rem' }}>
           <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
 
             <Stack
@@ -119,10 +127,9 @@ export default function ProjectBarCard({
                     </Box>
                     <Typography variant="caption">Uploading...</Typography>
                     <IconButton
-                      onClick={() => {
-                        setSubmissionProgress((prevState) => (
-                          { ...prevState, status: Status.CANCELING }));
-                        localStorage.setItem('cancelUpload', '1'); // worst design ever
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        cancelUpload();
                       }}
                     >
                       <Clear color="error" />
@@ -130,15 +137,11 @@ export default function ProjectBarCard({
                   </>
                   )}
                   {statusIsError(submissionProgress.status)
-              && (
-              <>
-                <Typography>{submissionProgress.status}</Typography>
-                <IconButton onClick={() => {}}>
-                  <ReplayIcon />
-                </IconButton>
-              </>
-              )}
+                  && <CanceldOrFailedStatus />}
+                  {submissionProgress.status === MULTIPART_UPLOAD_STATUS.CANCELING
+                  && <CanceldOrFailedStatus />}
                   {submissionProgress.status === MULTIPART_UPLOAD_STATUS.COMPLETE
+                   && project.status !== PROJECT_STATUS.DONE
                    && <ProcessingStatus />}
                 </Box>
               ) : null}
@@ -150,11 +153,7 @@ export default function ProjectBarCard({
                     }}
                   >
                     {project.status === PROJECT_STATUS.UPLOAD_PENDING
-                   && (
-                   <Typography variant="caption">
-                     Upload failed or canceled
-                   </Typography>
-                   )}
+                   && <CanceldOrFailedStatus />}
                     {project.status === PROJECT_STATUS.PROCESSING_PENDING
                    && <ProcessingStatus />}
                     {(project.status === PROJECT_STATUS.ABORTED
@@ -221,24 +220,52 @@ export default function ProjectBarCard({
           </Box>
         </Collapse>
 
-      </Card>
+      </GeneralCard>
       <Modal
         isOpen={addTeam}
         setOpen={setAddTeam}
+        sx={{ position: 'fixed', top: '20%' }}
       >
         <ModalTitle>
-          Select A Team
+          <Stack direction="row" alignItems="center">
+            Select a Team
+            <IconButton size="small" onClick={() => setShowInfo(true)}>
+              <InfoOutlined fontSize="small" />
+            </IconButton>
+          </Stack>
         </ModalTitle>
+        <Modal
+          isOpen={showInfo}
+          setOpen={setShowInfo}
+          sx={{ position: 'fixed', top: '20%' }}
+        >
+          <ModalTitle>
+            Why adding to a team?
+          </ModalTitle>
+          <Box sx={{ maxWidth: 320, overflow: 'auto' }}>
+            <Typography>
+              By Adding to a team, the visibility of
+              a project will be inherited
+              from the visibility of the team.
+              If the assigned team is public,
+              all teams will have access to the project.
+              If the assigned team is private, the project will be accessible only to this team.
+            </Typography>
+          </Box>
+
+        </Modal>
         <Box>
           {userTeams.map(
             (team) => (
               <TabCard
-                data={{ name: team.name }}
+                data={{ name: team.name, visibility: team.visibility }}
                 selected={team?._id === selectedTeam || team?.id === selectedTeam}
                 handleOnClick={() => setSelectedTeam(team?._id || team?.id)}
               />
+
             ),
           )}
+
           <Box sx={{ display: 'flex', justifyContent: 'space-between', pt: 4 }}>
             <CustomButton
               type="tertiary"
@@ -265,6 +292,7 @@ export default function ProjectBarCard({
           </Box>
         </Box>
       </Modal>
+
     </>
   );
 }
