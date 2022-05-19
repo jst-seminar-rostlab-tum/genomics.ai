@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Typography, Box, Button, IconButton, Divider, Stack, Fab,
+  Typography, Box, IconButton, Divider, Stack, Fab,
 } from '@mui/material';
 import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
 import CancelIcon from '@mui/icons-material/Cancel';
 import styles from './mapper.module.css';
-import { useHistory } from 'react-router-dom';
 import CustomButton from 'components/CustomButton';
 
 function Mapper({
@@ -13,16 +12,13 @@ function Mapper({
 }) {
   const [atlas, setAtlas] = useState(mapperAtlas);
   const [model, setModel] = useState(mapperModel);
-  const history = useHistory();
 
   const deleteAtlas = () => {
-    history.push('/explore/atlases');
     handleAtlasSelection(null);
     setAtlas(null);
   };
 
   const deleteModel = () => {
-    history.push('/explore/models');
     handleModelSelection(null);
     setModel(null);
   };

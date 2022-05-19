@@ -109,6 +109,7 @@ const Explore = () => {
           path={path}
           handleAtlasSelection={handleAtlasSelection}
           selectedAtlas={selectedAtlas}
+          selectedModel={selectedModel}
         />
       ) : null }
       {value === 1 ? (
@@ -117,6 +118,7 @@ const Explore = () => {
           path={path}
           handleModelSelection={handleModelSelection}
           selectedModel={selectedModel}
+          selectedAtlas={selectedAtlas}
         />
       ) : null }
     </Box>

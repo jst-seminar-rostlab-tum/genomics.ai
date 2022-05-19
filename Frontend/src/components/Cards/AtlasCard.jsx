@@ -1,10 +1,7 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { useState, useRef, useEffect } from 'react';
-
 import { Box, Typography } from '@mui/material';
-
 import { OutlinedButton } from './ModelCard';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 /**
  * Atlas Card
@@ -20,7 +17,7 @@ import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
  */
 export default function AtlasCard({
   width = '100%', height = '100%', title, atlasId, imgLink, modalities,
-  cellsInReference, species, learnMoreLink, onSelect, atlas, selected = false,
+  cellsInReference, species, learnMoreLink, onSelect, selected = false,
 }) {
   // check if the mouse is hovering above the card
   const [isHover, setHover] = useState(false);
@@ -30,9 +27,6 @@ export default function AtlasCard({
 
   // ref to get the out most Box
   const boxRef = useRef();
-
-  const history = useHistory();
-  const path = history.location.pathname;
 
   useEffect(() => {
     // each time the card is rerendered, check if the card is flat or not
@@ -112,13 +106,6 @@ export default function AtlasCard({
                   justifyContent: 'space-evenly',
                 }}
               >
-                <OutlinedButton
-                  content="Visualize"
-                  onClick={(e) => {
-                    history.push(`${path}/${atlasId}/visualization`);
-                    e.stopPropagation();
-                  }}
-                />
                 <OutlinedButton
                   content="Learn More"
                   link={learnMoreLink}
