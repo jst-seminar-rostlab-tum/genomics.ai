@@ -25,6 +25,7 @@ import CustomButton from 'components/CustomButton';
 import { TabCard } from '../TabCard';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { GeneralCard } from 'components/Cards/GeneralCard';
+import ProjectInfo from '../ProjectInfo';
 
 function ProcessingStatus() {
   return (
@@ -232,9 +233,7 @@ export default function ProjectBarCard({
         <Collapse in={open} timeout="auto">
           <Divider variant="middle" />
           <Box sx={{ pl: 11.5, pb: 1, pt: 1 }}>
-            <Typography>{`Atlas: ${atlas?.name}`}</Typography>
-            <Typography>{`Model: ${model?.name}`}</Typography>
-            <Typography>{`Dataset: ${project?.fileName}`}</Typography>
+            <ProjectInfo project={project} atlas={atlas} model={model} />
           </Box>
         </Collapse>
 

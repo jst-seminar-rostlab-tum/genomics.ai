@@ -5,8 +5,11 @@ import {
 } from '@mui/material';
 import CustomButton from 'components/CustomButton';
 import { Modal, ModalTitle } from 'components/Modal';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import AtlasService from 'shared/services/Atlas.service';
+import ModelsService from 'shared/services/Models.service';
+import ProjectInfo from '../ProjectInfo';
 import ShareMenu from '../ShareMenu';
 
 /**
@@ -16,6 +19,13 @@ import ShareMenu from '../ShareMenu';
 function GeneMapperResultHeader({ project }) {
   const history = useHistory();
   const [showInfo, setShowInfo] = useState(false);
+  const [atlas, setAtlas] = useState(null);
+  const [model, setModel] = useState(null);
+
+  useEffect(() => {
+    AtlasService.getAtlasById(project.atlasId).then((data) => setAtlas(data));
+    ModelsService.getModelById(project.modelId).then((data) => setModel(data));
+  }, [project.atlasId, project.modelId]);
 
   return (
     <>
@@ -42,8 +52,8 @@ function GeneMapperResultHeader({ project }) {
       </Box>
       <Divider sx={{ mt: 1, mb: 1 }} />
       <Modal isOpen={showInfo} setOpen={setShowInfo}>
-        <ModalTitle>Test</ModalTitle>
-        {Object.entries(project).map(([key, value]) => (<Typography key={key}>{`${key}: ${value}`}</Typography>))}
+        <ModalTitle>{project.name}</ModalTitle>
+        <ProjectInfo project={project} atlas={atlas} model={model} />
       </Modal>
     </>
   );
