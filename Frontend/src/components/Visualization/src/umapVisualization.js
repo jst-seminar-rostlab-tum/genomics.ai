@@ -61,7 +61,7 @@ export class UmapVisualization2 {
 
   hideReference() {
     this.before();
-    this.after("type", "query");
+    this.after("type", "reference");
   }
 
   //Set a color mode
