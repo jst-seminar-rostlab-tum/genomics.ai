@@ -55,14 +55,16 @@ export default function TeamPage() {
 
   // Institution may be undefined
   useEffect(() => {
-    InstitutionService.getInstitution(team.institutionId)
+    if (Object.keys(team).length !== 0) {
+      InstitutionService.getInstitution(team.institutionId)
       .then((newInstitution) => setInstitution(newInstitution))
       .catch((ignored) => { console.error(ignored); });
+    }
   }, [team, setInstitution]);
 
   const isAdmin = team.adminIds ? team.adminIds.includes(user._id) : false;
 
-  if (!team) return <></>;
+  if (!team || Object.keys(team).length === 0) return <></>;
 
   return (
     <HeaderView
