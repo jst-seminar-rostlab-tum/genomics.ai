@@ -108,16 +108,19 @@ function GeneMapperCategories({
     <>
       { categories
         ? Object.entries(categories).map(([title, values]) => (
-          <Category
-            key={title}
-            title={title}
-            values={values}
-            colored={title === coloredCategoryTitle}
-            toggleColored={() => handleSetColorMode(title)}
-            hide={(value) => { hide(title, value); setHiddenValue(value); }}
-            show={() => { show(); setHiddenValue(null); }}
-            hiddenValue={hiddenValue}
-          />
+          title !== 'type'
+            ? (
+              <Category
+                key={title}
+                title={title}
+                values={values}
+                colored={title === coloredCategoryTitle}
+                toggleColored={() => handleSetColorMode(title)}
+                hide={(value) => { hide(title, value); setHiddenValue(value); }}
+                show={() => { show(); setHiddenValue(null); }}
+                hiddenValue={hiddenValue}
+              />
+            ) : null
         ))
         : null}
     </>

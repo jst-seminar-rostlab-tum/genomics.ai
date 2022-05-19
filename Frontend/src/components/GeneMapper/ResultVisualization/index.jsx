@@ -1,13 +1,21 @@
 import CenterFocusWeakIcon from '@mui/icons-material/CenterFocusWeak';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import ZoomOutIcon from '@mui/icons-material/ZoomOut';
-import { Box, CircularProgress, IconButton } from '@mui/material';
+import PublicIcon from '@mui/icons-material/Public';
+import BiotechIcon from '@mui/icons-material/Biotech';
+import {
+  Box, CircularProgress, Divider, IconButton,
+} from '@mui/material';
 import { resetZoom, zoomInN, zoomOutN } from 'components/Visualization/src/newZoom';
 import { UmapVisualization2 } from 'components/Visualization/src/umapVisualization';
 import { csv } from 'd3';
 import React, { useEffect, useRef, useState } from 'react';
 import GeneMapperCategories from '../Categories';
 import Sidepanel from '../Sidepanel';
+import { colors } from 'shared/theme/colors';
+
+const activatedColor = colors.primary['400'];
+const deactivatedColor = colors.primary['200'];
 
 /**
  *
@@ -24,6 +32,9 @@ function ResultVisualization({ dataUrl, onlyUmap }) {
     width: 0,
     height: 0,
   });
+
+  const [showQuery, setShowQuery] = useState(true);
+  const [showReference, setShowReference] = useState(true);
 
   useEffect(() => {
     csv(dataUrl).then((data) => {
@@ -86,15 +97,52 @@ function ResultVisualization({ dataUrl, onlyUmap }) {
         }}
       >
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          <IconButton onClick={() => zoomInN()}>
-            <ZoomInIcon />
-          </IconButton>
-          <IconButton onClick={() => zoomOutN()}>
-            <ZoomOutIcon />
-          </IconButton>
-          <IconButton onClick={() => resetZoom()}>
-            <CenterFocusWeakIcon />
-          </IconButton>
+          {
+            umap
+            && Object.keys(umap.coloringModes).includes('type')
+            && (
+              <>
+                <Box>
+                  <IconButton onClick={() => {
+                    setShowReference(!showReference);
+                    if (showReference) {
+                      setShowQuery(true);
+                      umap.hideReference();
+                    } else {
+                      umap.showReference();
+                    }
+                  }}
+                  >
+                    <PublicIcon sx={{ color: showReference ? activatedColor : deactivatedColor }} />
+                  </IconButton>
+                  <IconButton onClick={() => {
+                    setShowQuery(!showQuery);
+                    if (showQuery) {
+                      setShowReference(true);
+                      umap.hideQuery();
+                    } else {
+                      umap.showQuery();
+                    }
+                  }}
+                  >
+                    <BiotechIcon sx={{ color: showQuery ? activatedColor : deactivatedColor }} />
+                  </IconButton>
+                </Box>
+                <Divider orientation="vertical" flexItem variant="middle" />
+              </>
+            )
+          }
+          <Box>
+            <IconButton onClick={() => zoomInN()}>
+              <ZoomInIcon />
+            </IconButton>
+            <IconButton onClick={() => zoomOutN()}>
+              <ZoomOutIcon />
+            </IconButton>
+            <IconButton onClick={() => resetZoom()}>
+              <CenterFocusWeakIcon />
+            </IconButton>
+          </Box>
         </Box>
         <Box
           sx={{
