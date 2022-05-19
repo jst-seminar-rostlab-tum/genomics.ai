@@ -1,5 +1,15 @@
 [
   {
+    "name": "Vigan Lladrovci",
+    "role": "Frontend Developer & Team Lead",
+    "img": "",
+    "dscp": "student in Informatics at TUM",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
     "name": "Nikita Charushnikov",
     "role": "Frontend Developer",
     "img": "memberphotos/frontend_1/Frontend_Nikita_Charushnikov.jpg",
