@@ -81,12 +81,12 @@ export default function ProjectBarCard({
   };
 
   return (
-    <Box sx={{ mb: 1.5 }}>
+    <Box sx={{ mb: 2 }}>
       <GeneralCard padding={0}>
         <CardActionArea
           disableTouchRipple
           sx={{
-            p: 1, borderRadius: 'inherit',
+            p: 2, borderRadius: 'inherit',
           }}
         >
           <Grid container direction="row" justifyContent="space-between" sx={{ width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -100,7 +100,7 @@ export default function ProjectBarCard({
               onClick={handleClickCard}
             >
               <Grid container item xs={4} alignItems="center">
-                <Box sx={{ flexDirection: 'row', ml: 1, alignItems: 'center' }}>
+                <Box sx={{ flexDirection: 'row', alignItems: 'center' }}>
                   {open ? (
                     <ExpandLess sx={{
                       fontSize: 30,
@@ -177,7 +177,7 @@ export default function ProjectBarCard({
             </Grid>
             <Grid container item md={4} justifyContent="flex-end">
               <Box sx={{
-                p: 0.1, bgcolor: 'background.paper', borderRadius: 3, width: 'flex', mr: 1, display: 'flex', alignItems: 'center',
+                p: 0.1, bgcolor: 'background.paper', borderRadius: 3, width: 'flex', display: 'flex', alignItems: 'center',
               }}
               >
                 {projectTeam?.title
