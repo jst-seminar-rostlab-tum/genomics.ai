@@ -41,6 +41,14 @@ const TeamService = MOCK_TEAMS ? MockTeamService : {
     await axiosInstance.post(`/teams/${teamId}`, { data: team });
   },
 
+  async makeTeamAdmin(teamId, userId) {
+    try {
+      await axiosInstance.put(`/teams/${teamId}/admin`, { userId });
+    } catch (e) {
+      throw Error(e.response.data);
+    }
+  },
+
   async getTeam(teamId) {
     const { data } = await axiosInstance.get(`/teams/${teamId}`);
     return enhanceTeam(data);
