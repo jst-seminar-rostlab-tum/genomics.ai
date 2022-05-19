@@ -5,29 +5,65 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Password Reset Request</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            emailBg: "#F8FBFF",
+            head: "#002644",
+            content: "#184060",
+            primary: "#5676E4",
+            primaryHover: "#445AA7",
+            primaryFocus: "#7187D5",
+            secondary: "#7DD181",
+            secondaryHover: "#6FB169",
+            secondaryFocus: "#A0E69E",
+            footer: "#212529",
+          },
+        }
+      }
+    }
+  </script>
 </head>
 <body>
-  <div class="bg-emailBg">
-    <div class="w-3/4 m-auto pt-10">
-      <a href="https://www.genecruncher.com" class="flex flex-row gap-4 items-center">
+  <table class="bg-emailBg w-screen m-auto table-fixed">
+    <tr>
+      <a href="https://www.genecruncher.com" class="flex flex-row gap-4 items-center mt-10 container mx-auto">
         <img src="{{genecruncher_logo}}">
         <div class="font-semibold text-xl text-content">genomics.ai</div>
       </a>
-      <div class="title text-3xl font-bold text-head mt-10">Hey {{firstname}},</div>
-      <div class="content text-xl text-content my-10 w-100">
-        <p class="my-20">We heard that you have lost your GeneCruncher password. Sorry about that! But don't worry, you can use the following button to reset your password:</p>
-        <a href="{{link}}" class="bg-secondary text-white font-bold px-32 py-5 rounded-full hover:bg-secondaryHover hover:drop-shadow-md focus:outline-none focus:bg-secondaryFocus m-auto">Reset Password</a>
-        <p class="mt-20">
-          If you don't use this link within 3 hours, it will expire. To get a new password reset link, click <a href="https://www.genecruncher.com/password_reset" class="text-primary underline">here</a>.
-        </p>
-        <p class="mt-10">Thanks,</p> 
-        <p>The GeneCruncher Team.</p> 
+    </tr>
+    <tr>
+      <div class="title text-3xl font-bold text-head mt-10 container mx-auto">Hey {{firstname}},</div>
+    </tr>
+    <tr>
+      <p class="my-20 container mx-auto">We heard that you have lost your GeneCruncher password. Sorry about that! But don't worry, you can use the following button to reset your password:</p>
+    </tr>
+    <tr>
+      <div class="container mx-auto">
+        <a href="{{link}}" class="bg-secondary text-white font-bold px-10 py-3 rounded-full hover:bg-secondaryHover hover:drop-shadow-md focus:outline-none focus:bg-secondaryFocus m-auto container mx-auto">Reset Password</a>
       </div>
+    </tr>
+    <tr>
+      <p class="mt-20 container mx-auto">
+        If you don't use this link within 3 hours, it will expire. To get a new password reset link, click <a href="https://www.genecruncher.com/password_reset" class="text-primary underline">here</a>.
+      </p>
+    </tr>
+    <tr>
+      <p class="mt-10 container mx-auto">Thanks,</p> 
+      <p class="container mx-auto mb-10">The GeneCruncher Team.</p> 
+    </tr>
+    <tr class="bg-footer text-white font-semibold">
+      <td>
+        <p class="p-4">© Copyright TUM 2022</p>
+      </td>
+      <td>
+        <a class="text-right" href="https://www.genecruncher.com">genecruncher.com</a>
+      </td>
+    </tr> 
     </div>
-    <div class="flex flex-row justify-between w-100 bg-footer text-white p-5 px-10 font-semibold">
-      <div class="">© Copyright TUM 2022</div>
-      <div class=""><a href="https://www.genecruncher.com">genecruncher.com</a></div>
-    </div>
-  </div>
+  </table>
 </body>
 </html>
