@@ -1,12 +1,11 @@
 /* eslint-disable no-return-assign */
 import React, { useState, useEffect } from 'react';
-import Button from '@mui/material/Button';
-import LoadingButton from '@mui/lab/LoadingButton';
-import Dialog from '@mui/material/Dialog';
+import Button from 'components/CustomButton';
+import { Modal, ModalTitle } from 'components/Modal';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-//import { DropzoneArea } from 'mui-file-dropzone';
+import { DropzoneArea } from 'mui-file-dropzone';
 import CropImage from '../CropImage';
 
 export default function ImageUploadDialog({
@@ -47,8 +46,8 @@ export default function ImageUploadDialog({
   }
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>{title}</DialogTitle>
+    <Modal isOpen={open} setOpen={(o) => !o && onClose()} maxWidth="sm" fullWidth>
+      <ModalTitle>{title}</ModalTitle>
       <DialogContent>
         {description && (<p>{description}</p>)}
         {!imgURL && (
@@ -59,6 +58,7 @@ export default function ImageUploadDialog({
             filesLimit={1}
             showPreviews={!croppable}
             showPreviewsInDropzone={!preview}
+            alertSnackbarProps={{ autoHideDuration: 3000 }}
           />
         )}
         {imgURL && croppable && (
@@ -79,17 +79,28 @@ export default function ImageUploadDialog({
         )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => { setImgURL(null); onClose(); }}>Cancel</Button>
+        <Button type="tertiary" onClick={() => { setImgURL(null); onClose(); }}>
+          Cancel
+        </Button>
         {additionalButtons.map(({ text, func }) => (
           <Button
             key={text}
+            type="secondary"
             onClick={async () => { setLoading(true); await func(); setLoading(false); }}
           >
             {text}
           </Button>
         ))}
-        <LoadingButton onClick={() => upload()} loading={loading}>Upload</LoadingButton>
+        {
+          loading ? (
+            <Button disabled>Uploading...</Button>
+          ) : (
+            <Button onClick={() => upload()} disabled={!croppedImgBlob}>
+              Upload
+            </Button>
+          )
+        }
       </DialogActions>
-    </Dialog>
+    </Modal>
   );
 }

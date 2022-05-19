@@ -10,3 +10,5 @@ build
 
 # NPM
 node_modules/
+
+.env

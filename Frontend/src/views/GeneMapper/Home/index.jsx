@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import {
   Typography, createTheme, ThemeProvider, Stack, TextField, Alert
 } from '@mui/material';
-import PlusIcon from 'components/GeneMapper/plusIcon';
+import PlusIcon from 'components/general/PlusIcon';
 import ProjectBarCard from 'components/GeneMapper/projectBarCard';
 import SearchIcon from '@mui/icons-material/Search';
 import ProjectService from 'shared/services/Project.service';
@@ -13,6 +13,7 @@ import ProjectMock from 'shared/services/mock/projects';
 import AtlasService from 'shared/services/Atlas.service';
 import ModelService from 'shared/services/Model.service';
 import TeamService from 'shared/services/Team.service';
+import { useHistory } from 'react-router-dom';
 
 const theme = createTheme({
   palette: {
@@ -33,6 +34,8 @@ function GeneMapperHome() {
 
   const [findString, setFindString] = useState('');
   const [submissionProgress, setSubmissionProgress] = useSubmissionProgress();
+
+  const history = useHistory();
 
   const handleDeleteItem = (id) => {
     setProjects(projects.filter((object) => object._id != id));
@@ -85,7 +88,7 @@ function GeneMapperHome() {
           <Stack direction="row" className="stack" alignItems="Center">
 
             <Typography variant="h5" sx={{ pr: 1 }}>Your Mappings</Typography>
-            <PlusIcon />
+            <PlusIcon onClick={() => { history.push('genemapper/create'); }} />
           </Stack>
           <TextField
             id="outlined-basic"
@@ -95,7 +98,7 @@ function GeneMapperHome() {
                 <SearchIcon />
                 Find a Mapping
               </Stack>
-        )}
+            )}
             variant="outlined"
             size="small"
             value={findString}
