@@ -9,7 +9,7 @@ import { useHistory } from 'react-router-dom';
 import CustomButton from 'components/CustomButton';
 
 function Mapper({
-  mapperAtlas, mapperModel, setSelectedAtlas, setSelectedModel, open, fabOnClick,
+  mapperAtlas, mapperModel, handleAtlasSelection, handleModelSelection, open, fabOnClick,
 }) {
   const [atlas, setAtlas] = useState(mapperAtlas);
   const [model, setModel] = useState(mapperModel);
@@ -17,13 +17,13 @@ function Mapper({
 
   const deleteAtlas = () => {
     history.push('/explore/atlases');
-    setSelectedAtlas(null);
+    handleAtlasSelection(null);
     setAtlas(null);
   };
 
   const deleteModel = () => {
     history.push('/explore/models');
-    setSelectedModel(null);
+    handleModelSelection(null);
     setModel(null);
   };
 
