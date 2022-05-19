@@ -39,7 +39,7 @@ export const OutlinedButton = ({ content, link = null, onClick }) => {
  * @param mapLink onHover button Map url
  * @param learnMoreLink onHover button Learn More url
  */
-export const ModelCard = ({ width = "100%", height = "100%", title, description, onClick, learnMoreLink, disabled = false }) => {
+export const ModelCard = ({ width = "100%", height = "100%", title, description, onClick, learnMoreLink, disabled = false, onSelect, selected=true }) => {
 
   const [hover, setHover] = useState(false)
   const ref = useRef()
@@ -60,6 +60,7 @@ export const ModelCard = ({ width = "100%", height = "100%", title, description,
         width: width,
         height: height
       }}
+      onClick={onSelect}
     >
       <Box
         ref={ref}
@@ -101,7 +102,7 @@ export const ModelCard = ({ width = "100%", height = "100%", title, description,
               }}
             >
               {/* <OutlinedButton content="Map" onClick={onClick} /> */}
-              <OutlinedButton content="Learn More" link={learnMoreLink} />
+              <OutlinedButton content="Learn More" link={learnMoreLink} onClick={(e) => e.stopPropagation()}/>
               {
                 disabled &&
                 <Typography sx={{ color: colors.primary[900], fontSize: "12px", textDecoration: 'underline', textAlign: "center" }}>
@@ -155,10 +156,12 @@ export const ModelCard = ({ width = "100%", height = "100%", title, description,
           p: "1.2rem",
           boxShadow: hover ? "none" : "0px 0px 10px rgba(0, 0, 0, 0.15)",
           borderRadius: "1.2rem",
-
+          borderStyle:"solid",
+          borderColor: selected ? "#008BF5" : 'transparent',
+          borderWidth:"4px",
         }}
         >
-          <Typography sx={{ fontSize: "1.4rem", fontWeight: "bold" }}>{title}</Typography>
+          <Typography sx={{ fontSize: "1.4rem", fontWeight: "bold" }}>{`Model ${title}`}</Typography>
           <Typography sx={{ fontSize: "1rem", color: colors.neutral[800] }}>{description}</Typography>
         </Box>}
         { 

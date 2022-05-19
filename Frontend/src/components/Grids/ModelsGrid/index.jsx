@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 import styles from './modelsGrid.module.css';
 
-const ModelsGrid = ({ models, path, selectedAtlas = null }) => {
+const ModelsGrid = ({ models, path, selectedAtlas = null, selectedModel = null, handleModelSelection = null }) => {
 
   const checkIfDisabled = (name) => {
     console.log(selectedAtlas)
@@ -25,6 +25,8 @@ const ModelsGrid = ({ models, path, selectedAtlas = null }) => {
               description={model.description}
               learnMoreLink={`${path}/models/${model._id}`}
               disabled={checkIfDisabled(model.name)}
+              onSelect={() => { if(handleModelSelection) handleModelSelection(model) }}
+              selected={selectedModel && selectedModel.name === model.name}
             />
           </Grid>
         ))}
@@ -32,4 +34,5 @@ const ModelsGrid = ({ models, path, selectedAtlas = null }) => {
     </Box>
   )
 }
+
 export default ModelsGrid;
