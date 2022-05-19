@@ -65,7 +65,7 @@ function InstitutionPage() {
         className={styles.background}
         style={{
           backgroundImage: `url(${institution.backgroundPictureURL || defaultBackgroundPicture
-          })`,
+            })`,
           resizeMode: 'stretch',
         }}
       >
@@ -140,14 +140,16 @@ function InstitutionPage() {
             {' Members'}
           </span>
         </p>
-        <button
-          className={styles.bgImgEditButton}
-          type="button"
-          onClick={() => setBackgroundUploadOpen(true)}
-        >
-          <span>Edit Background</span>
-          <EditIcon fontSize="small" />
-        </button>
+        {isAdmin() && (
+          <button
+            className={styles.bgImgEditButton}
+            type="button"
+            onClick={() => setBackgroundUploadOpen(true)}
+          >
+            <span>Edit Background</span>
+            <EditIcon fontSize="small" />
+          </button>
+        )}
       </div>
       <div className={styles.test}>
         <section>

@@ -23,6 +23,12 @@ const TeamService = MOCK_TEAMS ? MockTeamService : {
     return enhanceTeam(data);
   },
 
+  async joinTeam(teamId) {
+    const user = await ProfileService.getProfile();
+    const { data: updatedTeam } = await axiosInstance.put(`/${MODEL}/${teamId}/join`, { userId: user.id });
+    return updatedTeam;
+  },
+
   async removeMemberFromTeam(teamId, memberId) {
     const team = await TeamService.getTeam(teamId);
     team.memberIds = team.memberIds.filter((mId) => mId !== memberId);
