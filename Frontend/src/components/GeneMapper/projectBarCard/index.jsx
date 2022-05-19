@@ -180,7 +180,7 @@ export default function ProjectBarCard({
                 p: 0.1, bgcolor: 'background.paper', borderRadius: 3, width: 'flex', mr: 1, display: 'flex', alignItems: 'center',
               }}
               >
-                {projectTeam?.name
+                {projectTeam?.title
                   ? (
                     <CustomButton type="tertiary" sx={{ mr: 1 }} onClick={() => history.push(`/sequencer/teams/${projectTeam._id || projectTeam.id}`)}>
                       <Typography>

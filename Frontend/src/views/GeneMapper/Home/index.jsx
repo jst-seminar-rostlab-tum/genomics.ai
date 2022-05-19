@@ -47,13 +47,7 @@ function GeneMapperHome() {
   };
 
   const addProjectToTeam = async (teamId, projectId) => {
-    const projectTeams = JSON.parse(window.localStorage.getItem('projectTeams')) || {};
-    window.localStorage.setItem('projectTeams', JSON.stringify({ ...projectTeams, [projectId]: teamId }));
-  };
-
-  const teamOfProject = (projectId) => {
-    const projectTeams = JSON.parse(window.localStorage.getItem('projectTeams')) || {};
-    return projectTeams[projectId];
+    TeamService.addProject(teamId, projectId);
   };
 
   useEffect(() => {
@@ -116,32 +110,29 @@ function GeneMapperHome() {
             .filter((project) => (
               (findString === '' || project.name.toLowerCase().includes(findString.toLowerCase())))
               && !(window.localStorage.getItem('DeletedProjects') ?? []).includes(project._id))
-            .map((project) => {
-              const projectTeamId = teamOfProject(project._id);
-              return (
-                <ProjectBarCard
-                  key={project._id}
-                  project={projectTeamId ? { ...project, teamId: projectTeamId } : project}
-                  atlas={atlases.find((atlas) => String(atlas._id) === String(project.atlasId))}
-                  model={models.find((model) => String(model._id) === String(project.modelId))}
-                  userTeams={userTeams}
-                  addProjectToTeam={(teamId) => addProjectToTeam(teamId, project._id)}
-                  handleDelete={() => handleDeleteItem(project._id)}
-                  submissionProgress={submissionProgress[project._id]}
-                  cancelUpload={() => {
-                    setSubmissionProgress((prev) => ({
-                      ...prev,
-                      [project._id]: {
-                        ...(prev[project._id] ?? initSubmissionProgress(project.uploadId)),
-                        status: MULTIPART_UPLOAD_STATUS.CANCELING,
-                      },
-                    }));
-                    localStorage.setItem(`cancelUpload_${project.uploadId}`, '1');
-                  }}
-                />
+            .map((project) => (
+              <ProjectBarCard
+                key={project._id}
+                project={project}
+                atlas={atlases.find((atlas) => String(atlas._id) === String(project.atlasId))}
+                model={models.find((model) => String(model._id) === String(project.modelId))}
+                userTeams={userTeams}
+                addProjectToTeam={(teamId) => addProjectToTeam(teamId, project._id)}
+                handleDelete={() => handleDeleteItem(project._id)}
+                submissionProgress={submissionProgress[project._id]}
+                cancelUpload={() => {
+                  setSubmissionProgress((prev) => ({
+                    ...prev,
+                    [project._id]: {
+                      ...(prev[project._id] ?? initSubmissionProgress(project.uploadId)),
+                      status: MULTIPART_UPLOAD_STATUS.CANCELING,
+                    },
+                  }));
+                  localStorage.setItem(`cancelUpload_${project.uploadId}`, '1');
+                }}
+              />
 
-              );
-            })}
+            ))}
         </div>
 
       </ThemeProvider>
