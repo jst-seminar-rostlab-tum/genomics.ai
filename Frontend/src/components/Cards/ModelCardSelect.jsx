@@ -1,4 +1,5 @@
 import { Box, Button, Container, Typography } from "@mui/material"
+import ModelInfo from "components/GeneMapper/ModelInfo"
 import { Modal } from "components/Modal"
 import { useEffect, useRef, useState } from "react"
 import { colors } from "shared/theme/colors"
@@ -146,15 +147,7 @@ export const ModelCardSelect = ({
           }}>{description}</Typography>
       </Box>
       </Box>
-      <Modal
-        isOpen={modelInfoOpen}
-        setOpen={setModelInfoOpen}
-        children={(
-          <Container>
-            <LearnMoreModelComponent id={modelObject._id} />
-          </Container>
-      )}
-      />
+      <ModelInfo id={modelObject._id} open={modelInfoOpen} setOpen={setModelInfoOpen} />
     </Box>
   )
 }

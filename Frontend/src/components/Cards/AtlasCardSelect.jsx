@@ -8,6 +8,7 @@ import { borders } from "@mui/system"
 import { Modal } from "components/Modal"
 import { LearnMoreAtlasComponent } from "views/Explore/LearnMoreAtlas"
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min"
+import AtlasInfo from "components/GeneMapper/AtlasInfo"
 
 /**
  * Atlas Card 
@@ -191,16 +192,7 @@ export default function AtlasCardSelect({
           </Box>
         </Box>
       </Box>
-      <Modal
-        isOpen={atlasInfoOpen}
-        setOpen={setAtlasInfoOpen}
-        children={(
-          <Container>
-            <LearnMoreAtlasComponent id={atlasObject._id} onClick={() => history.push(`/explore/atlases/${atlasObject._id}/visualization`)} />
-
-          </Container>
-        )}
-      />
+      <AtlasInfo id={atlasObject._id} open={atlasInfoOpen} setOpen={setAtlasInfoOpen} />
     </Box>
 
   )
