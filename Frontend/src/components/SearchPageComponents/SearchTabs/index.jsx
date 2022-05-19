@@ -17,6 +17,7 @@ const SearchTabs = ({
   return (
     <TabGroup
       value={index}
+      onValueChange={() => onChange()}
       setValue={() => onChange()}
       tabsInfo={categories}
     />
