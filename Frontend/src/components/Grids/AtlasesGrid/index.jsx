@@ -5,7 +5,7 @@ import AtlasCard from 'components/Cards/AtlasCard';
 import styles from './atlasesGrid.module.css';
 
 const AtlasesGrid = ({
-  atlases, path, selectedAtlas, handleAtlasSelection,
+  atlases, path, selectedAtlas = null, handleAtlasSelection = null,
 }) => (
   <Box className={styles.atlasContainer} maxHeight="50vh" mb="2em">
     <Grid container spacing={3}>
@@ -18,7 +18,7 @@ const AtlasesGrid = ({
             modalities={atlas.modalities}
             title={atlas.name}
             learnMoreLink={`${path}/atlases/${atlas._id}`}
-            onSelect={() => handleAtlasSelection(atlas)}
+            onSelect={() => { if(handleAtlasSelection) handleAtlasSelection(atlas) }}
             selected={selectedAtlas && selectedAtlas.name === atlas.name}
           />
         </Grid>
