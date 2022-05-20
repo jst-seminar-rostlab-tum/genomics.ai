@@ -21,7 +21,7 @@ const groupBy = (data, cat) => {
 }
 
 
-const addBarPlot = (barContainer, data, groupedBy, title, size) => {
+const addBarPlot = (barContainer, data, groupedBy, title, w, h) => {
   const svg = d3.select(barContainer).append("svg");
   const marginBottom = 85;
   const plotTitleOffset = 25;
@@ -30,20 +30,20 @@ const addBarPlot = (barContainer, data, groupedBy, title, size) => {
   //const h = 270;
 
   svg
-    .attr("width", size)
-    .attr("height", size)
+    .attr("width", w)
+    .attr("height", h)
 
   //Scales
   const info = Array.from(groupedBy).filter(d => d[0] !== undefined).map(d => [d[0], d[1].length]);
   const labels = Array.from(groupedBy.keys()).filter(d => d !== undefined);
-  const xScale = d3.scaleBand().domain(labels).range([marginBottom, size]).padding(0.4);
-  const yScale = d3.scaleLinear().domain([0, data.length]).range([size, marginBottom + plotTitleOffset]);
+  const xScale = d3.scaleBand().domain(labels).range([marginBottom, w]).padding(0.4);
+  const yScale = d3.scaleLinear().domain([0, data.length]).range([h, marginBottom + plotTitleOffset]);
 
 
   const g = svg.append("g")
   let fontSizeTitle;
   let fontSizeOther;
-  if (size > 350) {
+  if (h > 350) {
     fontSizeTitle = "20px";
     fontSizeOther = "15px";
   } else {
@@ -62,20 +62,19 @@ const addBarPlot = (barContainer, data, groupedBy, title, size) => {
 
   //Axes
   const xAxis = d3.axisBottom(xScale);
-  const yAxis = d3.axisLeft(yScale).tickFormat(d => d).ticks(5).tickSize(-size);
+  const yAxis = d3.axisLeft(yScale).tickFormat(d => d).ticks(5).tickSize(-h);
 
 
   g.append("g")
     .attr("id", "x-axis")
     .attr("class", "x-axis")
-    .attr("transform", "translate(0, " + (size - marginBottom) + ")")
+    .attr("transform", "translate(0, " + (h - marginBottom) + ")")
     .call(xAxis)
     .selectAll("text")
     .attr("transform", "translate(-10,0)rotate(-45)")
     .style("text-anchor", "end")
     .style("color", "black")
     .attr("font-size", fontSizeOther);
-
 
 
   g.append("g")
@@ -89,7 +88,6 @@ const addBarPlot = (barContainer, data, groupedBy, title, size) => {
     .attr("font-size", fontSizeOther);
 
 
-
   g.append("g")
     .attr("id", "bars")
     .selectAll("rect")
@@ -101,10 +99,9 @@ const addBarPlot = (barContainer, data, groupedBy, title, size) => {
     .attr("y", (d) => yScale(d[1]))
     .attr("width", xScale.bandwidth())
     .attr("height", (d) => {
-      return size - yScale(d[1])
+      return h - yScale(d[1])
     })
     .attr("transform", "translate( 0, " + (-marginBottom) + ")")  
-
 
     g.append("g")
     .attr("id", "labels")
@@ -118,17 +115,16 @@ const addBarPlot = (barContainer, data, groupedBy, title, size) => {
     .attr("dy", ".75em")
     .text((d) => d[1])
     .attr("fill", "black")
-    .attr("font-size", fontSizeOther)
-
+    .attr("font-size", fontSizeOther);
      
 }
 
-export const addBarPlotCell = (barContainer, data, size) =>{
+export const addBarPlotCell = (barContainer, data, w, h) =>{
   const groupedByCellTypes = groupBy(data, "cell_type");
-  addBarPlot(barContainer, data, groupedByCellTypes, "#Cells per Cell Type", size);
+  addBarPlot(barContainer, data, groupedByCellTypes, "#Cells per Cell Type", w, h);
 }
 
-export const addBarPlotBatch = (barContainer, data, size) =>{
+export const addBarPlotBatch = (barContainer, data, w, h) =>{
   const groupedByBatch = groupBy(data, "batch");
-  addBarPlot(barContainer, data, groupedByBatch, "#Cells per Batch", size);
+  addBarPlot(barContainer, data, groupedByBatch, "#Cells per Batch", w, h);
 }
