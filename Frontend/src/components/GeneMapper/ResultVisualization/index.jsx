@@ -3,6 +3,7 @@ import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import ZoomOutIcon from '@mui/icons-material/ZoomOut';
 import PublicIcon from '@mui/icons-material/Public';
 import BiotechIcon from '@mui/icons-material/Biotech';
+import BlurOnIcon from '@mui/icons-material/BlurOn';
 import {
   Box, CircularProgress, Divider, IconButton, Tooltip,
 } from '@mui/material';
@@ -35,6 +36,7 @@ function ResultVisualization({ dataUrl, onlyUmap }) {
 
   const [showQuery, setShowQuery] = useState(true);
   const [showReference, setShowReference] = useState(true);
+  const [showPredictions, setShowPredictions] = useState(true);
 
   useEffect(() => {
     csv(dataUrl).then((data) => {
@@ -97,6 +99,28 @@ function ResultVisualization({ dataUrl, onlyUmap }) {
         }}
       >
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          {umap
+          && Object.keys(umap.coloringModes).includes('predictions')
+          && (
+            <>
+              <Box>
+                <Tooltip title={`${showPredictions ? 'Hide' : 'Show'} predicted data`}>
+                  <IconButton onClick={() => {
+                    setShowPredictions(!showPredictions);
+                    if (showPredictions) {
+                      umap.predictedCellsTransparent();
+                    } else {
+                      umap.predictedCellsVisible();
+                    }
+                  }}
+                  >
+                    <BlurOnIcon sx={{ color: showPredictions ? activatedColor : deactivatedColor }} />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+              <Divider orientation="vertical" flexItem variant="middle" />
+            </>
+          )}
           {
             umap
             && Object.keys(umap.coloringModes).includes('type')
