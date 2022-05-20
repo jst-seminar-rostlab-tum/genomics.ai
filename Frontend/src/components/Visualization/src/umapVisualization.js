@@ -104,6 +104,9 @@ export class UmapVisualization2 {
 
   //Sizing and resizing the cells
   resize(w, h) {
+    if(this.cells === undefined) {
+      return this.render(w, h);
+    }
 
     const min = getMin(w, h);
     const data = this.data;
@@ -137,7 +140,6 @@ export class UmapVisualization2 {
 
   //Constructing the svg
   async render(w, h) {
-
     const data = this.data;
 
     const min = getMin(w, h);
@@ -219,6 +221,11 @@ export class UmapVisualization2 {
       .style('fill', 'white')
       .lower()
       .call(zoomM)
+
+    this.cells
+      .attr("cx", d => xScale(parseFloat(d.x)))
+      .attr("cy", d => yScale(parseFloat(d.y)))
+
   }
 
 }
