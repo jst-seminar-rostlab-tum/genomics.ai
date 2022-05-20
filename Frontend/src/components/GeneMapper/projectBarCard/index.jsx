@@ -26,6 +26,7 @@ import { TabCard } from '../TabCard';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { GeneralCard } from 'components/Cards/GeneralCard';
 import ProjectInfo from '../ProjectInfo';
+import { initSubmissionProgress, useSubmissionProgress } from 'shared/context/submissionProgressContext';
 
 function ProcessingStatus() {
   return (
@@ -47,9 +48,27 @@ function CanceldOrFailedStatus() {
 }
 
 export default function ProjectBarCard({
-  project, atlas, model, submissionProgress, cancelUpload, handleDelete, userTeams, addProjectToTeam,
+  project, atlas, model, userTeams, handleDelete,
 }) {
   const history = useHistory();
+  const [submissionProgresses, setSubmissionProgresses] = useSubmissionProgress();
+
+  const submissionProgress = submissionProgresses[project._id];
+
+  const cancelUpload = () => {
+    setSubmissionProgresses((prev) => ({
+      ...prev,
+      [project._id]: {
+        ...(prev[project._id] ?? initSubmissionProgress(project.uploadId)),
+        status: MULTIPART_UPLOAD_STATUS.CANCELING,
+      },
+    }));
+    localStorage.setItem(`cancelUpload_${project.uploadId}`, '1');
+  };
+
+  const addProjectToTeam = async (teamId) => {
+    TeamService.addProject(teamId, project._id);
+  };
 
   const color = project.status === PROJECT_STATUS.DONE
     ? 'lightGreen'
