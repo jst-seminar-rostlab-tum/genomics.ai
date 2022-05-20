@@ -1,21 +1,10 @@
 import React, { useCallback, useState } from 'react';
-import {
-  Stack, ThemeProvider, createTheme, Typography, TextField, Button,
-} from '@mui/material';
-import styles from './help.module.css';
+import { Box, Typography, Button, Stack, TextField, TextareaAutosize } from "@mui/material";
+import Input from 'components/Input/Input'
+import HeaderView from 'components/general/HeaderView';
+import CustomButton from "components/CustomButton";
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#0075FF',
-    },
-    secondary: {
-      main: '#FFFFFF',
-    },
-  },
-});
-
-function Documentation() {
+export default function Help({ sidebarShown }) {
   const [contactDetails, setContactDetails] = useState({
     message: '',
   });
@@ -44,67 +33,40 @@ function Documentation() {
   };
 
   return (
+    <HeaderView
+      sidebarShown={sidebarShown}
+      title="Contact Us"
+    >
 
-    <ThemeProvider theme={theme}>
-      <Stack
-        direction="column"
-        sx={{
-          paddingTop: '100px',
-          paddingLeft: '130px',
-          paddingRight: '30px',
-          display: 'flex',
-          width: '100%',
-          justifyContent: 'center',
-        }}
-        spacing={1}
-      >
-        <div className={styles.title}>
-          <h1>Help</h1>
-        </div>
+      <Box sx={{margin: "2em auto", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center"}}>
+        <Typography fontWeight="bold" fontSize="1.5em">Please describe to us the problem you are experiencing in the contact form below.</Typography>
+      </Box>
 
-        <Stack direction="column" spacing={4}>
-          <Stack spacing={0.5}>
-            <Typography sx={{ fontSize: '20px' }}>
-              Please describe to us the problem you are experiencing.
-            </Typography>
-            <Typography sx={{ fontSize: '20px' }}>
-              We will get back to you within the next 48 hours.
-            </Typography>
+      <Box sx={{margin: "2em auto", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center"}}>
+        <Typography fontWeight="bold" fontSize="1.5em">We will get back to you as soon as possible.</Typography>
+      </Box>
+
+      <Box sx={{ position: "relative", width: "60vw", margin: "3em auto" }} >
+        <Box sx={{
+          width: "100%",
+          margin: "2em 0 0em 0",
+          padding: "2em 0em",
+          boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.10), 0px 0px 1px rgba(0, 0, 0, 0.20)",
+          borderRadius: "10px"
+        }}>
+          <Stack sx={{ width: "80%", margin: "auto" }} direction="column" spacing={4}>
+            <Stack direction="row" justifyContent="space-between" spacing={2}>
+              <Input isRequired label="Email" />
+              <Input isRequired label="First Name" />
+              <Input isRequired label="Last Name" />
+            </Stack>
+            <Input isRequired label="Message" multiline maxLength={1000} />
+            <Box sx={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
+              <CustomButton>Send</CustomButton>
+            </Box>
           </Stack>
-
-          <TextField
-            id="message"
-            label="Please describe your problem"
-            placeholder="Enter your message"
-            variant="filled"
-            multiline
-            rows={8}
-            rowsMax={20}
-            value={contactDetails.message}
-            onChange={handleTextChange}
-            required
-            type="text"
-            sx={{ maxWidth: '1000px' }}
-          />
-
-          <Button
-            variant="contained"
-            style={{
-              height: '60px', width: '180px', borderRadius: '10px', fontWeight: 'bold',
-            }}
-            size="large"
-            onClick={formSubmit}
-            color="primary"
-          >
-            Send
-          </Button>
-        </Stack>
-
-      </Stack>
-
-    </ThemeProvider>
-
+        </Box>
+      </Box>
+    </HeaderView>
   );
 }
-
-export default Documentation;
