@@ -13,6 +13,7 @@ function InstitutionTeamList({ onLeft, institution }) {
       .then((newTeams) => {
         setTeams(newTeams);
         setTeamsLoaded(true);
+        console.log(teams);
       });
   }, []);
 

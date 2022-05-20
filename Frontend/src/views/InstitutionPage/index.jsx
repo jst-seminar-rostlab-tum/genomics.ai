@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import EditIcon from '@mui/icons-material/ModeEditOutline';
+import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import InstitutionMemberList from 'components/institutions/InstitutionMemberList';
 import styles from './institutionPage.module.css';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -24,24 +25,18 @@ function InstitutionPage() {
     return (institution.adminIds || []).includes(user._id);
   }
 
+  function editDetails() {
+    // eslint-disable-next-line max-len
+    const details = { description: institution.description };
+    const jsonDetails = JSON.stringify(details);
+    alert(jsonDetails);
+    InstitutionService.updateDetails(id, jsonDetails);
+  }
+
   const handleDescriptionChange = (event) => {
     setInstitution({
       ...institution,
       description: event.target.value,
-    });
-  };
-
-  const handleCountryChange = (event) => {
-    setInstitution({
-      ...institution,
-      country: event.target.value,
-    });
-  };
-
-  const handleNameChange = (event) => {
-    setInstitution({
-      ...institution,
-      name: event.target.value,
     });
   };
 
@@ -51,6 +46,7 @@ function InstitutionPage() {
         setInstitution(newInstitution);
         setInstitutionLoaded(true);
       });
+    console.log(institution);
   }, []);
 
   function onLeft(/* team */) {
@@ -67,7 +63,7 @@ function InstitutionPage() {
         className={styles.background}
         style={{
           backgroundImage: `url(${institution.backgroundPictureURL || defaultBackgroundPicture
-            })`,
+          })`,
           resizeMode: 'stretch',
         }}
       >
@@ -104,11 +100,10 @@ function InstitutionPage() {
               },
             }}
             InputProps={{
-              readOnly: !isAdmin(),
               disableUnderline: true,
+              readOnly: true,
             }}
             style={{ width: '700px' }}
-            onChange={handleNameChange}
             variant="standard"
           />
         </div>
@@ -128,11 +123,10 @@ function InstitutionPage() {
               },
             }}
             InputProps={{
-              readOnly: !isAdmin(),
               disableUnderline: true,
+              readOnly: true,
             }}
             style={{ width: '300px' }}
-            onChange={handleCountryChange}
             variant="standard"
           />
         </div>
@@ -155,6 +149,16 @@ function InstitutionPage() {
       </div>
       <div className={styles.test}>
         <section>
+          {isAdmin() && (
+            <button
+              className={styles.editDetailsButton}
+              type="button"
+              onClick={() => editDetails()}
+            >
+              <span>Save Edits</span>
+              <SaveOutlinedIcon fontSize="small" />
+            </button>
+          )}
           <h2>Description</h2>
           <hr />
           <TextField

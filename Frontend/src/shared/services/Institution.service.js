@@ -31,7 +31,7 @@ const InstitutionService = MOCK_INSTUTITIONS ? MockInstitutionService : {
   },
 
   async getMembers(institutionId) {
-    return []; // TODO: enable once exists
+    // return []; // TODO: enable once exists
     // eslint-disable-next-line no-unreachable
     const { data } = await axiosInstance.get(`/institutions/${institutionId}/members`);
     return data.map(enhanceMember);
@@ -51,6 +51,10 @@ const InstitutionService = MOCK_INSTUTITIONS ? MockInstitutionService : {
   getTeamsOfInstitutionById: async (id) => {
     const { data } = await axiosInstance.get(`/${MODEL}/${id}/teams`);
     return data;
+  },
+
+  async updateDetails(institutionId, details) {
+    await axiosInstance.put(`/institutions/${institutionId}`, { details });
   },
 };
 
