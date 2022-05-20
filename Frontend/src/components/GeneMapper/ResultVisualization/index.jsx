@@ -4,7 +4,7 @@ import ZoomOutIcon from '@mui/icons-material/ZoomOut';
 import PublicIcon from '@mui/icons-material/Public';
 import BiotechIcon from '@mui/icons-material/Biotech';
 import {
-  Box, CircularProgress, Divider, IconButton,
+  Box, CircularProgress, Divider, IconButton, Tooltip,
 } from '@mui/material';
 import { resetZoom, zoomInN, zoomOutN } from 'components/Visualization/src/newZoom';
 import { UmapVisualization2 } from 'components/Visualization/src/umapVisualization';
@@ -103,30 +103,34 @@ function ResultVisualization({ dataUrl, onlyUmap }) {
             && (
               <>
                 <Box>
-                  <IconButton onClick={() => {
-                    setShowReference(!showReference);
-                    if (showReference) {
-                      setShowQuery(true);
-                      umap.hideReference();
-                    } else {
-                      umap.showReference();
-                    }
-                  }}
-                  >
-                    <PublicIcon sx={{ color: showReference ? activatedColor : deactivatedColor }} />
-                  </IconButton>
-                  <IconButton onClick={() => {
-                    setShowQuery(!showQuery);
-                    if (showQuery) {
-                      setShowReference(true);
-                      umap.hideQuery();
-                    } else {
-                      umap.showQuery();
-                    }
-                  }}
-                  >
-                    <BiotechIcon sx={{ color: showQuery ? activatedColor : deactivatedColor }} />
-                  </IconButton>
+                  <Tooltip title={`${showReference ? 'Hide' : 'Show'} reference data`}>
+                    <IconButton onClick={() => {
+                      setShowReference(!showReference);
+                      if (showReference) {
+                        setShowQuery(true);
+                        umap.hideReference();
+                      } else {
+                        umap.showReference();
+                      }
+                    }}
+                    >
+                      <PublicIcon sx={{ color: showReference ? activatedColor : deactivatedColor }} />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title={`${showQuery ? 'Hide' : 'Show'} query data`}>
+                    <IconButton onClick={() => {
+                      setShowQuery(!showQuery);
+                      if (showQuery) {
+                        setShowReference(true);
+                        umap.hideQuery();
+                      } else {
+                        umap.showQuery();
+                      }
+                    }}
+                    >
+                      <BiotechIcon sx={{ color: showQuery ? activatedColor : deactivatedColor }} />
+                    </IconButton>
+                  </Tooltip>
                 </Box>
                 <Divider orientation="vertical" flexItem variant="middle" />
               </>
