@@ -71,6 +71,7 @@ function UploadFilePage({
           }));
         },
       );
+      history.push(path); // go back to GeneMapper home
     });
   }, [submissionProgress]);
 
@@ -81,7 +82,6 @@ function UploadFilePage({
     setOpen(false); // opens modal to input mapping name
     createProject(mappingName, selectedAtlas._id, selectedModel._id,
       uploadedFile ? uploadedFile[0] : selectedDataset);
-    history.push(`${path}`); // go back to GeneMapper home
   };
 
   const handleSelectDataset = (data) => {
