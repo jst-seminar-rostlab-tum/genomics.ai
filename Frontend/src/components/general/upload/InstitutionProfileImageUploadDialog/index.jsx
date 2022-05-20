@@ -45,7 +45,6 @@ export default function InstitutionProfileImageUploadDialog({
       onClose={onClose}
       title="Upload Institution Profile Image"
       maxFileSizeMB={5}
-      croppable
       preview={(imgURL) => (
         <InstitutionCard
           institution={{ ...institution, profilePictureURL: imgURL }}
