@@ -111,6 +111,16 @@ export class UmapVisualization2 {
     this.after("type", "reference");
   }
 
+  predictedCellsTransparent() {
+    this.cells
+      .style("opacity", (d) => {return d["predicted"] === "True" ? 0.75 : 1 });
+  }
+
+  predictedCellsVisible() {
+    this.cells
+      .style("opacity", 1);
+  }
+
   //Set a color mode
   setColorMode(mode) {
     const colorScale = setColoring(mode, this.data);
