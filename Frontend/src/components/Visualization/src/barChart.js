@@ -21,17 +21,30 @@ const groupBy = (data, cat) => {
 }
 
 
-const addBarPlot = (barContainer, data, groupedBy, title, w, h) => {
+const addBarPlot = (barContainer, data, groupedBy, title, cWidth, cHeight) => {
   const svg = d3.select(barContainer).append("svg");
-  const marginBottom = 85;
   const plotTitleOffset = 25;
   const plotTitleCentered = 25;
   //const w = 270;
   //const h = 270;
-
+  let h = cHeight;
+  let w = cWidth;
   svg
     .attr("width", w)
     .attr("height", h)
+  
+  let fontSizeTitle;
+  let fontSizeOther;
+  let marginBottom;
+  if (h > 350) {
+    fontSizeTitle = "20px";
+    fontSizeOther = "15px";
+    marginBottom = 130;
+  } else {
+    fontSizeTitle = "15px";
+    fontSizeOther = "10px";
+    marginBottom = 85;
+  }
 
   //Scales
   const info = Array.from(groupedBy).filter(d => d[0] !== undefined).map(d => [d[0], d[1].length]);
@@ -41,15 +54,7 @@ const addBarPlot = (barContainer, data, groupedBy, title, w, h) => {
 
 
   const g = svg.append("g")
-  let fontSizeTitle;
-  let fontSizeOther;
-  if (h > 350) {
-    fontSizeTitle = "20px";
-    fontSizeOther = "15px";
-  } else {
-    fontSizeTitle = "15px";
-    fontSizeOther = "10px";
-  }
+  
   //Titel of grafic
   g.append("text")
     .attr("class", "title")
@@ -74,7 +79,7 @@ const addBarPlot = (barContainer, data, groupedBy, title, w, h) => {
     .attr("transform", "translate(-10,0)rotate(-45)")
     .style("text-anchor", "end")
     .style("color", "black")
-    .attr("font-size", fontSizeOther);
+    .attr("font-size", fontSizeOther)
 
 
   g.append("g")
@@ -86,7 +91,7 @@ const addBarPlot = (barContainer, data, groupedBy, title, w, h) => {
     .style("text-anchor", "end")
     .style("color", "black")
     .attr("font-size", fontSizeOther);
-
+    
 
   g.append("g")
     .attr("id", "bars")
