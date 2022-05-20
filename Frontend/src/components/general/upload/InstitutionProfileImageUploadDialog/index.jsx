@@ -5,7 +5,9 @@ import { BACKEND_ADDRESS } from 'shared/utils/common/constants';
 import { getAuthAndJsonHeader } from 'shared/utils/common/utils';
 import InstitutionCard from 'components/institutions/InstitutionCard';
 
-export default function InstitutionProfileImageUploadDialog({ institution, open, onClose }) {
+export default function InstitutionProfileImageUploadDialog({
+  institution, open, onClose, onChange,
+}) {
   async function upload(blob) {
     const response = await fetch(`${BACKEND_ADDRESS}/institutions/${institution.id}/profilepicture`, {
       method: 'POST',
@@ -24,6 +26,7 @@ export default function InstitutionProfileImageUploadDialog({ institution, open,
       }
       throw Error("Couldn't upload institution profile picture");
     }
+    onChange(await response.text());
     onClose();
   }
 
@@ -32,6 +35,7 @@ export default function InstitutionProfileImageUploadDialog({ institution, open,
       method: 'DELETE',
       headers: getAuthAndJsonHeader(),
     });
+    onChange(null);
     onClose();
   }
 
@@ -44,8 +48,8 @@ export default function InstitutionProfileImageUploadDialog({ institution, open,
       croppable
       preview={(imgURL) => (
         <InstitutionCard
-          institution={{ ...institution, avatarUrl: imgURL }}
-          showTrailing={false}
+          institution={{ ...institution, profilePictureURL: imgURL }}
+          replaceTrailing={() => <></>}
         />
       )}
       additionalButtons={[
