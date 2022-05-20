@@ -17,7 +17,7 @@ const addGroup = (svg, id) => {
 
 export class UmapVisualization2 {
 
-  constructor(container, data, containerBar) {
+  constructor(container, data) {
     d3.select(container).selectAll("*").remove();
     this.svg = d3.select(container).append('svg')
         .attr('id', 'vis_svg');
@@ -26,13 +26,40 @@ export class UmapVisualization2 {
     this.coloringModes = getColoringModes(data);
     this.tooltip = d3.select(container).append("div");
     this.mode = undefined;
-    this.barChartBatch = addBarPlotBatch(containerBar, data);
+    /*this.barChartBatch = addBarPlotBatch(containerBar, data);
     if(Object.keys(this.coloringModes).includes("cell_type")){
       d3.select(containerBar).append("div");
       this.barChartCell = addBarPlotCell(containerBar, data);
-    }
+    }*/
     this.data = data;
+    this.graphs = ["batch", "cell"];
+    //this.drawGraph(containerBar, "batch", 270, 270);
+    //this.drawGraph(containerBar, "cell", 270, 270);
   };
+
+  getAvailableGraphs() {
+    return this.graphs;
+  }
+
+  drawGraph(container, graph, width, height) {
+    switch (graph) {
+      case "batch":
+        if(Object.keys(this.coloringModes).includes("batch")){
+          d3.select(container).append("div");
+          addBarPlotBatch(container, this.data, width, height);
+        }
+        break;
+      case "cell":
+        if(Object.keys(this.coloringModes).includes("cell_type")){
+          d3.select(container).append("div");
+          this.barChartCell = addBarPlotCell(container, this.data, width, height);
+        }
+        break;
+      default:
+        break;
+    }
+  
+  }
 
   //Hide
   after(category, value) {
