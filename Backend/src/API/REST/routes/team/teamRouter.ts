@@ -90,16 +90,29 @@ const invite_person_to_a_team = (): Router => {
 
   router.put("/teams/:id/invite", check_auth(), async (req: any, res) => {
     try {
-      const { userId }: { userId: ObjectId } = req.body;
+      const { userId, email }: { userId: ObjectId; email: string } = req.body;
       const teamId: string = req.params.id;
 
-      if (!(userId && teamId)) return res.status(400).send("Missing parameters.");
+      console.log(userId);
+      console.log(email);
+      console.log(teamId);
 
-      const user = await UserService.getUserById(userId);
-      if (!user) return res.status(400).send("User to be invited does not exist.");
+      if (!(teamId && (userId || email))) return res.status(400).send("Missing parameters.");
+
+      var user;
+      if (userId) {
+        user = await UserService.getUserById(userId);
+        console.log(user);
+      } else {
+        user = await UserService.getUserByEmail(email, false);
+        console.log(user);
+      }
+      console.log(user);
+
+      if (!user) return res.status(404).send("User to be invited does not exist.");
 
       const team = await TeamService.getTeamById(teamId);
-      if (!team) return res.status(400).send("Team does not exist.");
+      if (!team) return res.status(404).send("Team does not exist.");
 
       const isAdmin: boolean = await TeamService.isAdmin(userId, team);
       const isMember: boolean = await TeamService.isMember(userId, team);
@@ -109,7 +122,7 @@ const invite_person_to_a_team = (): Router => {
       try {
         const team_updated = await TeamService.addInvitationMemberId(teamId, userId);
         if (!team_updated)
-          return res.status(400).send("Error when adding the user to members of the team.");
+          return res.status(500).send("Error when adding the user to members of the team.");
 
         try {
           await mailer.send(
@@ -140,7 +153,7 @@ const invite_person_to_a_team = (): Router => {
       console.error("Error in invite_person_to_a_project()");
       console.error(JSON.stringify(e));
       console.error(e);
-      return res.status(500).send("Internal error.");
+      return res.status(500).send("Server internal error.");
     }
   });
 
@@ -623,7 +636,7 @@ const get_members_of_team = (): Router => {
 const get_projects_of_team = (): Router => {
   let router = express.Router();
   router.get("/teams/:id/projects", check_auth(), async (req: Request, res: Response) => {
-    const { ObjectId } = require('mongodb');
+    const { ObjectId } = require("mongodb");
     const teamId = ObjectId(req.params.id);
     try {
       const projects = await ProjectService.getProjectsOfTeams([teamId]);
