@@ -34,9 +34,12 @@ export const TabCard = ({ width, height, data, handleOnClick, selected}) => {
                     ':disabled': { backgroundColor: '#EBEFFF', transition: '0.4s', color: colors.primary[600] }
                 }}}
             >
-                <Stack direction="row" spacing={4} p='0.1em' pl='0.3em'>
+                <Stack p='0.1em' pl='0.3em'>
                     <Typography variant='body1'>
                         {data.name}
+                    </Typography>
+                    <Typography variant='caption'>
+                        {data.visibility}
                     </Typography>
                 </Stack>
             </Box>

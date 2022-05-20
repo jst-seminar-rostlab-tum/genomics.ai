@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import {
-  Typography, createTheme, ThemeProvider, Stack, TextField,
+  Typography, createTheme, ThemeProvider, Stack, TextField, Alert
 } from '@mui/material';
 import PlusIcon from 'components/GeneMapper/plusIcon';
 import ProjectBarCard from 'components/GeneMapper/projectBarCard';
@@ -20,14 +20,6 @@ const theme = createTheme({
       main: '#000000',
     },
     secondary: {
-      main: '#5676E4',
-    },
-  },
-});
-
-const themeIcon = createTheme({
-  palette: {
-    primary: {
       main: '#5676E4',
     },
   },
@@ -93,12 +85,11 @@ function GeneMapperHome() {
           <Stack direction="row" className="stack" alignItems="Center">
 
             <Typography variant="h5" sx={{ pr: 1 }}>Your Mappings</Typography>
-            <ThemeProvider theme={themeIcon}>
-              <PlusIcon />
-            </ThemeProvider>
+            <PlusIcon />
           </Stack>
           <TextField
             id="outlined-basic"
+            sx={{ width: '32.7ch' }}
             label={(
               <Stack direction="row">
                 <SearchIcon />
@@ -111,6 +102,11 @@ function GeneMapperHome() {
             onChange={(e) => setFindString(e.target.value)}
           />
         </Box>
+        { projects.filter(p => !(window.localStorage.getItem('DeletedProjects') ?? []).includes(p._id)).length == 0 &&
+        <Alert severity="info">
+          You have not created any mappings yet. Create one by clicking the Plus-Icon or learn more about ScArches by clicking the Help-Icon next to the title.
+        </Alert>
+        }
         <div>
           {projects
             .filter((project) => (
