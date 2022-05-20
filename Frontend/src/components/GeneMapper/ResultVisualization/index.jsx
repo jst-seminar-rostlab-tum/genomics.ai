@@ -115,7 +115,9 @@ function ResultVisualization({ dataUrl, onlyUmap }) {
                     }
                   }}
                   >
-                    <BlurOnIcon sx={{ color: showPredictions ? activatedColor : deactivatedColor }} />
+                    <BlurOnIcon
+                      sx={{ color: showPredictions ? activatedColor : deactivatedColor }}
+                    />
                   </IconButton>
                 </Tooltip>
               </Box>
@@ -133,13 +135,16 @@ function ResultVisualization({ dataUrl, onlyUmap }) {
                       setShowReference(!showReference);
                       if (showReference) {
                         setShowQuery(true);
+                        umap.showQuery();
                         umap.hideReference();
                       } else {
                         umap.showReference();
                       }
                     }}
                     >
-                      <PublicIcon sx={{ color: showReference ? activatedColor : deactivatedColor }} />
+                      <PublicIcon
+                        sx={{ color: showReference ? activatedColor : deactivatedColor }}
+                      />
                     </IconButton>
                   </Tooltip>
                   <Tooltip title={`${showQuery ? 'Hide' : 'Show'} query data`}>
@@ -147,6 +152,7 @@ function ResultVisualization({ dataUrl, onlyUmap }) {
                       setShowQuery(!showQuery);
                       if (showQuery) {
                         setShowReference(true);
+                        umap.showReference();
                         umap.hideQuery();
                       } else {
                         umap.showQuery();
