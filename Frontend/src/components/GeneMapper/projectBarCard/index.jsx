@@ -210,7 +210,7 @@ export default function ProjectBarCard({
                     mr: 1,
                   }}
                   style={{ textTransform: 'none' }}
-                  onClick={() => history.push(`./genemapper/result/${project._id}`)}
+                  onClick={() => history.push(`/sequencer/genemapper/result/${project._id}`)}
                   disabled={project.status !== 'DONE'}
                 >
                   See Results
