@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import {
-  TextField, Dialog, DialogActions, DialogContent,
-  DialogContentText, DialogTitle, Button, Fab, Snackbar, Alert,
+  TextField, DialogActions, DialogContent,
+  DialogContentText, Fab, Snackbar, Alert,
 } from '@mui/material';
+import { Modal, ModalTitle } from 'components/Modal';
+import Button from 'components/CustomButton';
 import PersonAddOutlinedIcon from '@mui/icons-material/PersonAddOutlined';
 
 function TeamInviteButton({ team }) {
@@ -49,18 +51,16 @@ function TeamInviteButton({ team }) {
       >
         <PersonAddOutlinedIcon />
       </Fab>
-      <Dialog
-        open={dialogOpen}
-        onClose={handleCloseDialog}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
+      <Modal
+        isOpen={dialogOpen}
+        setOpen={(o) => !o && handleCloseDialog()}
         fullWidth
       >
-        <DialogTitle id="alert-dialog-title">
+        <ModalTitle>
           Invite User
-        </DialogTitle>
+        </ModalTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
+          <DialogContentText>
             {`Invite a user to your team "${team.name}"`}
           </DialogContentText>
           <TextField
@@ -78,12 +78,12 @@ function TeamInviteButton({ team }) {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialog}>Cancel</Button>
+          <Button type="tertiary" onClick={handleCloseDialog}>Cancel</Button>
           <Button onClick={handleTeamInvite} autoFocus>
             Confirm
           </Button>
         </DialogActions>
-      </Dialog>
+      </Modal>
       <Snackbar
         open={open}
         autoHideDuration={3000}

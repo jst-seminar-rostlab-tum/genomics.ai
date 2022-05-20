@@ -1,5 +1,5 @@
 import React from 'react';
-import Card from '@mui/material/Card';
+import { GeneralCard as Card } from 'components/Cards/GeneralCard';
 import Avatar from '@mui/material/Avatar';
 import styles from './listCard.module.css';
 import stringColor from 'shared/utils/stringColor';
@@ -23,8 +23,15 @@ function ListCard({
     );
   }
   return (
-    <Card sx={{ border: '1px solid #c8c8c8', boxShadow: '0 0 4px rgba(111, 111, 111, 0.25)' }} elevation={0}>
-      <div className={styles.cardContent} onClick={onClick} onKeyPress={onClick} role="button" tabIndex={0}>
+    <Card>
+      <div
+        className={`${styles.cardContent}
+        ${onClick ? styles.clickable : ''}`}
+        onClick={onClick}
+        onKeyPress={onClick}
+        role="button"
+        tabIndex={0}
+      >
         <div className={styles.start}>
           <div className={styles.cardImageWrapper}>
             {imageComponentUsed}

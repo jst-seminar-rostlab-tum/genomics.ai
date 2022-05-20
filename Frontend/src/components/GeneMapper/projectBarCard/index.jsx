@@ -26,6 +26,7 @@ import { TabCard } from '../TabCard';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { GeneralCard } from 'components/Cards/GeneralCard';
 import ProjectInfo from '../ProjectInfo';
+import { initSubmissionProgress, useSubmissionProgress } from 'shared/context/submissionProgressContext';
 
 function ProcessingStatus() {
   return (
@@ -47,9 +48,27 @@ function CanceldOrFailedStatus() {
 }
 
 export default function ProjectBarCard({
-  project, atlas, model, submissionProgress, cancelUpload, handleDelete, userTeams, addProjectToTeam,
+  project, atlas, model, userTeams, handleDelete,
 }) {
   const history = useHistory();
+  const [submissionProgresses, setSubmissionProgresses] = useSubmissionProgress();
+
+  const submissionProgress = submissionProgresses[project._id];
+
+  const cancelUpload = () => {
+    setSubmissionProgresses((prev) => ({
+      ...prev,
+      [project._id]: {
+        ...(prev[project._id] ?? initSubmissionProgress(project.uploadId)),
+        status: MULTIPART_UPLOAD_STATUS.CANCELING,
+      },
+    }));
+    localStorage.setItem(`cancelUpload_${project.uploadId}`, '1');
+  };
+
+  const addProjectToTeam = async (teamId) => {
+    TeamService.addProject(teamId, project._id);
+  };
 
   const color = project.status === PROJECT_STATUS.DONE
     ? 'lightGreen'
@@ -57,7 +76,7 @@ export default function ProjectBarCard({
     || (!submissionProgress && project.status === PROJECT_STATUS.UPLOAD_PENDING)
     || project.status === PROJECT_STATUS.PROCESSING_FAILED
     || submissionProgress?.status === MULTIPART_UPLOAD_STATUS.CANCELING
-    || statusIsError(submissionProgress?.status)
+    || (submissionProgress && statusIsError(submissionProgress.status))
       ? 'red'
       : 'orange';
 
@@ -81,12 +100,12 @@ export default function ProjectBarCard({
   };
 
   return (
-    <Box sx={{ mb: 1.5 }}>
+    <Box sx={{ mb: 2 }}>
       <GeneralCard padding={0}>
         <CardActionArea
           disableTouchRipple
           sx={{
-            p: 1, borderRadius: 'inherit',
+            p: 2, borderRadius: 'inherit',
           }}
         >
           <Grid container direction="row" justifyContent="space-between" sx={{ width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -100,7 +119,7 @@ export default function ProjectBarCard({
               onClick={handleClickCard}
             >
               <Grid container item xs={4} alignItems="center">
-                <Box sx={{ flexDirection: 'row', ml: 1, alignItems: 'center' }}>
+                <Box sx={{ flexDirection: 'row', alignItems: 'center' }}>
                   {open ? (
                     <ExpandLess sx={{
                       fontSize: 30,
@@ -177,14 +196,14 @@ export default function ProjectBarCard({
             </Grid>
             <Grid container item md={4} justifyContent="flex-end">
               <Box sx={{
-                p: 0.1, bgcolor: 'background.paper', borderRadius: 3, width: 'flex', mr: 1, display: 'flex', alignItems: 'center',
+                p: 0.1, bgcolor: 'background.paper', borderRadius: 3, width: 'flex', display: 'flex', alignItems: 'center',
               }}
               >
-                {projectTeam?.name
+                {projectTeam?.title
                   ? (
                     <CustomButton type="tertiary" sx={{ mr: 1 }} onClick={() => history.push(`/sequencer/teams/${projectTeam._id || projectTeam.id}`)}>
                       <Typography>
-                        {projectTeam.name}
+                        {projectTeam.title}
                       </Typography>
                     </CustomButton>
                   )
@@ -210,7 +229,7 @@ export default function ProjectBarCard({
                     mr: 1,
                   }}
                   style={{ textTransform: 'none' }}
-                  onClick={() => history.push(`./genemapper/result/${project._id}`)}
+                  onClick={() => history.push(`/sequencer/genemapper/result/${project._id}`)}
                   disabled={project.status !== 'DONE'}
                 >
                   See Results
@@ -275,7 +294,7 @@ export default function ProjectBarCard({
           {userTeams.map(
             (team) => (
               <TabCard
-                data={{ name: team.name, visibility: team.visibility }}
+                data={{ name: team.title, visibility: team.visibility.toLowerCase() }}
                 selected={team?._id === selectedTeam || team?.id === selectedTeam}
                 handleOnClick={() => setSelectedTeam(team?._id || team?.id)}
               />

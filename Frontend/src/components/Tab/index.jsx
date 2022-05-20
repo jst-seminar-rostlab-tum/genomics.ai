@@ -90,7 +90,7 @@ export function TabGroup(props) {
   const position = useLocation();
 
   const {
-    value, setValue, darkBackground, tabsInfo, width = '100%', height = '100%',
+    value, onValueChange, darkBackground, tabsInfo, width = '100%', height = '100%',
   } = props;
 
   const tabsRef = useRef();
@@ -105,7 +105,7 @@ export function TabGroup(props) {
       <Box ref={tabsRef}>
         <Tabs
           value={value}
-          onChange={(_, newValue) => setValue(newValue)}
+          onChange={(_, newValue) => onValueChange(newValue)}
           sx={{
             '& .MuiTabs-indicator': {
               backgroundColor: darkBackground ? 'white' : 'black',

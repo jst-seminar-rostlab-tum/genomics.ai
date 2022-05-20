@@ -31,8 +31,7 @@ import { colors } from 'shared/theme/colors';
  */
 const Input = (props) => { 
 
-  const {helperText, placeholder, errorHandler, disabledHandler, isRequired=true, defaultValue, multiline=false, onChangeEvent=null, label='Required', maxLength=40, type='text'} = props
-  
+  const {id,helperText, placeholder, errorHandler, disabledHandler, isRequired=false, defaultValue, multiline=false, onChangeEvent=null, label='Required', maxLength=40, type='text'} = props
   return (
   <Box
     component="form"
@@ -52,12 +51,12 @@ const Input = (props) => {
       inputProps={{ maxLength }}
       multiline={multiline}
       type={type}
-      id="input"
+      id={id}
       rows={4}
       label={label}
       helperText={helperText}
       variant="standard"
-      onChange={(e) => (onChangeEvent !== null ? onChangeEvent(e.target.value) : null)}
+      onChange={(e) => (onChangeEvent !== null ? onChangeEvent(e) : null)}
     />
   </Box>
 )};
