@@ -76,7 +76,7 @@ export default function ProjectBarCard({
     || (!submissionProgress && project.status === PROJECT_STATUS.UPLOAD_PENDING)
     || project.status === PROJECT_STATUS.PROCESSING_FAILED
     || submissionProgress?.status === MULTIPART_UPLOAD_STATUS.CANCELING
-    || statusIsError(submissionProgress?.status)
+    || (submissionProgress && statusIsError(submissionProgress.status))
       ? 'red'
       : 'orange';
 
