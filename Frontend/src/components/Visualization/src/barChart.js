@@ -21,17 +21,30 @@ const groupBy = (data, cat) => {
 }
 
 
-const addBarPlot = (barContainer, data, groupedBy, title, w, h) => {
+const addBarPlot = (barContainer, data, groupedBy, title, cWidth, cHeight) => {
   const svg = d3.select(barContainer).append("svg");
-  const marginBottom = 85;
   const plotTitleOffset = 25;
   const plotTitleCentered = 25;
   //const w = 270;
   //const h = 270;
-
+  let h = cHeight;
+  let w = cWidth;
   svg
     .attr("width", w)
     .attr("height", h)
+  
+  let fontSizeTitle;
+  let fontSizeOther;
+  let marginBottom;
+  if (h > 350) {
+    fontSizeTitle = "20px";
+    fontSizeOther = "15px";
+    marginBottom = 130;
+  } else {
+    fontSizeTitle = "15px";
+    fontSizeOther = "10px";
+    marginBottom = 85;
+  }
 
   //Scales
   const info = Array.from(groupedBy).filter(d => d[0] !== undefined).map(d => [d[0], d[1].length]);
@@ -41,20 +54,20 @@ const addBarPlot = (barContainer, data, groupedBy, title, w, h) => {
 
 
   const g = svg.append("g")
-
+  
   //Titel of grafic
   g.append("text")
     .attr("class", "title")
     .attr("x", marginBottom + plotTitleCentered)
     .attr("y", 15)
-    .attr("font-size", "15px")
+    .attr("font-size", fontSizeTitle)
     .text(title)
     .style("font-family", "inherit")
     .style("font-weight", 640)
 
   //Axes
   const xAxis = d3.axisBottom(xScale);
-  const yAxis = d3.axisLeft(yScale).tickFormat(d => d).ticks(5).tickSize(-220);
+  const yAxis = d3.axisLeft(yScale).tickFormat(d => d).ticks(5).tickSize(-h);
 
 
   g.append("g")
@@ -66,6 +79,7 @@ const addBarPlot = (barContainer, data, groupedBy, title, w, h) => {
     .attr("transform", "translate(-10,0)rotate(-45)")
     .style("text-anchor", "end")
     .style("color", "black")
+    .attr("font-size", fontSizeOther)
 
 
   g.append("g")
@@ -76,7 +90,8 @@ const addBarPlot = (barContainer, data, groupedBy, title, w, h) => {
     .selectAll("text")
     .style("text-anchor", "end")
     .style("color", "black")
-
+    .attr("font-size", fontSizeOther);
+    
 
   g.append("g")
     .attr("id", "bars")
@@ -101,10 +116,11 @@ const addBarPlot = (barContainer, data, groupedBy, title, w, h) => {
     .append("text")
     .attr("class","label")
     .attr("x", (d) => xScale(d[0]))
-    .attr("y", (d) => yScale(d[1]) - marginBottom - 10)
+    .attr("y", (d) => yScale(d[1]) - marginBottom - 13)
     .attr("dy", ".75em")
     .text((d) => d[1])
     .attr("fill", "black")
+    .attr("font-size", fontSizeOther);
      
 }
 
