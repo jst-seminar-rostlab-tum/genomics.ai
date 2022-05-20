@@ -17,7 +17,7 @@ code {
   width: 0.6em;
 }
 
-::-webkit-scrollbar-track{
+::-webkit-scrollbar-track {
   background: none;
   /* Second Option: '700': '#184060',*/
   background-color: rgba(193, 193, 193, 0.441);

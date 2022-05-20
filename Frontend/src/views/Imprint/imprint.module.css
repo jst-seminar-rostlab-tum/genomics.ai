@@ -1,0 +1,19 @@
+.headerContainer{
+    text-align: center;
+    align-items: center;
+    padding-top: 200px;
+}
+
+.membersContainer{
+    padding-top: 100px;
+}
+
+.textContainer {
+    display: flex;
+    justify-content: center
+}
+
+.subteamSection {
+    display: flex;
+    justify-content: center
+}

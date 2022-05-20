@@ -49,7 +49,7 @@ export default function Footer() {
     <Box
       sx={{
         bgcolor: colors.neutral[200],
-        width: "100vw",
+        width: "100%",
         height: "18vh",
         display: "flex",
         flexDirection: "column",
@@ -81,6 +81,10 @@ export default function Footer() {
       <Box sx={{ width: { xs: "90%", sm: "90%", md: "50%", lg: "50%", xl: "50%" }, margin: "auto", display: "flex", flexDirection: "row", alignItems: "center" }} >
         <CopyrightIcon sx={{ width: "16px", height: "16px" }} />
         <Typography fontSize="16px" fontWeight="bold" >2022</Typography>
+        <Typography fontSize="16px" sx={{ margin: '0 4px' }}> - </Typography>
+        <LinkBox to="/imprint" style={{ textDecoration: "none" }}>
+          <Typography fontSize="16px" color="black">Imprint</Typography>
+        </LinkBox>
       </Box>
     </Box>
   )
