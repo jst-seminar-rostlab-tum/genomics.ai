@@ -41,9 +41,9 @@ function Category({
               title={value}
               color={color}
               key={value}
-              visible={hiddenValue !== value}
-              setVisible={(visible) => {
-                if (visible) show();
+              // visible={hiddenValue !== value}
+              setVisibility={(visible) => {
+                if (visible) show(value);
                 else hide(value);
               }}
             />
@@ -55,14 +55,16 @@ function Category({
 }
 
 function Value({
-  title, color, visible, setVisible,
+  title, color, setVisibility,
 }) {
+  const [visible, setVisible] = useState(true);
+
   return (
     <Box sx={{
       display: 'flex', alignItems: 'center', pl: 3, pr: 2,
     }}
     >
-      <IconButton onClick={() => { setVisible(!visible); }}>
+      <IconButton onClick={() => { setVisible(!visible); setVisibility(!visible); }}>
         { visible
           ? <Visibility sx={{ color }} />
           : <VisibilityOff sx={{ color: deactivatedColor }} />}
@@ -83,7 +85,7 @@ function GeneMapperCategories({
   categories, setColorMode, hide, show,
 }) {
   const [coloredCategoryTitle, setColoredCategoryTitle] = useState(null);
-  const [hiddenValue, setHiddenValue] = useState(null);
+  // const [hiddenValue, setHiddenValue] = useState(null);
 
   const handleSetColorMode = (colorMode) => {
     setColoredCategoryTitle(colorMode);
@@ -116,9 +118,15 @@ function GeneMapperCategories({
                 values={values}
                 colored={title === coloredCategoryTitle}
                 toggleColored={() => handleSetColorMode(title)}
-                hide={(value) => { hide(title, value); setHiddenValue(value); }}
-                show={() => { show(); setHiddenValue(null); }}
-                hiddenValue={hiddenValue}
+                hide={(value) => {
+                  hide(title, value);
+                  // setHiddenValue(value);
+                }}
+                show={(value) => {
+                  show(title, value);
+                  // setHiddenValue(null);
+                }}
+                // hiddenValue={hiddenValue}
               />
             ) : null
         ))

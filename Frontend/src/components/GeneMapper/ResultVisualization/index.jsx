@@ -81,8 +81,8 @@ function ResultVisualization({ dataUrl, onlyUmap }) {
             hide={(category, value) => {
               umap.after(category, value);
             }}
-            show={() => {
-              umap.before();
+            show={(category, value) => {
+              umap.before(category, value);
             }}
           />
         </Sidepanel>
