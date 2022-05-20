@@ -17,11 +17,11 @@ function GeneMapper({ sidebarShown }) {
   const { path, url } = useRouteMatch();
 
   const headerStyle = {
-    color: "#003560",
-    fontSize: "1.6rem",
-    fontWeight: "bold",
-    paddingTop: "20px"
-  } 
+    color: '#003560',
+    fontSize: '1.6rem',
+    fontWeight: 'bold',
+    paddingTop: '20px',
+  };
   const [createOpen, setCreateOpen] = useState(false);
   const [showScarchesInfo, setShowScarchesInfo] = useState(false);
 
@@ -30,18 +30,18 @@ function GeneMapper({ sidebarShown }) {
       <HeaderView
         sidebarShown={sidebarShown}
         title="ScArches Gene Mapper"
-        rightOfTitle={
-        <span>
-          &nbsp; 
-          <HelpIcon
-            onClick={() => setShowScarchesInfo(true)}
-            color='primary'
-            sx={{
-              cursor: 'pointer',
-            }}
-          />
-        </span>
-        }
+        rightOfTitle={(
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          &nbsp;
+            <HelpIcon
+              onClick={() => setShowScarchesInfo(true)}
+              color="primary"
+              sx={{
+                cursor: 'pointer',
+              }}
+            />
+          </Box>
+      )}
       >
         <Switch>
           <Route exact path={`${path}`}>
