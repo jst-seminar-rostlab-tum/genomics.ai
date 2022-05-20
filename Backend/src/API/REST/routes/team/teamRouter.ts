@@ -102,12 +102,9 @@ const invite_person_to_a_team = (): Router => {
       var user;
       if (userId) {
         user = await UserService.getUserById(userId);
-        console.log(user);
       } else {
         user = await UserService.getUserByEmail(email, false);
-        console.log(user);
       }
-      console.log(user);
 
       if (!user) return res.status(404).send("User to be invited does not exist.");
 
@@ -153,7 +150,7 @@ const invite_person_to_a_team = (): Router => {
       console.error("Error in invite_person_to_a_project()");
       console.error(JSON.stringify(e));
       console.error(e);
-      return res.status(500).send("Server internal error.");
+      return res.status(500).send("Server internal error");
     }
   });
 
@@ -337,6 +334,8 @@ const join_member = (): Router => {
           return res.status(500).send("Error when joining a new member into the team.");
 
         const teamRes = await TeamService.getTeamById(teamId);
+        teamRes.memberIds.push(...teamRes.adminIds);
+
         return res.status(200).json(teamRes);
       } catch (err) {
         console.error("Error when trying to join a new member into a given team.");
@@ -390,6 +389,7 @@ const add_team_to_institution = (): Router => {
           return res.status(400).send("Error when associating the team with the institution.");
 
         const team2 = await TeamService.getTeamById(teamId);
+        team2.memberIds.push(...team2.adminIds);
         return res.status(200).json(team2);
       } catch (err) {
         console.error("Error when trying to join the team into the institution.");
@@ -446,6 +446,7 @@ const remove_team_from_institution = (): Router => {
           return res.status(400).send("Error when removing the team from the institution.");
 
         const team = await TeamService.getTeamById(teamId);
+        team.memberIds.push(...team.adminIds);
         return res.status(200).json(team);
       } catch (err) {
         console.error("Error when trying to join the team into the institution.");
@@ -500,6 +501,7 @@ const disjoin_member = (): Router => {
           return res.status(500).send("Error when removing a member from the team.");
 
         const teamRes = await TeamService.getTeamById(teamId);
+        teamRes.memberIds.push(...teamRes.adminIds);
         return res.status(200).json(teamRes);
       } catch (err) {
         console.error("Error when trying to remove a member from a team.");

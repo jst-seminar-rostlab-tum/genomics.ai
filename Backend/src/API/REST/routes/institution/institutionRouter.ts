@@ -330,13 +330,15 @@ const disjoin_member_of_institution = (): Router => {
         return res.status(403).send("You are the only one admin of the institution.");
 
       try {
-        const team_updated = await InstitutionService.removeMemberFromTeam(institutionId, userId);
+        const inst_updated = await InstitutionService.removeMemberFromTeam(institutionId, userId);
 
-        if (!team_updated)
+        if (!inst_updated)
           return res.status(500).send("Error when removing you from the institution.");
 
-        const teamRes = await InstitutionService.getInstitutionById(institutionId);
-        return res.status(200).json(teamRes);
+        const instRes = await InstitutionService.getInstitutionById(institutionId);
+        instRes.memberIds.push(...instRes.adminIds);
+
+        return res.status(200).json(instRes);
       } catch (err) {
         console.error("Error when trying to remove a member from a institution.");
         console.error(JSON.stringify(err));
