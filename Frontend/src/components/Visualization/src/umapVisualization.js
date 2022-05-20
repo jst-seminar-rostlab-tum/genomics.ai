@@ -32,35 +32,82 @@ export class UmapVisualization2 {
       this.barChartCell = addBarPlotCell(containerBar, data);
     }
     this.data = data;
+    this.hiddenCells = [];
   };
+
+  isHidden(cell){
+    for (let i = 0; i < this.hiddenCells.length; i++){
+       if (cell[this.hiddenCells[i][0]] === this.hiddenCells[i][1]) {
+         return true;
+       }
+    }
+    return false;
+  }
 
   //Hide
   after(category, value) {
-    this.cells
-      .style("visibility", (d) => { return d[category] === value ? "hidden" : "visible" });
+    this.addHiddenCell(category, value);
+    this.hideShowCells();
   }
 
+  //Hide
+  /*after(category, value) {
+    this.cells
+      .style("visibility", (d) => { return d[category] === value ? "hidden" : "visible" });
+  }*/
+
   //Show
-  before() {
+  before(category, value) {
+    this.deleteHiddenCell(category, value);
+    console.log(this.hiddenCells);
+    this.hideShowCells();
+  }
+
+  beforeAll() {
+    this.hiddenCells = [];
     this.cells
       .style("visibility", "visible");
   }
 
+  hideShowCells() {
+    this.cells
+      .style("visibility", (d) => { return this.isHidden(d) ? "hidden" : "visible" });
+  }
+
+  addHiddenCell(category, value) {
+    this.hiddenCells.push([category, value]);
+  }
+
+  filterCells(cell) {
+    console.log(this[1]);
+    cell[0] == this[0] && cell[1] == this[1];
+  }
+
+  deleteHiddenCell(category, value) {
+    /*for (let i = 0; i < this.addHiddenCell.length; i++) {
+      if (this.hiddenCells[i][0] == category && this.hiddenCells[i][1] == value) {
+        this.hiddenCells.splice(i, 1);
+      }
+    }*/
+    let thisArg = [category, value];
+    this.hiddenCells = this.hiddenCells.filter(function (cell) {
+      return !(cell[0] == category && cell[1] == value)});
+
+  }
+
   showReference() {
-    this.before();
+    this.before("type", "reference");
   }
 
   showQuery() {
-    this.before();
+    this.before("type", "query");
   }
 
   hideQuery() {
-    this.before();
     this.after("type", "query");
   }
 
   hideReference() {
-    this.before();
     this.after("type", "reference");
   }
 
