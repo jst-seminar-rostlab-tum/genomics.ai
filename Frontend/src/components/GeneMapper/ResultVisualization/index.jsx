@@ -13,6 +13,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import GeneMapperCategories from '../Categories';
 import Sidepanel from '../Sidepanel';
 import { colors } from 'shared/theme/colors';
+import GeneMapperGraphs from '../Graphs';
 
 const activatedColor = colors.primary['400'];
 const deactivatedColor = colors.primary['200'];
@@ -157,7 +158,15 @@ function ResultVisualization({ dataUrl, onlyUmap }) {
       </Box>
       <Box sx={{ display: onlyUmap ? 'none' : 'block' }}>
         <Sidepanel title="Graphs" collapseToRight>
-          <Box ref={graphContainer} />
+          {umap
+          && (
+          <GeneMapperGraphs
+            graphs={umap.getAvailableGraphs()}
+            drawGraph={(container, graph, width, height) => {
+              umap.drawGraph(container, graph, width, height);
+            }}
+          />
+          )}
         </Sidepanel>
       </Box>
     </Box>
