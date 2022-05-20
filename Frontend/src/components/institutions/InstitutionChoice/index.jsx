@@ -1,4 +1,4 @@
-import { Button } from '@mui/material';
+import Button from 'components/CustomButton';
 import React, { useEffect, useState } from 'react';
 import InstitutionService from 'shared/services/Institution.service';
 import InstitutionList from '../InstitutionList';
@@ -33,7 +33,7 @@ function InstitutionChoice({ onChoiceChange }) {
             setChosen(institution.id);
             onChoiceChange(institution.id);
           }}
-          sx={{ color: institution.id === chosen ? 'green' : null }}
+          type={institution.id === chosen ? 'primary' : 'tertiary'}
         >
           {institution.id === chosen ? 'Chosen' : 'Choose'}
         </Button>
