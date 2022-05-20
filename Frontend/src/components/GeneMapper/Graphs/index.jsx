@@ -23,7 +23,8 @@ function GeneMapperGraphs({ graphs, drawGraph }) {
             sx={{ position: 'relative' }}
           >
             <IconButton
-              sx={{ position: 'absolute', top: 0, left: 0 }}
+              size="small"
+              sx={{ position: 'absolute', left: 50 }}
               onClick={() => {
                 setOpen(id);
               }}
