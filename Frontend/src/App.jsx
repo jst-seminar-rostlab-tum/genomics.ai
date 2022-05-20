@@ -7,6 +7,7 @@ import {
 import HomePage from './views/Home';
 import About from './views/About';
 import Imprint from './views/Imprint';
+import Privacy from './views/Privacy';
 import Docs from './views/Docs';
 import Contact from './views/Contact';
 import DashboardContent from './components/DashboardContent';
@@ -35,6 +36,7 @@ function App() {
           <Route path="/result" render={() => <VisualizationPage />} />
           <Route path="/explore" render={() => <Explore />} />
           <Route path="/imprint" render={() => <Imprint />} />
+          <Route path="/privacy" render={() => <Privacy />} />
 
         </Switch>
       </HashRouter>
