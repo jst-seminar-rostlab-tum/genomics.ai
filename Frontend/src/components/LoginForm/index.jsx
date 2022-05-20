@@ -9,7 +9,7 @@ import {
   Typography,
   Link,
 } from "@mui/material";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import validator from "validator";
 import CloseIcon from "@mui/icons-material/Close";
 import { useHistory } from "react-router-dom";
@@ -38,6 +38,12 @@ function LoginForm(props) {
 
   const history = useHistory();
 
+  useEffect(() => {
+    if(localStorage.getItem("email")&&localStorage.getItem("email").length !==0) {
+      setLoginDetails({email:localStorage.getItem("email")})
+    }
+  },[])
+  
   const onClose = useCallback(() => {
     setLoginDetails({
       email: "",
@@ -70,7 +76,7 @@ function LoginForm(props) {
   );
 
   const handlepasswordForget = useCallback(() => {
-    onClose();
+    //onClose();
     setForgotPassword(true);
   }, [setForgotPassword]);
 
@@ -92,9 +98,12 @@ function LoginForm(props) {
   async function onSuccessfulLogin(data) {
     localStorage.setItem("jwt", data.jwt);
     localStorage.setItem("user", JSON.stringify(data.user));
+    if(loginDetails.remember) {
+      localStorage.setItem("email",loginDetails.email);
+    }
     onClose();
+    history.go(0);
     await setUser(data.user);
-    history.push("/sequencer/genemapper");
   }
 
   function onFailedLogin(code) {
@@ -158,7 +167,7 @@ function LoginForm(props) {
   const { close, visible } = props;
   const [isOpen, setIsOpen] = useState(false);
 
-  console.log(loginDetails);
+  
   return (
     <div>
       <Modal setOpen={(o) => !o && onClose()} isOpen={visible}>
@@ -168,6 +177,7 @@ function LoginForm(props) {
             <Input
               id="email"
               type="email"
+              defaultValue={localStorage.getItem("email")}
               error={!!errors.email}
               helperText={errors.email}
               label="E-mail"

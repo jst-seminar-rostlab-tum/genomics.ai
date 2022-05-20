@@ -1,5 +1,5 @@
 import {
-  Typography, Box, Grid, Snackbar, TextField,
+  Typography, Box, Grid, Snackbar,
 } from '@mui/material';
 import React, { useCallback, useState } from 'react';
 import validator from 'validator';
@@ -9,6 +9,7 @@ import { useAuth } from 'shared/context/authContext';
 import Input from 'components/Input/Input';
 import { Modal, ModalTitle } from 'components/Modal';
 import CustomButton from 'components/CustomButton';
+import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead';
 
 function RegistrationForm(props) {
   const [, setUser] = useAuth();
@@ -24,27 +25,46 @@ function RegistrationForm(props) {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [isSnackbarVisible, setSnackbarVisible] = useState(false);
+  const [checkYourEmail, setCheckYourEmail] = useState(false);
 
-  const handleTextChange = useCallback((e) => {
-    setUserDetails((prevState) => ({ ...prevState, [e.target.id]: e.target.value }));
-  }, [setUserDetails]);
+  const handleTextChange = useCallback(
+    (e) => {
+      setUserDetails((prevState) => ({
+        ...prevState,
+        [e.target.id]: e.target.value,
+      }));
+    },
+    [setUserDetails],
+  );
 
   function validateInput() {
     let currentErrors = {};
     if (!validator.isEmail(userDetails.email)) {
-      currentErrors = { ...currentErrors, email: 'A valid e-mail is required!' };
+      currentErrors = {
+        ...currentErrors,
+        email: 'A valid e-mail is required!',
+      };
     }
     if (userDetails.firstname === '') {
-      currentErrors = { ...currentErrors, firstname: 'Please enter your first name!' };
+      currentErrors = {
+        ...currentErrors,
+        firstname: 'Please enter your first name!',
+      };
     }
     if (userDetails.lastname === '') {
-      currentErrors = { ...currentErrors, lastname: 'Please enter your last name!' };
+      currentErrors = {
+        ...currentErrors,
+        lastname: 'Please enter your last name!',
+      };
     }
     if (userDetails.password === '') {
       currentErrors = { ...currentErrors, password: 'Password is required!' };
     }
     if (userDetails.passwordAgain !== userDetails.password) {
-      currentErrors = { ...currentErrors, passwordAgain: 'The passwords must match!' };
+      currentErrors = {
+        ...currentErrors,
+        passwordAgain: 'The passwords must match!',
+      };
     }
     setErrors(currentErrors);
     return !Object.keys(currentErrors).length;
@@ -65,21 +85,32 @@ function RegistrationForm(props) {
   }, [setUserDetails, setErrors, setLoading, props, setUser]);
 
   function onSuccessfulRegistration() {
-    onClose();
-    setSnackbarVisible(true)
+    // onClose();
+    setSnackbarVisible(true);
+    setCheckYourEmail(true);
+    setTimeout(onClose, 5000);
   }
 
   function onFailedRegistration(response) {
     switch (response.status) {
       case 400:
-        setErrors((prevState) => ({ ...prevState, response: 'Please check your input!' }));
+        setErrors((prevState) => ({
+          ...prevState,
+          response: 'Please check your input!',
+        }));
         break;
       case 409:
-        setErrors((prevState) => ({ ...prevState, response: 'Account already exists!' }));
+        setErrors((prevState) => ({
+          ...prevState,
+          response: 'Account already exists!',
+        }));
         break;
       default:
         console.log(response);
-        setErrors((prevState) => ({ ...prevState, response: 'Unknown error, please try again later!' }));
+        setErrors((prevState) => ({
+          ...prevState,
+          response: 'Unknown error, please try again later!',
+        }));
         break;
     }
   }
@@ -101,95 +132,120 @@ function RegistrationForm(props) {
         note: userDetails.affiliation,
       }),
     };
-    fetch(`${BACKEND_ADDRESS}/register`, requestOptions)
-      .then((response) => {
-        setLoading(false);
-        if (response.status === 200 || response.status === 201) {
-          onSuccessfulRegistration();
-        } else {
-          onFailedRegistration(response);
-        }
-        setSnackbarVisible(true);
-      });
+    fetch(`${BACKEND_ADDRESS}/register`, requestOptions).then((response) => {
+      setLoading(false);
+      if (response.status === 200 || response.status === 201) {
+        onSuccessfulRegistration();
+      } else {
+        onFailedRegistration(response);
+      }
+      setSnackbarVisible(true);
+    });
   }, [userDetails, setErrors, setLoading, props, setSnackbarVisible, setUser]);
 
   const { close, visible } = props;
 
   return (
     <div>
-      <Modal
-        setOpen={(o) => !o && onClose()}
-        isOpen={visible}
-      >
-        <ModalTitle>Register new user</ModalTitle>
-        <Box sx={{ width: 500 }}>
-          <Grid sx={{ width: "90%", margin: "auto"}}>
-            <Input
-              id="email"
-              type="email"
-              error={!!errors.email}
-              helperText={errors.email}
-              label="E-mail"
-              placeholder="Enter e-mail address"
-              isRequired
-              onChangeEvent={handleTextChange}
-            />
-            <Input
-              id="firstname"
-              type="text"
-              error={!!errors.firstname}
-              helperText={errors.firstname}
-              label="First name"
-              placeholder="Enter your first name"
-              isRequired
-              onChangeEvent={handleTextChange}
-            />
-            <Input
-              id="lastname"
-              type="text"
-              error={!!errors.lastname}
-              helperText={errors.lastname}
-              label="Last name"
-              placeholder="Enter your last name"
-              isRequired
-              onChangeEvent={handleTextChange}
-            />
-            <Input
-              id="affiliation"
-              error={!!errors.affiliation}
-              helperText={errors.affiliation}
-              label="Academic affiliation"
-              type="text"
-              placeholder="Enter your university, company or etc."
-              onChangeEvent={handleTextChange}
-            />
-            <Input
-              id="password"
-              error={!!errors.password}
-              helperText={errors.password}
-              label="Password"
-              type="password"
-              placeholder="Enter password"
-              isRequired
-              onChangeEvent={handleTextChange}
-            />
-            <Input
-              id="passwordAgain"
-              error={!!errors.passwordAgain}
-              helperText={errors.passwordAgain}
-              label="Password again"
-              type="password"
-              placeholder="Enter your password again"
-              isRequired
-              onChangeEvent={handleTextChange}
-            />
-            <Box mt={1}>
-              <CustomButton type="primary" sx={{ mr: "auto", width: "100%" }} onClick={doRegistration}>
-                <Typography>Sign up</Typography>
-              </CustomButton>
+      <Modal setOpen={(o) => !o && onClose()} isOpen={visible}>
+        {checkYourEmail === true ? (
+          <Modal isOpen={checkYourEmail} setOpen={(o) => !o && onClose()}>
+            <ModalTitle>Verify your email!</ModalTitle>
+            <Box sx={{
+              display: 'flex', flexDirection: 'column', rowGap: 2, padding: 2,
+            }}
+            >
+              <Box sx={{ display: 'flex' }}>
+                <MarkEmailReadIcon color="primary" />
+                <Typography style={{ paddingLeft: 8 }}>
+                  Registration Successful. We sent you a
+                  {' '}
+                  <b>confirmation email.</b>
+                </Typography>
+              </Box>
+              <Typography>
+                You can complete your registration by confirming your e-mail
+                address.
+              </Typography>
             </Box>
-          </Grid>
-        </Box>
+          </Modal>
+        ) : (
+          <>
+            <ModalTitle>Register new user</ModalTitle>
+            <Box sx={{ width: 500 }}>
+              <Grid sx={{ width: '90%', margin: 'auto' }}>
+                <Input
+                  id="email"
+                  type="email"
+                  error={!!errors.email}
+                  helperText={errors.email}
+                  label="E-mail"
+                  placeholder="Enter e-mail address"
+                  isRequired
+                  onChangeEvent={handleTextChange}
+                />
+                <Input
+                  id="firstname"
+                  type="text"
+                  error={!!errors.firstname}
+                  helperText={errors.firstname}
+                  label="First name"
+                  placeholder="Enter your first name"
+                  isRequired
+                  onChangeEvent={handleTextChange}
+                />
+                <Input
+                  id="lastname"
+                  type="text"
+                  error={!!errors.lastname}
+                  helperText={errors.lastname}
+                  label="Last name"
+                  placeholder="Enter your last name"
+                  isRequired
+                  onChangeEvent={handleTextChange}
+                />
+                <Input
+                  id="affiliation"
+                  error={!!errors.affiliation}
+                  helperText={errors.affiliation}
+                  label="Academic affiliation"
+                  type="text"
+                  placeholder="Enter your university, company or etc."
+                  onChangeEvent={handleTextChange}
+                />
+                <Input
+                  id="password"
+                  error={!!errors.password}
+                  helperText={errors.password}
+                  label="Password"
+                  type="password"
+                  placeholder="Enter password"
+                  isRequired
+                  onChangeEvent={handleTextChange}
+                />
+                <Input
+                  id="passwordAgain"
+                  error={!!errors.passwordAgain}
+                  helperText={errors.passwordAgain}
+                  label="Password again"
+                  type="password"
+                  placeholder="Enter your password again"
+                  isRequired
+                  onChangeEvent={handleTextChange}
+                />
+                <Box mt={1}>
+                  <CustomButton
+                    type="primary"
+                    sx={{ mr: 'auto', width: '100%' }}
+                    onClick={doRegistration}
+                  >
+                    <Typography>Sign up</Typography>
+                  </CustomButton>
+                </Box>
+              </Grid>
+            </Box>
+          </>
+        )}
       </Modal>
       <Snackbar
         open={isSnackbarVisible}
@@ -201,7 +257,9 @@ function RegistrationForm(props) {
           sx={{ width: '100%' }}
           onClose={() => setSnackbarVisible(false)}
         >
-          {errors.response ? errors.response : 'Successful registration, check your e-mails for verification!'}
+          {errors.response
+            ? errors.response
+            : 'Successful registration, check your e-mails for verification!'}
         </Alert>
       </Snackbar>
     </div>
@@ -209,5 +267,3 @@ function RegistrationForm(props) {
 }
 
 export default RegistrationForm;
-
-// TODO: make the popup more modern and nice
