@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Box, IconButton, Modal } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 import ZoomOutMapIcon from '@mui/icons-material/ZoomOutMap';
-import GraphModal from '../GraphModal';
+import { Modal } from 'components/Modal';
 
 function GeneMapperGraphs({ graphs, drawGraph }) {
   const graphContainers = useRef({});
@@ -33,15 +33,11 @@ function GeneMapperGraphs({ graphs, drawGraph }) {
           </Box>
         ))}
       </Box>
-      {open
-        ? (
-          <Modal open onClose={() => setOpen('')}>
-            <Box bgcolor="red" height="500px" flex alignItems="center" justifyItems="center">
-              <GraphModal draw={(container, w, h) => drawGraph(container, open, w, h)} />
-            </Box>
-          </Modal>
-        )
-        : null}
+
+      <Modal isOpen={open} setOpen={() => setOpen('')}>
+        <Box ref={(elem) => drawGraph(elem, open, 500, 500)} />
+      </Modal>
+
     </>
   );
 }
