@@ -13,7 +13,7 @@ function ProfileImage({ sizePixels, editable = false, overrideProfileImage = nul
   async function loadUser() {
     setUser(await ProfileService.getProfile());
   }
-  useEffect(loadUser, [setUser]);
+  useEffect(loadUser, []);
 
   const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
 

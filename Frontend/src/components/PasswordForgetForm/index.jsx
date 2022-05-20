@@ -35,7 +35,7 @@ function PasswordForgetForm(props) {
     setEmail('');
     setErrors({});
     props.onClose();
-  }, [setEmail, setErrors, props]);
+  }, [props]);
 
   function onSendClick() {
     if (!validateInput()) {

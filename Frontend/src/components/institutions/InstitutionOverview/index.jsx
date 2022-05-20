@@ -9,12 +9,14 @@ import InstitutionService from 'shared/services/Institution.service';
 function InstitutionOverview() {
   const [institutions, setInstitutions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  useEffect(async () => {
+  useEffect(() => {
     setIsLoading(true);
-    const newInstitutions = await InstitutionService.getMyInstitutions();
-    setInstitutions(newInstitutions);
-    setIsLoading(false);
-  }, [setInstitutions, setIsLoading]);
+    InstitutionService.getMyInstitutions()
+      .then((newInstitutions) => {
+        setInstitutions(newInstitutions);
+        setIsLoading(false);
+      });
+  }, []);
 
   function onLeft(institution) {
     setInstitutions(institutions.filter((i) => i.id !== institution.id));
