@@ -113,7 +113,7 @@ export class UmapVisualization2 {
 
   predictedCellsTransparent() {
     this.cells
-      .style("opacity", (d) => {return d["predicted"] === "True" ? 0.75 : 1 });
+      .style("opacity", (d) => {return d["predictions"] === "True" ? 0.3 : 0.85 });
   }
 
   predictedCellsVisible() {
