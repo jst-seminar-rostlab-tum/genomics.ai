@@ -12,7 +12,7 @@ const activatedColor = colors.primary['400'];
 const deactivatedColor = colors.primary['200'];
 
 function Category({
-  title, values, colored, toggleColored, hide, show, hiddenValue,
+  title, values, colored, toggleColored, hide, show, // hiddenValue,
 }) {
   const [open, setOpen] = useState(false);
 
@@ -42,10 +42,12 @@ function Category({
               color={color}
               key={value}
               // visible={hiddenValue !== value}
-              setVisibility={(visible) => {
-                if (visible) show(value);
-                else hide(value);
-              }}
+              // setVisible={(visible) => {
+              //   if (visible) show(value);
+              //   else hide(value);
+              // }}
+              hide={() => hide(value)}
+              show={() => show(value)}
             />
           ))}
         </Box>
@@ -55,7 +57,7 @@ function Category({
 }
 
 function Value({
-  title, color, setVisibility,
+  title, color, hide, show, // visible, setVisible
 }) {
   const [visible, setVisible] = useState(true);
 
@@ -64,7 +66,15 @@ function Value({
       display: 'flex', alignItems: 'center', pl: 3, pr: 2,
     }}
     >
-      <IconButton onClick={() => { setVisible(!visible); setVisibility(!visible); }}>
+      <IconButton onClick={() => {
+        if (visible) {
+          hide();
+        } else {
+          show();
+        }
+        setVisible(!visible);
+      }}
+      >
         { visible
           ? <Visibility sx={{ color }} />
           : <VisibilityOff sx={{ color: deactivatedColor }} />}
