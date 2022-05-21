@@ -35,6 +35,14 @@ const TeamService = MOCK_TEAMS ? MockTeamService : {
     return updatedTeam;
   },
 
+  async inviteMemberByEmail(teamId, email) {
+    try {
+      await axiosInstance.put(`/teams/${teamId}/invite`, { email });
+    } catch (e) {
+      throw Error(e.response.data);
+    }
+  },
+
   async removeMemberFromTeam(teamId, memberId) {
     const team = await TeamService.getTeam(teamId);
     team.memberIds = team.memberIds.filter((mId) => mId !== memberId);
