@@ -12,6 +12,14 @@ function enhanceInstitution(institution) {
 }
 
 const InstitutionService = MOCK_INSTUTITIONS ? MockInstitutionService : {
+  async createInstitution(name, country) {
+    const { data } = await axiosInstance.post('/institutions', {
+      name,
+      country,
+    });
+    return enhanceInstitution(data);
+  },
+
   async getMyInstitutions() {
     const user = await ProfileService.getProfile();
     let { data } = await axiosInstance.get(`/user/${user.id}/institutions`);
