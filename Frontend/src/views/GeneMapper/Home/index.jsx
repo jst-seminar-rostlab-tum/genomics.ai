@@ -38,12 +38,6 @@ function GeneMapperHome() {
   const history = useHistory();
 
   const handleDeleteProject = (id) => {
-    // setProjects(projects.filter((object) => object._id != id));
-    // const deleted = window.localStorage.getItem('DeletedProjects') ?? '';
-    // console.log(deleted);
-
-    // window.localStorage.setItem('DeletedProjects', `${deleted},${id}`);
-    // ProjectMock.deleteProject(id);
     ProjectService.deleteProject(id).then(() => {
       ProjectService.getOwnProjects().then((data) => setProjects(data));
       ProjectService.getDeletedProjects().then((data) => setDeletedProjects(data));
@@ -143,6 +137,7 @@ function GeneMapperHome() {
               model={models.find((model) => String(model._id) === String(project.modelId))}
               userTeams={userTeams}
               handleDelete={() => handleRestoreProject(project._id)}
+              deleted
             />
           ))}
         </Box>
