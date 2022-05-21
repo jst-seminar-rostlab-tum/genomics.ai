@@ -31,7 +31,7 @@ function TeamMemberMakeAdminButton({
 
   return (
     <>
-      <Button type="secondary" onClick={handleOpenDialog}>
+      <Button type="primary" onClick={handleOpenDialog}>
         {isAlreadyAdmin ? 'Remove Admin' : 'Make Admin'}
       </Button>
       <Modal

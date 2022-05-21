@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import CircularProgress from '@mui/material/CircularProgress';
+import { CircularProgress, Stack } from '@mui/material';
 import MemberList from 'components/members/MemberList';
 import TeamMemberRemoveButton from '../TeamMemberRemoveButton';
 import TeamMemberMakeAdminButton from '../TeamMemberMakeAdminButton';
@@ -34,7 +34,7 @@ function TeamMemberList({
       )}
       trailingBuilder={(member) => (
         team.adminIds.includes(user._id) && user._id !== member.id ? (
-          <div>
+          <Stack direction="row" spacing={1}>
             <TeamMemberMakeAdminButton
               team={team}
               member={member}
@@ -45,7 +45,7 @@ function TeamMemberList({
               member={member}
               updateTeam={updateTeam}
             />
-          </div>
+          </Stack>
         ) : null
       )}
     />
