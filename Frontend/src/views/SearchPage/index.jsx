@@ -26,18 +26,18 @@ import { applyModelFilters, applyAtlasFilters } from 'shared/utils/filter';
 // definitely target to change, when backend will provide full data
 async function getTeams(filterParams) {
   const searchResponse = await TeamService.getTeams(filterParams);
-  const teamsWithInstitutions = searchResponse.filter((team) => team.institutionId);
-  const institutionRequests = teamsWithInstitutions.map(
-    (team) => InstitutionService.getInstitutionById(team.institutionId)
-    ,
-  );
-  const institutionsResponse = await Promise.all(institutionRequests);
-  institutionsResponse.forEach(
-    (institution,
-      index) => {
-      teamsWithInstitutions[index].institution = institution;
-    },
-  );
+  // const teamsWithInstitutions = searchResponse.filter((team) => team.institutionId);
+  // const institutionRequests = teamsWithInstitutions.map(
+  //   (team) => InstitutionService.getInstitutionById(team.institutionId)
+  //   ,
+  // );
+  // const institutionsResponse = await Promise.all(institutionRequests);
+  // institutionsResponse.forEach(
+  //   (institution,
+  //     index) => {
+  //     teamsWithInstitutions[index].institution = institution;
+  //   },
+  // );
   return searchResponse;
 }
 

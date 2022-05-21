@@ -2,7 +2,7 @@ import MockTeamService from './mock/Team.service';
 import axiosInstance from './axiosInstance';
 import ProfileService from './Profile.service';
 
-const MOCK_TEAMS = true;
+const MOCK_TEAMS = false;
 const MODEL = 'teams';
 
 function enhanceTeam(team) {
@@ -58,7 +58,12 @@ const TeamService = MOCK_TEAMS ? MockTeamService : {
   },
 
   getTeams: async (params) => {
+    const preparedParams = { ...params };
+    if (!preparedParams.sortBy || preparedParams.sortBy === 'name') {
+      preparedParams.sortBy = 'title';
+    }
     const { data } = await axiosInstance.get(`/${MODEL}`, { params });
+
     return data.map(enhanceTeam);
   },
 

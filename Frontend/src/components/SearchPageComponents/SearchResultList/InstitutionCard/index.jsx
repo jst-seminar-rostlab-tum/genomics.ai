@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Chip } from '@mui/material';
 import SearchCard from '../SearchCard';
-// import Avatars from 'components/Avatars';
+import MemberAvatars from '../MemberAvatars';
 
 // Card to display search result for a single institution
 function InstitutionCard({ item: institution }) {
@@ -15,11 +15,9 @@ function InstitutionCard({ item: institution }) {
       // secondary={`updated on ${institution.updated}`}
       tertiary={(
         <>
-          {/* <Avatars
-            items={institution.members.map(({ name, image }) => ({ src: image, alt: name }))}
-          /> */}
+          <MemberAvatars members={institution.memberIds} />
           <Chip
-            label={`${institution.adminIds.length + institution.memberIds.length} members`}
+            label={`${institution.memberIds.length} members`}
             variant="outlined"
             size="small"
             sx={{ color: 'text.secondary' }}
