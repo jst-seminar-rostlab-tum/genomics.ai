@@ -86,42 +86,42 @@ export default function Sidebar(props) {
                   </Tooltip>
                 </NavLink>
               ))}
-              </Box>
+            </Box>
 
-              <NavLink
-                to="/"
-                onClick={() => {
-                  setUser(null);
-                  localStorage.removeItem('user');
-                  localStorage.removeItem('jwt');
-                }}
-                className={styles.navlinkIcon}
-                style={{ marginBottom: "1em" }}
-              >
-                <Tooltip
-                  title="Logout"
-                  placement="right"
-                  componentsProps={{
-                    tooltip: {
-                      sx: {
-                        bgcolor: '#5676E4',
-                      },
+            <NavLink
+              to="/"
+              onClick={() => {
+                setUser(null);
+                localStorage.removeItem('user');
+                localStorage.removeItem('jwt');
+              }}
+              className={styles.navlinkIcon}
+              style={{ marginBottom: '1em' }}
+            >
+              <Tooltip
+                title="Logout"
+                placement="right"
+                componentsProps={{
+                  tooltip: {
+                    sx: {
+                      bgcolor: '#5676E4',
                     },
+                  },
+                }}
+              >
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                   }}
                 >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}  
-                  >
-                    <ListItemIcon sx={{ justifyContent: "center" }}>
-                      <LogoutIcon sx={{ color: "white" }} />
-                    </ListItemIcon>
-                  </Box>
-                </Tooltip>
-              </NavLink>
+                  <ListItemIcon sx={{ justifyContent: 'center' }}>
+                    <LogoutIcon sx={{ color: 'white' }} />
+                  </ListItemIcon>
+                </Box>
+              </Tooltip>
+            </NavLink>
           </Box>
         </Box>
       </Box>

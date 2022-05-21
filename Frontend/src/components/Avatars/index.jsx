@@ -16,7 +16,7 @@ const Avatars = ({
     <AvatarGroup>
       {items.map((item) => (
         <Avatar
-          key={item.src}
+          key={item.alt}
           sx={{ bgcolor: stringToColor(item.alt), width, height }}
           alt={item.alt}
           src={item.src || '/dummy.jpg'} // Not perfect but otherwise display default user profile icon as fallback rather then letter
