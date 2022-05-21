@@ -3,7 +3,7 @@ import { teamModel } from "../models/team";
 import ProjectService from "./project.service";
 import { AddInstitutionDTO, UpdateInstitutionDTO } from "../dtos/institution.dto";
 import { ObjectId } from "mongoose";
-import { IProject } from "../models/project";
+import { IProject, projectModel } from "../models/project";
 import TeamService from "./team.service";
 
 /**
@@ -352,6 +352,7 @@ export default class InstitutionService {
 
     return projects;
   }
+
   static async getUsersInstitutions(userId: ObjectId | string): Promise<IInstitution[] | null> {
     return await institutionModel.find({
       $or: [
