@@ -26,16 +26,10 @@ export default function TeamCreationDialog({ open, handleClose, onCreated }) {
     }
     if (!name || !description) return;
     setLoading(true);
-    try {
-      const newTeam = await TeamService.createTeam(name, description, institutionId);
-      onCreated(newTeam);
-      setLoading(false);
-      handleClose();
-    } catch (e) {
-      setLoading(false);
-      alert(e.response.data);
-      console.error(e);
-    }
+    const newTeam = await TeamService.createTeam(name, description, institutionId);
+    onCreated(newTeam);
+    setLoading(false);
+    handleClose();
   }
 
   return (

@@ -9,18 +9,19 @@ import TeamService from 'shared/services/Team.service';
 
 function TeamLeaveButton({ team, onLeft }) {
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleOpenDialog = () => setDialogOpen(true);
   const handleCloseDialog = () => setDialogOpen(false);
 
   async function leave() {
+    setErrorMessage('');
     try {
       await TeamService.leaveTeam(team.id);
       handleCloseDialog();
       onLeft(team);
-    } catch (err) {
-      alert(err.response.data);
-      console.error(err.response);
+    } catch (e) {
+      setErrorMessage(e.message);
     }
   }
 
@@ -45,10 +46,17 @@ function TeamLeaveButton({ team, onLeft }) {
             {team.name}
             &quot;?
           </DialogContentText>
+          {
+            errorMessage && (
+              <DialogContentText id="alert-dialog-description" color="error">
+                {errorMessage}
+              </DialogContentText>
+            )
+          }
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialog}>Cancel</Button>
-          <Button onClick={() => leave()} color="error" autoFocus>
+          <Button onClick={handleCloseDialog} type="tertiary">Cancel</Button>
+          <Button onClick={() => leave()} type="critical" autoFocus>
             Leave
           </Button>
         </DialogActions>
