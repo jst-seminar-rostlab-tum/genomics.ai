@@ -101,14 +101,24 @@ const invite_to_institution = (): Router => {
     validationMdw,
     check_auth(),
     async (req: any, res: any) => {
-      const { userId }: { userId: Schema.Types.ObjectId } = req.body;
+      const { userId, email }: { userId: Schema.Types.ObjectId; email: string } = req.body;
       const institutionId_to_modify = req.params.id;
 
       try {
-        if (!userId) return res.status(400).send("Missing parameter");
+        if (!(institutionId_to_modify && (userId || email)))
+          return res.status(400).send("Missing parameters.");
 
-        const user = await UserService.getUserById(userId);
-        if (!user) return res.status(400).send("User to be invited does not exist.");
+        var user;
+        if (userId) {
+          user = await UserService.getUserById(userId);
+          console.log(user);
+        } else {
+          user = await UserService.getUserByEmail(email, false);
+          console.log(user);
+        }
+        console.log(user);
+
+        if (!user) return res.status(404).send("User to be invited does not exist.");
 
         if (await InstitutionService.findMemeberOrInvitedById(userId, institutionId_to_modify))
           return res
