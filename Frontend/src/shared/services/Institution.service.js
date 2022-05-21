@@ -3,7 +3,7 @@ import axiosInstance from './axiosInstance';
 import { enhanceMember } from './Member.service';
 import ProfileService from './Profile.service';
 
-const MOCK_INSTUTITIONS = true;
+const MOCK_INSTUTITIONS = false;
 
 const MODEL = 'institutions';
 
@@ -55,6 +55,10 @@ const InstitutionService = MOCK_INSTUTITIONS ? MockInstitutionService : {
 
   async updateDetails(institutionId, details) {
     await axiosInstance.put(`/institutions/${institutionId}`, { details });
+  },
+
+  async inviteMember(institutionId, member) {
+    await axiosInstance.put(`/institutions/${institutionId}/invite`, { userId: member });
   },
 };
 

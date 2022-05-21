@@ -19,7 +19,6 @@ function InstitutionMemberList({ institution, onRemoved }) {
         setIsLoading(false);
       });
   }, [institution]);
-  
   if (isLoading) {
     return <CircularProgress />;
   }
