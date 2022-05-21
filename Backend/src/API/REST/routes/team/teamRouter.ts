@@ -105,19 +105,20 @@ const invite_person_to_a_team = (): Router => {
       } else {
         user = await UserService.getUserByEmail(email, false);
       }
+      //IMPORTANT: use user._id instead of userId from here on
 
       if (!user) return res.status(404).send("User to be invited does not exist.");
 
       const team = await TeamService.getTeamById(teamId);
       if (!team) return res.status(404).send("Team does not exist.");
 
-      const isAdmin: boolean = await TeamService.isAdmin(userId, team);
-      const isMember: boolean = await TeamService.isMember(userId, team);
+      const isAdmin: boolean = await TeamService.isAdmin(user._id, team);
+      const isMember: boolean = await TeamService.isMember(user._id, team);
 
       if (isAdmin || isMember) return res.status(409).send("User is already part of the team");
 
       try {
-        const team_updated = await TeamService.addInvitationMemberId(teamId, userId);
+        const team_updated = await TeamService.addInvitationMemberId(teamId, user._id);
         if (!team_updated)
           return res.status(500).send("Error when adding the user to members of the team.");
 
