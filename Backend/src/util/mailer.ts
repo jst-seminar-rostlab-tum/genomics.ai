@@ -39,7 +39,7 @@ class Mailer {
     let rendered_html = handlebars.compile(htmltemplate)(data);
 
     let mail = {
-      from: `GeneCruncher <info@${process.env.MAIL_DOMAIN}>`,
+      from: `GeneCruncher <noreply@${process.env.MAIL_DOMAIN}>`,
       to: to,
       subject: subject,
       text: rendered_txt,

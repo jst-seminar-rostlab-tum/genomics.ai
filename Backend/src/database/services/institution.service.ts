@@ -4,6 +4,7 @@ import ProjectService from "./project.service";
 import { AddInstitutionDTO, UpdateInstitutionDTO } from "../dtos/institution.dto";
 import { ObjectId } from "mongoose";
 import { IProject, projectModel } from "../models/project";
+import TeamService from "./team.service";
 
 /**
  *  @class InstitutionService
@@ -291,7 +292,7 @@ export default class InstitutionService {
     return old?.backgroundPictureURL;
   }
 
-  static async filterInstitutions(query: any): Promise<IInstitution[] | null> {
+  static async filterInstitutions(query: any): Promise<any | null> {
     var keyword: object, sortBy: any;
 
     query.hasOwnProperty("keyword")
@@ -303,7 +304,18 @@ export default class InstitutionService {
       sortBy = { sortProperty: 1 };
     } else sortBy = {};
 
-    return await institutionModel.find(keyword).sort(sortBy).exec();
+    let institutions : any =  await institutionModel.find(keyword)
+        .populate("adminIds")
+        .populate("memberIds")
+        .sort(sortBy).exec();
+
+    institutions.map(institution => {
+      const teamsOfInstitutions = TeamService.getInstitutionsTeams(institution._id);
+      institution.teams = teamsOfInstitutions;
+      return institution;
+    })
+
+    return institutions;
   }
 
   static async getMembersOfInstitution(
@@ -326,7 +338,7 @@ export default class InstitutionService {
     }
 
     const teams = await teamModel.find({ institution_id: institution_id });
-    const teamIds = teams.map( (team) => team._id );
+    const teamIds = teams.map((team) => team._id);
     const projectsOfTeams = await ProjectService.getProjectsOfTeams(teamIds);
 
     const projects = projectsOfMembers;

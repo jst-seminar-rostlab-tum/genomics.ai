@@ -67,6 +67,12 @@ export default class TeamService {
       .exec();
   }
 
+  static async getMembersOfTeam(
+    team_id: ObjectId | string
+  ): Promise<ITeam| null> {
+    return await teamModel.findById(team_id).populate("memberIds");
+  }
+
   /**
    *  Add the given userId to the invitation list of the given team.
    *
@@ -188,7 +194,11 @@ export default class TeamService {
       sortBy = { sortProperty: 1 };
     } else sortBy = {};
 
-    return await teamModel.find(filter).sort(sortBy);
+    return await teamModel.find(filter)
+        .populate("memberIds")
+        .populate("institutionId")
+        .populate("adminIds")
+        .sort(sortBy);
   }
 
   static async getUsersTeams(userId: ObjectId | string): Promise<ITeam[] | null> {
@@ -198,6 +208,10 @@ export default class TeamService {
         { adminIds: { $elemMatch: { $eq: userId } } },
       ],
     });
+  }
+
+  static async getInstitutionsTeams(institutionId: ObjectId | any): Promise<ITeam[] | null> {
+    return await teamModel.find({ institutionId: institutionId } );
   }
 
   /**
