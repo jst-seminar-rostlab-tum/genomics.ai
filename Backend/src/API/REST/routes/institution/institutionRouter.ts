@@ -80,7 +80,7 @@ const update_institution = (): Router => {
         const updatedInstitution = await InstitutionService.getInstitutionById(
           institution_to_be_updated_id
         );
-        return res.status(202).send(updatedInstitution); // 202 error code is: request was accepted
+        return res.status(200).send(updatedInstitution); 
       } catch (err) {
         console.error("Error updating institution!");
         console.error(JSON.stringify(err));
