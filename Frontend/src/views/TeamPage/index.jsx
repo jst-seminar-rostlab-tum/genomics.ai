@@ -18,7 +18,7 @@ export default function TeamPage() {
   const [team, setTeam] = useState({});
   const [user] = useAuth();
   const [institution, setInstitution] = useState({});
-  const [newDescription, setNewDescription] = useState("");
+  const [newDescription, setNewDescription] = useState('');
   const [descriptionChanged, setDescriptionChanged] = useState(false);
 
   const handleDescriptionChange = (event) => {
@@ -31,34 +31,34 @@ export default function TeamPage() {
     TeamService.getTeam(id)
       .then(setTeam)
       .catch((ignored) => { console.error(ignored); });
-  };
+  }
 
   async function updateVisibility(newVisibility) {
     await TeamService.changeTeamVisibility(id, newVisibility);
-    updateTeam()
+    updateTeam();
   }
 
-  async function updateDescription(newDescription) {
+  async function updateDescription() {
     await TeamService.changeTeamDescription(id, newDescription);
-    updateTeam()
+    updateTeam();
     setDescriptionChanged(false);
   }
 
   useEffect(() => {
     if (id == null) return;
-    updateTeam()
+    updateTeam();
   }, [setTeam]);
 
   useEffect(() => {
     setNewDescription(team.description);
-  }, [team])
+  }, [team]);
 
   // Institution may be undefined
   useEffect(() => {
     if (Object.keys(team).length !== 0) {
       InstitutionService.getInstitution(team.institutionId)
-      .then((newInstitution) => setInstitution(newInstitution))
-      .catch((ignored) => { console.error(ignored); });
+        .then((newInstitution) => setInstitution(newInstitution))
+        .catch((ignored) => { console.error(ignored); });
     }
   }, [team, setInstitution]);
 
@@ -77,8 +77,8 @@ export default function TeamPage() {
         />
       )}
       replaceHeaderRight={
-        (isAdmin && <TeamAdminHeaderRight team={team} updateVisibility={updateVisibility} />)
-        || <TeamUserHeaderRight institution={institution} team={team} user={user} updateTeam={updateTeam} />
+        (isAdmin && <TeamAdminHeaderRight team={team} updateVisibility={() => updateVisibility()} />)
+        || <TeamUserHeaderRight institution={institution} team={team} user={user} updateTeam={() => updateTeam()} />
       }
     >
       <br />
@@ -101,7 +101,7 @@ export default function TeamPage() {
           />
           {descriptionChanged
             && (
-              <Button variant="outlined" type="secondary" onClick={() => updateDescription(newDescription)}>
+              <Button variant="outlined" type="secondary" onClick={() => updateDescription()}>
                 Submit
               </Button>
             )}

@@ -2,19 +2,22 @@ import React, { useState, useEffect } from 'react';
 import TeamLeaveButton from 'components/teams/overview/TeamLeaveButton';
 import TeamJoinButton from 'components/teams/detail/TeamJoinButton';
 
-function TeamUserHeaderRight({ institution, team, user, updateTeam }) {
+function TeamUserHeaderRight({
+  institution, team, user, updateTeam,
+}) {
   const [isMember, setIsMember] = useState(false);
+  console.log(team);
 
   function updateIsMember() {
     setIsMember((team.memberIds || []).includes(user._id));
   }
 
   const onLeft = () => {
-    updateTeam()
+    updateTeam();
   };
 
   const onJoin = () => {
-    updateTeam()
+    updateTeam();
   };
 
   useEffect(() => {
@@ -29,8 +32,9 @@ function TeamUserHeaderRight({ institution, team, user, updateTeam }) {
 
   return (
     <TeamJoinButton
-      isDisabled={(team.visibility === 'private' && (!team.invitedMemberIds.includes(user._id)))
-      || (team.visibility === 'by institution' && (!institution.memberIds.includes(user._id) && !institution.adminIds.includes(user._id)))}
+      isDisabled={(team.visibility === 'PRIVATE' && (!team.invitedMemberIds.includes(user._id)))
+        || (team.visibility === 'BY_INSTITUTION' && (!institution.memberIds.includes(user._id) && !institution.adminIds.includes(user._id))
+          && (!team.invitedMemberIds.includes(user._id)))}
       team={team}
       onJoin={onJoin}
     />
