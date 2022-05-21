@@ -7,6 +7,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
 import { Link as NavLink, useRouteMatch, useLocation } from 'react-router-dom';
 import ListItemIcon from '@mui/material/ListItemIcon';
+import PolicyIcon from '@mui/icons-material/Policy';
 import LogoutIcon from '@mui/icons-material/Logout';
 import geneIcon from 'assets/gene.png';
 import styles from './sidebar.module.css';
@@ -86,7 +87,38 @@ export default function Sidebar(props) {
                   </Tooltip>
                 </NavLink>
               ))}
-              </Box>
+            </Box>
+
+            <Box>
+              <NavLink
+                to="/imprint"
+                className={styles.navlinkIcon}
+                style={{ display: "block", marginBottom: "1em" }}
+              >
+                <Tooltip
+                  title="Imprint"
+                  placement="right"
+                  componentsProps={{
+                    tooltip: {
+                      sx: {
+                        bgcolor: '#5676E4',
+                      },
+                    },
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <ListItemIcon sx={{ justifyContent: "center" }}>
+                      <PolicyIcon sx={{ color: "white" }} />
+                    </ListItemIcon>
+                  </Box>
+                </Tooltip>
+              </NavLink>
 
               <NavLink
                 to="/"
@@ -114,7 +146,7 @@ export default function Sidebar(props) {
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
-                    }}  
+                    }}
                   >
                     <ListItemIcon sx={{ justifyContent: "center" }}>
                       <LogoutIcon sx={{ color: "white" }} />
@@ -122,6 +154,7 @@ export default function Sidebar(props) {
                   </Box>
                 </Tooltip>
               </NavLink>
+            </Box>
           </Box>
         </Box>
       </Box>
