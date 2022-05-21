@@ -1,0 +1,99 @@
+{
+  "/projects": {
+    "get": {
+      "summary": "Get all projects that meet query params",
+      "tags": ["Project"],
+      "parameters": [
+        {
+          "in": "query",
+          "name": "keyword",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "in": "query",
+          "name": "sortBy",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref":"#/components/schemas/Project"
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Failed. Bad post data."
+        }
+      }
+    }
+  },
+  "/project/{id}": {
+    "get": {
+      "summary": "Get detailed information about a project",
+      "tags": ["Project"],
+      "responses": {
+        "200": {
+          "description": "Get project by id successful",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Project"
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Missing parameters or the project does not exist"
+        },
+        "401": {
+          "description": "Access denied"
+        },
+        "500": {
+          "description": "Internal error, cannot get project by id"
+        }
+      }
+    },
+    "delete": {
+      "summary": "Move project into recycle bin",
+      "tags": ["Project"],
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "schema": {
+            "type":"string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description":"OK"
+        },
+        "400": {
+          "description":"Bad request"
+        },
+        "401": {
+          "description": "Invalid authentication"
+        },
+        "404": {
+          "description": "Project does not exist"
+        },
+        "500": {
+          "description": "Internal server error"
+        }
+      }
+    }
+  }
+}

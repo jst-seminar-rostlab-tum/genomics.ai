@@ -1,0 +1,60 @@
+{
+  "/register": {
+    "post": {
+      "summary": "Register a user",
+      "tags": ["User"],
+      "security": [],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "first_name": {
+                  "type": "string"
+                },
+                "last_name": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                },
+                "note": {
+                  "type": "string"
+                }
+              },
+              "required": ["email", "password"],
+              "additionalProperties": false
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "OK",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "msg": {
+                "type": "string"
+              },
+              "user": {
+                "type": "string"
+              },
+              "jwt": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Failed. Bad post data."
+        }
+      }
+    }
+  }
+}

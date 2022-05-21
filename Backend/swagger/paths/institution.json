@@ -1,0 +1,383 @@
+{
+  "/institutions": {
+    "post": {
+      "summary": "Add institution",
+      "tags": ["Institution"],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "country": {
+                  "type": "string"
+                },
+                "profilePictureURL": {
+                  "type": "string"
+                },
+                "backgroundPictureURL": {
+                  "type": "string"
+                }
+              },
+              "required": ["name", "country"],
+              "additionalProperties": false
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "OK"
+        },
+        "400": {
+          "description": "Failed. Bad post data."
+        }
+      }
+    },
+    "get": {
+      "summary": "Get all institutions that meet  query params",
+      "tags": ["Institution"],
+      "parameters": [
+        {
+          "in": "query",
+          "name": "keyword",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "in": "query",
+          "name": "sortBy",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK"
+        },
+        "400": {
+          "description": "Failed. Bad post data."
+        }
+      }
+    }
+  },
+  "/institutions/{id}/invite": {
+    "put": {
+      "summary": "Invite a user to institution",
+      "tags": ["Institution"],
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userId": {
+                  "type": "string"
+                }
+              },
+              "required": ["userId"],
+              "additionalProperties": false
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "OK"
+        },
+        "400": {
+          "description": "Failed. Bad post data."
+        },
+        "500": {
+          "description": "Error: Internal Error."
+        }
+      }
+    }
+  },
+  "/institutions/{id}/members": {
+    "get": {
+      "summary": "Get all members of an institution",
+      "tags": ["Institution"],
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "description": "Id of the instituion",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK"
+        },
+        "400": {
+          "description": "Failed. Bad post data."
+        }
+      }
+    }
+  },
+  "/institutions/{id}/projects": {
+    "get": {
+      "summary": "Get all projects of an institution",
+      "tags": ["Institution"],
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "description": "Id of the instituion",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK"
+        },
+        "400": {
+          "description": "Failed. Bad post data."
+        }
+      }
+    }
+  },
+  "/institutions/{id}/admin": {
+    "put": {
+      "summary": "Make a member of institution admin",
+      "tags": ["Institution"],
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userId": {
+                  "type": "string"
+                }
+              },
+              "required": ["userId"],
+              "additionalProperties": false
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "OK"
+        },
+        "400": {
+          "description": "Failed. Bad post data."
+        },
+        "401": {
+          "description": "Invalid autherization permission!"
+        }
+      }
+    }
+  },
+  "/institutions/{id}/join": {
+    "put": {
+      "summary": "Join as member of institution",
+      "tags": ["Institution"],
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK"
+        },
+        "400": {
+          "description": "Failed. Bad post data."
+        },
+        "401": {
+          "description": "Invalid autherization permission!"
+        }
+      }
+    }
+  },
+  "/institutions/{id}/profilepicture": {
+    "post": {
+      "summary": "Upload new profile picture for institution",
+      "tags": ["Institution"],
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "requestBody": {
+        "$ref": "#/components/requestBodies/pictureUpload"
+      },
+      "responses": {
+        "200": {
+          "description": "URL pointing to the S3 bucket location of the uploaded image",
+          "content": {
+            "text/plain": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Unauthorized"
+        }
+      }
+    },
+    "delete": {
+      "summary": "Delete profile picture of institution",
+      "tags": ["Institution"],
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK"
+        },
+        "401": {
+          "description": "Unauthorized"
+        }
+      }
+    }
+  },
+  "/institutions/{id}/teams": {
+    "get": {
+      "summary": "Get teams for an institution",
+      "tags": ["Institution"],
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "description": "Id of the instituion",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK"
+        },
+        "400": {
+          "description": "Failed. Bad post data."
+        }
+      }
+    }
+  },
+  "/institutions/{id}": {
+    "get": {
+      "summary": "Get institution with id",
+      "tags": ["Institution"],
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK"
+        },
+        "400": {
+          "description": "Failed. Bad post data."
+        }
+      }
+    },
+
+    "put": {
+      "summary": "Update an institution",
+      "tags": ["Institution"],
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "description": "Id of the instituion",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "country": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        }
+      },
+      "responses": {
+        "202": {
+          "description": "Update operation was accepted"
+        },
+        "400": {
+          "description": "Failed. Bad post data."
+        }
+      }
+    }
+  }
+}
