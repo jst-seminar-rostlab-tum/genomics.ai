@@ -243,7 +243,12 @@ export default function Privacy() {
               
               <p>Furthermore, in exercising his or her right to data portability pursuant to Article 20(1) of the GDPR, the data subject shall have the right to have personal data transmitted directly from one controller to another, where technically feasible and when doing so does not adversely affect the rights and freedoms of others.</p>
               
-              <p>In order to assert the right to data portability, the data subject may at any time contact any employee of the Helmholtz Zentrum München.</p>
+              <p>In order to assert the right to data portability, the data subject may at any time contact any of the following employees of the Helmholtz Zentrum München:</p>
+              <ul>
+                <li>Mohammad Lotfollahi: mohammad (dot) lotfollahi (at) helmholtz-muenchen.de</li>
+                <li>Ronald Skorobogat: ronald (dot) skorobogat (at) helmholtz-muenchen.de</li>
+                <li>Amin Ben-Saad: amin (dot) bensaad (at) helmholtz-muenchen.de</li>
+              </ul>
               
               </li>
               <li>
@@ -283,7 +288,7 @@ export default function Privacy() {
               <p>Where the processing of personal data is based on Article 6(1) lit. f GDPR our legitimate interest is to carry out our business in favor of the well-being of all our employees and the shareholders.</p>
               
               <h4>11. Period for which the personal data will be stored</h4>
-              <p>The criteria used to determine the period of storage of personal data is the respective statutory retention period. After expiration of that period, the corresponding data is routinely deleted, as long as it is no longer necessary for the fulfillment of the contract or the initiation of a contract.</p>
+              <p>The criteria used to determine the period of storage of personal data is the respective statutory retention period.</p>
               
               <h4>12. Provision of personal data as statutory or contractual requirement; Requirement necessary to enter into a contract; Obligation of the data subject to provide the personal data; possible consequences of failure to provide such data </h4>
               <p>We clarify that the provision of personal data is partly required by law (e.g. tax regulations) or can also result from contractual provisions (e.g. information on the contractual partner).
