@@ -3,6 +3,7 @@ import React from 'react';
 import { Chip } from '@mui/material';
 import SearchCard from '../SearchCard';
 import MemberAvatars from '../MemberAvatars';
+import { formatDate } from 'shared/utils/common/utils';
 
 // Card to display search result for a single institution
 function InstitutionCard({ item: institution }) {
@@ -12,7 +13,7 @@ function InstitutionCard({ item: institution }) {
       avatar={institution.profilePictureURL}
       displayAvatar
       link={`/sequencer/institutions/${institution.id}`}
-      // secondary={`updated on ${institution.updated}`}
+      secondary={institution.updatedAt && `updated on ${formatDate(institution.updatedAt)}`}
       tertiary={(
         <>
           <MemberAvatars members={institution.memberIds} />

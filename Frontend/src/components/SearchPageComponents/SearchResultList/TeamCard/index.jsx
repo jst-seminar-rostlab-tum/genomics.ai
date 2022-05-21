@@ -8,6 +8,7 @@ import LabeledLink from '../LabeledLink';
 import TeamJoinButton from 'components/teams/detail/TeamJoinButton';
 import TeamService from 'shared/services/Team.service';
 import MemberAvatars from '../MemberAvatars';
+import { formatDate } from 'shared/utils/common/utils';
 
 // Card to display search result for a single team
 // eslint-disable-next-line arrow-body-style
@@ -54,7 +55,7 @@ const TeamCard = ({ item: team, user, onAction }) => {
           <Chip label={visibility} color="primary" size="small" />
         </Tooltip>
         )}
-      // secondary={`updated on ${team.updated}`}
+      secondary={team.updatedAt && `updated on ${formatDate(team.updatedAt)}`}
       tertiary={(
         <>
           <MemberAvatars members={team.memberIds} />
