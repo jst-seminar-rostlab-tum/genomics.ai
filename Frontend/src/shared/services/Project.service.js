@@ -27,6 +27,19 @@ const ProjectService = MOCK_PROJECTS ? MockProjectService : {
     return data;
   },
 
+  deleteProject: async (id) => {
+    await axiosInstance.delete(`/project/${id}`);
+  },
+
+  getDeletedProjects: async () => {
+    const { data } = await axiosInstance.get('/deletedprojects');
+    return data;
+  },
+
+  restoreProject: async (id) => {
+    await axiosInstance.post(`/deletedprojects/${id}/restore`);
+  },
+
   // Temporary solution for search to use backend data while teampage uses mock
   getTeamProjects: async (teamId, forPart) => MockProjectService.getTeamProjects(teamId, forPart),
 };
