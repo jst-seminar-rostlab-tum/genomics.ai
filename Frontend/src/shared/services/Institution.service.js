@@ -3,7 +3,7 @@ import axiosInstance from './axiosInstance';
 import { enhanceMember } from './Member.service';
 import ProfileService from './Profile.service';
 
-const MOCK_INSTUTITIONS = true;
+const MOCK_INSTUTITIONS = false;
 
 const MODEL = 'institutions';
 
@@ -22,7 +22,7 @@ const InstitutionService = MOCK_INSTUTITIONS ? MockInstitutionService : {
 
   async getMyInstitutions() {
     const user = await ProfileService.getProfile();
-    let { data } = await axiosInstance.get(`/user/${user.id}/institutions`);
+    let { data } = await axiosInstance.get(`/users/${user.id}/institutions`);
     data = data.map(enhanceInstitution);
     return data;
   },
@@ -39,8 +39,6 @@ const InstitutionService = MOCK_INSTUTITIONS ? MockInstitutionService : {
   },
 
   async getMembers(institutionId) {
-    return []; // TODO: enable once exists
-    // eslint-disable-next-line no-unreachable
     const { data } = await axiosInstance.get(`/institutions/${institutionId}/members`);
     return data.map(enhanceMember);
   },

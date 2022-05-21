@@ -14,14 +14,22 @@ function TeamLeaveButton({ team, onLeft }) {
   const handleCloseDialog = () => setDialogOpen(false);
 
   async function leave() {
-    await TeamService.leaveTeam(team.id);
-    handleCloseDialog();
-    onLeft(team);
+    try {
+      await TeamService.leaveTeam(team.id);
+      handleCloseDialog();
+      onLeft(team);
+    } catch (err) {
+      alert(err.response.data);
+      console.error(err.response);
+    }
   }
 
   return (
     <>
-      <Button variant="outlined" type="critical" onClick={handleOpenDialog}>
+      <Button
+        type="critical"
+        onClick={handleOpenDialog}
+      >
         Leave
       </Button>
       <Modal

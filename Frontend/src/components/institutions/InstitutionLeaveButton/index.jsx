@@ -14,14 +14,22 @@ function InstitutionLeaveButton({ institution, onLeft }) {
   const handleCloseDialog = () => setDialogOpen(false);
 
   async function leave() {
-    await InstitutionService.leaveInstitution(institution);
-    handleCloseDialog();
-    onLeft(institution);
+    try {
+      await InstitutionService.leaveInstitution(institution.id);
+      handleCloseDialog();
+      onLeft(institution);
+    } catch (err) {
+      alert(err.response.data);
+      console.error(err.response);
+    }
   }
 
   return (
     <>
-      <Button type="critical" onClick={handleOpenDialog}>
+      <Button
+        type="critical"
+        onClick={handleOpenDialog}
+      >
         Leave
       </Button>
       <Modal
