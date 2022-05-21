@@ -1,69 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Password Reset Request</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            emailBg: "#F8FBFF",
-            head: "#002644",
-            content: "#184060",
-            primary: "#5676E4",
-            primaryHover: "#445AA7",
-            primaryFocus: "#7187D5",
-            secondary: "#7DD181",
-            secondaryHover: "#6FB169",
-            secondaryFocus: "#A0E69E",
-            footer: "#212529",
-          },
-        }
-      }
-    }
-  </script>
+  <!-- <link rel="stylesheet" href="../../tailwind.css">
+  <script src="../../tailwind.config.js"></script> -->
 </head>
+
 <body>
-  <table class="bg-emailBg w-screen m-auto table-fixed">
+  <table class="bg-emailBg m-auto table-fixed">
     <tr>
-      <a href="https://www.genecruncher.com" class="flex flex-row gap-4 items-center mt-10 container mx-auto">
-        <img src="{{genecruncher_logo}}">
-        <div class="font-semibold text-xl text-content">genomics.ai</div>
-      </a>
+      <td style="padding-left: 10px;">
+        <a href="https://www.genecruncher.com" class="flex flex-row gap-4 items-center mt-10 container mx-auto">
+          <img src="{{genecruncher_logo}}">
+          <div class="font-semibold text-xl text-content">genomics.ai</div>
+        </a>
+      </td>
     </tr>
     <tr>
-      <div class="title text-3xl font-bold text-head mt-10 container mx-auto">Hey {{firstname}},</div>
+      <td style="padding: 10px;">
+        <div class="title text-3xl font-bold text-head mt-10 container mx-auto">Hey {{firstname}},</div>
+      </td>
     </tr>
     <tr>
-      <p class="my-20 container mx-auto">We heard that you have lost your GeneCruncher password. Sorry about that! But don't worry, you can use the following button to reset your password:</p>
+      <td style="padding: 10px;">
+        <p class="my-10 container mx-auto">We heard that you have lost your GeneCruncher password. Sorry about that! But
+          don't worry, you can use the following button to reset your password:</p>
+      </td>
     </tr>
     <tr>
-      <div class="container mx-auto">
-        <a href="{{link}}" class="bg-secondary text-white font-bold px-10 py-3 rounded-full hover:bg-secondaryHover hover:drop-shadow-md focus:outline-none focus:bg-secondaryFocus m-auto container mx-auto">Reset Password</a>
-      </div>
+      <td style="padding: 10px;">
+        <div class="container mx-auto">
+          <a href="{{link}}" style="padding: 10px;"
+            class="bg-secondary text-white font-bold rounded-full hover:bg-secondaryHover hover:drop-shadow-md focus:outline-none focus:bg-secondaryFocus m-auto container mx-auto">Reset
+            Password</a>
+        </div>
+      </td>
     </tr>
     <tr>
-      <p class="mt-20 container mx-auto">
-        If you don't use this link within 3 hours, it will expire. To get a new password reset link, click <a href="https://www.genecruncher.com/password_reset" class="text-primary underline">here</a>.
-      </p>
+      <td style="padding: 10px;">
+        <p class="mt-10 container mx-auto">
+          If you don't use this link within 3 hours, it will expire. To get a new password reset link, click <a
+            href="https://www.genecruncher.com/password_reset" class="text-primary underline">here</a>.
+        </p>
+      </td>
     </tr>
     <tr>
-      <p class="mt-10 container mx-auto">Thanks,</p> 
-      <p class="container mx-auto mb-10">The GeneCruncher Team.</p> 
+      <td>
+        <div style="margin-bottom: 10px; padding-left: 10px;">
+          <p class="mt-10 container mx-auto">Thanks,</p>
+          <p class="container mx-auto mb-10">The GeneCruncher Team.</p>
+        </div>
+      </td>
     </tr>
     <tr class="bg-footer text-white font-semibold">
-      <td>
+      <td style="padding: 10px;">
         <p class="p-4">© Copyright TUM 2022</p>
       </td>
-      <td>
+      <td style="padding: 10px;">
         <a class="text-right" href="https://www.genecruncher.com">genecruncher.com</a>
       </td>
-    </tr> 
+    </tr>
     </div>
   </table>
 </body>
+
 </html>

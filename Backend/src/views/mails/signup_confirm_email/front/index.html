@@ -1,30 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign Up Confirmation</title>
+  <!-- <link rel="stylesheet" href="../../tailwind.css">
+  <script src="../../tailwind.config.js"></script> -->
 </head>
+
 <body>
-  <div class="bg-emailBg">
-    <div class="w-3/4 m-auto pt-10">
-      <a href="https://www.genecruncher.com" class="flex flex-row gap-4 items-center">
-        <img src="{{genecruncher_logo}}">
-        <div class="font-semibold text-xl text-content">genomics.ai</div>
-      </a>
-      <div class="title text-3xl font-bold text-head mt-10">Welcome {{firstname}}!</div>
-      <div class="content text-xl text-content my-10 w-100">
-        <p class="my-20">Thanks for taking interest in our service! One last step before you can use our platform: Please confirm your email address by clicking the button below.</p>
-        <a href="{{link}}" class="bg-primary text-white font-bold px-32 py-5 rounded-full hover:bg-primaryHover hover:drop-shadow-md focus:outline-none focus:bg-primaryFocus m-auto">Confirm Email</a>
-        <p class="mt-20">Best regards,</p>
-        <p>The GeneCruncher Team.</p> 
-      </div>
-    </div>
-    <div class="flex flex-row justify-between w-100 bg-footer text-white p-5 px-10 font-semibold">
-      <div class="">© Copyright TUM 2022</div>
-      <div class=""><a href="https://www.genecruncher.com">genecruncher.com</a></div>
-    </div>
-  </div>
+  <table class="bg-emailBg m-auto table-fixed">
+    <tr>
+      <td style="padding-left: 10px;">
+        <a href="https://www.genecruncher.com" class="flex flex-row gap-4 items-center">
+          <img src="{{genecruncher_logo}}">
+          <div class="font-semibold text-xl text-content">genomics.ai</div>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding: 10px;">
+        <div class="title text-3xl font-bold text-head mt-10">Welcome {{firstname}}!</div>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding: 10px;">
+        <p class="my-10">Thanks for taking interest in our service! One last step before you can use our platform:
+          Please confirm your email address by clicking the button below.</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding: 10px;">
+        <a href="{{link}}" style="padding: 10px;"
+          class="bg-primary text-white font-bold rounded-full hover:bg-primaryHover hover:drop-shadow-md focus:outline-none focus:bg-primaryFocus m-auto">Confirm
+          Email</a>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding: 10px;">
+        <div>
+          <p class="mt-10">Best regards,</p>
+          <p>The GeneCruncher Team.</p>
+        </div>
+      </td>
+    </tr>
+    <tr class="bg-footer text-white font-semibold">
+      <td style="padding: 10px;">
+        <div class="">© Copyright TUM 2022</div>
+      </td>
+      <td style="padding: 10px;">
+        <div class=""><a href="https://www.genecruncher.com">genecruncher.com</a></div>
+      </td>
+    </tr>
+  </table>
 </body>
+
 </html>
