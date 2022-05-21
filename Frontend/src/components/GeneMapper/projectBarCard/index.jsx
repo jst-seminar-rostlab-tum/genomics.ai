@@ -294,6 +294,7 @@ export default function ProjectBarCard({
           {userTeams.map(
             (team) => (
               <TabCard
+                key={team._id}
                 data={{ name: team.title, visibility: team.visibility.toLowerCase() }}
                 selected={team?._id === selectedTeam || team?.id === selectedTeam}
                 handleOnClick={() => setSelectedTeam(team?._id || team?.id)}
