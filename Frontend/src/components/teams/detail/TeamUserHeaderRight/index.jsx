@@ -6,7 +6,6 @@ function TeamUserHeaderRight({
   institution, team, user, updateTeam,
 }) {
   const [isMember, setIsMember] = useState(false);
-  console.log(team);
 
   function updateIsMember() {
     setIsMember((team.memberIds || []).includes(user._id));

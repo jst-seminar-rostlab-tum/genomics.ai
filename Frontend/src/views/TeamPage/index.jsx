@@ -117,27 +117,7 @@ export default function TeamPage() {
         <hr />
         <TeamMemberList
           team={team}
-          onMemberRemoved={(_team, member) => {
-            setTeam({
-              ...team,
-              memberIds: team.memberIds.filter((mId) => mId !== member.id),
-              adminIds: team.adminIds.filter((aId) => aId !== member.id),
-            });
-          }}
-          onMakeAdmin={(_team, member) => {
-            setTeam({
-              ...team,
-              memberIds: team.memberIds.filter((mId) => mId !== member.id),
-              adminIds: [...team.adminIds, member.id],
-            });
-          }}
-          onRemoveAdmin={(_team, member) => {
-            setTeam({
-              ...team,
-              memberIds: [...team.memberIds, member.id],
-              adminIds: team.adminIds.filter((aId) => aId !== member.id),
-            });
-          }}
+          updateTeam={updateTeam}
         />
       </section>
       {isAdmin && <TeamInviteButton team={team} />}
