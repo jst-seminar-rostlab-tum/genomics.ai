@@ -111,50 +111,6 @@
       }
     }
   },
-  "/institutions/{id}/invite": {
-    "put": {
-      "summary": "Invite a user to institution",
-      "tags": ["Institution"],
-      "parameters": [
-        {
-          "in": "path",
-          "name": "id",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        }
-      ],
-      "requestBody": {
-        "required": true,
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                "userId": {
-                  "type": "string"
-                }
-              },
-              "required": ["userId"],
-              "additionalProperties": false
-            }
-          }
-        }
-      },
-      "responses": {
-        "200": {
-          "description": "OK"
-        },
-        "400": {
-          "description": "Failed. Bad post data."
-        },
-        "500": {
-          "description": "Error: Internal Error."
-        }
-      }
-    }
-  },
   "/institutions/{id}/members": {
     "get": {
       "summary": "Get all members of an institution",
@@ -374,6 +330,49 @@
       "responses": {
         "200": {
           "description": "OK"
+        },
+        "400": {
+          "description": "Failed. Bad post data."
+        }
+      }
+    },
+
+    "put": {
+      "summary": "Update an institution",
+      "tags": ["Institution"],
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "description": "Id of the instituion",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "country": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        }
+      },
+      "responses": {
+        "202": {
+          "description": "Update operation was accepted"
         },
         "400": {
           "description": "Failed. Bad post data."

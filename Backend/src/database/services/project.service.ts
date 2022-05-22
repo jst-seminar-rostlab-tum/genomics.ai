@@ -22,6 +22,18 @@ export default class ProjectService {
   }
 
   /**
+   * Deletes a project with the given project id and return the deleted document.
+   * 
+   * @param project_id - the project id
+   * @returns project - project or null if not found
+   */
+  static async deleteProjectById(
+    project_id: ObjectId | string
+  ): Promise<(IProject & { _id: ObjectId}) | null> {
+    return await projectModel.findByIdAndRemove(project_id).exec();
+  }
+
+  /**
    *  Search for a project with the given uploadId and team owner (userId - optional)
    *  and return if found.
    *

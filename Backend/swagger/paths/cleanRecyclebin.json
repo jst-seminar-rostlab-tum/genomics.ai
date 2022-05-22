@@ -1,0 +1,15 @@
+{
+    "/clean-recyclebin": {
+        "post": {
+            "summary": "Deletes all projects in recycle bin which are older than 3 days",
+            "responses": {
+                "200": {
+                    "description": "OK"
+                },
+                "500": {
+                    "description": "Internal server error"
+                }
+            }
+        }
+    }
+}

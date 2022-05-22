@@ -8,6 +8,7 @@ export interface AddTeamDTO {
   description: string;
   visibility: string;
   adminIds: Array<ObjectId>;
+  institutionId?: string;
 }
 
 export interface UpdateTeamDTO {

@@ -18,7 +18,8 @@ export function init_env_vars() {
     "API_URL",
     "FRONTEND_URL",
     "JWT_SECRET",
-    "CONTACT_US"
+    "CONTACT_US",
+    "PROJECT_RECYCLE_BIN_LIFETIME_DAYS"
   ];
   required_env_vars.forEach((required_env_var) => {
     if (!(required_env_var in process.env))
@@ -42,4 +43,5 @@ export function init_env_vars() {
   setStdEnvValue("S3_PICTURE_BUCKET_NAME", "minio-picture-bucket");
   setStdEnvValue("S3_ACCESS_KEY_ID", "minioadmin");
   setStdEnvValue("S3_SECRET_ACCESS_KEY", "minioadmin");
+  setStdEnvValue("PROJECT_RECYCLE_BIN_LIFETIME_DAYS", "3");
 }

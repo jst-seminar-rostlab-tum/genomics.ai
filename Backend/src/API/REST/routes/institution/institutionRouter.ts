@@ -4,7 +4,7 @@ import { Schema, ObjectId } from "mongoose";
 
 import InstitutionService from "../../../../database/services/institution.service";
 import TeamsService from "../../../../database/services/team.service";
-import { AddInstitutionDTO } from "../../../../database/dtos/institution.dto";
+import { AddInstitutionDTO, UpdateInstitutionDTO } from "../../../../database/dtos/institution.dto";
 import UserService from "../../../../database/services/user.service";
 
 import check_auth from "../../middleware/check_auth";
@@ -49,6 +49,50 @@ const create_institution = (): Router => {
   return router;
 };
 
+const update_institution = (): Router => {
+  let router = express.Router();
+
+  router.put(
+    "/institutions/:id",
+    validationMdw,
+    check_auth(),
+    institution_admin_auth,
+    async (req: any, res) => {
+      const { name, country } = req.body;
+      const institution_to_be_updated_id = req.params.id;
+
+      if (!(name || country)) return res.status(400).send("Missing parameters");
+
+      try {
+        const institution = await InstitutionService.getInstitutionByName(name);
+        if (institution)
+          return res.status(409).send("Institution with the given name already exists!");
+
+        const institutionToUpdate: UpdateInstitutionDTO = {
+          name,
+          country,
+        };
+        await InstitutionService.updateInstitution(
+          institution_to_be_updated_id,
+          institutionToUpdate
+        );
+
+        const updatedInstitution = await InstitutionService.getInstitutionById(
+          institution_to_be_updated_id
+        );
+        return res.status(200).send(updatedInstitution); 
+      } catch (err) {
+        console.error("Error updating institution!");
+        console.error(JSON.stringify(err));
+        console.error(err);
+        return res.status(500).send("Unable to update institution. (DB-error)");
+      }
+    }
+  );
+
+  return router;
+};
+
 const invite_to_institution = (): Router => {
   let router = express.Router();
 
@@ -57,14 +101,24 @@ const invite_to_institution = (): Router => {
     validationMdw,
     check_auth(),
     async (req: any, res: any) => {
-      const { userId }: { userId: Schema.Types.ObjectId } = req.body;
+      const { userId, email }: { userId: Schema.Types.ObjectId; email: string } = req.body;
       const institutionId_to_modify = req.params.id;
 
       try {
-        if (!userId) return res.status(400).send("Missing parameter");
+        if (!(institutionId_to_modify && (userId || email)))
+          return res.status(400).send("Missing parameters.");
 
-        const user = await UserService.getUserById(userId);
-        if (!user) return res.status(400).send("User to be invited does not exist.");
+        var user;
+        if (userId) {
+          user = await UserService.getUserById(userId);
+          console.log(user);
+        } else {
+          user = await UserService.getUserByEmail(email, false);
+          console.log(user);
+        }
+        console.log(user);
+
+        if (!user) return res.status(404).send("User to be invited does not exist.");
 
         if (await InstitutionService.findMemeberOrInvitedById(userId, institutionId_to_modify))
           return res
@@ -320,13 +374,15 @@ const disjoin_member_of_institution = (): Router => {
         return res.status(403).send("You are the only one admin of the institution.");
 
       try {
-        const team_updated = await InstitutionService.removeMemberFromTeam(institutionId, userId);
+        const inst_updated = await InstitutionService.removeMemberFromTeam(institutionId, userId);
 
-        if (!team_updated)
+        if (!inst_updated)
           return res.status(500).send("Error when removing you from the institution.");
 
-        const teamRes = await InstitutionService.getInstitutionById(institutionId);
-        return res.status(200).json(teamRes);
+        const instRes = await InstitutionService.getInstitutionById(institutionId);
+        instRes.memberIds.push(...instRes.adminIds);
+
+        return res.status(200).json(instRes);
       } catch (err) {
         console.error("Error when trying to remove a member from a institution.");
         console.error(JSON.stringify(err));
@@ -347,6 +403,7 @@ const disjoin_member_of_institution = (): Router => {
 
 export {
   create_institution,
+  update_institution,
   invite_to_institution,
   make_user_admin_of_institution,
   join_as_member_of_institution,

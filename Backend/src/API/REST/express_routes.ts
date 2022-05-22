@@ -43,6 +43,7 @@ import {
   get_projects_of_institution,
   get_users_institutions,
   disjoin_member_of_institution,
+  update_institution,
 } from "./routes/institution/institutionRouter";
 
 import {
@@ -58,6 +59,8 @@ import {
   disjoin_member,
   get_team,
   update_team,
+  get_members_of_team,
+  get_projects_of_team,
 } from "./routes/team/teamRouter";
 
 import {
@@ -65,6 +68,10 @@ import {
   get_userProjects,
   get_project_by_id,
   get_users_projects,
+  delete_project,
+  get_deleted_projects,
+  restore_deleted_project,
+  cleanup_old_projects,
 } from "./routes/project/projectRouter";
 
 import {
@@ -123,6 +130,8 @@ export function express_routes(this: REST_Host): Router {
   this.expressApp.use(disjoin_member());
   this.expressApp.use(get_team());
   this.expressApp.use(update_team());
+  this.expressApp.use(get_members_of_team());
+  this.expressApp.use(get_projects_of_team());
 
   // user routes
   this.expressApp.use(get_teams_of_user());
@@ -134,6 +143,10 @@ export function express_routes(this: REST_Host): Router {
   this.expressApp.use(get_userProjects());
   this.expressApp.use(get_project_by_id());
   this.expressApp.use(get_users_projects());
+  this.expressApp.use(delete_project());
+  this.expressApp.use(get_deleted_projects());
+  this.expressApp.use(restore_deleted_project());
+  this.expressApp.use(cleanup_old_projects());
 
   // model routes
   this.expressApp.use(get_model());
@@ -157,6 +170,7 @@ export function express_routes(this: REST_Host): Router {
 
   // institution routes
   this.expressApp.use(create_institution());
+  this.expressApp.use(update_institution());
   this.expressApp.use(invite_to_institution());
   this.expressApp.use(get_institution());
   this.expressApp.use(get_institutions());
