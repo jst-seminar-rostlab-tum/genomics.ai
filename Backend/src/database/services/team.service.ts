@@ -191,7 +191,7 @@ export default class TeamService {
 
     if (queryParams.hasOwnProperty("sortBy")) {
       let sortProperty = queryParams.sortBy;
-      sortBy = { sortProperty: 1 };
+      sortBy = { title: 1 };
     } else sortBy = {};
 
     return await teamModel.find(filter)
