@@ -136,7 +136,7 @@ const Home = () => {
             </Box>
             <Box sx={{ width: { xs: "100%", sm: "50%", md: "50%", lg: "50%", xl: "50%" } }}>
               <Typography fontSize="1.2em" fontWeight="bold">Select & Upload</Typography>
-              <Typography color={colors.neutral[500]}>Create your new mapping project by choosing a reference atlas together with a pre-trained neural network (model) and upload your single-cell data.</Typography>
+              <Typography color={colors.neutral[500]}>Create a mapping project by choosing a reference atlas together with a pre-trained neural network (model) and upload your single-cell data.</Typography>
             </Box>
             <Box sx={{ width: { xs: "100%", sm: "50%", md: "50%", lg: "50%", xl: "50%" }, backgroundColor: "white", borderRadius: "20px" }}>
               <img style={{ width: "100%" }} src={graphic2} alt="Upload" />
@@ -151,7 +151,7 @@ const Home = () => {
             </Box>
             <Box sx={{ width: { xs: "100%", sm: "50%", md: "50%", lg: "50%", xl: "50%" } }}>
               <Typography fontSize="1.2em" fontWeight="bold">Processing</Typography>
-              <Typography color={colors.neutral[500]}>ScArches will map your input data to the specified atlas using the selected machine learning model by performing the cell-type classification.</Typography>
+              <Typography color={colors.neutral[500]}>ScArches will map your input data to the specified atlas using the selected machine learning model, while performing the cell-type classification.</Typography>
             </Box>
             <Box sx={{ width: { xs: "100%", sm: "50%", md: "50%", lg: "50%", xl: "50%" }, backgroundColor: "white", borderRadius: "20px" }}>
               <img style={{ width: "100%" }} src={graphic3} alt="Processing" />
