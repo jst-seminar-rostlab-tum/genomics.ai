@@ -108,8 +108,8 @@ const Home = () => {
               <img style={{ width: "100%" }} src={graphic1} alt="Science" />
             </Box>
             <Box sx={{ width: { xs: "100%", sm: "50%", md: "50%", lg: "50%", xl: "50%" } }}>
-              <Typography fontSize="1.2em" fontWeight="bold">genomics.ai</Typography>
-              <Typography margin="2em 0 2em 0">We help you visualize all of your single-cell sequencing data in a fast and easy way with the help of neural networks.</Typography>
+              <Typography fontSize="1.2em" fontWeight="bold">Query to reference dataset mapping using Transfer Learning</Typography>
+              <Typography margin="2em 0 2em 0">Genecruncher enables mapping by using a novel deep learning strategy called single-cell architectural surgery (ScArches).</Typography>
               <CustomButton onClick={() => history.push('/explore')}>Explore</CustomButton>
             </Box>
           </Box>

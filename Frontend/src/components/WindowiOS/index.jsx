@@ -79,13 +79,13 @@ const WindowiOS = ({ onSignUpClicked }) => {
         }}
       >
         <Box sx={{ margin: { xs: "2em 2em", sm: "0em", md: "0em", lg: "0em", xl: "0em" } }} >
-          <img src={tum} alt="TUM" style={{ width: "6em", height: "auto" }} />
+          <img src={helmholtz} alt="HELMHOLTZ" style={{ width: "8em", height: "auto" }} />
         </Box>
         <Box sx={{ margin: { xs: "2em 2em", sm: "0em", md: "0em", lg: "0em", xl: "0em" } }} >
           <img src={rostlab} alt="ROSTLAB" style={{ width: "10em", height: "auto" }} />
         </Box>
         <Box sx={{ margin: { xs: "2em 2em", sm: "0em", md: "0em", lg: "0em", xl: "0em" } }} >
-          <img src={helmholtz} alt="HELMHOLTZ" style={{ width: "6em", height: "auto" }} />
+          <img src={tum} alt="TUM" style={{ width: "5em", height: "auto" }} />
         </Box>
       </Box>
     </Box>
