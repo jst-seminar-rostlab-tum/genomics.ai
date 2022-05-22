@@ -38,7 +38,7 @@ const addBarPlot = (barContainer, data, groupedBy, title, cWidth, cHeight) => {
   if (h > 350) {
     fontSizeTitle = cons.fontSizeTBig;
     fontSizeOther = cons.fontSizeOBig;
-    marginBottom = cons.marginBottom;
+    marginBottom = cons.marginBottomBig;
   } else {
     fontSizeTitle = cons.fontSizeTSmall;
     fontSizeOther = cons.fontSizeOSmall;
@@ -57,7 +57,7 @@ const addBarPlot = (barContainer, data, groupedBy, title, cWidth, cHeight) => {
   //Titel of grafic
   g.append("text")
     .attr("class", "title")
-    .attr("x", marginBottom + plotTitleCentered)
+    .attr("x", marginBottom + cons.plotTitleCentered)
     .attr("y", 15)
     .attr("font-size", fontSizeTitle)
     .text(title)
