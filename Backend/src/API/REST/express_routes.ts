@@ -84,6 +84,7 @@ import {
   reset_institution_profilepicture_route,
 } from "./routes/reset_institution_pictures";
 import reset_user_avatar_route from "./routes/reset_user_avatar";
+import {contact_us} from "./routes/contact/contactRoute";
 
 // setup the websocket-server on top of the http_server
 export function express_routes(this: REST_Host): Router {
@@ -163,6 +164,9 @@ export function express_routes(this: REST_Host): Router {
 
   // download routes
   this.expressApp.use(download_results_route());
+
+  //contact routes
+  this.expressApp.use(contact_us());
 
   // institution routes
   this.expressApp.use(create_institution());
