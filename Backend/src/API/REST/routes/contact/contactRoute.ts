@@ -5,13 +5,13 @@ import {mailer} from "../../../../util/mailer";
 
 const contact_us = ():Router =>{
     let router = express.Router();
-    router.post("/contact", check_auth(), async (req: ExtRequest, res: any) => {
+    router.post("/contact",  async (req: ExtRequest, res: any) => {
         try {
-            const { email, firstName, lastName, message } = req.body;
+            const { email, firstName, lastName, message, subject } = req.body;
 
             await mailer.send(
-                "test@test.com",
-                "[GeneCruncher] Contact",
+                process.env.CONTACT_US,
+                subject,
                 "contact_us",
                 {
                     email: email,

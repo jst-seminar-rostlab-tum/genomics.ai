@@ -18,6 +18,7 @@ export function init_env_vars() {
     "API_URL",
     "FRONTEND_URL",
     "JWT_SECRET",
+    "CONTACT_US"
   ];
   required_env_vars.forEach((required_env_var) => {
     if (!(required_env_var in process.env))
