@@ -44,7 +44,7 @@ def setup_anndata_for_scanvi(anndata, configuration):
     scarches.models.SCANVI.setup_anndata(anndata,
                                          unlabeled_category=get_from_config(configuration, parameters.UNLABELED_KEY),
                                          batch_key=get_from_config(configuration, parameters.CONDITION_KEY),
-                                         labels_key=get_from_config(configuration, parameters.CELL_TYPE_KEY))  # TODO check if needed
+                                         labels_key=get_from_config(configuration, parameters.CELL_TYPE_KEY))
 
 
 def get_scanvi_from_scvi_model(scvi_model, configuration):
@@ -146,8 +146,8 @@ def query(pretrained_model, reference_latent, anndata, source_adata, configurati
 
     # added obs to query_latent
     query_latent = get_latent(model, anndata, configuration)
-    query_latent.obs['cell_type'] = anndata.obs[get_from_config(configuration, parameters.CELL_TYPE_KEY)].tolist()  #TODO check if needed
-    query_latent.obs['batch'] = anndata.obs[get_from_config(configuration, parameters.CONDITION_KEY)].tolist()    #TODO check if needed
+    query_latent.obs['cell_type'] = anndata.obs[get_from_config(configuration, parameters.CELL_TYPE_KEY)].tolist()
+    query_latent.obs['batch'] = anndata.obs[get_from_config(configuration, parameters.CONDITION_KEY)].tolist()
     scanpy.pp.neighbors(query_latent, n_neighbors=get_from_config(configuration, parameters.NUMBER_OF_NEIGHBORS))
     scanpy.tl.leiden(query_latent)
     scanpy.tl.umap(query_latent)
@@ -160,13 +160,13 @@ def query(pretrained_model, reference_latent, anndata, source_adata, configurati
                                   key=get_from_config(configuration, parameters.OUTPUT_PATH),
                                   cell_type_key=get_from_config(configuration, parameters.CELL_TYPE_KEY),
                                   condition_key=get_from_config(configuration,
-                                                                parameters.CONDITION_KEY), predictScanvi=True)  # TODO check if needed
+                                                                parameters.CONDITION_KEY), predictScanvi=True)
     return model, query_latent
 
 
 def predict_latent(model, latent):
-    latent.obs['predictions'] = model.predict()  # TODO check if needed
-    print("Acc: {}".format(np.mean(latent.obs.predictions == latent.obs.cell_type)))  # TODO check if needed
+    latent.obs['predictions'] = model.predict()
+    print("Acc: {}".format(np.mean(latent.obs.predictions == latent.obs.cell_type)))
 
     df = latent.obs.groupby(["cell_type", "predictions"]).size().unstack(fill_value=0)
     norm_df = df / df.sum(axis=0)
@@ -287,7 +287,7 @@ def create_model(source_adata, target_adata, configuration):
     if get_from_config(configuration, parameters.DEBUG):
         utils.save_umap_as_pdf(reference_latent, 'figures/reference.pdf', color=['batch', 'cell_type'])
 
-        # TODO check if needed
+
     reference_latent = predict(scanvi, reference_latent)
     return scanvi, reference_latent
 
