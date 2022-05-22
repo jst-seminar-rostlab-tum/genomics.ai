@@ -1,5 +1,7 @@
 import * as d3 from "d3";
 import "./bar.css"
+import * as cons from "./constants";
+
 
 const groupBy = (data, cat) => {
   let list = []
@@ -23,10 +25,7 @@ const groupBy = (data, cat) => {
 
 const addBarPlot = (barContainer, data, groupedBy, title, cWidth, cHeight) => {
   const svg = d3.select(barContainer).append("svg");
-  const plotTitleOffset = 25;
-  const plotTitleCentered = 25;
-  //const w = 270;
-  //const h = 270;
+
   let h = cHeight;
   let w = cWidth;
   svg
@@ -37,20 +36,20 @@ const addBarPlot = (barContainer, data, groupedBy, title, cWidth, cHeight) => {
   let fontSizeOther;
   let marginBottom;
   if (h > 350) {
-    fontSizeTitle = "20px";
-    fontSizeOther = "15px";
-    marginBottom = 130;
+    fontSizeTitle = cons.fontSizeTBig;
+    fontSizeOther = cons.fontSizeOBig;
+    marginBottom = cons.marginBottom;
   } else {
-    fontSizeTitle = "15px";
-    fontSizeOther = "10px";
-    marginBottom = 85;
+    fontSizeTitle = cons.fontSizeTSmall;
+    fontSizeOther = cons.fontSizeOSmall;
+    marginBottom = cons.marginBottomSmall;
   }
 
   //Scales
   const info = Array.from(groupedBy).filter(d => d[0] !== undefined).map(d => [d[0], d[1].length]);
   const labels = Array.from(groupedBy.keys()).filter(d => d !== undefined);
   const xScale = d3.scaleBand().domain(labels).range([marginBottom, w]).padding(0.4);
-  const yScale = d3.scaleLinear().domain([0, data.length]).range([h, marginBottom + plotTitleOffset]);
+  const yScale = d3.scaleLinear().domain([0, data.length]).range([h, marginBottom + cons.plotTitleOffset]);
 
 
   const g = svg.append("g")

@@ -26,15 +26,8 @@ export class UmapVisualization2 {
     this.coloringModes = getColoringModes(data);
     this.tooltip = d3.select(container).append("div");
     this.mode = undefined;
-    /*this.barChartBatch = addBarPlotBatch(containerBar, data);
-    if(Object.keys(this.coloringModes).includes("cell_type")){
-      d3.select(containerBar).append("div");
-      this.barChartCell = addBarPlotCell(containerBar, data);
-    }*/
     this.data = data;
     this.graphs = ["batch", "cell"];
-    //this.drawGraph(containerBar, "batch", 270, 270);
-    //this.drawGraph(containerBar, "cell", 270, 270);
     this.hiddenCells = [];
   };
 
@@ -76,12 +69,6 @@ export class UmapVisualization2 {
     this.hideShowCells();
   }
 
-  //Hide
-  /*after(category, value) {
-    this.cells
-      .style("visibility", (d) => { return d[category] === value ? "hidden" : "visible" });
-  }*/
-
   //Show
   before(category, value) {
     this.deleteHiddenCell(category, value);
@@ -105,22 +92,16 @@ export class UmapVisualization2 {
   }
 
   filterCells(cell) {
-    console.log(this[1]);
     cell[0] == this[0] && cell[1] == this[1];
   }
 
   deleteHiddenCell(category, value) {
-    /*for (let i = 0; i < this.addHiddenCell.length; i++) {
-      if (this.hiddenCells[i][0] == category && this.hiddenCells[i][1] == value) {
-        this.hiddenCells.splice(i, 1);
-      }
-    }*/
-    let thisArg = [category, value];
     this.hiddenCells = this.hiddenCells.filter(function (cell) {
       return !(cell[0] == category && cell[1] == value)});
-
   }
 
+  //////////////////////////////////////////////////// These should be deleted and the use in F3 changed, when
+                                                      // it's certain how the attributes are going to be named
   showReference() {
     this.before("type", "reference");
   }
@@ -136,7 +117,7 @@ export class UmapVisualization2 {
   hideReference() {
     this.after("type", "reference");
   }
-
+////////////////////////////////////////////////////////
   predictedCellsTransparent() {
     this.cells
       .style("opacity", (d) => {return d["predictions"] === "True" ? 0.3 : 0.85 });

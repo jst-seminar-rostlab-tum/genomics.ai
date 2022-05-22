@@ -61,3 +61,14 @@ export const colors = [
   '#BDC9D2', '#9FA064', '#BE4700', '#658188', '#83A485', '#453C23', '#47675D', '#3A3F00',
   '#061203', '#DFFB71', '#868E7E', '#98D058', '#6C8F7D', '#D7BFC2', '#3C3E6E', '#D83D66',
 ];
+
+
+// Bar Chart Stuff
+export const plotTitleOffset = 25;
+export const plotTitleCentered = 25;
+export const fontSizeTBig = "20px";
+export const fontSizeTSmall = "15px";
+export const fontSizeOBig = "15px";
+export const fontSizeOSmall = "10px";
+export const marginBottomBig = 130;
+export const marginBottomSmall = 85;
