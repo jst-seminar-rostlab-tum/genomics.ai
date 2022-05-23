@@ -253,7 +253,7 @@ const join_as_member_of_institution = (): Router => {
         return res
           .status(200)
           .send(
-            `<h2>You have been joint to the institution. Click <a href='javascript:window.close();'>here</a> to return</h2>`
+            `<h2>ou have joined the institution. Click <a href='javascript:window.close();'>here</a> to return</h2>`
           );
       } else {
         return res.status(409).send("Could not join as member of the institution!");
