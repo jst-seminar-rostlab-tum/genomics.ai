@@ -3,6 +3,7 @@ import { Box, Typography, Button, Stack, TextField, TextareaAutosize } from "@mu
 import Input from 'components/Input/Input'
 import HeaderView from 'components/general/HeaderView';
 import CustomButton from "components/CustomButton";
+import ContactForm from 'components/ContactForm';
 
 export default function Help({ sidebarShown }) {
   const [contactDetails, setContactDetails] = useState({
@@ -47,7 +48,7 @@ export default function Help({ sidebarShown }) {
       </Box>
 
       <Box sx={{ position: "relative", width: "60vw", margin: "3em auto" }} >
-        <Box sx={{
+        {/* <Box sx={{
           width: "100%",
           margin: "2em 0 0em 0",
           padding: "2em 0em",
@@ -66,7 +67,8 @@ export default function Help({ sidebarShown }) {
               <CustomButton>Send</CustomButton>
             </Box>
           </Stack>
-        </Box>
+        </Box> */}
+        <ContactForm />
       </Box>
     </HeaderView>
   );
