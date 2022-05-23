@@ -18,6 +18,6 @@ export interface AddProjectDTO {
     fileName: string,
     uploadDate: Date,
     status: string,
-    modelId: string,
-    atlasId: string,
+    modelId: ObjectId,
+    atlasId: ObjectId,
 }

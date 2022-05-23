@@ -22,6 +22,18 @@ export default class ProjectService {
   }
 
   /**
+   * Deletes a project with the given project id and return the deleted document.
+   * 
+   * @param project_id - the project id
+   * @returns project - project or null if not found
+   */
+  static async deleteProjectById(
+    project_id: ObjectId | string
+  ): Promise<(IProject & { _id: ObjectId}) | null> {
+    return await projectModel.findByIdAndRemove(project_id).exec();
+  }
+
+  /**
    *  Search for a project with the given uploadId and team owner (userId - optional)
    *  and return if found.
    *
@@ -51,6 +63,34 @@ export default class ProjectService {
     sort: number = 0
   ): Promise<(IProject & { _id: ObjectId })[]> {
     return await projectModel.find({ owner: user_id }).sort({ uploadDate: sort });
+  }
+
+  /**
+   *  Returns projects of the given team ids,
+   *  where the teams of the projects are in
+   *  the given team list.
+   *
+   *  @param   teamIds as ObjectId array
+   *  @returns projects or null
+   */
+  static async getProjectsOfTeams(
+    teamIds: ObjectId[]
+  ): Promise<(IProject & { _id: ObjectId })[]> {
+    return await projectModel.find({ teamId: { $in: teamIds } }).exec();
+  }
+
+  /**
+   *  Returns projects of the given user ids,
+   *  where the owners of the projects are in
+   *  the given user list.
+   *
+   *  @param   userIds as ObjectId array
+   *  @returns projects or null
+   */
+  static async getProjectsOfUsers(
+    userIds: ObjectId[]
+  ): Promise<(IProject & { _id: ObjectId })[]> {
+    return await projectModel.find({ owner: { $in: userIds } }).exec();
   }
 
   /**

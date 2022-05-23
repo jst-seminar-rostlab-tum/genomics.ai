@@ -5,7 +5,7 @@ import { ObjectId } from "mongoose";
 /**
  *  @class TeamService
  *
- *  Provides useful methods to access the database and modify projects,
+ *  Provides useful methods to access the database and modify teams,
  *  which can be used by the route-controllers.
  */
 export default class TeamService {
@@ -13,7 +13,7 @@ export default class TeamService {
    *  Adds given team to the database.
    *
    *  @param    team
-   *  @returns  projectAdded - the added team
+   *  @returns  teamAdded - the added team
    */
   static async addTeam(team: AddTeamDTO): Promise<ITeam> {
     let teamAdded: ITeam | undefined = undefined;
@@ -34,7 +34,7 @@ export default class TeamService {
    *  Search for a team with the given title and return if found.
    *
    *  @param   title
-   *  @returns project or null
+   *  @returns team or null
    */
   static async getTeamByTitle(title: string): Promise<(ITeam & { _id: ObjectId }) | null> {
     return await teamModel.findOne({ title });
@@ -44,7 +44,7 @@ export default class TeamService {
    *  Search for a team with the given team id and return if found.
    *
    *  @param   teamId
-   *  @returns project - matched proejct to projectId or null
+   *  @returns team - matched team to teamId or null
    */
   static async getTeamById(teamId: ObjectId | string): Promise<(ITeam & { _id: ObjectId }) | null> {
     return await teamModel.findById(teamId).exec();
@@ -67,6 +67,12 @@ export default class TeamService {
       .exec();
   }
 
+  static async getMembersOfTeam(
+    team_id: ObjectId | string
+  ): Promise<ITeam| null> {
+    return await teamModel.findById(team_id).populate("memberIds");
+  }
+
   /**
    *  Add the given userId to the invitation list of the given team.
    *
@@ -79,17 +85,6 @@ export default class TeamService {
     userId: ObjectId | string
   ): Promise<any> {
     return await teamModel.updateOne({ _id: teamId }, { $addToSet: { invitedMemberIds: userId } });
-  }
-
-  /**
-   *  Add the given projectId to the project list of the given team.
-   *
-   *  @param   teamId
-   *  @param   projectId
-   *  @returns updateDocument
-   */
-  static async addProject(teamId: ObjectId | string, projectId: ObjectId | string): Promise<any> {
-    return await teamModel.updateOne({ _id: teamId }, { $addToSet: { projects: projectId } });
   }
 
   /**
@@ -153,7 +148,7 @@ export default class TeamService {
   }
 
   /**
-   *  Add the given userId into the given project.
+   *  Add the given userId into the given team.
    *
    *  @param   teamId
    *  @param   userId
@@ -187,7 +182,7 @@ export default class TeamService {
   }
 
   static async getTeams(queryParams: any): Promise<ITeam[] | null> {
-    var filter: any, sortBy: any;
+    var filter: any, sortBy = {};
 
     queryParams.hasOwnProperty("keyword")
       ? (filter = { title: { $regex : "^" +  queryParams.keyword, $options : 'i'} })
@@ -195,11 +190,17 @@ export default class TeamService {
     queryParams.hasOwnProperty("visibility") ? (filter.visibility = queryParams.visibility) : null;
 
     if (queryParams.hasOwnProperty("sortBy")) {
-      let sortProperty = queryParams.sortBy;
-      sortBy = { sortProperty: 1 };
+      if(queryParams.sortBy == "title")
+          sortBy["title"] = 1;
+      else
+      sortBy["updatedAt"] = -1;
     } else sortBy = {};
 
-    return await teamModel.find(filter).sort(sortBy);
+    return await teamModel.find(filter)
+        .populate("memberIds")
+        .populate("institutionId")
+        .populate("adminIds")
+        .sort(sortBy);
   }
 
   static async getUsersTeams(userId: ObjectId | string): Promise<ITeam[] | null> {
@@ -209,6 +210,10 @@ export default class TeamService {
         { adminIds: { $elemMatch: { $eq: userId } } },
       ],
     });
+  }
+
+  static async getInstitutionsTeams(institutionId: ObjectId | any): Promise<ITeam[] | null> {
+    return await teamModel.find({ institutionId: institutionId } );
   }
 
   /**
@@ -231,7 +236,7 @@ export default class TeamService {
   }
 
   /**
-   *  Remove the given userId into the given project.
+   *  Remove the given userId from the given team.
    *
    *  @param   teamId
    *  @param   userId

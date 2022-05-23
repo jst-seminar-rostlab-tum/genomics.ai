@@ -1,9 +1,10 @@
 import { IInstitution, institutionModel } from "../models/institution";
-import { teamModel } from "../models/team";
+import {ITeam, teamModel} from "../models/team";
 import ProjectService from "./project.service";
 import { AddInstitutionDTO, UpdateInstitutionDTO } from "../dtos/institution.dto";
 import { ObjectId } from "mongoose";
-import { IProject } from "../models/project";
+import { IProject, projectModel } from "../models/project";
+import TeamService from "./team.service";
 
 /**
  *  @class InstitutionService
@@ -291,17 +292,34 @@ export default class InstitutionService {
     return old?.backgroundPictureURL;
   }
 
-  static async filterInstitutions(query: any): Promise<IInstitution[] | null> {
-    var keyword: object, sortBy: any;
+  static async filterInstitutions(query: any): Promise<any | null> {
+    var keyword: object, sortBy =  {};
 
-    query.hasOwnProperty("keyword") ? (keyword = { name: { $regex : "^" +  query.keyword, $options : 'i'} }) : (keyword = {});
+    query.hasOwnProperty("keyword")
+      ? (keyword = { name: { $regex: "^" + query.keyword, $options: "i" } })
+      : (keyword = {});
 
     if (query.hasOwnProperty("sortBy")) {
-      let sortProperty = query.sortBy;
-      sortBy = { sortProperty: 1 };
+      if(query.sortBy == "name")
+        sortBy["name"] = 1;
+      else
+        sortBy["updatedAt"] = -1;
     } else sortBy = {};
 
-    return await institutionModel.find(keyword).sort(sortBy).exec();
+    const institutions : any =  await institutionModel.find(keyword)
+        .populate("adminIds")
+        .populate("memberIds")
+        .sort(sortBy).lean();
+
+    var populatedInstitutions : Array<any> = new Array<any>();
+
+    for( let institution of institutions){
+      let institutionsTeams = await teamModel.find({ institutionId: institution._id } );
+      institution = {...institution , teams: institutionsTeams}
+      populatedInstitutions.push(institution);
+    }
+
+    return populatedInstitutions;
   }
 
   static async getMembersOfInstitution(
@@ -317,16 +335,15 @@ export default class InstitutionService {
 
     let projectsOfMembers: IProject[] = [];
     if (institution?.memberIds?.length > 0) {
-      const resp = await ProjectService.getProjects({
-        owner: { $in: institution.memberIds },
-      });
+      const resp = await ProjectService.getProjectsOfUsers(institution.memberIds);
       if (resp) {
         projectsOfMembers = resp;
       }
     }
 
-    const teams = await teamModel.find({ institution_id: institution_id }).populate("projects");
-    const projectsOfTeams = teams.map((team) => team.projects).flat();
+    const teams = await teamModel.find({ institution_id: institution_id });
+    const teamIds = teams.map((team) => team._id);
+    const projectsOfTeams = await ProjectService.getProjectsOfTeams(teamIds);
 
     const projects = projectsOfMembers;
     for (const projOfTeam of projectsOfTeams) {
@@ -339,6 +356,7 @@ export default class InstitutionService {
 
     return projects;
   }
+
   static async getUsersInstitutions(userId: ObjectId | string): Promise<IInstitution[] | null> {
     return await institutionModel.find({
       $or: [

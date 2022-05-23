@@ -1,7 +1,9 @@
 Invitation to a team
 
 Hey,
-We wanted to inform you that you were invited to the institution {{institution}}
+We wanted to inform you that you were invited to the institution {{institution}}.
+
+Click here to join the institution: {{link}}
 
 Thanks,
 The GeneCruncher Team
