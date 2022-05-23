@@ -23,22 +23,6 @@ import ModelService from 'shared/services/Model.service';
 
 import { applyModelFilters, applyAtlasFilters } from 'shared/utils/filter';
 
-// definitely target to change, when backend will provide full data
-async function getInstitutions(filterParams) {
-  const searchResponse = await InstitutionService.getInstitutions(filterParams);
-  const teamsRequests = searchResponse.map(
-    (team) => InstitutionService.getTeamsOfInstitutionById(team.id),
-  );
-  const teamsResponse = await Promise.all(teamsRequests);
-  teamsResponse.forEach(
-    (team,
-      index) => {
-      searchResponse[index].teamsCount = team.length;
-    },
-  );
-  return searchResponse;
-}
-
 const SearchPage = () => {
   const [user] = useAuth();
 
@@ -90,7 +74,7 @@ const SearchPage = () => {
         searchResponse = await TeamService.getTeams(filterParams);
         break;
       case 'institutions':
-        searchResponse = await getInstitutions(filterParams);
+        searchResponse = await InstitutionService.getInstitutions(filterParams);
         break;
       case 'projects':
         searchResponse = await ProjectService.getProjects(filterParams);

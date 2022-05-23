@@ -62,7 +62,7 @@ const TeamService = MOCK_TEAMS ? MockTeamService : {
     if (!preparedParams.sortBy || preparedParams.sortBy === 'name') {
       preparedParams.sortBy = 'title';
     }
-    const { data } = await axiosInstance.get(`/${MODEL}`, { params });
+    const { data } = await axiosInstance.get(`/${MODEL}`, { params: preparedParams });
 
     return data.map(enhanceTeam);
   },
