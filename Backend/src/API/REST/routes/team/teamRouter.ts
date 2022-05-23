@@ -57,7 +57,7 @@ const create_team = (): Router => {
 
         const newTeam = await TeamService.addTeam(teamToAdd);
 
-        return res.status(201).json(newTeam);
+        return res.status(201).json(TeamService.mergeAdminsMembers(newTeam));
       } else {
         const teamToAdd: AddTeamDTO = {
           title,
@@ -68,7 +68,7 @@ const create_team = (): Router => {
         };
         const newTeam = await TeamService.addTeam(teamToAdd);
 
-        return res.status(201).json(newTeam);
+        return res.status(201).json(TeamService.mergeAdminsMembers(newTeam));
       }
     } catch (err) {
       console.error("Error registering team!");
