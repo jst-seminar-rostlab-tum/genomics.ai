@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import CircularProgress from '@mui/material/CircularProgress';
+import { CircularProgress, Stack } from '@mui/material';
 import MemberList from 'components/members/MemberList';
 import InstitutionMemberRemoveButton from 'components/institutions/InstitutionMemberRemoveButton';
 import InstitutionService from 'shared/services/Institution.service';
@@ -33,7 +33,7 @@ function InstitutionMemberList({ institution, updateInstitution }) {
       )}
       trailingBuilder={(member) => (
         institution.adminIds.indexOf(user._id) > -1 && user._id !== member.id ? (
-          <div>
+          <Stack direction="row" spacing={1}>
             <InstitutionMemberMakeAdminButton
               institution={institution}
               member={member}
@@ -44,7 +44,7 @@ function InstitutionMemberList({ institution, updateInstitution }) {
               member={member}
               updateInstitution={updateInstitution}
             />
-          </div>
+          </Stack>
         ) : null
       )}
     />
