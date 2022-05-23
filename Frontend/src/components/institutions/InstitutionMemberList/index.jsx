@@ -5,6 +5,7 @@ import InstitutionMemberRemoveButton from 'components/institutions/InstitutionMe
 import InstitutionService from 'shared/services/Institution.service';
 import styles from './institutionMemberList.module.css';
 import { useAuth } from 'shared/context/authContext';
+import InstitutionMemberMakeAdminButton from '../InstitutionMemberMakeAdminButton';
 
 function InstitutionMemberList({ institution, onRemoved }) {
   const [user] = useAuth();
@@ -32,11 +33,17 @@ function InstitutionMemberList({ institution, onRemoved }) {
       )}
       trailingBuilder={(member) => (
         institution.adminIds.indexOf(user._id) > -1 && user._id !== member.id ? (
-          <InstitutionMemberRemoveButton
-            institution={institution}
-            member={member}
-            onRemoved={onRemoved}
-          />
+          <div>
+            <InstitutionMemberMakeAdminButton
+              institution={institution}
+              member={member}
+            />
+            <InstitutionMemberRemoveButton
+              institution={institution}
+              member={member}
+              onRemoved={onRemoved}
+            />
+          </div>
         ) : null
       )}
     />

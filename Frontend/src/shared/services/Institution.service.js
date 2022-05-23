@@ -72,6 +72,10 @@ const InstitutionService = MOCK_INSTUTITIONS ? MockInstitutionService : {
   async removeMemberFromInstitution(institutionId, memberId) {
     await axiosInstance.delete(`/institutions/${institutionId}/join`, { data: { userId: memberId } });
   },
+
+  async makeInstitutionAdmin(institutionId, memberId) {
+    await axiosInstance.put(`/institutions/${institutionId}/admin`, { userId: memberId });
+  },
 };
 
 export default InstitutionService;

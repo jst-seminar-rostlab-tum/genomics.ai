@@ -8,7 +8,8 @@ import DialogContentText from '@mui/material/DialogContentText';
 import InstitutionService from 'shared/services/Institution.service';
 
 function InstitutionMemberMakeAdminButton({
-  institution, member, updateTeam,
+  institution, member,
+  // updateTeam,
 }) {
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -17,13 +18,13 @@ function InstitutionMemberMakeAdminButton({
 
   async function addAdmin() {
     InstitutionService.makeInstitutionAdmin(institution.id, member.id);
-    updateTeam();
+    // updateTeam();
     handleCloseDialog();
   }
 
   async function removeAdmin() {
     InstitutionService.removeInstitutionAdmin(institution.id, member.id);
-    updateTeam();
+    // updateTeam();
     handleCloseDialog();
   }
 
