@@ -620,11 +620,11 @@ const get_members_of_team = (): Router => {
   router.get("/teams/:id/members", check_auth(), async (req: Request, res: Response) => {
     const teamId = req.params.id;
     try {
-      const team = await TeamService.getMembersOfTeam(teamId);
-      if (team == null) {
+      const members = await TeamService.getMembersOfTeam(teamId);
+      if (members == null) {
         return res.status(404).send(`Team ${teamId} not found`);
       }
-      return res.status(200).send(team.memberIds);
+      return res.status(200).send(members);
     } catch (err) {
       console.error(JSON.stringify(err));
       return res.status(500).json({ error: "General server error" });

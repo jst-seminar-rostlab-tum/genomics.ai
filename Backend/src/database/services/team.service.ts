@@ -1,4 +1,5 @@
 import { ITeam, teamModel } from "../models/team";
+import { IUser } from "../models/user";
 import { AddTeamDTO, UpdateTeamDTO } from "../dtos/team.dto";
 import { ObjectId } from "mongoose";
 
@@ -83,12 +84,11 @@ export default class TeamService {
     );
   }
 
-  static async getMembersOfTeam(team_id: ObjectId | string): Promise<ITeam | null> {
-    //For some reason, transform() is not included in mongoose definitions (found it in online documentation)
-    // => cast to any as a workaround
-    return await (teamModel.findById(team_id) as any)
-      .transform(TeamService.mergeMemberIds)
-      .populate("memberIds");
+  static async getMembersOfTeam(team_id: ObjectId | string): Promise<Array<IUser> | null> {
+    return TeamService.mergeMemberIds(
+      await teamModel.findById(team_id).populate("memberIds").populate("adminIds")
+    ).memberIds as any as Array<IUser>;
+    //Cast Array<ObjectId> to Array<IUser> as populate changes the type of elements of memberIds
   }
 
   /**
