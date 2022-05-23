@@ -16,6 +16,7 @@ def default_config():
     """
     return {
         parameters.MODEL: 'scVI',
+        parameters.ATLAS: 'pancreas',
 
         parameters.REFERENCE_DATA_PATH: 'pancreas_source.h5ad',
         parameters.QUERY_DATA_PATH: 'pancreas_query.h5ad',
@@ -34,6 +35,7 @@ def default_config():
 
         parameters.CONDITION_KEY: 'study',
         parameters.CELL_TYPE_KEY: 'cell_type',
+        parameters.BATCH_KEY: 'sample',
         parameters.PRETRAINED_MODEL_PATH: '',
         parameters.NUMBER_OF_LAYERS: 2,
         parameters.ENCODE_COVARIATES: True,
@@ -80,7 +82,7 @@ def merge_configs(user_config):
 def query(user_config):
     start_time = time.time()
     configuration = merge_configs(user_config)
-    model = get_from_config(configuration, parameters.MODEL)
+    model = utils.get_from_config(configuration, parameters.MODEL)
     attributes = None
     if model == 'scVI':
         attributes = compute_scVI(configuration)

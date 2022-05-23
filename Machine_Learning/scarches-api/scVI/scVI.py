@@ -9,6 +9,7 @@ from scarches.dataset.trvae.data_handling import remove_sparsity
 from utils import utils, parameters
 import sys
 import tempfile
+import scvi
 
 
 # def utils.get_from_config(configuration, key):
@@ -35,20 +36,10 @@ def setup():
     torch.set_printoptions(precision=3, sci_mode=False, edgeitems=7)
 
 
-def pre_process_data(configuration):
-    source_adata = utils.read_h5ad_file_from_s3(utils.get_from_config(configuration, parameters.REFERENCE_DATA_PATH))
-    target_adata = utils.read_h5ad_file_from_s3(utils.get_from_config(configuration, parameters.QUERY_DATA_PATH))
-    source_adata = remove_sparsity(source_adata)
-    source_adata.obs["type"] = "reference"
-    target_adata.obs["type"] = "query"
-    target_adata = remove_sparsity(target_adata)
-    return source_adata, target_adata
-
-
-def get_pretrained_scVI_model(anndata):
+def get_pretrained_scVI_model(anndata, configuration):
     return sca.models.SCVI.load_query_data(
         anndata,
-        'assets/scVI/',
+        'assets/scVI/' + str(utils.get_from_config(configuration, parameters.ATLAS)) + '/',
         freeze_dropout=True,
     )
 
@@ -68,7 +59,7 @@ def create_scVI_model(source_adata, target_adata, configuration):
             print('use pretrained scvi model', file=sys.stderr)
         # os.mkdir('scvi_model')
         # utils.fetch_file_from_s3(utils.get_from_config(configuration, parameters.PRETRAINED_MODEL_PATH), 'assets/scVI/model.pt')
-        return get_pretrained_scVI_model(target_adata), None
+        return get_pretrained_scVI_model(target_adata, configuration), None
     else:
         if utils.get_from_config(configuration, parameters.DEV_DEBUG):
             print('do not use pretrained scvi model', file=sys.stderr)
@@ -136,8 +127,10 @@ def compute_latent(model, adata, configuration):
     :return:
     """
     reference_latent = sc.AnnData(model.get_latent_representation(adata=adata))
-    reference_latent.obs["cell_type"] = adata.obs[utils.get_from_config(configuration, parameters.CELL_TYPE_KEY)].tolist()
-    reference_latent.obs["batch"] = adata.obs[utils.get_from_config(configuration, parameters.CONDITION_KEY)].tolist()
+    reference_latent.obs[utils.get_from_config(configuration, parameters.CELL_TYPE_KEY)] = adata.obs[
+        utils.get_from_config(configuration, parameters.CELL_TYPE_KEY)].tolist()
+    reference_latent.obs[utils.get_from_config(configuration, parameters.BATCH_KEY)] = adata.obs[
+        utils.get_from_config(configuration, parameters.CONDITION_KEY)].tolist()
     sc.pp.neighbors(reference_latent, n_neighbors=utils.get_from_config(configuration, parameters.NUMBER_OF_NEIGHBORS))
     sc.tl.leiden(reference_latent)
     sc.tl.umap(reference_latent)
@@ -159,7 +152,7 @@ def compute_query(pretrained_model, anndata, reference_latent, source_adata, con
     """
     model = sca.models.SCVI.load_query_data(
         anndata,
-        'assets/scVI/',
+        'assets/scVI/' + str(utils.get_from_config(configuration, parameters.ATLAS)) + '/',
         freeze_dropout=True,
     )
     model.train(
@@ -214,7 +207,6 @@ def compute_query(pretrained_model, anndata, reference_latent, source_adata, con
     return model
 
 
-
 def compute_full_latent(source_adata, target_adata, model, configuration):
     """
     basically just takes to datasets, concatenates them and then computes the latent and saves the result
@@ -229,15 +221,17 @@ def compute_full_latent(source_adata, target_adata, model, configuration):
         utils.save_umap_as_pdf(full_latent, 'data/figures/both.pdf', color=['batch', 'cell_type'])
 
     both_path = 'both.csv'
-    
-    utils.write_latent_csv(full_latent, key='both.csv', filename=both_path, drop_colums = dropped_columns)
+
+    utils.write_latent_csv(full_latent, key='both.csv', filename=both_path, drop_colums=dropped_columns)
 
     return full_latent
 
 
 def compute_scVI(configuration):
     setup()
-    source_adata, target_adata = pre_process_data(configuration)
+    source_adata, target_adata = utils.pre_process_data(configuration)
+    print(source_adata)
+    print(target_adata)
     model, reference_latent = create_scVI_model(source_adata, target_adata, configuration)
     model = compute_query(model, target_adata, reference_latent, source_adata, configuration)
     # TODO figure out if we need to do this

@@ -12,7 +12,6 @@ import torch
 from utils import utils, parameters
 
 
-
 def setup_modules():
     warnings.simplefilter(action='ignore', category=FutureWarning)
     warnings.simplefilter(action='ignore', category=UserWarning)
@@ -110,7 +109,7 @@ def visualize_RNA_data(model, adata_ref, configuration):
 
 def surgery(adata_query, configuration):
     # utils.fetch_file_from_s3(utils.get_from_config(configuration, parameters.PRETRAINED_MODEL_PATH), 'assets/totalVI/model.pt')
-    dir_path = 'assets/totalVI'
+    dir_path = 'assets/totalVI/' + str(utils.get_from_config(configuration, parameters.ATLAS)) + '/',
     # vae_q_file = exists(dir_path + args.fname)
     # vae_q = None
     # if vae_q_file:

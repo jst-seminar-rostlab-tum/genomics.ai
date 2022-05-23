@@ -78,3 +78,7 @@ SCANVI_DO_SURGERY = 'scanvi_do_surgery'
 DEV_DEBUG = 'development-mode'
 # set if GPU is available
 USE_GPU = 'use_gpu'
+# sets the batch type key
+BATCH_KEY = 'batch'
+# sets the used atlas
+ATLAS = 'atlas'

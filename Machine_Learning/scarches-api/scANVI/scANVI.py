@@ -11,6 +11,7 @@ from utils import utils, parameters
 import logging
 import tempfile
 import sys
+import scvi
 
 
 def setup_modules():
@@ -24,34 +25,27 @@ def setup_modules():
     torch.set_printoptions(precision=3, sci_mode=False, edgeitems=7)
 
 
-def pre_process_data(configuration):
-    source_adata = utils.read_h5ad_file_from_s3(utils.get_from_config(configuration, parameters.REFERENCE_DATA_PATH))
-    target_adata = utils.read_h5ad_file_from_s3(utils.get_from_config(configuration, parameters.QUERY_DATA_PATH))
-    source_adata.obs["type"] = "reference"
-    target_adata.obs["type"] = "query"
-    source_adata = remove_sparsity(source_adata)
-    target_adata = remove_sparsity(target_adata)
-
-    return source_adata, target_adata
-
-
 def setup_anndata_for_scanvi(anndata, configuration):
     scarches.models.SCANVI.setup_anndata(anndata,
-                                         unlabeled_category=utils.get_from_config(configuration, parameters.UNLABELED_KEY),
+                                         unlabeled_category=utils.get_from_config(configuration,
+                                                                                  parameters.UNLABELED_KEY),
                                          batch_key=utils.get_from_config(configuration, parameters.CONDITION_KEY),
                                          labels_key=utils.get_from_config(configuration, parameters.CELL_TYPE_KEY))
 
 
 def get_scanvi_from_scvi_model(scvi_model, configuration):
-    return scarches.models.SCANVI.from_scvi_model(scvi_model, utils.get_from_config(configuration, parameters.UNLABELED_KEY))
+    return scarches.models.SCANVI.from_scvi_model(scvi_model,
+                                                  utils.get_from_config(configuration, parameters.UNLABELED_KEY))
 
 
 def get_latent(model, adata, configuration):
     reference_latent = scanpy.AnnData(model.get_latent_representation())
-    reference_latent.obs["cell_type"] = adata.obs[utils.get_from_config(configuration, parameters.CELL_TYPE_KEY)].tolist()
+    reference_latent.obs["cell_type"] = adata.obs[
+        utils.get_from_config(configuration, parameters.CELL_TYPE_KEY)].tolist()
     reference_latent.obs["batch"] = adata.obs[utils.get_from_config(configuration, parameters.CONDITION_KEY)].tolist()
 
-    scanpy.pp.neighbors(reference_latent, n_neighbors=utils.get_from_config(configuration, parameters.NUMBER_OF_NEIGHBORS))
+    scanpy.pp.neighbors(reference_latent,
+                        n_neighbors=utils.get_from_config(configuration, parameters.NUMBER_OF_NEIGHBORS))
     scanpy.tl.leiden(reference_latent)
     scanpy.tl.umap(reference_latent)
 
@@ -106,7 +100,7 @@ def surgery(reference_latent, source_adata, anndata, configuration):
 def query(pretrained_model, reference_latent, anndata, source_adata, configuration):
     model = scarches.models.SCANVI.load_query_data(
         anndata,
-        'assets/scANVI/',
+        'assets/scANVI/' + str(utils.get_from_config(configuration, parameters.ATLAS)) + '/',
         freeze_dropout=True,
     )
 
@@ -166,7 +160,8 @@ def predict_latent(latent):
 def both_adata(source_adata, target_adata, configuration):
     adata_full = source_adata.concatenate(target_adata)
     full_latent = scanpy.AnnData(scarches.models.SCANVI.get_latent_representation(adata=adata_full))
-    full_latent.obs['cell_type'] = adata_full.obs[utils.get_from_config(configuration, parameters.CELL_TYPE_KEY)].tolist()
+    full_latent.obs['cell_type'] = adata_full.obs[
+        utils.get_from_config(configuration, parameters.CELL_TYPE_KEY)].tolist()
     full_latent.obs['batch'] = adata_full.obs[utils.get_from_config(configuration, parameters.CONDITION_KEY)].tolist()
 
     scanpy.pp.neighbors(full_latent)
@@ -198,9 +193,10 @@ def compare_adata(model, source_adata, target_adata, latent, configuration):
 
 def create_model(source_adata, target_adata, configuration):
     if utils.get_from_config(configuration, parameters.USE_PRETRAINED_SCANVI_MODEL):
+        path = 'assets/scANVI/' + str(utils.get_from_config(configuration, parameters.ATLAS)) + '/'
         return scarches.models.SCANVI.load_query_data(
             target_adata,
-            'assets/scANVI/',
+            path,
             freeze_dropout=True,
         ), None
 
@@ -247,7 +243,7 @@ def compute_scANVI(configuration):
 
     setup_modules()
 
-    source_adata, target_adata = pre_process_data(configuration)
+    source_adata, target_adata = utils.pre_process_data(configuration)
 
     scanvi, reference_latent = create_model(source_adata, target_adata, configuration)
 

@@ -1,21 +1,22 @@
 import os
 import tempfile
-import scanpy
+from utils import parameters
 import requests
 import boto3
 from aiohttp import ClientError
-import sys
-from pathlib import Path
 import scanpy
-import fileinput
 from pathlib import Path
+from scarches.dataset.trvae.data_handling import remove_sparsity
 
-UNWANTED_LABELS = ['leiden','','_scvi_labels', '_scvi_batch']
+
+UNWANTED_LABELS = ['leiden', '', '_scvi_labels', '_scvi_batch']
+
 
 def get_from_config(configuration, key):
     if key in configuration:
         return configuration[key]
     return None
+
 
 def to_drop(adata_obs):
     drop_list = []
@@ -26,6 +27,7 @@ def to_drop(adata_obs):
     print(drop_list)
     return drop_list
 
+
 def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=None):
     """
     stores a given latent in a file, and if a key is given also in an s3 bucket
@@ -35,7 +37,7 @@ def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=
     :param drop_columns: not needed columns
     :return:
     """
-    
+
     drop_columns = to_drop(latent.obs_keys())
     # if drop_columns is None:
     #     drop_columns = []
@@ -54,7 +56,8 @@ def write_full_adata_to_csv(model, source_adata, target_adata, key=None, filenam
     return write_adata_to_csv(model, adata_full, key, filename, drop_columns, cell_type_key, condition_key, neighbors)
 
 
-def write_adata_to_csv(model, adata=None, key=None, filename=tempfile.mktemp(), drop_columns=None, cell_type_key='cell_type',
+def write_adata_to_csv(model, adata=None, key=None, filename=tempfile.mktemp(), drop_columns=None,
+                       cell_type_key='cell_type',
                        condition_key='study', neighbors=8):
     anndata = None
     if adata is None:
@@ -177,8 +180,38 @@ def read_h5ad_file_from_s3(key):
     :param key:
     :return:
     """
+    if key is None or len(key) == 0:
+        return None
     filename = tempfile.mktemp(suffix=".h5ad")
     fetch_file_from_s3(key, filename)
     data = scanpy.read(filename)
     delete_file(filename)
     return data
+
+
+def check_model_atlas_compatibility(model, atlas):
+    compatible_atlases = []
+    if model == 'scVI':
+        compatible_atlases = ['pancreas', 'heart', 'human-lung', 'retina', 'fetal-immune']
+    if model == 'scANVI':
+        compatible_atlases = ['pancreas', 'heart', 'human-lung', 'retina', 'fetal-immune']
+    if model == 'totalVI':
+        compatible_atlases = ['pmbc', 'bone-marrow']
+    return atlas in compatible_atlases
+
+
+def pre_process_data(configuration):
+    source_adata = read_h5ad_file_from_s3(get_from_config(configuration, parameters.REFERENCE_DATA_PATH))
+    target_adata = read_h5ad_file_from_s3(get_from_config(configuration, parameters.QUERY_DATA_PATH))
+    source_adata.obs["type"] = "reference"
+    target_adata.obs["type"] = "query"
+    source_adata.raw = source_adata
+    try:
+        source_adata = remove_sparsity(source_adata)
+    except Exception as e:
+        pass
+    try:
+        target_adata = remove_sparsity(target_adata)
+    except Exception as e:
+        pass
+    return source_adata, target_adata
