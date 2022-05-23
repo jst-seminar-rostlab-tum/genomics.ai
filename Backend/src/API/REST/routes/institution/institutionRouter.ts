@@ -80,7 +80,7 @@ const update_institution = (): Router => {
         const updatedInstitution = await InstitutionService.getInstitutionById(
           institution_to_be_updated_id
         );
-        return res.status(200).send(updatedInstitution); 
+        return res.status(200).send(updatedInstitution);
       } catch (err) {
         console.error("Error updating institution!");
         console.error(JSON.stringify(err));
@@ -95,70 +95,79 @@ const update_institution = (): Router => {
 
 const invite_to_institution = (): Router => {
   let router = express.Router();
+  //,
+  router.put("/institutions/:id/invite", check_auth(), async (req: any, res: any) => {
+    var { userId, email }: { userId: Schema.Types.ObjectId; email: string } = req.body;
+    const institutionId_to_modify = req.params.id;
 
-  router.put(
-    "/institutions/:id/invite",
-    validationMdw,
-    check_auth(),
-    async (req: any, res: any) => {
-      const { userId, email }: { userId: Schema.Types.ObjectId; email: string } = req.body;
-      const institutionId_to_modify = req.params.id;
+    console.log("userId " + userId);
+    console.log("email " + email);
+    console.log("institutionId_to_modify " + institutionId_to_modify);
 
-      try {
-        if (!(institutionId_to_modify && (userId || email)))
-          return res.status(400).send("Missing parameters.");
+    try {
+      if (!(institutionId_to_modify && (userId || email)))
+        return res.status(400).send("Missing parameters.");
 
-        var user;
-        if (userId) {
-          user = await UserService.getUserById(userId);
-          console.log(user);
-        } else {
-          user = await UserService.getUserByEmail(email, false);
-          console.log(user);
-        }
+      var user;
+      if (userId) {
+        user = await UserService.getUserById(userId);
         console.log(user);
-
-        if (!user) return res.status(404).send("User to be invited does not exist.");
-
-        if (await InstitutionService.findMemeberOrInvitedById(userId, institutionId_to_modify))
-          return res
-            .status(404)
-            .send(
-              "User that you are trying to invite to this institution already is an invited member or is a member!"
-            );
-
-        const updatedInstitution = await InstitutionService.inviteToInstitution(
-          institutionId_to_modify,
-          userId
-        );
-
-        if (updatedInstitution) {
-          try {
-            await mailer.send(
-              user.email,
-              "[GeneCruncher] Invitation to an institution",
-              "invitation_to_institution",
-              {
-                institution: updatedInstitution.name,
-                country: updatedInstitution.country,
-                firstname: user.firstName,
-              }
-            );
-          } catch (e) {
-            console.error("Error when sending invitation of user to an institution.");
-            console.error(JSON.stringify(e));
-            console.error(e);
-            return res.status(500).send("Error when sending email. Invitation has been stored.");
-          }
-          return res.json(updatedInstitution);
-        } else {
-          return res.status(409).send("Could not invite person to institution!");
-        }
-      } catch (e) {
-        return res.status(500).send("Error: Something went wrong internal error!");
+      } else {
+        user = await UserService.getUserByEmail(email, false);
+        userId = user._id;
+        console.log(user);
       }
+      console.log(user);
+
+      if (!user) return res.status(404).send("User to be invited does not exist.");
+
+      if (await InstitutionService.findMemeberOrInvitedById(userId, institutionId_to_modify))
+        return res
+          .status(404)
+          .send(
+            "User that you are trying to invite to this institution already is an invited member or is a member!"
+          );
+
+      const updatedInstitution = await InstitutionService.inviteToInstitution(
+        institutionId_to_modify,
+        userId
+      );
+
+      /*
+      const tokenToCreate: TokenDTO = { _idToken: updatedInstitution._id };
+      const token = await TokenService.createToken(tokenToCreate);
+      */
+
+      const link = `${process.env.API_URL}/institutions/${updatedInstitution._id}&${userId}/join`;
+      console.log("link <<" + link + ">>");
+
+      if (updatedInstitution) {
+        try {
+          await mailer.send(
+            user.email,
+            "[GeneCruncher] Invitation to an institution",
+            "invitation_to_institution",
+            {
+              institution: updatedInstitution.name,
+              country: updatedInstitution.country,
+              firstname: user.firstName,
+              link: link,
+            }
+          );
+        } catch (e) {
+          console.error("Error when sending invitation of user to an institution.");
+          console.error(JSON.stringify(e));
+          console.error(e);
+          return res.status(500).send("Error when sending email. Invitation has been stored.");
+        }
+        return res.json(updatedInstitution);
+      } else {
+        return res.status(409).send("Could not invite person to institution!");
+      }
+    } catch (e) {
+      return res.status(500).send("Error: Something went wrong internal error!");
     }
-  );
+  });
 
   return router;
 };
@@ -214,10 +223,19 @@ const make_user_admin_of_institution = (): Router => {
 const join_as_member_of_institution = (): Router => {
   let router = express.Router();
 
-  router.put("/institutions/:id/join", check_auth(), async (req: any, res) => {
-    const institutionId_to_modify = req.params.id;
-    const current_user = req.user_id;
+  router.get("/institutions/:idInstitution&:idUser/join", async (req: any, res) => {
+    //check_auth(),
+    const institutionId_to_modify = req.params.idInstitution;
+    var current_user = req.user_id;
+    const userId = req.params.idUser;
+
+    console.log("institutionId_to_modify " + institutionId_to_modify);
+    console.log("current_user " + current_user);
+    console.log("userId " + userId);
+
     try {
+      if (!current_user) current_user = userId;
+
       const institutionToBeUpdated = await InstitutionService.getInstitutionById(
         institutionId_to_modify
       );
@@ -231,7 +249,12 @@ const join_as_member_of_institution = (): Router => {
       );
 
       if (updatedInstitution) {
-        res.json(updatedInstitution);
+        //res.json(updatedInstitution);
+        return res
+          .status(200)
+          .send(
+            `<h2>You have been joint to the institution. Click <a href='javascript:window.close();'>here</a> to return</h2>`
+          );
       } else {
         return res.status(409).send("Could not join as member of the institution!");
       }
