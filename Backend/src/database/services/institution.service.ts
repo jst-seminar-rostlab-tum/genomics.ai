@@ -357,6 +357,11 @@ export default class InstitutionService {
     return projects;
   }
 
+  static async getTeamsOfInstitution(institutionId: ObjectId | any): Promise<ITeam[] | null> {
+    return await teamModel.find({ institutionId: institutionId } );
+  }
+
+
   static async getUsersInstitutions(userId: ObjectId | string): Promise<IInstitution[] | null> {
     return await institutionModel.find({
       $or: [

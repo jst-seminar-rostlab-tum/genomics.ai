@@ -212,10 +212,6 @@ export default class TeamService {
     });
   }
 
-  static async getInstitutionsTeams(institutionId: ObjectId | any): Promise<ITeam[] | null> {
-    return await teamModel.find({ institutionId: institutionId } );
-  }
-
   /**
    *  Add the given userId to the admin list and removes he/she from the memberIds, of the given team.
    *

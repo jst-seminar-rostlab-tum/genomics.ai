@@ -323,7 +323,7 @@ const get_teams_of_institution = (): Router => {
   router.get("/institutions/:id/teams", check_auth(), async (req: Request, res: Response) => {
     const institutionId = req.params.id;
     try {
-      const teams = await TeamsService.getTeams({ institutionId: institutionId });
+      const teams = await InstitutionService.getTeamsOfInstitution(institutionId);
 
       return res.status(200).send(teams);
     } catch (err) {
