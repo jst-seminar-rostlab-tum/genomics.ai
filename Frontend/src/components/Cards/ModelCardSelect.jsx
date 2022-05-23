@@ -112,27 +112,18 @@ export const ModelCardSelect = ({
             </Box>
           </Box>
         }
-      <Box sx={selected ? { 
-        width: '100%',
-        height: "100%",
-        display: "flex", 
-        flexDirection: "column", 
-        p: "1.2rem", 
-        boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.15)", 
-        borderRadius: "1.2rem",
-        borderStyle:"solid",
-        borderColor:"#008BF5",
-        borderWidth:"4px"
-      }
-      : { 
-        width: '100%',
-        height: "100%",
-        display: "flex", 
-        flexDirection: "column", 
-        p: "1.2rem", 
-        boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.15)", 
-        borderRadius: "1.2rem",
-      }}
+      <Box sx={{
+          width: '100%',
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          p: "1.2rem",
+          boxShadow: hover ? "none" : "0px 0px 10px rgba(0, 0, 0, 0.15)",
+          borderRadius: "1.2rem",
+          borderStyle:"solid",
+          borderColor: selected ? "#008BF5" : 'transparent',
+          borderWidth:"4px",
+        }}
       >
         <Typography sx={{ fontSize: "1.4rem", fontWeight: "bold", color: !disabled ? "#000000" : "#8A8A8A"}}>{title}</Typography>
         <Typography 
