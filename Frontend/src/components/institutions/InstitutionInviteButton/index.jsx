@@ -28,7 +28,6 @@ function InstitutionInviteButton({ institution }) {
       return;
     }
     setOpen(true);
-    alert(invitedMailAdress);
     InstitutionService.inviteMember(institution.id, invitedMailAdress);
     handleCloseDialog();
   };

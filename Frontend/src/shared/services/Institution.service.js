@@ -65,8 +65,8 @@ const InstitutionService = MOCK_INSTUTITIONS ? MockInstitutionService : {
     await axiosInstance.put(`/institutions/${institutionId}`, { details });
   },
 
-  async inviteMember(institutionId, member) {
-    await axiosInstance.put(`/institutions/${institutionId}/invite`, { userId: member });
+  async inviteMember(institutionId, invitedMail) {
+    await axiosInstance.put(`/institutions/${institutionId}/invite`, { email: invitedMail });
   },
 };
 
