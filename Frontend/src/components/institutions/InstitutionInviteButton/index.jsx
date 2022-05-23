@@ -28,8 +28,8 @@ function InstitutionInviteButton({ institution }) {
       return;
     }
     setOpen(true);
-    setInvitedMailAdress('6287bf3a0dde3afb0e3114ee');
-    InstitutionService.inviteMember(institution.id, '6287bf3a0dde3afb0e3114ee');
+    alert(invitedMailAdress);
+    InstitutionService.inviteMember(institution.id, invitedMailAdress);
     handleCloseDialog();
   };
 

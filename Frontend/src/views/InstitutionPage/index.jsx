@@ -29,7 +29,6 @@ function InstitutionPage() {
     // eslint-disable-next-line max-len
     const details = { description: institution.description };
     const jsonDetails = JSON.stringify(details);
-    alert(jsonDetails);
     InstitutionService.updateDetails(id, jsonDetails);
   }
 
@@ -46,7 +45,6 @@ function InstitutionPage() {
         setInstitution(newInstitution);
         setInstitutionLoaded(true);
       });
-    console.log(institution);
   }, []);
 
   function onLeft(/* team */) {
@@ -132,7 +130,7 @@ function InstitutionPage() {
         </div>
         <p className={styles.imageText}>
           <span>
-            {institution.memberIds?.length + institution.adminIds?.length}
+            {institution.memberIds?.length}
             {' Members'}
           </span>
         </p>

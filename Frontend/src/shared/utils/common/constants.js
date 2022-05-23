@@ -6,7 +6,7 @@ import {
   blue,
 } from '@mui/material/colors';
 
-export const BACKEND_ADDRESS = 'https://devversion-dot-custom-helix-329116.ey.r.appspot.com';
+export const BACKEND_ADDRESS = 'https://manualversion-dot-custom-helix-329116.ey.r.appspot.com/';
 
 export const JOB_QUEUE_UPDATE_INTERVAL = 5000;
 export const PROJECTS_UPDATE_INTERVAL = 5000;

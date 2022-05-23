@@ -15,7 +15,6 @@ function InstitutionMemberList({ institution, onRemoved }) {
     InstitutionService.getMembers(institution.id)
       .then((newMembers) => {
         setMembers(newMembers);
-        console.log(members);
         setIsLoading(false);
       });
   }, [institution]);
