@@ -123,6 +123,9 @@ const invite_person_to_a_team = (): Router => {
           return res.status(500).send("Error when adding the user to members of the team.");
 
         try {
+          const link = `${process.env.API_URL}/teams/${teamId}&${user._id}/join`;
+          console.log("link <<" + link + ">>");
+
           await mailer.send(
             user.email,
             "[GeneCruncher] Invitation to a team",
@@ -130,6 +133,7 @@ const invite_person_to_a_team = (): Router => {
             {
               firstname: user.firstName,
               teamname: team.title,
+              link: link,
             }
           );
         } catch (e) {
@@ -271,19 +275,23 @@ const add_user_to_admin = (): Router => {
 const join_member = (): Router => {
   let router = express.Router();
 
-  router.put("/teams/:id/join", check_auth(), async (req: any, res) => {
+  router.get("/teams/:idTeam&:idUser/join", async (req: any, res) => {
+    //check_auth(),
     try {
-      const { userId }: { userId: ObjectId } = req.body;
-      const teamId: string = req.params.id;
-      const user_id_jwt = req.user_id;
+      //const { userId }: { userId: ObjectId } = req.body;
+      const teamId: string = req.params.idTeam;
+      //const user_id_jwt = req.user_id;
+      const userId: string = req.params.idUser;
 
       if (!(userId && teamId)) return res.status(400).send("Missing parameters.");
 
       const user = await UserService.getUserById(userId);
       if (!user) return res.status(409).send("User does not exist.");
       if (!user.isEmailVerified) return res.status(409).send("User has not been verified.");
+      /*
       if (userId != user_id_jwt)
         return res.status(409).send("Information of the user does not match.");
+      */
 
       const team = await TeamService.getTeamById(teamId);
       if (!team) return res.status(409).send("Team does not exist.");
@@ -337,7 +345,12 @@ const join_member = (): Router => {
         const teamRes = await TeamService.getTeamById(teamId);
         teamRes.memberIds.push(...teamRes.adminIds);
 
-        return res.status(200).json(teamRes);
+        //return res.status(200).json(teamRes);
+        return res
+          .status(200)
+          .send(
+            `<h2>You have joined the team. Click <a href='javascript:window.close();'>here</a> to return</h2>`
+          );
       } catch (err) {
         console.error("Error when trying to join a new member into a given team.");
         console.error(JSON.stringify(err));
