@@ -35,6 +35,7 @@ export default function ContactForm(){
       }
     }
     setError(newError)
+    setData({email: "", firstName: "", lastName: "", subject: "", message: ""})
     
     ContactUsService.postContactForm(data)
   }
@@ -49,12 +50,12 @@ export default function ContactForm(){
     }}>
       <Stack sx={{ width: "80%", margin: "auto" }} direction="column" spacing={4}>
         <Stack direction="row" justifyContent="space-between" spacing={2}>
-          <Input isRequired label="Email" errorHandler={error.email} helperText={error.email ? "Email cannot be empty!" : ""} onChangeEvent={onChange("email")} onBlurEvent={onBlur("email")} onFocusEvent={onFocus("email")} />
-          <Input isRequired label="First Name" errorHandler={error.firstName} helperText={error.firstName ? "First Name cannot be empty!" : ""} onChangeEvent={onChange("firstName")} onBlurEvent={onBlur("firstName")} onFocusEvent={onFocus("firstName")} />
-          <Input isRequired label="Last Name" errorHandler={error.lastName} helperText={error.lastName ? "Last Name cannot be empty!" : ""} onChangeEvent={onChange("lastName")} onBlurEvent={onBlur("lastName")} onFocusEvent={onFocus("lastName")} />
+          <Input value={data.email} isRequired label="Email" errorHandler={error.email} helperText={error.email ? "Email cannot be empty!" : ""} onChangeEvent={onChange("email")} onBlurEvent={onBlur("email")} onFocusEvent={onFocus("email")} />
+          <Input value={data.firstName} isRequired label="First Name" errorHandler={error.firstName} helperText={error.firstName ? "First Name cannot be empty!" : ""} onChangeEvent={onChange("firstName")} onBlurEvent={onBlur("firstName")} onFocusEvent={onFocus("firstName")} />
+          <Input value={data.lastName} isRequired label="Last Name" errorHandler={error.lastName} helperText={error.lastName ? "Last Name cannot be empty!" : ""} onChangeEvent={onChange("lastName")} onBlurEvent={onBlur("lastName")} onFocusEvent={onFocus("lastName")} />
         </Stack>
-        <Input isRequired label="Subject" maxLength={100} errorHandler={error.subject} helperText={error.subject ? "Subject cannot be empty!" : ""} onChangeEvent={onChange("subject")} onBlurEvent={onBlur("subject")} onFocusEvent={onFocus("subject")} />
-        <Input isRequired label="Message" multiline maxLength={1000} errorHandler={error.message} helperText={error.message ? "Message cannot be empty!" : ""} onChangeEvent={onChange("message")} onBlurEvent={onBlur("message")} onFocusEvent={onFocus("message")} />
+        <Input value={data.subject} isRequired label="Subject" maxLength={100} errorHandler={error.subject} helperText={error.subject ? "Subject cannot be empty!" : ""} onChangeEvent={onChange("subject")} onBlurEvent={onBlur("subject")} onFocusEvent={onFocus("subject")} />
+        <Input value={data.message} isRequired label="Message" multiline maxLength={1000} errorHandler={error.message} helperText={error.message ? "Message cannot be empty!" : ""} onChangeEvent={onChange("message")} onBlurEvent={onBlur("message")} onFocusEvent={onFocus("message")} />
         <Box sx={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
           <CustomButton onClick={onClick}>Send</CustomButton>
         </Box>
