@@ -57,6 +57,7 @@ const Input = (props) => {
       helperText={helperText}
       variant="standard"
       onChange={(e) => (onChangeEvent !== null ? onChangeEvent(e) : null)}
+      autoComplete
     />
   </Box>
 )};

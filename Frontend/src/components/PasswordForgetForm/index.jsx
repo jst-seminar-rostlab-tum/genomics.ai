@@ -19,8 +19,9 @@ import styles from "./passwordforgetform.module.css";
 import logo from "../../assets/logo.svg";
 import Input from "../Input/Input";
 import CustomButton from "components/CustomButton";
+
 function PasswordForgetForm(props) {
-  const { close, visible } = props;
+  const { close, visible, switchForm } = props;
   const [errors, setErrors] = useState({});
   // eslint-disable-next-line no-unused-vars
   const [email, setEmail] = useState();
@@ -70,6 +71,9 @@ function PasswordForgetForm(props) {
         setSnackbarVisible(true);
       }
     );
+    
+    props.onClick()
+    switchForm(true);
 
     // history.push('/password_reset');
   }

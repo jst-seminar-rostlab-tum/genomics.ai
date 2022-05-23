@@ -1,5 +1,5 @@
 import {
-  Typography, Box, Grid, Snackbar,
+  Typography, Box, Grid, Snackbar, Link
 } from '@mui/material';
 import React, { useCallback, useState } from 'react';
 import validator from 'validator';
@@ -70,7 +70,7 @@ function RegistrationForm(props) {
     return !Object.keys(currentErrors).length;
   }
 
-  const onClose = useCallback(() => {
+  const clearForm = useCallback(() => {
     setUserDetails({
       email: '',
       firstname: '',
@@ -143,7 +143,7 @@ function RegistrationForm(props) {
     });
   }, [userDetails, setErrors, setLoading, props, setSnackbarVisible, setUser]);
 
-  const { close, visible } = props;
+  const { onClose, visible, switchForm } = props;
 
   return (
     <div>
@@ -242,6 +242,16 @@ function RegistrationForm(props) {
                     <Typography>Sign up</Typography>
                   </CustomButton>
                 </Box>
+                <Typography mt={1} textAlign="center">
+                  Already have an account? Login {" "}
+                  <Link
+                    href="#"
+                    onClick={() => { clearForm(); switchForm(true); }}
+                  >
+                    here
+                  </Link>
+                  {"."}
+                </Typography>
               </Grid>
             </Box>
           </>

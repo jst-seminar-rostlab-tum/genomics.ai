@@ -31,7 +31,6 @@ function LoginForm(props) {
     remember: false,
   });
 
-  const [forgotPassword, setForgotPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [isSnackbarVisible, setSnackbarVisible] = useState(false);
@@ -44,7 +43,7 @@ function LoginForm(props) {
     }
   },[])
   
-  const onClose = useCallback(() => {
+  const clearForm = () => {
     setLoginDetails({
       email: "",
       password: "",
@@ -53,7 +52,7 @@ function LoginForm(props) {
     setErrors({});
     setLoading(false);
     props.onClose();
-  }, [setLoginDetails, setErrors, setLoading, props]);
+  }
 
   const handleTextChange = useCallback(
     (e) => {
@@ -74,11 +73,6 @@ function LoginForm(props) {
     },
     [setLoginDetails]
   );
-
-  const handlepasswordForget = useCallback(() => {
-    //onClose();
-    setForgotPassword(true);
-  }, [setForgotPassword]);
 
   function validateInput() {
     let currentErrors = {};
@@ -164,13 +158,13 @@ function LoginForm(props) {
       });
   }, [setLoading, loginDetails, setErrors]);
 
-  const { close, visible } = props;
-  const [isOpen, setIsOpen] = useState(false);
+  const { onClose, visible, switchForm, onForgetPassword } = props;
+  const [isOpen, setIsOpen] = useState(visible ? true : false);
 
   
   return (
     <div>
-      <Modal setOpen={(o) => !o && onClose()} isOpen={visible}>
+      <Modal setOpen={(o) => !o && onClose()} isOpen={isOpen}>
         <ModalTitle>Log in</ModalTitle>
         <Box sx={{ width:340}}>
           <Grid sx={{width:320}}>
@@ -211,14 +205,23 @@ function LoginForm(props) {
               <CustomButton type="primary" onClick={doLogin}>
                 <Typography>Sign in</Typography>
               </CustomButton>
-              <Typography mt={1}>
+              <Typography mt={1} textAlign="center">
                 <Link
                   href="#"
-                  onClick={handlepasswordForget}
-                  className={styles.pwReminderLink}
+                  onClick={() => { onForgetPassword(true); clearForm(); }}
                 >
                   Forgot password?
                 </Link>
+              </Typography>
+              <Typography mt={1} textAlign="center">
+                Don't have an account yet? Sign up {" "}
+                <Link
+                  href="#"
+                  onClick={() => { switchForm(true); clearForm(); }} 
+                > 
+                  here
+                </Link>
+                {"."}
               </Typography>
             </Box>
           </Grid>
@@ -238,10 +241,6 @@ function LoginForm(props) {
           {errors.response ? errors.response : "Login successful!"}
         </Alert>
       </Snackbar>
-      <PasswordForgetForm
-        visible={forgotPassword}
-        onClose={() => setForgotPassword(false)}
-      />
     </div>
   );
 }
