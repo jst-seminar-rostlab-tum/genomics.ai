@@ -60,6 +60,8 @@ import {
   get_team,
   update_team,
   get_members_of_team,
+  remove_member_from_team,
+  remove_admin_role_for_team_member,
   get_projects_of_team,
 } from "./routes/team/teamRouter";
 
@@ -131,6 +133,8 @@ export function express_routes(this: REST_Host): Router {
   this.expressApp.use(get_team());
   this.expressApp.use(update_team());
   this.expressApp.use(get_members_of_team());
+  this.expressApp.use(remove_member_from_team());
+  this.expressApp.use(remove_admin_role_for_team_member());
   this.expressApp.use(get_projects_of_team());
 
   // user routes

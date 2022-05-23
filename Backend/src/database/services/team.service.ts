@@ -269,4 +269,25 @@ export default class TeamService {
       }
     );
   }
+
+  /**
+   *  Remove the given userId from the admins list of the given team.
+   *
+   *  @param   teamId
+   *  @param   userId
+   *  @returns updateDocument
+   */
+  static async demoteAdminFromTeam(
+    teamId: ObjectId | string,
+    userId: ObjectId | string
+  ): Promise<any> {
+    return await teamModel.updateOne(
+      { _id: teamId },
+      {
+        $pull: { adminIds: userId },
+        $push: {memberIds: userId}
+      }
+    );
+  }
 }
+
