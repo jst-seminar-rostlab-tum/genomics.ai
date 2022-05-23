@@ -7,7 +7,6 @@ import LabeledLink from '../LabeledLink';
 
 import TeamJoinButton from 'components/teams/detail/TeamJoinButton';
 import TeamService from 'shared/services/Team.service';
-import MemberAvatars from '../MemberAvatars';
 import { formatDate } from 'shared/utils/common/utils';
 
 // Card to display search result for a single team
@@ -18,12 +17,10 @@ const TeamCard = ({ item: team, user, onAction }) => {
     onAction();
   };
 
-  const isMember = ((member) => member._id === user._id);
-
   const visibility = team.visibility.toLowerCase();
   let canJoin = false; // target to remove if backend implements rules checks
   let visibilityTooltip;
-  const isTeamMember = team.memberIds.find(isMember); // check if user already joined
+  const isTeamMember = team.memberIds.includes(user._id); // check if user already joined
 
   switch (visibility) {
     case 'public':
@@ -32,13 +29,14 @@ const TeamCard = ({ item: team, user, onAction }) => {
       break;
     case 'private':
       visibilityTooltip = 'Only invited members can join the project!';
-      canJoin = !!team.invitedMemberIds.find(isMember); // check if user is invited
+      canJoin = !isTeamMember && !!team.invitedMemberIds.includes(user._id);
+      // check if user is invited
       break;
     case 'by institution':
       visibilityTooltip = 'Only institution members can join the project!';
       // check if user is not member but part of institution
       canJoin = !isTeamMember
-      && team.institution.memberIds.find(isMember);
+      && team.institution.memberIds.includes(user._id);
       break;
     default:
       visibilityTooltip = 'unknown';
@@ -58,7 +56,6 @@ const TeamCard = ({ item: team, user, onAction }) => {
       secondary={team.updatedAt && `updated on ${formatDate(team.updatedAt)}`}
       tertiary={(
         <>
-          <MemberAvatars members={team.memberIds} />
           <Chip
             label={`${team.memberIds.length} members`}
             variant="outlined"

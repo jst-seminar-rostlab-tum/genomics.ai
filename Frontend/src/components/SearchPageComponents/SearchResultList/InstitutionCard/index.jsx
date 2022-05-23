@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Chip } from '@mui/material';
 import SearchCard from '../SearchCard';
-import MemberAvatars from '../MemberAvatars';
 import { formatDate } from 'shared/utils/common/utils';
 
 // Card to display search result for a single institution
@@ -16,7 +15,6 @@ function InstitutionCard({ item: institution }) {
       secondary={institution.updatedAt && `updated on ${formatDate(institution.updatedAt)}`}
       tertiary={(
         <>
-          <MemberAvatars members={institution.memberIds} />
           <Chip
             label={`${institution.memberIds.length} members`}
             variant="outlined"
