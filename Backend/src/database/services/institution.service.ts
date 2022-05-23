@@ -1,5 +1,5 @@
 import { IInstitution, institutionModel } from "../models/institution";
-import { teamModel } from "../models/team";
+import {ITeam, teamModel} from "../models/team";
 import ProjectService from "./project.service";
 import { AddInstitutionDTO, UpdateInstitutionDTO } from "../dtos/institution.dto";
 import { ObjectId } from "mongoose";
@@ -293,29 +293,33 @@ export default class InstitutionService {
   }
 
   static async filterInstitutions(query: any): Promise<any | null> {
-    var keyword: object, sortBy: any;
+    var keyword: object, sortBy =  {};
 
     query.hasOwnProperty("keyword")
       ? (keyword = { name: { $regex: "^" + query.keyword, $options: "i" } })
       : (keyword = {});
 
     if (query.hasOwnProperty("sortBy")) {
-      let sortProperty = query.sortBy;
-      sortBy = { sortProperty: 1 };
+      if(query.sortBy == "name")
+        sortBy["name"] = 1;
+      else
+        sortBy["updatedAt"] = -1;
     } else sortBy = {};
 
-    let institutions : any =  await institutionModel.find(keyword)
+    const institutions : any =  await institutionModel.find(keyword)
         .populate("adminIds")
         .populate("memberIds")
-        .sort(sortBy).exec();
+        .sort(sortBy).lean();
 
-    institutions.map(institution => {
-      const teamsOfInstitutions = TeamService.getInstitutionsTeams(institution._id);
-      institution.teams = teamsOfInstitutions;
-      return institution;
-    })
+    var populatedInstitutions : Array<any> = new Array<any>();
 
-    return institutions;
+    for( let institution of institutions){
+      let institutionsTeams = await teamModel.find({ institutionId: institution._id } );
+      institution = {...institution , teams: institutionsTeams}
+      populatedInstitutions.push(institution);
+    }
+
+    return populatedInstitutions;
   }
 
   static async getMembersOfInstitution(
