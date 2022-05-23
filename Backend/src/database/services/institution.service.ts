@@ -321,19 +321,19 @@ export default class InstitutionService {
     } else sortBy = {};
 
     const institutions : any =  await institutionModel.find(keyword)
+        .populate("adminIds")
+        .populate("memberIds")
         .sort(sortBy).lean();
 
-//    do not populate at the moment
-//    var populatedInstitutions : Array<any> = new Array<any>();
-//
-//    for( let institution of institutions){
-//      let institutionsTeams = await teamModel.find({ institutionId: institution._id } );
-//      institution = {...institution , teams: institutionsTeams}
-//      populatedInstitutions.push(institution);
-//    }
+    var populatedInstitutions : Array<any> = new Array<any>();
 
-//    return populatedInstitutions;
-    return institutions;
+    for( let institution of institutions){
+      let institutionsTeams = await teamModel.find({ institutionId: institution._id } );
+      institution = {...institution , teams: institutionsTeams}
+      populatedInstitutions.push(institution);
+    }
+
+    return populatedInstitutions;
   }
 
   static async getMembersOfInstitution(
