@@ -321,8 +321,6 @@ export default class InstitutionService {
     } else sortBy = {};
 
     const institutions : any =  await institutionModel.find(keyword)
-        .populate("adminIds")
-        .populate("memberIds")
         .sort(sortBy).lean();
 
     var populatedInstitutions : Array<any> = new Array<any>();
