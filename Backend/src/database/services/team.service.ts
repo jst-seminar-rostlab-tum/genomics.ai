@@ -1,4 +1,5 @@
 import { ITeam, teamModel } from "../models/team";
+import { IUser } from "../models/user";
 import { AddTeamDTO, UpdateTeamDTO } from "../dtos/team.dto";
 import { ObjectId } from "mongoose";
 
@@ -9,6 +10,20 @@ import { ObjectId } from "mongoose";
  *  which can be used by the route-controllers.
  */
 export default class TeamService {
+  public static mergeAdminsMembers<
+    T extends T2 | Array<T2>,
+    T2 extends { memberIds: Array<any>; adminIds: Array<any> }
+  >(team: T): T {
+    if (Array.isArray(team)) {
+      for (let t of team) {
+        t.memberIds.push(...t.adminIds);
+      }
+    } else {
+      team.memberIds.push(...team.adminIds);
+    }
+    return team;
+  }
+
   /**
    *  Adds given team to the database.
    *
@@ -69,8 +84,15 @@ export default class TeamService {
 
   static async getMembersOfTeam(
     team_id: ObjectId | string
-  ): Promise<ITeam| null> {
-    return await teamModel.findById(team_id).populate("memberIds");
+  ): Promise<{ memberIds: Array<IUser>; adminIds: Array<IUser> } | null> {
+    let team = await teamModel.findById(team_id).populate("memberIds").populate("adminIds");
+    if (!team) return null;
+    let { memberIds, adminIds } = team;
+    return {
+      memberIds: memberIds as any as Array<IUser>,
+      adminIds: adminIds as any as Array<IUser>,
+    };
+    //Cast Array<ObjectId> to Array<IUser> as populate changes the type of elements of memberIds
   }
 
   /**
@@ -185,7 +207,7 @@ export default class TeamService {
     var filter: any, sortBy = {};
 
     queryParams.hasOwnProperty("keyword")
-      ? (filter = { title: { $regex : "^" +  queryParams.keyword, $options : 'i'} })
+      ? (filter = { title: { $regex: "^" + queryParams.keyword, $options: "i" } })
       : (filter = {});
     queryParams.hasOwnProperty("visibility") ? (filter.visibility = queryParams.visibility) : null;
 
@@ -196,11 +218,9 @@ export default class TeamService {
       sortBy["updatedAt"] = -1;
     } else sortBy = {};
 
-    return await teamModel.find(filter)
-        .populate("memberIds")
-        .populate("institutionId")
-        .populate("adminIds")
-        .sort(sortBy);
+    teamModel.find(filter);
+
+    return await teamModel.find(filter).populate("institutionId").sort(sortBy);
   }
 
   static async getUsersTeams(userId: ObjectId | string): Promise<ITeam[] | null> {
