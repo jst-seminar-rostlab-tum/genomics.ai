@@ -336,7 +336,7 @@ const join_member = (): Router => {
 
         const teamRes = await TeamService.getTeamById(teamId);
 
-        return res.status(200).json(teamRes);
+        return res.status(200).json(TeamService.mergeAdminsMembers(teamRes));
       } catch (err) {
         console.error("Error when trying to join a new member into a given team.");
         console.error(JSON.stringify(err));
@@ -389,7 +389,7 @@ const add_team_to_institution = (): Router => {
           return res.status(400).send("Error when associating the team with the institution.");
 
         const team2 = await TeamService.getTeamById(teamId);
-        return res.status(200).json(team2);
+        return res.status(200).json(TeamService.mergeAdminsMembers(team2));
       } catch (err) {
         console.error("Error when trying to join the team into the institution.");
         console.error(JSON.stringify(err));
@@ -445,7 +445,7 @@ const remove_team_from_institution = (): Router => {
           return res.status(400).send("Error when removing the team from the institution.");
 
         const team = await TeamService.getTeamById(teamId);
-        return res.status(200).json(team);
+        return res.status(200).json(TeamService.mergeAdminsMembers(team));
       } catch (err) {
         console.error("Error when trying to join the team into the institution.");
         console.error(JSON.stringify(err));
@@ -499,7 +499,7 @@ const disjoin_member = (): Router => {
           return res.status(500).send("Error when removing a member from the team.");
 
         const teamRes = await TeamService.getTeamById(teamId);
-        return res.status(200).json(teamRes);
+        return res.status(200).json(TeamService.mergeAdminsMembers(teamRes));
       } catch (err) {
         console.error("Error when trying to remove a member from a team.");
         console.error(JSON.stringify(err));
@@ -525,7 +525,7 @@ const get_teams = (): Router => {
     try {
       const teams = await TeamService.getTeams(query);
 
-      if (teams != null) return res.status(200).json(teams);
+      if (teams != null) return res.status(200).json(TeamService.mergeAdminsMembers(teams));
       return res.status(404).send(`No teams found`);
     } catch (err) {
       console.error(err);
@@ -544,7 +544,7 @@ const get_users_teams = (): Router => {
     try {
       const teams = await TeamService.getUsersTeams(userId);
 
-      if (teams != null) return res.status(200).json(teams);
+      if (teams != null) return res.status(200).json(TeamService.mergeAdminsMembers(teams));
       res.status(404).send(`No teams found`);
     } catch (err) {
       console.error(JSON.stringify(err));
@@ -561,7 +561,7 @@ const get_team = (): Router => {
     try {
       const team = await TeamService.getTeamById(teamsId);
 
-      if (team != null) return res.status(200).json(team);
+      if (team != null) return res.status(200).json(TeamService.mergeAdminsMembers(team));
       return res.status(404).send(`Team ${teamsId} not found`);
     } catch (err) {
       console.error(JSON.stringify(err));
@@ -624,10 +624,10 @@ const get_members_of_team = (): Router => {
       if (members == null) {
         return res.status(404).send(`Team ${teamId} not found`);
       }
-      return res.status(200).send(members);
+      return res.status(200).send(TeamService.mergeAdminsMembers(members).memberIds);
     } catch (err) {
       console.error(JSON.stringify(err));
-      return res.status(500).json({ error: "General server error" });
+      return res.status(500).json({ error: "Internal server error" });
     }
   });
   return router;

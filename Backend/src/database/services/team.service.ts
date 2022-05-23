@@ -10,7 +10,7 @@ import { ObjectId } from "mongoose";
  *  which can be used by the route-controllers.
  */
 export default class TeamService {
-  private static mergeMemberIds<
+  public static mergeAdminsMembers<
     T extends T2 | Array<T2>,
     T2 extends { memberIds: Array<any>; adminIds: Array<any> }
   >(team: T): T {
@@ -33,7 +33,7 @@ export default class TeamService {
   static async addTeam(team: AddTeamDTO): Promise<ITeam> {
     let teamAdded: ITeam | undefined = undefined;
     teamAdded = await teamModel.create(team);
-    return TeamService.mergeMemberIds(teamAdded);
+    return teamAdded;
   }
 
   static async updateTeam(updateTeam: UpdateTeamDTO): Promise<any> {
@@ -42,7 +42,7 @@ export default class TeamService {
     if (updateTeam.visibility) updateObj.visibility = updateTeam.visibility;
     const updateResult = await teamModel.updateOne({ _id: updateTeam.id }, { $set: updateObj });
 
-    return TeamService.mergeMemberIds(updateResult as any as ITeam);
+    return updateResult;
   }
 
   /**
@@ -52,7 +52,7 @@ export default class TeamService {
    *  @returns team or null
    */
   static async getTeamByTitle(title: string): Promise<(ITeam & { _id: ObjectId }) | null> {
-    return TeamService.mergeMemberIds(await teamModel.findOne({ title }));
+    return await teamModel.findOne({ title });
   }
 
   /**
@@ -62,7 +62,7 @@ export default class TeamService {
    *  @returns team - matched team to teamId or null
    */
   static async getTeamById(teamId: ObjectId | string): Promise<(ITeam & { _id: ObjectId }) | null> {
-    return TeamService.mergeMemberIds(await teamModel.findById(teamId).exec());
+    return await teamModel.findById(teamId).exec();
   }
 
   /**
@@ -72,22 +72,26 @@ export default class TeamService {
    *  @returns array of teamId's and titles
    */
   static async getTeamsOfUser(userId: ObjectId): Promise<(ITeam & { _id: ObjectId })[]> {
-    return TeamService.mergeMemberIds(
-      await teamModel
-        .find(
-          {
-            $or: [{ memberIds: userId }, { adminIds: userId }],
-          },
-          { title: 1 }
-        )
-        .exec()
-    );
+    return await teamModel
+      .find(
+        {
+          $or: [{ memberIds: userId }, { adminIds: userId }],
+        },
+        { title: 1 }
+      )
+      .exec();
   }
 
-  static async getMembersOfTeam(team_id: ObjectId | string): Promise<Array<IUser> | null> {
-    return TeamService.mergeMemberIds(
-      await teamModel.findById(team_id).populate("memberIds").populate("adminIds")
-    ).memberIds as any as Array<IUser>;
+  static async getMembersOfTeam(
+    team_id: ObjectId | string
+  ): Promise<{ memberIds: Array<IUser>; adminIds: Array<IUser> } | null> {
+    let team = await teamModel.findById(team_id).populate("memberIds").populate("adminIds");
+    if (!team) return null;
+    let { memberIds, adminIds } = team;
+    return {
+      memberIds: memberIds as any as Array<IUser>,
+      adminIds: adminIds as any as Array<IUser>,
+    };
     //Cast Array<ObjectId> to Array<IUser> as populate changes the type of elements of memberIds
   }
 
@@ -102,12 +106,7 @@ export default class TeamService {
     teamId: ObjectId | string,
     userId: ObjectId | string
   ): Promise<any> {
-    return TeamService.mergeMemberIds(
-      (await teamModel.updateOne(
-        { _id: teamId },
-        { $addToSet: { invitedMemberIds: userId } }
-      )) as any as ITeam
-    );
+    return await teamModel.updateOne({ _id: teamId }, { $addToSet: { invitedMemberIds: userId } });
   }
 
   /**
@@ -118,14 +117,12 @@ export default class TeamService {
    *  @returns updateDocument
    */
   static async addAdminToTeam(teamId: ObjectId | string, userId: ObjectId | string): Promise<any> {
-    return TeamService.mergeMemberIds(
-      (await teamModel.updateOne(
-        { _id: teamId },
-        {
-          $addToSet: { adminIds: userId },
-          $pull: { memberIds: userId },
-        }
-      )) as any as ITeam
+    return await teamModel.updateOne(
+      { _id: teamId },
+      {
+        $addToSet: { adminIds: userId },
+        $pull: { memberIds: userId },
+      }
     );
   }
 
@@ -183,14 +180,12 @@ export default class TeamService {
     teamId: ObjectId | string,
     userId: ObjectId | string
   ): Promise<any> {
-    return TeamService.mergeMemberIds(
-      (await teamModel.updateOne(
-        { _id: teamId },
-        {
-          $addToSet: { memberIds: userId },
-          $pull: { invitedMemberIds: userId },
-        }
-      )) as any as ITeam
+    return await teamModel.updateOne(
+      { _id: teamId },
+      {
+        $addToSet: { memberIds: userId },
+        $pull: { invitedMemberIds: userId },
+      }
     );
   }
 
@@ -205,12 +200,7 @@ export default class TeamService {
     teamId: ObjectId | string,
     institutionId: ObjectId | string
   ): Promise<any> {
-    return TeamService.mergeMemberIds(
-      (await teamModel.updateOne(
-        { _id: teamId },
-        { $set: { institutionId: institutionId } }
-      )) as any as ITeam
-    );
+    return await teamModel.updateOne({ _id: teamId }, { $set: { institutionId: institutionId } });
   }
 
   static async getTeams(queryParams: any): Promise<ITeam[] | null> {
@@ -228,24 +218,20 @@ export default class TeamService {
 
     teamModel.find(filter);
 
-    return TeamService.mergeMemberIds(
-      await teamModel.find(filter).populate("institutionId").sort(sortBy)
-    );
+    return await teamModel.find(filter).populate("institutionId").sort(sortBy);
   }
 
   static async getUsersTeams(userId: ObjectId | string): Promise<ITeam[] | null> {
-    return TeamService.mergeMemberIds(
-      await teamModel.find({
-        $or: [
-          { memberIds: { $elemMatch: { $eq: userId } } },
-          { adminIds: { $elemMatch: { $eq: userId } } },
-        ],
-      })
-    );
+    return await teamModel.find({
+      $or: [
+        { memberIds: { $elemMatch: { $eq: userId } } },
+        { adminIds: { $elemMatch: { $eq: userId } } },
+      ],
+    });
   }
 
   static async getInstitutionsTeams(institutionId: ObjectId | any): Promise<ITeam[] | null> {
-    return TeamService.mergeMemberIds(await teamModel.find({ institutionId: institutionId }));
+    return await teamModel.find({ institutionId: institutionId });
   }
 
   /**
@@ -259,13 +245,11 @@ export default class TeamService {
     teamId: ObjectId | string,
     institutionId: ObjectId | string
   ): Promise<any> {
-    return TeamService.mergeMemberIds(
-      (await teamModel.updateOne(
-        { _id: teamId },
-        {
-          $unset: { institutionId: 1 },
-        }
-      )) as any as ITeam
+    return await teamModel.updateOne(
+      { _id: teamId },
+      {
+        $unset: { institutionId: 1 },
+      }
     );
   }
 
@@ -280,13 +264,11 @@ export default class TeamService {
     teamId: ObjectId | string,
     userId: ObjectId | string
   ): Promise<any> {
-    return TeamService.mergeMemberIds(
-      (await teamModel.updateOne(
-        { _id: teamId },
-        {
-          $pull: { memberIds: userId, adminIds: userId },
-        }
-      )) as any as ITeam
+    return await teamModel.updateOne(
+      { _id: teamId },
+      {
+        $pull: { memberIds: userId, adminIds: userId },
+      }
     );
   }
 }
