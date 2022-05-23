@@ -349,7 +349,7 @@ const join_member = (): Router => {
         return res
           .status(200)
           .send(
-            `<h2>You have been joint to the team. Click <a href='javascript:window.close();'>here</a> to return</h2>`
+            `<h2>You have joined the team. Click <a href='javascript:window.close();'>here</a> to return</h2>`
           );
       } catch (err) {
         console.error("Error when trying to join a new member into a given team.");
