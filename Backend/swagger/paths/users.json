@@ -1,0 +1,163 @@
+{
+  "/users": {
+    "get": {
+      "summary": "Search users",
+      "tags": ["User"],
+      "parameters": [
+        {
+          "in": "query",
+          "name": "keyword",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "in": "query",
+          "name": "sortBy",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Matching users as json array"
+        },
+        "400": {
+          "description": "Failed. Bad post data."
+        }
+      }
+    }
+  },
+  "/users/{id}": {
+    "get": {
+      "summary": "Get user by id",
+      "tags": ["User"],
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Returned the user requested sucessfully!"
+        },
+        "400": {
+          "description": "Failed. Bad post data."
+        },
+        "404": {
+          "description": "Resource not found"
+        }
+      }
+    }
+  },
+  "/users/{id}/institutions": {
+    "get": {
+      "summary": "Get all institutions that user is a member",
+      "tags": ["Institution"],
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK"
+        },
+        "400": {
+          "description": "Failed. Bad post data."
+        }
+      }
+    }
+  },
+  "/users/{id}/teams": {
+    "get": {
+      "summary": "Get all teams that user is a member",
+      "tags": ["Team"],
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK"
+        },
+        "400": {
+          "description": "Failed. Bad post data."
+        }
+      }
+    }
+  },
+  "/users/{id}/projects": {
+    "get": {
+      "summary": "Get all projects of the user",
+      "tags": ["Project"],
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK"
+        },
+        "400": {
+          "description": "Failed. Bad post data."
+        }
+      }
+    }
+  },
+  "/users/ownteams": {
+    "get": {
+      "summary": "Returns the teams that the user belong to",
+      "tags": ["User", "Team"],
+      "responses": {
+        "200": {
+          "description": "Getting team list successful",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Internal error, unable to get team list of the user"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "/ownprojects": {
+    "get": {
+      "summary": "Get all projects of an owner",
+      "tags": ["Project"],
+      "responses": {
+        "200": {
+          "description": "Getting the project list of the user successful",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Project"
+                }
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Internal error, cannot get the project list of the user"
+        }
+      }
+    }
+  }
+}
