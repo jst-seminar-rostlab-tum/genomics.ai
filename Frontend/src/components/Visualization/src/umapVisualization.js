@@ -26,15 +26,9 @@ export class UmapVisualization2 {
     this.coloringModes = getColoringModes(data);
     this.tooltip = d3.select(container).append("div");
     this.mode = undefined;
-    /*this.barChartBatch = addBarPlotBatch(containerBar, data);
-    if(Object.keys(this.coloringModes).includes("cell_type")){
-      d3.select(containerBar).append("div");
-      this.barChartCell = addBarPlotCell(containerBar, data);
-    }*/
     this.data = data;
     this.graphs = ["batch", "cell"];
-    //this.drawGraph(containerBar, "batch", 270, 270);
-    //this.drawGraph(containerBar, "cell", 270, 270);
+    this.hiddenCells = [];
   };
 
   getAvailableGraphs() {
@@ -58,37 +52,80 @@ export class UmapVisualization2 {
       default:
         break;
     }
-  
+  };
+
+  isHidden(cell){
+    for (let i = 0; i < this.hiddenCells.length; i++){
+       if (cell[this.hiddenCells[i][0]] === this.hiddenCells[i][1]) {
+         return true;
+       }
+    }
+    return false;
   }
 
   //Hide
   after(category, value) {
-    this.cells
-      .style("visibility", (d) => { return d[category] === value ? "hidden" : "visible" });
+    this.addHiddenCell(category, value);
+    this.hideShowCells();
   }
 
   //Show
-  before() {
+  before(category, value) {
+    this.deleteHiddenCell(category, value);
+    console.log(this.hiddenCells);
+    this.hideShowCells();
+  }
+
+  beforeAll() {
+    this.hiddenCells = [];
     this.cells
       .style("visibility", "visible");
   }
 
+  hideShowCells() {
+    this.cells
+      .style("visibility", (d) => { return this.isHidden(d) ? "hidden" : "visible" });
+  }
+
+  addHiddenCell(category, value) {
+    this.hiddenCells.push([category, value]);
+  }
+
+  filterCells(cell) {
+    cell[0] == this[0] && cell[1] == this[1];
+  }
+
+  deleteHiddenCell(category, value) {
+    this.hiddenCells = this.hiddenCells.filter(function (cell) {
+      return !(cell[0] == category && cell[1] == value)});
+  }
+
+  //////////////////////////////////////////////////// These should be deleted and the use in F3 changed, when
+                                                      // it's certain how the attributes are going to be named
   showReference() {
-    this.before();
+    this.before("type", "reference");
   }
 
   showQuery() {
-    this.before();
+    this.before("type", "query");
   }
 
   hideQuery() {
-    this.before();
     this.after("type", "query");
   }
 
   hideReference() {
-    this.before();
-    this.after("type", "query");
+    this.after("type", "reference");
+  }
+////////////////////////////////////////////////////////
+  predictedCellsTransparent() {
+    this.cells
+      .style("opacity", (d) => {return d["predictions"] === "True" ? 0.3 : 0.85 });
+  }
+
+  predictedCellsVisible() {
+    this.cells
+      .style("opacity", 1);
   }
 
   //Set a color mode

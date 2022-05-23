@@ -1,19 +1,13 @@
-.cardsContainer {
-  margin-block: 1%;
-  padding: 1%;
-}
-
 .atlasContainer {
   margin-block: 1%;
   padding: 1%;
   overflow: scroll;
   overflow-x: hidden;
-  height: 65vh;
   padding-right: 3%;
 }
 
-.atlasContainer::-webkit-scrollbar {
-  width: 0.8em;
+/* .atlasContainer::-webkit-scrollbar {
+  width: 0.6em;
 }
 
 .atlasContainer::-webkit-scrollbar-track {
@@ -25,10 +19,9 @@
 .atlasContainer::-webkit-scrollbar-thumb {
   background-color: #B7C8E9;
   border-radius: 1.5em;
-  /*border: .25em solid rgba(128, 128, 128, 0.441); */
 }
 
 .atlasContainer::-webkit-scrollbar-thumb:hover {
   background-color: #90aee979;
 
-}
+} */
