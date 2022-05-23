@@ -15,7 +15,13 @@ import Search from 'components/Search';
 import UserService from 'shared/services/User.service';
 import TeamService from 'shared/services/Team.service';
 import InstitutionService from 'shared/services/Institution.service';
+
+import { useAuth } from 'shared/context/authContext';
 import ProjectService from 'shared/services/Project.service';
+import AtlasService from 'shared/services/Atlas.service';
+import ModelService from 'shared/services/Model.service';
+
+import { applyModelFilters, applyAtlasFilters } from 'shared/utils/filter';
 
 // definitely target to change, when backend will provide full data
 async function getTeams(filterParams) {
@@ -29,7 +35,7 @@ async function getTeams(filterParams) {
   institutionsResponse.forEach(
     (institution,
       index) => {
-      teamsWithInstitutions[index].institutionTitle = institution.name;
+      teamsWithInstitutions[index].institution = institution;
     },
   );
   return searchResponse;
@@ -51,9 +57,8 @@ async function getInstitutions(filterParams) {
   return searchResponse;
 }
 
-const SearchPage = ({ sidebarShown }) => {
-  /* Booleans */
-  const paddingL = () => (sidebarShown ? '130px' : '380px');
+const SearchPage = () => {
+  const [user] = useAuth();
 
   // state managed in path and query params
   const history = useHistory();
@@ -62,12 +67,15 @@ const SearchPage = ({ sidebarShown }) => {
 
   const searchParams = new URLSearchParams(search);
 
-  // category of the searched items (teams/institutions/users/projects)
+  // category of the searched items (teams/institutions/users)
   const { searchCategory } = useParams();
   const searchedKeyword = searchParams.get('keyword') || '';
 
   const [searchRequestResult, setSearchRequestResult] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [loadedCategory, setLoadedCategory] = useState('');
+
+  // check if searchRequestResult is of the requested category
+  const isLoading = loadedCategory !== searchCategory;
 
   // function to update the state in the URL
   const updateQueryParams = (param, value) => {
@@ -88,14 +96,11 @@ const SearchPage = ({ sidebarShown }) => {
     updateQueryParams('keyword', value);
   };
 
-  const changedTabHandler = () => {
-    setIsLoading(true);
-  };
-
-  const fetchSearchHandler = useCallback(async (_searchCategory, _searchParams) => {
+  const fetchSearchHandler = useCallback(async () => {
     let searchResponse = [];
-    const filterParams = Object.fromEntries(new URLSearchParams(_searchParams));
-    switch (_searchCategory) {
+    const urlParams = new URLSearchParams(searchParams);
+    const filterParams = Object.fromEntries(urlParams);
+    switch (searchCategory) {
       case 'users':
         searchResponse = await UserService.getUsers(filterParams);
         break;
@@ -108,16 +113,23 @@ const SearchPage = ({ sidebarShown }) => {
       case 'projects':
         searchResponse = await ProjectService.getProjects(filterParams);
         break;
+      case 'atlases':
+        searchResponse = await AtlasService.getAtlases();
+        searchResponse = applyAtlasFilters(searchResponse, filterParams.keyword || '', urlParams);
+        break;
+      case 'models':
+        searchResponse = await ModelService.getModels();
+        searchResponse = applyModelFilters(searchResponse, filterParams.keyword || '', urlParams);
+        break;
       default:
     }
     setSearchRequestResult(searchResponse);
-    setIsLoading(false);
-  }, []);
+    setLoadedCategory(searchCategory);
+  }, [searchCategory, search]);
 
   useEffect(() => {
-    setIsLoading(true);
-    fetchSearchHandler(searchCategory, search);
-  }, [fetchSearchHandler, searchCategory, search]);
+    fetchSearchHandler();
+  }, [fetchSearchHandler]);
 
   return (
     <Stack direction="column" sx={{ paddingLeft: '130px' }}>
@@ -133,11 +145,10 @@ const SearchPage = ({ sidebarShown }) => {
               />
             )}
             handleSearch={searchedKeywordChangeHandler}
-            value={searchedKeyword} // currently two-way-binding missing
+            value={searchedKeyword}
           />
           <SearchTabs
             value={searchCategory}
-            onChange={changedTabHandler}
             searchParams={searchParams}
             path={path}
           />
@@ -151,6 +162,8 @@ const SearchPage = ({ sidebarShown }) => {
               searchResult={searchRequestResult}
               searchCategory={searchCategory}
               searchedKeyword={searchedKeyword}
+              user={user}
+              fetchSearchHandler={fetchSearchHandler}
             />
           )}
         </Box>

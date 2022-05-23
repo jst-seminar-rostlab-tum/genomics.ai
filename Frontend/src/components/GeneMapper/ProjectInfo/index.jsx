@@ -23,8 +23,10 @@ function ProjectInfo({ project, atlas, model }) {
         </IconButton>
       </Typography>
       <Typography>{`Dataset: ${project?.fileName}`}</Typography>
-      <AtlasInfo id={atlas._id} open={atlasInfoOpen} setOpen={setAtlasInfoOpen} />
-      <ModelInfo id={model._id} open={modelInfoOpen} setOpen={setModelInfoOpen} />
+      {atlas
+      && <AtlasInfo id={atlas._id} open={atlasInfoOpen} setOpen={setAtlasInfoOpen} />}
+      {model
+      && <ModelInfo id={model._id} open={modelInfoOpen} setOpen={setModelInfoOpen} />}
     </>
   );
 }

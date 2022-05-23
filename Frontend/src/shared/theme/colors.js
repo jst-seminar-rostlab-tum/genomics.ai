@@ -57,4 +57,8 @@ export const colors = {
     main: '#4CAF50',
     dark: '#4E6D4F',
   },
+  'plus': {
+    main: '#5676E4',
+    dark: '#4C5ED4',
+  },
 };

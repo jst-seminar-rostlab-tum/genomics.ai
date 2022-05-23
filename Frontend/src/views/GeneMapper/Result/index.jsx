@@ -20,7 +20,7 @@ function GeneMapperResultView() {
     ProjectService.getProject(projectId)
       .then((data) => setProject(data))
       .catch(() => {
-        ProjectMock.getProject(1).then((data) => setProject(data));
+        ProjectMock.getProject(projectId).then((data) => setProject(data));
       });
   }, [projectId]);
 

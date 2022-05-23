@@ -21,13 +21,13 @@ const groupBy = (data, cat) => {
 }
 
 
-const addBarPlot = (barContainer, data, groupedBy, title) => {
+const addBarPlot = (barContainer, data, groupedBy, title, w, h) => {
   const svg = d3.select(barContainer).append("svg");
   const marginBottom = 85;
   const plotTitleOffset = 25;
   const plotTitleCentered = 25;
-  const w = 270;
-  const h = 270;
+  //const w = 270;
+  //const h = 270;
 
   svg
     .attr("width", w)
@@ -108,12 +108,12 @@ const addBarPlot = (barContainer, data, groupedBy, title) => {
      
 }
 
-export const addBarPlotCell = (barContainer, data) =>{
+export const addBarPlotCell = (barContainer, data, w, h) =>{
   const groupedByCellTypes = groupBy(data, "cell_type");
-  addBarPlot(barContainer, data, groupedByCellTypes, "#Cells per Cell Type");
+  addBarPlot(barContainer, data, groupedByCellTypes, "#Cells per Cell Type", w, h);
 }
 
-export const addBarPlotBatch = (barContainer, data) =>{
+export const addBarPlotBatch = (barContainer, data, w, h) =>{
   const groupedByBatch = groupBy(data, "batch");
-  addBarPlot(barContainer, data, groupedByBatch, "#Cells per Batch");
+  addBarPlot(barContainer, data, groupedByBatch, "#Cells per Batch", w, h);
 }
