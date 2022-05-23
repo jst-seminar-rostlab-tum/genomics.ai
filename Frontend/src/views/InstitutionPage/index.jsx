@@ -25,6 +25,12 @@ function InstitutionPage() {
     return (institution.adminIds || []).includes(user._id);
   }
 
+  function updateInstitution() {
+    InstitutionService.getInstitution(id)
+      .then(setInstitution)
+      .catch((ignored) => { console.error(ignored); });
+  }
+
   function editDetails() {
     // eslint-disable-next-line max-len
     const details = { description: institution.description };
@@ -188,18 +194,8 @@ function InstitutionPage() {
           <hr />
           <InstitutionMemberList
             institution={institution}
-            // eslint-disable-next-line no-shadow
-            onRemoved={(institution, removedMember) => {
-              setInstitution({
-                ...institution,
-                adminIds: institution.adminIds.filter(
-                  (mId) => mId !== removedMember.id,
-                ),
-                memberIds: institution.memberIds.filter(
-                  (mId) => mId !== removedMember.id,
-                ),
-              });
-            }}
+            // eslint-disable-next-line react/jsx-no-bind
+            updateInstitution={updateInstitution}
           />
         </section>
       </div>

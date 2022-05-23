@@ -7,7 +7,7 @@ import styles from './institutionMemberList.module.css';
 import { useAuth } from 'shared/context/authContext';
 import InstitutionMemberMakeAdminButton from '../InstitutionMemberMakeAdminButton';
 
-function InstitutionMemberList({ institution, onRemoved }) {
+function InstitutionMemberList({ institution, updateInstitution }) {
   const [user] = useAuth();
   const [members, setMembers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -37,11 +37,12 @@ function InstitutionMemberList({ institution, onRemoved }) {
             <InstitutionMemberMakeAdminButton
               institution={institution}
               member={member}
+              updateInstitution={updateInstitution}
             />
             <InstitutionMemberRemoveButton
               institution={institution}
               member={member}
-              onRemoved={onRemoved}
+              updateInstitution={updateInstitution}
             />
           </div>
         ) : null
