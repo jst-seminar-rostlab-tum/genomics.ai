@@ -1,4 +1,5 @@
 import { IInstitution, institutionModel } from "../models/institution";
+import { IUser } from "../models/user";
 import {ITeam, teamModel} from "../models/team";
 import ProjectService from "./project.service";
 import { AddInstitutionDTO, UpdateInstitutionDTO } from "../dtos/institution.dto";
@@ -13,6 +14,19 @@ import TeamService from "./team.service";
  *  which can be used by the route-controllers.
  */
 export default class InstitutionService {
+  public static mergeAdminsMembers<
+    T extends T2 | Array<T2>,
+    T2 extends { memberIds: Array<any>; adminIds: Array<any> }
+  >(institution: T): T {
+    if (Array.isArray(institution)) {
+      for (let i of institution) {
+        i.memberIds.push(...i.adminIds);
+      }
+    } else {
+      institution.memberIds.push(...institution.adminIds);
+    }
+    return institution;
+  }
   /**
    *  Adds given institution to the database.
    *
@@ -307,8 +321,6 @@ export default class InstitutionService {
     } else sortBy = {};
 
     const institutions : any =  await institutionModel.find(keyword)
-        .populate("adminIds")
-        .populate("memberIds")
         .sort(sortBy).lean();
 
     var populatedInstitutions : Array<any> = new Array<any>();
@@ -324,8 +336,11 @@ export default class InstitutionService {
 
   static async getMembersOfInstitution(
     institution_id: ObjectId | string
-  ): Promise<IInstitution | null> {
-    return await institutionModel.findById(institution_id).populate("memberIds");
+  ): Promise<{memberIds: Array<IUser>, adminIds: Array<IUser>} | null> {
+    let institution =  await institutionModel.findById(institution_id).populate("memberIds").populate("adminIds");
+    if(!institution) return null;
+    let {memberIds, adminIds} = institution;
+    return {memberIds: memberIds as any as Array<IUser>, adminIds: adminIds as any as Array<IUser>};
   }
 
   static async getProjectsOfInstitution(institution_id: ObjectId | string) {
