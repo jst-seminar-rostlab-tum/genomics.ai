@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import {
-  Typography, createTheme, ThemeProvider, Stack, TextField,
+  Typography, createTheme, ThemeProvider, Stack, TextField, Alert,
 } from '@mui/material';
 import PlusIcon from 'components/general/PlusIcon';
 import ProjectBarCard from 'components/GeneMapper/projectBarCard';
 import SearchIcon from '@mui/icons-material/Search';
 import ProjectService from 'shared/services/Project.service';
-import { useSubmissionProgress } from 'shared/context/submissionProgressContext';
+import { initSubmissionProgress, useSubmissionProgress } from 'shared/context/submissionProgressContext';
 import { MULTIPART_UPLOAD_STATUS, PROJECTS_UPDATE_INTERVAL, statusIsError } from 'shared/utils/common/constants';
 import ProjectMock from 'shared/services/mock/projects';
 import AtlasService from 'shared/services/Atlas.service';
@@ -26,7 +26,6 @@ const theme = createTheme({
   },
 });
 
-
 function GeneMapperHome() {
   const [projects, setProjects] = useState([]);
   const [atlases, setAtlases] = useState([]);
@@ -34,7 +33,6 @@ function GeneMapperHome() {
   const [userTeams, setUserTeams] = useState([]);
 
   const [findString, setFindString] = useState('');
-  const [submissionProgress, setSubmissionProgress] = useSubmissionProgress();
 
   const history = useHistory();
 
@@ -47,38 +45,16 @@ function GeneMapperHome() {
     // ProjectMock.deleteProject(id);
   };
 
-  const addProjectToTeam = async (teamId, projectId) => {
-    const projectTeams = JSON.parse(window.localStorage.getItem('projectTeams')) || {};
-    window.localStorage.setItem('projectTeams', JSON.stringify({ ...projectTeams, [projectId]: teamId }));
-  };
-
-  const teamOfProject = (projectId) => {
-    const projectTeams = JSON.parse(window.localStorage.getItem('projectTeams')) || {};
-    return projectTeams[projectId];
-  };
-
   useEffect(() => {
     ProjectService.getOwnProjects().then((data) => setProjects(data));
     const timer = setInterval(() => {
       ProjectService.getOwnProjects().then((data) => setProjects(data));
-      if (submissionProgress.status === MULTIPART_UPLOAD_STATUS.COMPLETE
-        || submissionProgress.status === MULTIPART_UPLOAD_STATUS.CANCELING
-        || statusIsError(submissionProgress.status)) {
-        setSubmissionProgress({
-          status: MULTIPART_UPLOAD_STATUS.IDLE,
-          uploadId: '',
-          chunks: 0,
-          uploaded: 0,
-          remaining: [],
-          uploadedParts: [],
-        });
-      }
     }, PROJECTS_UPDATE_INTERVAL);
 
     return () => {
       clearInterval(timer);
     };
-  }, [submissionProgress.status]);
+  }, []);
 
   useEffect(() => {
     AtlasService.getAtlases().then((data) => setAtlases(data));
@@ -89,8 +65,6 @@ function GeneMapperHome() {
   return (
     <div>
       <ThemeProvider theme={theme}>
-        {/* {Object.entries(submissionProgress)
-          .map(([key, value]) => <Typography>{`${key}: ${value}` }</Typography>)} */}
         <Box
           sx={{
             display: 'flex',
@@ -107,6 +81,7 @@ function GeneMapperHome() {
           </Stack>
           <TextField
             id="outlined-basic"
+            sx={{ width: '32.7ch' }}
             label={(
               <Stack direction="row">
                 <SearchIcon />
@@ -119,30 +94,28 @@ function GeneMapperHome() {
             onChange={(e) => setFindString(e.target.value)}
           />
         </Box>
+        { projects.filter((p) => !(window.localStorage.getItem('DeletedProjects') ?? []).includes(p._id)).length == 0
+        && (
+        <Alert severity="info">
+          You have not created any mappings yet. Create one by clicking the Plus-Icon or learn more about ScArches by clicking the Help-Icon next to the title.
+        </Alert>
+        )}
         <div>
           {projects
             .filter((project) => (
               (findString === '' || project.name.toLowerCase().includes(findString.toLowerCase())))
               && !(window.localStorage.getItem('DeletedProjects') ?? []).includes(project._id))
-            .map((project) => {
-              const projectTeamId = teamOfProject(project._id);
-              return (
-                <ProjectBarCard
-                  key={project._id}
-                  project={projectTeamId ? { ...project, teamId: projectTeamId } : project}
-                  atlas={atlases.find((atlas) => String(atlas._id) === String(project.atlasId))}
-                  model={models.find((model) => String(model._id) === String(project.modelId))}
-                  userTeams={userTeams}
-                  addProjectToTeam={(teamId) => addProjectToTeam(teamId, project._id)}
-                  handleDelete={() => handleDeleteItem(project._id)}
-                  submissionProgress={submissionProgress.uploadId === project.uploadId
-                    ? submissionProgress : null}
-                  setSubmissionProgress={submissionProgress.uploadId === project.uploadId
-                    ? setSubmissionProgress : () => { }}
-                />
+            .map((project) => (
+              <ProjectBarCard
+                key={project._id}
+                project={project}
+                atlas={atlases.find((atlas) => String(atlas._id) === String(project.atlasId))}
+                model={models.find((model) => String(model._id) === String(project.modelId))}
+                userTeams={userTeams}
+                handleDelete={() => handleDeleteItem(project._id)}
+              />
 
-              );
-            })}
+            ))}
         </div>
 
       </ThemeProvider>

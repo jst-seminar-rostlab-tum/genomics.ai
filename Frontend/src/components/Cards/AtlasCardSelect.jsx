@@ -8,6 +8,7 @@ import { borders } from "@mui/system"
 import { Modal } from "components/Modal"
 import { LearnMoreAtlasComponent } from "views/Explore/LearnMoreAtlas"
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min"
+import AtlasInfo from "components/GeneMapper/AtlasInfo"
 
 /**
  * Atlas Card 
@@ -23,7 +24,8 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom.min"
  */
 export default function AtlasCardSelect({
   width = "100%", height = "100%", title, imgLink, modalities,
-  cellsInReference, species, mapLink, learnMoreLink, selected=false, onSelect, atlasObject={}
+  cellsInReference, species, mapLink, learnMoreLink, selected=false, 
+  onSelect, atlasObject={}
 }) {
 
   //check if the mouse is hovering above the card
@@ -190,16 +192,7 @@ export default function AtlasCardSelect({
           </Box>
         </Box>
       </Box>
-      <Modal
-        isOpen={atlasInfoOpen}
-        setOpen={setAtlasInfoOpen}
-        children={(
-          <Container>
-            <LearnMoreAtlasComponent id={atlasObject._id} onClick={() => history.push(`/explore/atlases/${atlasObject._id}/visualization`)} />
-
-          </Container>
-        )}
-      />
+      <AtlasInfo id={atlasObject._id} open={atlasInfoOpen} setOpen={setAtlasInfoOpen} />
     </Box>
 
   )
