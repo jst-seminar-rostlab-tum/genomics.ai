@@ -6,14 +6,12 @@ import SearchCard from '../SearchCard';
 import LabeledLink from '../LabeledLink';
 
 import TeamJoinButton from 'components/teams/detail/TeamJoinButton';
-import TeamService from 'shared/services/Team.service';
 import { formatDate } from 'shared/utils/common/utils';
 
 // Card to display search result for a single team
 // eslint-disable-next-line arrow-body-style
 const TeamCard = ({ item: team, user, onAction }) => {
-  const joinTeam = async (teamToJoin) => {
-    await TeamService.joinTeam(teamToJoin.id);
+  const joinTeam = async () => {
     onAction();
   };
 
