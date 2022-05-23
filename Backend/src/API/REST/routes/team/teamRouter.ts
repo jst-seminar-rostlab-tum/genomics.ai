@@ -155,7 +155,7 @@ const invite_person_to_a_team = (): Router => {
       console.error("Error in invite_person_to_a_project()");
       console.error(JSON.stringify(e));
       console.error(e);
-      return res.status(500).send("Server internal error");
+      return res.status(500).send("Internal server error");
     }
   });
 
@@ -229,10 +229,10 @@ const add_user_to_admin = (): Router => {
       if (!(userId && teamId)) return res.status(400).send("Missing parameters.");
 
       const user = await UserService.getUserById(userId);
-      if (!user) return res.status(400).send("User does not exist.");
+      if (!user) return res.status(404).send("User does not exist.");
 
       const team = await TeamService.getTeamById(teamId);
-      if (!team) return res.status(400).send("Team does not exist.");
+      if (!team) return res.status(404).send("Team does not exist.");
 
       const isAdmin: boolean = await TeamService.isAdmin(userId, team);
       const isMember: boolean = await TeamService.isMember(userId, team);
@@ -262,7 +262,7 @@ const add_user_to_admin = (): Router => {
       console.error("Error in add_user_to_admin()");
       console.error(JSON.stringify(e));
       console.error(e);
-      return res.status(500).send("Internal error.");
+      return res.status(500).send("Internal server error");
     }
   });
 
@@ -286,7 +286,7 @@ const join_member = (): Router => {
       if (!(userId && teamId)) return res.status(400).send("Missing parameters.");
 
       const user = await UserService.getUserById(userId);
-      if (!user) return res.status(409).send("User does not exist.");
+      if (!user) return res.status(404).send("User does not exist.");
       if (!user.isEmailVerified) return res.status(409).send("User has not been verified.");
       /*
       if (userId != user_id_jwt)
@@ -294,7 +294,7 @@ const join_member = (): Router => {
       */
 
       const team = await TeamService.getTeamById(teamId);
-      if (!team) return res.status(409).send("Team does not exist.");
+      if (!team) return res.status(404).send("Team does not exist.");
 
       var tempUserId = String(userId);
       var tempListAdmins = team.adminIds.map(String);
@@ -302,10 +302,10 @@ const join_member = (): Router => {
       var tempListInvitedMembers = team.invitedMemberIds.map(String);
 
       if (tempListAdmins.includes(tempUserId))
-        return res.status(409).send("User is an admin of the team.");
+        return res.status(404).send("User is an admin of the team.");
 
       if (tempListMembers.includes(tempUserId))
-        return res.status(409).send("User is already a member of the team.");
+        return res.status(404).send("User is already a member of the team.");
 
       try {
         if (team.visibility == "PUBLIC") {
@@ -319,7 +319,7 @@ const join_member = (): Router => {
               .status(409)
               .send("Team is not associated to any institution and set-up requires it.");
           const institutionObj = await InstitutionService.getInstitutionById(team.institutionId);
-          if (!institutionObj) return res.status(409).send("Institution does not exist.");
+          if (!institutionObj) return res.status(404).send("Institution does not exist.");
 
           var tempListAdminsOfInst = institutionObj?.adminIds.map(String);
           var tempListMembersOfInst = institutionObj?.memberIds.map(String);
@@ -334,7 +334,7 @@ const join_member = (): Router => {
           }
         } else {
           console.log("New visibility has been detected with value [" + team.visibility + "]");
-          return res.status(500).send("Internal error. Set-up");
+          return res.status(500).send("Internal server error. Set-up");
         }
 
         const team_updated = await TeamService.joinMemberIntoTeam(teamId, userId);
@@ -362,7 +362,7 @@ const join_member = (): Router => {
       console.error("Error in join_member()");
       console.error(JSON.stringify(e));
       console.error(e);
-      return res.status(500).send("Internal error.");
+      return res.status(500).send("Internal server error");
     }
   });
 
@@ -384,10 +384,10 @@ const add_team_to_institution = (): Router => {
       if (!(institutionId && teamId)) return res.status(400).send("Missing parameters.");
 
       const institution = await InstitutionService.getInstitutionById(institutionId);
-      if (!institution) return res.status(409).send("Institution does not exist.");
+      if (!institution) return res.status(404).send("Institution does not exist.");
 
       const team = await TeamService.getTeamById(teamId);
-      if (!team) return res.status(409).send("Team does not exist.");
+      if (!team) return res.status(404).send("Team does not exist.");
 
       var tempListAdminsOfTeam = team.adminIds.map(String);
       if (!tempListAdminsOfTeam.includes(user_id_jwt))
@@ -400,7 +400,7 @@ const add_team_to_institution = (): Router => {
         const institution_updated = await TeamService.setInstitutionOfTeam(teamId, institutionId);
 
         if (!institution_updated)
-          return res.status(400).send("Error when associating the team with the institution.");
+          return res.status(500).send("Error when associating the team with the institution.");
 
         const team2 = await TeamService.getTeamById(teamId);
         team2.memberIds.push(...team2.adminIds);
@@ -416,7 +416,7 @@ const add_team_to_institution = (): Router => {
       console.error("Error in add_team_to_institution()");
       console.error(JSON.stringify(e));
       console.error(e);
-      return res.status(500).send("Internal error.");
+      return res.status(500).send("Internal server error");
     }
   });
 
