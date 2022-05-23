@@ -37,7 +37,7 @@ const create_institution = (): Router => {
       };
       const institution = await InstitutionService.addInstitution(institutionToAdd);
 
-      return res.status(201).json(institution);
+      return res.status(201).json(InstitutionService.mergeAdminsMembers(institution));
     } catch (err) {
       console.error("Error registering institution!");
       console.error(JSON.stringify(err));
@@ -80,7 +80,7 @@ const update_institution = (): Router => {
         const updatedInstitution = await InstitutionService.getInstitutionById(
           institution_to_be_updated_id
         );
-        return res.status(200).send(updatedInstitution); 
+        return res.status(200).send(InstitutionService.mergeAdminsMembers(updatedInstitution)); 
       } catch (err) {
         console.error("Error updating institution!");
         console.error(JSON.stringify(err));
@@ -250,7 +250,7 @@ const get_institution = (): Router => {
     try {
       const institution = await InstitutionService.getInstitutionById(institutionId);
 
-      if (institution != null) return res.status(200).json(institution);
+      if (institution != null) return res.status(200).json(InstitutionService.mergeAdminsMembers(institution));
       return res.status(404).send(`Institution ${institutionId} not found`);
     } catch (err) {
       console.error(JSON.stringify(err));
@@ -267,7 +267,7 @@ const get_institutions = (): Router => {
     try {
       const institutions = await InstitutionService.filterInstitutions(query);
 
-      if (institutions != null) return res.status(200).json(institutions);
+      if (institutions != null) return res.status(200).json(InstitutionService.mergeAdminsMembers(institutions));
       return res.status(404).send(`No institutions found`);
     } catch (err) {
       console.error(JSON.stringify(err));
@@ -282,11 +282,11 @@ const get_members_of_institution = (): Router => {
   router.get("/institutions/:id/members", check_auth(), async (req: Request, res: Response) => {
     const institutionId = req.params.id;
     try {
-      const institution = await InstitutionService.getMembersOfInstitution(institutionId);
-      if (institution == null) {
+      const members = await InstitutionService.getMembersOfInstitution(institutionId);
+      if (members == null) {
         return res.status(404).send(`Institution ${institutionId} not found`);
       }
-      return res.status(200).send(institution.memberIds);
+      return res.status(200).send(InstitutionService.mergeAdminsMembers(members).memberIds);
     } catch (err) {
       console.error(JSON.stringify(err));
       return res.status(500).json({ error: "General server error" });
@@ -334,7 +334,7 @@ const get_users_institutions = (): Router => {
     const userId = req.params.id;
     try {
       const institutions = await InstitutionService.getUsersInstitutions(userId);
-      if (institutions != null) return res.status(200).json(institutions);
+      if (institutions != null) return res.status(200).json(InstitutionService.mergeAdminsMembers(institutions));
       return res.status(404).send(`No institutions found`);
     } catch (err) {
       console.error(JSON.stringify(err));
@@ -382,7 +382,7 @@ const disjoin_member_of_institution = (): Router => {
         const instRes = await InstitutionService.getInstitutionById(institutionId);
         instRes.memberIds.push(...instRes.adminIds);
 
-        return res.status(200).json(instRes);
+        return res.status(200).json(InstitutionService.mergeAdminsMembers(instRes));
       } catch (err) {
         console.error("Error when trying to remove a member from a institution.");
         console.error(JSON.stringify(err));
