@@ -48,7 +48,7 @@ function CanceldOrFailedStatus() {
 }
 
 export default function ProjectBarCard({
-  project, atlas, model, userTeams, handleDelete,
+  project, atlas, model, userTeams, handleDelete, deleted,
 }) {
   const history = useHistory();
   const [submissionProgresses, setSubmissionProgresses] = useSubmissionProgress();
@@ -199,50 +199,57 @@ export default function ProjectBarCard({
                 p: 0.1, bgcolor: 'background.paper', borderRadius: 3, width: 'flex', display: 'flex', alignItems: 'center',
               }}
               >
-                {projectTeam?.title
-                  ? (
-                    <CustomButton type="tertiary" sx={{ mr: 1 }} onClick={() => history.push(`/sequencer/teams/${projectTeam._id || projectTeam.id}`)}>
-                      <Typography>
-                        {projectTeam.title}
-                      </Typography>
-                    </CustomButton>
-                  )
-                  : (
-                    <Button
-                      variant="outlined"
-                      sx={{
-                        borderRadius: 100,
-                        mr: 1,
-                      }}
-                      style={{ textTransform: 'none' }}
-                      onClick={handleOpen}
-                    >
-                      Add To Team
-                    </Button>
-                  )}
+                {!deleted
+                && (
+                <>
+                  {projectTeam?.title
+                    ? (
+                      <CustomButton type="tertiary" sx={{ mr: 1 }} onClick={() => history.push(`/sequencer/teams/${projectTeam._id || projectTeam.id}`)}>
+                        <Typography>
+                          {projectTeam.title}
+                        </Typography>
+                      </CustomButton>
+                    )
+                    : (
+                      <Button
+                        variant="outlined"
+                        sx={{
+                          borderRadius: 100,
+                          mr: 1,
+                        }}
+                        style={{ textTransform: 'none' }}
+                        onClick={handleOpen}
+                      >
+                        Add To Team
+                      </Button>
+                    )}
 
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  sx={{
-                    borderRadius: 100,
-                    mr: 1,
-                  }}
-                  style={{ textTransform: 'none' }}
-                  onClick={() => history.push(`/sequencer/genemapper/result/${project._id}`)}
-                  disabled={project.status !== 'DONE'}
-                >
-                  See Results
-                </Button>
-                <IconButton
-                  href={project.location}
-                  download={`${project.name}.tsv`}
-                  disabled={project.status !== 'DONE'}
-                >
-                  <DownloadIcon />
-                </IconButton>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    sx={{
+                      borderRadius: 100,
+                      mr: 1,
+                    }}
+                    style={{ textTransform: 'none' }}
+                    onClick={() => history.push(`/sequencer/genemapper/result/${project._id}`)}
+                    disabled={project.status !== 'DONE'}
+                  >
+                    See Results
+                  </Button>
+                  <IconButton
+                    href={project.location}
+                    download={`${project.name}.tsv`}
+                    disabled={project.status !== 'DONE'}
+                  >
+                    <DownloadIcon />
+                  </IconButton>
+                </>
+                )}
                 <IconButton onClick={() => handleDelete()}>
-                  <DeleteOutlineIcon color="error" />
+                  {deleted
+                    ? <ReplayIcon />
+                    : <DeleteOutlineIcon color="error" />}
                 </IconButton>
               </Box>
             </Grid>
@@ -294,6 +301,7 @@ export default function ProjectBarCard({
           {userTeams.map(
             (team) => (
               <TabCard
+                key={team._id}
                 data={{ name: team.title, visibility: team.visibility.toLowerCase() }}
                 selected={team?._id === selectedTeam || team?.id === selectedTeam}
                 handleOnClick={() => setSelectedTeam(team?._id || team?.id)}

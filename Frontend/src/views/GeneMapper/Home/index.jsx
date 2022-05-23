@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import {
-  Typography, createTheme, ThemeProvider, Stack, TextField, Alert,
+  Typography, createTheme, ThemeProvider, Stack, TextField, Alert, CircularProgress,
 } from '@mui/material';
 import PlusIcon from 'components/general/PlusIcon';
 import ProjectBarCard from 'components/GeneMapper/projectBarCard';
@@ -27,7 +27,8 @@ const theme = createTheme({
 });
 
 function GeneMapperHome() {
-  const [projects, setProjects] = useState([]);
+  const [projects, setProjects] = useState(null);
+  const [deletedProjects, setDeletedProjects] = useState([]);
   const [atlases, setAtlases] = useState([]);
   const [models, setModels] = useState([]);
   const [userTeams, setUserTeams] = useState([]);
@@ -36,13 +37,18 @@ function GeneMapperHome() {
 
   const history = useHistory();
 
-  const handleDeleteItem = (id) => {
-    setProjects(projects.filter((object) => object._id != id));
-    const deleted = window.localStorage.getItem('DeletedProjects') ?? '';
-    console.log(deleted);
+  const handleDeleteProject = (id) => {
+    ProjectService.deleteProject(id).then(() => {
+      ProjectService.getOwnProjects().then((data) => setProjects(data));
+      ProjectService.getDeletedProjects().then((data) => setDeletedProjects(data));
+    });
+  };
 
-    window.localStorage.setItem('DeletedProjects', `${deleted},${id}`);
-    // ProjectMock.deleteProject(id);
+  const handleRestoreProject = (id) => {
+    ProjectService.restoreProject(id).then(() => {
+      ProjectService.getOwnProjects().then((data) => setProjects(data));
+      ProjectService.getDeletedProjects().then((data) => setDeletedProjects(data));
+    });
   };
 
   useEffect(() => {
@@ -60,6 +66,7 @@ function GeneMapperHome() {
     AtlasService.getAtlases().then((data) => setAtlases(data));
     ModelService.getModels().then((data) => setModels(data));
     TeamService.getMyTeams().then((teams) => setUserTeams(teams));
+    ProjectService.getDeletedProjects().then((data) => setDeletedProjects(data));
   }, []);
 
   return (
@@ -94,30 +101,51 @@ function GeneMapperHome() {
             onChange={(e) => setFindString(e.target.value)}
           />
         </Box>
-        { projects.filter((p) => !(window.localStorage.getItem('DeletedProjects') ?? []).includes(p._id)).length == 0
+        {projects === null
+        && (
+        <Box sx={{ textAlign: 'center' }}>
+          <CircularProgress />
+        </Box>
+        )}
+        { projects?.length === 0 && deletedProjects.length === 0
         && (
         <Alert severity="info">
           You have not created any mappings yet. Create one by clicking the Plus-Icon or learn more about ScArches by clicking the Help-Icon next to the title.
         </Alert>
         )}
+        {projects
+        && (
         <div>
-          {projects
-            .filter((project) => (
-              (findString === '' || project.name.toLowerCase().includes(findString.toLowerCase())))
-              && !(window.localStorage.getItem('DeletedProjects') ?? []).includes(project._id))
-            .map((project) => (
-              <ProjectBarCard
-                key={project._id}
-                project={project}
-                atlas={atlases.find((atlas) => String(atlas._id) === String(project.atlasId))}
-                model={models.find((model) => String(model._id) === String(project.modelId))}
-                userTeams={userTeams}
-                handleDelete={() => handleDeleteItem(project._id)}
-              />
+          {projects.map((project) => (
+            <ProjectBarCard
+              key={project._id}
+              project={project}
+              atlas={atlases.find((atlas) => String(atlas._id) === String(project.atlasId))}
+              model={models.find((model) => String(model._id) === String(project.modelId))}
+              userTeams={userTeams}
+              handleDelete={() => handleDeleteProject(project._id)}
+            />
 
-            ))}
+          ))}
         </div>
-
+        )}
+        {deletedProjects.length > 0
+        && (
+        <Box>
+          <Typography variant="h6" sx={{ mt: 4, mb: 2 }}>Deleted Projects</Typography>
+          {deletedProjects.map((project) => (
+            <ProjectBarCard
+              key={project._id}
+              project={project}
+              atlas={atlases.find((atlas) => String(atlas._id) === String(project.atlasId))}
+              model={models.find((model) => String(model._id) === String(project.modelId))}
+              userTeams={userTeams}
+              handleDelete={() => handleRestoreProject(project._id)}
+              deleted
+            />
+          ))}
+        </Box>
+        )}
       </ThemeProvider>
     </div>
   );
