@@ -301,7 +301,7 @@ export default class InstitutionService {
 
     if (query.hasOwnProperty("sortBy")) {
       let sortProperty = query.sortBy;
-      sortBy = { sortProperty: 1 };
+      sortBy = { name: 1 };
     } else sortBy = {};
 
     let institutions : any =  await institutionModel.find(keyword)
