@@ -8,6 +8,7 @@ import { AddInstitutionDTO, UpdateInstitutionDTO } from "../../../../database/dt
 import UserService from "../../../../database/services/user.service";
 
 import check_auth from "../../middleware/check_auth";
+import { ExtRequest } from "../../../../definitions/ext_request";
 import { validationMdw } from "../../middleware/validation";
 import { institution_admin_auth } from "../../middleware/check_institution_auth";
 import { mailer } from "../../../../util/mailer";
@@ -80,7 +81,7 @@ const update_institution = (): Router => {
         const updatedInstitution = await InstitutionService.getInstitutionById(
           institution_to_be_updated_id
         );
-        return res.status(200).send(InstitutionService.mergeAdminsMembers(updatedInstitution)); 
+        return res.status(200).send(InstitutionService.mergeAdminsMembers(updatedInstitution));
       } catch (err) {
         console.error("Error updating institution!");
         console.error(JSON.stringify(err));
@@ -273,7 +274,8 @@ const get_institution = (): Router => {
     try {
       const institution = await InstitutionService.getInstitutionById(institutionId);
 
-      if (institution != null) return res.status(200).json(InstitutionService.mergeAdminsMembers(institution));
+      if (institution != null)
+        return res.status(200).json(InstitutionService.mergeAdminsMembers(institution));
       return res.status(404).send(`Institution ${institutionId} not found`);
     } catch (err) {
       console.error(JSON.stringify(err));
@@ -290,7 +292,8 @@ const get_institutions = (): Router => {
     try {
       const institutions = await InstitutionService.filterInstitutions(query);
 
-      if (institutions != null) return res.status(200).json(InstitutionService.mergeAdminsMembers(institutions));
+      if (institutions != null)
+        return res.status(200).json(InstitutionService.mergeAdminsMembers(institutions));
       return res.status(404).send(`No institutions found`);
     } catch (err) {
       console.error(JSON.stringify(err));
@@ -315,6 +318,64 @@ const get_members_of_institution = (): Router => {
       return res.status(500).json({ error: "General server error" });
     }
   });
+  return router;
+};
+
+const remove_member_from_institution = (): Router => {
+  let router = express.Router();
+  router.delete(
+    "/institutions/:id/members/:userid",
+    check_auth(),
+    async (req: ExtRequest, res: Response) => {
+      const institutionId = req.params.id;
+      const deletedUserId = req.params.userid;
+      try {
+        const institution = await InstitutionService.getInstitutionById(institutionId);
+        if (!(await InstitutionService.isAdmin(req.user_id!, institution))) {
+          return res.status(403).send("Forbidden. Not an admin");
+        }
+        if (await InstitutionService.isAdmin(deletedUserId, institution)) {
+          return res.status(403).send("Forbidden. Trying to delete an admin");
+        }
+        if (!(await InstitutionService.isMember(deletedUserId, institution))) {
+          return res.status(409).send("User is not part of this team");
+        }
+        await InstitutionService.removeMemberFromInstitution(institutionId, deletedUserId);
+
+        return res.status(200).send("OK");
+      } catch (err) {
+        console.error(JSON.stringify(err));
+        return res.status(500).json({ error: "Internal server error" });
+      }
+    }
+  );
+  return router;
+};
+
+const remove_admin_role_for_institution_member = (): Router => {
+  let router = express.Router();
+  router.delete(
+    "/teams/:id/admins/:adminid",
+    check_auth(),
+    async (req: ExtRequest, res: Response) => {
+      const instId = req.params.id;
+      const adminId = req.params.adminid;
+      try {
+        const inst = await InstitutionService.getInstitutionById(instId);
+        if (!(await InstitutionService.isAdmin(req.user_id!, inst))) {
+          return res.status(403).send("Forbidden. Not an admin");
+        }
+        if (!(await InstitutionService.isAdmin(adminId, inst))) {
+          return res.status(409).send("User to demote is not an admin");
+        }
+        await InstitutionService.demoteAdminFromInstitution(instId, adminId);
+        return res.status(200).send("OK");
+      } catch (err) {
+        console.error(JSON.stringify(err));
+        return res.status(500).json({ error: "Internal server error" });
+      }
+    }
+  );
   return router;
 };
 
@@ -357,7 +418,8 @@ const get_users_institutions = (): Router => {
     const userId = req.params.id;
     try {
       const institutions = await InstitutionService.getUsersInstitutions(userId);
-      if (institutions != null) return res.status(200).json(InstitutionService.mergeAdminsMembers(institutions));
+      if (institutions != null)
+        return res.status(200).json(InstitutionService.mergeAdminsMembers(institutions));
       return res.status(404).send(`No institutions found`);
     } catch (err) {
       console.error(JSON.stringify(err));
@@ -397,13 +459,15 @@ const disjoin_member_of_institution = (): Router => {
         return res.status(403).send("You are the only one admin of the institution.");
 
       try {
-        const inst_updated = await InstitutionService.removeMemberFromTeam(institutionId, userId);
+        const inst_updated = await InstitutionService.removeMemberFromInstitution(
+          institutionId,
+          userId
+        );
 
         if (!inst_updated)
           return res.status(500).send("Error when removing you from the institution.");
 
         const instRes = await InstitutionService.getInstitutionById(institutionId);
-        instRes.memberIds.push(...instRes.adminIds);
 
         return res.status(200).json(InstitutionService.mergeAdminsMembers(instRes));
       } catch (err) {
@@ -433,6 +497,8 @@ export {
   get_institutions,
   get_institution,
   get_members_of_institution,
+  remove_member_from_institution,
+  remove_admin_role_for_institution_member,
   get_teams_of_institution,
   get_projects_of_institution,
   get_users_institutions,
