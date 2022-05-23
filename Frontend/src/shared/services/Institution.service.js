@@ -68,6 +68,10 @@ const InstitutionService = MOCK_INSTUTITIONS ? MockInstitutionService : {
   async inviteMember(institutionId, invitedMail) {
     await axiosInstance.put(`/institutions/${institutionId}/invite`, { email: invitedMail });
   },
+
+  async removeMemberFromInstitution(institutionId, memberId) {
+    await axiosInstance.delete(`/institutions/${institutionId}/join`, { data: { userId: memberId } });
+  },
 };
 
 export default InstitutionService;
