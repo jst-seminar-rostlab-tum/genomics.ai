@@ -282,18 +282,35 @@ export default function ProjectBarCard({
           setOpen={setShowInfo}
           sx={{ position: 'fixed', top: '20%' }}
         >
-          <ModalTitle>
-            Why adding to a team?
-          </ModalTitle>
-          <Box sx={{ maxWidth: 320, overflow: 'auto' }}>
-            <Typography>
-              By Adding to a team, the visibility of
-              a project will be inherited
-              from the visibility of the team.
-              If the assigned team is public,
-              all teams will have access to the project.
-              If the assigned team is private, the project will be accessible only to this team.
-            </Typography>
+          <Box sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+            justifyContent: 'space-between',
+            ml: 3,
+            mr: 3,
+          }}
+          >
+            <Box sx={{
+              display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'center',
+            }}
+            >
+              <ModalTitle>
+                Why Adding to a Team?
+              </ModalTitle>
+            </Box>
+
+            <Box>
+              <Typography sx={{ width: '100%', maxWidth: '800px' }}>
+                By Adding to a team, the visibility of
+                a project will be inherited
+                from the visibility of the team.
+                If the assigned team is public,
+                all teams will have access to the project.
+                If the assigned team is private, the project will be
+                accessible only to this team.
+              </Typography>
+            </Box>
           </Box>
 
         </Modal>
