@@ -2,13 +2,8 @@ import * as d3 from "d3";
 import * as cons from "./constants";
 import { zoomM } from "./newZoom";
 import "./tooltip.css";
-import { addBarPlotCell, addBarPlotBatch } from "./barChart"
+import { addBarPlotCell, addBarPlotBatch, addBarPlotPredict } from "./barChart"
 import {getColoringModes, setColoring} from "./coloring"
-
-// //Reference before and after
-// const refAfter = (cells) =>{
-//   after(cells, "is_reference", "No");
-// }
 
 //Create a color scale based on the chosen mode and its values
 
@@ -22,34 +17,134 @@ const addGroup = (svg, id) => {
 
 export class UmapVisualization2 {
 
-  constructor(container, data, containerBar) {
+  constructor(container, data) {
     d3.select(container).selectAll("*").remove();
-    this.svg = d3.select(container).append('svg');
+    this.svg = d3.select(container).append('svg')
+        .attr('id', 'vis_svg');
     this.gCells = addGroup(this.svg, 'cells');
-    this.gLabels = addGroup(this.svg, 'labels');
+    // this.gLabels = addGroup(this.svg, 'labels');
     this.coloringModes = getColoringModes(data);
     this.tooltip = d3.select(container).append("div");
     this.mode = undefined;
-    //TODO: add if for when the atlas doesn't contain cell_type
-    this.barChartBatch = addBarPlotBatch(containerBar, data);
+    /*this.barChartBatch = addBarPlotBatch(containerBar, data);
     if(Object.keys(this.coloringModes).includes("cell_type")){
       d3.select(containerBar).append("div");
       this.barChartCell = addBarPlotCell(containerBar, data);
-    }
+    }*/
     this.data = data;
+    this.graphs = ["batch", "cell"];
+    //this.drawGraph(containerBar, "batch", 270, 270);
+    //this.drawGraph(containerBar, "cell", 270, 270);
+    this.hiddenCells = [];
   };
+
+  getAvailableGraphs() {
+    return this.graphs;
+  }
+
+  drawGraph(container, graph, width, height) {
+    switch (graph) {
+      case "batch":
+        if(Object.keys(this.coloringModes).includes("batch")){
+          d3.select(container).append("div");
+          addBarPlotBatch(container, this.data, width, height);
+        }
+        break;
+      case "cell":
+        if(Object.keys(this.coloringModes).includes("cell_type")){
+          d3.select(container).append("div");
+          this.barChartCell = addBarPlotCell(container, this.data, width, height);
+        }
+        break;
+      default:
+        break;
+    }
+  };
+
+  isHidden(cell){
+    for (let i = 0; i < this.hiddenCells.length; i++){
+       if (cell[this.hiddenCells[i][0]] === this.hiddenCells[i][1]) {
+         return true;
+       }
+    }
+    return false;
+  }
 
   //Hide
   after(category, value) {
+    this.addHiddenCell(category, value);
+    this.hideShowCells();
+  }
+
+  //Hide
+  /*after(category, value) {
     this.cells
       .style("visibility", (d) => { return d[category] === value ? "hidden" : "visible" });
+  }*/
+
+  //Show
+  before(category, value) {
+    this.deleteHiddenCell(category, value);
+    console.log(this.hiddenCells);
+    this.hideShowCells();
+  }
+
+  beforeAll() {
+    this.hiddenCells = [];
+    this.cells
+      .style("visibility", "visible");
+  }
+
+  hideShowCells() {
+    this.cells
+      .style("visibility", (d) => { return this.isHidden(d) ? "hidden" : "visible" });
+  }
+
+  addHiddenCell(category, value) {
+    this.hiddenCells.push([category, value]);
+  }
+
+  filterCells(cell) {
+    console.log(this[1]);
+    cell[0] == this[0] && cell[1] == this[1];
+  }
+
+  deleteHiddenCell(category, value) {
+    /*for (let i = 0; i < this.addHiddenCell.length; i++) {
+      if (this.hiddenCells[i][0] == category && this.hiddenCells[i][1] == value) {
+        this.hiddenCells.splice(i, 1);
+      }
+    }*/
+    let thisArg = [category, value];
+    this.hiddenCells = this.hiddenCells.filter(function (cell) {
+      return !(cell[0] == category && cell[1] == value)});
 
   }
 
-  //Show
-  before() {
+  showReference() {
+    this.before("type", "reference");
+  }
+
+  showQuery() {
+    this.before("type", "query");
+  }
+
+  hideQuery() {
+    this.after("type", "query");
+  }
+
+  hideReference() {
+    this.after("type", "reference");
+  }
+
+  predictedCellsTransparent() {
     this.cells
-      .style("visibility", "visible");
+      .style("opacity", (d) => {return d["predictions"] === "True" ? 0.3 : 0.85 });
+  }
+
+  predictedCellsVisible() {
+    this.cells
+      .style("opacity", 1);
   }
 
   //Set a color mode
@@ -179,8 +274,7 @@ export class UmapVisualization2 {
       .attr('height', h)
       .style('fill', 'white')
       .lower()
-      .call(zoomM);
-
+      .call(zoomM)
   }
 
 }
