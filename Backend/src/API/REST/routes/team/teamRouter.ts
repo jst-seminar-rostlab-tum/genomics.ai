@@ -647,53 +647,61 @@ const get_members_of_team = (): Router => {
 
 const remove_member_from_team = (): Router => {
   let router = express.Router();
-  router.delete("/teams/:id/members/:userid", check_auth(), async (req: ExtRequest, res: Response) => {
-    const teamId = req.params.id;
-    const deleteUserId = req.params.userid;
-    try {
-      const team = await TeamService.getTeamById(teamId);
-      if(!await TeamService.isAdmin(req.user_id!, team)) {
-        return res.status(403).send("Forbidden. Not an admin");
-      }
-      if(await TeamService.isAdmin(deleteUserId, team)) {
-        return res.status(403).send("Forbidden. Trying to delete an admin");
-      }
-      if(!await TeamService.isMember(deleteUserId, team)) {
-        return res.status(409).send("User is not part of this team");
-      }
-      await TeamService.removeMemberFromTeam(teamId, deleteUserId);
+  router.delete(
+    "/teams/:id/members/:userid",
+    check_auth(),
+    async (req: ExtRequest, res: Response) => {
+      const teamId = req.params.id;
+      const deleteUserId = req.params.userid;
+      try {
+        const team = await TeamService.getTeamById(teamId);
+        if (!(await TeamService.isAdmin(req.user_id!, team))) {
+          return res.status(403).send("Forbidden. Not an admin");
+        }
+        if (await TeamService.isAdmin(deleteUserId, team)) {
+          return res.status(403).send("Forbidden. Trying to delete an admin");
+        }
+        if (!(await TeamService.isMember(deleteUserId, team))) {
+          return res.status(409).send("User is not part of this team");
+        }
+        await TeamService.removeMemberFromTeam(teamId, deleteUserId);
 
-      return res.status(200).send("OK");
-    } catch (err) {
-      console.error(JSON.stringify(err));
-      return res.status(500).json({ error: "Internal server error"});
+        return res.status(200).send("OK");
+      } catch (err) {
+        console.error(JSON.stringify(err));
+        return res.status(500).json({ error: "Internal server error" });
+      }
     }
-  });
+  );
   return router;
-}
+};
 
 const remove_admin_role_for_team_member = (): Router => {
   let router = express.Router();
-  router.delete("/teams/:id/admins/:adminid", check_auth(), async (req:ExtRequest, res:Response)=> {
-    const teamId = req.params.id;
-    const adminId = req.params.adminid;
-    try {
-      const team = await TeamService.getTeamById(teamId);
-      if(!await TeamService.isAdmin(req.user_id!, team)) {
-        return res.status(403).send("Forbidden. Not an admin");
+  router.delete(
+    "/teams/:id/admins/:adminid",
+    check_auth(),
+    async (req: ExtRequest, res: Response) => {
+      const teamId = req.params.id;
+      const adminId = req.params.adminid;
+      try {
+        const team = await TeamService.getTeamById(teamId);
+        if (!(await TeamService.isAdmin(req.user_id!, team))) {
+          return res.status(403).send("Forbidden. Not an admin");
+        }
+        if (!(await TeamService.isAdmin(adminId, team))) {
+          return res.status(409).send("User to demote is not an admin");
+        }
+        await TeamService.demoteAdminFromTeam(teamId, adminId);
+        return res.status(200).send("OK");
+      } catch (err) {
+        console.error(JSON.stringify(err));
+        return res.status(500).json({ error: "Internal server error" });
       }
-      if(!await TeamService.isAdmin(adminId, team)) {
-        return res.status(409).send("User to demote is not an admin");
-      }
-      await TeamService.demoteAdminFromTeam(teamId, adminId);
-      return res.status(200).send("OK");
-    } catch(err) {
-      console.error(JSON.stringify(err));
-      return res.status(500).json({ error: "Internal server error"});
     }
-  });
+  );
   return router;
-}
+};
 
 const get_projects_of_team = (): Router => {
   let router = express.Router();

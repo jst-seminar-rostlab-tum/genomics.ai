@@ -204,7 +204,8 @@ export default class TeamService {
   }
 
   static async getTeams(queryParams: any): Promise<ITeam[] | null> {
-    var filter: any, sortBy = {};
+    var filter: any,
+      sortBy = {};
 
     queryParams.hasOwnProperty("keyword")
       ? (filter = { title: { $regex: "^" + queryParams.keyword, $options: "i" } })
@@ -212,10 +213,8 @@ export default class TeamService {
     queryParams.hasOwnProperty("visibility") ? (filter.visibility = queryParams.visibility) : null;
 
     if (queryParams.hasOwnProperty("sortBy")) {
-      if(queryParams.sortBy == "title")
-          sortBy["title"] = 1;
-      else
-      sortBy["updatedAt"] = -1;
+      if (queryParams.sortBy == "title") sortBy["title"] = 1;
+      else sortBy["updatedAt"] = -1;
     } else sortBy = {};
 
     teamModel.find(filter);
@@ -285,9 +284,8 @@ export default class TeamService {
       { _id: teamId },
       {
         $pull: { adminIds: userId },
-        $push: {memberIds: userId}
+        $push: { memberIds: userId },
       }
     );
   }
 }
-
