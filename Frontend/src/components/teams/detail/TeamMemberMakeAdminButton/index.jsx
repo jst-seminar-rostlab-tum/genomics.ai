@@ -19,7 +19,7 @@ function TeamMemberMakeAdminButton({
   async function addAdmin() {
     setErrorMessage('');
     try {
-      TeamService.makeTeamAdmin(team.id, member.id);
+      await TeamService.makeTeamAdmin(team.id, member.id);
       handleCloseDialog();
       updateTeam();
     } catch (e) {
@@ -30,7 +30,7 @@ function TeamMemberMakeAdminButton({
   async function removeAdmin() {
     setErrorMessage('');
     try {
-      TeamService.removeTeamAdmin(team.id, member.id);
+      await TeamService.removeTeamAdmin(team.id, member.id);
       updateTeam();
       handleCloseDialog();
     } catch (e) {
