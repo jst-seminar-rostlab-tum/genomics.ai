@@ -12,9 +12,10 @@ function GeneMapperState({ path, defaultSelectedAtlas = '', defaultSelectedModel
   const [activeStep, setActiveStep] = useState(0);
   const steps = ['Pick Atlas and Model', 'Choose File and Project details'];
 
-  useEffect(() => {
+  const handleSelectAtlas = (atlas) => {
+    setSelectedAtlas(atlas);
     setSelectedModel('');
-  }, [selectedAtlas]);
+  }
 
   const handleStep = (step) => () => {
     setActiveStep(step);
@@ -42,7 +43,7 @@ function GeneMapperState({ path, defaultSelectedAtlas = '', defaultSelectedModel
               selectedModel={selectedModel}
               activeStep={activeStep}
               steps={steps}
-              setSelectedAtlas={setSelectedAtlas}
+              setSelectedAtlas={handleSelectAtlas}
               setSelectedModel={setSelectedModel}
               setActiveStep={setActiveStep}
               compatibleModels={selectedAtlas ? selectedAtlas.compatibleModels : []}

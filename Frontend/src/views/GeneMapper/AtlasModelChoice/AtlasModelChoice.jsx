@@ -116,7 +116,7 @@ function AtlasModelChoice({
                             height="97%"
                             title={m.name} 
                             description={m.description}
-                            selected={selectedModel.name===m.name}
+                            selected={selectedModel && selectedModel.name===m.name}
                             onSelect={setSelectedModel}
                             modelObject={m}
                             disabled={!compatibleModels.map(m => m.toLowerCase()).includes(m.name.toLowerCase()) || compatibleModels.length == 0}

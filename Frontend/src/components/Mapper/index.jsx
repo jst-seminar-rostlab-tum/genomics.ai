@@ -32,11 +32,7 @@ function Mapper({
   useEffect(() => {
     setAtlas(mapperAtlas);
     setModel(mapperModel);
-    if (!fabVisible) {
-      setAtlas(null);
-      setModel(null);
-    }
-  }, [mapperAtlas, mapperModel, fabVisible]);
+  }, [mapperAtlas, mapperModel]);
 
   return (
     <Box className={styles.container} sx={{ display: fabVisible ? 'block' : 'none' }}>
