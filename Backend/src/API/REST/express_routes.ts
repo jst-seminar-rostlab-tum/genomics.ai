@@ -39,6 +39,8 @@ import {
   get_institutions,
   get_institution,
   get_members_of_institution,
+  remove_member_from_institution,
+  remove_admin_role_for_institution_member,
   get_teams_of_institution,
   get_projects_of_institution,
   get_users_institutions,
@@ -60,6 +62,8 @@ import {
   get_team,
   update_team,
   get_members_of_team,
+  remove_member_from_team,
+  remove_admin_role_for_team_member,
   get_projects_of_team,
 } from "./routes/team/teamRouter";
 
@@ -84,7 +88,7 @@ import {
   reset_institution_profilepicture_route,
 } from "./routes/reset_institution_pictures";
 import reset_user_avatar_route from "./routes/reset_user_avatar";
-import {contact_us} from "./routes/contact/contactRoute";
+import { contact_us } from "./routes/contact/contactRoute";
 
 // setup the websocket-server on top of the http_server
 export function express_routes(this: REST_Host): Router {
@@ -131,6 +135,8 @@ export function express_routes(this: REST_Host): Router {
   this.expressApp.use(get_team());
   this.expressApp.use(update_team());
   this.expressApp.use(get_members_of_team());
+  this.expressApp.use(remove_member_from_team());
+  this.expressApp.use(remove_admin_role_for_team_member());
   this.expressApp.use(get_projects_of_team());
 
   // user routes
@@ -184,6 +190,8 @@ export function express_routes(this: REST_Host): Router {
   this.expressApp.use(get_teams_of_institution());
   this.expressApp.use(get_projects_of_institution());
   this.expressApp.use(get_users_institutions());
+  this.expressApp.use(remove_member_from_institution());
+  this.expressApp.use(remove_admin_role_for_institution_member());
   this.expressApp.use(disjoin_member_of_institution());
 
   this.expressApp.use(/^.*_ah.*$/, (req, res) => res.status(200).send()); // always tell google everything is fine

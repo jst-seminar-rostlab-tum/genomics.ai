@@ -57,7 +57,7 @@ const create_team = (): Router => {
 
         const newTeam = await TeamService.addTeam(teamToAdd);
 
-        return res.status(201).json(newTeam);
+        return res.status(201).json(TeamService.mergeAdminsMembers(newTeam));
       } else {
         const teamToAdd: AddTeamDTO = {
           title,
@@ -68,7 +68,7 @@ const create_team = (): Router => {
         };
         const newTeam = await TeamService.addTeam(teamToAdd);
 
-        return res.status(201).json(newTeam);
+        return res.status(201).json(TeamService.mergeAdminsMembers(newTeam));
       }
     } catch (err) {
       console.error("Error registering team!");
@@ -155,7 +155,7 @@ const invite_person_to_a_team = (): Router => {
       console.error("Error in invite_person_to_a_project()");
       console.error(JSON.stringify(e));
       console.error(e);
-      return res.status(500).send("Server internal error");
+      return res.status(500).send("Internal server error");
     }
   });
 
@@ -229,10 +229,10 @@ const add_user_to_admin = (): Router => {
       if (!(userId && teamId)) return res.status(400).send("Missing parameters.");
 
       const user = await UserService.getUserById(userId);
-      if (!user) return res.status(400).send("User does not exist.");
+      if (!user) return res.status(404).send("User does not exist.");
 
       const team = await TeamService.getTeamById(teamId);
-      if (!team) return res.status(400).send("Team does not exist.");
+      if (!team) return res.status(404).send("Team does not exist.");
 
       const isAdmin: boolean = await TeamService.isAdmin(userId, team);
       const isMember: boolean = await TeamService.isMember(userId, team);
@@ -248,7 +248,7 @@ const add_user_to_admin = (): Router => {
         const team_updated = await TeamService.addAdminToTeam(teamId, userId);
 
         if (!team_updated)
-          return res.status(400).send("Error when changing to user to admin profile.");
+          return res.status(500).send("Error when changing to user to admin profile.");
 
         return res.status(200).json("User has been changed to admin.");
       } catch (err) {
@@ -262,7 +262,7 @@ const add_user_to_admin = (): Router => {
       console.error("Error in add_user_to_admin()");
       console.error(JSON.stringify(e));
       console.error(e);
-      return res.status(500).send("Internal error.");
+      return res.status(500).send("Internal server error");
     }
   });
 
@@ -286,12 +286,97 @@ const join_member = (): Router => {
       if (!(userId && teamId)) return res.status(400).send("Missing parameters.");
 
       const user = await UserService.getUserById(userId);
-      if (!user) return res.status(409).send("User does not exist.");
+      if (!user) return res.status(404).send("User does not exist.");
       if (!user.isEmailVerified) return res.status(409).send("User has not been verified.");
       /*
       if (userId != user_id_jwt)
         return res.status(409).send("Information of the user does not match.");
       */
+
+      const team = await TeamService.getTeamById(teamId);
+      if (!team) return res.status(404).send("Team does not exist.");
+
+      var tempUserId = String(userId);
+      var tempListAdmins = team.adminIds.map(String);
+      var tempListMembers = team.memberIds.map(String);
+      var tempListInvitedMembers = team.invitedMemberIds.map(String);
+
+      if (tempListAdmins.includes(tempUserId))
+        return res.status(404).send("User is an admin of the team.");
+
+      if (tempListMembers.includes(tempUserId))
+        return res.status(404).send("User is already a member of the team.");
+
+      try {
+        if (team.visibility == "PUBLIC") {
+          // Nothing to validate. Added just to exclude any error in case of a new visilitity state
+        } else if (team.visibility == "PRIVATE") {
+          if (!tempListInvitedMembers.includes(tempUserId))
+            return res.status(409).send("User has not been invited.");
+        } else if (team.visibility == "BY_INSTITUTION") {
+          if (!team.institutionId)
+            return res
+              .status(409)
+              .send("Team is not associated to any institution and set-up requires it.");
+          const institutionObj = await InstitutionService.getInstitutionById(team.institutionId);
+          if (!institutionObj) return res.status(404).send("Institution does not exist.");
+
+          var tempListAdminsOfInst = institutionObj?.adminIds.map(String);
+          var tempListMembersOfInst = institutionObj?.memberIds.map(String);
+
+          if (
+            !(
+              tempListAdminsOfInst.includes(tempUserId) ||
+              tempListMembersOfInst.includes(tempUserId)
+            )
+          ) {
+            return res.status(409).send("User does not belong to the institution of the team.");
+          }
+        } else {
+          console.log("New visibility has been detected with value [" + team.visibility + "]");
+          return res.status(500).send("Internal server error. Set-up");
+        }
+
+        const team_updated = await TeamService.joinMemberIntoTeam(teamId, userId);
+
+        if (!team_updated)
+          return res.status(500).send("Error when joining a new member into the team.");
+
+        const teamRes = await TeamService.getTeamById(teamId);
+
+        return res
+          .status(200)
+          .send(
+            `<h2>You have joined the team. Click <a href='javascript:window.close();'>here</a> to return</h2>`
+          );
+      } catch (err) {
+        console.error("Error when trying to join a new member into a given team.");
+        console.error(JSON.stringify(err));
+        console.error(err);
+        return res.status(500).send("Unable to register new admin.");
+      }
+    } catch (e) {
+      /* Added since a test proved that if user sends a request with incorrect parameter names, it is able to shutdown the server. */
+      console.error("Error in join_member()");
+      console.error(JSON.stringify(e));
+      console.error(e);
+      return res.status(500).send("Internal server error");
+    }
+  });
+
+  router.put("/teams/:id/join", check_auth(), async (req: any, res) => {
+    try {
+      const { userId }: { userId: ObjectId } = req.body;
+      const teamId: string = req.params.id;
+      const user_id_jwt = req.user_id;
+
+      if (!(userId && teamId)) return res.status(400).send("Missing parameters.");
+
+      const user = await UserService.getUserById(userId);
+      if (!user) return res.status(409).send("User does not exist.");
+      if (!user.isEmailVerified) return res.status(409).send("User has not been verified.");
+      if (userId != user_id_jwt)
+        return res.status(409).send("Information of the user does not match.");
 
       const team = await TeamService.getTeamById(teamId);
       if (!team) return res.status(409).send("Team does not exist.");
@@ -343,14 +428,7 @@ const join_member = (): Router => {
           return res.status(500).send("Error when joining a new member into the team.");
 
         const teamRes = await TeamService.getTeamById(teamId);
-        teamRes.memberIds.push(...teamRes.adminIds);
-
-        //return res.status(200).json(teamRes);
-        return res
-          .status(200)
-          .send(
-            `<h2>You have joined the team. Click <a href='javascript:window.close();'>here</a> to return</h2>`
-          );
+        return res.status(200).json(teamRes);
       } catch (err) {
         console.error("Error when trying to join a new member into a given team.");
         console.error(JSON.stringify(err));
@@ -362,55 +440,7 @@ const join_member = (): Router => {
       console.error("Error in join_member()");
       console.error(JSON.stringify(e));
       console.error(e);
-      return res.status(500).send("Internal server error");
-    }
-  });
-
-  router.put("/teams/:id/join", check_auth(), async (req: any, res) => {
-    try {
-      const { userId }: { userId: ObjectId } = req.body;
-      const teamId: string = req.params.id;
-
-      if (!(userId && teamId)) return res.status(400).send("Missing parameters.");
-
-      const user = await UserService.getUserById(userId);
-      if (!user) return res.status(400).send("User does not exist.");
-      if (!user.isEmailVerified) return res.status(409).send("User has not been verified.");
-
-      const team = await TeamService.getTeamById(teamId);
-      if (!team) return res.status(400).send("Team does not exist.");
-
-      var tempUserId = String(userId);
-      var tempListAdmins = team.adminIds.map(String);
-      var tempListMembers = team.memberIds.map(String);
-
-      if (tempListAdmins.includes(tempUserId))
-        return res.status(409).send("User is an admin of the team.");
-
-      if (tempListMembers.includes(tempUserId))
-        return res.status(409).send("User is already a member of the team.");
-
-      //[PENDING] Consider whether is necessary to validate if a user should have been invited before it is joined. i.e. it should exist a record in invitedMemberIds
-
-      try {
-        const team_updated = await TeamService.joinMemberIntoTeam(teamId, userId);
-
-        if (!team_updated)
-          return res.status(400).send("Error when joining a new member into the team.");
-
-        return res.status(200).json("User has been joined.");
-      } catch (err) {
-        console.error("Error when trying to join a new member into a given team.");
-        console.error(JSON.stringify(err));
-        console.error(err);
-        return res.status(500).send("Unable to register new admin.");
-      }
-    } catch (e) {
-      /* Added since a test proved that if user sends a request with incorrect parameter names, it is able to shutdown the server. */
-      console.error("Error in join_member()");
-      console.error(JSON.stringify(e));
-      console.error(e);
-      return res.status(500).send("Internal server error");
+      return res.status(500).send("Internal error.");
     }
   });
 
@@ -432,10 +462,10 @@ const add_team_to_institution = (): Router => {
       if (!(institutionId && teamId)) return res.status(400).send("Missing parameters.");
 
       const institution = await InstitutionService.getInstitutionById(institutionId);
-      if (!institution) return res.status(409).send("Institution does not exist.");
+      if (!institution) return res.status(404).send("Institution does not exist.");
 
       const team = await TeamService.getTeamById(teamId);
-      if (!team) return res.status(409).send("Team does not exist.");
+      if (!team) return res.status(404).send("Team does not exist.");
 
       var tempListAdminsOfTeam = team.adminIds.map(String);
       if (!tempListAdminsOfTeam.includes(user_id_jwt))
@@ -448,11 +478,10 @@ const add_team_to_institution = (): Router => {
         const institution_updated = await TeamService.setInstitutionOfTeam(teamId, institutionId);
 
         if (!institution_updated)
-          return res.status(400).send("Error when associating the team with the institution.");
+          return res.status(500).send("Error when associating the team with the institution.");
 
         const team2 = await TeamService.getTeamById(teamId);
-        team2.memberIds.push(...team2.adminIds);
-        return res.status(200).json(team2);
+        return res.status(200).json(TeamService.mergeAdminsMembers(team2));
       } catch (err) {
         console.error("Error when trying to join the team into the institution.");
         console.error(JSON.stringify(err));
@@ -464,7 +493,7 @@ const add_team_to_institution = (): Router => {
       console.error("Error in add_team_to_institution()");
       console.error(JSON.stringify(e));
       console.error(e);
-      return res.status(500).send("Internal error.");
+      return res.status(500).send("Internal server error");
     }
   });
 
@@ -508,8 +537,7 @@ const remove_team_from_institution = (): Router => {
           return res.status(400).send("Error when removing the team from the institution.");
 
         const team = await TeamService.getTeamById(teamId);
-        team.memberIds.push(...team.adminIds);
-        return res.status(200).json(team);
+        return res.status(200).json(TeamService.mergeAdminsMembers(team));
       } catch (err) {
         console.error("Error when trying to join the team into the institution.");
         console.error(JSON.stringify(err));
@@ -539,12 +567,12 @@ const disjoin_member = (): Router => {
       if (!(userId && teamId)) return res.status(400).send("Missing parameters.");
 
       const user = await UserService.getUserById(userId);
-      if (!user) return res.status(409).send("User does not exist.");
+      if (!user) return res.status(400).send("User does not exist.");
       if (userId != user_id_jwt)
         return res.status(409).send("Information of the user does not match.");
 
       const team = await TeamService.getTeamById(teamId);
-      if (!team) return res.status(409).send("Team does not exist.");
+      if (!team) return res.status(400).send("Team does not exist.");
 
       var tempUserId = String(userId);
       var tempListAdmins = team.adminIds.map(String);
@@ -563,8 +591,7 @@ const disjoin_member = (): Router => {
           return res.status(500).send("Error when removing a member from the team.");
 
         const teamRes = await TeamService.getTeamById(teamId);
-        teamRes.memberIds.push(...teamRes.adminIds);
-        return res.status(200).json(teamRes);
+        return res.status(200).json(TeamService.mergeAdminsMembers(teamRes));
       } catch (err) {
         console.error("Error when trying to remove a member from a team.");
         console.error(JSON.stringify(err));
@@ -590,9 +617,10 @@ const get_teams = (): Router => {
     try {
       const teams = await TeamService.getTeams(query);
 
-      if (teams != null) return res.status(200).json(teams);
+      if (teams != null) return res.status(200).json(TeamService.mergeAdminsMembers(teams));
       return res.status(404).send(`No teams found`);
     } catch (err) {
+      console.error(err);
       console.error(JSON.stringify(err));
       return res.status(500).send(`Internal server error`);
     }
@@ -608,7 +636,7 @@ const get_users_teams = (): Router => {
     try {
       const teams = await TeamService.getUsersTeams(userId);
 
-      if (teams != null) return res.status(200).json(teams);
+      if (teams != null) return res.status(200).json(TeamService.mergeAdminsMembers(teams));
       res.status(404).send(`No teams found`);
     } catch (err) {
       console.error(JSON.stringify(err));
@@ -625,7 +653,7 @@ const get_team = (): Router => {
     try {
       const team = await TeamService.getTeamById(teamsId);
 
-      if (team != null) return res.status(200).json(team);
+      if (team != null) return res.status(200).json(TeamService.mergeAdminsMembers(team));
       return res.status(404).send(`Team ${teamsId} not found`);
     } catch (err) {
       console.error(JSON.stringify(err));
@@ -684,16 +712,74 @@ const get_members_of_team = (): Router => {
   router.get("/teams/:id/members", check_auth(), async (req: Request, res: Response) => {
     const teamId = req.params.id;
     try {
-      const team = await TeamService.getMembersOfTeam(teamId);
-      if (team == null) {
+      const members = await TeamService.getMembersOfTeam(teamId);
+      if (members == null) {
         return res.status(404).send(`Team ${teamId} not found`);
       }
-      return res.status(200).send(team.memberIds);
+      return res.status(200).send(TeamService.mergeAdminsMembers(members).memberIds);
     } catch (err) {
       console.error(JSON.stringify(err));
-      return res.status(500).json({ error: "General server error" });
+      return res.status(500).json({ error: "Internal server error" });
     }
   });
+  return router;
+};
+
+const remove_member_from_team = (): Router => {
+  let router = express.Router();
+  router.delete(
+    "/teams/:id/members/:userid",
+    check_auth(),
+    async (req: ExtRequest, res: Response) => {
+      const teamId = req.params.id;
+      const deleteUserId = req.params.userid;
+      try {
+        const team = await TeamService.getTeamById(teamId);
+        if (!(await TeamService.isAdmin(req.user_id!, team))) {
+          return res.status(403).send("Forbidden. Not an admin");
+        }
+        if (await TeamService.isAdmin(deleteUserId, team)) {
+          return res.status(403).send("Forbidden. Trying to delete an admin");
+        }
+        if (!(await TeamService.isMember(deleteUserId, team))) {
+          return res.status(409).send("User is not part of this team");
+        }
+        await TeamService.removeMemberFromTeam(teamId, deleteUserId);
+
+        return res.status(200).send("OK");
+      } catch (err) {
+        console.error(JSON.stringify(err));
+        return res.status(500).json({ error: "Internal server error" });
+      }
+    }
+  );
+  return router;
+};
+
+const remove_admin_role_for_team_member = (): Router => {
+  let router = express.Router();
+  router.delete(
+    "/teams/:id/admins/:adminid",
+    check_auth(),
+    async (req: ExtRequest, res: Response) => {
+      const teamId = req.params.id;
+      const adminId = req.params.adminid;
+      try {
+        const team = await TeamService.getTeamById(teamId);
+        if (!(await TeamService.isAdmin(req.user_id!, team))) {
+          return res.status(403).send("Forbidden. Not an admin");
+        }
+        if (!(await TeamService.isAdmin(adminId, team))) {
+          return res.status(409).send("User to demote is not an admin");
+        }
+        await TeamService.demoteAdminFromTeam(teamId, adminId);
+        return res.status(200).send("OK");
+      } catch (err) {
+        console.error(JSON.stringify(err));
+        return res.status(500).json({ error: "Internal server error" });
+      }
+    }
+  );
   return router;
 };
 
@@ -730,5 +816,7 @@ export {
   get_team,
   update_team,
   get_members_of_team,
+  remove_member_from_team,
+  remove_admin_role_for_team_member,
   get_projects_of_team,
 };

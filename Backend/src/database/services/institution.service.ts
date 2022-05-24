@@ -1,5 +1,6 @@
 import { IInstitution, institutionModel } from "../models/institution";
-import {ITeam, teamModel} from "../models/team";
+import { IUser } from "../models/user";
+import { ITeam, teamModel } from "../models/team";
 import ProjectService from "./project.service";
 import { AddInstitutionDTO, UpdateInstitutionDTO } from "../dtos/institution.dto";
 import { ObjectId } from "mongoose";
@@ -13,6 +14,19 @@ import TeamService from "./team.service";
  *  which can be used by the route-controllers.
  */
 export default class InstitutionService {
+  public static mergeAdminsMembers<
+    T extends T2 | Array<T2>,
+    T2 extends { memberIds: Array<any>; adminIds: Array<any> }
+  >(institution: T): T {
+    if (Array.isArray(institution)) {
+      for (let i of institution) {
+        i.memberIds.push(...i.adminIds);
+      }
+    } else {
+      institution.memberIds.push(...institution.adminIds);
+    }
+    return institution;
+  }
   /**
    *  Adds given institution to the database.
    *
@@ -293,29 +307,25 @@ export default class InstitutionService {
   }
 
   static async filterInstitutions(query: any): Promise<any | null> {
-    var keyword: object, sortBy =  {};
+    var keyword: object,
+      sortBy = {};
 
     query.hasOwnProperty("keyword")
       ? (keyword = { name: { $regex: "^" + query.keyword, $options: "i" } })
       : (keyword = {});
 
     if (query.hasOwnProperty("sortBy")) {
-      if(query.sortBy == "name")
-        sortBy["name"] = 1;
-      else
-        sortBy["updatedAt"] = -1;
+      if (query.sortBy == "name") sortBy["name"] = 1;
+      else sortBy["updatedAt"] = -1;
     } else sortBy = {};
 
-    const institutions : any =  await institutionModel.find(keyword)
-        .populate("adminIds")
-        .populate("memberIds")
-        .sort(sortBy).lean();
+    const institutions: any = await institutionModel.find(keyword).sort(sortBy).lean();
 
-    var populatedInstitutions : Array<any> = new Array<any>();
+    var populatedInstitutions: Array<any> = new Array<any>();
 
-    for( let institution of institutions){
-      let institutionsTeams = await teamModel.find({ institutionId: institution._id } );
-      institution = {...institution , teams: institutionsTeams}
+    for (let institution of institutions) {
+      let institutionsTeams = await teamModel.find({ institutionId: institution._id });
+      institution = { ...institution, teams: institutionsTeams };
       populatedInstitutions.push(institution);
     }
 
@@ -324,8 +334,17 @@ export default class InstitutionService {
 
   static async getMembersOfInstitution(
     institution_id: ObjectId | string
-  ): Promise<IInstitution | null> {
-    return await institutionModel.findById(institution_id).populate("memberIds");
+  ): Promise<{ memberIds: Array<IUser>; adminIds: Array<IUser> } | null> {
+    let institution = await institutionModel
+      .findById(institution_id)
+      .populate("memberIds")
+      .populate("adminIds");
+    if (!institution) return null;
+    let { memberIds, adminIds } = institution;
+    return {
+      memberIds: memberIds as any as Array<IUser>,
+      adminIds: adminIds as any as Array<IUser>,
+    };
   }
 
   static async getProjectsOfInstitution(institution_id: ObjectId | string) {
@@ -357,6 +376,10 @@ export default class InstitutionService {
     return projects;
   }
 
+  static async getTeamsOfInstitution(institutionId: ObjectId | any): Promise<ITeam[] | null> {
+    return await teamModel.find({ institutionId: institutionId });
+  }
+
   static async getUsersInstitutions(userId: ObjectId | string): Promise<IInstitution[] | null> {
     return await institutionModel.find({
       $or: [
@@ -373,7 +396,7 @@ export default class InstitutionService {
    *  @param   userId
    *  @returns updateDocument
    */
-  static async removeMemberFromTeam(
+  static async removeMemberFromInstitution(
     institutionId: ObjectId | string,
     userId: ObjectId | string
   ): Promise<any> {
@@ -381,6 +404,26 @@ export default class InstitutionService {
       { _id: institutionId },
       {
         $pull: { memberIds: userId, adminIds: userId },
+      }
+    );
+  }
+
+  /**
+   *  Remove the given userId from the admins list of the given team.
+   *
+   *  @param   teamId
+   *  @param   userId
+   *  @returns updateDocument
+   */
+  static async demoteAdminFromInstitution(
+    institutionId: ObjectId | string,
+    userId: ObjectId | string
+  ): Promise<any> {
+    return await institutionModel.updateOne(
+      { _id: institutionId },
+      {
+        $pull: { adminIds: userId },
+        $push: { memberIds: userId },
       }
     );
   }

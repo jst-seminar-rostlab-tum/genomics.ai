@@ -6,6 +6,7 @@ import { ObjectId } from "mongoose";
 export interface AddInstitutionDTO {
   name: string;
   country: string;
+  description: string;
   profilePictureURL: string;
   backgroundPictureURL: string;
   adminIds: Array<ObjectId>;
@@ -14,6 +15,7 @@ export interface AddInstitutionDTO {
 export interface UpdateInstitutionDTO {
   name?: string;
   country?: string;
+  description?: string;
   profilePictureURL?: string;
   backgroundPictureURL?: string;
 }
