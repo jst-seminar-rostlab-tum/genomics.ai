@@ -16,6 +16,9 @@
                 "country": {
                   "type": "string"
                 },
+                "description": {
+                  "type": "string"
+                },
                 "profilePictureURL": {
                   "type": "string"
                 },
@@ -455,10 +458,7 @@
             "schema": {
               "type": "object",
               "properties": {
-                "name": {
-                  "type": "string"
-                },
-                "country": {
+                "description": {
                   "type": "string"
                 }
               },
