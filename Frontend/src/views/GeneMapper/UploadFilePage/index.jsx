@@ -9,7 +9,7 @@ import CustomButton from 'components/CustomButton';
 import FileUpload from 'components/FileUpload';
 import { Modal, ModalTitle } from 'components/Modal';
 import React, { useState, useEffect, useCallback } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import styles from './uploadfilepage.module.css';
 // import ProjectMock from 'shared/services/mock/projects';
 import ProjectService from 'shared/services/Project.service';
@@ -32,6 +32,7 @@ function UploadFilePage({
   const [modelInfoOpen, setModelInfoOpen] = useState(false);
   const [submissionProgress, setSubmissionProgress] = useSubmissionProgress();
   const history = useHistory();
+  const { pathname } = useLocation();
 
   useEffect(() => {
     setRequirements(selectedModel.requirements || [
@@ -52,7 +53,6 @@ function UploadFilePage({
   const handleOnDropChange = (file) => {
     setUploadedFile(file);
   };
-
   const createProject = useCallback((projectName, atlasId, modelId, file) => {
     ProjectService.createProject(
       projectName,
@@ -71,7 +71,7 @@ function UploadFilePage({
           }));
         },
       );
-      history.push(path); // go back to GeneMapper home
+      history.push(pathname.split('/').includes('explore') ? `${path}/genemapper` : path); // go back to GeneMapper home
     });
   }, [submissionProgress]);
 

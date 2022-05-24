@@ -61,7 +61,7 @@ function Mapper({
         <Divider className={styles.divider} />
         <Box className={styles.buttonBox}>
           {/* Button will be disabled if selected models and atlases are incompatible with eachother, in this case it will be gray. Lets keep it enabled all the time for now. */}
-          <CustomButton disabled={!atlas || !model} type="primary" onClick={() => { history.push(`${path}/create`); }}>Go</CustomButton>
+          <CustomButton disabled={!atlas || !model} type="primary" onClick={() => { history.push(`${path}/genemapper/create`); }}>Go</CustomButton>
         </Box>
       </Box>
       <Box className={styles.mapperBox}>

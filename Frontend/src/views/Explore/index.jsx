@@ -38,14 +38,13 @@ const Explore = () => {
   const [mapperVisible, setMapperVisible] = useState(false);
   const [isLoginFormVisible, setLoginFormVisible] = useState(false);
   const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
-  const { search } = useLocation();
+  const { search, pathname } = useLocation();
   const searchParams = new URLSearchParams(search);
   const searchedKeyword = searchParams.get('keyword') || '';
   const { path } = useRouteMatch();
   const history = useHistory();
   const [atlases, setAtlases] = useState([]);
   const [models, setModels] = useState([]);
-  const { pathname } = useLocation();
 
   // function to update the state in the URL
   const updateQueryParams = (param, value) => {
