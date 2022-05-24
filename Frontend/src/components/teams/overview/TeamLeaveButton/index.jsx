@@ -27,7 +27,10 @@ function TeamLeaveButton({ team, onLeft }) {
 
   return (
     <>
-      <Button variant="outlined" type="critical" onClick={handleOpenDialog}>
+      <Button
+        type="critical"
+        onClick={handleOpenDialog}
+      >
         Leave
       </Button>
       <Modal

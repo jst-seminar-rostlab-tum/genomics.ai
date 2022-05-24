@@ -48,14 +48,16 @@ const InstitutionService = MOCK_INSTUTITIONS ? MockInstitutionService : {
   },
 
   async getMembers(institutionId) {
-    return []; // TODO: enable once exists
-    // eslint-disable-next-line no-unreachable
     const { data } = await axiosInstance.get(`/institutions/${institutionId}/members`);
     return data.map(enhanceMember);
   },
 
   getInstitutions: async (params) => {
-    const { data } = await axiosInstance.get(`/${MODEL}`, { params });
+    const preparedParams = { ...params };
+    if (!preparedParams.sortBy) {
+      preparedParams.sortBy = 'name';
+    }
+    const { data } = await axiosInstance.get(`/${MODEL}`, { params: preparedParams });
     return data.map(enhanceInstitution);
   },
 

@@ -53,7 +53,6 @@ const TeamService = {
       name,
       country: null,
       description,
-      avatarUrl: null,
       backgroundPictureURL: null,
       adminIds: [user.id], // TODO: make sure that the backend puts my user ID here
       memberIds: [],

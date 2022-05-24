@@ -101,7 +101,12 @@ const TeamService = MOCK_TEAMS ? MockTeamService : {
   },
 
   getTeams: async (params) => {
-    const { data } = await axiosInstance.get(`/${MODEL}`, { params });
+    const preparedParams = { ...params };
+    if (!preparedParams.sortBy || preparedParams.sortBy === 'name') {
+      preparedParams.sortBy = 'title';
+    }
+    const { data } = await axiosInstance.get(`/${MODEL}`, { params: preparedParams });
+
     return data.map(enhanceTeam);
   },
 

@@ -1,7 +1,7 @@
 // import axiosInstance from './axiosInstance';
 import MockMemberService from './mock/Member.service';
 
-const MOCK_MEMBERS = true;
+const MOCK_MEMBERS = false;
 
 export function enhanceMember(member) {
   return { ...member, id: member._id };

@@ -27,7 +27,10 @@ function InstitutionLeaveButton({ institution, onLeft }) {
 
   return (
     <>
-      <Button type="critical" onClick={handleOpenDialog}>
+      <Button
+        type="critical"
+        onClick={handleOpenDialog}
+      >
         Leave
       </Button>
       <Modal

@@ -9,13 +9,12 @@ import { DropzoneArea } from 'mui-file-dropzone';
 import CropImage from '../CropImage';
 
 export default function ImageUploadDialog({
-  open, onClose, title, description, maxFileSizeMB, croppable,
+  open, onClose, title, description, maxFileSizeMB,
   onUpload, additionalButtons,
   preview = (imgURL) => <img style={{ width: '100%' }} src={imgURL} alt="Preview" />,
 }) {
   const [loading, setLoading] = useState(false);
   const [imgURL, setImgURL] = useState('');
-  const [croppedImgURL, setCroppedImgURL] = useState('');
   const [croppedImgBlob, setCroppedImgBlob] = useState();
 
   const [isMounted, setIsMounted] = useState(false);
@@ -39,7 +38,6 @@ export default function ImageUploadDialog({
     reader.addEventListener('load', () => {
       const url = reader.result.toString() || '';
       setImgURL(url);
-      setCroppedImgURL(url);
     });
     reader.readAsDataURL(files[0]);
     console.log('files', files);
@@ -56,27 +54,17 @@ export default function ImageUploadDialog({
             acceptedFiles={['image/jpeg', 'image/png']}
             maxFileSize={maxFileSizeMB * 1024 * 1024}
             filesLimit={1}
-            showPreviews={!croppable}
+            showPreviews={false}
             showPreviewsInDropzone={!preview}
             alertSnackbarProps={{ autoHideDuration: 3000 }}
           />
         )}
-        {imgURL && croppable && (
-          <>
-            <h3>Crop</h3>
-            <CropImage
-              imgSrc={imgURL}
-              onUpdate={(url) => setCroppedImgURL(url)}
-              onUpdateBlob={(blob) => setCroppedImgBlob(blob)}
-            />
-          </>
-        )}
-        {imgURL && (
-          <>
-            <h3>Preview</h3>
-            {preview(croppedImgURL)}
-          </>
-        )}
+        <h3>Crop</h3>
+        <CropImage
+          imgSrc={imgURL}
+          onUpdate={() => null}
+          onUpdateBlob={(blob) => setCroppedImgBlob(blob)}
+        />
       </DialogContent>
       <DialogActions>
         <Button type="tertiary" onClick={() => { setImgURL(null); onClose(); }}>
