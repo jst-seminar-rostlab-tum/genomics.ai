@@ -338,7 +338,7 @@ const remove_member_from_institution = (): Router => {
           return res.status(403).send("Forbidden. Trying to delete an admin");
         }
         if (!(await InstitutionService.isMember(deletedUserId, institution))) {
-          return res.status(409).send("User is not part of this team");
+          return res.status(409).send("User is not part of this institution");
         }
         await InstitutionService.removeMemberFromInstitution(institutionId, deletedUserId);
 
@@ -355,7 +355,7 @@ const remove_member_from_institution = (): Router => {
 const remove_admin_role_for_institution_member = (): Router => {
   let router = express.Router();
   router.delete(
-    "/teams/:id/admins/:adminid",
+    "/institutions/:id/admins/:adminid",
     check_auth(),
     async (req: ExtRequest, res: Response) => {
       const instId = req.params.id;
