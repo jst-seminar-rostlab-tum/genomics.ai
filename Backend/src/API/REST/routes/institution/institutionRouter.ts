@@ -17,7 +17,7 @@ const create_institution = (): Router => {
   let router = express.Router();
 
   router.post("/institutions", validationMdw, check_auth(), async (req: any, res) => {
-    const { name, country, profilePictureURL, backgroundPictureURL } = req.body;
+    const { name, country, description, profilePictureURL, backgroundPictureURL } = req.body;
     const admin_user_id = req.user_id;
 
     if (!(name && country && admin_user_id)) return res.status(400).send("Missing parameters");
@@ -32,6 +32,7 @@ const create_institution = (): Router => {
       const institutionToAdd: AddInstitutionDTO = {
         name,
         country,
+        description,
         profilePictureURL,
         backgroundPictureURL,
         adminIds: [admin_user_id],
@@ -59,7 +60,7 @@ const update_institution = (): Router => {
     check_auth(),
     institution_admin_auth,
     async (req: any, res) => {
-      const { name, country } = req.body;
+      const { name, country, description } = req.body;
       const institution_to_be_updated_id = req.params.id;
 
       if (!(name || country)) return res.status(400).send("Missing parameters");
@@ -72,6 +73,7 @@ const update_institution = (): Router => {
         const institutionToUpdate: UpdateInstitutionDTO = {
           name,
           country,
+          description
         };
         await InstitutionService.updateInstitution(
           institution_to_be_updated_id,
@@ -412,6 +414,7 @@ const get_projects_of_institution = (): Router => {
   });
   return router;
 };
+
 const get_users_institutions = (): Router => {
   let router = express.Router();
   router.get("/users/:id/institutions", check_auth(), async (req: any, res) => {

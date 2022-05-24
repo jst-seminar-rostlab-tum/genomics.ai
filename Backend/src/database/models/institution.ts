@@ -8,6 +8,7 @@ export enum visibilityInstitutionStatus {
 export interface IInstitution extends Document {
   name: string;
   country: string;
+  description: string;
   profilePictureURL: string;
   backgroundPictureURL: string;
   adminIds: Array<Schema.Types.ObjectId>;
@@ -26,6 +27,12 @@ const institutionSchema = new Schema<IInstitution>(
     country: {
       type: String,
       require: true,
+    },
+
+    description: {
+      type: String,
+      require: true,
+      default: "",
     },
 
     profilePictureURL: {
