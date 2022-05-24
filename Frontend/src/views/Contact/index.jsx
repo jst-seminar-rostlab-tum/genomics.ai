@@ -5,7 +5,7 @@ import {
 import Stack from '@mui/material/Stack';
 import NavBar from 'components/NavBar/old';
 import styles from './contact.module.css';
-import Footer from 'components/Footer/old';
+import Footer from 'components/Footer';
 
 const theme = createTheme({
   palette: {

@@ -1,16 +1,21 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/jsx-one-expression-per-line */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import HeaderView from 'components/general/HeaderView';
 import InstitutionList from 'components/institutions/InstitutionList';
 import TabPanel from 'components/TabPanel';
-import { useAuth } from 'shared/context/authContext';
-import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Grid from '@mui/material/Grid';
-import ProfileImage from 'components/ProfileImage';
+import Avatar from '@mui/material/Avatar';
 import TeamCard from 'components/teams/TeamCard';
+import UserService from 'shared/services/User.service'
+import stringToColor from 'shared/utils/stringColor';
+import {
+  useParams
+} from "react-router-dom";
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 function a11yProps(index) {
   return {
@@ -63,16 +68,36 @@ const mockTeams = [
 ];
 
 function UserProfile({ sidebarShown }) {
-  const [user] = useAuth();
+  const [value, setValue] = useState(0);
+  let { id } = useParams();
 
-  const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const [institutions] = useState(testInstitutions);
-  const [teams] = useState(mockTeams);
+  const [user, setUser] = useState({})
+  const [isUserLoading, setIsUserLoading] = useState(false)
+  const [userInstitutions, setUserInstitutions] = useState([])
+  const [isInstitutionLoading, setIsInstitutionLoading] = useState(false)
+  const [userTeams, setUserTeams] = useState([])
+  const [isTeamLoading, setIsTeamLoading] = useState(false)
+
+
+  useEffect(() => {
+    setIsUserLoading(true)
+    UserService.getUser(id).then((data) => setUser(data)).finally(setIsUserLoading(false))
+  }, [])
+
+  useEffect(() => {
+    setIsInstitutionLoading(true)
+    UserService.getUserInstitutions(id).then((data) => setUserInstitutions(data)).finally(setIsInstitutionLoading(false))
+  }, [])
+
+  useEffect(() => {
+    setIsTeamLoading(true)
+    UserService.getUserTeams(id).then((data) => setUserTeams(data)).finally(setIsTeamLoading(false))
+  }, [])
 
   return (
     <>
@@ -80,17 +105,30 @@ function UserProfile({ sidebarShown }) {
         sidebarShown={sidebarShown}
         title="Profile"
       >
-        <Grid container justifyContent="center" alignItems="center" spacing={3}>
-          <Grid item>
-            <ProfileImage sizePixels={160} />
-          </Grid>
-          <Grid item>
-            <h2>
-              {user.firstName} {user.lastName}
-            </h2>
-            <span>{user.email}</span>
-          </Grid>
-        </Grid>
+        {isUserLoading ? <Box sx={{ display: 'flex' }}>
+          <CircularProgress />
+        </Box> :
+          <Grid container justifyContent="center" alignItems="center" spacing={3}>
+            <Grid item>
+              <Avatar
+                src={user.avatarUrl}
+                alt={`${user.firstName} ${user.lastName}`}
+                sx={{
+                  backgroundColor: stringToColor(`${user.firstName} ${user.lastName}`),
+                  width: 160,
+                  height: 160,
+                }}
+              >
+                {(user.firstName || '?')[0]}
+              </Avatar>
+            </Grid>
+            <Grid item>
+              <h2>
+                {user.firstName} {user.lastName}
+              </h2>
+              <span>{user.email}</span>
+            </Grid>
+          </Grid>}
         <Box sx={{ width: '100%' }}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
@@ -100,13 +138,13 @@ function UserProfile({ sidebarShown }) {
           </Box>
           <TabPanel value={value} index={0}>
             <InstitutionList
-              isLoading={false}
-              institutions={institutions}
+              isLoading={isInstitutionLoading}
+              institutions={userInstitutions}
             />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            {teams.length === 0 ? 'No teams.' : ''}
-            {teams.map((team) => (
+            {userTeams.length === 0 ? 'No teams.' : ''}
+            {userTeams.map((team) => (
               <div key={team.id}>
                 <TeamCard
                   team={team}

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Chip } from '@mui/material';
 import SearchCard from '../SearchCard';
-// import Avatars from 'components/Avatars';
+import { formatDate } from 'shared/utils/common/utils';
 
 // Card to display search result for a single institution
 function InstitutionCard({ item: institution }) {
@@ -12,20 +12,17 @@ function InstitutionCard({ item: institution }) {
       avatar={institution.profilePictureURL}
       displayAvatar
       link={`/sequencer/institutions/${institution.id}`}
-      // secondary={`updated on ${institution.updated}`}
+      secondary={institution.updatedAt && `updated on ${formatDate(institution.updatedAt)}`}
       tertiary={(
         <>
-          {/* <Avatars
-            items={institution.members.map(({ name, image }) => ({ src: image, alt: name }))}
-          /> */}
           <Chip
-            label={`${institution.adminIds.length + institution.memberIds.length} members`}
+            label={`${institution.memberIds.length} members`}
             variant="outlined"
             size="small"
             sx={{ color: 'text.secondary' }}
           />
           <Chip
-            label={`${institution.teamsCount} teams`}
+            label={`${institution.teams.length} teams`}
             variant="outlined"
             size="small"
             sx={{ color: 'text.secondary' }}

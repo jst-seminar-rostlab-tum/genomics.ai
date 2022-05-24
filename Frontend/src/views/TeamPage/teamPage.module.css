@@ -5,3 +5,15 @@
 .cardSpacing {
     margin-bottom: 16px;
 }
+
+.editDetailsButton {
+    position: static;
+    border: none;
+    background-color: #002744;
+    color: white;
+    padding: 5px 8px;
+    font-size: 12px;
+    align-items: center;
+    cursor: pointer;
+    float: right;
+  }

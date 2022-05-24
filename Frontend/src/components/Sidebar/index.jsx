@@ -7,9 +7,11 @@ import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
 import { Link as NavLink, useRouteMatch, useLocation } from 'react-router-dom';
 import ListItemIcon from '@mui/material/ListItemIcon';
+import PolicyIcon from '@mui/icons-material/Policy';
 import LogoutIcon from '@mui/icons-material/Logout';
 import geneIcon from 'assets/gene.png';
 import styles from './sidebar.module.css';
+import ProfileService from 'shared/services/Profile.service';
 
 function indexIcon(index) {
   switch (index) {
@@ -34,7 +36,7 @@ function indexIcon(index) {
 
 export default function Sidebar(props) {
   const { setUser } = props;
-  const routes = ['genemapper', 'community', 'search/teams', 'documentation', 'help'];
+  const routes = ['genemapper', 'community', 'search/atlases', 'documentation', 'help'];
   const titles = ['Gene Mapper', 'Community', 'Search', 'Documentation', 'Help'];
   const { url } = useRouteMatch();
   const location = useLocation();
@@ -86,20 +88,15 @@ export default function Sidebar(props) {
                   </Tooltip>
                 </NavLink>
               ))}
-              </Box>
-
+            </Box>
+            <Box>
               <NavLink
-                to="/"
-                onClick={() => {
-                  setUser(null);
-                  localStorage.removeItem('user');
-                  localStorage.removeItem('jwt');
-                }}
+                to="/imprint"
                 className={styles.navlinkIcon}
-                style={{ marginBottom: "1em" }}
+                style={{ display: "block", marginBottom: "1em" }}
               >
                 <Tooltip
-                  title="Logout"
+                  title="Imprint"
                   placement="right"
                   componentsProps={{
                     tooltip: {
@@ -114,17 +111,54 @@ export default function Sidebar(props) {
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
-                    }}  
+                    }}
                   >
                     <ListItemIcon sx={{ justifyContent: "center" }}>
-                      <LogoutIcon sx={{ color: "white" }} />
+                      <PolicyIcon sx={{ color: "white" }} />
                     </ListItemIcon>
                   </Box>
                 </Tooltip>
               </NavLink>
-          </Box>
-        </Box>
-      </Box>
+
+              <NavLink
+                to="/"
+                onClick={() => {
+                  setUser(null);
+                  ProfileService.clearProfileCache();
+                  localStorage.removeItem('user');
+                  localStorage.removeItem('jwt');
+                }}
+                className={styles.navlinkIcon}
+                style={{ marginBottom: '1em' }}
+              >
+                <Tooltip
+                  title="Logout"
+                  placement="right"
+                  componentsProps={{
+                    tooltip: {
+                      sx: {
+                        bgcolor: '#5676E4',
+                      },
+                    },
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <ListItemIcon sx={{ justifyContent: 'center' }}>
+                      <LogoutIcon sx={{ color: 'white' }} />
+                    </ListItemIcon>
+                  </Box>
+                </Tooltip>
+              </NavLink>
+            </Box>
+          </Box >
+        </Box >
+      </Box >
     </Box>
   );
 }

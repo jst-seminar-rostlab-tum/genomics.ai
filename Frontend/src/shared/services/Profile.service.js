@@ -14,6 +14,10 @@ const ProfileService = MOCK_PROFILE ? MockProfileService : {
     _cachedProfile.id = _cachedProfile._id;
     return _cachedProfile;
   },
+
+  clearProfileCache: () => {
+    _cachedProfile = null;
+  },
 };
 
 export default ProfileService;

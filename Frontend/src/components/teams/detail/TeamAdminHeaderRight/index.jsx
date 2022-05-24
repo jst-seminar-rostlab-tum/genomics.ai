@@ -1,13 +1,7 @@
 import React from 'react';
 import { TextField, MenuItem } from '@mui/material';
 
-function TeamAdminHeaderRight({ team, setTeam }) {
-  const updateVisibility = (event) => {
-    setTeam({
-      ...team,
-      visibility: event.target.value,
-    });
-  };
+function TeamAdminHeaderRight({ team, updateVisibility }) {
 
   return (
     <TextField
@@ -15,13 +9,13 @@ function TeamAdminHeaderRight({ team, setTeam }) {
       select
       label="Visibility"
       value={team.visibility}
-      onChange={updateVisibility}
+      onChange={(e) => updateVisibility(e.target.value)}
       variant="standard"
       sx={{ width: '120px' }}
     >
-      <MenuItem value="public">public</MenuItem>
-      <MenuItem value="private">private</MenuItem>
-      <MenuItem value="by institution">by institution</MenuItem>
+      <MenuItem value="PUBLIC">public</MenuItem>
+      <MenuItem value="PRIVATE">private</MenuItem>
+      <MenuItem value="BY_INSTITUTION">by institution</MenuItem>
     </TextField>
   );
 }

@@ -22,40 +22,7 @@ import AtlasService from 'shared/services/Atlas.service';
 import ModelService from 'shared/services/Model.service';
 
 import { applyModelFilters, applyAtlasFilters } from 'shared/utils/filter';
-
-// definitely target to change, when backend will provide full data
-async function getTeams(filterParams) {
-  const searchResponse = await TeamService.getTeams(filterParams);
-  const teamsWithInstitutions = searchResponse.filter((team) => team.institutionId);
-  const institutionRequests = teamsWithInstitutions.map(
-    (team) => InstitutionService.getInstitutionById(team.institutionId)
-    ,
-  );
-  const institutionsResponse = await Promise.all(institutionRequests);
-  institutionsResponse.forEach(
-    (institution,
-      index) => {
-      teamsWithInstitutions[index].institution = institution;
-    },
-  );
-  return searchResponse;
-}
-
-// definitely target to change, when backend will provide full data
-async function getInstitutions(filterParams) {
-  const searchResponse = await InstitutionService.getInstitutions(filterParams);
-  const teamsRequests = searchResponse.map(
-    (team) => InstitutionService.getTeamsOfInstitutionById(team.id),
-  );
-  const teamsResponse = await Promise.all(teamsRequests);
-  teamsResponse.forEach(
-    (team,
-      index) => {
-      searchResponse[index].teamsCount = team.length;
-    },
-  );
-  return searchResponse;
-}
+import HeaderView from 'components/general/HeaderView';
 
 const SearchPage = () => {
   const [user] = useAuth();
@@ -105,10 +72,10 @@ const SearchPage = () => {
         searchResponse = await UserService.getUsers(filterParams);
         break;
       case 'teams':
-        searchResponse = await getTeams(filterParams);
+        searchResponse = await TeamService.getTeams(filterParams);
         break;
       case 'institutions':
-        searchResponse = await getInstitutions(filterParams);
+        searchResponse = await InstitutionService.getInstitutions(filterParams);
         break;
       case 'projects':
         searchResponse = await ProjectService.getProjects(filterParams);
@@ -132,43 +99,40 @@ const SearchPage = () => {
   }, [fetchSearchHandler]);
 
   return (
-    <Stack direction="column" sx={{ paddingLeft: '130px' }}>
-      <div className={styles.title}>
-        <h1>Search</h1>
-        <Box sx={{ margin: 'auto', maxWidth: 1200 }}>
-          <Search
-            filterComponent={(
-              <Filter
-                searchParams={searchParams}
-                updateQueryParams={updateQueryParams}
-                path={path}
-              />
-            )}
-            handleSearch={searchedKeywordChangeHandler}
-            value={searchedKeyword}
-          />
-          <SearchTabs
-            value={searchCategory}
-            searchParams={searchParams}
-            path={path}
-          />
-          {isLoading && (
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-              <CircularProgress />
-            </Box>
-          )}
-          {!isLoading && (
-            <SearchContent
-              searchResult={searchRequestResult}
-              searchCategory={searchCategory}
-              searchedKeyword={searchedKeyword}
-              user={user}
-              fetchSearchHandler={fetchSearchHandler}
+    <HeaderView title="Search">
+      <Box sx={{ margin: 'auto', maxWidth: 1200 }}>
+        <Search
+          filterComponent={(
+            <Filter
+              searchParams={searchParams}
+              updateQueryParams={updateQueryParams}
+              path={path}
             />
-          )}
+            )}
+          handleSearch={searchedKeywordChangeHandler}
+          value={searchedKeyword}
+        />
+        <SearchTabs
+          value={searchCategory}
+          searchParams={searchParams}
+          path={path}
+        />
+        {isLoading && (
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <CircularProgress />
         </Box>
-      </div>
-    </Stack>
+        )}
+        {!isLoading && (
+        <SearchContent
+          searchResult={searchRequestResult}
+          searchCategory={searchCategory}
+          searchedKeyword={searchedKeyword}
+          user={user}
+          fetchSearchHandler={fetchSearchHandler}
+        />
+        )}
+      </Box>
+    </HeaderView>
   );
 };
 
