@@ -13,11 +13,14 @@ function TeamMemberList({
   const [user] = useAuth();
   const [members, setMembers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  useEffect(async () => {
+  useEffect(() => {
     if (team.id == null) return;
     setIsLoading(true);
-    setMembers(await TeamService.getMembers(team.id));
-    setIsLoading(false);
+    TeamService.getMembers(team.id)
+      .then((newMembers) => {
+        setMembers(newMembers);
+        setIsLoading(false);
+      });
   }, [team]);
 
   if (isLoading) {

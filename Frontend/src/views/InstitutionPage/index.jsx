@@ -45,10 +45,12 @@ function InstitutionPage() {
     });
   };
 
-  useEffect(async () => {
-    console.log(await InstitutionService.getInstitution(id));
-    setInstitution(await InstitutionService.getInstitution(id));
-    setInstitutionLoaded(true);
+  useEffect(() => {
+    InstitutionService.getInstitution(id)
+      .then((newInstitution) => {
+        setInstitution(newInstitution);
+        setInstitutionLoaded(true);
+      });
   }, []);
 
   function onLeft(/* team */) {
