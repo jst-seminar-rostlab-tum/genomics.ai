@@ -11,6 +11,7 @@ fill:#3088cb;
     font-family:inherit;
     font-weight: 500;
     stroke-width: 1.75;
+    margin-bottom: 200px;
 }
 
 .y-axis {
@@ -30,7 +31,6 @@ fill:#3088cb;
 }
 
 .title{
-    font-size: 15;
     font-family: inherit;
     font-weight: 650;
 }
@@ -41,5 +41,5 @@ fill:#3088cb;
     font-weight: 500;
     stroke-width: 1.75;
     text-anchor: inherit;
-    font-size: 10px;
+    
 }

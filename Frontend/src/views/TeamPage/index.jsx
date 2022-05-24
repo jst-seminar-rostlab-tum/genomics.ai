@@ -11,36 +11,60 @@ import InstitutionService from 'shared/services/Institution.service';
 import TeamInviteButton from 'components/teams/detail/TeamInviteButton';
 import TextField from '@mui/material/TextField';
 import { useAuth } from 'shared/context/authContext';
+import Button from 'components/CustomButton';
 
 export default function TeamPage() {
   const { id } = useParams();
   const [team, setTeam] = useState({});
   const [user] = useAuth();
   const [institution, setInstitution] = useState({});
+  const [newDescription, setNewDescription] = useState('');
+  const [descriptionChanged, setDescriptionChanged] = useState(false);
 
   const handleDescriptionChange = (event) => {
-    setTeam({
-      ...team,
-      description: event.target.value,
-    });
+    event.preventDefault();
+    setDescriptionChanged(true);
+    setNewDescription(event.target.value);
   };
 
-  useEffect(() => {
-    if (id == null) return;
+  function updateTeam() {
     TeamService.getTeam(id)
       .then(setTeam)
       .catch((ignored) => { console.error(ignored); });
-  }, []);
+  }
+
+  async function updateVisibility(newVisibility) {
+    await TeamService.changeTeamVisibility(id, newVisibility);
+    updateTeam();
+  }
+
+  async function updateDescription() {
+    await TeamService.changeTeamDescription(id, newDescription);
+    updateTeam();
+    setDescriptionChanged(false);
+  }
+
+  useEffect(() => {
+    if (id == null) return;
+    updateTeam();
+  }, [setTeam]);
+
+  useEffect(() => {
+    setNewDescription(team.description);
+  }, [team]);
 
   // Institution may be undefined
   useEffect(() => {
-    InstitutionService.getInstitution(team.institutionId)
-      .then((newInstitution) => setInstitution(newInstitution));
+    if (Object.keys(team).length !== 0) {
+      InstitutionService.getInstitution(team.institutionId)
+        .then((newInstitution) => setInstitution(newInstitution))
+        .catch((ignored) => { console.error(ignored); });
+    }
   }, [team, setInstitution]);
 
   const isAdmin = team.adminIds ? team.adminIds.includes(user._id) : false;
 
-  if (!team) return <></>;
+  if (!team || Object.keys(team).length === 0) return <></>;
 
   return (
     <HeaderView
@@ -53,64 +77,47 @@ export default function TeamPage() {
         />
       )}
       replaceHeaderRight={
-        (isAdmin && <TeamAdminHeaderRight team={team} setTeam={setTeam} />)
-        || <TeamUserHeaderRight institution={institution} team={team} user={user} />
+        (isAdmin && <TeamAdminHeaderRight team={team} updateVisibility={() => updateVisibility()} />)
+        || <TeamUserHeaderRight institution={institution} team={team} user={user} updateTeam={() => updateTeam()} />
       }
     >
       <br />
       <section>
         <h2>Description</h2>
         <hr />
-        <TextField
-          id="description"
-          multiline
-          minRows={3}
-          maxRows={5}
-          value={team.description}
-          InputProps={{
-            readOnly: !isAdmin,
-          }}
-          fullWidth
-          onChange={handleDescriptionChange}
-          variant="standard"
-        />
+        <div>
+          <TextField
+            id="description"
+            multiline
+            minRows={3}
+            maxRows={5}
+            value={newDescription}
+            InputProps={{
+              readOnly: !isAdmin,
+            }}
+            fullWidth
+            onChange={handleDescriptionChange}
+            variant="standard"
+          />
+          {descriptionChanged
+            && (
+              <Button variant="outlined" type="secondary" onClick={() => updateDescription()}>
+                Submit
+              </Button>
+            )}
+        </div>
       </section>
       <section>
-        <h2>GeneMapper</h2>
+        <h2>Projects</h2>
         <hr />
-        <TeamProjectList team={team} forPart="geneMapper" />
-      </section>
-      <section>
-        <h2>GeneCruncher</h2>
-        <hr />
-        <TeamProjectList team={team} forPart="geneCruncher" />
+        <TeamProjectList teamId={id} />
       </section>
       <section>
         <h2>Members</h2>
         <hr />
         <TeamMemberList
           team={team}
-          onMemberRemoved={(_team, member) => {
-            setTeam({
-              ...team,
-              memberIds: team.memberIds.filter((mId) => mId !== member.id),
-              adminIds: team.adminIds.filter((aId) => aId !== member.id),
-            });
-          }}
-          onMakeAdmin={(_team, member) => {
-            setTeam({
-              ...team,
-              memberIds: team.memberIds.filter((mId) => mId !== member.id),
-              adminIds: [...team.adminIds, member.id],
-            });
-          }}
-          onRemoveAdmin={(_team, member) => {
-            setTeam({
-              ...team,
-              memberIds: [...team.memberIds, member.id],
-              adminIds: team.adminIds.filter((aId) => aId !== member.id),
-            });
-          }}
+          updateTeam={updateTeam}
         />
       </section>
       {isAdmin && <TeamInviteButton team={team} />}

@@ -4,15 +4,17 @@ import { MULTIPART_UPLOAD_STATUS } from 'shared/utils/common/constants';
 const SubmissionProgressContext = React.createContext();
 SubmissionProgressContext.displayName = 'SubmissionProgressContext';
 
+const initSubmissionProgress = (uploadId) => ({
+  status: MULTIPART_UPLOAD_STATUS.IDLE,
+  uploadId,
+  chunks: 0,
+  uploaded: 0,
+  remaining: [],
+  uploadedParts: [],
+});
+
 function SubmissionProgressProvider(props) {
-  const [submissionProgress, setSubmissionProgress] = useState({
-    status: MULTIPART_UPLOAD_STATUS.IDLE,
-    uploadId: '',
-    chunks: 0,
-    uploaded: 0,
-    remaining: [],
-    uploadedParts: [],
-  });
+  const [submissionProgress, setSubmissionProgress] = useState({});
 
   const value = [submissionProgress, setSubmissionProgress];
 
@@ -28,4 +30,4 @@ function useSubmissionProgress() {
   return context;
 }
 
-export { SubmissionProgressProvider, useSubmissionProgress };
+export { SubmissionProgressProvider, useSubmissionProgress, initSubmissionProgress };
