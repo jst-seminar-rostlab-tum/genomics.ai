@@ -159,5 +159,6 @@ export default function Sidebar(props) {
           </Box >
         </Box >
       </Box >
+    </Box>
   );
 }
