@@ -32,10 +32,7 @@ function InstitutionPage() {
   }
 
   function editDetails() {
-    // eslint-disable-next-line max-len
-    const details = { description: institution.description };
-    const jsonDetails = JSON.stringify(details);
-    InstitutionService.updateDetails(id, jsonDetails);
+    InstitutionService.updateDetails(id, institution.description);
   }
 
   const handleDescriptionChange = (event) => {
