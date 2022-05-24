@@ -61,7 +61,8 @@ def train_model(adata_ref, configuration):
         use_batch_norm="none",
     )
     if utils.get_from_config(configuration, parameters.USE_PRETRAINED_TOTALVI_MODEL):
-        vae_ref = sca.models.TOTALVI.load(adata=adata_ref, dir_path='assets/totalVI/')
+        vae_ref = sca.models.TOTALVI.load(adata=adata_ref, dir_path='assets/totalVI/' + str(
+            utils.get_from_config(configuration, parameters.ATLAS)) + '/')
     else:
         vae_ref = sca.models.TOTALVI(adata_ref, **arches_params)
         vae_ref.train(utils.get_from_config(configuration, parameters.TOTALVI_MAX_EPOCHS_1),
