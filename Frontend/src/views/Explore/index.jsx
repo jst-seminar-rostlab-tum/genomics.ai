@@ -219,7 +219,7 @@ const Explore = () => {
         }}
       >
         {/* /explore/atlases */}
-        <ExploreRoutes atlases={atlases && tabMenu()} models={models && tabMenu()} path="/explore" />
+        <ExploreRoutes atlases={atlases && tabMenu()} models={models && tabMenu()} path="/explore" selectedAtlas={selectedAtlas} selectedModel={selectedModel} />
       </Box>
 
       <Mapper
@@ -229,6 +229,7 @@ const Explore = () => {
         handleModelSelection={handleModelSelection}
         open={mapperVisible}
         fabOnClick={() => setMapperVisible(!mapperVisible)}
+        fabVisible={!useLocation().pathname.split('/').includes('create')}
       />
     </Box>
   );

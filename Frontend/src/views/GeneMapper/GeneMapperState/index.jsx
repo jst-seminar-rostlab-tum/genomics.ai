@@ -6,9 +6,9 @@ import AtlasModelChoice from '../AtlasModelChoice/AtlasModelChoice';
 import UploadFilePage from '../UploadFilePage';
 import { useEffect } from 'react';
 
-function GeneMapperState({ path }) {
-  const [selectedAtlas, setSelectedAtlas] = useState('');
-  const [selectedModel, setSelectedModel] = useState('');
+function GeneMapperState({ path, defaultSelectedAtlas = '', defaultSelectedModel = '' }) {
+  const [selectedAtlas, setSelectedAtlas] = useState(defaultSelectedAtlas);
+  const [selectedModel, setSelectedModel] = useState(defaultSelectedModel);
   const [activeStep, setActiveStep] = useState(0);
   const steps = ['Pick Atlas and Model', 'Choose File and Project details'];
 

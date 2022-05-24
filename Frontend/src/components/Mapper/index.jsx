@@ -6,12 +6,18 @@ import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
 import CancelIcon from '@mui/icons-material/Cancel';
 import styles from './mapper.module.css';
 import CustomButton from 'components/CustomButton';
+import {
+  useHistory, useRouteMatch,
+} from 'react-router-dom';
 
 function Mapper({
   mapperAtlas, mapperModel, handleAtlasSelection, handleModelSelection, open, fabOnClick,
+  fabVisible,
 }) {
   const [atlas, setAtlas] = useState(mapperAtlas);
   const [model, setModel] = useState(mapperModel);
+  const { path } = useRouteMatch();
+  const history = useHistory();
 
   const deleteAtlas = () => {
     handleAtlasSelection(null);
@@ -26,10 +32,14 @@ function Mapper({
   useEffect(() => {
     setAtlas(mapperAtlas);
     setModel(mapperModel);
-  }, [mapperAtlas, mapperModel]);
+    if (!fabVisible) {
+      setAtlas(null);
+      setModel(null);
+    }
+  }, [mapperAtlas, mapperModel, fabVisible]);
 
   return (
-    <Box className={styles.container}>
+    <Box className={styles.container} sx={{ display: fabVisible ? 'block' : 'none' }}>
       <Box className={styles.borderContainer} sx={{ display: open ? 'block' : 'none', boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.25)' }}>
         <Typography className={styles.title}>Mapper</Typography>
         <Divider className={styles.divider} />
@@ -55,7 +65,7 @@ function Mapper({
         <Divider className={styles.divider} />
         <Box className={styles.buttonBox}>
           {/* Button will be disabled if selected models and atlases are incompatible with eachother, in this case it will be gray. Lets keep it enabled all the time for now. */}
-          <CustomButton disabled={!atlas || !model} type="primary">Go</CustomButton>
+          <CustomButton disabled={!atlas || !model} type="primary" onClick={() => { history.push(`${path}/create`); }}>Go</CustomButton>
         </Box>
       </Box>
       <Box className={styles.mapperBox}>
