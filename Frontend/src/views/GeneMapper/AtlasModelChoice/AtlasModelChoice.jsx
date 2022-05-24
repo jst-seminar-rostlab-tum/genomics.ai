@@ -95,7 +95,7 @@ function AtlasModelChoice({
                                 cellsInReference={a.numberOfCells}
                                 species={a.species}
                                 imgLink={a.previewPictureURL}
-                                selected={selectedAtlas.name===a.name}
+                                selected={selectedAtlas && selectedAtlas.name===a.name}
                                 onSelect={setSelectedAtlas}
                                 atlasObject={a}
                             />      
