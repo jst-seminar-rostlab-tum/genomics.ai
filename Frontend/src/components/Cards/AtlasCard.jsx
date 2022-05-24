@@ -70,7 +70,7 @@ export default function AtlasCard({
       sx={{
         width, height,
       }}
-      onClick={onSelect}
+      
     >
       <Box
         ref={boxRef}
@@ -114,11 +114,8 @@ export default function AtlasCard({
                 }}
               >
                 <OutlinedButton
-                  content="Visualize"
-                  onClick={(e) => {
-                    history.push(`${path}/${atlasId}/visualization`);
-                    e.stopPropagation();
-                  }}
+                  content="Select"
+                  onClick={onSelect}
                 />
                 <OutlinedButton
                   content="Learn More"
