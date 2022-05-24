@@ -30,8 +30,8 @@ function TeamUserHeaderRight({
     );
   }
 
-  const canJoin = (team.visibility === 'PUBLIC') || (team.visibility === 'BY_INSTITUTION' && institution.memberIds.includes(user._id))
-    || (team.invitedMemberIds.includes(user._id));
+  const canJoin = (team.visibility === 'PUBLIC') || (team.visibility === 'BY_INSTITUTION' && institution.memberIds?.includes(user._id))
+    || (team.invitedMemberIds?.includes(user._id));
 
   return (
     <Tooltip title={canJoin ? '' : `This team is ${team.visibility.toLowerCase()} and you haven't been invited${team.visibility === 'BY_INSTITUTION' ? " or you're a member of this team's institution" : ''}.`}>
