@@ -15,26 +15,26 @@ const TeamCard = ({ item: team, user, onAction }) => {
     onAction();
   };
 
-  const visibility = team.visibility.toLowerCase();
+  const visibility = team.visibility.toLowerCase().replace('_', ' ');
   let canJoin = false; // target to remove if backend implements rules checks
   let visibilityTooltip;
   const isTeamMember = team.memberIds.includes(user._id); // check if user already joined
 
   switch (visibility) {
     case 'public':
-      visibilityTooltip = 'Anybody can join the project!';
+      visibilityTooltip = 'Anybody can join the team!';
       canJoin = !isTeamMember;
       break;
     case 'private':
-      visibilityTooltip = 'Only invited members can join the project!';
+      visibilityTooltip = 'Only invited members can join the team!';
       canJoin = !isTeamMember && !!team.invitedMemberIds.includes(user._id);
       // check if user is invited
       break;
     case 'by institution':
-      visibilityTooltip = 'Only institution members can join the project!';
+      visibilityTooltip = 'Only institution members can join the team!';
       // check if user is not member but part of institution
       canJoin = !isTeamMember
-      && team.institution.memberIds.includes(user._id);
+      && team.institutionId.memberIds.includes(user._id);
       break;
     default:
       visibilityTooltip = 'unknown';
