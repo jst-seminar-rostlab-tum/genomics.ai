@@ -96,28 +96,18 @@ export default function AtlasCardSelect({
         }
 
         <Box
-          sx={selected ? {
-            width: "100%",
-            height: "100%",
-            padding: "1rem",
-            display: "flex",
-            flexDirection: "column",
-            boxShadow: "0px 4px 6px 0px rgba(33, 37, 41, .2), 0px 0px 1px 0px rgba(33, 37, 41, .32)",
-            borderRadius: "1.2rem",
-            justifyContent: "center",
-            borderStyle:"solid",
-            borderColor:"#008BF5",
-            borderWidth:"4px"
-          }
-          : {
-            width: "100%",
-            height: "100%",
-            padding: "1rem",
-            display: "flex",
-            flexDirection: "column",
-            boxShadow: "0px 4px 6px 0px rgba(33, 37, 41, .2), 0px 0px 1px 0px rgba(33, 37, 41, .32)",
-            borderRadius: "1.2rem",
-            justifyContent: "center"
+          sx={{
+            width: '100%',
+            height: '100%',
+            padding: '1rem',
+            display: 'flex',
+            flexDirection: 'column',
+            boxShadow: isHover ? 'none' : '0px 4px 6px 0px rgba(33, 37, 41, .2), 0px 0px 1px 0px rgba(33, 37, 41, .32)',
+            borderRadius: '1.2rem',
+            justifyContent: 'center',
+            borderStyle: 'solid',
+            borderColor: selected ? '#008BF5' : 'transparent',
+            borderWidth: '4px',
           }}
         >
           <Typography

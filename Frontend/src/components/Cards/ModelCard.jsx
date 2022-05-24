@@ -123,7 +123,7 @@ export const ModelCard = ({ width = "100%", height = "100%", title, description,
               height: "100%",
               borderRadius: "1.2rem",
               p: "1rem",
-              opacity: 0.95,
+              opacity: 0.9,
             }}>
             <Typography sx={{ position: "absolute", fontSize: "12px", fontWeight: "bold", color: colors.neutral[900], textAlign: "center", left: "28%" }}>
               Not Compatible
@@ -141,7 +141,7 @@ export const ModelCard = ({ width = "100%", height = "100%", title, description,
               }}
             >
 
-              { hover && <OutlinedButton content="Learn More" link={learnMoreLink} bg={colors.neutral[800]} color={colors.neutral[800]} onClick={(e) => e.stopPropagation()} bgHover={colors.neutral[100]} colorHover={colors.neutral[700]}/> }
+              { hover && <OutlinedButton content="Learn More" link={learnMoreLink} bg={colors.neutral[800]} color={colors.neutral[800]} onClick={(e) => e.stopPropagation()} bgHover={colors.neutral[100]} colorHover={colors.neutral[600]}/> }
               {/* <CustomButton type="outlined" href={learnMoreLink ? `#${learnMoreLink}` : null} onClick={(e) => e.stopPropagation()}>Learn More</CustomButton> */}
             </Box>
           </Box>
