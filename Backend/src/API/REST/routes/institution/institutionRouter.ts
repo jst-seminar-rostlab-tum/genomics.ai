@@ -17,7 +17,7 @@ const create_institution = (): Router => {
   let router = express.Router();
 
   router.post("/institutions", validationMdw, check_auth(), async (req: any, res) => {
-    const { name, country, profilePictureURL, backgroundPictureURL } = req.body;
+    const { name, country, description, profilePictureURL, backgroundPictureURL } = req.body;
     const admin_user_id = req.user_id;
 
     if (!(name && country && admin_user_id)) return res.status(400).send("Missing parameters");
@@ -32,6 +32,7 @@ const create_institution = (): Router => {
       const institutionToAdd: AddInstitutionDTO = {
         name,
         country,
+        description,
         profilePictureURL,
         backgroundPictureURL,
         adminIds: [admin_user_id],
@@ -59,19 +60,19 @@ const update_institution = (): Router => {
     check_auth(),
     institution_admin_auth,
     async (req: any, res) => {
-      const { name, country } = req.body;
+      //const { name, country, description } = req.body;
+      const { description } = req.body;
       const institution_to_be_updated_id = req.params.id;
 
-      if (!(name || country)) return res.status(400).send("Missing parameters");
-
       try {
-        const institution = await InstitutionService.getInstitutionByName(name);
-        if (institution)
-          return res.status(409).send("Institution with the given name already exists!");
+        // const institution = await InstitutionService.getInstitutionByName(name);
+        // if (institution)
+        //   return res.status(409).send("Institution with the given name already exists!");
 
         const institutionToUpdate: UpdateInstitutionDTO = {
-          name,
-          country,
+          // name,
+          // country,
+          description
         };
         await InstitutionService.updateInstitution(
           institution_to_be_updated_id,
@@ -412,6 +413,7 @@ const get_projects_of_institution = (): Router => {
   });
   return router;
 };
+
 const get_users_institutions = (): Router => {
   let router = express.Router();
   router.get("/users/:id/institutions", check_auth(), async (req: any, res) => {
@@ -441,12 +443,12 @@ const disjoin_member_of_institution = (): Router => {
       if (!(userId && institutionId)) return res.status(400).send("Missing parameters.");
 
       const user = await UserService.getUserById(userId);
-      if (!user) return res.status(409).send("User does not exist.");
+      if (!user) return res.status(404).send("User does not exist.");
       if (userId != user_id_jwt)
-        return res.status(409).send("Information of the user does not match.");
+        return res.status(404).send("Information of the user does not match.");
 
       const institution = await InstitutionService.getInstitutionById(institutionId);
-      if (!institution) return res.status(409).send("Institution does not exist.");
+      if (!institution) return res.status(404).send("Institution does not exist.");
 
       var tempUserId = String(userId);
       var tempListAdmins = institution.adminIds.map(String);
@@ -481,7 +483,7 @@ const disjoin_member_of_institution = (): Router => {
       console.error("Error in disjoin_member_of_institution()");
       console.error(JSON.stringify(e));
       console.error(e);
-      return res.status(500).send("Internal error.");
+      return res.status(500).send("Internal server error");
     }
   });
 
