@@ -206,7 +206,7 @@ def compute_query(pretrained_model, anndata, reference_latent, source_adata, con
 
     return model
 
-
+'''
 def compute_full_latent(source_adata, target_adata, model, configuration):
     """
     basically just takes to datasets, concatenates them and then computes the latent and saves the result
@@ -225,6 +225,7 @@ def compute_full_latent(source_adata, target_adata, model, configuration):
     utils.write_latent_csv(full_latent, key='both.csv', filename=both_path, drop_colums=dropped_columns)
 
     return full_latent
+'''
 
 
 def compute_scVI(configuration):

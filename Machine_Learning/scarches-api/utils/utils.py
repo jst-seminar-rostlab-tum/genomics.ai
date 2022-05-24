@@ -205,6 +205,8 @@ def pre_process_data(configuration):
     source_adata.obs["type"] = "reference"
     target_adata.obs["type"] = "query"
     source_adata.raw = source_adata
+    #TODO: See why remove sparsity removes all of X, is it all 0?
+    #TODO: See why the other obs apart from cell_type and batch are removed
     try:
         source_adata = remove_sparsity(source_adata)
     except Exception as e:
@@ -213,6 +215,8 @@ def pre_process_data(configuration):
         target_adata = remove_sparsity(target_adata)
     except Exception as e:
         pass
+    source_adata.layers['counts'] = source_adata.X.copy()
+    target_adata.layers['counts'] = target_adata.X.copy()
     return source_adata, target_adata
 
 
