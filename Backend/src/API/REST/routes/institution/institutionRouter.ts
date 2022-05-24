@@ -60,19 +60,18 @@ const update_institution = (): Router => {
     check_auth(),
     institution_admin_auth,
     async (req: any, res) => {
-      const { name, country, description } = req.body;
+      //const { name, country, description } = req.body;
+      const { description } = req.body;
       const institution_to_be_updated_id = req.params.id;
 
-      if (!(name || country)) return res.status(400).send("Missing parameters");
-
       try {
-        const institution = await InstitutionService.getInstitutionByName(name);
-        if (institution)
-          return res.status(409).send("Institution with the given name already exists!");
+        // const institution = await InstitutionService.getInstitutionByName(name);
+        // if (institution)
+        //   return res.status(409).send("Institution with the given name already exists!");
 
         const institutionToUpdate: UpdateInstitutionDTO = {
-          name,
-          country,
+          // name,
+          // country,
           description
         };
         await InstitutionService.updateInstitution(
