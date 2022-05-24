@@ -6,19 +6,25 @@ const MOCK_TEAMS = false;
 const MODEL = 'teams';
 
 function enhanceTeam(team) {
-  return { ...team, id: team._id };
+  return { ...team, id: team._id, name: team.title };
 }
 
 const TeamService = MOCK_TEAMS ? MockTeamService : {
   async leaveTeam(teamId) {
-    await axiosInstance.delete(`/teams/${teamId}/join`);
+    const user = await ProfileService.getProfile();
+    try {
+      await axiosInstance.delete(`/teams/${teamId}/join`, { data: { userId: user.id } });
+    } catch (e) {
+      throw Error(e.response.data);
+    }
   },
 
   async createTeam(name, description, institutionId) {
     const { data } = await axiosInstance.post('/teams', {
-      name,
+      title: name,
       description,
       institutionId,
+      visibility: 'PRIVATE',
     });
     return enhanceTeam(data);
   },
@@ -29,16 +35,43 @@ const TeamService = MOCK_TEAMS ? MockTeamService : {
     return updatedTeam;
   },
 
+  async inviteMemberByEmail(teamId, email) {
+    try {
+      await axiosInstance.put(`/teams/${teamId}/invite`, { email });
+    } catch (e) {
+      throw Error(e.response.data);
+    }
+  },
+
   async removeMemberFromTeam(teamId, memberId) {
     const team = await TeamService.getTeam(teamId);
     team.memberIds = team.memberIds.filter((mId) => mId !== memberId);
-    await axiosInstance.post(`/teams/${teamId}`, team);
+    await axiosInstance.post(`/teams/${teamId}`, { data: team });
+  },
+
+  async makeTeamAdmin(teamId, userId) {
+    try {
+      await axiosInstance.put(`/teams/${teamId}/admin`, { userId });
+    } catch (e) {
+      throw Error(e.response.data);
+    }
   },
 
   async getTeam(teamId) {
     const { data } = await axiosInstance.get(`/teams/${teamId}`);
     return enhanceTeam(data);
   },
+
+  async changeTeamDescription(teamId, description) {
+    const { data } = await axiosInstance.put(`/teams/${teamId}`, { description });
+    return data;
+  },
+
+  async changeTeamVisibility(teamId, visibility) {
+    const { data } = await axiosInstance.put(`/teams/${teamId}`, { visibility });
+    return data;
+  },
+
 
   async getInstitutionTeams(institutionId) {
     const { data } = await axiosInstance.get(`/institutions/${institutionId}/teams`);
@@ -52,7 +85,7 @@ const TeamService = MOCK_TEAMS ? MockTeamService : {
 
   async getMyTeams() {
     const user = await ProfileService.getProfile();
-    let { data } = await axiosInstance.get(`/user/${user.id}/teams`);
+    let { data } = await axiosInstance.get(`/users/${user.id}/teams`);
     data = data.map(enhanceTeam);
     return data;
   },

@@ -10,6 +10,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import LogoutIcon from '@mui/icons-material/Logout';
 import geneIcon from 'assets/gene.png';
 import styles from './sidebar.module.css';
+import ProfileService from 'shared/services/Profile.service';
 
 function indexIcon(index) {
   switch (index) {
@@ -92,6 +93,7 @@ export default function Sidebar(props) {
               to="/"
               onClick={() => {
                 setUser(null);
+                ProfileService.clearProfileCache();
                 localStorage.removeItem('user');
                 localStorage.removeItem('jwt');
               }}
