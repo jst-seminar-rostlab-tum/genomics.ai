@@ -7,7 +7,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 
 import TeamService from 'shared/services/Team.service';
 
-function TeamMemberRemoveButton({ team, member, onRemoved }) {
+function TeamMemberRemoveButton({ team, member, updateTeam }) {
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleOpenDialog = () => setDialogOpen(true);
@@ -15,8 +15,8 @@ function TeamMemberRemoveButton({ team, member, onRemoved }) {
 
   async function remove() {
     await TeamService.removeMemberFromTeam(team.id, member.id);
+    updateTeam();
     handleCloseDialog();
-    onRemoved(team, member);
   }
 
   return (

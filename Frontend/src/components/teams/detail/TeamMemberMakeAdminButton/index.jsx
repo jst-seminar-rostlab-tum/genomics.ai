@@ -5,8 +5,10 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 
+import TeamService from 'shared/services/Team.service';
+
 function TeamMemberMakeAdminButton({
-  team, member, onMakeAdmin, onRemoveAdmin,
+  team, member, updateTeam
 }) {
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -14,12 +16,14 @@ function TeamMemberMakeAdminButton({
   const handleCloseDialog = () => setDialogOpen(false);
 
   async function addAdmin() {
-    onMakeAdmin(team, member);
+    TeamService.makeTeamAdmin(team.id, member.id);
+    updateTeam();
     handleCloseDialog();
   }
 
   async function removeAdmin() {
-    onRemoveAdmin(team, member);
+    TeamService.removeTeamAdmin(team.id, member.id);
+    updateTeam();
     handleCloseDialog();
   }
 
