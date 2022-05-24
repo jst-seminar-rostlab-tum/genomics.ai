@@ -7,6 +7,7 @@ import { colors } from "shared/theme/colors";
 import { useEffect, useRef, useState } from "react";
 
 import { useAuth } from 'shared/context/authContext';
+import ProfileImage from "components/ProfileImage";
 
 // REMOVE THIS LATER
 import UserProfileImage from "assets/user.png";
@@ -244,8 +245,9 @@ export default function Navbar({
             {!user && <Signup onClick={onSignUpClicked}>Sign Up</Signup>}
             {
               user && 
-              <IconButton sx={{ border: "4px solid white", p: "0" }} onClick={() => history.push("/")}>
-                <Avatar alt={user.firstName} src={UserProfileImage} />
+              <IconButton onClick={() => history.push("/")}>
+                {/* <Avatar alt={user.firstName} src={UserProfileImage} /> */}
+                <ProfileImage sizePixels={40} />
               </IconButton>
             }
         </Rightbar>
