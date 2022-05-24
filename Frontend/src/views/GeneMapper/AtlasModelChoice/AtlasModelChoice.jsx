@@ -1,5 +1,5 @@
 import HelpIcon from '@mui/icons-material/Help';
-import { Grid, Typography, Stack, Alert, Box, Container } from "@mui/material";
+import { Grid, Typography, Stack, Alert, Box, Container, Tooltip } from "@mui/material";
 import AtlasCardSelect from "components/Cards/AtlasCardSelect";
 import { ModelCardSelect } from "components/Cards/ModelCardSelect";
 import CustomButton from 'components/CustomButton';
@@ -128,17 +128,19 @@ function AtlasModelChoice({
                 <CustomButton type='tertiary' onClick={() => history.push(`${path}`)}>
                 <Clear/>&nbsp; Cancel
                 </CustomButton>
-                <Box
-                    onClick={!selectedAtlas || !selectedModel ? () => setShowWarning(true) : ()=>{}}
-                >
-                    <CustomButton 
-                        type='primary' 
-                        disabled={!selectedAtlas || !selectedModel} 
-                        onClick={() => setActiveStep(1)}
+                <Tooltip title={!selectedAtlas || !selectedModel ? "Select an Atlas and a fitting Model before continuing" : ''} placement='top'>
+                    <Box
+                        onClick={!selectedAtlas || !selectedModel ? () => setShowWarning(true) : ()=>{}}
                     >
-                    Confirm&nbsp;<ArrowForwardIcon/>
-                    </CustomButton>
-                </Box>
+                        <CustomButton 
+                            type='primary' 
+                            disabled={!selectedAtlas || !selectedModel} 
+                            onClick={() => setActiveStep(1)}
+                        >
+                        Confirm&nbsp;<ArrowForwardIcon/>
+                        </CustomButton>
+                    </Box>
+                </Tooltip>
             </Stack>
         </div>
     )

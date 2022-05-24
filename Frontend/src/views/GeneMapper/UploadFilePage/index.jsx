@@ -31,6 +31,7 @@ function UploadFilePage({
   const [atlasInfoOpen, setAtlasInfoOpen] = useState(false);
   const [modelInfoOpen, setModelInfoOpen] = useState(false);
   const [submissionProgress, setSubmissionProgress] = useSubmissionProgress();
+  const [showWarning, setShowWarning] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
@@ -94,9 +95,15 @@ function UploadFilePage({
 
   return (
     <Box sx={{ marginTop: '2.5em' }}>
+      {showWarning &&
+        <Alert severity="error" xs={{marginTop: '100px'}}>
+            Select or upload a dataset before continuing
+        </Alert>
+      }
       <Stack
         direction="row"
         divider={(<Divider className={styles.divider} orientation="vertical" flexItem />)}
+        sx={ showWarning ? {marginTop: '1em'} : {}}
       >
         {/* Left side */}
         <Box width="50%" mr="3%">
@@ -282,18 +289,20 @@ function UploadFilePage({
             { uploadedFile && `Selected file: ${uploadedFile[0].name}` }
           </Typography>
           <Tooltip title={(!uploadedFile && !selectedDataset) ? "You haven't selected or uploaded a dataset!" : ''} placement="top">
-            <span>
-              <CustomButton
-                type="primary"
-                disabled={!uploadedFile && !selectedDataset}
-                onClick={() => {
-                  setOpen(true);
-                }}
-              >
-                Create Mapping
-                <CheckCircleOutlineIcon sx={{ marginLeft: '4px' }} />
-              </CustomButton>
-            </span>
+            <Box onClick={!uploadedFile && !selectedDataset ? () => setShowWarning(true) : ()=>{}}>
+              <span>
+                <CustomButton
+                  type="primary"
+                  disabled={!uploadedFile && !selectedDataset}
+                  onClick={() => {
+                    setOpen(true);
+                  }}
+                  >
+                  Create Mapping
+                  <CheckCircleOutlineIcon sx={{ marginLeft: '4px' }} />
+                </CustomButton>
+              </span>
+            </Box>
           </Tooltip>
         </Stack>
       </Stack>
