@@ -45,7 +45,7 @@ const Explore = () => {
   const history = useHistory();
   const [atlases, setAtlases] = useState([]);
   const [models, setModels] = useState([]);
-  const pathname = useLocation().pathname;
+  const { pathname } = useLocation();
 
   // function to update the state in the URL
   const updateQueryParams = (param, value) => {
@@ -189,13 +189,21 @@ const Explore = () => {
       </Box>
 
       <Stack
-        direction={{ xs: "column", sm: "row", md: "row", lg: "row", xl: "row" }}
+        direction={{
+          xs: 'column', sm: 'row', md: 'row', lg: 'row', xl: 'row',
+        }}
         sx={{
           alignSelf: 'center', width: '60%', marginTop: '2%', justifyContent: 'space-between',
         }}
       >
         <Breadcrumb elems={elems} fontSize={1} actions={{ explore: () => setValue(0) }} />
-        <Box sx={{ width: { xs: "60%", sm: "40%", md: "40%", lg: "40%", xl: "40%" }, marginBlock: '2%' }}>
+        <Box sx={{
+          width: {
+            xs: '60%', sm: '40%', md: '40%', lg: '40%', xl: '40%',
+          },
+          marginBlock: '2%',
+        }}
+        >
           <Search
             filterComponent={(
               <Filter
@@ -207,6 +215,7 @@ const Explore = () => {
             handleSearch={searchedKeywordChangeHandler}
             value={searchedKeyword}
             padding="0px"
+            visible={pathname.split('/').slice(-1).includes('atlases') || pathname.split('/').slice(-1).includes('models')}
           />
         </Box>
       </Stack>
