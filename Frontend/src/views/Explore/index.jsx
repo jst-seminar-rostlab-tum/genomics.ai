@@ -45,6 +45,7 @@ const Explore = () => {
   const history = useHistory();
   const [atlases, setAtlases] = useState([]);
   const [models, setModels] = useState([]);
+  const pathname = useLocation().pathname;
 
   // function to update the state in the URL
   const updateQueryParams = (param, value) => {
@@ -145,7 +146,7 @@ const Explore = () => {
     setRegistrationFormVisible(false);
   }, [setRegistrationFormVisible]);
 
-  const tmp_elems = useLocation().pathname.split('/');
+  const tmp_elems = pathname.split('/');
   const elems = tmp_elems.map((elem, index) => {
     if (index === 3) {
       if (tmp_elems[2] === 'atlases') return atlases.filter((x) => x._id === elem)[0] ? atlases.filter((x) => x._id === elem)[0].name : elem;
@@ -216,6 +217,7 @@ const Explore = () => {
           flexDirection: 'column',
           alignSelf: 'center',
           width: { xs: '90%', md: '60%' },
+          overflowY: pathname.split('/').includes('create') ? 'scroll' : 'none',
         }}
       >
         {/* /explore/atlases */}
@@ -229,7 +231,7 @@ const Explore = () => {
         handleModelSelection={handleModelSelection}
         open={mapperVisible}
         fabOnClick={() => setMapperVisible(!mapperVisible)}
-        fabVisible={!useLocation().pathname.split('/').includes('create')}
+        fabVisible={!pathname.split('/').includes('create')}
       />
     </Box>
   );
