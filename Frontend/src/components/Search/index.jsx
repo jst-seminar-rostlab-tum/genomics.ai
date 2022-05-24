@@ -65,7 +65,7 @@ const Search = ({ filterComponent, handleSearch, value, padding = '10px', visibl
         p: padding,
         border: `2px solid ${active ? colors.primary[400] : colors.primary[700]}`,
         borderRadius: '40px',
-        display: visible ? 'flex !important' : 'none',
+        display: visible ? 'flex' : 'none',
       }}
     >
       {/* Left part */}
