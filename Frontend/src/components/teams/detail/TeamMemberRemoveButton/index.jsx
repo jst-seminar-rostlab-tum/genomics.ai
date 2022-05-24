@@ -9,14 +9,20 @@ import TeamService from 'shared/services/Team.service';
 
 function TeamMemberRemoveButton({ team, member, updateTeam }) {
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleOpenDialog = () => setDialogOpen(true);
   const handleCloseDialog = () => setDialogOpen(false);
 
   async function remove() {
-    await TeamService.removeMemberFromTeam(team.id, member.id);
-    updateTeam();
-    handleCloseDialog();
+    setErrorMessage('');
+    try {
+      await TeamService.removeMemberFromTeam(team.id, member.id);
+      handleCloseDialog();
+      updateTeam();
+    } catch (e) {
+      setErrorMessage(e.message);
+    }
   }
 
   return (
@@ -39,6 +45,13 @@ function TeamMemberRemoveButton({ team, member, updateTeam }) {
             {team.name}
             &quot;?
           </DialogContentText>
+          {
+            errorMessage && (
+              <DialogContentText id="alert-dialog-description" color="error">
+                {errorMessage}
+              </DialogContentText>
+            )
+          }
         </DialogContent>
         <DialogActions>
           <Button type="tertiary" onClick={handleCloseDialog}>Cancel</Button>
