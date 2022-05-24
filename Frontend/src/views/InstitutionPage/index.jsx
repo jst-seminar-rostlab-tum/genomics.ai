@@ -66,8 +66,7 @@ function InstitutionPage() {
       <div
         className={styles.background}
         style={{
-          backgroundImage: `url(${institution.backgroundPictureURL || defaultBackgroundPicture
-            })`,
+          backgroundImage: `url(${institution.backgroundPictureURL || defaultBackgroundPicture})`,
           resizeMode: 'stretch',
         }}
       >
@@ -77,7 +76,8 @@ function InstitutionPage() {
             editable={isAdmin()}
             onChange={(newUrl) => {
               // update without reload
-              setInstitution({ ...institution, avatarUrl: newUrl });
+              console.log("change", newUrl, institution);
+              setInstitution({ ...institution, profilePictureURL: newUrl });
             }}
           />
         </div>

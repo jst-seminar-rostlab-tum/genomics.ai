@@ -21,7 +21,7 @@ function InstitutionAvatar({ editable = false, institution, onChange }) {
         }}
       >
         <Avatar
-          src={institution.avatarUrl}
+          src={institution.profilePictureURL}
           alt={`${institution.name}`}
           sx={{
             backgroundColor: stringToColor(institution.name),
