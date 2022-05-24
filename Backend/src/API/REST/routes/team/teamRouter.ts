@@ -362,7 +362,7 @@ const join_member = (): Router => {
       console.error("Error in join_member()");
       console.error(JSON.stringify(e));
       console.error(e);
-      return res.status(500).send("Internal error.");
+      return res.status(500).send("Internal server error");
     }
   });
 
@@ -410,7 +410,7 @@ const join_member = (): Router => {
       console.error("Error in join_member()");
       console.error(JSON.stringify(e));
       console.error(e);
-      return res.status(500).send("Internal error.");
+      return res.status(500).send("Internal server error");
     }
   });
 
