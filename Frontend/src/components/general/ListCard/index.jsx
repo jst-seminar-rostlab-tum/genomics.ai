@@ -44,7 +44,7 @@ function ListCard({
             <div className={styles.description}>
               {description && (
                 <p style={{
-                  textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', width: '60vw',
+                  textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', width: 'calc(60vw - 200px)',
                 }}
                 >
                   {description}

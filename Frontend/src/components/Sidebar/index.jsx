@@ -1,8 +1,6 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import LiveHelpIcon from '@mui/icons-material/LiveHelp';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
-import MapIcon from '@mui/icons-material/Map';
-import TaskIcon from '@mui/icons-material/Task';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import SearchIcon from '@mui/icons-material/Search';
 import Tooltip from '@mui/material/Tooltip';
@@ -10,10 +8,9 @@ import Box from '@mui/material/Box';
 import { Link as NavLink, useRouteMatch, useLocation } from 'react-router-dom';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import LogoutIcon from '@mui/icons-material/Logout';
-import SettingsIcon from '@mui/icons-material/Settings';
 import geneIcon from 'assets/gene.png';
 import styles from './sidebar.module.css';
-import { useAuth } from 'shared/context/authContext';
+import ProfileService from 'shared/services/Profile.service';
 
 function indexIcon(index) {
   switch (index) {
@@ -43,22 +40,24 @@ export default function Sidebar(props) {
   const { url } = useRouteMatch();
   const location = useLocation();
   const path = location.pathname;
-  const settingsPath = '/sequencer/settings';
-  const [checkPathActive, setCheckPathActive] = useState("/")
-  const pathRegex = new RegExp(".*\/sequencer\/(\\w+)(?=\/|)", "g")
+  const [checkPathActive, setCheckPathActive] = useState('/');
+  const pathRegex = new RegExp('.*\/sequencer\/(\\w+)(?=\/|)', 'g');
 
   useEffect(() => {
-    const result = pathRegex.exec(path)
+    const result = pathRegex.exec(path);
     if (result) {
-      setCheckPathActive(result[1])
+      setCheckPathActive(result[1]);
     }
-  }, [path])
+  }, [path]);
 
   return (
     <Box>
       <Box className={styles.sidebarNav}>
         <Box className={styles.sidebarWrap}>
-          <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "98vh" }}>
+          <Box sx={{
+            display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '98vh', marginTop: '2vh',
+          }}
+          >
             <Box className={styles.iconList}>
               {routes.map((route, index) => (
                 <NavLink
@@ -88,26 +87,43 @@ export default function Sidebar(props) {
                   </Tooltip>
                 </NavLink>
               ))}
-            </Box>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: '3' }}>
-              <NavLink
-                to={settingsPath}
-                className={`${styles.navlinkIcon} ${styles.bottomIcons} ${styles.settingsIcon}`}
-              >
-                <SettingsIcon />
-              </NavLink>
+              </Box>
+
               <NavLink
                 to="/"
                 onClick={() => {
                   setUser(null);
+                  ProfileService.clearProfileCache();
                   localStorage.removeItem('user');
                   localStorage.removeItem('jwt');
                 }}
-                className={`${styles.navlinkIcon} ${styles.bottomIcons}`}
+                className={styles.navlinkIcon}
+                style={{ marginBottom: "1em" }}
               >
-                <LogoutIcon />
+                <Tooltip
+                  title="Logout"
+                  placement="right"
+                  componentsProps={{
+                    tooltip: {
+                      sx: {
+                        bgcolor: '#5676E4',
+                      },
+                    },
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}  
+                  >
+                    <ListItemIcon sx={{ justifyContent: "center" }}>
+                      <LogoutIcon sx={{ color: "white" }} />
+                    </ListItemIcon>
+                  </Box>
+                </Tooltip>
               </NavLink>
-            </Box>
           </Box>
         </Box>
       </Box>

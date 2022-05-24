@@ -1,25 +1,32 @@
 import React, { useState } from 'react';
-import Button from '@mui/material/Button';
 import { Modal, ModalTitle } from 'components/Modal';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import CustomButton from 'components/CustomButton';
+import Button from 'components/CustomButton';
+import TeamService from 'shared/services/Team.service';
 
-function TeamLeaveButton({ team, onJoin, isDisabled }) {
+function TeamJoinButton({ team, onJoin, isDisabled }) {
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleOpenDialog = () => setDialogOpen(true);
   const handleCloseDialog = () => setDialogOpen(false);
 
-  function leave() {
-    handleCloseDialog();
-    onJoin(team);
+  async function join() {
+    setErrorMessage('');
+    try {
+      await TeamService.joinTeam(team.id);
+      handleCloseDialog();
+      onJoin(team);
+    } catch (e) {
+      setErrorMessage(e.message);
+    }
   }
 
   return (
     <>
-      <CustomButton type="primary" disabled={isDisabled} onClick={handleOpenDialog}>Join</CustomButton>
+      <Button type="primary" disabled={isDisabled} onClick={handleOpenDialog}>Join</Button>
       <Modal
         isOpen={dialogOpen}
         setOpen={(o) => !o && handleCloseDialog()}
@@ -33,10 +40,17 @@ function TeamLeaveButton({ team, onJoin, isDisabled }) {
             {team.name}
             &quot;?
           </DialogContentText>
+          {
+            errorMessage && (
+              <DialogContentText id="alert-dialog-description" color="error">
+                {errorMessage}
+              </DialogContentText>
+            )
+          }
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialog} color="error">Cancel</Button>
-          <Button onClick={() => leave()} autoFocus>
+          <Button onClick={handleCloseDialog} type="critical">Cancel</Button>
+          <Button onClick={() => join()} type="primary" autoFocus>
             Join
           </Button>
         </DialogActions>
@@ -45,4 +59,4 @@ function TeamLeaveButton({ team, onJoin, isDisabled }) {
   );
 }
 
-export default TeamLeaveButton;
+export default TeamJoinButton;

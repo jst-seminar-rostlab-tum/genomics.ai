@@ -8,7 +8,7 @@ import { useAuth } from 'shared/context/authContext';
 import TeamService from 'shared/services/Team.service';
 
 function TeamMemberList({
-  team, onMemberRemoved, onMakeAdmin, onRemoveAdmin,
+  team, updateTeam,
 }) {
   const [user] = useAuth();
   const [members, setMembers] = useState([]);
@@ -41,13 +41,12 @@ function TeamMemberList({
             <TeamMemberMakeAdminButton
               team={team}
               member={member}
-              onMakeAdmin={onMakeAdmin}
-              onRemoveAdmin={onRemoveAdmin}
+              updateTeam={updateTeam}
             />
             <TeamMemberRemoveButton
               team={team}
               member={member}
-              onRemoved={onMemberRemoved}
+              updateTeam={updateTeam}
             />
           </div>
         ) : null
