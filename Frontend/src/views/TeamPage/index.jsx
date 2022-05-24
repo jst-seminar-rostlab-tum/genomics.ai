@@ -28,7 +28,8 @@ export default function TeamPage() {
     setNewDescription(event.target.value);
   };
 
-  function updateTeam() {
+  async function updateTeam(wait) {
+    if (wait) await new Promise((resolve) => setTimeout(resolve, 100));
     TeamService.getTeam(id)
       .then(setTeam)
       .catch((ignored) => { console.error(ignored); });
@@ -36,18 +37,18 @@ export default function TeamPage() {
 
   async function updateVisibility(newVisibility) {
     await TeamService.changeTeamVisibility(id, newVisibility);
-    updateTeam();
+    updateTeam(true);
   }
 
   async function updateDescription() {
     await TeamService.changeTeamDescription(id, newDescription);
-    updateTeam();
+    updateTeam(true);
     setDescriptionChanged(false);
   }
 
   useEffect(() => {
     if (id == null) return;
-    updateTeam();
+    updateTeam(false);
   }, [setTeam]);
 
   useEffect(() => {
@@ -78,8 +79,8 @@ export default function TeamPage() {
         />
       )}
       replaceHeaderRight={
-        (isAdmin && <TeamAdminHeaderRight team={team} updateVisibility={() => updateVisibility()} />)
-        || <TeamUserHeaderRight institution={institution} team={team} user={user} updateTeam={() => updateTeam()} />
+        (isAdmin && <TeamAdminHeaderRight team={team} updateVisibility={(value) => updateVisibility(value)} />)
+        || <TeamUserHeaderRight institution={institution} team={team} user={user} updateTeam={() => updateTeam(true)} />
       }
     >
       <br />
@@ -123,7 +124,7 @@ export default function TeamPage() {
         <hr />
         <TeamMemberList
           team={team}
-          updateTeam={updateTeam}
+          updateTeam={() => updateTeam(true)}
         />
       </section>
       {isAdmin && <TeamInviteButton team={team} />}
