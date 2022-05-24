@@ -9,10 +9,7 @@ import styles from './modelsGrid.module.css';
 const ModelsGrid = ({ models, path, selectedAtlas = null, selectedModel = null, handleModelSelection = null }) => {
 
   const checkIfDisabled = (name) => {
-    console.log(selectedAtlas)
-    if(!selectedAtlas) return false
-    if(selectedAtlas.compatibleModels.indexOf(name) > -1) return false
-    return true
+    return !compatibleModels.map(m => m.toLowerCase()).includes(m.name.toLowerCase()) || compatibleModels.length == 0
   }
 
   return (
@@ -24,7 +21,7 @@ const ModelsGrid = ({ models, path, selectedAtlas = null, selectedModel = null, 
               title={`Model ${model.name}`}
               description={model.description}
               learnMoreLink={`${path}/models/${model._id}`}
-              disabled={checkIfDisabled(model.name)}
+              disabled={!compatibleModels.map(m => m.toLowerCase()).includes(m.name.toLowerCase()) || compatibleModels.length == 0}
               onSelect={() => { if(handleModelSelection) handleModelSelection(model) }}
               selected={selectedModel && selectedModel.name === model.name}
             />
