@@ -1,15 +1,15 @@
 import React from 'react';
 import LabeledSelect from '../LabeledSelect';
 
+const DEFAULT_SORT_ITEMS = [
+  { label: 'Name', value: 'name' },
+  { label: 'Last updated', value: 'updatedAt' },
+];
+
 // General filter that is needed in all categories
-const GeneralFilter = ({ sortBy, onChange }) => {
-  const defaultValue = 'name';
-
-  const sortItems = [
-    { label: 'Name', value: 'name' },
-    { label: 'Last updated', value: 'updatedAt' },
-  ];
-
+const GeneralFilter = ({
+  sortBy, onChange, sortItems = DEFAULT_SORT_ITEMS, defaultValue = 'updatedAt',
+}) => {
   const sortItem = sortItems.find((item) => item.value === sortBy);
 
   return (
