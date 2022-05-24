@@ -22,6 +22,7 @@ import AtlasService from 'shared/services/Atlas.service';
 import ModelService from 'shared/services/Model.service';
 
 import { applyModelFilters, applyAtlasFilters } from 'shared/utils/filter';
+import HeaderView from 'components/general/HeaderView';
 
 const SearchPage = () => {
   const [user] = useAuth();
@@ -98,43 +99,40 @@ const SearchPage = () => {
   }, [fetchSearchHandler]);
 
   return (
-    <Stack direction="column" sx={{ paddingLeft: '130px' }}>
-      <div className={styles.title}>
-        <h1>Search</h1>
-        <Box sx={{ margin: 'auto', maxWidth: 1200 }}>
-          <Search
-            filterComponent={(
-              <Filter
-                searchParams={searchParams}
-                updateQueryParams={updateQueryParams}
-                path={path}
-              />
-            )}
-            handleSearch={searchedKeywordChangeHandler}
-            value={searchedKeyword}
-          />
-          <SearchTabs
-            value={searchCategory}
-            searchParams={searchParams}
-            path={path}
-          />
-          {isLoading && (
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-              <CircularProgress />
-            </Box>
-          )}
-          {!isLoading && (
-            <SearchContent
-              searchResult={searchRequestResult}
-              searchCategory={searchCategory}
-              searchedKeyword={searchedKeyword}
-              user={user}
-              fetchSearchHandler={fetchSearchHandler}
+    <HeaderView title="Search">
+      <Box sx={{ margin: 'auto', maxWidth: 1200 }}>
+        <Search
+          filterComponent={(
+            <Filter
+              searchParams={searchParams}
+              updateQueryParams={updateQueryParams}
+              path={path}
             />
-          )}
+            )}
+          handleSearch={searchedKeywordChangeHandler}
+          value={searchedKeyword}
+        />
+        <SearchTabs
+          value={searchCategory}
+          searchParams={searchParams}
+          path={path}
+        />
+        {isLoading && (
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <CircularProgress />
         </Box>
-      </div>
-    </Stack>
+        )}
+        {!isLoading && (
+        <SearchContent
+          searchResult={searchRequestResult}
+          searchCategory={searchCategory}
+          searchedKeyword={searchedKeyword}
+          user={user}
+          fetchSearchHandler={fetchSearchHandler}
+        />
+        )}
+      </Box>
+    </HeaderView>
   );
 };
 
