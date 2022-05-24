@@ -148,11 +148,11 @@ function UserProfile({ sidebarShown }) {
               <div key={team.id}>
                 <TeamCard
                   team={team}
-                  onLeft={() => { }}
+                  onLeft={(t) => onLeft(t)}
                 />
+                <div style={{ marginBottom: "15px" }} />
               </div>
             ))}
-
           </TabPanel>
         </Box>
       </HeaderView>

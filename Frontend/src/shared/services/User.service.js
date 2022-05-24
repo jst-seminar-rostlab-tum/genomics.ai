@@ -2,6 +2,15 @@ import axiosInstance from './axiosInstance';
 
 const MODEL = 'users';
 
+function enhanceInstitution(institution) {
+  return { ...institution, id: institution._id };
+}
+
+function enhanceTeam(team) {
+  return { ...team, id: team._id, name: team.title };
+}
+
+
 const UserService = {
   getUsers: async (params) => {
     const preparedParams = { ...params };
@@ -23,11 +32,11 @@ const UserService = {
   },
   getUserInstitutions: async (id) => {
     const { data } = await axiosInstance.get(`${MODEL}/${id}/institutions`)
-    return data;
+    return data.map(enhanceInstitution);;
   },
   getUserTeams: async (id) => {
     const { data } = await axiosInstance.get(`${MODEL}/${id}/teams`)
-    return data;
+    return data.map(enhanceTeam);
   }
 };
 

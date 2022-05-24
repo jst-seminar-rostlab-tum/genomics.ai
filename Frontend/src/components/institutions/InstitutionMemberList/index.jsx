@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import CircularProgress from '@mui/material/CircularProgress';
+import { CircularProgress, Stack } from '@mui/material';
 import MemberList from 'components/members/MemberList';
 import InstitutionMemberRemoveButton from 'components/institutions/InstitutionMemberRemoveButton';
 import InstitutionService from 'shared/services/Institution.service';
 import styles from './institutionMemberList.module.css';
 import { useAuth } from 'shared/context/authContext';
+import InstitutionMemberMakeAdminButton from '../InstitutionMemberMakeAdminButton';
 
-function InstitutionMemberList({ institution, onRemoved }) {
+function InstitutionMemberList({ institution, updateInstitution }) {
   const [user] = useAuth();
   const [members, setMembers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -18,7 +19,6 @@ function InstitutionMemberList({ institution, onRemoved }) {
         setIsLoading(false);
       });
   }, [institution]);
-
   if (isLoading) {
     return <CircularProgress />;
   }
@@ -33,11 +33,18 @@ function InstitutionMemberList({ institution, onRemoved }) {
       )}
       trailingBuilder={(member) => (
         institution.adminIds.indexOf(user._id) > -1 && user._id !== member.id ? (
-          <InstitutionMemberRemoveButton
-            institution={institution}
-            member={member}
-            onRemoved={onRemoved}
-          />
+          <Stack direction="row" spacing={1}>
+            <InstitutionMemberMakeAdminButton
+              institution={institution}
+              member={member}
+              updateInstitution={updateInstitution}
+            />
+            <InstitutionMemberRemoveButton
+              institution={institution}
+              member={member}
+              updateInstitution={updateInstitution}
+            />
+          </Stack>
         ) : null
       )}
     />

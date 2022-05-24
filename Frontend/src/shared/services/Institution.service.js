@@ -71,6 +71,22 @@ const InstitutionService = MOCK_INSTUTITIONS ? MockInstitutionService : {
     const { data } = await axiosInstance.get(`/${MODEL}/${id}/teams`);
     return data;
   },
+
+  async updateDetails(institutionId, details) {
+    await axiosInstance.put(`/institutions/${institutionId}`, { details });
+  },
+
+  async inviteMember(institutionId, invitedMail) {
+    await axiosInstance.put(`/institutions/${institutionId}/invite`, { email: invitedMail });
+  },
+
+  async removeMemberFromInstitution(institutionId, memberId) {
+    await axiosInstance.delete(`/institutions/${institutionId}/join`, { data: { userId: memberId } });
+  },
+
+  async makeInstitutionAdmin(institutionId, memberId) {
+    await axiosInstance.put(`/institutions/${institutionId}/admin`, { userId: memberId });
+  },
 };
 
 export default InstitutionService;

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import EditIcon from '@mui/icons-material/ModeEditOutline';
+import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import InstitutionMemberList from 'components/institutions/InstitutionMemberList';
 import styles from './institutionPage.module.css';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -24,24 +25,23 @@ function InstitutionPage() {
     return (institution.adminIds || []).includes(user._id);
   }
 
+  function updateInstitution() {
+    InstitutionService.getInstitution(id)
+      .then(setInstitution)
+      .catch((ignored) => { console.error(ignored); });
+  }
+
+  function editDetails() {
+    // eslint-disable-next-line max-len
+    const details = { description: institution.description };
+    const jsonDetails = JSON.stringify(details);
+    InstitutionService.updateDetails(id, jsonDetails);
+  }
+
   const handleDescriptionChange = (event) => {
     setInstitution({
       ...institution,
       description: event.target.value,
-    });
-  };
-
-  const handleCountryChange = (event) => {
-    setInstitution({
-      ...institution,
-      country: event.target.value,
-    });
-  };
-
-  const handleNameChange = (event) => {
-    setInstitution({
-      ...institution,
-      name: event.target.value,
     });
   };
 
@@ -104,11 +104,10 @@ function InstitutionPage() {
               },
             }}
             InputProps={{
-              readOnly: !isAdmin(),
               disableUnderline: true,
+              readOnly: true,
             }}
             style={{ width: '700px' }}
-            onChange={handleNameChange}
             variant="standard"
           />
         </div>
@@ -128,17 +127,16 @@ function InstitutionPage() {
               },
             }}
             InputProps={{
-              readOnly: !isAdmin(),
               disableUnderline: true,
+              readOnly: true,
             }}
             style={{ width: '300px' }}
-            onChange={handleCountryChange}
             variant="standard"
           />
         </div>
         <p className={styles.imageText}>
           <span>
-            {institution.memberIds?.length + institution.adminIds?.length}
+            {institution.memberIds?.length}
             {' Members'}
           </span>
         </p>
@@ -155,6 +153,16 @@ function InstitutionPage() {
       </div>
       <div className={styles.test}>
         <section>
+          {isAdmin() && (
+            <button
+              className={styles.editDetailsButton}
+              type="button"
+              onClick={() => editDetails()}
+            >
+              <span>Save Edits</span>
+              <SaveOutlinedIcon fontSize="small" />
+            </button>
+          )}
           <h2>Description</h2>
           <hr />
           <TextField
@@ -186,18 +194,8 @@ function InstitutionPage() {
           <hr />
           <InstitutionMemberList
             institution={institution}
-            // eslint-disable-next-line no-shadow
-            onRemoved={(institution, removedMember) => {
-              setInstitution({
-                ...institution,
-                adminIds: institution.adminIds.filter(
-                  (mId) => mId !== removedMember.id,
-                ),
-                memberIds: institution.memberIds.filter(
-                  (mId) => mId !== removedMember.id,
-                ),
-              });
-            }}
+            // eslint-disable-next-line react/jsx-no-bind
+            updateInstitution={updateInstitution}
           />
         </section>
       </div>
