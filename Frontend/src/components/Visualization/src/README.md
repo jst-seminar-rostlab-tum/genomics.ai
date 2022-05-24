@@ -39,6 +39,9 @@ class UmapVisualization2 {
 
 ### Class functions
 * _drawGraph_ - draws a specified graph with a given height and width in a given container (only graphs from _graphs_ are possible)
+* _hideShowCells_ - set's the visibility of all cells based on _hiddenCells_
+* _isHidden_ - determines for a given cells, whether it is hidden or not
+* _addHiddenCell_ and _deleteHiddenCell_ - adds/removes a [category, value] to/from the _hiddenCells_
 * _before_ and _after_ - responsible for the on and off toggle for the sub-categories
 * _beforeAll_ - resets the visibility of all cells
 * _showReference_, _hideReference_, _showQuery_ and _hideQuery_  - are extra methods that use the _before_/_after_ methods
