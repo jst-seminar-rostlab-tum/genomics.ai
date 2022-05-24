@@ -53,7 +53,11 @@ const InstitutionService = MOCK_INSTUTITIONS ? MockInstitutionService : {
   },
 
   getInstitutions: async (params) => {
-    const { data } = await axiosInstance.get(`/${MODEL}`, { params });
+    const preparedParams = { ...params };
+    if (!preparedParams.sortBy) {
+      preparedParams.sortBy = 'name';
+    }
+    const { data } = await axiosInstance.get(`/${MODEL}`, { params: preparedParams });
     return data.map(enhanceInstitution);
   },
 

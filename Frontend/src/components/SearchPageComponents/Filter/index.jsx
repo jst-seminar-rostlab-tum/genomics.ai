@@ -16,7 +16,6 @@ function Filter({ path, searchParams, updateQueryParams }) {
       <FormGroup>
         <Route path={[setSeachCategoryInUrl(path, 'teams'),
           setSeachCategoryInUrl(path, 'institutions'),
-          setSeachCategoryInUrl(path, 'users'),
           setSeachCategoryInUrl(path, 'models')]}
         >
           <FilterItem>
@@ -39,6 +38,16 @@ function Filter({ path, searchParams, updateQueryParams }) {
             sortBy={searchParams.get('sortBy')}
             onChange={(param, value) => updateQueryParams(param, value)}
           />
+        </Route>
+        <Route path={setSeachCategoryInUrl(path, 'users')}>
+          <FilterItem>
+            <GeneralFilter
+              sortBy={searchParams.get('sortBy')}
+              onChange={(param, value) => updateQueryParams(param, value)}
+              sortItems={[{ label: 'Name', value: 'name' }]}
+              defaultValue="name"
+            />
+          </FilterItem>
         </Route>
       </FormGroup>
     </GeneralCard>

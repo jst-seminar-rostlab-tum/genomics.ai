@@ -24,40 +24,6 @@ import ModelService from 'shared/services/Model.service';
 import { applyModelFilters, applyAtlasFilters } from 'shared/utils/filter';
 import HeaderView from 'components/general/HeaderView';
 
-// definitely target to change, when backend will provide full data
-async function getTeams(filterParams) {
-  const searchResponse = await TeamService.getTeams(filterParams);
-  const teamsWithInstitutions = searchResponse.filter((team) => team.institutionId);
-  const institutionRequests = teamsWithInstitutions.map(
-    (team) => InstitutionService.getInstitutionById(team.institutionId)
-    ,
-  );
-  const institutionsResponse = await Promise.all(institutionRequests);
-  institutionsResponse.forEach(
-    (institution,
-      index) => {
-      teamsWithInstitutions[index].institution = institution;
-    },
-  );
-  return searchResponse;
-}
-
-// definitely target to change, when backend will provide full data
-async function getInstitutions(filterParams) {
-  const searchResponse = await InstitutionService.getInstitutions(filterParams);
-  const teamsRequests = searchResponse.map(
-    (team) => InstitutionService.getTeamsOfInstitutionById(team.id),
-  );
-  const teamsResponse = await Promise.all(teamsRequests);
-  teamsResponse.forEach(
-    (team,
-      index) => {
-      searchResponse[index].teamsCount = team.length;
-    },
-  );
-  return searchResponse;
-}
-
 const SearchPage = () => {
   const [user] = useAuth();
 
@@ -106,10 +72,10 @@ const SearchPage = () => {
         searchResponse = await UserService.getUsers(filterParams);
         break;
       case 'teams':
-        searchResponse = await getTeams(filterParams);
+        searchResponse = await TeamService.getTeams(filterParams);
         break;
       case 'institutions':
-        searchResponse = await getInstitutions(filterParams);
+        searchResponse = await InstitutionService.getInstitutions(filterParams);
         break;
       case 'projects':
         searchResponse = await ProjectService.getProjects(filterParams);

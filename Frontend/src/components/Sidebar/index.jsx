@@ -89,7 +89,6 @@ export default function Sidebar(props) {
                 </NavLink>
               ))}
             </Box>
-
             <Box>
               <NavLink
                 to="/imprint"
@@ -130,7 +129,7 @@ export default function Sidebar(props) {
                   localStorage.removeItem('jwt');
                 }}
                 className={styles.navlinkIcon}
-                style={{ marginBottom: "1em" }}
+                style={{ marginBottom: '1em' }}
               >
                 <Tooltip
                   title="Logout"
@@ -145,21 +144,21 @@ export default function Sidebar(props) {
                 >
                   <Box
                     sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
                     }}
                   >
-                    <ListItemIcon sx={{ justifyContent: "center" }}>
-                      <LogoutIcon sx={{ color: "white" }} />
+                    <ListItemIcon sx={{ justifyContent: 'center' }}>
+                      <LogoutIcon sx={{ color: 'white' }} />
                     </ListItemIcon>
                   </Box>
                 </Tooltip>
               </NavLink>
             </Box>
-          </Box>
-        </Box>
-      </Box>
+          </Box >
+        </Box >
+      </Box >
     </Box>
   );
 }
