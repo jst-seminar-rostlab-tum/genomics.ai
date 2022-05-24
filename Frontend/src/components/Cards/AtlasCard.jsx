@@ -112,13 +112,13 @@ export default function AtlasCard({
                   justifyContent: 'space-evenly',
                 }}
               >
-                <OutlinedButton
+                {/* <OutlinedButton
                   content="Visualize"
                   onClick={(e) => {
                     history.push(`${path}/${atlasId}/visualization`);
                     e.stopPropagation();
                   }}
-                />
+                /> */}
                 <OutlinedButton
                   content="Learn More"
                   link={learnMoreLink}

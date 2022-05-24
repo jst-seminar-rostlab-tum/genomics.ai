@@ -61,6 +61,7 @@ const Explore = () => {
   };
 
   const handleAtlasSelection = (newAtlas) => {
+    console.log(newAtlas)
     setSelectedAtlas(newAtlas);
     if (!selectedModel) {
       history.push(`${path}/models`);
@@ -217,7 +218,7 @@ const Explore = () => {
         }}
       >
         {/* /explore/atlases */}
-        <ExploreRoutes atlases={atlases && tabMenu()} models={models && tabMenu()} path="/explore" />
+        <ExploreRoutes atlases={atlases && tabMenu()} models={models && tabMenu()} path="/explore" handleSelect={handleAtlasSelection}/>
       </Box>
 
       <Mapper
