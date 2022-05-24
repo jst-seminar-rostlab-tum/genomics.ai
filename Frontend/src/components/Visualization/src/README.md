@@ -1,31 +1,32 @@
 # Visualization
-The visualization is based on the class called UmapVisualization2 and all of the key elements for the end product are contained in there.
+Generally is the visualization responsible for the logic and drawing (not the placement) of the umap and the bar graphs. The visualizing is done with d3.
+Most elements are done with possible extensions in mind.
+The main class is called UmapVisualization2 and all of the key elements for the end product are contained in there.
 The files used for the GeneMapper are: umapVisualization.js, coloring.js, newZoom.js, barChart.js for the functionality and constants.js, bar.css, tooltip.css for the styling. The others belong to the GeneCruncher.
 
 ***
 ## UmapVisualization2
 This class has the following constructor:
 ```
-constructor(container, data, containerBar) {
+class UmapVisualization2 {
+
+  constructor(container, data) {
     d3.select(container).selectAll("*").remove();
-    this.svg = d3.select(container).append('svg');
+    this.svg = d3.select(container).append('svg')
+      .attr('id', 'vis_svg');
     this.gCells = addGroup(this.svg, 'cells');
     this.coloringModes = getColoringModes(data);
     this.tooltip = d3.select(container).append("div");
     this.mode = undefined;
-    this.barChartBatch = addBarPlotBatch(containerBar, data);
-    if(Object.keys(this.coloringModes).includes("cell_type")){
-      d3.select(containerBar).append("div");
-      this.barChartCell = addBarPlotCell(containerBar, data);
-    }
     this.data = data;
+    this.graphs = ["batch", "cell"];
+    this.hiddenCells = [];
   };
 ```
 ### Constructor:
 **Arguments:**
 * _container_ - the container in which the svg(scatter plot) is. On the frontend it is a div
 * _data_ - is the already parsed .csv data
-* _containerBar_ - the container in which the additional diagrams can be found. Again a div on the frontend
 
 **Class Attributes**
 * _gCells_ - cell group
@@ -33,9 +34,17 @@ constructor(container, data, containerBar) {
 * _coloringModes_ - every category with its sub-categories in the form \{category1: \{subCategory1: color\} \.\.\. \}, sorted alphabetically
 * _mode_ - can take a value from the set of attributes
 * _colorScale_ - the color scale that provides the plot coloring according to the mode, initial color, however, black
+* _graphs_ - the available graphs (can be extracted via getAvailableGraphs())
+* _hiddenCells_ - contains a list of [category, value] which specifies the currently hidden cells
 
 ### Class functions
+* _drawGraph_ - draws a specified graph with a given height and width in a given container (only graphs from _graphs_ are possible)
 * _before_ and _after_ - responsible for the on and off toggle for the sub-categories
+* _beforeAll_ - resets the visibility of all cells
+* _showReference_, _hideReference_, _showQuery_ and _hideQuery_  - are extra methods that use the _before_/_after_ methods
+* _reduceOpacity_ - reduces the opacity of a category and value (only one at the same time is supported at the moment)
+* _resetOpacity_ - sets the opacity of all cells to the original value
+* _predictedCellsTransparten_ and _predictedCellsVisible_ - use _reduceOpacity_ and _resetOpacity_ to provide the functionality for the predicted cells button
 * _setColorMode_ - changes the colorScale according to the color mode chosen
 * _resize_ - sets the dimension scales for the plot, the dot coordinates and the dot radius
 *_render_ - visualized the data and provides the interactive tooltip
@@ -46,6 +55,7 @@ Provides all zoom functionalities
 * _zoomM_ - the scale for the zoom functionalities and responsible for mouse zoom and pat
 * _zoomInN_, _zoomOutN_, _resetZoom_ - resposible for zooming in, out and resetting the zoom scale
 -> the mouse wheel zoom is called in umapVisualization, the button zoom is called in the various front end files
+-> is called on the specific id of the svg, because it can come to problems otherwise
 
 ***
 ## coloring
@@ -57,10 +67,4 @@ Provides all coloring functionalities
 ## barChart
 Provides the functionalities for all additional diagrams
 * _groupBy_ - groups the data according to the given _cat_, category, attribute
-
-## How to run:
-You have to install node on your computer. If you use a Mac and Homebrew, you can simply do brew install node@16 . If not, I think you can download it from here: https://nodejs.org/en/ (pick the LTS version)
-Then, you go into the Frontend folder inside the repo and run npm install . You only have to do this once. This will probably modify the package-lock.json and yarn.json files, but you can revert these changes, they are irrelevant.
-also in the Frontend folder, run npm start  then the frontend is reachable on http://localhost:3000
-Node.js® is a JavaScript runtime built on Chrome's V8 JavaScript engine.
-For 2.: You actually have to run npm install  every time any 3rd party dependency changes. This can only happen if you switch branches or merge branches into yours. So basically, whenever you do git pull/merge/checkout and something isn’t working (and probably says something like “can’t find….“), then run npm install and try again
+* _addBarPlot_ - draws the chart in the given barContainer, with the other given attributes
