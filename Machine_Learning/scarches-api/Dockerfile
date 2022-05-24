@@ -16,4 +16,4 @@ ENV WORKERS 1
 ENV THREADS 1
 ENV PORT 8080
 
-CMD gunicorn --bind :$PORT --workers $WORKERS --threads $THREADS --timeout 0 api:app
+CMD exec gunicorn --bind :$PORT --workers $WORKERS --threads $THREADS --timeout 0 api:app
