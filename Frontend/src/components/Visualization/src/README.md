@@ -53,9 +53,9 @@ class UmapVisualization2 {
 ## newZoom
 Provides all zoom functionalities
 * _zoomM_ - the scale for the zoom functionalities and responsible for mouse zoom and pat
-* _zoomInN_, _zoomOutN_, _resetZoom_ - resposible for zooming in, out and resetting the zoom scale
-* -> the mouse wheel zoom is called in umapVisualization, the button zoom is called in the various front end files
-* -> is called on the specific id of the svg, because it can come to problems otherwise
+* _zoomInN_, _zoomOutN_, _resetZoom_ - resposible for zooming in, out and resetting the zoom scale  
+-> the mouse wheel zoom is called in umapVisualization, the button zoom is called in the various front end files  
+-> is called on the specific id of the svg, because it can come to problems otherwise  
 
 ***
 ## coloring
