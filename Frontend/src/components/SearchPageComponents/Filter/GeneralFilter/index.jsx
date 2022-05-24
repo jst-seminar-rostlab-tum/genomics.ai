@@ -8,7 +8,7 @@ const DEFAULT_SORT_ITEMS = [
 
 // General filter that is needed in all categories
 const GeneralFilter = ({
-  sortBy, onChange, sortItems = DEFAULT_SORT_ITEMS, defaultValue = 'updatedAt',
+  sortBy, onChange, sortItems = DEFAULT_SORT_ITEMS, defaultValue = 'name',
 }) => {
   const sortItem = sortItems.find((item) => item.value === sortBy);
 
