@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Box, Typography } from '@mui/material';
 import { OutlinedButton } from './ModelCard';
 import { colors } from 'shared/theme/colors';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 /**
  * Atlas Card
@@ -28,6 +29,8 @@ export default function AtlasCard({
 
   // ref to get the out most Box
   const boxRef = useRef();
+  const history = useHistory();
+  const path = history.location.pathname;
   {/*useEffect(() => {
     // each time the card is rerendered, check if the card is flat or not
     if (boxRef.current.clientWidth > boxRef.current.clientHeight) setFlat(true);
@@ -108,6 +111,13 @@ export default function AtlasCard({
                   gap: '5px'
                 }}
               >
+                <OutlinedButton
+                  content="Visualize"
+                  onClick={(e) => {
+                    history.push(`${path}/${atlasId}/visualization`);
+                    e.stopPropagation();
+                  }}
+                />
                 <OutlinedButton
                   content="Learn More"
                   link={learnMoreLink}
