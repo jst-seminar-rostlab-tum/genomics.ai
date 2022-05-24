@@ -11,10 +11,8 @@ import { Modal, ModalTitle } from 'components/Modal';
 import React, { useState, useEffect, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import styles from './uploadfilepage.module.css';
-// import ProjectMock from 'shared/services/mock/projects';
 import ProjectService from 'shared/services/Project.service';
 import { initSubmissionProgress, useSubmissionProgress } from 'shared/context/submissionProgressContext';
-// import { TabCard } from 'components/GeneMapper/TabCard'; 
 import { LearnMoreAtlasComponent } from 'views/Explore/LearnMoreAtlas';
 import { LearnMoreModelComponent } from 'views/Explore/LearnMoreModel';
 import { uploadMultipartFile } from 'shared/services/UploadLogic';
@@ -34,20 +32,8 @@ function UploadFilePage({
   const history = useHistory();
 
   useEffect(() => {
-    setRequirements(selectedModel.requirements || [
-      // source: https://beta.fastgenomics.org/analyses/scarches
-      'Ensure your data is in h5ad format',
-      'Make sure your .X layer has raw counts (i.e. integers, so no normalization, no log-transformation)',
-      'If your dataset contains multiple batches, specify these in the .obs layer under .obs["dataset"]',
-    ]);
+    setRequirements(selectedModel.requirements);
   }, [selectedModel]);
-
-  // Temporarily commented out as the endpoint is not implemented yet
-  // useEffect(() => {
-  //   ProjectMock.getDatasets().then((data) => {
-  //     setExistingDatasets(data);
-  //   });
-  // }, [existingDatasets]);
 
   const handleOnDropChange = (file) => {
     setUploadedFile(file);
