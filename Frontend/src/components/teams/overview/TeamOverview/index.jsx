@@ -13,7 +13,7 @@ function TeamOverview() {
     TeamService.getMyTeams()
       .then(setTeams)
       .catch(console.log);
-  }, [setTeams]);
+  }, []);
 
   function onLeft(team) {
     setTeams(teams.filter((i) => i.id !== team.id));

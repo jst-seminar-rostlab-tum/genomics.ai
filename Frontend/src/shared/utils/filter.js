@@ -1,6 +1,9 @@
-export function applyModelFilters(models, searchedKeyword, searchParams) {
+export function applyModelFilters(models, searchedKeyword, searchParams, selectedAtlas) {
   const searchedModels = models.filter(
-    (item) => item.name.toLowerCase().includes(searchedKeyword.toLowerCase()),
+    (item) => item.name.toLowerCase().includes(searchedKeyword.toLowerCase()) && (!selectedAtlas
+      || selectedAtlas.compatibleModels.some(
+        (element) => element.toLowerCase() === item.name.toLowerCase(),
+      )),
   );
   if (searchParams.get('sortBy') === 'name' || searchParams.get('sortBy') === null) {
     searchedModels.sort((a, b) => {
@@ -18,9 +21,13 @@ export function applyModelFilters(models, searchedKeyword, searchParams) {
   return searchedModels;
 }
 
-export function applyAtlasFilters(atlases, searchedKeyword, searchParams) {
+export function applyAtlasFilters(atlases, searchedKeyword, searchParams, selectedModel) {
   const searchedAtlases = atlases.filter(
-    (item) => item.name.toLowerCase().includes(searchedKeyword.toLowerCase()),
+    (item) => item.name.toLowerCase().includes(searchedKeyword.toLowerCase())
+    && (!selectedModel
+      || item.compatibleModels.some(
+        (element) => element.toLowerCase() === selectedModel.name.toLowerCase(),
+      )),
   );
   if (searchParams.get('sortBy') === 'name' || searchParams.get('sortBy') === null) {
     searchedAtlases.sort((a, b) => {

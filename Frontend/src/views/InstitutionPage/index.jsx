@@ -45,10 +45,12 @@ function InstitutionPage() {
     });
   };
 
-  useEffect(async () => {
-    console.log(await InstitutionService.getInstitution(id));
-    setInstitution(await InstitutionService.getInstitution(id));
-    setInstitutionLoaded(true);
+  useEffect(() => {
+    InstitutionService.getInstitution(id)
+      .then((newInstitution) => {
+        setInstitution(newInstitution);
+        setInstitutionLoaded(true);
+      });
   }, []);
 
   function onLeft(/* team */) {
@@ -64,8 +66,7 @@ function InstitutionPage() {
       <div
         className={styles.background}
         style={{
-          backgroundImage: `url(${institution.backgroundPictureURL || defaultBackgroundPicture
-            })`,
+          backgroundImage: `url(${institution.backgroundPictureURL || defaultBackgroundPicture})`,
           resizeMode: 'stretch',
         }}
       >
@@ -75,7 +76,8 @@ function InstitutionPage() {
             editable={isAdmin()}
             onChange={(newUrl) => {
               // update without reload
-              setInstitution({ ...institution, avatarUrl: newUrl });
+              console.log("change", newUrl, institution);
+              setInstitution({ ...institution, profilePictureURL: newUrl });
             }}
           />
         </div>

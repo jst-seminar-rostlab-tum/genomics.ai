@@ -19,7 +19,13 @@ function Sidepanel({ title, collapseToRight, children }) {
   const flexDirection = collapseToRight ? 'row-reverse' : 'row';
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'strech' }}>
+    <Box sx={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'strech',
+      height: '100%',
+    }}
+    >
       {open
         ? (
           <Box sx={{ display: 'flex', alignItems: 'center', flexDirection }}>
@@ -36,11 +42,9 @@ function Sidepanel({ title, collapseToRight, children }) {
             </IconButton>
           </Tooltip>
         )}
-      <Box sx={{ overflow: 'auto' }}>
-        <Collapse in={open} orientation="horizontal">
-          {children}
-        </Collapse>
-      </Box>
+      <Collapse in={open} orientation="horizontal" sx={{ overflowY: 'auto', overflowX: 'hidden', pr: 2 }}>
+        {children}
+      </Collapse>
     </Box>
   );
 }

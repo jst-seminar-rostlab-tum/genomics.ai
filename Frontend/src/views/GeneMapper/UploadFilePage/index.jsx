@@ -2,22 +2,22 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 import {
-  Button, Box, Container, Divider, Stack, Typography,
+  Alert, Button, Box, Container, Divider, Stack, Tooltip, Typography, TextField,
 } from '@mui/material';
 import { GeneralCard as Card } from 'components/Cards/GeneralCard';
 import CustomButton from 'components/CustomButton';
 import FileUpload from 'components/FileUpload';
-import Input from 'components/Input/Input';
 import { Modal, ModalTitle } from 'components/Modal';
 import React, { useState, useEffect, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import styles from './uploadfilepage.module.css';
-import ProjectMock from 'shared/services/mock/projects';
+// import ProjectMock from 'shared/services/mock/projects';
 import ProjectService from 'shared/services/Project.service';
-import { useSubmissionProgress } from 'shared/context/submissionProgressContext';
-import { TabCard } from 'components/GeneMapper/TabCard';
+import { initSubmissionProgress, useSubmissionProgress } from 'shared/context/submissionProgressContext';
+// import { TabCard } from 'components/GeneMapper/TabCard'; 
 import { LearnMoreAtlasComponent } from 'views/Explore/LearnMoreAtlas';
 import { LearnMoreModelComponent } from 'views/Explore/LearnMoreModel';
+import { uploadMultipartFile } from 'shared/services/UploadLogic';
 
 function UploadFilePage({
   path, selectedAtlas, selectedModel, setActiveStep,
@@ -25,7 +25,7 @@ function UploadFilePage({
   const [uploadedFile, setUploadedFile] = useState();
   const [selectedDataset, setSelectedDataset] = useState();
   const [mappingName, setMappingName] = useState('');
-  const [existingDatasets, setExistingDatasets] = useState([]);
+  const [existingDatasets, setExistingDatasets] = useState();
   const [requirements, setRequirements] = useState([]);
   const [open, setOpen] = useState(false);
   const [atlasInfoOpen, setAtlasInfoOpen] = useState(false);
@@ -42,36 +42,46 @@ function UploadFilePage({
     ]);
   }, [selectedModel]);
 
-  useEffect(() => {
-    ProjectMock.getDatasets().then((data) => {
-      setExistingDatasets(data);
-    });
-  }, [existingDatasets]);
+  // Temporarily commented out as the endpoint is not implemented yet
+  // useEffect(() => {
+  //   ProjectMock.getDatasets().then((data) => {
+  //     setExistingDatasets(data);
+  //   });
+  // }, [existingDatasets]);
 
   const handleOnDropChange = (file) => {
     setUploadedFile(file);
   };
 
   const createProject = useCallback((projectName, atlasId, modelId, file) => {
-    ProjectService.startOrContinueProjectUpload(
-      file,
-      submissionProgress,
-      setSubmissionProgress,
-      {
-        projectName,
-        atlasId,
-        modelId,
-        fileName: file.name,
-      },
-    );
+    ProjectService.createProject(
+      projectName,
+      atlasId,
+      modelId,
+      file.name,
+    ).then((project) => {
+      uploadMultipartFile(
+        project.uploadId,
+        file,
+        initSubmissionProgress(project.uploadId),
+        (update) => {
+          setSubmissionProgress((prev) => ({
+            ...prev,
+            [project._id]: update(prev[project._id] ?? initSubmissionProgress(project.uploadId)),
+          }));
+        },
+      );
+      history.push(path); // go back to GeneMapper home
+    });
   }, [submissionProgress]);
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e?.preventDefault();
     console.log(selectedDataset);
     // save mapping name
     setOpen(false); // opens modal to input mapping name
-    createProject(mappingName, selectedAtlas._id, selectedModel._id, uploadedFile ? uploadedFile[0] : selectedDataset);
-    history.push(`${path}`); // go back to GeneMapper home
+    createProject(mappingName, selectedAtlas._id, selectedModel._id,
+      uploadedFile ? uploadedFile[0] : selectedDataset);
   };
 
   const handleSelectDataset = (data) => {
@@ -97,26 +107,37 @@ function UploadFilePage({
                 width="50%"
                 children={(
                   <Stack direction="column">
+                    <Typography variant="caption" fontWeight="bold">Atlas</Typography>
                     <Typography gutterBottom variant="h6" fontWeight="bold">{selectedAtlas.name}</Typography>
-                    <Typography gutterBottom variant="caption">
-                      { `Species: ${selectedAtlas.species}` }
+                    <Typography
+                      gutterBottom
+                      variant="caption"
+                      sx={{
+                        whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '200px',
+                      }}
+                    >
+                      {`Modalities:  ${selectedAtlas.modalities}`}
                     </Typography>
-                    <Button size="small" disabled={!selectedAtlas} onClick={() => setAtlasInfoOpen(true)}>Learn More</Button>
+                    <Typography gutterBottom variant="caption">{`Cells in Reference:  ${selectedAtlas.numberOfCells}`}</Typography>
+                    <Typography gutterBottom variant="caption">{`Species: ${selectedAtlas.species}`}</Typography>
+                    <Button
+                      size="small"
+                      variant="outlined"
+                      onClick={() => setAtlasInfoOpen(true)}
+                      sx={{
+                        borderRadius: 100, width: '50%', ml: '50%', mt: '1em', textTransform: 'none',
+                      }}
+                    >
+                      Learn more
+                    </Button>
                     <Modal
                       isOpen={atlasInfoOpen}
                       setOpen={setAtlasInfoOpen}
                       children={(
                         <Container>
-                          {/* <ModalTitle>{selectedAtlas.name}</ModalTitle> */}
                           <LearnMoreAtlasComponent id={selectedAtlas._id} onClick={() => history.push(`/explore/atlases/${selectedAtlas._id}/visualization`)} />
-                          {/* <Typography variant="body1" gutterBottom>
-                            {
-                              Object.keys(selectedAtlas).map((key, i) => (<li key={i}>{`${key} : ${selectedAtlas[key]}`}</li>))
-                            }
-                          </Typography>
-                          <Button size="large" onClick={() => setAtlasInfoOpen(false)}>Close</Button> */}
                         </Container>
-                    )}
+                      )}
                     />
                   </Stack>
                 )}
@@ -125,32 +146,40 @@ function UploadFilePage({
                 width="50%"
                 children={(
                   <Stack direction="column">
+                    <Typography variant="caption" fontWeight="bold">Model</Typography>
                     <Typography gutterBottom variant="h6" fontWeight="bold">{selectedModel.name}</Typography>
                     <Typography
                       gutterBottom
                       variant="caption"
                       sx={{
-                        whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '200px',
+                        display: 'block',
+                        textOverflow: 'ellipsis',
+                        wordWrap: 'break-word',
+                        overflow: 'hidden',
+                        maxHeight: '5.7em',
+                        lineHeight: '1.9em',
                       }}
                     >
                       {selectedModel.description}
                     </Typography>
-                    <Button size="small" disabled={!selectedModel} onClick={() => setModelInfoOpen(true)}>Learn More</Button>
+                    <Button
+                      size="small"
+                      variant="outlined"
+                      onClick={() => setModelInfoOpen(true)}
+                      sx={{
+                        borderRadius: 100, width: '50%', ml: '50%', mt: '1em', textTransform: 'none',
+                      }}
+                    >
+                      Learn more
+                    </Button>
                     <Modal
                       isOpen={modelInfoOpen}
                       setOpen={setModelInfoOpen}
                       children={(
                         <Container>
                           <LearnMoreModelComponent id={selectedModel._id} />
-                          {/* <ModalTitle>{selectedModel.name}</ModalTitle>
-                          <Typography variant="body1" gutterBottom>
-                            {
-                              Object.keys(selectedModel).map((key, i) => (<li key={i}>{`${key} : ${selectedModel[key]}`}</li>))
-                            }
-                          </Typography>
-                          <Button size="large" onClick={() => setModelInfoOpen(false)}>Close</Button> */}
                         </Container>
-                    )}
+                      )}
                     />
                   </Stack>
               )}
@@ -161,9 +190,9 @@ function UploadFilePage({
               <Card>
                 <Box sx={{ flexDirection: 'column', minHeight: '18em' }}>
                   {requirements
-                    ? requirements.map((text) => (
+                    ? requirements.map((text, index) => (
                       <Box key={text} sx={{ display: 'flex' }}>
-                        <Typography variant="body2" sx={{ pr: 1, fontWeight: 'bold' }}>-</Typography>
+                        <Typography variant="body2" sx={{ pr: 1, fontWeight: 'bold' }}>{++index}</Typography>
                         <Typography variant="body2">
                           {text}
                         </Typography>
@@ -188,16 +217,33 @@ function UploadFilePage({
             children={(
               <Container>
                 <ModalTitle>Give your mapping a name </ModalTitle>
-                <Divider className={styles.divider} orientation="horizontal" flexItem />
-                <Input
-                  placeholder="Enter name here"
-                  onChangeEvent={setMappingName}
-                  isRequired
-                />
-                <Stack direction="row">
-                  <Button size="large" onClick={() => setOpen(false)}>Close</Button>
-                  <Button size="large" onClick={handleSubmit}>Done</Button>
-                </Stack>
+                <form onSubmit={handleSubmit}>
+                  <TextField
+                    variant="standard"
+                    placeholder="Enter name here"
+                    fullWidth
+                    onChange={(e) => setMappingName(e.target.value)}
+                    required
+                    label="Mapping name"
+                  />
+                  <Stack direction="row" justifyContent="space-between" mt="1.5em">
+                    <CustomButton
+                      type="tertiary"
+                      onClick={() => {
+                        setOpen(false);
+                      }}
+                    >
+                      Close
+                    </CustomButton>
+                    <CustomButton
+                      type="primary"
+                      onClick={handleSubmit}
+                      disabled={!mappingName}
+                    >
+                      Submit
+                    </CustomButton>
+                  </Stack>
+                </form>
               </Container>
             )}
           />
@@ -210,8 +256,19 @@ function UploadFilePage({
           </Stack>
           <Stack mt="1em" maxHeight="50%">
             <Typography variant="h5" fontWeight="bold" pb="1em">Select Existing Datasets</Typography>
-            { existingDatasets ? existingDatasets.map((data) => <TabCard data={data} width="95%" height="3em" handleOnClick={() => handleSelectDataset(data)} selected={selectedDataset && data._id === selectedDataset._id} />)
-              : <Typography>No existing datasets available.</Typography>}
+            { 
+              existingDatasets ? 
+                existingDatasets.map((data) => 
+                  <TabCard 
+                    data={data}
+                    width="95%" 
+                    height="3em"
+                    handleOnClick={
+                      () => handleSelectDataset(data)} selected={selectedDataset && data._id === selectedDataset._id
+                    }
+                  />)
+              : <Alert severity="info"> No existing datasets available. </Alert> 
+            }
           </Stack>
         </Box>
       </Stack>
@@ -221,17 +278,23 @@ function UploadFilePage({
           Back
         </CustomButton>
         <Stack direction="row" spacing={3} alignItems="center">
-          <Typography variant="h6" fontWeight="bold">{uploadedFile && `Selected file: ${uploadedFile[0].name}`}</Typography>
-          <CustomButton
-            type="primary"
-            disabled={!uploadedFile && !selectedDataset}
-            onClick={() => {
-              setOpen(true);
-            }}
-          >
-            Create Mapping
-            <CheckCircleOutlineIcon sx={{ marginLeft: '4px' }} />
-          </CustomButton>
+          <Typography variant="h6" fontWeight="bold">
+            { uploadedFile && `Selected file: ${uploadedFile[0].name}` }
+          </Typography>
+          <Tooltip title={(!uploadedFile && !selectedDataset) ? "You haven't selected or uploaded a dataset!" : ''} placement="top">
+            <span>
+              <CustomButton
+                type="primary"
+                disabled={!uploadedFile && !selectedDataset}
+                onClick={() => {
+                  setOpen(true);
+                }}
+              >
+                Create Mapping
+                <CheckCircleOutlineIcon sx={{ marginLeft: '4px' }} />
+              </CustomButton>
+            </span>
+          </Tooltip>
         </Stack>
       </Stack>
     </Box>

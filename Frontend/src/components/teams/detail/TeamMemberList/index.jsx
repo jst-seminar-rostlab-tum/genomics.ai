@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import CircularProgress from '@mui/material/CircularProgress';
+import { CircularProgress, Stack } from '@mui/material';
 import MemberList from 'components/members/MemberList';
 import TeamMemberRemoveButton from '../TeamMemberRemoveButton';
 import TeamMemberMakeAdminButton from '../TeamMemberMakeAdminButton';
@@ -8,16 +8,19 @@ import { useAuth } from 'shared/context/authContext';
 import TeamService from 'shared/services/Team.service';
 
 function TeamMemberList({
-  team, onMemberRemoved, onMakeAdmin, onRemoveAdmin,
+  team, updateTeam,
 }) {
   const [user] = useAuth();
   const [members, setMembers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  useEffect(async () => {
+  useEffect(() => {
     if (team.id == null) return;
     setIsLoading(true);
-    setMembers(await TeamService.getMembers(team.id));
-    setIsLoading(false);
+    TeamService.getMembers(team.id)
+      .then((newMembers) => {
+        setMembers(newMembers);
+        setIsLoading(false);
+      });
   }, [team]);
 
   if (isLoading) {
@@ -34,19 +37,18 @@ function TeamMemberList({
       )}
       trailingBuilder={(member) => (
         team.adminIds.includes(user._id) && user._id !== member.id ? (
-          <div>
+          <Stack direction="row" spacing={1}>
             <TeamMemberMakeAdminButton
               team={team}
               member={member}
-              onMakeAdmin={onMakeAdmin}
-              onRemoveAdmin={onRemoveAdmin}
+              updateTeam={updateTeam}
             />
             <TeamMemberRemoveButton
               team={team}
               member={member}
-              onRemoved={onMemberRemoved}
+              updateTeam={updateTeam}
             />
-          </div>
+          </Stack>
         ) : null
       )}
     />

@@ -33,7 +33,7 @@ const projects = [
     uploadId: 'abcde-12345',
     atlasId: '626ea3311d7d1a27de465b64',
     fileName: 'test3.h5ad',
-    location: './testData/test_file1.csv',
+    location: './testData/test_file3.csv',
     fileSize: 10000000,
     modelId: '626ea2361d7d1a27de465b60',
     name: 'Test project 03',
@@ -47,7 +47,7 @@ const projects = [
     uploadId: 'abcde-12345',
     atlasId: '626ea3311d7d1a27de465b63',
     fileName: 'test3.h5ad',
-    location: './testData/test_file1.csv',
+    location: './testData/test_file4.csv',
     fileSize: 10000000,
     modelId: '626ea2361d7d1a27de465b5f',
     name: 'Sample project',
@@ -151,7 +151,7 @@ const ProjectMock = {
   getDatasets: async () => datasets,
 
   deleteProject: async (id) => {
-    let i = projects.findIndex((project) => project._id === Number(id));
+    const i = projects.findIndex((project) => project._id === Number(id));
     return i > -1 ? projects.splice(i, 1) : false;
   },
 };
