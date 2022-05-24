@@ -476,5 +476,75 @@
         }
       }
     }
+  },
+  "/institutions/{id}/members/{userid}": {
+    "delete": {
+      "summary": "For admins: Remove (non-admin) user from the institution",
+      "tags": ["Institution"],
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }, 
+        {
+          "in": "path",
+          "name": "userid",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK"
+        },
+        "403": {
+          "description": "Forbidden. Returned when not an admin or trying to delete an admin"
+        },
+        "409": {
+          "description": "User is not part of the institution"
+        }
+      }
+    }
+  },
+  "/institutions/{id}/admins/{userid}": {
+    "delete": {
+      "summary": "For admins: Demote another admin",
+      "tags": ["Institution"],
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }, 
+        {
+          "in": "path",
+          "name": "userid",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK"
+        },
+        "403": {
+          "description": "Forbidden. Returned when not an admin"
+        },
+        "409": {
+          "description": "User is not an admin of the institution"
+        }
+      }
+    }
   }
 }
