@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react"
 import { FaLessThanEqual } from "react-icons/fa"
 import { useHistory } from "react-router-dom"
 import { colors } from "shared/theme/colors"
+import CustomButton from "components/CustomButton";
 
 // Outlined Button specific to Models and Atlases
 /**
@@ -13,7 +14,7 @@ import { colors } from "shared/theme/colors"
  * @param content text content to be displayed
  * @param link button href link  
  */
-export const OutlinedButton = ({ content, link = null, onClick }) => {
+export const OutlinedButton = ({ content, link = null, onClick, bg, color, bgHover, colorHover }) => {
   return (
     <Button
       variant="outlined"
@@ -21,8 +22,8 @@ export const OutlinedButton = ({ content, link = null, onClick }) => {
       href={link ? `#${link}` : null}
       onClick={onClick}
       sx={{
-        color: colors.primary[100], borderWidth: "2px", borderColor: colors.primary[100], borderRadius: "1.2rem", justifyContent: 'center', textAlign: 'center',
-        ":hover": { borderColor: '#01579B', borderWidth: "2px", backgroundColor: colors.primary[100], color: '#01579B', transition: '0.5s' }
+        color: color ? color : colors.primary[100], borderWidth: "2px", borderColor: bg ? bg : colors.primary[100], borderRadius: "1.2rem", justifyContent: 'center', textAlign: 'center',
+        ":hover": { borderColor: colorHover ? colorHover : '#01579B', borderWidth: "2px", backgroundColor: bgHover ? bgHover : colors.primary[100], color: colorHover ? colorHover : '#01579B', transition: '0.5s' }
       }}
     >
       {content}
@@ -60,7 +61,6 @@ export const ModelCard = ({ width = "100%", height = "100%", title, description,
         width: width,
         height: height
       }}
-      onClick={onSelect}
     >
       <Box
         ref={ref}
@@ -101,7 +101,7 @@ export const ModelCard = ({ width = "100%", height = "100%", title, description,
                 transform: "translate(-50%, -50%)"
               }}
             >
-              {/* <OutlinedButton content="Map" onClick={onClick} /> */}
+              <OutlinedButton content="Select" onClick={onSelect} />
               <OutlinedButton content="Learn More" link={learnMoreLink} onClick={(e) => e.stopPropagation()}/>
               {
                 disabled &&
@@ -123,9 +123,11 @@ export const ModelCard = ({ width = "100%", height = "100%", title, description,
               height: "100%",
               borderRadius: "1.2rem",
               p: "1rem",
-              opacity: 0.9,
-              // boxShadow: "0px 4px 6px 0px rgba(1, 87, 155, .20), 0px 0px 1px 0px rgba(1, 87, 155, .32)"
+              opacity: 0.95,
             }}>
+            <Typography sx={{ position: "absolute", fontSize: "12px", fontWeight: "bold", color: colors.neutral[900], textAlign: "center", left: "28%" }}>
+              Not Compatible
+            </Typography>
             <Box
               sx={{
                 display: "flex",
@@ -139,10 +141,8 @@ export const ModelCard = ({ width = "100%", height = "100%", title, description,
               }}
             >
 
-              <Typography sx={{ color: colors.neutral[900], textAlign: "center" }}>
-                Not Compatible
-              </Typography>
-            
+              { hover && <OutlinedButton content="Learn More" link={learnMoreLink} bg={colors.neutral[800]} color={colors.neutral[800]} onClick={(e) => e.stopPropagation()} bgHover={colors.neutral[100]} colorHover={colors.neutral[700]}/> }
+              {/* <CustomButton type="outlined" href={learnMoreLink ? `#${learnMoreLink}` : null} onClick={(e) => e.stopPropagation()}>Learn More</CustomButton> */}
             </Box>
           </Box>
         }
