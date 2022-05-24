@@ -16,7 +16,7 @@ def default_config():
     """
     return {
         parameters.MODEL: 'scVI',
-        parameters.ATLAS: 'pancreas',
+        parameters.ATLAS: 'Pancreas',
 
         parameters.REFERENCE_DATA_PATH: 'pancreas_source.h5ad',
         parameters.QUERY_DATA_PATH: 'pancreas_query.h5ad',
@@ -83,7 +83,7 @@ def query(user_config):
     start_time = time.time()
     configuration = merge_configs(user_config)
     model = utils.get_from_config(configuration, parameters.MODEL)
-    attributes = None
+    configuration['atlas'] = utils.translate_atlas_to_directory(configuration)
     if model == 'scVI':
         attributes = compute_scVI(configuration)
     elif model == 'scANVI':

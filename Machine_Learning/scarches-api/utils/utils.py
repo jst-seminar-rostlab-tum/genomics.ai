@@ -8,7 +8,6 @@ import scanpy
 from pathlib import Path
 from scarches.dataset.trvae.data_handling import remove_sparsity
 
-
 UNWANTED_LABELS = ['leiden', '', '_scvi_labels', '_scvi_batch']
 
 
@@ -215,3 +214,21 @@ def pre_process_data(configuration):
     except Exception as e:
         pass
     return source_adata, target_adata
+
+
+def translate_atlas_to_directory(configuration):
+    atlas = get_from_config(configuration, 'atlas')
+    if atlas == 'Pancreas':
+        return 'pancreas'
+    elif atlas == 'PBMC':
+        return 'pbmc'
+    elif atlas == 'Heart cell atlas':
+        return 'heart'
+    elif atlas == 'Human lung cell atlas':
+        return 'human-lung'
+    elif atlas == 'Bone marrow':
+        return 'bone-marrow'
+    elif atlas == 'Retina atlas':
+        return 'retina'
+    elif atlas == 'Fetal immune atlas':
+        return 'fetal-immune'
