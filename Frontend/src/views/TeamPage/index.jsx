@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import styles from './teamPage.module.css';
 import HeaderView from 'components/general/HeaderView';
 import TeamProjectList from 'components/teams/detail/TeamProjectList';
 import TeamMemberList from 'components/teams/detail/TeamMemberList';
@@ -10,8 +11,8 @@ import TeamService from 'shared/services/Team.service';
 import InstitutionService from 'shared/services/Institution.service';
 import TeamInviteButton from 'components/teams/detail/TeamInviteButton';
 import TextField from '@mui/material/TextField';
+import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import { useAuth } from 'shared/context/authContext';
-import Button from 'components/CustomButton';
 
 export default function TeamPage() {
   const { id } = useParams();
@@ -27,7 +28,8 @@ export default function TeamPage() {
     setNewDescription(event.target.value);
   };
 
-  function updateTeam() {
+  async function updateTeam(wait) {
+    if (wait) await new Promise((resolve) => setTimeout(resolve, 100));
     TeamService.getTeam(id)
       .then(setTeam)
       .catch((ignored) => { console.error(ignored); });
@@ -35,18 +37,18 @@ export default function TeamPage() {
 
   async function updateVisibility(newVisibility) {
     await TeamService.changeTeamVisibility(id, newVisibility);
-    updateTeam();
+    updateTeam(true);
   }
 
   async function updateDescription() {
     await TeamService.changeTeamDescription(id, newDescription);
-    updateTeam();
+    updateTeam(true);
     setDescriptionChanged(false);
   }
 
   useEffect(() => {
     if (id == null) return;
-    updateTeam();
+    updateTeam(false);
   }, [setTeam]);
 
   useEffect(() => {
@@ -77,12 +79,23 @@ export default function TeamPage() {
         />
       )}
       replaceHeaderRight={
-        (isAdmin && <TeamAdminHeaderRight team={team} updateVisibility={() => updateVisibility()} />)
-        || <TeamUserHeaderRight institution={institution} team={team} user={user} updateTeam={() => updateTeam()} />
+        (isAdmin && <TeamAdminHeaderRight team={team} updateVisibility={(value) => updateVisibility(value)} />)
+        || <TeamUserHeaderRight institution={institution} team={team} user={user} updateTeam={() => updateTeam(true)} />
       }
     >
       <br />
       <section>
+        {isAdmin && (
+          <button
+            className={styles.editDetailsButton}
+            type="button"
+            onClick={() => updateDescription()}
+            disabled={descriptionChanged ? '' : 'disabled'}
+          >
+            <span>Save Edits</span>
+            <SaveOutlinedIcon fontSize="small" />
+          </button>
+        )}
         <h2>Description</h2>
         <hr />
         <div>
@@ -99,12 +112,6 @@ export default function TeamPage() {
             onChange={handleDescriptionChange}
             variant="standard"
           />
-          {descriptionChanged
-            && (
-              <Button variant="outlined" type="secondary" onClick={() => updateDescription()}>
-                Submit
-              </Button>
-            )}
         </div>
       </section>
       <section>
@@ -117,7 +124,7 @@ export default function TeamPage() {
         <hr />
         <TeamMemberList
           team={team}
-          updateTeam={updateTeam}
+          updateTeam={() => updateTeam(true)}
         />
       </section>
       {isAdmin && <TeamInviteButton team={team} />}

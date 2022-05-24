@@ -44,14 +44,24 @@ const TeamService = MOCK_TEAMS ? MockTeamService : {
   },
 
   async removeMemberFromTeam(teamId, memberId) {
-    const team = await TeamService.getTeam(teamId);
-    team.memberIds = team.memberIds.filter((mId) => mId !== memberId);
-    await axiosInstance.post(`/teams/${teamId}`, { data: team });
+    try {
+      await axiosInstance.delete(`/teams/${teamId}/members/${memberId}`);
+    } catch (e) {
+      throw Error(e.response.data);
+    }
   },
 
   async makeTeamAdmin(teamId, userId) {
     try {
       await axiosInstance.put(`/teams/${teamId}/admin`, { userId });
+    } catch (e) {
+      throw Error(e.response.data);
+    }
+  },
+
+  async removeTeamAdmin(teamId, userId) {
+    try {
+      await axiosInstance.delete(`/teams/${teamId}/admins/${userId}`);
     } catch (e) {
       throw Error(e.response.data);
     }
