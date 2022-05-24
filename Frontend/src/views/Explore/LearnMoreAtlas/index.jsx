@@ -60,10 +60,12 @@ export const LearnMoreAtlasComponent = ({ onClick, id, isMap = false }) => {
           {atlas?.species}
         </Typography>
       </Box>
-      { 
+      <Box marginBlock="10px"><CustomButton>Select</CustomButton></Box>
+      {/*
         isMap &&
         <CustomButton sx={{ marginTop: "1em", padding: "0.5em 2em 0.5em 2em" }} type="primary" onClick={onClick}>Map</CustomButton>
-      }
+      */}
+      
     </Box>
   );
 };
