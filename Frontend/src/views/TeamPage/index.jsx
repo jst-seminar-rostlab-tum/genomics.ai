@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import styles from './teamPage.module.css';
 import HeaderView from 'components/general/HeaderView';
 import TeamProjectList from 'components/teams/detail/TeamProjectList';
 import TeamMemberList from 'components/teams/detail/TeamMemberList';
@@ -10,8 +11,8 @@ import TeamService from 'shared/services/Team.service';
 import InstitutionService from 'shared/services/Institution.service';
 import TeamInviteButton from 'components/teams/detail/TeamInviteButton';
 import TextField from '@mui/material/TextField';
+import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import { useAuth } from 'shared/context/authContext';
-import Button from 'components/CustomButton';
 
 export default function TeamPage() {
   const { id } = useParams();
@@ -83,6 +84,17 @@ export default function TeamPage() {
     >
       <br />
       <section>
+        {isAdmin && (
+          <button
+            className={styles.editDetailsButton}
+            type="button"
+            onClick={() => updateDescription()}
+            disabled={descriptionChanged ? '' : 'disabled'}
+          >
+            <span>Save Edits</span>
+            <SaveOutlinedIcon fontSize="small" />
+          </button>
+        )}
         <h2>Description</h2>
         <hr />
         <div>
@@ -99,12 +111,6 @@ export default function TeamPage() {
             onChange={handleDescriptionChange}
             variant="standard"
           />
-          {descriptionChanged
-            && (
-              <Button variant="outlined" type="secondary" onClick={() => updateDescription()}>
-                Submit
-              </Button>
-            )}
         </div>
       </section>
       <section>
