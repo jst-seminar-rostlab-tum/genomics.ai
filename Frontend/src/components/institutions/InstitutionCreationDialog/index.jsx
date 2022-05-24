@@ -1,46 +1,43 @@
 /* eslint-disable no-return-assign */
 import React, { useState } from 'react';
-import Button from '@mui/material/Button';
-import LoadingButton from '@mui/lab/LoadingButton';
+import Button from 'components/CustomButton';
 import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
+import { Modal, ModalTitle } from 'components/Modal';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
 import InstitutionService from 'shared/services/Institution.service';
+import { CircularProgress } from '@mui/material';
 
 export default function InstitutionCreationDialog({ open, handleClose, onCreated }) {
   const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
+  const [country, setCountry] = useState('');
   const [loading, setLoading] = useState(false);
   const [nameError, setNameError] = useState('');
-  const [descriptionError, setDescriptionError] = useState('');
+  const [countryError, setCountryError] = useState('');
 
   async function create() {
     if (!name) {
       setNameError('Please enter a name.');
     }
-    if (!description) {
-      setDescriptionError('Please enter a description.');
+    if (!country) {
+      setCountryError('Please enter a description.');
     }
-    if (!name || !description) return;
+    if (!name || !country) return;
     setLoading(true);
-    const newInstitution = await InstitutionService.createInstitution(name, description);
+    const newInstitution = await InstitutionService.createInstitution(name, country);
     onCreated(newInstitution);
     setLoading(false);
     handleClose();
     setName('');
-    setDescription('');
+    setCountry('');
   }
 
   return (
-    <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>Create an Institution</DialogTitle>
+    <Modal isOpen={open} setOpen={(o) => !o && handleClose()}>
+      <ModalTitle>Create an Institution</ModalTitle>
       <DialogContent>
         <TextField
           autoFocus
-          margin="dense"
-          id="name"
           label="Name"
           type="text"
           variant="standard"
@@ -50,24 +47,29 @@ export default function InstitutionCreationDialog({ open, handleClose, onCreated
           onChange={(evt) => { setName(evt.target.value); setNameError(''); }}
         />
         <TextField
-          margin="dense"
-          id="description"
-          label="Description"
+          label="Country"
           type="text"
           fullWidth
           multiline
-          maxRows={3}
           variant="standard"
           required
-          error={!!descriptionError}
-          helperText={descriptionError}
-          onChange={(evt) => { setDescription(evt.target.value); setDescriptionError(''); }}
+          error={!!countryError}
+          helperText={countryError}
+          onChange={(evt) => { setCountry(evt.target.value); setCountryError(''); }}
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
-        <LoadingButton onClick={() => create()} loading={loading}>Create</LoadingButton>
+        <Button type="tertiary" onClick={handleClose}>Cancel</Button>
+        {
+          loading ? (
+            <CircularProgress />
+          ) : (
+            <Button type="primary" disabled={!name || !country} onClick={() => create()}>
+              Create
+            </Button>
+          )
+        }
       </DialogActions>
-    </Dialog>
+    </Modal>
   );
 }

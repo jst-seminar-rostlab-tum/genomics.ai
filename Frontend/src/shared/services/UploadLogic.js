@@ -31,7 +31,7 @@ function getAuthAndJsonHeader() {
 async function uploadChunks(chunkCount, remaining, selectedFile, uploadId,
   submissionProgress, setSubmissionProgress, promiseArray) {
   for (let index = 1;
-    index < chunkCount + 1 && !localStorage.getItem('cancelUpload');
+    index < chunkCount + 1 && !localStorage.getItem(`cancelUpload_${uploadId}`);
     index += 1) {
     if (!remaining.includes(index)) {
       console.log(`Skipping chunk ${index}`);
@@ -78,16 +78,8 @@ function finishUpload(chunkCount, promiseArray, submissionProgress, setSubmissio
   selectedFile, uploadId) {
   Promise.all(promiseArray.map((promise) => promise.catch((e) => e)))
     .then(async (promises) => {
-      if (localStorage.getItem('cancelUpload')) {
-        localStorage.removeItem('cancelUpload');
-        setSubmissionProgress({
-          status: Status.IDLE,
-          uploadId: '',
-          chunks: 0,
-          uploaded: 0,
-          remaining: [],
-          uploadedParts: [],
-        });
+      if (localStorage.getItem(`cancelUpload_${uploadId}`)) {
+        localStorage.removeItem(`cancelUpload_${uploadId}`);
         return;
       }
       if (submissionProgress.remaining.length > 0) {
@@ -126,7 +118,7 @@ function finishUpload(chunkCount, promiseArray, submissionProgress, setSubmissio
     }).catch((err) => console.log(err));
 }
 
-async function uploadMultipartFile(uploadId, selectedFile,
+export async function uploadMultipartFile(uploadId, selectedFile,
   submissionProgress, setSubmissionProgress) {
   const chunkCount = Math.floor(selectedFile.size / UPLOAD_CHUNK_SIZE) + 1;
   const promiseArray = [];

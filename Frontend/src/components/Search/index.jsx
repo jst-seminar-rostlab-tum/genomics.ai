@@ -31,7 +31,7 @@ const FilterButton = ({ onClick }) => (
   </ButtonBase>
 );
 
-const Search = ({ filterComponent, handleSearch, value }) => {
+const Search = ({ filterComponent, handleSearch, value, padding = '10px' }) => {
 
   const [active, setActive] = useState(false)
   const [filterEnabled, setFilterEnabled] = useState(false)
@@ -64,7 +64,7 @@ const Search = ({ filterComponent, handleSearch, value }) => {
       justifyContent="space-between"
       sx={{
         position: 'relative',
-        p: '10px',
+        p: padding,
         border: `2px solid ${active ? colors.primary[400] : colors.primary[700]}`,
         borderRadius: '40px',
       }}
