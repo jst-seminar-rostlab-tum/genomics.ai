@@ -63,6 +63,7 @@ def write_adata_to_csv(model, adata=None, key=None, filename=tempfile.mktemp(), 
         anndata = scanpy.AnnData(model.get_latent_representation())
     else:
         anndata = scanpy.AnnData(model.get_latent_representation(adata=adata))
+        
     latent = anndata
     latent.obs['cell_type'] = adata.obs[cell_type_key].tolist()
     latent.obs['batch'] = adata.obs[condition_key].tolist()
@@ -229,10 +230,10 @@ def translate_atlas_to_directory(configuration):
     elif atlas == 'Heart cell atlas':
         return 'heart'
     elif atlas == 'Human lung cell atlas':
-        return 'human-lung'
+        return 'human_lung'
     elif atlas == 'Bone marrow':
-        return 'bone-marrow'
+        return 'bone_marrow'
     elif atlas == 'Retina atlas':
         return 'retina'
     elif atlas == 'Fetal immune atlas':
-        return 'fetal-immune'
+        return 'fetal_immune'
