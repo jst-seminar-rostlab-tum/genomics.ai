@@ -20,12 +20,12 @@ function InstitutionCard({
   };
 
   const {
-    name, avatarUrl, adminIds,
+    name, profilePictureURL, adminIds,
   } = institution;
   return (
     <ListCard
       title={name}
-      imageURL={avatarUrl}
+      imageURL={profilePictureURL}
       enforceImage
       nextToTitle={(
         <span className={styles.accessRightIndicator}>

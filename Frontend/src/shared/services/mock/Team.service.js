@@ -10,7 +10,7 @@ let mockTeams = [
     invitedMemberIds: [],
     memberIds: ['626bdb1ed76c8b968a50f833', 2, 3, 4, 5],
     projects: [],
-    visibility: 'public',
+    visibility: 'PUBLIC',
     institutionId: '1',
   },
   {
@@ -21,7 +21,7 @@ let mockTeams = [
     invitedMemberIds: [],
     memberIds: [2, 3, 4, 5],
     projects: [],
-    visibility: 'public',
+    visibility: 'PUBLIC',
     institutionId: '3',
   },
   {
@@ -32,7 +32,7 @@ let mockTeams = [
     invitedMemberIds: [],
     memberIds: [3, 4, 5],
     projects: [],
-    visibility: 'private',
+    visibility: 'PRIVATE',
     institutionId: '3',
   },
 ];
@@ -53,7 +53,6 @@ const TeamService = {
       name,
       country: null,
       description,
-      avatarUrl: null,
       backgroundPictureURL: null,
       adminIds: [user.id], // TODO: make sure that the backend puts my user ID here
       memberIds: [],

@@ -1,5 +1,4 @@
 import axiosInstance from './axiosInstance';
-import { startOrContinueUpload } from './UploadLogic';
 import MockProjectService from './mock/Project.service';
 
 const MODEL = 'projects';
@@ -21,18 +20,18 @@ const ProjectService = MOCK_PROJECTS ? MockProjectService : {
     return data;
   },
 
-  startOrContinueProjectUpload: async (
-    selectedFile,
-    submissionProgress,
-    setSubmissionProgress,
-    projectData,
-  ) => startOrContinueUpload(selectedFile,
-    submissionProgress,
-    setSubmissionProgress,
-    projectData),
+  createProject: async (projectName, atlasId, modelId, fileName) => {
+    const { data } = await axiosInstance.post('/file_upload/start_upload', {
+      projectName, atlasId, modelId, fileName,
+    });
+    return data;
+  },
 
   // Temporary solution for search to use backend data while teampage uses mock
-  getTeamProjects: async (teamId, forPart) => MockProjectService.getTeamProjects(teamId, forPart),
+  getTeamProjects: async (teamId) => {
+    const { data } = await axiosInstance.get(`/teams/${teamId}/projects`);
+    return data;
+  }
 };
 
 export default ProjectService;

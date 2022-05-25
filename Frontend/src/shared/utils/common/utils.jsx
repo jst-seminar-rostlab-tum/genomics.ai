@@ -40,5 +40,6 @@ export function setSeachCategoryInUrl(path, value) {
 export function formatDate(rawDate) {
   const date = new Date(Date.parse(rawDate));
   const monthNameLong = date.toLocaleString('en-US', { month: 'long' });
-  return date.getDate(`${date}th ${monthNameLong}`);
+  console.log(monthNameLong);
+  return `${date.getDate()}th ${monthNameLong}`;
 }
