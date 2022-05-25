@@ -11,6 +11,8 @@ First login or sign up using your academic affiliation.
 
 .. image:: _static/homepage.png
 
+test
+
 .. raw:: html
  <img src="_static/homepage.png" width="700px" align="center"/>
 
