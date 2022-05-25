@@ -15,6 +15,7 @@ import { useAuth } from 'shared/context/authContext';
 import Explore from 'views/Explore';
 import InstitutionPage from 'views/InstitutionPage';
 import TeamPage from 'views/TeamPage';
+import Footer from 'components/Footer';
 
 const DashboardContent = () => {
   const [sidebarShown] = useState(true);
@@ -68,6 +69,7 @@ const DashboardContent = () => {
           />
         </Route>
       </Switch>
+      <Footer />
     </div>
   );
 };

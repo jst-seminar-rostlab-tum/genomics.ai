@@ -56,7 +56,7 @@ export default function Sidebar(props) {
       <Box className={styles.sidebarNav}>
         <Box className={styles.sidebarWrap}>
           <Box sx={{
-            display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '98vh', marginTop: '2vh',
+            display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '97vh', marginTop: '2vh',
           }}
           >
             <Box className={styles.iconList}>
@@ -90,7 +90,7 @@ export default function Sidebar(props) {
               ))}
             </Box>
             <Box>
-              <NavLink
+              {/* <NavLink
                 to="/imprint"
                 className={styles.navlinkIcon}
                 style={{ display: "block", marginBottom: "1em" }}
@@ -118,7 +118,7 @@ export default function Sidebar(props) {
                     </ListItemIcon>
                   </Box>
                 </Tooltip>
-              </NavLink>
+              </NavLink> */}
 
               <NavLink
                 to="/"

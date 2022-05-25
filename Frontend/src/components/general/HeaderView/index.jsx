@@ -1,4 +1,4 @@
-import { Stack } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import React from 'react';
 import Header from 'components/general/Header';
 
@@ -8,7 +8,14 @@ function HeaderView({
   title, rightOfTitle, replaceHeaderRight, children,
 }) {
   return (
-    <div className={styles.headerView}>
+    // <div className={styles.headerView}>
+    <Box sx={{
+      width: "100%", 
+      height: "92vh", 
+      maxHeight: "92vh", 
+      overflowY: "auto", 
+      padding: "12px 60px 0 60px", 
+      boxSizing: "border-box"}}>
       <Stack
         direction="column"
         sx={{
@@ -31,7 +38,8 @@ function HeaderView({
           </div>
         </Stack>
       </Stack>
-    </div>
+    </Box>
+    // </div>
   );
 }
 

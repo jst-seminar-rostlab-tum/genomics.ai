@@ -9,9 +9,6 @@ import { useEffect, useRef, useState } from "react";
 import { useAuth } from 'shared/context/authContext';
 import ProfileImage from "components/ProfileImage";
 
-// REMOVE THIS LATER
-import UserProfileImage from "assets/user.png";
-
 //In styled(), we cannot use different width to fix different resolution
 //we have to use sx
 function Appbar(props) {
@@ -238,7 +235,7 @@ export default function Navbar({
           <LinkBox to="/explore"><Navlink>Explore</Navlink></LinkBox>
           <LinkBox to="/about"><Navlink>About us</Navlink></LinkBox>
           <Box sx={{ cursor: "pointer" }} onClick={executeScroll}><Navlink>Contact us</Navlink></Box>
-          <LinkBox to="/docs"><Navlink>Docs </Navlink></LinkBox>
+          <Box sx={{cursor: "pointer"}} onClick={()=>window.open("https://genecruncher.readthedocs.io/")}><Navlink>Docs</Navlink></Box>
         </Leftbar>
         <Rightbar>
             {!user && <Login onClick={onLoginClicked}>Log In</Login>}
