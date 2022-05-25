@@ -237,3 +237,31 @@ def translate_atlas_to_directory(configuration):
         return 'retina'
     elif atlas == 'Fetal immune atlas':
         return 'fetal_immune'
+
+
+def set_keys(configuration):
+    atlas = get_from_config(configuration, 'atlas')
+    if atlas == 'Pancreas':
+        return configuration
+    elif atlas == 'PBMC':
+        return configuration
+    elif atlas == 'Heart cell atlas':
+        configuration[parameters.CELL_TYPE_KEY] = 'cell_type'
+        configuration[parameters.CONDITION_KEY] = 'source'
+        return configuration
+    elif atlas == 'Human lung cell atlas':
+        configuration[parameters.CELL_TYPE_KEY] = 'ann_coarse_for_GWAS_and_modeling'
+        configuration[parameters.CONDITION_KEY] = 'dataset'
+        return configuration
+    elif atlas == 'Bone marrow':
+        # configuration[parameters.CELL_TYPE_KEY] = 'cell_type'
+        # configuration[parameters.CONDITION_KEY] = 'source'
+        return configuration
+    elif atlas == 'Retina atlas':
+        configuration[parameters.CELL_TYPE_KEY] = 'CellType'
+        configuration[parameters.CONDITION_KEY] = '‘batch’'
+        return configuration
+    elif atlas == 'Fetal immune atlas':
+        configuration[parameters.CELL_TYPE_KEY] = 'cell_name'
+        configuration[parameters.CONDITION_KEY] = 'bbk'
+        return configuration

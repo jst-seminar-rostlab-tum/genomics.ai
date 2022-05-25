@@ -209,26 +209,26 @@ def compute_query(pretrained_model, anndata, reference_latent, source_adata, con
 
     return model
 
-'''
-def compute_full_latent(source_adata, target_adata, model, configuration):
-    """
-    basically just takes to datasets, concatenates them and then computes the latent and saves the result
-    :param source_adata:
-    :param target_adata:
-    :param model:
-    :return:
-    """
-    full_latent = compute_latent(model, source_adata.concatenate(target_adata), configuration)
 
-    if utils.get_from_config(configuration, parameters.DEBUG):
-        utils.save_umap_as_pdf(full_latent, 'data/figures/both.pdf', color=['batch', 'cell_type'])
+# def compute_full_latent(source_adata, target_adata, model, configuration):
+#     """
+#     basically just takes to datasets, concatenates them and then computes the latent and saves the result
+#     :param source_adata:
+#     :param target_adata:
+#     :param model:
+#     :return:
+#     """
+#     full_latent = compute_latent(model, source_adata.concatenate(target_adata), configuration)
 
-    both_path = 'both.csv'
+#     if utils.get_from_config(configuration, parameters.DEBUG):
+#         utils.save_umap_as_pdf(full_latent, 'data/figures/both.pdf', color=['batch', 'cell_type'])
 
-    utils.write_latent_csv(full_latent, key='both.csv', filename=both_path, drop_colums=dropped_columns)
+#     both_path = 'both.csv'
 
-    return full_latent
-'''
+#     utils.write_latent_csv(full_latent, key='both.csv', filename=both_path, drop_colums=dropped_columns)
+
+#     return full_latent
+
 
 
 def compute_scVI(configuration):
