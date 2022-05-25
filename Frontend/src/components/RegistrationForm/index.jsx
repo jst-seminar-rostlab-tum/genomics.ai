@@ -1,5 +1,12 @@
 import {
-  Typography, Box, Grid, Snackbar, Link
+  Typography,
+  Box,
+  Grid,
+  Snackbar,
+  Link,
+  FormControlLabel,
+  Checkbox,
+  Icon,
 } from '@mui/material';
 import React, { useCallback, useState } from 'react';
 import validator from 'validator';
@@ -10,6 +17,8 @@ import Input from 'components/Input/Input';
 import { Modal, ModalTitle } from 'components/Modal';
 import CustomButton from 'components/CustomButton';
 import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead';
+import ChromeReaderModeIcon from '@mui/icons-material/ChromeReaderMode';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 function RegistrationForm(props) {
   const [, setUser] = useAuth();
@@ -26,7 +35,10 @@ function RegistrationForm(props) {
   const [loading, setLoading] = useState(false);
   const [isSnackbarVisible, setSnackbarVisible] = useState(false);
   const [checkYourEmail, setCheckYourEmail] = useState(false);
+  const [imprint, setImprint] = useState(false);
+  const [isAcceptedTermsSnackbar, setIsAcceptedTermsSnackbar] = useState(false);
 
+  const history = useHistory();
   const handleTextChange = useCallback(
     (e) => {
       setUserDetails((prevState) => ({
@@ -119,6 +131,10 @@ function RegistrationForm(props) {
     if (!validateInput()) {
       return;
     }
+    if (imprint === false) {
+      setIsAcceptedTermsSnackbar(true);
+      return;
+    }
     setLoading(true);
 
     const requestOptions = {
@@ -141,7 +157,15 @@ function RegistrationForm(props) {
       }
       setSnackbarVisible(true);
     });
-  }, [userDetails, setErrors, setLoading, props, setSnackbarVisible, setUser]);
+  }, [
+    userDetails,
+    setErrors,
+    setLoading,
+    props,
+    setSnackbarVisible,
+    setUser,
+    imprint,
+  ]);
 
   const { onClose, visible, switchForm } = props;
 
@@ -151,9 +175,13 @@ function RegistrationForm(props) {
         {checkYourEmail === true ? (
           <Modal isOpen={checkYourEmail} setOpen={(o) => !o && onClose()}>
             <ModalTitle>Verify your email!</ModalTitle>
-            <Box sx={{
-              display: 'flex', flexDirection: 'column', rowGap: 2, padding: 2,
-            }}
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                rowGap: 2,
+                padding: 2,
+              }}
             >
               <Box sx={{ display: 'flex' }}>
                 <MarkEmailReadIcon color="primary" />
@@ -233,6 +261,26 @@ function RegistrationForm(props) {
                   isRequired
                   onChangeEvent={handleTextChange}
                 />
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <FormControlLabel
+                    control={(
+                      <Checkbox
+                        id="remember"
+                        onChange={() => setImprint(!imprint)}
+                        disableRipple
+                        disableFocusRipple
+                      />
+                  )}
+                    label="Accept terms and conditions"
+                  />
+                  <Box>
+                    <ChromeReaderModeIcon
+                      sx={{ marginTop: 0.5, '&:hover': { cursor: 'pointer' } }}
+                      onClick={() => history.push('/imprint')}
+                      color="primary"
+                    />
+                  </Box>
+                </Box>
                 <Box mt={1}>
                   <CustomButton
                     type="primary"
@@ -243,20 +291,39 @@ function RegistrationForm(props) {
                   </CustomButton>
                 </Box>
                 <Typography mt={1} textAlign="center">
-                  Already have an account? Login {" "}
+                  Already have an account? Login
+                  {' '}
                   <Link
                     href="#"
-                    onClick={() => { clearForm(); switchForm(true); }}
+                    onClick={() => {
+                      clearForm();
+                      switchForm(true);
+                    }}
                   >
                     here
                   </Link>
-                  {"."}
+                  .
                 </Typography>
               </Grid>
             </Box>
           </>
         )}
       </Modal>
+      <Snackbar
+        open={isAcceptedTermsSnackbar}
+        autoHideDuration={10000}
+        onClose={() => setIsAcceptedTermsSnackbar(false)}
+      >
+        <Alert
+          severity="error"
+          sx={{ width: '100%' }}
+          onClose={() => setIsAcceptedTermsSnackbar(false)}
+        >
+          {errors.response
+            ? errors.response
+            : 'You must accept terms and conditions!'}
+        </Alert>
+      </Snackbar>
       <Snackbar
         open={isSnackbarVisible}
         autoHideDuration={10000}

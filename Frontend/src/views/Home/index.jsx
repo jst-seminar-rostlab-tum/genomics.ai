@@ -70,7 +70,7 @@ const Home = () => {
 
       {isLoginFormVisible && <LoginForm visible={isLoginFormVisible} onClose={onLoginFormClosed} switchForm={setRegistrationFormVisible} onForgetPassword={setPasswordForgetFormVisible}/>}
       {isRegistrationFormVisible && <RegistrationForm visible={isRegistrationFormVisible} switchForm={setLoginFormVisible} onClose={onRegistrationFormClosed} />}
-      {isPasswordForgetFormVisible && <PasswordForgetForm visible={isRegistrationFormVisible} switchForm={setLoginFormVisible} onClose={onForgetPasswordClosed}/>}
+      {isPasswordForgetFormVisible && <PasswordForgetForm visible={isPasswordForgetFormVisible} switchForm={setLoginFormVisible} onClose={onForgetPasswordClosed}/>}
       {/* STARTING PAGE */}
       <Box sx={{ width: window.width, bgcolor: colors.primary[800], position: "relative", paddingBottom: "4em" }}>
         {/* NAVBAR HERE */}

@@ -72,8 +72,8 @@ function PasswordForgetForm(props) {
       }
     );
     
-    props.onClick()
-    switchForm(true);
+    //props.onClick()
+    //switchForm(true);
 
     // history.push('/password_reset');
   }

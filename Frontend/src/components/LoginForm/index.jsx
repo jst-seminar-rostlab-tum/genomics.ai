@@ -172,6 +172,7 @@ function LoginForm(props) {
               id="email"
               type="email"
               defaultValue={localStorage.getItem("email")}
+              
               error={!!errors.email}
               helperText={errors.email}
               label="E-mail"
