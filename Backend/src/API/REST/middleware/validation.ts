@@ -1,8 +1,11 @@
 import Ajv from "ajv";
 import { Request, Response, NextFunction } from "express";
-import * as swaggerDocument from "../../../swagger.json";
+
+import { loadSwaggerDocument } from "../../../swagger/load-swagger";
 
 const ajv = new Ajv();
+
+const swaggerDocument = loadSwaggerDocument();
 
 for (const [path, pathObj] of Object.entries(swaggerDocument.paths)) {
   for (const [method, methodObj] of Object.entries(pathObj)) {

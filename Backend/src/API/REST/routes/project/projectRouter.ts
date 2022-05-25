@@ -7,10 +7,13 @@ import InstitutionService from "../../../../database/services/institution.servic
 import { ObjectId } from "mongoose";
 import { validationMdw } from "../../middleware/validation";
 import ProjectUpdateTokenService from "../../../../database/services/project_update_token.service";
-import s3 from "../../../../util/s3";
+import DeletedProjectService from "../../../../database/services/deletedProject.service";
+import { IDeletedProject } from "../../../../database/models/deleted_projects";
 import { UpdateProjectDTO } from "../../../../database/dtos/project.dto";
+import s3 from "../../../../util/s3";
+import { DeleteObjectRequest } from "aws-sdk/clients/s3";
 import { ProjectStatus } from "../../../../database/models/project";
-import { result_path } from "../file_upload/bucket_filepaths";
+import { query_path, result_model_path, result_path } from "../file_upload/bucket_filepaths";
 
 const get_projects = (): Router => {
   let router = express.Router();
@@ -172,10 +175,117 @@ const update_project_results = (): Router => {
   return router;
 };
 
+const delete_project = (): Router => {
+  let router = express.Router();
+  router.delete("/project/:id", check_auth(), validationMdw, async (req, res) => {
+    try {
+      const projectId = req.params.id;
+      const project = (await ProjectService.getProjectById(projectId))?.toObject();
+      if (project == null) return res.status(404).send("Project not found");
+
+      const deletedProject = {
+        ...project,
+        deletedAt: new Date(),
+      };
+
+      await DeletedProjectService.addDeletedProject(deletedProject);
+      await ProjectService.deleteProjectById(projectId);
+
+      return res.status(200).send("OK");
+    } catch (err) {
+      console.error(JSON.stringify(err));
+      return res.status(500).send("Internal server error");
+    }
+  });
+  return router;
+};
+
+const get_deleted_projects = (): Router => {
+  let router = express.Router();
+  router.get("/deletedprojects", check_auth(), validationMdw, async (req: ExtRequest, res) => {
+    try {
+      let projects = await DeletedProjectService.getDeletedProjectsByOwner(req.user_id!);
+      if (!projects) {
+        console.error("getDeletedProjectsOfUsers returned null/undefined");
+        projects = [];
+      }
+      return res.status(200).json(projects);
+    } catch (err) {
+      console.error(err);
+      return res.status(500).send("Internal server error");
+    }
+  });
+  return router;
+};
+
+const restore_deleted_project = (): Router => {
+  let router = express.Router();
+  router.post(
+    "/deletedprojects/:id/restore",
+    check_auth(),
+    validationMdw,
+    async (req: ExtRequest, res) => {
+      try {
+        let project = (
+          await DeletedProjectService.getDeletedProjectById(req.params.id)
+        )?.toObject();
+        if (!project) {
+          return res.status(404).send("Project not found");
+        }
+        let { deletedAt, ...restoredProject } = project;
+        await ProjectService.addProject(restoredProject);
+        await DeletedProjectService.deleteDeletedProjectById(project._id);
+        return res.status(200).send("OK");
+      } catch (err) {
+        console.error(err);
+        return res.status(500).send("Internal server error");
+      }
+    }
+  );
+  return router;
+};
+
+const cleanup_old_projects = (): Router => {
+  let router = express.Router();
+  router.get("/clean-recyclebin", async (req: ExtRequest, res) => {
+    try {
+      let oldprojects = await DeletedProjectService.getProjectsOverLifetime();
+      for (const project of oldprojects) {
+        try_delete_object_from_s3(result_path(project.id));
+        try_delete_object_from_s3(result_model_path(project.id));
+        try_delete_object_from_s3(query_path(project.id));
+      }
+      let ids = oldprojects.map((p) => p.id);
+      await DeletedProjectService.deleteProjectsByIds(ids);
+      return res.status(200).send("OK");
+    } catch (err) {
+      console.error(err);
+      return res.status(500).send("Internal server error");
+    }
+  });
+  return router;
+};
+function try_delete_object_from_s3(key: string) {
+  let params: DeleteObjectRequest = {
+    Bucket: process.env.S3_BUCKET_NAME,
+    Key: key,
+  };
+  s3.deleteObject(params)
+    .promise()
+    .catch((e) => {
+      console.error(`Error while deleting ${key}`);
+      console.error(e);
+    });
+}
+
 export {
   get_projects,
   get_userProjects,
   get_project_by_id,
   get_users_projects,
   update_project_results,
+  delete_project,
+  get_deleted_projects,
+  restore_deleted_project,
+  cleanup_old_projects,
 };

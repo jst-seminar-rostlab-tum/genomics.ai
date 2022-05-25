@@ -134,7 +134,7 @@ export default function upload_complete_upload_route() {
               });
               const params2: PutObjectRequest = {
                 Bucket: process.env.S3_BUCKET_NAME!,
-                Key: `results/${project!.id}/query.tsv`,
+                Key: result_path(project.id),
                 Body: content,
               };
               await s3.upload(params2).promise();
@@ -152,8 +152,6 @@ export default function upload_complete_upload_route() {
             await ProjectService.updateProjectByUploadId(params.UploadId, updateStatus);
             return res.status(500).send("Processing failed!");
           }
-
-          //Processing finished, http response has already be sent before processing, update database entry now
         } catch (err) {
           console.log(err);
           try {
