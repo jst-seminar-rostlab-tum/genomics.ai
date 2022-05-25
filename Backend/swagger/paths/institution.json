@@ -16,6 +16,9 @@
                 "country": {
                   "type": "string"
                 },
+                "description": {
+                  "type": "string"
+                },
                 "profilePictureURL": {
                   "type": "string"
                 },
@@ -63,50 +66,6 @@
         },
         "400": {
           "description": "Failed. Bad post data."
-        }
-      }
-    }
-  },
-  "/institutions/{id}/invite": {
-    "put": {
-      "summary": "Invite a user to institution",
-      "tags": ["Institution"],
-      "parameters": [
-        {
-          "in": "path",
-          "name": "id",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        }
-      ],
-      "requestBody": {
-        "required": true,
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                "userId": {
-                  "type": "string"
-                }
-              },
-              "required": ["userId"],
-              "additionalProperties": false
-            }
-          }
-        }
-      },
-      "responses": {
-        "200": {
-          "description": "OK"
-        },
-        "400": {
-          "description": "Failed. Bad post data."
-        },
-        "500": {
-          "description": "Error: Internal Error."
         }
       }
     }
@@ -249,8 +208,8 @@
       }
     }
   },
-  "/institutions/{id}/join": {
-    "put": {
+  "/institutions/{idInstitution}&{idUser}/join": {
+    "get": {
       "summary": "Join as member of institution",
       "tags": ["Institution"],
       "parameters": [
@@ -272,6 +231,103 @@
         },
         "401": {
           "description": "Invalid autherization permission!"
+        }
+      }
+    },
+    "delete": {
+      "summary": "A member leaves the institution. (i.e. removes the reference that linked it with the institution)",
+      "tags": ["Institution"],
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "institutionId": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "user": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "country": {
+                    "type": "string"
+                  },
+                  "profilePictureURL": {
+                    "type": "string"
+                  },
+                  "adminIds": {
+                    "type": "array"
+                  },
+                  "memberIds": {
+                    "type": "array"
+                  },
+                  "invitedMemberIds": {
+                    "type": "array"
+                  },
+                  "createdAt": {
+                    "type": "string"
+                  },
+                  "updatedAt": {
+                    "type": "string"
+                  },
+                  "__v": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": ["Missing parameters."]
+        },
+        "403": {
+          "description": "You are the only one admin of the institution."
+        },
+        "404": {
+          "description": ["Institution does not exist.", "User does not exist."]
+        },
+        "409": {
+          "description": [
+            "You are not member of the institution.",
+            "Information of the user does not match."
+          ]
+        },
+        "500": {
+          "description": [
+            "Internal error.",
+            "Unable to remove user from a institution.",
+            "Error when removing you from the institution."
+          ]
         }
       }
     }
@@ -377,6 +433,116 @@
         },
         "400": {
           "description": "Failed. Bad post data."
+        }
+      }
+    },
+
+    "put": {
+      "summary": "Update an institution",
+      "tags": ["Institution"],
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "description": "Id of the instituion",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        }
+      },
+      "responses": {
+        "202": {
+          "description": "Update operation was accepted"
+        },
+        "400": {
+          "description": "Failed. Bad post data."
+        }
+      }
+    }
+  },
+  "/institutions/{id}/members/{userid}": {
+    "delete": {
+      "summary": "For admins: Remove (non-admin) user from the institution",
+      "tags": ["Institution"],
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }, 
+        {
+          "in": "path",
+          "name": "userid",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK"
+        },
+        "403": {
+          "description": "Forbidden. Returned when not an admin or trying to delete an admin"
+        },
+        "409": {
+          "description": "User is not part of the institution"
+        }
+      }
+    }
+  },
+  "/institutions/{id}/admins/{userid}": {
+    "delete": {
+      "summary": "For admins: Demote another admin",
+      "tags": ["Institution"],
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }, 
+        {
+          "in": "path",
+          "name": "userid",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK"
+        },
+        "403": {
+          "description": "Forbidden. Returned when not an admin"
+        },
+        "409": {
+          "description": "User is not an admin of the institution"
         }
       }
     }

@@ -39,10 +39,13 @@ import {
   get_institutions,
   get_institution,
   get_members_of_institution,
+  remove_member_from_institution,
+  remove_admin_role_for_institution_member,
   get_teams_of_institution,
   get_projects_of_institution,
   get_users_institutions,
   disjoin_member_of_institution,
+  update_institution,
 } from "./routes/institution/institutionRouter";
 
 import {
@@ -58,6 +61,10 @@ import {
   disjoin_member,
   get_team,
   update_team,
+  get_members_of_team,
+  remove_member_from_team,
+  remove_admin_role_for_team_member,
+  get_projects_of_team,
 } from "./routes/team/teamRouter";
 
 import {
@@ -65,6 +72,10 @@ import {
   get_userProjects,
   get_project_by_id,
   get_users_projects,
+  delete_project,
+  get_deleted_projects,
+  restore_deleted_project,
+  cleanup_old_projects,
 } from "./routes/project/projectRouter";
 
 import {
@@ -77,6 +88,7 @@ import {
   reset_institution_profilepicture_route,
 } from "./routes/reset_institution_pictures";
 import reset_user_avatar_route from "./routes/reset_user_avatar";
+import { contact_us } from "./routes/contact/contactRoute";
 
 // setup the websocket-server on top of the http_server
 export function express_routes(this: REST_Host): Router {
@@ -122,6 +134,10 @@ export function express_routes(this: REST_Host): Router {
   this.expressApp.use(disjoin_member());
   this.expressApp.use(get_team());
   this.expressApp.use(update_team());
+  this.expressApp.use(get_members_of_team());
+  this.expressApp.use(remove_member_from_team());
+  this.expressApp.use(remove_admin_role_for_team_member());
+  this.expressApp.use(get_projects_of_team());
 
   // user routes
   this.expressApp.use(get_teams_of_user());
@@ -133,6 +149,10 @@ export function express_routes(this: REST_Host): Router {
   this.expressApp.use(get_userProjects());
   this.expressApp.use(get_project_by_id());
   this.expressApp.use(get_users_projects());
+  this.expressApp.use(delete_project());
+  this.expressApp.use(get_deleted_projects());
+  this.expressApp.use(restore_deleted_project());
+  this.expressApp.use(cleanup_old_projects());
 
   // model routes
   this.expressApp.use(get_model());
@@ -151,8 +171,12 @@ export function express_routes(this: REST_Host): Router {
   // download routes
   this.expressApp.use(download_results_route());
 
+  //contact routes
+  this.expressApp.use(contact_us());
+
   // institution routes
   this.expressApp.use(create_institution());
+  this.expressApp.use(update_institution());
   this.expressApp.use(invite_to_institution());
   this.expressApp.use(get_institution());
   this.expressApp.use(get_institutions());
@@ -166,6 +190,8 @@ export function express_routes(this: REST_Host): Router {
   this.expressApp.use(get_teams_of_institution());
   this.expressApp.use(get_projects_of_institution());
   this.expressApp.use(get_users_institutions());
+  this.expressApp.use(remove_member_from_institution());
+  this.expressApp.use(remove_admin_role_for_institution_member());
   this.expressApp.use(disjoin_member_of_institution());
 
   this.expressApp.use(/^.*_ah.*$/, (req, res) => res.status(200).send()); // always tell google everything is fine

@@ -54,13 +54,13 @@ class Mailer {
         let fullpath = path.join(__dirname, "./../views/mails", template_name, "front", filepath);
         let content = await fs.readFile(fullpath);
 
-        //nodemailer-mailgun-transport doesnt correctly support path attribute, 
+        //nodemailer-mailgun-transport doesnt correctly support path attribute,
         //and also priotizes cid before filename for passing a filename to mailgun-js
         //not optimal, but cant do anything about it.
         attachmentsWithCid.push({
           cid: cid,
           filename: filename,
-          content: content, 
+          content: content,
         });
       }
     }
@@ -69,7 +69,7 @@ class Mailer {
     let rendered_html = handlebars.compile(htmltemplate)(data);
 
     let mail = {
-      from: `GeneCruncher <info@${process.env.MAIL_DOMAIN}>`,
+      from: `GeneCruncher <noreply@${process.env.MAIL_DOMAIN}>`,
       to: to,
       subject: subject,
       text: rendered_txt,
@@ -112,7 +112,7 @@ class Mailer {
       "password_reset_request_email",
       {
         firstname: firstname,
-        link: `${process.env.FRONTEND_URL}/#/password_reset?token=${token}`,
+        link: `${process.env.FRONTEND_URL}/password_reset?token=${token}`,
         new_reset_link: `${process.env.FRONTEND_URL}/password_reset`,
         genecruncher_static: `${process.env.STATIC_FILES_URL}`,
       },
@@ -140,7 +140,8 @@ class Mailer {
     firstname: string,
     recipient: string,
     institution: string,
-    country: string
+    country: string,
+    link: string
   ) {
     return this.send(
       recipient,
@@ -150,13 +151,20 @@ class Mailer {
         institution,
         country,
         firstname,
+        link,
       }
     );
   }
-  async send_invitation_to_team_mail(firstname: string, recipient: string, teamname: string) {
+  async send_invitation_to_team_mail(
+    firstname: string,
+    recipient: string,
+    teamname: string,
+    link: string
+  ) {
     return this.send(recipient, "[GeneCruncher] Invitation to a team", "invitation_to_team", {
       firstname,
       teamname,
+      link,
     });
   }
 }

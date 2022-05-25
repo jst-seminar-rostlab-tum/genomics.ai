@@ -36,6 +36,105 @@
           }
         }
       }
+    },
+    "schemas": {
+      "Project": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "owner": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "uploadId": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "fileName": {
+            "type": "string"
+          },
+          "fileSize": {
+            "type": "number"
+          },
+          "uploadDate": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "resultName": {
+            "type": "string"
+          },
+          "resultSize": {
+            "type": "number"
+          },
+          "atlasId": {
+            "type": "string"
+          },
+          "modelId": {
+            "type": "string"
+          },
+          "teamId": {
+            "type": "string"
+          }
+        }
+      },
+      "DeletedProject": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "owner": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "uploadId": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "fileName": {
+            "type": "string"
+          },
+          "fileSize": {
+            "type": "number"
+          },
+          "uploadDate": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "resultName": {
+            "type": "string"
+          },
+          "resultSize": {
+            "type": "number"
+          },
+          "atlasId": {
+            "type": "string"
+          },
+          "modelId": {
+            "type": "string"
+          },
+          "teamId": {
+            "type": "string"
+          },
+          "deletedAt": {
+            "type": "string"
+          }
+        }
+      }
     }
   },
   "security": [
@@ -75,7 +174,5 @@
       "description": "APIs for CRUD operations on Model"
     }
   ],
-  "paths": {
-    
-  }
+  "paths": {}
 }

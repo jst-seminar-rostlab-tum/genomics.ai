@@ -11,48 +11,7 @@
               "schema": {
                 "type": "array",
                 "items": {
-                  "type": "object",
-                  "properties": {
-                    "_id": {
-                      "type": "string"
-                    },
-                    "owner": {
-                      "type": "string"
-                    },
-                    "uploadId": {
-                      "type": "string"
-                    },
-                    "location": {
-                      "type": "string"
-                    },
-                    "fileName": {
-                      "type": "string"
-                    },
-                    "fileSize": {
-                      "type": "number"
-                    },
-                    "uploadDate": {
-                      "type": "object"
-                    },
-                    "status": {
-                      "type": "string"
-                    },
-                    "resultName": {
-                      "type": "string"
-                    },
-                    "resultSize": {
-                      "type": "number"
-                    },
-                    "atlasId": {
-                      "type": "string"
-                    },
-                    "modelId": {
-                      "type": "string"
-                    },
-                    "teamId": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/Project"
                 }
               }
             }
