@@ -11,6 +11,7 @@ import {
 import { Modal, ModalTitle } from 'components/Modal';
 import PersonAddOutlinedIcon from '@mui/icons-material/PersonAddOutlined';
 import Button from 'components/CustomButton';
+import InstitutionService from 'shared/services/Institution.service';
 
 function InstitutionInviteButton({ institution }) {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -27,6 +28,7 @@ function InstitutionInviteButton({ institution }) {
       return;
     }
     setOpen(true);
+    InstitutionService.inviteMember(institution.id, invitedMailAdress);
     handleCloseDialog();
   };
 

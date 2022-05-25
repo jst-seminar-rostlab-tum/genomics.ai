@@ -19,6 +19,7 @@ import graphic4 from 'assets/landing-illustrations/results.png';
 import CustomButton from "components/CustomButton";
 import Input from 'components/Input/Input'
 import { useHistory, useLocation } from "react-router-dom";
+import ContactForm from 'components/ContactForm';
 
 const Home = () => {
 
@@ -180,7 +181,7 @@ const Home = () => {
         <Box ref={contactUsBoxRef} sx={{ position: "relative", margin: "4em auto", position: "relative", width: "100%" }} >
           <Typography sx={{ textAlign: "center" }} fontSize="2em" fontWeight="bold">Contact Us</Typography>
           <Typography marginTop="1em" sx={{ textAlign: "center" }} fontSize="1em">Please message us in case you have any questions, feedback or collaboration-related inquiries concerning Genomics.ai.</Typography>
-          <Box sx={{
+          {/* <Box sx={{
             width: "100%",
             margin: "2em auto 0em auto",
             padding: "2em 0em",
@@ -199,7 +200,8 @@ const Home = () => {
                 <CustomButton>Send</CustomButton>
               </Box>
             </Stack>
-          </Box>
+          </Box> */}
+          <ContactForm />
         </Box>
       </Box>
 
