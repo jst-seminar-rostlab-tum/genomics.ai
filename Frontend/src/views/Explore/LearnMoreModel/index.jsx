@@ -2,19 +2,20 @@ import React, { useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import ModelsService from 'shared/services/Models.service';
 import { useParams } from 'react-router-dom';
+import CustomButton from 'components/CustomButton';
 
-export const LearnMoreModelComponent = ({ id }) => {
-  
+export const LearnMoreModelComponent = ({ onClick, id, isMap = false }) => {
+
   const [model, setModel] = useState(null);
-  
+
   useEffect(() => {
-    if(id) {
+    if (id) {
       ModelsService.getModelById(id)
         .then((data) => setModel(data))
         .catch((err) => console.log(err));
     }
   }, [id]);
-  
+
   return (
     <Box sx={{
       display: 'flex',
@@ -32,13 +33,18 @@ export const LearnMoreModelComponent = ({ id }) => {
       <Box>
         <Typography sx={{ fontSize: '20px', fontWeight: 600, borderBottom: '1px solid black' }}>Overview</Typography>
       </Box>
-      
-      <Typography sx={{ width:'100%', maxWidth: '800px' }}>Description: {model?.description}</Typography> 
+
+      <Typography sx={{ width: '100%', maxWidth: '800px' }}>Description: {model?.description}</Typography>
+      {
+        // isSelect
+        isMap &&
+        <CustomButton sx={{ marginTop: "1em", padding: "0.5em 2em 0.5em 2em" }} type="primary" onClick={() => onClick(model)}>Select</CustomButton>
+      }
     </Box>
   );
 }
 
-export default function LearnMore() {
+export default function LearnMore({handleSelect}) {
   const { id } = useParams();
 
   return (
@@ -49,7 +55,7 @@ export default function LearnMore() {
         minWidth: '1200px',
       }}
       >
-        <LearnMoreModelComponent id={id} />
+        <LearnMoreModelComponent id={id} isMap={true} onClick={handleSelect} />
       </Box>
     </Box>
   )

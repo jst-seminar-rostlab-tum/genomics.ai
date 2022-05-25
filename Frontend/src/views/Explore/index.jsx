@@ -196,13 +196,13 @@ const Explore = () => {
         </Box>
 
         <Stack
-          direction="row"
+          direction={{xs: "column", sm: "column", md: "row"}}
           sx={{
             alignSelf: 'center', width: '60%', marginTop: '2%', justifyContent: 'space-between',
           }}
         >
           <Breadcrumb elems={elems} fontSize={1} actions={{ explore: () => setValue(0) }} />
-          <Box sx={{ alignSelf: 'center', width: '40%', marginBlock: '2%' }}>
+          <Box sx={{ alignSelf: 'center', width: { xs: "100%", sm: "100%", md: "40%"}, marginBlock: '2%' }}>
             <Search
               filterComponent={(
                 <Filter
@@ -228,7 +228,7 @@ const Explore = () => {
           }}
         >
           {/* /explore/atlases */}
-          <ExploreRoutes atlases={atlases && tabMenu()} models={models && tabMenu()} path="/explore" />
+          <ExploreRoutes atlases={atlases && tabMenu()} models={models && tabMenu()} path="/explore" handleSelectAtlases={handleAtlasSelection} handleSelectModels={handleModelSelection} />
         </Box>
 
         <Mapper
