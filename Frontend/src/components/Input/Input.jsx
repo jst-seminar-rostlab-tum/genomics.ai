@@ -57,7 +57,6 @@ const Input = (props) => {
       helperText={helperText}
       variant="standard"
       onChange={(e) => (onChangeEvent !== null ? onChangeEvent(e) : null)}
-      autoComplete
       onBlur={(e) => (onBlurEvent !== null ? onBlurEvent(e) : null)}
       onFocus={(e) => (onFocusEvent !== null ? onFocusEvent(e) : null)}
     />
