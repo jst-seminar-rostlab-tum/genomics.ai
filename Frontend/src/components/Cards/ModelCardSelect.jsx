@@ -111,7 +111,7 @@ export const ModelCardSelect = ({
               }}  
               >
               {!disabled && <OutlinedButtonSelect content="Select" onSelect={() => onSelect(modelObject)}/>}
-              <OutlinedButtonSelect content="Learn More" onSelect={() => setModelInfoOpen(true)} disabled={disabled}/>
+              {hover && <OutlinedButtonSelect content="Learn More" onSelect={() => setModelInfoOpen(true)} disabled={disabled}/>}
             </Box>
           </Box>
         }
