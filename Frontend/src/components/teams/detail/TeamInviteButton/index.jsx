@@ -18,9 +18,15 @@ function TeamInviteButton({ team }) {
 
   const handleCloseDialog = () => setDialogOpen(false);
 
+  function validateEmail(email) 
+    {
+        let re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+        return re.test(email);
+    }
+
   async function handleTeamInvite() {
-    if (!invitedMailAdress) {
-      setMailError('Please enter an e-mail address.');
+    if (!invitedMailAdress || !validateEmail(invitedMailAdress)) {
+      setMailError('Please enter a valid e-mail address.');
       return;
     }
     setMailError('');
