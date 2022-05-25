@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/genomics.ai/static/css/main.7dd35296.chunk.css",
-    "main.js": "/genomics.ai/static/js/main.2f6dfa51.chunk.js",
-    "main.js.map": "/genomics.ai/static/js/main.2f6dfa51.chunk.js.map",
+    "main.css": "/genomics.ai/static/css/main.61be8e9c.chunk.css",
+    "main.js": "/genomics.ai/static/js/main.635f0618.chunk.js",
+    "main.js.map": "/genomics.ai/static/js/main.635f0618.chunk.js.map",
     "runtime-main.js": "/genomics.ai/static/js/runtime-main.5abe02ae.js",
     "runtime-main.js.map": "/genomics.ai/static/js/runtime-main.5abe02ae.js.map",
     "static/css/2.325324c8.chunk.css": "/genomics.ai/static/css/2.325324c8.chunk.css",
-    "static/js/2.e8cd0c6c.chunk.js": "/genomics.ai/static/js/2.e8cd0c6c.chunk.js",
-    "static/js/2.e8cd0c6c.chunk.js.map": "/genomics.ai/static/js/2.e8cd0c6c.chunk.js.map",
+    "static/js/2.3c7c692c.chunk.js": "/genomics.ai/static/js/2.3c7c692c.chunk.js",
+    "static/js/2.3c7c692c.chunk.js.map": "/genomics.ai/static/js/2.3c7c692c.chunk.js.map",
     "index.html": "/genomics.ai/index.html",
     "static/css/2.325324c8.chunk.css.map": "/genomics.ai/static/css/2.325324c8.chunk.css.map",
-    "static/css/main.7dd35296.chunk.css.map": "/genomics.ai/static/css/main.7dd35296.chunk.css.map",
-    "static/js/2.e8cd0c6c.chunk.js.LICENSE.txt": "/genomics.ai/static/js/2.e8cd0c6c.chunk.js.LICENSE.txt",
+    "static/css/main.61be8e9c.chunk.css.map": "/genomics.ai/static/css/main.61be8e9c.chunk.css.map",
+    "static/js/2.3c7c692c.chunk.js.LICENSE.txt": "/genomics.ai/static/js/2.3c7c692c.chunk.js.LICENSE.txt",
     "static/media/allClusterLabels.06044daf.png": "/genomics.ai/static/media/allClusterLabels.06044daf.png",
     "static/media/clusterDetails.3b8b8559.png": "/genomics.ai/static/media/clusterDetails.3b8b8559.png",
     "static/media/clusterLabel.30c9dce8.png": "/genomics.ai/static/media/clusterLabel.30c9dce8.png",
@@ -33,8 +33,8 @@
   "entrypoints": [
     "static/js/runtime-main.5abe02ae.js",
     "static/css/2.325324c8.chunk.css",
-    "static/js/2.e8cd0c6c.chunk.js",
-    "static/css/main.7dd35296.chunk.css",
-    "static/js/main.2f6dfa51.chunk.js"
+    "static/js/2.3c7c692c.chunk.js",
+    "static/css/main.61be8e9c.chunk.css",
+    "static/js/main.635f0618.chunk.js"
   ]
 }
