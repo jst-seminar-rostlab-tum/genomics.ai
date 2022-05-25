@@ -16,13 +16,13 @@ function InstitutionMemberMakeAdminButton({
   const handleCloseDialog = () => setDialogOpen(false);
 
   async function addAdmin() {
-    InstitutionService.makeInstitutionAdmin(institution.id, member.id);
+    await InstitutionService.makeInstitutionAdmin(institution.id, member.id);
     updateInstitution();
     handleCloseDialog();
   }
 
   async function removeAdmin() {
-    InstitutionService.removeInstitutionAdmin(institution.id, member.id);
+    await InstitutionService.removeInstitutionAdmin(institution.id, member.id);
     updateInstitution();
     handleCloseDialog();
   }
