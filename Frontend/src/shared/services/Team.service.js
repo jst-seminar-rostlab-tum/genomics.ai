@@ -67,6 +67,14 @@ const TeamService = MOCK_TEAMS ? MockTeamService : {
     }
   },
 
+  async removeProjectFromTeam(teamId, projectId) {
+    try {
+      await axiosInstance.delete(`/teams/${teamId}/projects/${projectId}`);
+    } catch (e) {
+      throw Error(e.response.data);
+    }
+  },
+
   async getTeam(teamId) {
     const { data } = await axiosInstance.get(`/teams/${teamId}`);
     return enhanceTeam(data);

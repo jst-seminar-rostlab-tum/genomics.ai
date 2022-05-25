@@ -40,7 +40,6 @@ const Input = (props) => {
       '& .MuiFormLabel-asterisk': { color: colors.error.main },
     }}
     noValidate
-    autoComplete="off"
   >
     <TextField
       error={errorHandler}

@@ -1,14 +1,23 @@
 /* eslint-disable no-unused-vars,react/jsx-no-bind */
 import React, { useCallback, useState, useEffect } from 'react';
 import {
-  Box, Grid, TextField, Button, Avatar, Snackbar, Alert,
+  Box,
+  Grid,
+  TextField,
+  Button,
+  Avatar,
+  Snackbar,
+  Alert,
+  Typography,
 } from '@mui/material';
 import { useHistory, useLocation } from 'react-router-dom';
-import NavBar from 'components/NavBar/old';
+import NavBar from 'components/NavBar';
 import Footer from 'components/Footer/old';
 import styles from './passwordresetpage.module.css';
 import logo from 'assets/logo.svg';
 import { BACKEND_ADDRESS } from 'shared/utils/common/constants';
+import Input from 'components/Input/Input';
+import CustomButton from 'components/CustomButton/index';
 
 function PasswordResetPage(props) {
   const [errors, setErrors] = useState({});
@@ -23,9 +32,10 @@ function PasswordResetPage(props) {
   const boxStyle = {
     position: 'relative',
     align: 'center',
-    width: 1000,
+    width: '60%',
     bgcolor: 'background.paper',
     boxShadow: 3,
+    top: 32,
     p: 12,
     borderRadius: 3,
   };
@@ -55,17 +65,16 @@ function PasswordResetPage(props) {
         password: input.password,
       }),
     };
-    fetch(`${BACKEND_ADDRESS}/password_reset/${token}`, requestOptions)
-      .then(
-        (response) => {
-          if (response.status === 404) {
-            setErrors({ response: response.statusText });
-          }
-          if (response.status === 400) {
-            setErrors({ response: response.statusText });
-          }
-        },
-      );
+    fetch(`${BACKEND_ADDRESS}/password_reset/${token}`, requestOptions).then(
+      (response) => {
+        if (response.status === 404) {
+          setErrors({ response: response.statusText });
+        }
+        if (response.status === 400) {
+          setErrors({ response: response.statusText });
+        }
+      },
+    );
     setSnackbarVisible(true);
     // history.push('/');
   }
@@ -75,12 +84,17 @@ function PasswordResetPage(props) {
     setErrors({});
   }
 
-  const handleTextChange = useCallback((e) => {
-    setInput((prevState) => ({ ...prevState, [e.target.id]: e.target.value }));
-  }, [setInput]);
+  const handleTextChange = useCallback(
+    (e) => {
+      setInput((prevState) => ({
+        ...prevState,
+        [e.target.id]: e.target.value,
+      }));
+    },
+    [setInput],
+  );
 
   return (
-
     <div className={styles.headerContainer}>
       <NavBar />
       <Box justifyContent="center" display="flex">
@@ -94,44 +108,35 @@ function PasswordResetPage(props) {
               </Grid>
               <Grid xs align="right" item />
             </Grid>
-            <TextField
+            <Input
               id="password"
               type="password"
-              autoFocus
               error={!!errors.password}
               helperText={errors.password}
               label="New Password"
               placeholder="Enter New Password"
-              margin="dense"
               required
-              fullWidth
-              onChange={handleTextChange}
+              onChangeEvent={handleTextChange}
             />
-            <TextField
+            <Input
               id="confirmpass"
               type="password"
               error={!!errors.passwordconfirm}
               helperText={errors.passwordconfirm}
               label="Confirm Password"
               placeholder="Reenter Password"
-              margin="dense"
               required
-              fullWidth
-              onChange={handleTextChange}
+              onChangeEvent={handleTextChange}
             />
-            <Button
-              type="submit"
-              variant="outlined"
-              fullWidth
-              sx={{
-                pt: 1,
-              }}
-              onClick={doPWReset}
-              size="large"
-            >
-              confirm
-            </Button>
-
+            <Box mt={1}>
+              <CustomButton
+                type="primary"
+                sx={{ ml: 1, width: '100%' }}
+                onClick={doPWReset}
+              >
+                <Typography>Reset</Typography>
+              </CustomButton>
+            </Box>
           </Grid>
         </Box>
       </Box>
@@ -146,36 +151,8 @@ function PasswordResetPage(props) {
           onClose={onSnackbarClose}
         >
           {errors.response ? errors.response : 'Password reset successfully!'}
-
         </Alert>
       </Snackbar>
-
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <Footer />
     </div>
   );
 }
