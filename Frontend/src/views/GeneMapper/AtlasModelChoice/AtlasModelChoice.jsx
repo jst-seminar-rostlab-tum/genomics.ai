@@ -95,7 +95,7 @@ function AtlasModelChoice({
                                 cellsInReference={a.numberOfCells}
                                 species={a.species}
                                 imgLink={a.previewPictureURL}
-                                selected={selectedAtlas && selectedAtlas.name===a.name}
+                                selected={selectedAtlas.name===a.name}
                                 onSelect={setSelectedAtlas}
                                 atlasObject={a}
                             />      
@@ -116,7 +116,7 @@ function AtlasModelChoice({
                             height="97%"
                             title={m.name} 
                             description={m.description}
-                            selected={selectedModel && selectedModel.name===m.name}
+                            selected={selectedModel.name===m.name}
                             onSelect={setSelectedModel}
                             modelObject={m}
                             disabled={!compatibleModels.map(m => m.toLowerCase()).includes(m.name.toLowerCase()) || compatibleModels.length == 0}
