@@ -116,15 +116,16 @@ function GeneMapperHome() {
         {projects
         && (
         <div>
-          {projects.map((project) => (
-            <ProjectBarCard
-              key={project._id}
-              project={project}
-              atlas={atlases.find((atlas) => String(atlas._id) === String(project.atlasId))}
-              model={models.find((model) => String(model._id) === String(project.modelId))}
-              userTeams={userTeams}
-              handleDelete={() => handleDeleteProject(project._id)}
-            />
+          {projects.filter((project) => (
+            (findString === '' || project.name.toLowerCase().includes(findString.toLowerCase())))).map((project) => (
+              <ProjectBarCard
+                key={project._id}
+                project={project}
+                atlas={atlases.find((atlas) => String(atlas._id) === String(project.atlasId))}
+                model={models.find((model) => String(model._id) === String(project.modelId))}
+                userTeams={userTeams}
+                handleDelete={() => handleDeleteProject(project._id)}
+              />
 
           ))}
         </div>
