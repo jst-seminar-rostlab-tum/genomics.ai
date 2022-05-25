@@ -164,7 +164,9 @@ const update_project_results = (): Router => {
           location: presignedUrl,
           status: ProjectStatus.DONE,
         };
-        await ProjectService.updateProjectByUploadId(params.UploadId, updateLocationAndStatus);
+        await ProjectService.updateProjectById(project._id, updateLocationAndStatus);
+      } else {
+        console.log(`Trying to update project with token, but status is already ${project.status}`)
       }
       return res.status(200).send("OK");
     } catch (e) {

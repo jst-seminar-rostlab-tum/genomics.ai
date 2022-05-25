@@ -12,6 +12,7 @@ import ProjectService from "../../../../database/services/project.service";
 import { UpdateProjectDTO } from "../../../../database/dtos/project.dto";
 import s3 from "../../../../util/s3";
 import { GoogleAuth } from "google-auth-library";
+import { request as gaxiosRequest } from "gaxios";
 import { ProjectStatus } from "../../../../database/models/project";
 import AtlasService from "../../../../database/services/atlas.service";
 import ModelService from "../../../../database/services/model.service";
@@ -86,7 +87,7 @@ export default function upload_complete_upload_route() {
               reference_data: `atlas/${project.atlasId}/data.h5ad`,
               //ref_path: `models/${project.modelId}/model.pt`,
               async: false,
-              webhook: `${process.env.API_URL}/projects/results/${updateToken}`,
+              webhook: `${process.env.API_URL}/projects/updateresults/${updateToken}`,
             };
             console.log("sending: ");
             console.log(queryInfo);
@@ -138,10 +139,18 @@ export default function upload_complete_upload_route() {
                 Body: content,
               };
               await s3.upload(params2).promise();
+              let { token: updateToken } = await ProjectUpdateTokenService.addToken({
+                _projectId: project._id,
+              });
               await new Promise((resolve, reject) => {
                 setTimeout(resolve, 10000);
               });
+              await gaxiosRequest({
+                method: "POST",
+                url: `http://127.0.0.1:${process.env.PORT}/projects/updateresults/${updateToken}`,
+              });
             } catch (e) {
+              console.error(e);
               await ProjectService.updateProjectByUploadId(params.UploadId, {
                 status: ProjectStatus.PROCESSING_FAILED,
               });
