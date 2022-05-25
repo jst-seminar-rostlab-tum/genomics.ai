@@ -6,6 +6,8 @@ import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import InstitutionMemberList from 'components/institutions/InstitutionMemberList';
 import styles from './institutionPage.module.css';
 import CircularProgress from '@mui/material/CircularProgress';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 import InstitutionTeamList from 'components/institutions/InstitutionTeamList';
 import InstitutionAvatar from 'components/institutions/InstitutionAvatar';
 import InstitutionBackgroundImageUploadDialog from 'components/general/upload/InstitutionBackgroundImageUploadDialog';
@@ -20,6 +22,14 @@ function InstitutionPage() {
   const [user] = useAuth();
   const [institutionLoaded, setInstitutionLoaded] = useState(false);
   const [backgroundUploadOpen, setBackgroundUploadOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
 
   function isAdmin() {
     return (institution.adminIds || []).includes(user._id);
@@ -33,6 +43,7 @@ function InstitutionPage() {
 
   function editDetails() {
     InstitutionService.updateDetails(id, institution.description);
+    setOpen(true);
   }
 
   const handleDescriptionChange = (event) => {
@@ -208,6 +219,19 @@ function InstitutionPage() {
           });
         }}
       />
+      <Snackbar
+        open={open}
+        autoHideDuration={1500}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+      >
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          {'Description saved successfully!'}
+        </Alert>
+      </Snackbar>
     </>
   );
 }
