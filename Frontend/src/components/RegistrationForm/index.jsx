@@ -286,6 +286,7 @@ function RegistrationForm(props) {
                     type="primary"
                     sx={{ mr: 'auto', width: '100%' }}
                     onClick={doRegistration}
+                    disabled={!imprint}
                   >
                     <Typography>Sign up</Typography>
                   </CustomButton>
