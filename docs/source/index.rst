@@ -11,11 +11,6 @@ First login or sign up using your academic affiliation.
 
 .. image:: _static/homepage.png
 
-test
-
-.. raw:: html
- <img src="_static/homepage.png" width="700px" align="center"/>
-
 Under the Gene Mapper all of your mappings are displayed. Click on the blue plus button to create a new one.
 
 Here the Atlas and model type are set, scVI for the Pancreas for example.
