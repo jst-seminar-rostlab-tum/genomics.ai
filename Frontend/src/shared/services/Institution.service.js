@@ -73,7 +73,7 @@ const InstitutionService = MOCK_INSTUTITIONS ? MockInstitutionService : {
   },
 
   async updateDetails(institutionId, details) {
-    await axiosInstance.put(`/institutions/${institutionId}`, { details });
+    await axiosInstance.put(`/institutions/${institutionId}`, { description: details });
   },
 
   async inviteMember(institutionId, invitedMail) {
