@@ -34,14 +34,13 @@ export default class UserService {
    */
   static async searchUsers(keyword: string | null | undefined, sortBy: string | null | undefined) {
     //TODO implement actual fuzzy searching and other sorting methods
-    let sort = 1;
-    if (sortBy == "namedesc") {
-      sort = -1;
-    }
     let keywordFilter: FilterQuery<IUser> = {};
+    let sort = {};
+    sort[sortBy]=1;
     if (keyword && keyword.length > 0) {
       keywordFilter = { $or: [{ firstName: { $regex : "^" +  keyword, $options : 'i'}}, { lastName: { $regex : "^" +  keyword, $options : 'i'}}] };
     }
+
     return await userModel
       .find(keywordFilter, {
         _id: 1,
@@ -52,7 +51,7 @@ export default class UserService {
         createdAt: 0,
         updatedAt: 0,
       })
-      .sort({ name: sort });
+      .sort(sort);
   }
 
   /**

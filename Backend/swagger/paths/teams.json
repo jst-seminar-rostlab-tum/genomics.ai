@@ -675,5 +675,75 @@
         }
       }
     }
+  },
+  "/teams/{id}/members/{userid}": {
+    "delete": {
+      "summary": "For admins: Remove (non-admin) user from the team",
+      "tags": ["Team"],
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }, 
+        {
+          "in": "path",
+          "name": "userid",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK"
+        },
+        "403": {
+          "description": "Forbidden. Returned when not an admin or trying to delete an admin"
+        },
+        "409": {
+          "description": "User is not part of the team"
+        }
+      }
+    }
+  },
+  "/team/{id}/admins/{userid}": {
+    "delete": {
+      "summary": "For admins: Demote another admin",
+      "tags": ["Team"],
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }, 
+        {
+          "in": "path",
+          "name": "userid",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK"
+        },
+        "403": {
+          "description": "Forbidden. Returned when not an admin"
+        },
+        "409": {
+          "description": "User is not an admin of the team"
+        }
+      }
+    }
   }
 }

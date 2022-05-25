@@ -31,7 +31,7 @@ const get_users = (): Router => {
   router.get("/users", check_auth(), async (req: ExtRequest, res: any) => {
     try {
       const keyword = req.query?.keyword?.toString();
-      const sort = req.query?.sort?.toString();
+      const sort = req.query?.sortBy?.toString();
       const users = await UserService.searchUsers(keyword, sort);
       return res.status(200).json(users);
     } catch (e) {
