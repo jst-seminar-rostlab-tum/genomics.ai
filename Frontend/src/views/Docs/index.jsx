@@ -6,7 +6,7 @@ import {
 } from '@mui/material';
 import styles from './docs.module.css';
 import NavBar from 'components/NavBar/old';
-import Footer from 'components/Footer/old';
+import Footer from 'components/Footer';
 import visualisation from 'assets/landing-illustrations/visualisation.png';
 import zoom from 'assets/landing-illustrations/zoomVisualisation.png';
 import allClusterLabels from 'assets/landing-illustrations/allClusterLabels.png';

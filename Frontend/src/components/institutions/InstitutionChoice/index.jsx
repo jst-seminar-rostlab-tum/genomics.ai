@@ -20,7 +20,15 @@ function InstitutionChoice({ onChoiceChange }) {
   }, []);
 
   if (institutions.length === 0) {
-    return <b>You are not an admin of any institution.</b>;
+    return (
+      <>
+        <b>You are not an admin of any institution.</b>
+        <p>
+          To create a team, you need to be the admin of an institution.
+          That is because you can only create teams within institutions directly.
+        </p>
+      </>
+    );
   }
 
   return (
