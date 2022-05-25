@@ -8,9 +8,12 @@ function InstitutionTeamList({ onLeft, institution }) {
   const [teams, setTeams] = useState([]);
   const [teamsLoaded, setTeamsLoaded] = useState(false);
 
-  useEffect(async () => {
-    setTeams(await TeamService.getInstitutionTeams(institution.id));
-    setTeamsLoaded(true);
+  useEffect(() => {
+    TeamService.getInstitutionTeams(institution.id)
+      .then((newTeams) => {
+        setTeams(newTeams);
+        setTeamsLoaded(true);
+      });
   }, []);
 
   if (!teamsLoaded) {

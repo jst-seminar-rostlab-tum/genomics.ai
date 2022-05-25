@@ -7,15 +7,8 @@ const TeamsFilter = ({ visibility, onChange }) => {
     { label: 'All', value: '' },
     { label: 'Public', value: 'PUBLIC' },
     { label: 'Private', value: 'PRIVATE' },
-    { label: 'By institution', value: 'BYINSTITUTION' },
+    { label: 'By institution', value: 'BY_INSTITUTION' },
   ];
-
-  // useEffect(
-  //   () => () => {
-  //     onChange('visibility', '');
-  //   },
-  //   [],
-  // );
 
   return (
     <LabeledSelect
