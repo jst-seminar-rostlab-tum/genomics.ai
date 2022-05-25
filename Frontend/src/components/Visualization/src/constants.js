@@ -1,3 +1,4 @@
+// General constants for the umap
 export const width = 1860;
 export const height = 965;
 export const margin = 20;
@@ -20,14 +21,15 @@ export const textHeight = 20;
 export const offset = 11;
 export const searchRadius = 0.02;
 
-//New
+// Newly added constants
 export const originalOpacity = 0.85;
+export const reducedOpacity = 0.3;
 export const fill = '#000000';
 export const gradientColors = ["#42e91f", "#0a43c8"];
 export const colors = [
 
   "#FF0000", "#9ACD32", "#00BFFF", "#FF8C00", "#FFD700", "#BA55D3", "#A0522D", "#8B0000",
-  "#FF69B4", "#FF4500", "#4B0082", "#006400", "#191970", "#696969", "#008080", '#1CE6FF', 
+  "#FF69B4", "#FF4500", "#4B0082", "#006400", "#191970", "#696969", "#008080", '#1CE6FF',
   '#FF34FF', '#FF4A46', '#008941', '#006FA6', '#A30059', '#5B656C', '#00B57F', '#D25B88',
   '#0000A6', '#63FFAC', '#B79762', '#997D87', '#92896B', '#365D25', '#866097', '#6C5E46',
   '#5A0007', '#809693', '#3B5DFF', '#4A3B53', '#674E60', '#252F99', '#00CCFF', '#545C46',
@@ -61,3 +63,14 @@ export const colors = [
   '#BDC9D2', '#9FA064', '#BE4700', '#658188', '#83A485', '#453C23', '#47675D', '#3A3F00',
   '#061203', '#DFFB71', '#868E7E', '#98D058', '#6C8F7D', '#D7BFC2', '#3C3E6E', '#D83D66',
 ];
+
+
+// General constants for the bar graphs
+export const plotTitleOffset = 25;
+export const plotTitleCentered = 25;
+export const fontSizeTBig = "20px";
+export const fontSizeTSmall = "15px";
+export const fontSizeOBig = "15px";
+export const fontSizeOSmall = "10px";
+export const marginBottomBig = 130;
+export const marginBottomSmall = 85;
