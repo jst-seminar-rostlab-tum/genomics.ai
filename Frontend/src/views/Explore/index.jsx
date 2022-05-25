@@ -124,7 +124,7 @@ const Explore = () => {
           path={path}
           handleModelSelection={handleModelSelection}
           selectedModel={selectedModel}
-          selectedAtlas={selectedAtlas}
+          compatibleModels={selectedAtlas && selectedAtlas.compatibleModels}
         />
       ) : null}
     </Box>
