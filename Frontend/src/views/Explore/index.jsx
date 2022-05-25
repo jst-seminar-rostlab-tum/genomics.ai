@@ -11,6 +11,7 @@ import NavBar from 'components/NavBar';
 import Breadcrumb from 'components/Breadcrumb';
 import LoginForm from 'components/LoginForm';
 import RegistrationForm from 'components/RegistrationForm';
+import Footer from 'components/Footer';
 
 import ModelsService from 'shared/services/Models.service';
 import AtlasService from 'shared/services/Atlas.service';
@@ -38,7 +39,7 @@ const Explore = () => {
   const [mapperVisible, setMapperVisible] = useState(false);
   const [isLoginFormVisible, setLoginFormVisible] = useState(false);
   const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
-  const { search } = useLocation();
+  const { search, pathname } = useLocation();
   const searchParams = new URLSearchParams(search);
   const searchedKeyword = searchParams.get('keyword') || '';
   const { path } = useRouteMatch();
@@ -95,6 +96,11 @@ const Explore = () => {
     searchedKeywordChangeHandler('');
   };
 
+  const handleMap = () => {
+    history.push(`${path}/atlases/${selectedAtlas._id}/visualization`);
+    setMapperVisible(false);
+  };
+
   useEffect(() => {
     if (selectedAtlas || selectedModel) setMapperVisible(true);
     if (!selectedAtlas && !selectedModel) setMapperVisible(false);
@@ -110,16 +116,18 @@ const Explore = () => {
           path={path}
           handleAtlasSelection={handleAtlasSelection}
           selectedAtlas={selectedAtlas}
+          selectedModel={selectedModel}
         />
-      ) : null }
+      ) : null}
       {value === 1 ? (
         <ModelsGrid
           models={applyModelFilters(models, searchedKeyword, searchParams, selectedAtlas)}
           path={path}
           handleModelSelection={handleModelSelection}
           selectedModel={selectedModel}
+          compatibleModels={selectedAtlas && selectedAtlas.compatibleModels}
         />
-      ) : null }
+      ) : null}
     </Box>
 
   );
@@ -144,7 +152,7 @@ const Explore = () => {
     setRegistrationFormVisible(false);
   }, [setRegistrationFormVisible]);
 
-  const tmp_elems = useLocation().pathname.split('/');
+  const tmp_elems = pathname.split('/');
   const elems = tmp_elems.map((elem, index) => {
     if (index === 3) {
       if (tmp_elems[2] === 'atlases') return atlases.filter((x) => x._id === elem)[0] ? atlases.filter((x) => x._id === elem)[0].name : elem;
@@ -156,80 +164,85 @@ const Explore = () => {
   const executeScroll = () => history.push({ pathname: '/', state: { contact_us: true } });
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        '::-webkit-scrollbar': {
-          display: 'none',
-        },
-        height: '100vh',
-        overflow: 'hidden',
-      }}
-    >
-      {isLoginFormVisible && (
-        <LoginForm visible={isLoginFormVisible} onClose={onLoginFormClosed} />
-      )}
-      {isRegistrationFormVisible && (
-        <RegistrationForm
-          visible={isRegistrationFormVisible}
-          onClose={onRegistrationFormClosed}
-        />
-      )}
-
-      <Box>
-        <NavBar
-          position="relative"
-          onLoginClicked={onLoginClicked}
-          onSignUpClicked={onSignUpClicked}
-          executeScroll={executeScroll}
-        />
-      </Box>
-
-      <Stack
-        direction="row"
-        sx={{
-          alignSelf: 'center', width: '60%', marginTop: '2%', justifyContent: 'space-between',
-        }}
-      >
-        <Breadcrumb elems={elems} fontSize={1} actions={{ explore: () => setValue(0) }} />
-        <Box sx={{ alignSelf: 'center', width: '40%', marginBlock: '2%' }}>
-          <Search
-            filterComponent={(
-              <Filter
-                searchParams={searchParams}
-                updateQueryParams={updateQueryParams}
-                path={path}
-              />
-            )}
-            handleSearch={searchedKeywordChangeHandler}
-            value={searchedKeyword}
-            padding="0px"
-          />
-        </Box>
-      </Stack>
-
+    <>
       <Box
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          alignSelf: 'center',
-          width: { xs: '90%', md: '60%' },
+          '::-webkit-scrollbar': {
+            display: 'none',
+          },
+          height: '100vh',
+          overflow: 'hidden',
         }}
       >
-        {/* /explore/atlases */}
-        <ExploreRoutes atlases={atlases && tabMenu()} models={models && tabMenu()} path="/explore" handleSelect={handleAtlasSelection}/>
-      </Box>
+        {isLoginFormVisible && (
+          <LoginForm visible={isLoginFormVisible} onClose={onLoginFormClosed} />
+        )}
+        {isRegistrationFormVisible && (
+          <RegistrationForm
+            visible={isRegistrationFormVisible}
+            onClose={onRegistrationFormClosed}
+          />
+        )}
 
-      <Mapper
-        mapperAtlas={selectedAtlas ? selectedAtlas.name : null}
-        mapperModel={selectedModel ? selectedModel.name : null}
-        handleAtlasSelection={handleAtlasSelection}
-        handleModelSelection={handleModelSelection}
-        open={mapperVisible}
-        fabOnClick={() => setMapperVisible(!mapperVisible)}
-      />
-    </Box>
+        <Box>
+          <NavBar
+            position="relative"
+            onLoginClicked={onLoginClicked}
+            onSignUpClicked={onSignUpClicked}
+            executeScroll={executeScroll}
+          />
+        </Box>
+
+        <Stack
+          direction="row"
+          sx={{
+            alignSelf: 'center', width: '60%', marginTop: '2%', justifyContent: 'space-between',
+          }}
+        >
+          <Breadcrumb elems={elems} fontSize={1} actions={{ explore: () => setValue(0) }} />
+          <Box sx={{ alignSelf: 'center', width: '40%', marginBlock: '2%' }}>
+            <Search
+              filterComponent={(
+                <Filter
+                  searchParams={searchParams}
+                  updateQueryParams={updateQueryParams}
+                  path={path}
+                />
+              )}
+              handleSearch={searchedKeywordChangeHandler}
+              value={searchedKeyword}
+              padding="0px"
+              visible={pathname.split('/').slice(-1).includes('atlases') || pathname.split('/').slice(-1).includes('models')}
+            />
+          </Box>
+        </Stack>
+
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignSelf: 'center',
+            width: { xs: '90%', md: '60%' },
+          }}
+        >
+          {/* /explore/atlases */}
+          <ExploreRoutes atlases={atlases && tabMenu()} models={models && tabMenu()} path="/explore" />
+        </Box>
+
+        <Mapper
+          mapperAtlas={selectedAtlas ? selectedAtlas.name : null}
+          mapperModel={selectedModel ? selectedModel.name : null}
+          handleAtlasSelection={handleAtlasSelection}
+          handleModelSelection={handleModelSelection}
+          open={mapperVisible}
+          fabOnClick={() => setMapperVisible(!mapperVisible)}
+          handleMap={handleMap}
+        />
+      </Box>
+      <Footer />
+    </>
   );
 };
 

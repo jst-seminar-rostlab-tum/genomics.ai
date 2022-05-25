@@ -1,17 +1,27 @@
 /* eslint-disable */
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState } from "react";
 import {
-  Modal, Box, Grid, TextField, Button, Avatar, Snackbar, Alert,
-} from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-import { useHistory } from 'react-router-dom';
-import validator from 'validator';
-import { BACKEND_ADDRESS } from '../../shared/utils/common/constants';
-import styles from './passwordforgetform.module.css';
-import logo from '../../assets/logo.svg';
+  Modal,
+  Box,
+  Grid,
+  TextField,
+  Button,
+  Avatar,
+  Snackbar,
+  Alert,
+  Typography,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import { useHistory } from "react-router-dom";
+import validator from "validator";
+import { BACKEND_ADDRESS } from "../../shared/utils/common/constants";
+import styles from "./passwordforgetform.module.css";
+import logo from "../../assets/logo.svg";
+import Input from "../Input/Input";
+import CustomButton from "components/CustomButton";
 
 function PasswordForgetForm(props) {
-  const { close, visible } = props;
+  const { close, visible, switchForm } = props;
   const [errors, setErrors] = useState({});
   // eslint-disable-next-line no-unused-vars
   const [email, setEmail] = useState();
@@ -20,22 +30,22 @@ function PasswordForgetForm(props) {
   const history = useHistory();
 
   const boxStyle = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
     width: 400,
-    bgcolor: 'background.paper',
+    bgcolor: "background.paper",
     boxShadow: 24,
     p: 4,
     borderRadius: 3,
   };
 
   const onClose = useCallback(() => {
-    setEmail('');
+    setEmail("");
     setErrors({});
     props.onClose();
-  }, [setEmail, setErrors, props]);
+  }, [props]);
 
   function onSendClick() {
     if (!validateInput()) {
@@ -43,25 +53,27 @@ function PasswordForgetForm(props) {
     }
 
     const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         email,
       }),
     };
-    fetch(`${BACKEND_ADDRESS}/password_reset`, requestOptions)
-      .then(
-        (response) => {
-          if (response.status == 404) {
-            setErrors({ response: response.statusText });
-          }
-          if (response.status == 400) {
-            setErrors({ response: response.statusText });
-          } else {
-          }
-          setSnackbarVisible(true);
-        },
-      );
+    fetch(`${BACKEND_ADDRESS}/password_reset`, requestOptions).then(
+      (response) => {
+        if (response.status == 404) {
+          setErrors({ response: "User not found" });
+        }
+        if (response.status == 400) {
+          setErrors({ response: response.statusText });
+        } else {
+        }
+        setSnackbarVisible(true);
+      }
+    );
+    
+    //props.onClick()
+    //switchForm(true);
 
     // history.push('/password_reset');
   }
@@ -72,20 +84,19 @@ function PasswordForgetForm(props) {
   }
 
   function validateInput() {
-    if ((email) == null) {
-      setErrors({ ...errors, email: 'Empty input!' });
+    if (email == null) {
+      setErrors({ ...errors, email: "Empty input!" });
       return false;
     }
 
     if (!validator.isEmail(email)) {
-      setErrors({ ...errors, email: 'A valid e-mail is required!' });
+      setErrors({ ...errors, email: "A valid e-mail is required!" });
       return false;
     }
     return true;
   }
 
   return (
-
     <div>
       <Modal
         onClose={close}
@@ -105,33 +116,25 @@ function PasswordForgetForm(props) {
                 <CloseIcon onClick={onClose} className={styles.closeImg} />
               </Grid>
             </Grid>
-            <TextField
+            <Input
               id="email"
               type="email"
               error={!!errors.email}
               helperText={errors.email}
               label="E-mail"
               placeholder="Enter e-mail address"
-              margin="dense"
-              required
-              fullWidth
-              onChange={(e) => setEmail(e.target.value)}
+              isRequired={true}
+              onChangeEvent={(e) => setEmail(e.target.value)}
             />
-            <Button
-              type="submit"
-              variant="outlined"
-              fullWidth
-              sx={{
-                pt: 1,
-              }}
-              onClick={onSendClick}
+            <Box
+              sx={{ width: "100%", display: "flex", justifyContent: "center"}}
             >
-              confirm
-            </Button>
-
+              <CustomButton type="primary" onClick={onSendClick}>
+                <Typography>Send</Typography>
+              </CustomButton>
+            </Box>
           </Grid>
         </Box>
-
       </Modal>
 
       <Snackbar
@@ -140,15 +143,15 @@ function PasswordForgetForm(props) {
         onClose={onSnackbarClose}
       >
         <Alert
-          severity={errors.response ? 'error' : 'success'}
-          sx={{ width: '100%' }}
+          severity={errors.response ? "error" : "success"}
+          sx={{ width: "100%" }}
           onClose={onSnackbarClose}
         >
-          {errors.response ? errors.response : 'Password reset email has been sent! Please check your e-mail!'}
-
+          {errors.response
+            ? errors.response
+            : "Password reset email has been sent! Please check your e-mail!"}
         </Alert>
       </Snackbar>
-
     </div>
   );
 }

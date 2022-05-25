@@ -7,7 +7,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 
 import InstitutionService from 'shared/services/Institution.service';
 
-function InstitutionMemberRemoveButton({ institution, member, onRemoved }) {
+function InstitutionMemberRemoveButton({ institution, member, updateInstitution }) {
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleOpenDialog = () => setDialogOpen(true);
@@ -15,8 +15,8 @@ function InstitutionMemberRemoveButton({ institution, member, onRemoved }) {
 
   async function remove() {
     await InstitutionService.removeMemberFromInstitution(institution.id, member.id);
+    updateInstitution();
     handleCloseDialog();
-    onRemoved(institution, member);
   }
 
   return (

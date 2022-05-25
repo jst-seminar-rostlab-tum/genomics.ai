@@ -45,6 +45,7 @@ function GeneMapperState({ path }) {
               setSelectedAtlas={setSelectedAtlas}
               setSelectedModel={setSelectedModel}
               setActiveStep={setActiveStep}
+              // selectedAtlas && selectedAtlas.compatibleModel
               compatibleModels={selectedAtlas ? selectedAtlas.compatibleModels : []}
             />
           )

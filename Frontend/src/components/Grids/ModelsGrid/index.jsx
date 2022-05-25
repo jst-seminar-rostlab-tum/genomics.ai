@@ -2,18 +2,12 @@ import React from 'react';
 import { Box } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { ModelCard } from 'components/Cards/ModelCard';
-import { useState } from 'react';
 
 import styles from './modelsGrid.module.css';
 
-const ModelsGrid = ({ models, path, selectedAtlas = null, selectedModel = null, handleModelSelection = null }) => {
+const ModelsGrid = ({ models, path, compatibleModels = null, selectedModel = null, handleModelSelection = null }) => {
 
-  const checkIfDisabled = (name) => {
-    console.log(selectedAtlas)
-    if(!selectedAtlas) return false
-    if(selectedAtlas.compatibleModels.indexOf(name) > -1) return false
-    return true
-  }
+  console.log(compatibleModels)
 
   return (
     <Box className={styles.cardsContainer} maxHeight={{ xs: "75vh", md: "60vh" }} mb="2em" >
@@ -24,7 +18,7 @@ const ModelsGrid = ({ models, path, selectedAtlas = null, selectedModel = null, 
               title={`Model ${model.name}`}
               description={model.description}
               learnMoreLink={`${path}/models/${model._id}`}
-              disabled={checkIfDisabled(model.name)}
+              disabled={compatibleModels && (!compatibleModels.map((m) => m.toLowerCase()).includes(model.name.toLowerCase()) || compatibleModels.length == 0)}
               onSelect={() => { if(handleModelSelection) handleModelSelection(model) }}
               selected={selectedModel && selectedModel.name === model.name}
             />

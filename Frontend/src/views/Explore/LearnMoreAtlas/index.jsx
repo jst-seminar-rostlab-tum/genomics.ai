@@ -60,11 +60,11 @@ export const LearnMoreAtlasComponent = ({ onClick, id, isMap = false }) => {
           {atlas?.species}
         </Typography>
       </Box>
-      { 
-        // isSelect
-        isMap &&
-        <CustomButton sx={{ marginTop: "1em", padding: "0.5em 2em 0.5em 2em" }} type="primary" onClick={() => onClick(atlas)}>Select</CustomButton>
+      {
+        isMap
+        && <CustomButton sx={{ marginTop: '1em', padding: '0.5em 2em 0.5em 2em' }} type="primary" onClick={onClick}>Visualize</CustomButton>
       }
+      <Box marginBlock="10px"><CustomButton>Select</CustomButton></Box>
     </Box>
   );
 };
@@ -82,7 +82,7 @@ export default function LearnMore({ handleSelect }) {
         minWidth: '1200px',
       }}
       >
-        <LearnMoreAtlasComponent id={id} isMap={true} onClick={handleSelect} />
+        <LearnMoreAtlasComponent id={id} isMap onClick={() => history.push(`${path.pathname}/visualization`)} />
       </Box>
     </Box>
   );
