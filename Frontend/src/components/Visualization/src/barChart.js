@@ -37,7 +37,8 @@ const addBarPlot = (barContainer, data, groupedBy, title, cWidth, cHeight) => {
   let fontSizeTitle;
   let fontSizeOther;
   let marginBottom;
-  if (h > 350) {
+  let big = h > 350; // to change the pop up based on if it's big or not
+  if (big) {
     fontSizeTitle = cons.fontSizeTBig;
     fontSizeOther = cons.fontSizeOBig;
     marginBottom = cons.marginBottomBig;
@@ -108,21 +109,58 @@ const addBarPlot = (barContainer, data, groupedBy, title, cWidth, cHeight) => {
       return h - yScale(d[1])
     })
     .attr("transform", "translate( 0, " + (-marginBottom) + ")")
+    .append("title")
+    .text((d) => (d[1]))
 
-  // Adds the values on top of the bars
-  g.append("g")
-    .attr("id", "labels")
-    .selectAll("label")
-    .data(info)
-    .enter()
-    .append("text")
-    .attr("class", "label")
-    .attr("x", (d) => xScale(d[0]))
-    .attr("y", (d) => yScale(d[1]) - marginBottom - 13)
-    .attr("dy", ".75em")
-    .text((d) => d[1])
-    .attr("fill", "black")
-    .attr("font-size", fontSizeOther);
+  // Only the big pop up has labels
+  if (big) {
+    // Adds the values on top of the bars
+    g.append("g")
+      .attr("id", "labels")
+      .selectAll("label")
+      .data(info)
+      .enter()
+      .append("text")
+      .attr("class", "label")
+      .attr("x", (d) => xScale(d[0]))
+      .attr("y", (d) => yScale(d[1]) - marginBottom - 13)
+      .attr("dy", ".75em")
+      .text((d) => d[1])
+      .attr("fill", "black")
+      .attr("font-size", fontSizeOther)
+  }
+
+  /*bars
+      .on("mouseover", function (m, d) { //getter bigger on hover
+        d3.select(this)
+          .transition()
+          .duration(100)
+          .attr('r', r * 1.5)
+          .style("stroke", "black")
+          .style("opacity", 1)
+        if (!_this.mode) return;
+        const att = d[_this.mode];
+        const xPos = parseFloat(m.x) + 5;
+        const yPos = parseFloat(m.y) - 35;
+
+        tooltip
+          .style("visibility", "visible")
+
+        tooltip
+          .html(att)
+          .style("top", `${yPos}px`)
+          .style("left", `${xPos}px`)
+
+      })
+      .on("mouseout", function () {
+        tooltip.style("visibility", "hidden");
+        d3.select(this)
+          .transition()
+          .duration(100)
+          .attr('r', r)
+          .style("stroke", "none")
+          .style("opacity", 0.8)
+      })*/
 
 }
 
