@@ -19,35 +19,39 @@ import graphic4 from 'assets/landing-illustrations/results.png';
 import CustomButton from "components/CustomButton";
 import Input from 'components/Input/Input'
 import { useHistory, useLocation } from "react-router-dom";
+import PasswordForgetForm from "components/PasswordForgetForm";
 import ContactForm from 'components/ContactForm';
 
 const Home = () => {
 
   const [isLoginFormVisible, setLoginFormVisible] = useState(false);
   const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
+  const [isPasswordForgetFormVisible, setPasswordForgetFormVisible] = useState(false);
 
   const history = useHistory();
   const location = useLocation();
 
-  const onLoginClicked = useCallback(() => {
-    console.log("login")
+  const onLoginClicked = () => {
     setRegistrationFormVisible(false)
     setLoginFormVisible(true)
-  }, [setLoginFormVisible])
+  }
 
-  const onSignUpClicked = useCallback(() => {
-    console.log("register")
+  const onSignUpClicked = () => {
     setLoginFormVisible(false);
     setRegistrationFormVisible(true);
-  }, [setRegistrationFormVisible])
+  }
 
-  const onLoginFormClosed = useCallback(() => {
+  const onLoginFormClosed = () => {
     setLoginFormVisible(false);
-  }, [setLoginFormVisible]);
+  }
 
-  const onRegistrationFormClosed = useCallback(() => {
+  const onRegistrationFormClosed = () => {
     setRegistrationFormVisible(false);
-  }, [setRegistrationFormVisible]);
+  }
+
+  const onForgetPasswordClosed = () => {
+    setPasswordForgetFormVisible(false);
+  }
 
   //here we get the ref of the contact us, in order to be able to scroll to it
   const contactUsBoxRef = useRef()
@@ -65,9 +69,9 @@ const Home = () => {
   return (
     <Box style={{ overflow: "hidden" }} sx={{ position: "relative" }}>
 
-      {isLoginFormVisible && <LoginForm visible={isLoginFormVisible} onClose={onLoginFormClosed} />}
-      {isRegistrationFormVisible && <RegistrationForm visible={isRegistrationFormVisible} onClose={setRegistrationFormVisible} />}
-
+      {isLoginFormVisible && <LoginForm visible={isLoginFormVisible} onClose={onLoginFormClosed} switchForm={setRegistrationFormVisible} onForgetPassword={setPasswordForgetFormVisible}/>}
+      {isRegistrationFormVisible && <RegistrationForm visible={isRegistrationFormVisible} switchForm={setLoginFormVisible} onClose={onRegistrationFormClosed} />}
+      {isPasswordForgetFormVisible && <PasswordForgetForm visible={isPasswordForgetFormVisible} switchForm={setLoginFormVisible} onClose={onForgetPasswordClosed}/>}
       {/* STARTING PAGE */}
       <Box sx={{ width: window.width, bgcolor: colors.primary[800], position: "relative", paddingBottom: "4em" }}>
         {/* NAVBAR HERE */}
