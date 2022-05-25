@@ -128,7 +128,11 @@ export default function TeamPage() {
       <section>
         <h2>Projects</h2>
         <hr />
-        <TeamProjectList team={team} isAdmin={isAdmin} />
+        <TeamProjectList
+          team={team}
+          isAdmin={isAdmin}
+          updateTeam={() => updateTeam(true)}
+        />
       </section>
       <section>
         <h2>Members</h2>

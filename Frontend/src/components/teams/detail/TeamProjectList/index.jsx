@@ -11,7 +11,7 @@ import AtlasService from 'shared/services/Atlas.service';
 import ModelService from 'shared/services/Model.service';
 import TeamService from 'shared/services/Team.service';
 
-function TeamProjectList({ team, isAdmin }) {
+function TeamProjectList({ team, isAdmin, updateTeam }) {
   const [projects, setProjects] = useState([]);
   const [atlases, setAtlases] = useState([]);
   const [models, setModels] = useState([]);
@@ -118,7 +118,7 @@ function TeamProjectList({ team, isAdmin }) {
         }}
       >
         <Alert onClose={handleSnackbarClose} severity="error" sx={{ width: '100%' }}>
-          {'Only an admin may remove projects from a team!'}
+          Only an admin may remove projects from a team!
         </Alert>
       </Snackbar>
     </div>
