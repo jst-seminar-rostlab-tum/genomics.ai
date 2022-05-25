@@ -51,7 +51,7 @@ const get_user_by_id = (): Router => {
     try {
       const user_id = req.params.id;
       const {email, password, isEmailVerified, isAdministrator,
-        ...filtered_user} = await UserService.getUserById(user_id);
+        ...filtered_user} = await UserService.getUserById(user_id) || {};
 
       if (!filtered_user) {
         return res.status(404).send("User with user id: " + user_id + " was not found!");
