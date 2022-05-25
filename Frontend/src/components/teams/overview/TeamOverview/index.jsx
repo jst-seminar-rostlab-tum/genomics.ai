@@ -12,7 +12,12 @@ function TeamOverview() {
   useEffect(() => {
     TeamService.getMyTeams()
       .then(setTeams)
-      .catch(console.log);
+      .catch((e) => {
+        console.error(e);
+        if (e.response?.data) {
+          alert(e.response.data);
+        }
+      });
   }, []);
 
   function onLeft(team) {
