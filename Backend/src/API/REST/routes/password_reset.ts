@@ -31,7 +31,7 @@ export default function password_reset_route(): Router {
       {
         firstname: user.firstName,
         // link: `https://www.genecruncher.com/#/password_reset?token=${token.token}`
-        link: `${process.env.FRONTEND_URL}/#/password_reset?token=${token.token}`,
+        link: `${process.env.FRONTEND_URL}/password_reset?token=${token.token}`,
         new_reset_link: `${process.env.FRONTEND_URL}/password_reset`,
       }
     );
