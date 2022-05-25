@@ -128,7 +128,7 @@ export default function TeamPage() {
       <section>
         <h2>Projects</h2>
         <hr />
-        <TeamProjectList teamId={id} />
+        <TeamProjectList team={team} isAdmin={isAdmin} />
       </section>
       <section>
         <h2>Members</h2>
