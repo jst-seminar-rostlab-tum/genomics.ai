@@ -52,7 +52,7 @@ function UploadFilePage({
   const handleOnDropChange = (file) => {
     setUploadedFile(file);
   };
-  
+
   const createProject = useCallback((projectName, atlasId, modelId, file) => {
     ProjectService.createProject(
       projectName,
