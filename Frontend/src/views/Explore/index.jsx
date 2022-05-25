@@ -95,6 +95,11 @@ const Explore = () => {
     searchedKeywordChangeHandler('');
   };
 
+  const handleMap = () => {
+    history.push(`${path}/atlases/${selectedAtlas._id}/visualization`);
+    setMapperVisible(false);
+  };
+
   useEffect(() => {
     if (selectedAtlas || selectedModel) setMapperVisible(true);
     if (!selectedAtlas && !selectedModel) setMapperVisible(false);
@@ -232,6 +237,7 @@ const Explore = () => {
           handleModelSelection={handleModelSelection}
           open={mapperVisible}
           fabOnClick={() => setMapperVisible(!mapperVisible)}
+          handleMap={handleMap}
         />
       </Box>
       <Footer />

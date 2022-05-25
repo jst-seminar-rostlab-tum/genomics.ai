@@ -67,7 +67,6 @@ export default function AtlasCard({
       sx={{
         width, height,
       }}
-      onClick={!disabled && onSelect}
     >
       <Box
         ref={boxRef}
@@ -103,27 +102,23 @@ export default function AtlasCard({
               <Box
                 sx={{
                   margin: 'auto',
-                  width:  '70%',
+                  width: '70%',
                   height: 'auto',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'space-evenly',
-                  gap: '5px'
+                  gap: '5px',
                 }}
               >
                 <OutlinedButton
-                  content="Visualize"
-                  onClick={(e) => {
-                    history.push(`${path}/${atlasId}/visualization`);
-                    e.stopPropagation();
-                  }}
+                  content="Select"
+                  onClick={onSelect}
                 />
                 <OutlinedButton
                   content="Learn More"
                   link={learnMoreLink}
-                  onClick={(e) => {
+                  onClick={() => {
                     localStorage.setItem('atlasId', atlasId);
-                    e.stopPropagation();
                   }}
                 />
                 {
