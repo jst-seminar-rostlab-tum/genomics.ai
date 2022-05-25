@@ -15,7 +15,14 @@ function InstitutionOverview() {
       .then((newInstitutions) => {
         setInstitutions(newInstitutions);
         setIsLoading(false);
-      });
+      })
+      .catch((e) => {
+        console.error(e);
+        if (e.response?.data) {
+          alert(e.response.data);
+        }
+      })
+      .finally(() => setIsLoading(false));
   }, []);
 
   function onLeft(institution) {
