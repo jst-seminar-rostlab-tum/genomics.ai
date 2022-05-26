@@ -31,7 +31,7 @@ def default_config():
         # scANVI stuff
         parameters.SCANVI_COMPARE_REFERENCE_AND_QUERY: False,
         parameters.SCANVI_COMPARE_OBSERVED_AND_PREDICTED_CELLTYPES: False,
-        parameters.SCANVI_PREDICT_CELLTYPES: False,
+        parameters.SCANVI_PREDICT_CELLTYPES: True,
 
         parameters.CONDITION_KEY: 'study',
         parameters.CELL_TYPE_KEY: 'cell_type',
@@ -111,3 +111,4 @@ if __name__ == "__main__":
     os.environ['AWS_SECRET_KEY'] = 'minioadmin'
 
     query({parameters.DEV_DEBUG: True})
+
