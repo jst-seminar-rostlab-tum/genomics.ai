@@ -172,7 +172,12 @@ export default function ProjectBarCard({
                   && <CanceldOrFailedStatus />}
                     {submissionProgress.status === MULTIPART_UPLOAD_STATUS.COMPLETE
                    && project.status !== PROJECT_STATUS.DONE
+                   && project.status !== PROJECT_STATUS.ABORTED
+                   && project.status !== PROJECT_STATUS.PROCESSING_FAILED
                    && <ProcessingStatus />}
+                    {(project.status === PROJECT_STATUS.ABORTED
+                  || project.status === PROJECT_STATUS.PROCESSING_FAILED)
+                   && <Typography variant="caption">Processing failed</Typography>}
                   </Box>
                 ) : null}
                 {!submissionProgress
