@@ -63,7 +63,8 @@ export default function Sidebar(props) {
               {routes.map((route, index) => (
                 <NavLink
                   className={styles.navlink}
-                  to={`${url}/${route}`}
+                  to={route!=='documentation' ? `${url}/${route}` : path}
+                  onClick={route==='documentation' ? ()=>window.open("https://genecruncher.readthedocs.io/") : ()=>{}}
                   key={route.toString()}
                 >
                   <Tooltip

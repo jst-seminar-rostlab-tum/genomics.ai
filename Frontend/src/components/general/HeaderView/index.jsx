@@ -31,7 +31,7 @@ function HeaderView({
         <Stack
           className="flexContainer"
           direction="row"
-          sx={{ height: 'calc(100% - var(--header-height))' }}
+          // sx={{ height: 'calc(92vh - var(--header-height))' }}
         >
           <div className={styles.content}>
             {children}
