@@ -28,7 +28,7 @@ function TeamProjectList({
   if ((!team.memberIds?.includes(user._id) && team.visibility === 'PRIVATE')
     || (team.visibility === 'BY_INSTITUTION' && !institution.memberIds?.includes(user._id))) {
     return (
-      <span>{`The projects of this team are hidden as it's visibility is set to ${team.visibility.toLowerCase().replace('_', ' ')} and you're not a member of this team${team.visibility === 'BY_INSTITUTION' ? " or you're a member of this team's institution" : ''}.`}</span>
+      <span>{`The projects of this team are hidden as it's visibility is set to ${team.visibility.toLowerCase().replace('_', ' ')} and you're not a member of this team${team.visibility === 'BY_INSTITUTION' ? " or this team's institution" : ''}.`}</span>
     );
   }
 

@@ -34,7 +34,7 @@ function TeamUserHeaderRight({
     || (team.invitedMemberIds?.includes(user._id));
 
   return (
-    <Tooltip title={canJoin ? '' : `This team is ${team.visibility.toLowerCase().replace('_', ' ')} and you haven't been invited${team.visibility === 'BY_INSTITUTION' ? " or you're a member of this team's institution" : ''}.`}>
+    <Tooltip title={canJoin ? '' : `This team is ${team.visibility.toLowerCase().replace('_', ' ')} and you haven't been invited${team.visibility === 'BY_INSTITUTION' ? " and you're not a member of this team's institution" : ''}.`}>
       <div>
         <TeamJoinButton
           isDisabled={!canJoin}
