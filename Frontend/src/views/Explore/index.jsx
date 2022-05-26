@@ -168,7 +168,7 @@ const Explore = () => {
             display: 'none',
           },
           height: '100vh',
-          overflow: 'hidden',
+          overflow: 'auto',
         }}
       >
         {context.loginVisible && <LoginForm />}
