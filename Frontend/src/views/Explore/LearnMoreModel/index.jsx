@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Link, Typography } from '@mui/material';
 import ModelsService from 'shared/services/Models.service';
 import { useParams } from 'react-router-dom';
 import CustomButton from 'components/CustomButton';
+import { useHistory, useLocation } from 'react-router-dom/cjs/react-router-dom.min';
+import { colors } from "shared/theme/colors";
 
-export const LearnMoreModelComponent = ({ onClick, id, isMap = false }) => {
+export const LearnMoreModelComponent = ({ onClick, id, isMap = false, isSearchPage = false }) => {
 
   const [model, setModel] = useState(null);
+  const history = useHistory();
 
   useEffect(() => {
     if (id) {
@@ -24,6 +27,7 @@ export const LearnMoreModelComponent = ({ onClick, id, isMap = false }) => {
       justifyContent: 'space-between',
     }}
     >
+      {isSearchPage && <Typography onClick={history.goBack} sx={{ cursor: "pointer", fontSize: "18px", fontWeight: 500,  color: colors.neutral[800], ":hover": { color: colors.primary[500] }}}>Go Back</Typography>}
       <Box sx={{
         display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'space-between',
       }}
@@ -37,7 +41,7 @@ export const LearnMoreModelComponent = ({ onClick, id, isMap = false }) => {
       <Typography sx={{ width: '100%', maxWidth: '800px' }}>Description: {model?.description}</Typography>
       {
         // isSelect
-        isMap &&
+        isMap && !isSearchPage &&
         <CustomButton sx={{ marginTop: "1em", padding: "0.5em 2em 0.5em 2em" }} type="primary" onClick={() => onClick(model)}>Select</CustomButton>
       }
     </Box>
@@ -46,16 +50,16 @@ export const LearnMoreModelComponent = ({ onClick, id, isMap = false }) => {
 
 export default function LearnMore({handleSelect}) {
   const { id } = useParams();
+  const path = useLocation();
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
       <Box sx={{
         marginTop: '12px',
         width: '80%',
-        minWidth: '1200px',
       }}
       >
-        <LearnMoreModelComponent id={id} isMap={true} onClick={handleSelect} />
+        <LearnMoreModelComponent id={id} isMap={true} onClick={handleSelect} isSearchPage={path.pathname.includes("search")}/>
       </Box>
     </Box>
   )

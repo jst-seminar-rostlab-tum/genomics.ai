@@ -225,7 +225,7 @@ export default function Navbar({
               disableRipple
               sx={{
                 bgcolor: "white",
-                ":hover": { bgcolor: "primary.dark" }
+                ":hover": { bgcolor: "white" }
               }}
             >
               <img width={28} alt="logo" src={logo} />

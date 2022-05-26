@@ -5,7 +5,7 @@ import AtlasCard from 'components/Cards/AtlasCard';
 import styles from './atlasesGrid.module.css';
 
 const AtlasesGrid = ({
-  atlases, path, selectedAtlas = null, handleAtlasSelection = null, selectedModel = null,
+  atlases, path, selectedAtlas = null, handleAtlasSelection = null, selectedModel = null, isSearchPage = false
 }) => (
   <Box className={styles.atlasContainer} mb="2em" pb="1.5em">
     <Grid container spacing={3}>
@@ -23,6 +23,7 @@ const AtlasesGrid = ({
             disabled={selectedModel && !atlas.compatibleModels.some(
               (element) => element.toLowerCase() === selectedModel.name.toLowerCase(),
             )}
+            isSearchPage={isSearchPage}
           />
         </Grid>
       ))}

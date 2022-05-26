@@ -5,7 +5,7 @@ import { ModelCard } from 'components/Cards/ModelCard';
 
 import styles from './modelsGrid.module.css';
 
-const ModelsGrid = ({ models, path, compatibleModels = null, selectedModel = null, handleModelSelection = null }) => {
+const ModelsGrid = ({ models, path, compatibleModels = null, selectedModel = null, handleModelSelection = null, isSearchPage = false }) => {
 
   console.log(compatibleModels)
 
@@ -21,6 +21,7 @@ const ModelsGrid = ({ models, path, compatibleModels = null, selectedModel = nul
               disabled={compatibleModels && (!compatibleModels.map((m) => m.toLowerCase()).includes(model.name.toLowerCase()) || compatibleModels.length == 0)}
               onSelect={() => { if(handleModelSelection) handleModelSelection(model) }}
               selected={selectedModel && selectedModel.name === model.name}
+              isSearchPage={isSearchPage}
             />
           </Grid>
         ))}
