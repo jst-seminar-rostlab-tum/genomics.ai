@@ -8,7 +8,7 @@ import {
   Checkbox,
   Icon,
 } from '@mui/material';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import validator from 'validator';
 import { Alert } from '@mui/lab';
 import { BACKEND_ADDRESS } from 'shared/utils/common/constants';
@@ -19,6 +19,7 @@ import CustomButton from 'components/CustomButton';
 import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead';
 import ChromeReaderModeIcon from '@mui/icons-material/ChromeReaderMode';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import { LoginContext } from 'shared/context/loginContext';
 
 function RegistrationForm(props) {
   const [, setUser] = useAuth();
@@ -30,15 +31,18 @@ function RegistrationForm(props) {
     password: '',
     passwordAgain: '',
   });
-
+  
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [isSnackbarVisible, setSnackbarVisible] = useState(false);
   const [checkYourEmail, setCheckYourEmail] = useState(false);
   const [imprint, setImprint] = useState(false);
   const [isAcceptedTermsSnackbar, setIsAcceptedTermsSnackbar] = useState(false);
+  
+  const { registerClose: onClose, registerVisible: visible, switchLogin:  switchForm } = useContext(LoginContext);
 
   const history = useHistory();
+
   const handleTextChange = useCallback(
     (e) => {
       setUserDetails((prevState) => ({
@@ -93,7 +97,7 @@ function RegistrationForm(props) {
     });
     setErrors({});
     setLoading(false);
-    props.onClose();
+    onClose();
   }, [setUserDetails, setErrors, setLoading, props, setUser]);
 
   function onSuccessfulRegistration() {
@@ -157,6 +161,8 @@ function RegistrationForm(props) {
       }
       setSnackbarVisible(true);
     });
+
+    history.push("/");
   }, [
     userDetails,
     setErrors,
@@ -167,7 +173,6 @@ function RegistrationForm(props) {
     imprint,
   ]);
 
-  const { onClose, visible, switchForm } = props;
 
   return (
     <div>

@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import {
   Modal,
   Box,
@@ -19,9 +19,10 @@ import styles from "./passwordforgetform.module.css";
 import logo from "../../assets/logo.svg";
 import Input from "../Input/Input";
 import CustomButton from "components/CustomButton";
+import { LoginContext } from "shared/context/loginContext";
 
 function PasswordForgetForm(props) {
-  const { close, visible, switchForm } = props;
+  const { forgetClose: close, forgetVisible: visible } = useContext(LoginContext);
   const [errors, setErrors] = useState({});
   // eslint-disable-next-line no-unused-vars
   const [email, setEmail] = useState();
@@ -44,7 +45,7 @@ function PasswordForgetForm(props) {
   const onClose = useCallback(() => {
     setEmail("");
     setErrors({});
-    props.onClose();
+    close();
   }, [props]);
 
   function onSendClick() {

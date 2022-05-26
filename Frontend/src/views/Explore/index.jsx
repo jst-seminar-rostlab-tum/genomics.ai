@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import {
   useHistory, useLocation,
   useRouteMatch,
@@ -21,6 +21,8 @@ import Mapper from 'components/Mapper';
 import { applyModelFilters, applyAtlasFilters } from 'shared/utils/filter';
 import ExploreRoutes from 'components/ExplorePageComponents/ExploreRoutes';
 import { useAuth } from 'shared/context/authContext';
+import { LoginContext } from 'shared/context/loginContext';
+import PasswordForgetForm from 'components/PasswordForgetForm';
 
 const tmpObj = [
   {
@@ -38,16 +40,15 @@ const Explore = () => {
   const [selectedAtlas, setSelectedAtlas] = useState(null);
   const [selectedModel, setSelectedModel] = useState(null);
   const [mapperVisible, setMapperVisible] = useState(false);
-  const [isLoginFormVisible, setLoginFormVisible] = useState(false);
-  const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
   const { search, pathname } = useLocation();
   const searchParams = new URLSearchParams(search);
   const searchedKeyword = searchParams.get('keyword') || '';
   const { path } = useRouteMatch();
-  const history = useHistory();
   const [atlases, setAtlases] = useState([]);
   const [models, setModels] = useState([]);
   const [user, setUser] = useAuth()
+
+  const history = useHistory();
 
   // function to update the state in the URL
   const updateQueryParams = (param, value) => {
@@ -134,25 +135,17 @@ const Explore = () => {
 
   );
 
-  const onLoginClicked = useCallback(() => {
-    console.log('login');
-    setRegistrationFormVisible(false);
-    setLoginFormVisible(true);
-  }, [setLoginFormVisible]);
+  const context = useContext(LoginContext)
 
-  const onSignUpClicked = useCallback(() => {
-    console.log('register');
-    setLoginFormVisible(false);
-    setRegistrationFormVisible(true);
-  }, [setRegistrationFormVisible]);
+  const onLoginClicked = () => {
+    context.switchRegister(false)
+    context.switchLogin(true)
+  }
 
-  const onLoginFormClosed = useCallback(() => {
-    setLoginFormVisible(false);
-  }, [setLoginFormVisible]);
-
-  const onRegistrationFormClosed = useCallback(() => {
-    setRegistrationFormVisible(false);
-  }, [setRegistrationFormVisible]);
+  const onSignUpClicked = () => {
+    context.switchLogin(false);
+    context.switchRegister(true);
+  }
 
   const tmp_elems = pathname.split('/');
   const elems = tmp_elems.map((elem, index) => {
@@ -178,15 +171,9 @@ const Explore = () => {
           overflow: 'hidden',
         }}
       >
-        {isLoginFormVisible && (
-          <LoginForm visible={isLoginFormVisible} onClose={onLoginFormClosed} />
-        )}
-        {isRegistrationFormVisible && (
-          <RegistrationForm
-            visible={isRegistrationFormVisible}
-            onClose={onRegistrationFormClosed}
-          />
-        )}
+        {context.loginVisible && <LoginForm />}
+        {context.registerVisible && <RegistrationForm  />}
+        {context.forgetVisible && <PasswordForgetForm />}
 
         <Box>
           <NavBar
