@@ -40,7 +40,7 @@ const Explore = () => {
   const [mapperVisible, setMapperVisible] = useState(false);
   const [isLoginFormVisible, setLoginFormVisible] = useState(false);
   const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
-  const { search } = useLocation();
+  const { search, pathname } = useLocation();
   const searchParams = new URLSearchParams(search);
   const searchedKeyword = searchParams.get('keyword') || '';
   const { path } = useRouteMatch();
@@ -64,6 +64,7 @@ const Explore = () => {
   };
 
   const handleAtlasSelection = (newAtlas) => {
+    console.log(newAtlas)
     setSelectedAtlas(newAtlas);
     if (!selectedModel) {
       history.push(`${path}/models`);
@@ -97,6 +98,11 @@ const Explore = () => {
     searchedKeywordChangeHandler('');
   };
 
+  const handleMap = () => {
+    history.push(`${path}/atlases/${selectedAtlas._id}/visualization`);
+    setMapperVisible(false);
+  };
+
   useEffect(() => {
     if (selectedAtlas || selectedModel) setMapperVisible(true);
     if (!selectedAtlas && !selectedModel) setMapperVisible(false);
@@ -112,6 +118,7 @@ const Explore = () => {
           path={path}
           handleAtlasSelection={handleAtlasSelection}
           selectedAtlas={selectedAtlas}
+          selectedModel={selectedModel}
         />
       ) : null}
       {value === 1 ? (
@@ -120,6 +127,7 @@ const Explore = () => {
           path={path}
           handleModelSelection={handleModelSelection}
           selectedModel={selectedModel}
+          compatibleModels={selectedAtlas && selectedAtlas.compatibleModels}
         />
       ) : null}
     </Box>
@@ -146,7 +154,7 @@ const Explore = () => {
     setRegistrationFormVisible(false);
   }, [setRegistrationFormVisible]);
 
-  const tmp_elems = useLocation().pathname.split('/');
+  const tmp_elems = pathname.split('/');
   const elems = tmp_elems.map((elem, index) => {
     if (index === 3) {
       if (tmp_elems[2] === 'atlases') return atlases.filter((x) => x._id === elem)[0] ? atlases.filter((x) => x._id === elem)[0].name : elem;
@@ -190,13 +198,13 @@ const Explore = () => {
         </Box>
 
         <Stack
-          direction="row"
+          direction={{xs: "column", sm: "column", md: "row"}}
           sx={{
             alignSelf: 'center', width: '60%', marginTop: '2%', justifyContent: 'space-between',
           }}
         >
           <Breadcrumb elems={elems} fontSize={1} actions={{ explore: () => setValue(0) }} />
-          <Box sx={{ alignSelf: 'center', width: '40%', marginBlock: '2%' }}>
+          <Box sx={{ alignSelf: 'center', width: { xs: "100%", sm: "100%", md: "40%"}, marginBlock: '2%' }}>
             <Search
               filterComponent={(
                 <Filter
@@ -208,6 +216,7 @@ const Explore = () => {
               handleSearch={searchedKeywordChangeHandler}
               value={searchedKeyword}
               padding="0px"
+              visible={pathname.split('/').slice(-1).includes('atlases') || pathname.split('/').slice(-1).includes('models')}
             />
           </Box>
         </Stack>
@@ -221,7 +230,7 @@ const Explore = () => {
           }}
         >
           {/* /explore/atlases */}
-          <ExploreRoutes atlases={atlases && tabMenu()} models={models && tabMenu()} path="/explore" />
+          <ExploreRoutes atlases={atlases && tabMenu()} models={models && tabMenu()} path="/explore" handleSelectAtlases={handleAtlasSelection} handleSelectModels={handleModelSelection} />
         </Box>
 
         <Mapper
@@ -231,6 +240,7 @@ const Explore = () => {
           handleModelSelection={handleModelSelection}
           open={mapperVisible}
           fabOnClick={() => setMapperVisible(!mapperVisible)}
+          handleMap={handleMap}
         />
       </Box>
       <Footer />

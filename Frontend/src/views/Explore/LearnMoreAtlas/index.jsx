@@ -60,20 +60,20 @@ export const LearnMoreAtlasComponent = ({ onClick, id, isMap = false }) => {
           {atlas?.species}
         </Typography>
       </Box>
-      <Box marginBlock="10px"><CustomButton>Select</CustomButton></Box>
-      {/*
-        isMap &&
-        <CustomButton sx={{ marginTop: "1em", padding: "0.5em 2em 0.5em 2em" }} type="primary" onClick={onClick}>Map</CustomButton>
-      */}
-      
+      {
+        isMap
+        && <CustomButton sx={{ marginTop: '1em', padding: '0.5em 2em 0.5em 2em' }} type="primary" onClick={onClick}>Visualize</CustomButton>
+      }
+      <Box marginBlock="10px"> <CustomButton sx={{ marginTop: "1em", padding: "0.5em 2em 0.5em 2em" }} type="primary" onClick={() => onClick(atlas)}>Select</CustomButton></Box>
     </Box>
   );
 };
 
-export default function LearnMore() {
+export default function LearnMore({ handleSelect }) {
   const history = useHistory();
   const path = useLocation();
   const { id } = useParams();
+  
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
       <Box sx={{
@@ -82,7 +82,7 @@ export default function LearnMore() {
         minWidth: '1200px',
       }}
       >
-        <LearnMoreAtlasComponent id={id} isMap={true} onClick={() => history.push(`${path.pathname}/visualization`)} />
+        <LearnMoreAtlasComponent id={id} isMap={true} onClick={handleSelect} />
       </Box>
     </Box>
   );
