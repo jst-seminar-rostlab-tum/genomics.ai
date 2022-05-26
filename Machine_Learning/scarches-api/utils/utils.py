@@ -75,7 +75,11 @@ def write_adata_to_csv(model, adata=None, key=None, filename=tempfile.mktemp(), 
     if adata is None:
         anndata = scanpy.AnnData(model.get_latent_representation())
     else:
-        anndata = scanpy.AnnData(model.get_latent_representation(adata=adata))
+        try:
+            anndata = scanpy.AnnData(model.get_latent_representation(adata=adata))
+        except Exception as e:
+            anndata = adata
+
     latent = anndata
     latent.obs['cell_type'] = adata.obs[cell_type_key].tolist()
     latent.obs['batch'] = adata.obs[condition_key].tolist()
@@ -89,33 +93,31 @@ def write_adata_to_csv(model, adata=None, key=None, filename=tempfile.mktemp(), 
     return write_latent_csv(latent, key, filename)
 
 
-def write_combined_csv(latent_ref, latent_query, key=None, filename=tempfile.mktemp(), drop_columns=None):
-    """
-    stores a given latent in a file, and if a key is given also in an s3 bucket
-    :param latent_ref: reference_data to be saved
-    :param latent_query: query data to be saved
-    :param key: s3 key
-    :param filename: local filename
-    :param drop_columns: not needed columns
-    :return:
-    """
-    if drop_columns is None:
-        drop_columns = []
-    query = latent_query.obs.drop(columns=drop_columns)
-    query["x"] = list(map(lambda p: float(p[0]), latent_query.obsm["X_umap"]))
-    query["y"] = list(map(lambda p: float(p[1]), latent_query.obsm["X_umap"]))
-    query["is_reference"] = ['No'] * len(latent_query.obsm["X_umap"])
-    query.to_csv(filename)
+# def write_combined_csv(latent_ref, latent_query, key=None, filename=tempfile.mktemp(), drop_columns=None):
+#     """
+#     stores a given latent in a file, and if a key is given also in an s3 bucket
+#     :param latent_ref: reference_data to be saved
+#     :param latent_query: query data to be saved
+#     :param key: s3 key
+#     :param filename: local filename
+#     :param drop_columns: not needed columns
+#     :return:
+#     """
+#     if drop_columns is None:
+#         drop_columns = []
+#     query = latent_query.obs.drop(columns=drop_columns)
+#     query["x"] = list(map(lambda p: float(p[0]), latent_query.obsm["X_umap"]))
+#     query["y"] = list(map(lambda p: float(p[1]), latent_query.obsm["X_umap"]))
+#     query["is_reference"] = ['No'] * len(latent_query.obsm["X_umap"])
+#     query.to_csv(filename)
+#     reference = latent_ref.obs.drop(columns=drop_columns)
+#     reference["x"] = list(map(lambda p: float(p[0]), latent_ref.obsm["X_umap"]))
+#     reference["y"] = list(map(lambda p: float(p[1]), latent_ref.obsm["X_umap"]))
+#     reference["is_reference"] = ['Yes'] * len(latent_ref.obsm["X_umap"])
+#     reference.to_csv(filename, header=False, mode='a')
 
-    reference = latent_ref.obs.drop(columns=drop_columns)
-    reference["x"] = list(map(lambda p: float(p[0]), latent_ref.obsm["X_umap"]))
-    reference["y"] = list(map(lambda p: float(p[1]), latent_ref.obsm["X_umap"]))
-    reference["is_reference"] = ['Yes'] * len(latent_ref.obsm["X_umap"])
-    reference.to_csv(filename, header=False, mode='a')
-
-    if key is not None:
-        store_file_in_s3(filename, key)
-
+#     if key is not None:
+#         store_file_in_s3(filename, key)
 
 def print_csv(filename):
     with open(filename, mode='r') as file:
@@ -208,11 +210,11 @@ def read_h5ad_file_from_s3(key):
 def check_model_atlas_compatibility(model, atlas):
     compatible_atlases = []
     if model == 'scVI':
-        compatible_atlases = ['pancreas', 'heart', 'human-lung', 'retina', 'fetal-immune']
+        compatible_atlases = ['pancreas', 'heart', 'human_lung', 'retina', 'fetal_immune']
     if model == 'scANVI':
-        compatible_atlases = ['pancreas', 'heart', 'human-lung', 'retina', 'fetal-immune']
+        compatible_atlases = ['pancreas', 'heart', 'human_lung', 'retina', 'fetal_immune']
     if model == 'totalVI':
-        compatible_atlases = ['pmbc', 'bone-marrow']
+        compatible_atlases = ['pmbc', 'bone_marrow']
     return atlas in compatible_atlases
 
 
@@ -230,6 +232,18 @@ def pre_process_data(configuration):
         target_adata = remove_sparsity(target_adata)
     except Exception as e:
         pass
+    try:
+        source_adata.layers['counts']
+    except Exception as e:
+        source_adata.layers['counts'] = source_adata.X.copy()
+        print("counts layer source")
+
+    try:
+        target_adata.layers['counts']
+    except Exception as e:
+        target_adata.layers['counts'] = target_adata.X.copy()
+        print("counts layer query")
+
     return source_adata, target_adata
 
 
@@ -242,10 +256,38 @@ def translate_atlas_to_directory(configuration):
     elif atlas == 'Heart cell atlas':
         return 'heart'
     elif atlas == 'Human lung cell atlas':
-        return 'human-lung'
+        return 'human_lung'
     elif atlas == 'Bone marrow':
-        return 'bone-marrow'
+        return 'bone_marrow'
     elif atlas == 'Retina atlas':
         return 'retina'
     elif atlas == 'Fetal immune atlas':
-        return 'fetal-immune'
+        return 'fetal_immune'
+
+
+def set_keys(configuration):
+    atlas = get_from_config(configuration, 'atlas')
+    if atlas == 'Pancreas':
+        return configuration
+    elif atlas == 'PBMC':
+        return configuration
+    elif atlas == 'Heart cell atlas':
+        configuration[parameters.CELL_TYPE_KEY] = 'cell_type'
+        configuration[parameters.CONDITION_KEY] = 'source'
+        return configuration
+    elif atlas == 'Human lung cell atlas':
+        configuration[parameters.CELL_TYPE_KEY] = 'ann_coarse_for_GWAS_and_modeling'
+        configuration[parameters.CONDITION_KEY] = 'dataset'
+        return configuration
+    elif atlas == 'Bone marrow':
+        # configuration[parameters.CELL_TYPE_KEY] = 'cell_type'
+        # configuration[parameters.CONDITION_KEY] = 'source'
+        return configuration
+    elif atlas == 'Retina atlas':
+        configuration[parameters.CELL_TYPE_KEY] = 'CellType'
+        configuration[parameters.CONDITION_KEY] = 'batch'
+        return configuration
+    elif atlas == 'Fetal immune atlas':
+        configuration[parameters.CELL_TYPE_KEY] = 'cell_name'
+        configuration[parameters.CONDITION_KEY] = 'bbk'
+        return configuration

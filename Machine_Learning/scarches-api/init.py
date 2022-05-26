@@ -35,7 +35,6 @@ def default_config():
 
         parameters.CONDITION_KEY: 'study',
         parameters.CELL_TYPE_KEY: 'cell_type',
-        parameters.BATCH_KEY: 'sample',
         parameters.PRETRAINED_MODEL_PATH: '',
         parameters.NUMBER_OF_LAYERS: 2,
         parameters.ENCODE_COVARIATES: True,
@@ -82,6 +81,9 @@ def merge_configs(user_config):
 def query(user_config):
     start_time = time.time()
     configuration = merge_configs(user_config)
+    #Sets the correct condition and cell_type key
+    configuration = utils.set_keys(configuration)
+    
     model = utils.get_from_config(configuration, parameters.MODEL)
     configuration['atlas'] = utils.translate_atlas_to_directory(configuration)
     if model == 'scVI':

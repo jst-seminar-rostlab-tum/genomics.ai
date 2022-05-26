@@ -60,6 +60,8 @@ def create_scVI_model(source_adata, target_adata, configuration):
             print('use pretrained scvi model', file=sys.stderr)
         # os.mkdir('scvi_model')
         # utils.fetch_file_from_s3(utils.get_from_config(configuration, parameters.PRETRAINED_MODEL_PATH), 'assets/scVI/model.pt')
+
+        
         return get_pretrained_scVI_model(target_adata, configuration), None
     else:
         if utils.get_from_config(configuration, parameters.DEV_DEBUG):
@@ -130,7 +132,7 @@ def compute_latent(model, adata, configuration):
     reference_latent = sc.AnnData(model.get_latent_representation(adata=adata))
     reference_latent.obs[utils.get_from_config(configuration, parameters.CELL_TYPE_KEY)] = adata.obs[
         utils.get_from_config(configuration, parameters.CELL_TYPE_KEY)].tolist()
-    reference_latent.obs[utils.get_from_config(configuration, parameters.BATCH_KEY)] = adata.obs[
+    reference_latent.obs[utils.get_from_config(configuration, parameters.CONDITION_KEY)] = adata.obs[
         utils.get_from_config(configuration, parameters.CONDITION_KEY)].tolist()
     sc.pp.neighbors(reference_latent, n_neighbors=utils.get_from_config(configuration, parameters.NUMBER_OF_NEIGHBORS))
     sc.tl.leiden(reference_latent)
@@ -171,6 +173,7 @@ def compute_query(pretrained_model, anndata, reference_latent, source_adata, con
             print(e, file=sys.stderr)
     utils.delete_file(tempdir + '/model.pt')
     os.removedirs(tempdir)
+    
     if utils.get_from_config(configuration, parameters.DEV_DEBUG):
         try:
             if reference_latent is not None:
@@ -208,24 +211,25 @@ def compute_query(pretrained_model, anndata, reference_latent, source_adata, con
     return model
 
 
-def compute_full_latent(source_adata, target_adata, model, configuration):
-    """
-    basically just takes to datasets, concatenates them and then computes the latent and saves the result
-    :param source_adata:
-    :param target_adata:
-    :param model:
-    :return:
-    """
-    full_latent = compute_latent(model, source_adata.concatenate(target_adata), configuration)
+# def compute_full_latent(source_adata, target_adata, model, configuration):
+#     """
+#     basically just takes to datasets, concatenates them and then computes the latent and saves the result
+#     :param source_adata:
+#     :param target_adata:
+#     :param model:
+#     :return:
+#     """
+#     full_latent = compute_latent(model, source_adata.concatenate(target_adata), configuration)
 
-    if utils.get_from_config(configuration, parameters.DEBUG):
-        utils.save_umap_as_pdf(full_latent, 'data/figures/both.pdf', color=['batch', 'cell_type'])
+#     if utils.get_from_config(configuration, parameters.DEBUG):
+#         utils.save_umap_as_pdf(full_latent, 'data/figures/both.pdf', color=['batch', 'cell_type'])
 
-    both_path = 'both.csv'
+#     both_path = 'both.csv'
 
-    utils.write_latent_csv(full_latent, key='both.csv', filename=both_path, drop_colums=dropped_columns)
+#     utils.write_latent_csv(full_latent, key='both.csv', filename=both_path, drop_colums=dropped_columns)
 
-    return full_latent
+#     return full_latent
+
 
 
 def compute_scVI(configuration):
