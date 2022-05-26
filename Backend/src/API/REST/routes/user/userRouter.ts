@@ -50,13 +50,14 @@ const get_user_by_id = (): Router => {
   router.get("/users/:id", check_auth(), async (req: ExtRequest, res: any) => {
     try {
       const user_id = req.params.id;
-      const user = await UserService.getUserById(user_id);
+      const {email, password, isEmailVerified, isAdministrator,
+        ...filtered_user} = await UserService.getUserById(user_id) || {};
 
-      if (!user) {
+      if (!filtered_user) {
         return res.status(404).send("User with user id: " + user_id + " was not found!");
       }
 
-      return res.status(200).json(user);
+      return res.status(200).json(filtered_user);
     } catch (e) {
       console.error("Error in /users/:id");
       console.error(JSON.stringify(e));
