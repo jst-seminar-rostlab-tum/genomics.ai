@@ -130,6 +130,8 @@ export default function TeamPage() {
         <hr />
         <TeamProjectList
           team={team}
+          institution={institution}
+          user={user}
           isAdmin={isAdmin}
           updateTeam={() => updateTeam(true)}
         />

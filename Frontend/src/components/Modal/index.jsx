@@ -7,7 +7,7 @@ import { Dialog, DialogTitle } from '@mui/material';
  * @param children mui dialog title / dialog content / dialog actions children component
  */
 export const Modal = ({
-  isOpen, setOpen, children, sx,
+  isOpen, setOpen, children, sx, maxWidth='sm'
 }) => (
   <Dialog
     open={isOpen}
@@ -22,6 +22,7 @@ export const Modal = ({
         ...sx,
       },
     }}
+    maxWidth={maxWidth}
   >
     {children}
   </Dialog>
