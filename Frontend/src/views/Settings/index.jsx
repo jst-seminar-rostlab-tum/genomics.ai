@@ -11,8 +11,8 @@ import validator from 'validator';
 import ProfileImage from 'components/ProfileImage';
 
 import styles from './settings.module.css';
-import updateProfile from 'shared/services/SettingsLogic';
 import { useAuth } from 'shared/context/authContext';
+import ProfileService from 'shared/services/Profile.service';
 
 const myTheme = createTheme({
   palette: {
@@ -66,7 +66,7 @@ function PasswordSection({ onPasswordInfoChange, errors, changePassword }) {
 }
 
 function Settings({ sidebarShown }) {
-  const [user, setUser] = useAuth();
+  const [user] = useAuth();
   /* Booleans */
   const paddingL = useCallback(() => (sidebarShown ? '130px' : '380px'), [sidebarShown]);
 
@@ -131,7 +131,7 @@ function Settings({ sidebarShown }) {
   const saveUserData = () => {
     if (isValidInput() && isValidPasswordInfo()) {
       setSaveInProgress(true);
-      updateProfile(userInfo, changePassword ? passwordInfo.newPassword : null, setUser)
+      ProfileService.updateProfile(userInfo, changePassword ? passwordInfo.newPassword : null)
         .catch((err) => {
           setErrors((prevState) => ({ ...prevState, response: "Couldn't save changes :/" }));
           console.log(err);
