@@ -72,7 +72,7 @@ const update_institution = (): Router => {
         const institutionToUpdate: UpdateInstitutionDTO = {
           // name,
           // country,
-          description
+          description,
         };
         await InstitutionService.updateInstitution(
           institution_to_be_updated_id,
@@ -335,10 +335,13 @@ const remove_member_from_institution = (): Router => {
         if (!(await InstitutionService.isAdmin(req.user_id!, institution))) {
           return res.status(403).send("Forbidden. Not an admin");
         }
-        if (await InstitutionService.isAdmin(deletedUserId, institution)) {
-          return res.status(403).send("Forbidden. Trying to delete an admin");
-        }
-        if (!(await InstitutionService.isMember(deletedUserId, institution))) {
+        // if (await InstitutionService.isAdmin(deletedUserId, institution)) {
+        //   return res.status(403).send("Forbidden. Trying to delete an admin");
+        // }
+        if (
+          !(await InstitutionService.isMember(deletedUserId, institution)) &&
+          !(await InstitutionService.isAdmin(deletedUserId, institution))
+        ) {
           return res.status(409).send("User is not part of this institution");
         }
         await InstitutionService.removeMemberFromInstitution(institutionId, deletedUserId);

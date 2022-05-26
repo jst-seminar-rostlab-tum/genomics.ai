@@ -658,10 +658,13 @@ const remove_member_from_team = (): Router => {
         if (!(await TeamService.isAdmin(req.user_id!, team))) {
           return res.status(403).send("Forbidden. Not an admin");
         }
-        if (await TeamService.isAdmin(deleteUserId, team)) {
-          return res.status(403).send("Forbidden. Trying to delete an admin");
-        }
-        if (!(await TeamService.isMember(deleteUserId, team))) {
+        // if (await TeamService.isAdmin(deleteUserId, team)) {
+        //   return res.status(403).send("Forbidden. Trying to delete an admin");
+        // }
+        if (
+          !(await TeamService.isMember(deleteUserId, team)) &&
+          !(await TeamService.isAdmin(deleteUserId, team))
+        ) {
           return res.status(409).send("User is not part of this team");
         }
         await TeamService.removeMemberFromTeam(teamId, deleteUserId);
