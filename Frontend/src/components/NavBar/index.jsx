@@ -101,11 +101,14 @@ function Rightbar(props) {
 }
 
 function Navlink(props) {
+
+  const { fontWeight="425", main } = props
+
   return (
     <Box {...props}>
       <Typography {...props} sx={{
-        fontWeight: "bold",
-        fontSize: { xs: "0.6em", sm: "0.8em", md: "0.8em", lg: "1.2em", xl: "1.2em" },
+        fontWeight,
+        fontSize: main ? { xs: "0.6em", sm: "0.8em", md: "0.8em", lg: "1.2em", xl: "1.2em" } : { xs: "0.4em", sm: "0.6em", md: "0.6em", lg: "1em", xl: "1em" },
         color: "white",
         ":hover": {
           color: colors.primary[400],
@@ -229,7 +232,7 @@ export default function Navbar({
             >
               <img width={28} alt="logo" src={logo} />
             </IconButton>
-            <Navlink>genomics.ai</Navlink>
+            <Navlink fontWeight="bold" main={true} >genomics.ai</Navlink>
           </LinkBox>
           <LinkBox to="/explore"><Navlink>Explore</Navlink></LinkBox>
           <LinkBox to="/about"><Navlink>About us</Navlink></LinkBox>

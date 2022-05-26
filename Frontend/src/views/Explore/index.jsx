@@ -117,6 +117,7 @@ const Explore = () => {
           path={path}
           handleModelSelection={handleModelSelection}
           selectedModel={selectedModel}
+          compatibleModels={selectedAtlas && selectedAtlas.compatibleModels}
         />
       ) : null }
     </Box>
@@ -186,13 +187,13 @@ const Explore = () => {
       </Box>
 
       <Stack
-        direction="row"
+        direction={{ xs: "column", sm: "row", md: "row", lg: "row", xl: "row" }}
         sx={{
           alignSelf: 'center', width: '60%', marginTop: '2%', justifyContent: 'space-between',
         }}
       >
         <Breadcrumb elems={elems} fontSize={1} actions={{ explore: () => setValue(0) }} />
-        <Box sx={{ alignSelf: 'center', width: '40%', marginBlock: '2%' }}>
+        <Box sx={{ width: { xs: "60%", sm: "40%", md: "40%", lg: "40%", xl: "40%" }, marginBlock: '2%' }}>
           <Search
             filterComponent={(
               <Filter
