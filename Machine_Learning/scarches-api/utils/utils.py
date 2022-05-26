@@ -216,8 +216,18 @@ def pre_process_data(configuration):
         target_adata = remove_sparsity(target_adata)
     except Exception as e:
         pass
-    source_adata.layers['counts'] = source_adata.X.copy()
-    target_adata.layers['counts'] = target_adata.X.copy()
+    try:
+        source_adata.layers['counts']
+    except Exception as e:    
+        source_adata.layers['counts'] = source_adata.X.copy()
+        print("counts layer source")
+    
+    try:
+        target_adata.layers['counts']
+    except Exception as e:    
+        target_adata.layers['counts'] = target_adata.X.copy()
+        print("counts layer query")
+
     return source_adata, target_adata
 
 
