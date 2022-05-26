@@ -20,6 +20,7 @@ import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 export default function AtlasCard({
   width = '100%', height = '100%', title, atlasId, imgLink, modalities,
   cellsInReference, species, learnMoreLink, onSelect, selected = false, disabled = false,
+  isSearchPage = false
 }) {
   // check if the mouse is hovering above the card
   const [isHover, setHover] = useState(false);
@@ -110,10 +111,13 @@ export default function AtlasCard({
                   gap: '5px',
                 }}
               >
-                <OutlinedButton
-                  content="Select"
-                  onClick={onSelect}
-                />
+                {
+                  !isSearchPage &&
+                  <OutlinedButton
+                    content="Select"
+                    onClick={onSelect}
+                  />
+                }
                 <OutlinedButton
                   content="Learn More"
                   link={learnMoreLink}
@@ -139,39 +143,42 @@ export default function AtlasCard({
 
         {/* DISABLED OVERLAY BOX */}
         {
-          disabled
-          && (
+          disabled &&
           <Box
-            style={{ background: 'linear-gradient(#e7e7e7, #d0d0d0)' }}
+            style={{ background: "linear-gradient(#e7e7e7, #d0d0d0)" }}
             sx={{
-              position: 'absolute',
-              width: '100%',
-              height: '100%',
-              borderRadius: '1.2rem',
-              p: '1rem',
-              opacity: 0.9,
-              // boxShadow: "0px 4px 6px 0px rgba(1, 87, 155, .20), 0px 0px 1px 0px rgba(1, 87, 155, .32)"
-            }}
-          >
+              position: "absolute",
+              width: "100%",
+              height: "100%",
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              borderRadius: "1.2rem",
+              cursor: "pointer",
+              opacity: 0.95,
+            }}>
+            { 
+              !isHover && 
+              <Typography sx={{ position: "absolute", fontSize: "12px", fontWeight: "bold", color: colors.neutral[900], textAlign: "center", left: "28%" }}>
+                Not Compatible
+              </Typography>
+            }
             <Box
               sx={{
+                margin: 'auto',
+                width: '70%',
+                height: 'auto',
                 display: 'flex',
-                gap: '1rem',
-                // styles below center the buttons to the very center of the component
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
+                flexDirection: 'column',
+                justifyContent: 'space-evenly',
+                gap: '5px',
               }}
             >
 
-              <Typography sx={{ color: colors.neutral[900], textAlign: 'center' }}>
-                Not Compatible
-              </Typography>
-
+              { isHover && <OutlinedButton content="Learn More" link={learnMoreLink} bg={colors.neutral[800]} color={colors.neutral[800]} onClick={(e) => e.stopPropagation()} bgHover={colors.neutral[100]} colorHover={colors.neutral[600]}/> }
+              {/* <CustomButton type="outlined" href={learnMoreLink ? `#${learnMoreLink}` : null} onClick={(e) => e.stopPropagation()}>Learn More</CustomButton> */}
             </Box>
           </Box>
-          )
         }
         { !disabled
           && (

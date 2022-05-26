@@ -55,7 +55,7 @@ const WindowiOS = ({ onSignUpClicked }) => {
           Transfer learning with Architecture Surgery on Single-cell data.
         </Typography>
         <Box sx={{ margin: "2em 0 0 0px", display: "flex", flexDirection: "row", gap: "10px", alignItems: "center" }}>
-          <CustomButton onClick={onSignUpClicked} sx={{ width: "150px" }}>Sign up</CustomButton>
+          <CustomButton onClick={onSignUpClicked} sx={{ width: "100px" }}>Sign up</CustomButton>
         </Box>
         <Box sx={{ marginBlock: "10px", display: "flex", flexDirection: "row", gap: "10px", alignItems: "center" }}>
           <Typography sx={{ color: colors.neutral[200] }}>Test out our GeneMapper. No need to sign up.</Typography>
