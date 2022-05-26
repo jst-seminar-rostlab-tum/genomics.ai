@@ -11,6 +11,7 @@ import NavBar from 'components/NavBar';
 import Breadcrumb from 'components/Breadcrumb';
 import LoginForm from 'components/LoginForm';
 import RegistrationForm from 'components/RegistrationForm';
+import Footer from 'components/Footer';
 
 import ModelsService from 'shared/services/Models.service';
 import AtlasService from 'shared/services/Atlas.service';
@@ -110,15 +111,16 @@ const Explore = () => {
           handleAtlasSelection={handleAtlasSelection}
           selectedAtlas={selectedAtlas}
         />
-      ) : null }
+      ) : null}
       {value === 1 ? (
         <ModelsGrid
           models={applyModelFilters(models, searchedKeyword, searchParams, selectedAtlas)}
           path={path}
           handleModelSelection={handleModelSelection}
           selectedModel={selectedModel}
+          compatibleModels={selectedAtlas && selectedAtlas.compatibleModels}
         />
-      ) : null }
+      ) : null}
     </Box>
 
   );
@@ -186,13 +188,13 @@ const Explore = () => {
       </Box>
 
       <Stack
-        direction="row"
+        direction={{ xs: "column", sm: "row", md: "row", lg: "row", xl: "row" }}
         sx={{
           alignSelf: 'center', width: '60%', marginTop: '2%', justifyContent: 'space-between',
         }}
       >
         <Breadcrumb elems={elems} fontSize={1} actions={{ explore: () => setValue(0) }} />
-        <Box sx={{ alignSelf: 'center', width: '40%', marginBlock: '2%' }}>
+        <Box sx={{ width: { xs: "60%", sm: "40%", md: "40%", lg: "40%", xl: "40%" }, marginBlock: '2%' }}>
           <Search
             filterComponent={(
               <Filter
@@ -207,27 +209,6 @@ const Explore = () => {
           />
         </Box>
       </Stack>
-
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignSelf: 'center',
-          width: { xs: '90%', md: '60%' },
-        }}
-      >
-        {/* /explore/atlases */}
-        <ExploreRoutes atlases={atlases && tabMenu()} models={models && tabMenu()} path="/explore" />
-      </Box>
-
-      <Mapper
-        mapperAtlas={selectedAtlas ? selectedAtlas.name : null}
-        mapperModel={selectedModel ? selectedModel.name : null}
-        handleAtlasSelection={handleAtlasSelection}
-        handleModelSelection={handleModelSelection}
-        open={mapperVisible}
-        fabOnClick={() => setMapperVisible(!mapperVisible)}
-      />
     </Box>
   );
 };

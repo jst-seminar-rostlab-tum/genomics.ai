@@ -34,6 +34,6 @@ export function handleZoom(e) {
 export const resetZoom = () => {
   d3.select('#vis_svg')
     .transition()
-    .call(zoomM.scaleTo, 1);
+    .call(zoomM.transform, d3.zoomIdentity);
 }
 

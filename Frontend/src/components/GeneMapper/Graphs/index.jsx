@@ -35,8 +35,8 @@ function GeneMapperGraphs({ graphs, drawGraph }) {
         ))}
       </Box>
 
-      <Modal isOpen={open} setOpen={() => setOpen('')}>
-        <Box ref={(elem) => drawGraph(elem, open, 500, 500)} />
+      <Modal isOpen={open} setOpen={() => setOpen('')} maxWidth="false">
+        <Box ref={(elem) => drawGraph(elem, open, 750, 750)} />
       </Modal>
 
     </>
