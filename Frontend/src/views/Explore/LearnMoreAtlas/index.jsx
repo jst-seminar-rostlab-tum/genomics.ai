@@ -8,6 +8,7 @@ import { colors } from 'shared/theme/colors';
 export const LearnMoreAtlasComponent = ({ onClick, id, isMap = false, isSearchPage = false }) => {
   const [atlas, setAtlas] = useState(null);
   const history = useHistory();
+  const path = useLocation().pathname;
 
   useEffect(() => {
     if (id) {
@@ -69,7 +70,7 @@ export const LearnMoreAtlasComponent = ({ onClick, id, isMap = false, isSearchPa
         !isSearchPage 
         &&
         <>
-          <CustomButton sx={{ marginTop: '1em', padding: '0.5em 2em 0.5em 2em' }} type="secondary" onClick={onClick}>Visualize</CustomButton>
+          <CustomButton sx={{ marginTop: '1em', padding: '0.5em 2em 0.5em 2em' }} type="secondary" onClick={() => history.push(`${path}/visualization`)}>Visualize</CustomButton>
           <CustomButton sx={{ marginTop: '1em', padding: "0.5em 2em 0.5em 2em" }} type="primary" onClick={() => onClick(atlas)}>Select</CustomButton>
         </>
       }
