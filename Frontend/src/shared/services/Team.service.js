@@ -2,7 +2,7 @@ import MockTeamService from './mock/Team.service';
 import axiosInstance from './axiosInstance';
 import ProfileService from './Profile.service';
 
-const MOCK_TEAMS = true;
+const MOCK_TEAMS = false;
 const MODEL = 'teams';
 
 function enhanceTeam(team) {
@@ -21,6 +21,12 @@ const TeamService = MOCK_TEAMS ? MockTeamService : {
       institutionId,
     });
     return enhanceTeam(data);
+  },
+
+  async joinTeam(teamId) {
+    const user = await ProfileService.getProfile();
+    const { data: updatedTeam } = await axiosInstance.put(`/${MODEL}/${teamId}/join`, { userId: user.id });
+    return updatedTeam;
   },
 
   async removeMemberFromTeam(teamId, memberId) {
@@ -46,7 +52,7 @@ const TeamService = MOCK_TEAMS ? MockTeamService : {
 
   async getMyTeams() {
     const user = await ProfileService.getProfile();
-    let { data } = await axiosInstance.get(`/user/${user.id}/teams`);
+    let { data } = await axiosInstance.get(`/users/${user.id}/teams`);
     data = data.map(enhanceTeam);
     return data;
   },

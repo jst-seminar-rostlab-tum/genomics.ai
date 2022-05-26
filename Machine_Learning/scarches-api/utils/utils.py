@@ -1,15 +1,31 @@
 import os
 import tempfile
-import scanpy
+from utils import parameters
 import requests
 import boto3
 from aiohttp import ClientError
-import sys
-from pathlib import Path
 import scanpy
-import fileinput
 from pathlib import Path
 import pandas as pd
+from scarches.dataset.trvae.data_handling import remove_sparsity
+
+UNWANTED_LABELS = ['leiden', '', '_scvi_labels', '_scvi_batch']
+
+
+def get_from_config(configuration, key):
+    if key in configuration:
+        return configuration[key]
+    return None
+
+
+def to_drop(adata_obs):
+    drop_list = []
+    print(adata_obs)
+    for attr in UNWANTED_LABELS:
+        if attr in adata_obs:
+            drop_list.append(attr)
+    print(drop_list)
+    return drop_list
 
 
 def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=None):
@@ -21,8 +37,10 @@ def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=
     :param drop_columns: not needed columns
     :return:
     """
-    if drop_columns is None:
-        drop_columns = []
+
+    drop_columns = to_drop(latent.obs_keys())
+    # if drop_columns is None:
+    #     drop_columns = []
     final = latent.obs.drop(columns=drop_columns)
     final["x"] = list(map(lambda p: p[0], latent.obsm["X_umap"]))
     final["y"] = list(map(lambda p: p[1], latent.obsm["X_umap"]))
@@ -61,7 +79,7 @@ def write_adata_to_csv(model, adata=None, key=None, filename=tempfile.mktemp(), 
     latent = anndata
     latent.obs['cell_type'] = adata.obs[cell_type_key].tolist()
     latent.obs['batch'] = adata.obs[condition_key].tolist()
-
+    latent.obs['type'] = adata.obs['type'].tolist()
     scanpy.pp.neighbors(latent, n_neighbors=neighbors)
     scanpy.tl.leiden(latent)
     scanpy.tl.umap(latent)
@@ -178,8 +196,56 @@ def read_h5ad_file_from_s3(key):
     :param key:
     :return:
     """
+    if key is None or len(key) == 0:
+        return None
     filename = tempfile.mktemp(suffix=".h5ad")
     fetch_file_from_s3(key, filename)
     data = scanpy.read(filename)
     delete_file(filename)
     return data
+
+
+def check_model_atlas_compatibility(model, atlas):
+    compatible_atlases = []
+    if model == 'scVI':
+        compatible_atlases = ['pancreas', 'heart', 'human-lung', 'retina', 'fetal-immune']
+    if model == 'scANVI':
+        compatible_atlases = ['pancreas', 'heart', 'human-lung', 'retina', 'fetal-immune']
+    if model == 'totalVI':
+        compatible_atlases = ['pmbc', 'bone-marrow']
+    return atlas in compatible_atlases
+
+
+def pre_process_data(configuration):
+    source_adata = read_h5ad_file_from_s3(get_from_config(configuration, parameters.REFERENCE_DATA_PATH))
+    target_adata = read_h5ad_file_from_s3(get_from_config(configuration, parameters.QUERY_DATA_PATH))
+    source_adata.obs["type"] = "reference"
+    target_adata.obs["type"] = "query"
+    source_adata.raw = source_adata
+    try:
+        source_adata = remove_sparsity(source_adata)
+    except Exception as e:
+        pass
+    try:
+        target_adata = remove_sparsity(target_adata)
+    except Exception as e:
+        pass
+    return source_adata, target_adata
+
+
+def translate_atlas_to_directory(configuration):
+    atlas = get_from_config(configuration, 'atlas')
+    if atlas == 'Pancreas':
+        return 'pancreas'
+    elif atlas == 'PBMC':
+        return 'pbmc'
+    elif atlas == 'Heart cell atlas':
+        return 'heart'
+    elif atlas == 'Human lung cell atlas':
+        return 'human-lung'
+    elif atlas == 'Bone marrow':
+        return 'bone-marrow'
+    elif atlas == 'Retina atlas':
+        return 'retina'
+    elif atlas == 'Fetal immune atlas':
+        return 'fetal-immune'

@@ -1,10 +1,10 @@
 import React, { useState, useRef } from 'react';
 
-import ReactCrop from 'react-image-crop';
+//import ReactCrop from 'react-image-crop';
 import canvasPreview from './canvasPreview';
 import useDebounceEffect from './useDebounceEffect';
 
-import 'react-image-crop/dist/ReactCrop.css';
+//import 'react-image-crop/dist/ReactCrop.css';
 
 // adapted from the react-image-crop example on
 // https://www.npmjs.com/package/react-image-crop
