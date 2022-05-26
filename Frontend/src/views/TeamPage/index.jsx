@@ -13,6 +13,8 @@ import TeamInviteButton from 'components/teams/detail/TeamInviteButton';
 import TextField from '@mui/material/TextField';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import { useAuth } from 'shared/context/authContext';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 export default function TeamPage() {
   const { id } = useParams();
@@ -21,6 +23,14 @@ export default function TeamPage() {
   const [institution, setInstitution] = useState({});
   const [newDescription, setNewDescription] = useState('');
   const [descriptionChanged, setDescriptionChanged] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
 
   const handleDescriptionChange = (event) => {
     event.preventDefault();
@@ -44,6 +54,7 @@ export default function TeamPage() {
     await TeamService.changeTeamDescription(id, newDescription);
     updateTeam(true);
     setDescriptionChanged(false);
+    setOpen(true);
   }
 
   useEffect(() => {
@@ -117,7 +128,13 @@ export default function TeamPage() {
       <section>
         <h2>Projects</h2>
         <hr />
-        <TeamProjectList teamId={id} />
+        <TeamProjectList
+          team={team}
+          institution={institution}
+          user={user}
+          isAdmin={isAdmin}
+          updateTeam={() => updateTeam(true)}
+        />
       </section>
       <section>
         <h2>Members</h2>
@@ -128,6 +145,19 @@ export default function TeamPage() {
         />
       </section>
       {isAdmin && <TeamInviteButton team={team} />}
+      <Snackbar
+        open={open}
+        autoHideDuration={1500}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+      >
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          {'Description saved successfully!'}
+        </Alert>
+      </Snackbar>
     </HeaderView>
   );
 }

@@ -23,6 +23,7 @@ import ModelService from 'shared/services/Model.service';
 
 import { applyModelFilters, applyAtlasFilters } from 'shared/utils/filter';
 import HeaderView from 'components/general/HeaderView';
+import { GiConsoleController } from 'react-icons/gi';
 
 const SearchPage = () => {
   const [user] = useAuth();
@@ -64,34 +65,40 @@ const SearchPage = () => {
   };
 
   const fetchSearchHandler = useCallback(async () => {
-    let searchResponse = [];
-    const urlParams = new URLSearchParams(searchParams);
-    const filterParams = Object.fromEntries(urlParams);
-    switch (searchCategory) {
-      case 'users':
-        searchResponse = await UserService.getUsers(filterParams);
-        break;
-      case 'teams':
-        searchResponse = await TeamService.getTeams(filterParams);
-        break;
-      case 'institutions':
-        searchResponse = await InstitutionService.getInstitutions(filterParams);
-        break;
-      case 'projects':
-        searchResponse = await ProjectService.getProjects(filterParams);
-        break;
-      case 'atlases':
-        searchResponse = await AtlasService.getAtlases();
-        searchResponse = applyAtlasFilters(searchResponse, filterParams.keyword || '', urlParams);
-        break;
-      case 'models':
-        searchResponse = await ModelService.getModels();
-        searchResponse = applyModelFilters(searchResponse, filterParams.keyword || '', urlParams);
-        break;
-      default:
+    try {
+      let searchResponse = [];
+      const urlParams = new URLSearchParams(searchParams);
+      const filterParams = Object.fromEntries(urlParams);
+      switch (searchCategory) {
+        case 'users':
+          searchResponse = await UserService.getUsers(filterParams);
+          break;
+        case 'teams':
+          searchResponse = await TeamService.getTeams(filterParams);
+          break;
+        case 'institutions':
+          searchResponse = await InstitutionService.getInstitutions(filterParams);
+          break;
+        case 'projects':
+          searchResponse = await ProjectService.getProjects(filterParams);
+          break;
+        case 'atlases':
+          searchResponse = await AtlasService.getAtlases();
+          searchResponse = applyAtlasFilters(searchResponse, filterParams.keyword || '', urlParams);
+          break;
+        case 'models':
+          searchResponse = await ModelService.getModels();
+          searchResponse = applyModelFilters(searchResponse, filterParams.keyword || '', urlParams);
+          break;
+        default:
+      }
+      setSearchRequestResult(searchResponse);
+    } catch (e) {
+      setSearchRequestResult([]);
+      console.log(e);
+    } finally {
+      setLoadedCategory(searchCategory);
     }
-    setSearchRequestResult(searchResponse);
-    setLoadedCategory(searchCategory);
   }, [searchCategory, search]);
 
   useEffect(() => {

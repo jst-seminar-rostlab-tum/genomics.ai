@@ -11,6 +11,7 @@ import CropImage from '../CropImage';
 export default function ImageUploadDialog({
   open, onClose, title, description, maxFileSizeMB,
   onUpload, additionalButtons,
+  disableCropping,
   preview = (imgURL) => <img style={{ width: '100%' }} src={imgURL} alt="Preview" />,
 }) {
   const [loading, setLoading] = useState(false);
@@ -40,6 +41,9 @@ export default function ImageUploadDialog({
       setImgURL(url);
     });
     reader.readAsDataURL(files[0]);
+    if (disableCropping) {
+      setCroppedImgBlob(files[0]);
+    }
     console.log('files', files);
   }
 
@@ -48,23 +52,27 @@ export default function ImageUploadDialog({
       <ModalTitle>{title}</ModalTitle>
       <DialogContent>
         {description && (<p>{description}</p>)}
-        {!imgURL && (
+        {(!imgURL || disableCropping) && (
           <DropzoneArea
             onChange={(files) => handleSave(files)}
             acceptedFiles={['image/jpeg', 'image/png']}
             maxFileSize={maxFileSizeMB * 1024 * 1024}
             filesLimit={1}
-            showPreviews={false}
+            showPreviews={disableCropping}
             showPreviewsInDropzone={!preview}
             alertSnackbarProps={{ autoHideDuration: 3000 }}
           />
         )}
-        <h3>Crop</h3>
-        <CropImage
-          imgSrc={imgURL}
-          onUpdate={() => null}
-          onUpdateBlob={(blob) => setCroppedImgBlob(blob)}
-        />
+        {!disableCropping && imgURL && (
+          <>
+            <h3>Crop</h3>
+            <CropImage
+              imgSrc={imgURL}
+              onUpdate={() => null}
+              onUpdateBlob={(blob) => setCroppedImgBlob(blob)}
+            />
+          </>
+        )}
       </DialogContent>
       <DialogActions>
         <Button type="tertiary" onClick={() => { setImgURL(null); onClose(); }}>

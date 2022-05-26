@@ -7,9 +7,7 @@ import { colors } from "shared/theme/colors";
 import { useEffect, useRef, useState } from "react";
 
 import { useAuth } from 'shared/context/authContext';
-
-// REMOVE THIS LATER
-import UserProfileImage from "assets/user.png";
+import ProfileImage from "components/ProfileImage";
 
 //In styled(), we cannot use different width to fix different resolution
 //we have to use sx
@@ -101,11 +99,14 @@ function Rightbar(props) {
 }
 
 function Navlink(props) {
+
+  const { fontWeight="425", main } = props
+
   return (
     <Box {...props}>
       <Typography {...props} sx={{
-        fontWeight: "bold",
-        fontSize: { xs: "0.6em", sm: "0.8em", md: "0.8em", lg: "1.2em", xl: "1.2em" },
+        fontWeight,
+        fontSize: main ? { xs: "0.6em", sm: "0.8em", md: "0.8em", lg: "1.2em", xl: "1.2em" } : { xs: "0.4em", sm: "0.6em", md: "0.6em", lg: "1em", xl: "1em" },
         color: "white",
         ":hover": {
           color: colors.primary[400],
@@ -224,25 +225,26 @@ export default function Navbar({
               disableRipple
               sx={{
                 bgcolor: "white",
-                ":hover": { bgcolor: "primary.dark" }
+                ":hover": { bgcolor: "white" }
               }}
             >
               <img width={28} alt="logo" src={logo} />
             </IconButton>
-            <Navlink>genomics.ai</Navlink>
+            <Navlink fontWeight="bold" main={true} >genomics.ai</Navlink>
           </LinkBox>
           <LinkBox to="/explore"><Navlink>Explore</Navlink></LinkBox>
           <LinkBox to="/about"><Navlink>About us</Navlink></LinkBox>
           <Box sx={{ cursor: "pointer" }} onClick={executeScroll}><Navlink>Contact us</Navlink></Box>
-          <LinkBox to="/docs"><Navlink>Docs </Navlink></LinkBox>
+          <Box sx={{cursor: "pointer"}} onClick={()=>window.open("https://genecruncher.readthedocs.io/")}><Navlink>Docs</Navlink></Box>
         </Leftbar>
         <Rightbar>
             {!user && <Login onClick={onLoginClicked}>Log In</Login>}
             {!user && <Signup onClick={onSignUpClicked}>Sign Up</Signup>}
             {
               user && 
-              <IconButton sx={{ border: "4px solid white", p: "0" }} onClick={() => history.push("/")}>
-                <Avatar alt={user.firstName} src={UserProfileImage} />
+              <IconButton onClick={() => history.push("/")}>
+                {/* <Avatar alt={user.firstName} src={UserProfileImage} /> */}
+                <ProfileImage sizePixels={40} />
               </IconButton>
             }
         </Rightbar>

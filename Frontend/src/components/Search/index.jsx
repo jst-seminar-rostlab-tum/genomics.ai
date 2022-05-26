@@ -31,13 +31,11 @@ const FilterButton = ({ onClick }) => (
   </ButtonBase>
 );
 
-const Search = ({ filterComponent, handleSearch, value, padding = '10px' }) => {
+const Search = ({ filterComponent, handleSearch, value, padding = '10px', visible = true }) => {
 
   const [active, setActive] = useState(false)
   const [filterEnabled, setFilterEnabled] = useState(false)
   const filterBox = useRef()
-
-  console.log(filterComponent)
 
   useEffect(() => {
     // TODO
@@ -67,6 +65,7 @@ const Search = ({ filterComponent, handleSearch, value, padding = '10px' }) => {
         p: padding,
         border: `2px solid ${active ? colors.primary[400] : colors.primary[700]}`,
         borderRadius: '40px',
+        display: visible ? 'flex' : 'none',
       }}
     >
       {/* Left part */}

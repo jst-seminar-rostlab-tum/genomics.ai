@@ -22,8 +22,13 @@ function InstitutionInviteButton({ institution }) {
 
   const handleCloseDialog = () => setDialogOpen(false);
 
+  function validateEmail(email) {
+    let re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    return re.test(email)
+  }
+
   const handleTeamInvite = () => {
-    if (!invitedMailAdress) {
+    if (!invitedMailAdress || !validateEmail(invitedMailAdress)) {
       setMailError('Please enter an e-mail address.');
       return;
     }
