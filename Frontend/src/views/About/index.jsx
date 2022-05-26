@@ -3,7 +3,7 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import { Box, Typography, Grid, IconButton, Divider, Avatar } from '@mui/material';
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, useContext } from 'react';
 import {
   Switch, Route, Redirect, useHistory, useLocation, useParams,
   useRouteMatch, Link
@@ -24,6 +24,8 @@ import frontend2Data from './frontend/frontend_2.json'
 import frontend3Data from './frontend/frontend_3.json'
 import backendData from './backend/backend.json'
 import visualizationData from './visualization/visualization.json'
+import { LoginContext } from 'shared/context/loginContext';
+import PasswordForgetForm from 'components/PasswordForgetForm';
 
 function FbItem({link}) {
   return (
@@ -108,37 +110,27 @@ function MemberSection({name, data}){
 
 export default function About(props){
 
-  const [isLoginFormVisible, setLoginFormVisible] = useState(false);
-  const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
-
   const history = useHistory();
-    
-  const onLoginClicked = useCallback(() => {
-    console.log('login');
-    setRegistrationFormVisible(false);
-    setLoginFormVisible(true);
-  }, [setLoginFormVisible]);
+  
+  const context = useContext(LoginContext)
 
-  const onSignUpClicked = useCallback(() => {
-    console.log('register');
-    setLoginFormVisible(false);
-    setRegistrationFormVisible(true);
-  }, [setRegistrationFormVisible]);
+  const onLoginClicked = () => {
+    context.switchRegister(false)
+    context.switchLogin(true)
+  }
 
-  const onLoginFormClosed = useCallback(() => {
-    setLoginFormVisible(false);
-  }, [setLoginFormVisible]);
-
-  const onRegistrationFormClosed = useCallback(() => {
-    setRegistrationFormVisible(false);
-  }, [setRegistrationFormVisible]);
+  const onSignUpClicked = () => {
+    context.switchLogin(false);
+    context.switchRegister(true);
+  } 
 
   const executeScroll = () => history.push({pathname: '/', state: {contact_us: true}})
 
   return (
     <Box sx={{overflowX: "hidden"}}>
-      {isLoginFormVisible && <LoginForm visible={isLoginFormVisible} onClose={onLoginFormClosed} />}
-      {isRegistrationFormVisible && <RegistrationForm visible={isRegistrationFormVisible} onClose={onRegistrationFormClosed} />}
+      {context.loginVisible && <LoginForm />}
+      {context.registerVisible && <RegistrationForm  />}
+      {context.forgetVisible && <PasswordForgetForm />}
 
       <Box>
         <NavBar

@@ -9,7 +9,7 @@ import {
   Typography,
   Link,
 } from "@mui/material";
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useCallback, useState, useEffect, useContext } from "react";
 import validator from "validator";
 import CloseIcon from "@mui/icons-material/Close";
 import { useHistory } from "react-router-dom";
@@ -22,9 +22,11 @@ import { Modal, ModalTitle } from "components/Modal";
 import Input from "components/Input/Input";
 import CustomButton from "components/CustomButton";
 import { colors } from 'shared/theme/colors';
+import { LoginContext } from "shared/context/loginContext";
 
 function LoginForm(props) {
   const [, setUser] = useAuth();
+
   const [loginDetails, setLoginDetails] = useState({
     email: "",
     password: "",
@@ -34,6 +36,8 @@ function LoginForm(props) {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [isSnackbarVisible, setSnackbarVisible] = useState(false);
+
+  const { loginClose: onClose, loginVisible: visible, switchRegister: switchForm, switchForget: onForgetPassword } = useContext(LoginContext);
 
   const history = useHistory();
 
@@ -51,7 +55,7 @@ function LoginForm(props) {
     });
     setErrors({});
     setLoading(false);
-    props.onClose();
+    onClose();
   }
 
   const handleTextChange = useCallback(
@@ -140,7 +144,7 @@ function LoginForm(props) {
         password: loginDetails.password,
       }),
     };
-    console.log(BACKEND_ADDRESS);
+
     fetch(`${BACKEND_ADDRESS}/auth`, loginRequest)
       .then((response) => {
         setLoading(false);
@@ -156,15 +160,15 @@ function LoginForm(props) {
           await onSuccessfulLogin(data);
         }
       });
+
+    history.push("/");
   }, [setLoading, loginDetails, setErrors]);
 
-  const { onClose, visible, switchForm, onForgetPassword } = props;
-  const [isOpen, setIsOpen] = useState(visible ? true : false);
 
   
   return (
     <div>
-      <Modal setOpen={(o) => !o && onClose()} isOpen={isOpen}>
+      <Modal setOpen={(o) => !o && onClose()} isOpen={visible}>
         <ModalTitle>Log in</ModalTitle>
         <Box sx={{ width:340}}>
           <Grid sx={{width:320}}>
