@@ -711,7 +711,7 @@
       }
     }
   },
-  "/team/{id}/admins/{userid}": {
+  "/teams/{id}/admins/{userid}": {
     "delete": {
       "summary": "For admins: Demote another admin",
       "tags": ["Team"],
@@ -742,6 +742,47 @@
         },
         "409": {
           "description": "User is not an admin of the team"
+        }
+      }
+    }
+  },
+  "/teams/{id}/projects/{projectid}": {
+    "delete": {
+      "summary": "For admins: Remove project from team",
+      "tags": ["Team"],
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "in": "path",
+          "name": "projectid",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK"
+        },
+        "403": {
+          "description": "Forbidden. Not an admin"
+        },
+        "404": {
+          "description": ["Team not found", "Project not found"]
+        },
+        "409": {
+          "description": "Project does not belong to the team"
+        },
+        "500": {
+          "description": "Internal server error"
         }
       }
     }
