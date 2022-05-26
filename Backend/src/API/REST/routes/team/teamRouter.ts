@@ -805,6 +805,41 @@ const get_projects_of_team = (): Router => {
   return router;
 };
 
+const remove_project_from_team = (): Router => {
+  let router = express.Router();
+  router.delete(
+    "/teams/:id/projects/:projectid",
+    check_auth(),
+    async (req: ExtRequest, res: Response) => {
+      try {
+        const projectId = req.params.projectid;
+        const teamId = req.params.id;
+        const team = await TeamService.getTeamById(teamId);
+        if(!team) {
+          return res.status(404).send("Team not found");
+        }
+        if(!await TeamService.isAdmin(req.user_id!,team)) {
+          return res.status(403).send("Not an admin");
+        }
+        const project = await ProjectService.getProjectById(projectId);
+        if(!project) {
+          return res.status(404).send("Project not found");
+        }
+        const projectTeamId = project.teamId;
+        if (String(projectTeamId) != String(teamId)) {
+          return res.status(409).send("Project doesn't belong to the team");
+        }
+        await ProjectService.unsetTeamOfProject(project._id);
+        return res.status(200).send("OK");
+      } catch (err) {
+        console.error(err);
+        return res.status(500).send("Internal server error");
+      }
+    }
+  );
+  return router;
+};
+
 export {
   create_team,
   invite_person_to_a_team,
@@ -822,4 +857,5 @@ export {
   remove_member_from_team,
   remove_admin_role_for_team_member,
   get_projects_of_team,
+  remove_project_from_team,
 };
