@@ -62,9 +62,12 @@ export const LearnMoreAtlasComponent = ({ onClick, id, isMap = false }) => {
       </Box>
       {
         isMap
-        && <CustomButton sx={{ marginTop: '1em', padding: '0.5em 2em 0.5em 2em' }} type="primary" onClick={onClick}>Visualize</CustomButton>
+        && 
+        <>
+          <CustomButton sx={{ marginTop: '1em', padding: '0.5em 2em 0.5em 2em' }} type="secondary" onClick={onClick}>Visualize</CustomButton>
+          <CustomButton sx={{ marginTop: '1em', padding: "0.5em 2em 0.5em 2em" }} type="primary" onClick={() => onClick(atlas)}>Select</CustomButton>
+        </>
       }
-      <Box marginBlock="10px"> <CustomButton sx={{ marginTop: "1em", padding: "0.5em 2em 0.5em 2em" }} type="primary" onClick={() => onClick(atlas)}>Select</CustomButton></Box>
     </Box>
   );
 };
