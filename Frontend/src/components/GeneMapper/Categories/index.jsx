@@ -120,7 +120,7 @@ function GeneMapperCategories({
     <>
       { categories
         ? Object.entries(categories).map(([title, values]) => (
-          title !== 'type' && title !== 'predictions'
+          title !== 'type' && title !== 'predicted'
             ? (
               <Category
                 key={title}

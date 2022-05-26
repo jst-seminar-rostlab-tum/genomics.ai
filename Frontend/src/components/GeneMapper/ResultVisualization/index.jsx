@@ -101,7 +101,7 @@ function ResultVisualization({ dataUrl, onlyUmap }) {
       >
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           {umap
-          && Object.keys(umap.coloringModes).includes('predictions')
+          && Object.keys(umap.coloringModes).includes('predicted')
           && (
             <>
               <Box>
