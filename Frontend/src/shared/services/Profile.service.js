@@ -6,7 +6,7 @@ const MOCK_PROFILE = false;
 let _cachedProfile;
 
 const ProfileService = MOCK_PROFILE ? MockProfileService : {
-  getProfile: async (options) => {
+  async getProfile(options) {
     const allowCache = (options || {}).allowCache ?? true;
     if (allowCache && _cachedProfile) return _cachedProfile;
     const { data } = await axiosInstance.get('/profile');
@@ -15,8 +15,33 @@ const ProfileService = MOCK_PROFILE ? MockProfileService : {
     return _cachedProfile;
   },
 
-  clearProfileCache: () => {
+  clearProfileCache() {
     _cachedProfile = null;
+  },
+
+  updateProfile(userData, newPassword) {
+    const body = {
+      first_name: userData.firstName,
+      last_name: userData.lastName,
+      // email: userData.emailAddress,
+      note: userData.academicAffiliation,
+    };
+    if (!!newPassword && newPassword !== '') {
+      body.password = newPassword;
+    }
+    return axiosInstance.post('/update_profile', body)
+      .then((response) => {
+        if (response.status !== 200) {
+          throw Error("Couldn't save changes");
+        }
+        this.clearProfileCache();
+        localStorage.setItem('user', JSON.stringify({
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          email: userData.emailAddress,
+          note: userData.academicAffiliation,
+        }));
+      });
   },
 };
 
