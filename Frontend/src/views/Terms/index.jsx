@@ -7,12 +7,14 @@ import NavBar from 'components/NavBar';
 import Footer from 'components/Footer';
 import LoginForm from 'components/LoginForm';
 import RegistrationForm from 'components/RegistrationForm';
+import { useAuth } from 'shared/context/authContext';
 
 export default function Terms() {
   const [isLoginFormVisible, setLoginFormVisible] = useState(false);
   const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
 
   const history = useHistory();
+  const [user, setUser] = useAuth()
 
   const onLoginClicked = useCallback(() => {
     console.log('login');
@@ -34,7 +36,7 @@ export default function Terms() {
     setRegistrationFormVisible(false);
   }, [setRegistrationFormVisible]);
 
-  const executeScroll = () => history.push({ pathname: '/', state: { contact_us: true } });
+  const executeScroll = () => user ? history.push({ pathname: '/sequencer/help'}) : history.push({ pathname: '/', state: { contact_us: true } });
 
   const regForm = isRegistrationFormVisible
     && <RegistrationForm visible={isRegistrationFormVisible} onClose={onRegistrationFormClosed} />;
