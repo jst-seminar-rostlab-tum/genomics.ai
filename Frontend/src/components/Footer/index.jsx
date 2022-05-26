@@ -65,8 +65,9 @@ export default function Footer({ sx }) {
           <IconButton
             disableRipple
             sx={{
+              cursor: "default",
               bgcolor: "white",
-              ":hover": { bgcolor: "primary.dark" }
+              ":hover": { bgcolor: "white" }
             }}
           >
             <img width={28} alt="logo" src={logo} />
