@@ -269,7 +269,7 @@ def set_keys(configuration):
         return configuration
     elif atlas == 'Retina atlas':
         configuration[parameters.CELL_TYPE_KEY] = 'CellType'
-        configuration[parameters.CONDITION_KEY] = '‘batch’'
+        configuration[parameters.CONDITION_KEY] = 'batch'
         return configuration
     elif atlas == 'Fetal immune atlas':
         configuration[parameters.CELL_TYPE_KEY] = 'cell_name'
