@@ -59,7 +59,7 @@ export default function Footer({ sx }) {
         ...sx
       }}
     >
-      <Box sx={{width: { xs: "90%", sm: "90%", md: "60%", lg: "60%", xl: "60%" }, display: "flex", flexDirection: "row", alignItems: "center", gap: "15px"}}>
+      <Box sx={{display: "flex", flexDirection: "row", alignItems: "center", gap: "15px", alignSelf: "center"}}>
       {/* <Footbar> */}
         {/* <LinkBox to="/" sx={{ display: "flex", alignItems: "center", gap: "0.7em" }}> */}
           {/* <IconButton
