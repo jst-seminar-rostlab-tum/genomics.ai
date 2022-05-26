@@ -148,6 +148,7 @@ export default function Sidebar(props) {
                       display: 'flex',
                       justifyContent: 'center',
                       alignItems: 'center',
+                      marginBottom: "1em"
                     }}
                   >
                     <ListItemIcon sx={{ justifyContent: 'center' }}>
