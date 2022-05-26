@@ -615,7 +615,11 @@ const get_teams = (): Router => {
   router.get("/teams", check_auth(), async (req: any, res) => {
     const query = { ...req.query };
     try {
-      const teams = (await TeamService.getTeams(query)).toObject();
+      const teams = (await TeamService.getTeams(query));
+
+      for(const team of teams) {
+        InstitutionService.mergeAdminsMembers(team.institutionId as any);
+      }
 
       if (teams != null) return res.status(200).json(TeamService.mergeAdminsMembers(teams));
       return res.status(404).send(`No teams found`);
