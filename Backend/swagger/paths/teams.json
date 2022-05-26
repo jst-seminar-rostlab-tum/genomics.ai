@@ -780,6 +780,9 @@
         },
         "409": {
           "description": "Project does not belong to the team"
+        },
+        "500": {
+          "description": "Internal server error"
         }
       }
     }
