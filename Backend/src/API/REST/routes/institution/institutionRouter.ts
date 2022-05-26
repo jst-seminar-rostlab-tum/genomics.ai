@@ -255,13 +255,40 @@ const join_as_member_of_institution = (): Router => {
         return res
           .status(200)
           .send(
-            `<h2>ou have joined the institution. Click <a href='javascript:window.close();'>here</a> to return</h2>`
+            `<h2>You have joined the institution. Click <a href='javascript:window.close();'>here</a> to return</h2>`
           );
       } else {
         return res.status(409).send("Could not join as member of the institution!");
       }
     } catch (error) {
       return res.status(500).send("Something went wrong: " + error);
+    }
+  });
+
+  router.put("/institutions/:id/join", check_auth(), async (req: any, res) => {
+    const institutionId_to_modify = req.params.id;
+    const current_user = req.user_id;
+    try {
+      const institutionToBeUpdated = await InstitutionService.getInstitutionById(
+        institutionId_to_modify
+      );
+
+      if (!institutionToBeUpdated?.invitedMemberIds.includes(current_user))
+        return res.status(409).send("Could not join as you are not an invited member!");
+
+      const updatedInstitution = await InstitutionService.makeUserMemberOfInstitution(
+        institutionId_to_modify,
+        current_user
+      );
+
+      if (updatedInstitution) {
+        res.json(updatedInstitution);
+      } else {
+        return res.status(500).send("Could not join as member of the institution!");
+      }
+    } catch (error) {
+      console.log("Something went wrong: " + error);
+      return res.status(500).send("Internal server error");
     }
   });
 

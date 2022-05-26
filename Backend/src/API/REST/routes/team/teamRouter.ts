@@ -364,6 +364,86 @@ const join_member = (): Router => {
     }
   });
 
+  router.put("/teams/:id/join", check_auth(), async (req: any, res) => {
+    try {
+      const { userId }: { userId: ObjectId } = req.body;
+      const teamId: string = req.params.id;
+      const user_id_jwt = req.user_id;
+
+      if (!(userId && teamId)) return res.status(400).send("Missing parameters.");
+
+      const user = await UserService.getUserById(userId);
+      if (!user) return res.status(409).send("User does not exist.");
+      if (!user.isEmailVerified) return res.status(409).send("User has not been verified.");
+      if (userId != user_id_jwt)
+        return res.status(409).send("Information of the user does not match.");
+
+      const team = await TeamService.getTeamById(teamId);
+      if (!team) return res.status(409).send("Team does not exist.");
+
+      var tempUserId = String(userId);
+      var tempListAdmins = team.adminIds.map(String);
+      var tempListMembers = team.memberIds.map(String);
+      var tempListInvitedMembers = team.invitedMemberIds.map(String);
+
+      if (tempListAdmins.includes(tempUserId))
+        return res.status(409).send("User is an admin of the team.");
+
+      if (tempListMembers.includes(tempUserId))
+        return res.status(409).send("User is already a member of the team.");
+
+      try {
+        if (team.visibility == "PUBLIC") {
+          // Nothing to validate. Added just to exclude any error in case of a new visilitity state
+        } else if (team.visibility == "PRIVATE") {
+          if (!tempListInvitedMembers.includes(tempUserId))
+            return res.status(409).send("User has not been invited.");
+        } else if (team.visibility == "BY_INSTITUTION") {
+          if (!team.institutionId)
+            return res
+              .status(409)
+              .send("Team is not associated to any institution and set-up requires it.");
+          const institutionObj = await InstitutionService.getInstitutionById(team.institutionId);
+          if (!institutionObj) return res.status(409).send("Institution does not exist.");
+
+          var tempListAdminsOfInst = institutionObj?.adminIds.map(String);
+          var tempListMembersOfInst = institutionObj?.memberIds.map(String);
+
+          if (
+            !(
+              tempListAdminsOfInst.includes(tempUserId) ||
+              tempListMembersOfInst.includes(tempUserId)
+            )
+          ) {
+            return res.status(409).send("User does not belong to the institution of the team.");
+          }
+        } else {
+          console.log("New visibility has been detected with value [" + team.visibility + "]");
+          return res.status(500).send("Internal error. Set-up");
+        }
+
+        const team_updated = await TeamService.joinMemberIntoTeam(teamId, userId);
+
+        if (!team_updated)
+          return res.status(500).send("Error when joining a new member into the team.");
+
+        const teamRes = await TeamService.getTeamById(teamId);
+        return res.status(200).json(teamRes);
+      } catch (err) {
+        console.error("Error when trying to join a new member into a given team.");
+        console.error(JSON.stringify(err));
+        console.error(err);
+        return res.status(500).send("Unable to register new admin.");
+      }
+    } catch (e) {
+      /* Added since a test proved that if user sends a request with incorrect parameter names, it is able to shutdown the server. */
+      console.error("Error in join_member()");
+      console.error(JSON.stringify(e));
+      console.error(e);
+      return res.status(500).send("Internal error.");
+    }
+  });
+
   return router;
 };
 
