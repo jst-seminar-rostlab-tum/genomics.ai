@@ -43,7 +43,7 @@ function LinkBox(props) {
   )
 }
 
-export default function Footer() {
+export default function Footer({ sx }) {
   return (
     <Box
       sx={{
@@ -56,6 +56,7 @@ export default function Footer() {
         alignItems: "center",
         justifyContent: "center",
         padding: "10px",
+        ...sx
       }}
     >
       <Box sx={{width: { xs: "90%", sm: "90%", md: "60%", lg: "60%", xl: "60%" }, display: "flex", flexDirection: "row", alignItems: "center", gap: "15px"}}>
