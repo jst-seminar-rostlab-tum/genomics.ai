@@ -50,7 +50,7 @@ export default function Footer({ sx }) {
         position: "relative",
         bgcolor: colors.neutral[200],
         width: "100%",
-        height: "8vh",
+        height: "40px",
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
@@ -62,7 +62,7 @@ export default function Footer({ sx }) {
       <Box sx={{width: { xs: "90%", sm: "90%", md: "60%", lg: "60%", xl: "60%" }, display: "flex", flexDirection: "row", alignItems: "center", gap: "15px"}}>
       {/* <Footbar> */}
         {/* <LinkBox to="/" sx={{ display: "flex", alignItems: "center", gap: "0.7em" }}> */}
-          <IconButton
+          {/* <IconButton
             disableRipple
             sx={{
               cursor: "default",
@@ -72,7 +72,7 @@ export default function Footer({ sx }) {
           >
             <img width={28} alt="logo" src={logo} />
           </IconButton>
-          <Navlink>genomics.ai</Navlink>
+          <Navlink>genomics.ai</Navlink> */}
         {/* </LinkBox> */}
         {/* <LinkBox to="/about"><Navlink>About us</Navlink></LinkBox>
         <LinkBox to="/docs"><Navlink>Docs </Navlink></LinkBox>
@@ -82,11 +82,10 @@ export default function Footer({ sx }) {
       {/* <Box sx={{ width: { xs: "90%", sm: "90%", md: "50%", lg: "50%", xl: "50%" }, height: "2px", bgcolor: "black", margin: "auto" }} /> */}
 
       <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center" }} >
-        <CopyrightIcon sx={{ width: "16px", height: "16px" }} />
-        <Typography fontSize="16px" fontWeight="bold" >2022</Typography>
-        <Typography fontSize="16px" sx={{ margin: '0 4px' }}> - </Typography>
+        <Typography fontSize="12px" fontWeight="bold" >© Copyright 2022</Typography>
+        <Typography fontSize="12px" sx={{ margin: '0 4px' }}> - </Typography>
         <LinkBox to="/imprint" style={{ textDecoration: "none" }}>
-          <Typography fontSize="16px" color="black">Imprint</Typography>
+          <Typography fontSize="12px" color="black">Imprint</Typography>
         </LinkBox>
         { /*
         <Typography fontSize="16px" sx={{ margin: '0 4px' }}> - </Typography>
@@ -94,9 +93,9 @@ export default function Footer({ sx }) {
           <Typography fontSize="16px" color="black">Terms of Usage</Typography>
         </LinkBox>
         */ }
-        <Typography fontSize="16px" sx={{ margin: '0 4px' }}> - </Typography>
+        <Typography fontSize="12px" sx={{ margin: '0 4px' }}> - </Typography>
         <LinkBox to="/privacy" style={{ textDecoration: "none" }}>
-          <Typography fontSize="16px" color="black">Privacy Policy</Typography>
+          <Typography fontSize="12px" color="black">Privacy Policy</Typography>
         </LinkBox>
       </Box>
       </Box>
