@@ -62,8 +62,11 @@ def write_adata_to_csv(model, adata=None, key=None, filename=tempfile.mktemp(), 
     if adata is None:
         anndata = scanpy.AnnData(model.get_latent_representation())
     else:
-        anndata = scanpy.AnnData(model.get_latent_representation(adata=adata))
-        
+        try:
+            anndata = scanpy.AnnData(model.get_latent_representation(adata=adata))
+        except Exception as e:
+            anndata = adata
+
     latent = anndata
     latent.obs['cell_type'] = adata.obs[cell_type_key].tolist()
     latent.obs['batch'] = adata.obs[condition_key].tolist()
@@ -218,13 +221,13 @@ def pre_process_data(configuration):
         pass
     try:
         source_adata.layers['counts']
-    except Exception as e:    
+    except Exception as e:
         source_adata.layers['counts'] = source_adata.X.copy()
         print("counts layer source")
-    
+
     try:
         target_adata.layers['counts']
-    except Exception as e:    
+    except Exception as e:
         target_adata.layers['counts'] = target_adata.X.copy()
         print("counts layer query")
 
