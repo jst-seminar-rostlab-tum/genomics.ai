@@ -1,14 +1,17 @@
 /* eslint-disable */
 
 import { Circle } from "@mui/icons-material"
-import { Box, Button, Typography } from "@mui/material"
+import { Box, Typography } from "@mui/material"
 import { colors } from "shared/theme/colors"
 import tum from 'assets/landing-illustrations/tum-logo.png';
 import rostlab from 'assets/landing-illustrations/rostlab.png';
 import helmholtz from 'assets/landing-illustrations/helmholtz.png';
 import CustomButton from "components/CustomButton";
+import { useHistory } from "react-router-dom";
 
 const WindowiOS = ({ onSignUpClicked }) => {
+  const history = useHistory()
+
   return (
     <Box
       sx={{
@@ -45,10 +48,19 @@ const WindowiOS = ({ onSignUpClicked }) => {
         <Typography fontSize={{ xs: "1.4rem", sm: "1.6rem", md: "1.4rem", lg: "2rem", xl: "2rem" }} fontWeight="semibold">
           No Code. Just Results.
         </Typography>
-        <Typography fontSize="1.2rem" fontWeight="light" color="#8193B2">
+        {/* <Typography fontSize="1.2rem" fontWeight="light" color="#8193B2">
           Genomics.ai helps you visualize all of your single-cell sequencing data in a fast and easy way using neural networks.
+        </Typography> */}
+        <Typography fontSize="1.2rem" fontWeight="light" color="#8193B2">
+          Transfer learning with Architecture Surgery on Single-cell data.
         </Typography>
-        <CustomButton marginTop="1em" onClick={onSignUpClicked} >Sign up for genomics.ai</CustomButton>
+        <Box sx={{ margin: "2em 0 0 0px", display: "flex", flexDirection: "row", gap: "10px", alignItems: "center" }}>
+          <CustomButton onClick={onSignUpClicked} sx={{ width: "150px" }}>Sign up</CustomButton>
+        </Box>
+        <Box sx={{ marginBlock: "10px", display: "flex", flexDirection: "row", gap: "10px", alignItems: "center" }}>
+          <Typography sx={{ color: colors.neutral[200] }}>Test out our GeneMapper. No need to sign up.</Typography>
+          <CustomButton type="secondary" onClick={() => history.push("/explore")} sx={{ color: colors.secondary1[700] }}>Explore</CustomButton>
+        </Box>
         
         {/* DIVIDER */}
         <Box sx={{ marginTop: "3em", display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
@@ -70,13 +82,13 @@ const WindowiOS = ({ onSignUpClicked }) => {
         }}
       >
         <Box sx={{ margin: { xs: "2em 2em", sm: "0em", md: "0em", lg: "0em", xl: "0em" } }} >
-          <img src={tum} alt="TUM" style={{ width: "6em", height: "auto" }} />
-        </Box>
-        <Box sx={{ margin: { xs: "2em 2em", sm: "0em", md: "0em", lg: "0em", xl: "0em" } }} >
           <img src={rostlab} alt="ROSTLAB" style={{ width: "10em", height: "auto" }} />
         </Box>
         <Box sx={{ margin: { xs: "2em 2em", sm: "0em", md: "0em", lg: "0em", xl: "0em" } }} >
-          <img src={helmholtz} alt="HELMHOLTZ" style={{ width: "6em", height: "auto" }} />
+          <img src={helmholtz} alt="HELMHOLTZ" style={{ width: "10em", height: "auto" }} />
+        </Box>
+        <Box sx={{ margin: { xs: "2em 2em", sm: "0em", md: "0em", lg: "0em", xl: "0em" } }} >
+          <img src={tum} alt="TUM" style={{ width: "5em", height: "auto" }} />
         </Box>
       </Box>
     </Box>

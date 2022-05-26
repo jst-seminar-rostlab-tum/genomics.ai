@@ -101,14 +101,17 @@ function Rightbar(props) {
 }
 
 function Navlink(props) {
+
+  const { fontWeight="425", main } = props
+
   return (
     <Box {...props}>
       <Typography {...props} sx={{
-        fontWeight: "bold",
-        fontSize: { xs: "0.6em", sm: "0.8em", md: "0.8em", lg: "1.2em", xl: "1.2em" },
+        fontWeight,
+        fontSize: main ? { xs: "0.6em", sm: "0.8em", md: "0.8em", lg: "1.2em", xl: "1.2em" } : { xs: "0.4em", sm: "0.6em", md: "0.6em", lg: "1em", xl: "1em" },
         color: "white",
         ":hover": {
-          color: colors.secondary1[200]
+          color: colors.primary[400],
         }
       }}
       ></Typography>
@@ -124,7 +127,7 @@ function DrawerNavlink(props) {
         fontSize: "1em",
         color: "black",
         ":hover": {
-          color: colors.secondary1[200]
+          color: colors.primary[400],
         }
       }}
       ></Typography>
@@ -145,6 +148,7 @@ function Login(props) {
         fontSize: { xs: "0.6em", sm: "0.8em", md: "0.8em", lg: "1.2em", xl: "1.2em" },
         color: "white",
         ":hover": {
+          color: colors.primary[400],
           textDecoration: "underline"
         }
       }}
@@ -214,7 +218,7 @@ export default function Navbar({
   })
 
   return (
-    <Box ref={boxRef} sx={{width: "100%", bgcolor: colors.primary[800], position: position, zIndex: "3"}}>
+    <Box ref={boxRef} sx={{width: "100%", bgcolor: colors.primary[800], position: position, zIndex: "10"}}>
       <Appbar>
         <DrawerBar open={drawerOpen} setOpen={setDrawerOpen} executeScroll={handleClickContactUsInDrawer} />
         <Leftbar>
@@ -228,17 +232,16 @@ export default function Navbar({
             >
               <img width={28} alt="logo" src={logo} />
             </IconButton>
-            <Navlink>genomics.ai</Navlink>
+            <Navlink fontWeight="bold" main={true} >genomics.ai</Navlink>
           </LinkBox>
-          <LinkBox to="/about"><Navlink>About us</Navlink></LinkBox>
-          <LinkBox to="/docs"><Navlink>Docs </Navlink></LinkBox>
-          <Box sx={{ cursor: "pointer" }} onClick={executeScroll}><Navlink>Contact us</Navlink></Box>
           <LinkBox to="/explore"><Navlink>Explore</Navlink></LinkBox>
+          <LinkBox to="/about"><Navlink>About us</Navlink></LinkBox>
+          <Box sx={{ cursor: "pointer" }} onClick={executeScroll}><Navlink>Contact us</Navlink></Box>
+          <LinkBox to="/docs"><Navlink>Docs </Navlink></LinkBox>
         </Leftbar>
         <Rightbar>
             {!user && <Login onClick={onLoginClicked}>Log In</Login>}
             {!user && <Signup onClick={onSignUpClicked}>Sign Up</Signup>}
-            {/* TODO: Display user avatar */}
             {
               user && 
               <IconButton sx={{ border: "4px solid white", p: "0" }} onClick={() => history.push("/")}>

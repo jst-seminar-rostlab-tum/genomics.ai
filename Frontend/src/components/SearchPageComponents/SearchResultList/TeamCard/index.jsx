@@ -1,40 +1,61 @@
 import React from 'react';
 
-import { Chip } from '@mui/material';
+import { Chip, Tooltip } from '@mui/material';
 
-// import Avatars from 'components/Avatars';
 import SearchCard from '../SearchCard';
 import LabeledLink from '../LabeledLink';
 
-// import CustomButton from 'components/CustomButton';
+import TeamJoinButton from 'components/teams/detail/TeamJoinButton';
+import { formatDate } from 'shared/utils/common/utils';
 
 // Card to display search result for a single team
 // eslint-disable-next-line arrow-body-style
-const TeamCard = ({ item: team }) => {
+const TeamCard = ({ item: team, user, onAction }) => {
+  const joinTeam = async () => {
+    onAction();
+  };
+
+  const visibility = team.visibility.toLowerCase().replace('_', ' ');
+  let canJoin = false; // target to remove if backend implements rules checks
+  let visibilityTooltip;
+  const isTeamMember = team.memberIds.includes(user._id); // check if user already joined
+
+  switch (visibility) {
+    case 'public':
+      visibilityTooltip = 'Anybody can join the team!';
+      canJoin = !isTeamMember;
+      break;
+    case 'private':
+      visibilityTooltip = 'Only invited members can join the team!';
+      canJoin = !isTeamMember && !!team.invitedMemberIds.includes(user._id);
+      // check if user is invited
+      break;
+    case 'by institution':
+      visibilityTooltip = 'Only institution members can join the team!';
+      // check if user is not member but part of institution
+      canJoin = !isTeamMember
+      && team.institutionId.memberIds.includes(user._id);
+      break;
+    default:
+      visibilityTooltip = 'unknown';
+  }
+
   return (
     <SearchCard
-      // action={<Button variant="contained">Join</Button>}
-      // action={<CustomButton type="primary">Join</CustomButton>}
+      action={canJoin && <TeamJoinButton team={team} onJoin={joinTeam} />}
       title={team.title}
       link={`/sequencer/teams/${team.id}`}
-      primary={
-        //  <Tag content={team.visibility} variant="primary-default" />
-        <Chip label={team.visibility.toLowerCase()} color="primary" size="small" />
-      }
-      // secondary={`updated on ${team.updated}`}
+      primary={(
+        // <Tag content={team.visibility} variant="primary-default" />
+        <Tooltip title={visibilityTooltip} placement="right-end">
+          <Chip label={visibility} color="primary" size="small" />
+        </Tooltip>
+        )}
+      secondary={team.updatedAt && `updated on ${formatDate(team.updatedAt)}`}
       tertiary={(
         <>
-          {/* <Avatars
-            items={team.members.map(({ name, image }) => ({ src: image, alt: name }))}
-          /> */}
           <Chip
-            label={`${team.memberIds.length + team.adminIds.length} members`}
-            variant="outlined"
-            size="small"
-            sx={{ color: 'text.secondary' }}
-          />
-          <Chip
-            label={`${team.projects.length} projects`}
+            label={`${team.memberIds.length} members`}
             variant="outlined"
             size="small"
             sx={{ color: 'text.secondary' }}
@@ -42,8 +63,9 @@ const TeamCard = ({ item: team }) => {
           {team.institutionId && (
             <LabeledLink
               label="Institution"
-              content={team.institutionTitle}
-              to={`/sequencer/institutions/${team.institutionId}`}
+              tooltip="The institution managing the team."
+              content={team.institutionId.name}
+              to={`/sequencer/institutions/${team.institutionId._id}`}
             />
           )}
         </>

@@ -6,6 +6,7 @@ import boto3
 from aiohttp import ClientError
 import scanpy
 from pathlib import Path
+import pandas as pd
 from scarches.dataset.trvae.data_handling import remove_sparsity
 
 UNWANTED_LABELS = ['leiden', '', '_scvi_labels', '_scvi_batch']
@@ -43,21 +44,33 @@ def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=
     final = latent.obs.drop(columns=drop_columns)
     final["x"] = list(map(lambda p: p[0], latent.obsm["X_umap"]))
     final["y"] = list(map(lambda p: p[1], latent.obsm["X_umap"]))
+
+    final['predictions'] = final['predictions'].apply(lambda cell_type: prediction_value(cell_type))
     final.to_csv(filename)
+
     if key is not None:
         store_file_in_s3(filename, key)
     return filename
 
 
+def prediction_value(cell_type):
+    if cell_type is None:
+        return "yes"
+    else:
+        return "no"
+
+
 def write_full_adata_to_csv(model, source_adata, target_adata, key=None, filename=tempfile.mktemp(), drop_columns=None,
-                            cell_type_key='', condition_key='', neighbors=8):
+                            unlabeled_category='', cell_type_key='', condition_key='', neighbors=8,
+                            predictScanvi=False):
     adata_full = source_adata.concatenate(target_adata)
-    return write_adata_to_csv(model, adata_full, key, filename, drop_columns, cell_type_key, condition_key, neighbors)
+    return write_adata_to_csv(model, adata_full, key, filename, drop_columns, unlabeled_category, cell_type_key,
+                              condition_key, neighbors, predictScanvi)
 
 
 def write_adata_to_csv(model, adata=None, key=None, filename=tempfile.mktemp(), drop_columns=None,
-                       cell_type_key='cell_type',
-                       condition_key='study', neighbors=8):
+                       unlabeled_category='Unknown', cell_type_key='cell_type',
+                       condition_key='study', neighbors=8, predictScanvi=False):
     anndata = None
     if adata is None:
         anndata = scanpy.AnnData(model.get_latent_representation())
@@ -74,6 +87,9 @@ def write_adata_to_csv(model, adata=None, key=None, filename=tempfile.mktemp(), 
     scanpy.pp.neighbors(latent, n_neighbors=neighbors)
     scanpy.tl.leiden(latent)
     scanpy.tl.umap(latent)
+    if predictScanvi:
+        latent.obs['predictions'] = model.predict(adata=adata)
+
     return write_latent_csv(latent, key, filename)
 
 
@@ -102,7 +118,6 @@ def write_adata_to_csv(model, adata=None, key=None, filename=tempfile.mktemp(), 
 
 #     if key is not None:
 #         store_file_in_s3(filename, key)
-
 
 def print_csv(filename):
     with open(filename, mode='r') as file:

@@ -1,4 +1,5 @@
 import { Box, Button, Container, Typography } from "@mui/material"
+import ModelInfo from "components/GeneMapper/ModelInfo"
 import { Modal } from "components/Modal"
 import { useEffect, useRef, useState } from "react"
 import { colors } from "shared/theme/colors"
@@ -11,15 +12,21 @@ import { LearnMoreModelComponent } from "views/Explore/LearnMoreModel"
  * @param content text content to be displayed
  * @param link button href link  
  */
-export const OutlinedButtonSelect = ({ content, onSelect }) => {
+export const OutlinedButtonSelect = ({ content, onSelect, disabled=false }) => {
  return (
   <Button
     variant="outlined"
     disableRipple
     onClick={onSelect}
     sx={{
-      color: colors.primary[100], borderWidth: "2px", borderColor: colors.primary[100], borderRadius: "1.2rem", justifyContent: 'center', textAlign: 'center',
-      ":hover": { borderColor: '#01579B', borderWidth: "2px", backgroundColor: colors.primary[100], color: '#01579B', transition: '0.5s' }
+      color: !disabled ? colors.primary[100] : colors.neutral[800] , borderWidth: "2px", 
+      borderColor: !disabled ? colors.primary[100] : colors.neutral[800], 
+      borderRadius: "1.2rem", justifyContent: 'center', textAlign: 'center',
+      ":hover": { 
+        borderColor: !disabled ? '#01579B' : colors.neutral[600], borderWidth: "2px", 
+        backgroundColor: !disabled ? colors.primary[100] : colors.neutral[100], 
+        color: !disabled ? '#01579B' : colors.neutral[600], transition: '0.5s' 
+    }
     }}
   >
     {content}
@@ -36,7 +43,10 @@ export const OutlinedButtonSelect = ({ content, onSelect }) => {
  * @param mapLink onHover button Map url
  * @param learnMoreLink onHover button Learn More url
  */
-export const ModelCardSelect = ({ width = "100%", height = "100%", title, description, onSelect, selected, learnMoreLink, modelObject={}}) => {
+export const ModelCardSelect = ({ 
+  width = "100%", height = "100%", title, description, onSelect, 
+  selected, learnMoreLink, modelObject={}, disabled=false
+}) => {
 
   const [hover, setHover] = useState(false)
   const ref = useRef()
@@ -65,7 +75,7 @@ export const ModelCardSelect = ({ width = "100%", height = "100%", title, descri
           width: "100%", 
           height: "100%", 
           position: "relative", 
-          cursor: "pointer", 
+          cursor: disabled ? "pointer": "initial", 
           display: "flex", 
           flexDirection: "column", 
           justifyContent: "center"
@@ -73,10 +83,9 @@ export const ModelCardSelect = ({ width = "100%", height = "100%", title, descri
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
         >  
-        {
-          hover && 
+        {(hover || disabled) &&
           <Box 
-          style={{ background: "linear-gradient(#4F83CC, #01579B)" }} 
+          style={{ background: !disabled ? "linear-gradient(#4F83CC, #01579B)" : "linear-gradient(#e7e7e7, #d0d0d0)" }} 
           sx={{ 
             position: "absolute", 
             width: "100%", 
@@ -85,6 +94,10 @@ export const ModelCardSelect = ({ width = "100%", height = "100%", title, descri
             p:"1rem",
             opacity: 0.9
           }}>
+          {disabled &&
+            <Typography sx={{ position: "absolute", fontSize: "12px", fontWeight: "bold", color: colors.neutral[900], textAlign: "center", left: "30%", top:'7%' }}>
+              Not Compatible
+            </Typography>}
             <Box
               sx={{
                 display: "flex",
@@ -97,34 +110,25 @@ export const ModelCardSelect = ({ width = "100%", height = "100%", title, descri
                 transform: "translate(-50%, -50%)"
               }}  
               >
-              <OutlinedButtonSelect content="Select" onSelect={() => onSelect(modelObject)}/>
-              <OutlinedButtonSelect content="Learn More" onSelect={() => setModelInfoOpen(true)}/>
+              {!disabled && <OutlinedButtonSelect content="Select" onSelect={() => onSelect(modelObject)}/>}
+              {hover && <OutlinedButtonSelect content="Learn More" onSelect={() => setModelInfoOpen(true)} disabled={disabled}/>}
             </Box>
           </Box>
         }
-      <Box sx={selected ? { 
-        width: '100%',
-        height: "100%",
-        display: "flex", 
-        flexDirection: "column", 
-        p: "1.2rem", 
-        boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.15)", 
-        borderRadius: "1.2rem",
-        borderStyle:"solid",
-        borderColor:"#008BF5",
-        borderWidth:"4px"
-      }
-      : { 
-        width: '100%',
-        height: "100%",
-        display: "flex", 
-        flexDirection: "column", 
-        p: "1.2rem", 
-        boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.15)", 
-        borderRadius: "1.2rem",
-      }}
+      <Box sx={{
+          width: '100%',
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          p: "1.2rem",
+          boxShadow: hover ? "none" : "0px 0px 10px rgba(0, 0, 0, 0.15)",
+          borderRadius: "1.2rem",
+          borderStyle:"solid",
+          borderColor: selected ? "#008BF5" : 'transparent',
+          borderWidth:"4px",
+        }}
       >
-        <Typography sx={{ fontSize: "1.4rem", fontWeight: "bold" }}>{title}</Typography>
+        <Typography sx={{ fontSize: "1.4rem", fontWeight: "bold", color: "#000000"}}>{title}</Typography>
         <Typography 
           className="modelDescription" 
           sx={{ 
@@ -137,15 +141,7 @@ export const ModelCardSelect = ({ width = "100%", height = "100%", title, descri
           }}>{description}</Typography>
       </Box>
       </Box>
-      <Modal
-        isOpen={modelInfoOpen}
-        setOpen={setModelInfoOpen}
-        children={(
-          <Container>
-            <LearnMoreModelComponent id={modelObject._id} />
-          </Container>
-      )}
-      />
+      <ModelInfo id={modelObject._id} open={modelInfoOpen} setOpen={setModelInfoOpen} />
     </Box>
   )
 }

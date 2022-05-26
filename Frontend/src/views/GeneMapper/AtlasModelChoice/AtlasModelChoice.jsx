@@ -1,27 +1,29 @@
 import HelpIcon from '@mui/icons-material/Help';
-import { Grid, Typography, Stack } from "@mui/material";
+import { Grid, Typography, Stack, Alert, Box, Container, Tooltip } from "@mui/material";
 import AtlasCardSelect from "components/Cards/AtlasCardSelect";
 import { ModelCardSelect } from "components/Cards/ModelCardSelect";
 import CustomButton from 'components/CustomButton';
-import styles from "./atlasModelChoice.module.css";
 import { useHistory} from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import ProjectMock from "shared/services/mock/projects"
 
 import Clear from '@mui/icons-material/Clear';
-import CancelIcon from '@mui/icons-material/Cancel';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 import ModelService from 'shared/services/Model.service';
 import AtlasService from 'shared/services/Atlas.service';
 
+import { colors } from 'shared/theme/colors';
+
 function AtlasModelChoice({ 
     activeStep, setActiveStep, 
     selectedAtlas, setSelectedAtlas, 
-    selectedModel, setSelectedModel, steps, path
+    selectedModel, setSelectedModel, steps, path,
+    compatibleModels
 }) {
     let [atlases, setAtlases] = useState([]);
     let [models, setModels] = useState([]);
+    const [showWarning, setShowWarning] = useState(false);
     const history = useHistory();
 
     let headerStyle = {
@@ -63,12 +65,34 @@ function AtlasModelChoice({
             })
             setAtlases(a);
         });
-        ModelService.getModels().then(m => setModels(m));
+        ModelService.getModels().then(m => {
+            m.map(model => {
+                model.requirements = ['Batch/study information is mandatory and should be labeled as “batch”'];
+                if (model.name === 'scVI') {
+                    model.requirements.push('Cell type information should be labeled as “cell_type”');
+                    model.requirements.push('For unlabeled cells, the value for “cell_type” should be “Unknown”');
+                }
+                if (model.name === 'scANVI') {
+                    model.requirements.push('Cell type information should be labeled as “cell_type”');
+                }
+            })
+            setModels(m);
+        });
     }, []);
 
     return (
         <div>
-            <Typography variant="h5" sx={{ fontWeight: 'bold', pb: "1em", mt: "1.5em"}}>
+            {showWarning &&
+            <Alert severity="error">
+                Select an Atlas and a fitting Model before continuing
+            </Alert>}
+            <Typography 
+            variant="h5" 
+            sx={{ 
+                fontWeight: 'bold', 
+                pb: "1em", 
+                mt: "1.5em",
+            }}>
                 Pick an Atlas 
             </Typography>
 
@@ -107,6 +131,7 @@ function AtlasModelChoice({
                             selected={selectedModel.name===m.name}
                             onSelect={setSelectedModel}
                             modelObject={m}
+                            disabled={!compatibleModels.map(m => m.toLowerCase()).includes(m.name.toLowerCase()) || compatibleModels.length == 0}
                     />               
                 </Grid>)
             }
@@ -115,9 +140,19 @@ function AtlasModelChoice({
                 <CustomButton type='tertiary' onClick={() => history.push(`${path}`)}>
                 <Clear/>&nbsp; Cancel
                 </CustomButton>
-                <CustomButton type='primary' disabled={!selectedAtlas || !selectedModel} onClick={() => setActiveStep(1)}>
-                    Confirm&nbsp;<ArrowForwardIcon/>
-                </CustomButton>
+                <Tooltip title={!selectedAtlas || !selectedModel ? "Select an Atlas and a fitting Model before continuing" : ''} placement='top'>
+                    <Box
+                        onClick={!selectedAtlas || !selectedModel ? () => setShowWarning(true) : ()=>{}}
+                    >
+                        <CustomButton 
+                            type='primary' 
+                            disabled={!selectedAtlas || !selectedModel} 
+                            onClick={() => setActiveStep(1)}
+                        >
+                        Confirm&nbsp;<ArrowForwardIcon/>
+                        </CustomButton>
+                    </Box>
+                </Tooltip>
             </Stack>
         </div>
     )

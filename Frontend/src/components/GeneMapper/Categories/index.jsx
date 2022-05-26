@@ -12,7 +12,7 @@ const activatedColor = colors.primary['400'];
 const deactivatedColor = colors.primary['200'];
 
 function Category({
-  title, values, colored, toggleColored, hide, show, hiddenValue,
+  title, values, colored, toggleColored, hide, show, // hiddenValue,
 }) {
   const [open, setOpen] = useState(false);
 
@@ -41,11 +41,13 @@ function Category({
               title={value}
               color={color}
               key={value}
-              visible={hiddenValue !== value}
-              setVisible={(visible) => {
-                if (visible) show();
-                else hide(value);
-              }}
+              // visible={hiddenValue !== value}
+              // setVisible={(visible) => {
+              //   if (visible) show(value);
+              //   else hide(value);
+              // }}
+              hide={() => hide(value)}
+              show={() => show(value)}
             />
           ))}
         </Box>
@@ -55,14 +57,24 @@ function Category({
 }
 
 function Value({
-  title, color, visible, setVisible,
+  title, color, hide, show, // visible, setVisible
 }) {
+  const [visible, setVisible] = useState(true);
+
   return (
     <Box sx={{
       display: 'flex', alignItems: 'center', pl: 3, pr: 2,
     }}
     >
-      <IconButton onClick={() => { setVisible(!visible); }}>
+      <IconButton onClick={() => {
+        if (visible) {
+          hide();
+        } else {
+          show();
+        }
+        setVisible(!visible);
+      }}
+      >
         { visible
           ? <Visibility sx={{ color }} />
           : <VisibilityOff sx={{ color: deactivatedColor }} />}
@@ -83,7 +95,7 @@ function GeneMapperCategories({
   categories, setColorMode, hide, show,
 }) {
   const [coloredCategoryTitle, setColoredCategoryTitle] = useState(null);
-  const [hiddenValue, setHiddenValue] = useState(null);
+  // const [hiddenValue, setHiddenValue] = useState(null);
 
   const handleSetColorMode = (colorMode) => {
     setColoredCategoryTitle(colorMode);
@@ -108,16 +120,25 @@ function GeneMapperCategories({
     <>
       { categories
         ? Object.entries(categories).map(([title, values]) => (
-          <Category
-            key={title}
-            title={title}
-            values={values}
-            colored={title === coloredCategoryTitle}
-            toggleColored={() => handleSetColorMode(title)}
-            hide={(value) => { hide(title, value); setHiddenValue(value); }}
-            show={() => { show(); setHiddenValue(null); }}
-            hiddenValue={hiddenValue}
-          />
+          title !== 'type' && title !== 'predicted'
+            ? (
+              <Category
+                key={title}
+                title={title}
+                values={values}
+                colored={title === coloredCategoryTitle}
+                toggleColored={() => handleSetColorMode(title)}
+                hide={(value) => {
+                  hide(title, value);
+                  // setHiddenValue(value);
+                }}
+                show={(value) => {
+                  show(title, value);
+                  // setHiddenValue(null);
+                }}
+                // hiddenValue={hiddenValue}
+              />
+            ) : null
         ))
         : null}
     </>

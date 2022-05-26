@@ -1,53 +1,66 @@
 import React, { useState } from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
+import Button from 'components/CustomButton';
+import { Modal, ModalTitle } from 'components/Modal';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
 
 import TeamService from 'shared/services/Team.service';
 
 function TeamLeaveButton({ team, onLeft }) {
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleOpenDialog = () => setDialogOpen(true);
   const handleCloseDialog = () => setDialogOpen(false);
 
   async function leave() {
-    await TeamService.leaveTeam(team.id);
-    handleCloseDialog();
-    onLeft(team);
+    setErrorMessage('');
+    try {
+      await TeamService.leaveTeam(team.id);
+      handleCloseDialog();
+      onLeft(team);
+    } catch (e) {
+      setErrorMessage(e.message);
+    }
   }
 
   return (
     <>
-      <Button variant="outlined" color="error" onClick={handleOpenDialog}>
+      <Button
+        type="critical"
+        onClick={handleOpenDialog}
+      >
         Leave
       </Button>
-      <Dialog
-        open={dialogOpen}
-        onClose={handleCloseDialog}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
+      <Modal
+        isOpen={dialogOpen}
+        setOpen={(o) => !o && handleCloseDialog()}
       >
-        <DialogTitle id="alert-dialog-title">
+        <ModalTitle>
           Leave
-        </DialogTitle>
+        </ModalTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
+          <DialogContentText>
             Do you really want to leave the team &quot;
             {team.name}
             &quot;?
           </DialogContentText>
+          {
+            errorMessage && (
+              <DialogContentText id="alert-dialog-description" color="error">
+                {errorMessage}
+              </DialogContentText>
+            )
+          }
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialog}>Cancel</Button>
-          <Button onClick={() => leave()} color="error" autoFocus>
+          <Button onClick={handleCloseDialog} type="tertiary">Cancel</Button>
+          <Button onClick={() => leave()} type="critical" autoFocus>
             Leave
           </Button>
         </DialogActions>
-      </Dialog>
+      </Modal>
     </>
   );
 }

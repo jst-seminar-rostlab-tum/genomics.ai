@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import {
   TextField,
-  Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle,
-  Button,
   Fab,
   Snackbar,
   Alert,
 } from '@mui/material';
+import { Modal, ModalTitle } from 'components/Modal';
 import PersonAddOutlinedIcon from '@mui/icons-material/PersonAddOutlined';
+import Button from 'components/CustomButton';
+import InstitutionService from 'shared/services/Institution.service';
 
 function InstitutionInviteButton({ institution }) {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -22,12 +22,18 @@ function InstitutionInviteButton({ institution }) {
 
   const handleCloseDialog = () => setDialogOpen(false);
 
+  function validateEmail(email) {
+    let re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    return re.test(email)
+  }
+
   const handleTeamInvite = () => {
-    if (!invitedMailAdress) {
+    if (!invitedMailAdress || !validateEmail(invitedMailAdress)) {
       setMailError('Please enter an e-mail address.');
       return;
     }
     setOpen(true);
+    InstitutionService.inviteMember(institution.id, invitedMailAdress);
     handleCloseDialog();
   };
 
@@ -56,14 +62,14 @@ function InstitutionInviteButton({ institution }) {
       >
         <PersonAddOutlinedIcon />
       </Fab>
-      <Dialog
-        open={dialogOpen}
-        onClose={handleCloseDialog}
+      <Modal
+        isOpen={dialogOpen}
+        setOpen={(o) => !o && handleCloseDialog()}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
         fullWidth
       >
-        <DialogTitle id="alert-dialog-title">Invite User</DialogTitle>
+        <ModalTitle id="alert-dialog-title">Invite User</ModalTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             {`Invite a user to your institution "${institution.name}"`}
@@ -83,12 +89,12 @@ function InstitutionInviteButton({ institution }) {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialog}>Cancel</Button>
+          <Button type="tertiary" onClick={handleCloseDialog}>Cancel</Button>
           <Button onClick={handleTeamInvite} autoFocus>
             Confirm
           </Button>
         </DialogActions>
-      </Dialog>
+      </Modal>
       <Snackbar
         open={open}
         autoHideDuration={3000}

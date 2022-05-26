@@ -3,12 +3,14 @@ import { TabGroup } from 'components/Tab';
 import { setSeachCategoryInUrl } from 'shared/utils/common/utils';
 
 const SearchTabs = ({
-  value, onChange, searchParams, path,
+  value, searchParams, path, onChange = () => {},
 }) => {
-  let categories = ['teams', 'institutions', 'users', 'projects'];
+  let categories = ['atlases', 'models', 'teams', 'institutions', 'users'];
+  const keyword = searchParams.get('keyword');
+  const newParams = keyword ? `?keyword=${keyword}` : '';
   categories = categories.map((category) => ({
     label: category.toUpperCase(),
-    path: `${setSeachCategoryInUrl(path, category)}?${searchParams}`,
+    path: `${setSeachCategoryInUrl(path, category)}${newParams}`,
   }));
   // Not nice solution but TabGroup works only with integer at the moment.
   const index = categories.findIndex(
@@ -17,6 +19,7 @@ const SearchTabs = ({
   return (
     <TabGroup
       value={index}
+      onValueChange={() => onChange()}
       setValue={() => onChange()}
       tabsInfo={categories}
     />

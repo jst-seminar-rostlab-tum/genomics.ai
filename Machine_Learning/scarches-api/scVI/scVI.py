@@ -3,6 +3,7 @@ import warnings
 
 import scanpy as sc
 import scarches as sca
+import scvi
 import torch
 from scarches.dataset.trvae.data_handling import remove_sparsity
 
@@ -241,4 +242,5 @@ def compute_scVI(configuration):
     # TODO figure out if we need to do this
     # compute_full_latent(source_adata, target_adata, model)
     # model.save('resulting_model', overwrite=True)
+
     # utils.store_file_in_s3('resulting_model/model.pt', utils.get_from_config(configuration, parameters.RESULTING_MODEL_PATH) + '_new')

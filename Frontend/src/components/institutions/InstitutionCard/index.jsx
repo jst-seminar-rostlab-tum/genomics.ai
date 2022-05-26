@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import SettingsIcon from '@mui/icons-material/Settings';
-import Button from '@mui/material/Button';
+import Button from 'components/CustomButton';
 import ListCard from 'components/general/ListCard';
 import InstitutionLeaveButton from 'components/institutions/InstitutionLeaveButton';
 import styles from './institutionCard.module.css';
@@ -20,12 +20,12 @@ function InstitutionCard({
   };
 
   const {
-    name, avatarUrl, adminIds,
+    name, profilePictureURL, adminIds,
   } = institution;
   return (
     <ListCard
       title={name}
-      imageURL={avatarUrl}
+      imageURL={profilePictureURL}
       enforceImage
       nextToTitle={(
         <span className={styles.accessRightIndicator}>
@@ -39,6 +39,7 @@ function InstitutionCard({
             endIcon={<SettingsIcon />}
             variant="outlined"
             sx={{ marginRight: '6px' }}
+            onClick={navigateToInstitution}
           >
             Settings
           </Button>
@@ -46,6 +47,7 @@ function InstitutionCard({
         <InstitutionLeaveButton key="leave" institution={institution} onLeft={onLeft} />,
       ]}
       onClick={navigateToInstitution}
+      sx={{ pointer: 'cursor' }}
     />
   );
 }

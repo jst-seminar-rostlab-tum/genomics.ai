@@ -43,10 +43,11 @@ export default function InstitutionProfileImageUploadDialog({
       onClose={onClose}
       title="Upload Institution Background Image"
       description="Please upload a large image that will be used as the background image for your institution."
-      maxFileSizeMB={4}
+      maxFileSizeMB={8}
       additionalButtons={[
         { text: 'Reset', func: reset },
       ]}
+      disableCropping
       onUpload={(blob) => upload(blob)}
     />
   );

@@ -1,58 +1,79 @@
 import React, { useState } from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
+import Button from 'components/CustomButton';
+import { Modal, ModalTitle } from 'components/Modal';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+
+import TeamService from 'shared/services/Team.service';
 
 function TeamMemberMakeAdminButton({
-  team, member, onMakeAdmin, onRemoveAdmin,
+  team, member, updateTeam
 }) {
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleOpenDialog = () => setDialogOpen(true);
   const handleCloseDialog = () => setDialogOpen(false);
 
   async function addAdmin() {
-    onMakeAdmin(team, member);
-    handleCloseDialog();
+    setErrorMessage('');
+    try {
+      await TeamService.makeTeamAdmin(team.id, member.id);
+      handleCloseDialog();
+      updateTeam();
+    } catch (e) {
+      setErrorMessage(e.message);
+    }
   }
 
   async function removeAdmin() {
-    onRemoveAdmin(team, member);
-    handleCloseDialog();
+    setErrorMessage('');
+    try {
+      await TeamService.removeTeamAdmin(team.id, member.id);
+      updateTeam();
+      handleCloseDialog();
+    } catch (e) {
+      setErrorMessage(e.message);
+    }
   }
 
   const isAlreadyAdmin = team.adminIds ? team.adminIds.includes(member.id) : false;
 
   return (
     <>
-      <Button variant="outlined" onClick={handleOpenDialog} sx={{ marginRight: '6px', width: '145px' }}>
+      <Button type="primary" onClick={handleOpenDialog}>
         {isAlreadyAdmin ? 'Remove Admin' : 'Make Admin'}
       </Button>
-      <Dialog
-        open={dialogOpen}
-        onClose={handleCloseDialog}
+      <Modal
+        isOpen={dialogOpen}
+        setOpen={(o) => !o && handleCloseDialog()}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
+        <ModalTitle id="alert-dialog-title">
           {isAlreadyAdmin ? 'Remove Admin' : 'Make Admin'}
-        </DialogTitle>
+        </ModalTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             {`Do you really want to ${isAlreadyAdmin ? 'remove' : 'make'} ${member.firstName} 
             ${member.lastName} ${isAlreadyAdmin ? 'as' : ''} an admin of ${team.name}?`}
           </DialogContentText>
+          {
+            errorMessage && (
+              <DialogContentText id="alert-dialog-description" color="error">
+                {errorMessage}
+              </DialogContentText>
+            )
+          }
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialog}>Cancel</Button>
-          <Button onClick={isAlreadyAdmin ? () => removeAdmin() : () => addAdmin()} color="error" autoFocus>
+          <Button type="tertiary" onClick={handleCloseDialog}>Cancel</Button>
+          <Button type="critical" onClick={isAlreadyAdmin ? () => removeAdmin() : () => addAdmin()} autoFocus>
             {isAlreadyAdmin ? 'Remove' : 'Make'}
           </Button>
         </DialogActions>
-      </Dialog>
+      </Modal>
     </>
   );
 }

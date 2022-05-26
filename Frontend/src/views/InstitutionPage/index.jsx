@@ -2,9 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import EditIcon from '@mui/icons-material/ModeEditOutline';
+import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import InstitutionMemberList from 'components/institutions/InstitutionMemberList';
 import styles from './institutionPage.module.css';
 import CircularProgress from '@mui/material/CircularProgress';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 import InstitutionTeamList from 'components/institutions/InstitutionTeamList';
 import InstitutionAvatar from 'components/institutions/InstitutionAvatar';
 import InstitutionBackgroundImageUploadDialog from 'components/general/upload/InstitutionBackgroundImageUploadDialog';
@@ -19,9 +22,28 @@ function InstitutionPage() {
   const [user] = useAuth();
   const [institutionLoaded, setInstitutionLoaded] = useState(false);
   const [backgroundUploadOpen, setBackgroundUploadOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
 
   function isAdmin() {
     return (institution.adminIds || []).includes(user._id);
+  }
+
+  function updateInstitution() {
+    InstitutionService.getInstitution(id)
+      .then(setInstitution)
+      .catch((ignored) => { console.error(ignored); });
+  }
+
+  function editDetails() {
+    InstitutionService.updateDetails(id, institution.description);
+    setOpen(true);
   }
 
   const handleDescriptionChange = (event) => {
@@ -31,24 +53,12 @@ function InstitutionPage() {
     });
   };
 
-  const handleCountryChange = (event) => {
-    setInstitution({
-      ...institution,
-      country: event.target.value,
-    });
-  };
-
-  const handleNameChange = (event) => {
-    setInstitution({
-      ...institution,
-      name: event.target.value,
-    });
-  };
-
-  useEffect(async () => {
-    console.log(await InstitutionService.getInstitution(id));
-    setInstitution(await InstitutionService.getInstitution(id));
-    setInstitutionLoaded(true);
+  useEffect(() => {
+    InstitutionService.getInstitution(id)
+      .then((newInstitution) => {
+        setInstitution(newInstitution);
+        setInstitutionLoaded(true);
+      });
   }, []);
 
   function onLeft(/* team */) {
@@ -64,8 +74,7 @@ function InstitutionPage() {
       <div
         className={styles.background}
         style={{
-          backgroundImage: `url(${institution.backgroundPictureURL || defaultBackgroundPicture
-          })`,
+          backgroundImage: `url(${institution.backgroundPictureURL || defaultBackgroundPicture})`,
           resizeMode: 'stretch',
         }}
       >
@@ -75,7 +84,8 @@ function InstitutionPage() {
             editable={isAdmin()}
             onChange={(newUrl) => {
               // update without reload
-              setInstitution({ ...institution, avatarUrl: newUrl });
+              console.log("change", newUrl, institution);
+              setInstitution({ ...institution, profilePictureURL: newUrl });
             }}
           />
         </div>
@@ -102,11 +112,10 @@ function InstitutionPage() {
               },
             }}
             InputProps={{
-              readOnly: !isAdmin(),
               disableUnderline: true,
+              readOnly: true,
             }}
             style={{ width: '700px' }}
-            onChange={handleNameChange}
             variant="standard"
           />
         </div>
@@ -126,31 +135,42 @@ function InstitutionPage() {
               },
             }}
             InputProps={{
-              readOnly: !isAdmin(),
               disableUnderline: true,
+              readOnly: true,
             }}
             style={{ width: '300px' }}
-            onChange={handleCountryChange}
             variant="standard"
           />
         </div>
         <p className={styles.imageText}>
           <span>
-            {institution.memberIds?.length + institution.adminIds?.length}
+            {institution.memberIds?.length}
             {' Members'}
           </span>
         </p>
-        <button
-          className={styles.bgImgEditButton}
-          type="button"
-          onClick={() => setBackgroundUploadOpen(true)}
-        >
-          <span>Edit Background</span>
-          <EditIcon fontSize="small" />
-        </button>
+        {isAdmin() && (
+          <button
+            className={styles.bgImgEditButton}
+            type="button"
+            onClick={() => setBackgroundUploadOpen(true)}
+          >
+            <span>Edit Background</span>
+            <EditIcon fontSize="small" />
+          </button>
+        )}
       </div>
       <div className={styles.test}>
         <section>
+          {isAdmin() && (
+            <button
+              className={styles.editDetailsButton}
+              type="button"
+              onClick={() => editDetails()}
+            >
+              <span>Save Edits</span>
+              <SaveOutlinedIcon fontSize="small" />
+            </button>
+          )}
           <h2>Description</h2>
           <hr />
           <TextField
@@ -182,18 +202,8 @@ function InstitutionPage() {
           <hr />
           <InstitutionMemberList
             institution={institution}
-            // eslint-disable-next-line no-shadow
-            onRemoved={(institution, removedMember) => {
-              setInstitution({
-                ...institution,
-                adminIds: institution.adminIds.filter(
-                  (mId) => mId !== removedMember.id,
-                ),
-                memberIds: institution.memberIds.filter(
-                  (mId) => mId !== removedMember.id,
-                ),
-              });
-            }}
+            // eslint-disable-next-line react/jsx-no-bind
+            updateInstitution={updateInstitution}
           />
         </section>
       </div>
@@ -209,6 +219,19 @@ function InstitutionPage() {
           });
         }}
       />
+      <Snackbar
+        open={open}
+        autoHideDuration={1500}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+      >
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          {'Description saved successfully!'}
+        </Alert>
+      </Snackbar>
     </>
   );
 }

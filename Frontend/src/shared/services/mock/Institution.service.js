@@ -16,7 +16,7 @@ let mockInstitutions = [
     backgroundPictureURL: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Helmholtz_Zentrum_M%C3%BCnchen.jpg/2560px-Helmholtz_Zentrum_M%C3%BCnchen.jpg',
     adminIds: ['626bdb1ed76c8b968a50f833'],
     memberIds: [2],
-    avatarUrl: helmholtz,
+    profilePictureURL: helmholtz,
   },
   {
     id: '2',
@@ -24,7 +24,7 @@ let mockInstitutions = [
     country: 'Germany',
     description: 'The Technical University of Munich (TUM) is one of Europe’s top universities. It is committed to excellence in research and teaching, interdisciplinary education and the active promotion of promising young scientists. The university also forges strong links with companies and scientific institutions across the world. \nTUM was one of the first universities in Germany to be named a University of Excellence. Moreover, TUM regularly ranks among the best European universities in international rankings.',
     backgroundPictureURL: 'https://www.in.tum.de/fileadmin/_processed_/5/5/csm_2006_1015Bild0136_9dc504e910.jpg',
-    avatarUrl: tum,
+    profilePictureURL: tum,
     adminIds: ['626bdb1ed76c8b968a50f833'],
     memberIds: [1, 2, 3, 4, 5],
   },
@@ -33,14 +33,14 @@ let mockInstitutions = [
     name: 'Rostlab',
     country: 'Germany',
     description: 'The lab\'s research is driven by a conviction that protein and DNA sequences encode a significant core of information about the ultimate structure and function of genetic material and its gene products. \nResearch goals of the lab involve using protein and DNA sequences along with evolutionary information to predict a protein\'s: overall function, interaction partners, secondary structure, disordered regions, subcellular localization, membrane spanning protein structure, intra-chain residue contacts, cell cycle control, and domain boundaries. \nAnother significant research focus is to improve the effectiveness and efficiency of structural genomics projects\' ability to determine the structures of proteins on a large scale.',
-    avatarUrl: 'https://avatars.githubusercontent.com/u/4093405?s=200&v=4',
+    profilePictureURL: 'https://avatars.githubusercontent.com/u/4093405?s=200&v=4',
     adminIds: [1],
     memberIds: ['626bdb1ed76c8b968a50f833', 2, 3, 4, 5],
   },
 ];
 
 const InstitutionService = {
-  async createInstitution(name, description) {
+  async createInstitution(name, country) {
     // fake effect
     await new Promise((resolve) => setTimeout(resolve, 1000));
     const user = await ProfileService.getProfile();
@@ -48,8 +48,8 @@ const InstitutionService = {
     const newInstitution = {
       id: runningId.toString(),
       name,
-      country: 'Germany',
-      description,
+      country,
+      description: '',
       avatarUrl: null,
       backgroundPictureURL: null,
       adminIds: [user.id], // TODO: make sure that the backend puts my user ID here
@@ -59,8 +59,8 @@ const InstitutionService = {
     return newInstitution;
   },
 
-  async leaveInstitution(institution) {
-    mockLeftIds.push(institution.id);
+  async leaveInstitution(institutionId) {
+    mockLeftIds.push(institutionId);
   },
 
   async getMyInstitutions() {

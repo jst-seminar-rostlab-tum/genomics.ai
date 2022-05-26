@@ -1,9 +1,10 @@
 import {
-  Box, Container, Step, StepLabel, Stepper,
+  Box, Container, Step, StepButton, Stepper,
 } from '@mui/material';
 import { useState } from 'react';
 import AtlasModelChoice from '../AtlasModelChoice/AtlasModelChoice';
 import UploadFilePage from '../UploadFilePage';
+import { useEffect } from 'react';
 
 function GeneMapperState({ path }) {
   const [selectedAtlas, setSelectedAtlas] = useState('');
@@ -11,15 +12,23 @@ function GeneMapperState({ path }) {
   const [activeStep, setActiveStep] = useState(0);
   const steps = ['Pick Atlas and Model', 'Choose File and Project details'];
 
+  useEffect(() => {
+    setSelectedModel('');
+  }, [selectedAtlas]);
+
+  const handleStep = (step) => () => {
+    setActiveStep(step);
+  }
+
   return (
     <Container>
       <Box width="500px" margin="auto" sx={{ marginTop: '1%', marginBottom: '1%' }}>
         <Stepper activeStep={activeStep}>
           {steps.map((labelText, index) => (
             <Step index={index}>
-              <StepLabel>
+              <StepButton color="inherit" onClick={handleStep(index)}>
                 {labelText}
-              </StepLabel>
+              </StepButton>
             </Step>
           ))}
         </Stepper>
@@ -36,6 +45,8 @@ function GeneMapperState({ path }) {
               setSelectedAtlas={setSelectedAtlas}
               setSelectedModel={setSelectedModel}
               setActiveStep={setActiveStep}
+              // selectedAtlas && selectedAtlas.compatibleModel
+              compatibleModels={selectedAtlas ? selectedAtlas.compatibleModels : []}
             />
           )
           : (

@@ -1,292 +1,182 @@
-/* eslint-disable */
-import React from 'react';
-import {
-  Typography, Card, CardMedia, CardContent, Grid, IconButton, Divider,
-} from '@mui/material';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import Footer from '../../components/Footer/old';
-import NavBar from '../../components/NavBar/old';
-import styles from './about.module.css';
-import Stack from "@mui/material/Stack";
-import frontendData from './frontend.json';
-import backendData from './backend.json';
-import visualizationData from './visualization.json';
+import { Box, Typography, Grid, IconButton, Divider, Avatar } from '@mui/material';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import {
+  Switch, Route, Redirect, useHistory, useLocation, useParams,
+  useRouteMatch, Link
+} from 'react-router-dom';
+import NavBar from 'components/NavBar';
+import Footer from "components/Footer";
+import LoginForm from 'components/LoginForm'
+import RegistrationForm from 'components/RegistrationForm'
+import { colors } from 'shared/theme/colors';
 
-function FbItem(fblink) {
+import organizationData from './origanization/organization.json'
+import frontendDataOld from './frontend/frontend_old.json';
+import backendDataOld from './backend/backend_old.json';
+import visualizationDataOld from './visualization/visualization_old.json';
+
+import frontend1Data from './frontend/frontend_1.json'
+import frontend2Data from './frontend/frontend_2.json'
+import frontend3Data from './frontend/frontend_3.json'
+import backendData from './backend/backend.json'
+import visualizationData from './visualization/visualization.json'
+
+function FbItem({link}) {
   return (
-    <Grid item>
-      <IconButton href={fblink}>
-        <FacebookIcon style={{ fill: '#3B8EED' }} />
-      </IconButton>
-    </Grid>
+    <IconButton href={link}>
+      <FacebookIcon style={{ fill: '#3B8EED' }} />
+    </IconButton>
   );
 }
 
-function GithubItem(ghlink) {
+function GithubItem({link}) {
   return (
-    <Grid item>
-      <IconButton href={ghlink}>
-        <GitHubIcon style={{ fill: '#171B22' }} />
-      </IconButton>
-    </Grid>
+    <IconButton href={link}>
+      <GitHubIcon style={{ fill: '#171B22' }} />
+    </IconButton>
   );
 }
 
-function LinkedInItem(lilink) {
+function LinkedInItem({link}) {
   return (
-    <Grid item>
-      <IconButton href={lilink}>
-        <LinkedInIcon style={{ fill: '#2D69BF' }} />
-      </IconButton>
-    </Grid>
+    <IconButton href={link}>
+      <LinkedInIcon style={{ fill: '#2D69BF' }} />
+    </IconButton>
   );
 }
 
-function TwitterItem(ttlink) {
+function TwitterItem({link}) {
   return (
-    <Grid item>
-      <IconButton href={ttlink}>
-        <TwitterIcon style={{ fill: '#66AFEC' }} />
-      </IconButton>
-    </Grid>
+    <IconButton href={link}>
+      <TwitterIcon style={{ fill: '#66AFEC' }} />
+    </IconButton>
   );
 }
 
-function Namecard(props) {
-  const {
-    img, name, role, dscp, socialFB, socialGithub, socialLinkedIn,
-    socialTwitter,
-  } = props;
+function CustomImg({src}){
   return (
-    <Card sx={{
-      maxWidth: 500,
-      display: 'flex',
-      paddingLeft: '20px',
-      paddingright: '20px',
-      boxShadow: 'none',
-    }}
-    >
-
-      <CardMedia
-        component="img"
-        image={img}
-        alt={name}
-        sx={{
-          borderRadius: '50%',
-          height: '150px',
-          width: '150px',
-          margin: '28px',
-          objectFit: 'cover',
-          border: '4px solid #ff',
-          display: 'flex',
-        }}
-      />
-
-      <CardContent style={{ maxWidth: '200px' }}>
-        <Typography variant="h5">{name}</Typography>
-        <Typography variant="body2" color="text.secondary">{role}</Typography>
-        <Typography
-          variant="body2"
-          style={{
-            maxWidth: '200px',
-            alignItems: 'center',
-            wordWrap: 'break-word',
-            paddingTop: '10px'
-          }}
-        >
-          {dscp}
-        </Typography>
-
-        <Grid
-          container
-          spacing={0}
-          sx={{
-            marginTop: '0px',
-            justifyContent: 'center',
-          }}
-        >
-
-          {
-            socialFB !== ''
-              ? FbItem(socialFB)
-              : <Grid item />
-          }
-          {
-            socialGithub !== ''
-              ? GithubItem(socialGithub)
-              : <Grid item />
-          }
-          {
-            socialLinkedIn !== ''
-              ? LinkedInItem(socialLinkedIn)
-              : <Grid item />
-          }
-          {
-            socialTwitter !== ''
-              ? TwitterItem(socialTwitter)
-              : <Grid item />
-          }
-        </Grid>
-
-      </CardContent>
-    </Card>
-
-  );
+    <Avatar alt="Member Avatar" src={src} sx={{width: "80px", height: "80px"}} />
+  )
 }
 
-const SubteamSection = ((props) => {
-  const cardWidth = 3.5;
-  let { data } = JSON.parse(JSON.stringify(props));
-  let teamlead = data.shift();
+function MemberCard(props){
+
+  const fontColor = colors.primary[800]
+
+  const { width="100%", name, role, img, dscp, socialFB, socialGithub, socialLinkedIn, socialTwitter } = props
+
   return (
-    <div >
+    <Box sx={{width, display: "flex", flexDirection: "column", gap: "0.3em", alignItems: "center"}}>
+      <CustomImg src={img} />
+      <Typography sx={{color: fontColor, textAlign: "center"}} fontWeight="bold" fontSize="1.2em" >{name}</Typography>
+      <Typography sx={{color: fontColor, textAlign: "center"}} fontSize="0.9em">{role}</Typography>
+      <Typography sx={{color: fontColor, textAlign: "center"}} fontSize="0.9em">{dscp}</Typography>
+      <Box sx={{display: "flex", flexDirection: "row", gap: "5px"}}>
+        {socialFB ? <FbItem link={socialFB} /> : <></>}
+        {socialGithub ? <GithubItem link={socialGithub} /> : <></>}
+        {socialLinkedIn ? <LinkedInItem link={socialLinkedIn} /> : <></>}
+        {socialTwitter ? <TwitterItem link={socialTwitter} /> : <></>}
+      </Box>
+    </Box>
+  )
+}
 
-      <Grid
-        container
-        spacing={1}
-        direction="row"
-        justifyContent="center"
-        // justifyContent="space-between"
-        // alignItems="center"
-        // justify="center"
-        style={{ minHeight: '20vh', maxWidth: '500vh' }}
-        sx={{ paddingTop: '50px' }}
-      >
-
-        <Grid item xs={cardWidth} style={{ display: 'flex', justifyContent: 'center' }}>
-          <Namecard
-            name={teamlead.name}
-            role={teamlead.role}
-            img={teamlead.img}
-            dscp={teamlead.dscp}
-            socialFB={teamlead.socialFB}
-            socialLinkedIn={teamlead.socialLinkedIn}
-            socialGithub={teamlead.socialGithub}
-            socialTwitter={teamlead.socialTwitter}
-          />
-        </Grid>
-
-      </Grid>
-
-      <Grid
-        container
-        spacing={2}
-        direction="row"
-        justifyContent="center"
-        // justifyContent="space-between"
-        alignItems="center"
-        justify="center"
-        style={{ minHeight: '20vh', maxWidth: '500vh' }}
-        sx={{ paddingTop: '50px' }}
-      >
-
+function MemberSection({name, data}){
+  return (
+    <Box sx={{marginBottom: "5em", position: "relative", width: { xs: "90%", sm: "90%", md: "70%", lg: "70%", xl: "70%" }}}>
+      <Box sx={{ marginBottom: "3em", display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+        <Box sx={{ height: "1px", width: { xs: "25%", sm: "37%", md: "35%", lg: "40%", xl: "40%" }, backgroundColor: "black" }} />
+        <Typography fontWeight="bold" fontSize={{ xs: "1.2em", sm: "1em", md: "1.4em", lg: "1.7em", xl: "2em" }} >{name}</Typography>
+        <Box sx={{ height: "1px", width: { xs: "25%", sm: "37%", md: "35%", lg: "40%", xl: "40%" }, backgroundColor: "black" }} />
+      </Box>
+      <Grid container rowSpacing={7} columnSpacing={{ xs: 2, sm: 2, md: 3, lg: 4, xl: 4 }}>
         {
-          data.map((elem) => (
-            <Grid item xs={cardWidth} style={{ display: 'flex', justifyContent: 'center' }}>
-              <Namecard
-                name={elem.name}
-                role={elem.role}
-                img={elem.img}
-                dscp={elem.dscp}
-                socialFB={elem.socialFB}
-                socialLinkedIn={elem.socialLinkedIn}
-                socialGithub={elem.socialGithub}
-                socialTwitter={elem.socialTwitter}
-              />
-            </Grid>
-          ))
+          data.map(member => (
+            <Grid item xs={12} sm={6} md={4} lg={3} xl={2} >
+              <MemberCard {...member} />
+            </Grid>)
+          )
         }
       </Grid>
-    </div>
-  );
-});
+    </Box>
+  )
+}
 
-const About = ((props) => {
+export default function About(props){
 
+  const [isLoginFormVisible, setLoginFormVisible] = useState(false);
+  const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
 
+  const history = useHistory();
+    
+  const onLoginClicked = useCallback(() => {
+    console.log('login');
+    setRegistrationFormVisible(false);
+    setLoginFormVisible(true);
+  }, [setLoginFormVisible]);
 
+  const onSignUpClicked = useCallback(() => {
+    console.log('register');
+    setLoginFormVisible(false);
+    setRegistrationFormVisible(true);
+  }, [setRegistrationFormVisible]);
+
+  const onLoginFormClosed = useCallback(() => {
+    setLoginFormVisible(false);
+  }, [setLoginFormVisible]);
+
+  const onRegistrationFormClosed = useCallback(() => {
+    setRegistrationFormVisible(false);
+  }, [setRegistrationFormVisible]);
+
+  const executeScroll = () => history.push({pathname: '/', state: {contact_us: true}})
 
   return (
-    <div>
-      <NavBar />
-      <div className={styles.headerContainer}>
-        <Stack
-          spacing="30px"
-        >
-          <Typography sx={{ fontWeight: 'bold', fontSize: '30px' }}>Team</Typography>
-          <div className={styles.textContainer}>
-            <Typography
-              sx={{ fontSize: '25px', paddingInline: '350px', maxWidth: '1700px' }}
-              align="center"
-            >
-              Genomics.ai was developed by a team of 12 students from the Technical University of Munich (TUM)
-              under the guidance of Dr. Guy Yachdav.
-            </Typography>
-          </div>
+    <Box sx={{overflowX: "hidden"}}>
+      {isLoginFormVisible && <LoginForm visible={isLoginFormVisible} onClose={onLoginFormClosed} />}
+      {isRegistrationFormVisible && <RegistrationForm visible={isRegistrationFormVisible} onClose={onRegistrationFormClosed} />}
 
-        </Stack>
+      <Box>
+        <NavBar
+          position="relative"
+          onLoginClicked={onLoginClicked}
+          onSignUpClicked={onSignUpClicked}
+          executeScroll={executeScroll}
+        />
+      </Box>
 
-        <Divider variant="middle" textAlign="left" sx={{ paddingTop: '100px', paddingBottom: '100px' }}>
-          <Typography sx={{ fontSize: '30px', fontWeight: 'bold' }}>Organisation</Typography>
-        </Divider>
+      <Box sx={{margin: "3em auto", display: "flex", flexDirection: "column", alignItems: "center", width: { xs: "90%", sm: "90%", md: "70%", lg: "70%", xl: "70%" }}}>
+        <Typography fontWeight="bold" fontSize="1.4em">Our Team</Typography>
+      </Box>
 
+      <Box sx={{margin: "3em auto", display: "flex", flexDirection: "column", alignItems: "center", width: { xs: "90%", sm: "90%", md: "70%", lg: "70%", xl: "70%" }, textAlign: "center"}}>
+        <Typography fontWeight="bold" fontSize="1em">Genomics.ai was developed by a team of 12 students from the Technical University of Munich (TUM) under the guidance of Dr. Guy Yachdav.</Typography>
+      </Box>
 
-        <Grid
-          container
-          spacing={1}
-          direction="row"
-          justifyContent="center"
-          // justifyContent="space-between"
-          alignItems="center"
-          justify="center"
-          style={{ minHeight: '20vh', maxWidth: '500vh' }}
-          sx={{ alignItems: 'center' }}
-        >
+      <Box sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+        <MemberSection name="Organisation" data={organizationData} />
+        <MemberSection name="Frontend 1" data={frontend1Data} />
+        <MemberSection name="Frontend 2" data={frontend2Data} />
+        <MemberSection name="Frontend 3" data={frontend3Data} />
+        <MemberSection name="Backend" data={backendData} />
+        <MemberSection name="Visualization" data={visualizationData} />
+      </Box>
 
-          <Grid item xs={3.5} style={{ display: 'flex', justifyContent: 'center' }} >
+      <Box sx={{margin: "3em auto", display: "flex", flexDirection: "column", alignItems: "center", width: { xs: "90%", sm: "90%", md: "70%", lg: "70%", xl: "70%" }, textAlign: "center"}}>
+        <Typography fontWeight="bold" fontSize="1em">Contributors from previous years</Typography>
+      </Box>
 
-            <Namecard
-              name="Dr. Guy Yachdav"
-              role="Supervisor & Initiator"
-              img="https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=UoUkGhUAAAAJ&citpid=2"
-              dscp="Technology executive with over 15 years experience in R&D and specialization in big data and machine learning"
-              socialFB=""
-              socialLinkedIn="https://www.linkedin.com/in/gyachdav/?originalSubdomain=il"
-              socialGithub=""
-              socialTwitter=""
-            />
-          </Grid>
+      <Box sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+        <MemberSection name="Frontend" data={frontendDataOld} />
+        <MemberSection name="Backend" data={backendDataOld} />
+        <MemberSection name="Visualisation" data={visualizationDataOld} />
+      </Box>
 
-
-        </Grid>
-
-
-        <br />
-        <Divider variant="middle" textAlign="left" sx={{ paddingTop: '100px', paddingBottom: '100px' }} >
-          <Typography sx={{ fontSize: '30px', fontWeight: 'bold' }}>Frontend</Typography>
-        </Divider>
-
-        <SubteamSection data={frontendData} />
-
-        <Divider variant="middle" textAlign="left" sx={{ paddingTop: '100px', paddingBottom: '100px' }}>
-          <Typography sx={{ fontSize: '30px', fontWeight: 'bold' }}>Backend</Typography>
-        </Divider>
-
-        <SubteamSection data={backendData} />
-
-        <Divider variant="middle" textAlign="left" sx={{ paddingTop: '100px', paddingBottom: '100px' }}>
-          <Typography sx={{ fontSize: '30px', fontWeight: 'bold' }}>Visualisation</Typography>
-        </Divider>
-        <SubteamSection data={visualizationData} />
-
-        <Footer />
-      </div>
-    </div>
-  );
-});
-
-
-export default About;
+      <Footer />
+    </Box>
+  )
+}

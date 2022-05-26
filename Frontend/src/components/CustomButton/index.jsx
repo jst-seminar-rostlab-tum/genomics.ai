@@ -32,6 +32,17 @@ function getStyles(type) {
         ':focus': { transition: '0.4s', color: colors.primary[500], textDecoration: 'underline' },
         ':disabled': { transition: '0.4s', color: colors.neutral[400] },
       });
+    case 'critical':
+      return ({
+        color: 'white',
+        borderRadius: '100px',
+        padding: '0.5em 1em 0.5em 1em',
+        fontSize: '1em',
+        background: colors.error.main,
+        ':hover': { transition: '0.4s', background: colors.error.dark },
+        ':focus': { transition: '0.4s', textDecoration: 'underline' },
+        ':disabled': { transition: '0.4s', color: colors.neutral[400] },
+      });
     default:
       return ({
         backgroundColor: colors.primary[400],
@@ -69,7 +80,7 @@ const CustomButton = (props) => {
       }}
       onClick={(e) => {
         e.stopPropagation();
-        if(onClick)
+        if (onClick)
           onClick();
       }}
       className={styles.button}
