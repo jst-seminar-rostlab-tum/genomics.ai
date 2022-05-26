@@ -20,6 +20,7 @@ import ModelsGrid from 'components/Grids/ModelsGrid';
 import Mapper from 'components/Mapper';
 import { applyModelFilters, applyAtlasFilters } from 'shared/utils/filter';
 import ExploreRoutes from 'components/ExplorePageComponents/ExploreRoutes';
+import { useAuth } from 'shared/context/authContext';
 
 const tmpObj = [
   {
@@ -46,6 +47,7 @@ const Explore = () => {
   const history = useHistory();
   const [atlases, setAtlases] = useState([]);
   const [models, setModels] = useState([]);
+  const [user, setUser] = useAuth()
 
   // function to update the state in the URL
   const updateQueryParams = (param, value) => {
@@ -153,7 +155,7 @@ const Explore = () => {
     return elem;
   });
 
-  const executeScroll = () => history.push({ pathname: '/', state: { contact_us: true } });
+  const executeScroll = () => user ? history.push({ pathname: '/sequencer/help'}) : history.push({ pathname: '/', state: { contact_us: true } });
 
   return (
     <>
