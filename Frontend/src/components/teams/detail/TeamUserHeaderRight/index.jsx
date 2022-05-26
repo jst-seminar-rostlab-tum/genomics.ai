@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import TeamLeaveButton from 'components/teams/overview/TeamLeaveButton';
 import TeamJoinButton from 'components/teams/detail/TeamJoinButton';
+import { Tooltip } from '@mui/material';
 
-function TeamUserHeaderRight({ institution, team, user }) {
+function TeamUserHeaderRight({
+  institution, team, user, updateTeam,
+}) {
   const [isMember, setIsMember] = useState(false);
 
   function updateIsMember() {
@@ -10,11 +13,11 @@ function TeamUserHeaderRight({ institution, team, user }) {
   }
 
   const onLeft = () => {
-    setIsMember(false);
+    updateTeam();
   };
 
   const onJoin = () => {
-    setIsMember(true);
+    updateTeam();
   };
 
   useEffect(() => {
@@ -27,13 +30,19 @@ function TeamUserHeaderRight({ institution, team, user }) {
     );
   }
 
+  const canJoin = (team.visibility === 'PUBLIC') || (team.visibility === 'BY_INSTITUTION' && institution.memberIds?.includes(user._id))
+    || (team.invitedMemberIds?.includes(user._id));
+
   return (
-    <TeamJoinButton
-      isDisabled={(team.visibility === 'private' && (!team.invitedMemberIds.includes(user._id)))
-      || (team.visibility === 'by institution' && (!institution.memberIds.includes(user._id) && !institution.adminIds.includes(user._id)))}
-      team={team}
-      onJoin={onJoin}
-    />
+    <Tooltip title={canJoin ? '' : `This team is ${team.visibility.toLowerCase().replace('_', ' ')} and you haven't been invited${team.visibility === 'BY_INSTITUTION' ? " or you're a member of this team's institution" : ''}.`}>
+      <div>
+        <TeamJoinButton
+          isDisabled={!canJoin}
+          team={team}
+          onJoin={onJoin}
+        />
+      </div>
+    </Tooltip>
   );
 }
 

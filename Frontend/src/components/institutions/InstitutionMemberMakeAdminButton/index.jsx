@@ -5,40 +5,29 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 
-import TeamService from 'shared/services/Team.service';
+import InstitutionService from 'shared/services/Institution.service';
 
-function TeamMemberMakeAdminButton({
-  team, member, updateTeam
+function InstitutionMemberMakeAdminButton({
+  institution, member, updateInstitution,
 }) {
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
 
   const handleOpenDialog = () => setDialogOpen(true);
   const handleCloseDialog = () => setDialogOpen(false);
 
   async function addAdmin() {
-    setErrorMessage('');
-    try {
-      await TeamService.makeTeamAdmin(team.id, member.id);
-      handleCloseDialog();
-      updateTeam();
-    } catch (e) {
-      setErrorMessage(e.message);
-    }
+    await InstitutionService.makeInstitutionAdmin(institution.id, member.id);
+    updateInstitution();
+    handleCloseDialog();
   }
 
   async function removeAdmin() {
-    setErrorMessage('');
-    try {
-      await TeamService.removeTeamAdmin(team.id, member.id);
-      updateTeam();
-      handleCloseDialog();
-    } catch (e) {
-      setErrorMessage(e.message);
-    }
+    await InstitutionService.removeInstitutionAdmin(institution.id, member.id);
+    updateInstitution();
+    handleCloseDialog();
   }
 
-  const isAlreadyAdmin = team.adminIds ? team.adminIds.includes(member.id) : false;
+  const isAlreadyAdmin = institution.adminIds ? institution.adminIds.includes(member.id) : false;
 
   return (
     <>
@@ -57,15 +46,8 @@ function TeamMemberMakeAdminButton({
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             {`Do you really want to ${isAlreadyAdmin ? 'remove' : 'make'} ${member.firstName} 
-            ${member.lastName} ${isAlreadyAdmin ? 'as' : ''} an admin of ${team.name}?`}
+            ${member.lastName} ${isAlreadyAdmin ? 'as' : ''} an admin of ${institution.name}?`}
           </DialogContentText>
-          {
-            errorMessage && (
-              <DialogContentText id="alert-dialog-description" color="error">
-                {errorMessage}
-              </DialogContentText>
-            )
-          }
         </DialogContent>
         <DialogActions>
           <Button type="tertiary" onClick={handleCloseDialog}>Cancel</Button>
@@ -78,4 +60,4 @@ function TeamMemberMakeAdminButton({
   );
 }
 
-export default TeamMemberMakeAdminButton;
+export default InstitutionMemberMakeAdminButton;

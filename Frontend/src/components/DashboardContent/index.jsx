@@ -44,7 +44,7 @@ const DashboardContent = () => {
           <TeamPage />
         </Route>
 
-        <Route path={`${path}/users`}>
+        <Route path={`${path}/users/:id`}>
           <UserProfile />
         </Route>
 
