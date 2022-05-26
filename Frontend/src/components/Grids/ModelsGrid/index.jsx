@@ -10,7 +10,7 @@ const ModelsGrid = ({ models, path, compatibleModels = null, selectedModel = nul
   console.log(compatibleModels)
 
   return (
-    <Box className={styles.cardsContainer} maxHeight={{ xs: "75vh", md: "60vh" }} mb="2em" >
+    <Box className={styles.cardsContainer} mb="2em" >
       <Grid container spacing={3}>
         {models && models.map((model) => (
           <Grid key={model._id} item xs={12} sm={6} md={4} lg={3}>

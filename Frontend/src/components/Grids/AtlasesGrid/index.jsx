@@ -7,7 +7,7 @@ import styles from './atlasesGrid.module.css';
 const AtlasesGrid = ({
   atlases, path, selectedAtlas = null, handleAtlasSelection = null, selectedModel = null,
 }) => (
-  <Box className={styles.atlasContainer} maxHeight={{ xs: "75vh", md: "60vh" }} mb="2em">
+  <Box className={styles.atlasContainer} mb="2em">
     <Grid container spacing={3}>
       {atlases && atlases.map((atlas) => (
         <Grid key={atlas._id} item xs={12} sm={6} md={4} lg={3}>

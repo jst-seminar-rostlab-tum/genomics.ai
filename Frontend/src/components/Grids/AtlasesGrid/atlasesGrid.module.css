@@ -1,7 +1,6 @@
 .atlasContainer {
   margin-block: 1%;
   padding: 1%;
-  overflow: scroll;
   overflow-x: hidden;
   padding-right: 3%;
 }
