@@ -2,7 +2,7 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 import {
-  Button, Box, Container, Divider, Stack, Tooltip, Typography, DialogActions, TextField,
+  Alert, Button, Box, Container, Divider, Stack, Tooltip, Typography, TextField,
 } from '@mui/material';
 import { GeneralCard as Card } from 'components/Cards/GeneralCard';
 import CustomButton from 'components/CustomButton';
@@ -11,10 +11,8 @@ import { Modal, ModalTitle } from 'components/Modal';
 import React, { useState, useEffect, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import styles from './uploadfilepage.module.css';
-import ProjectMock from 'shared/services/mock/projects';
 import ProjectService from 'shared/services/Project.service';
 import { initSubmissionProgress, useSubmissionProgress } from 'shared/context/submissionProgressContext';
-import { TabCard } from 'components/GeneMapper/TabCard';
 import { LearnMoreAtlasComponent } from 'views/Explore/LearnMoreAtlas';
 import { LearnMoreModelComponent } from 'views/Explore/LearnMoreModel';
 import { uploadMultipartFile } from 'shared/services/UploadLogic';
@@ -25,28 +23,18 @@ function UploadFilePage({
   const [uploadedFile, setUploadedFile] = useState();
   const [selectedDataset, setSelectedDataset] = useState();
   const [mappingName, setMappingName] = useState('');
-  const [existingDatasets, setExistingDatasets] = useState([]);
+  const [existingDatasets, setExistingDatasets] = useState();
   const [requirements, setRequirements] = useState([]);
   const [open, setOpen] = useState(false);
   const [atlasInfoOpen, setAtlasInfoOpen] = useState(false);
   const [modelInfoOpen, setModelInfoOpen] = useState(false);
   const [submissionProgress, setSubmissionProgress] = useSubmissionProgress();
+  const [showWarning, setShowWarning] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
-    setRequirements(selectedModel.requirements || [
-      // source: https://beta.fastgenomics.org/analyses/scarches
-      'Ensure your data is in h5ad format',
-      'Make sure your .X layer has raw counts (i.e. integers, so no normalization, no log-transformation)',
-      'If your dataset contains multiple batches, specify these in the .obs layer under .obs["dataset"]',
-    ]);
+    setRequirements(selectedModel.requirements);
   }, [selectedModel]);
-
-  useEffect(() => {
-    ProjectMock.getDatasets().then((data) => {
-      setExistingDatasets(data);
-    });
-  }, [existingDatasets]);
 
   const handleOnDropChange = (file) => {
     setUploadedFile(file);
@@ -93,9 +81,15 @@ function UploadFilePage({
 
   return (
     <Box sx={{ marginTop: '2.5em' }}>
+      {showWarning &&
+        <Alert severity="error" xs={{marginTop: '100px'}}>
+            Select or upload a dataset before continuing
+        </Alert>
+      }
       <Stack
         direction="row"
         divider={(<Divider className={styles.divider} orientation="vertical" flexItem />)}
+        sx={ showWarning ? {marginTop: '1em'} : {}}
       >
         {/* Left side */}
         <Box width="50%" mr="3%">
@@ -237,6 +231,7 @@ function UploadFilePage({
                     <CustomButton
                       type="primary"
                       onClick={handleSubmit}
+                      disabled={!mappingName}
                     >
                       Submit
                     </CustomButton>
@@ -254,8 +249,19 @@ function UploadFilePage({
           </Stack>
           <Stack mt="1em" maxHeight="50%">
             <Typography variant="h5" fontWeight="bold" pb="1em">Select Existing Datasets</Typography>
-            { existingDatasets ? existingDatasets.map((data) => <TabCard data={data} width="95%" height="3em" handleOnClick={() => handleSelectDataset(data)} selected={selectedDataset && data._id === selectedDataset._id} />)
-              : <Typography>No existing datasets available.</Typography>}
+            { 
+              existingDatasets ? 
+                existingDatasets.map((data) => 
+                  <TabCard 
+                    data={data}
+                    width="95%" 
+                    height="3em"
+                    handleOnClick={
+                      () => handleSelectDataset(data)} selected={selectedDataset && data._id === selectedDataset._id
+                    }
+                  />)
+              : <Alert severity="info"> No existing datasets available. </Alert> 
+            }
           </Stack>
         </Box>
       </Stack>
@@ -265,20 +271,24 @@ function UploadFilePage({
           Back
         </CustomButton>
         <Stack direction="row" spacing={3} alignItems="center">
-          <Typography variant="h6" fontWeight="bold">{uploadedFile && `Selected file: ${uploadedFile[0].name}`}</Typography>
+          <Typography variant="h6" fontWeight="bold">
+            { uploadedFile && `Selected file: ${uploadedFile[0].name}` }
+          </Typography>
           <Tooltip title={(!uploadedFile && !selectedDataset) ? "You haven't selected or uploaded a dataset!" : ''} placement="top">
-            <span>
-              <CustomButton
-                type="primary"
-                disabled={!uploadedFile && !selectedDataset}
-                onClick={() => {
-                  setOpen(true);
-                }}
-              >
-                Create Mapping
-                <CheckCircleOutlineIcon sx={{ marginLeft: '4px' }} />
-              </CustomButton>
-            </span>
+            <Box onClick={!uploadedFile && !selectedDataset ? () => setShowWarning(true) : ()=>{}}>
+              <span>
+                <CustomButton
+                  type="primary"
+                  disabled={!uploadedFile && !selectedDataset}
+                  onClick={() => {
+                    setOpen(true);
+                  }}
+                  >
+                  Create Mapping
+                  <CheckCircleOutlineIcon sx={{ marginLeft: '4px' }} />
+                </CustomButton>
+              </span>
+            </Box>
           </Tooltip>
         </Stack>
       </Stack>

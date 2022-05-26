@@ -26,7 +26,7 @@ export default function AtlasCard({
   const [isHover, setHover] = useState(false);
 
   // check if the card is flat(width > height)
-  const [isFlat, setFlat] = useState(false);
+  {/*const [isFlat, setFlat] = useState(false);*/}
 
   // ref to get the out most Box
   const boxRef = useRef();
@@ -34,10 +34,10 @@ export default function AtlasCard({
   const history = useHistory();
   const path = history.location.pathname;
 
-  useEffect(() => {
+  {/*useEffect(() => {
     // each time the card is rerendered, check if the card is flat or not
     if (boxRef.current.clientWidth > boxRef.current.clientHeight) setFlat(true);
-  });
+  });*/}
 
   const showModalities = () => {
     // TODO fix this
@@ -70,7 +70,7 @@ export default function AtlasCard({
       sx={{
         width, height,
       }}
-      onClick={onSelect}
+      
     >
       <Box
         ref={boxRef}
@@ -105,19 +105,17 @@ export default function AtlasCard({
               <Box
                 sx={{
                   margin: 'auto',
-                  width: isFlat ? '70%' : '70%',
-                  height: isFlat ? 'auto' : '40%',
+                  width:  '70%',
+                  height: 'auto',
                   display: 'flex',
-                  flexDirection: isFlat ? 'row' : 'column',
+                  flexDirection: 'column',
                   justifyContent: 'space-evenly',
+                  gap: '5px'
                 }}
               >
                 <OutlinedButton
-                  content="Visualize"
-                  onClick={(e) => {
-                    history.push(`${path}/${atlasId}/visualization`);
-                    e.stopPropagation();
-                  }}
+                  content="Select"
+                  onClick={onSelect}
                 />
                 <OutlinedButton
                   content="Learn More"
