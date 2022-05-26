@@ -118,6 +118,7 @@ const Explore = () => {
           path={path}
           handleModelSelection={handleModelSelection}
           selectedModel={selectedModel}
+          compatibleModels={selectedAtlas && selectedAtlas.compatibleModels}
         />
       ) : null}
     </Box>
@@ -156,83 +157,59 @@ const Explore = () => {
   const executeScroll = () => history.push({ pathname: '/', state: { contact_us: true } });
 
   return (
-    <>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          '::-webkit-scrollbar': {
-            display: 'none',
-          },
-          height: '100vh',
-          overflow: 'hidden',
-        }}
-      >
-        {isLoginFormVisible && (
-          <LoginForm visible={isLoginFormVisible} onClose={onLoginFormClosed} />
-        )}
-        {isRegistrationFormVisible && (
-          <RegistrationForm
-            visible={isRegistrationFormVisible}
-            onClose={onRegistrationFormClosed}
-          />
-        )}
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        '::-webkit-scrollbar': {
+          display: 'none',
+        },
+        height: '100vh',
+        overflow: 'hidden',
+      }}
+    >
+      {isLoginFormVisible && (
+        <LoginForm visible={isLoginFormVisible} onClose={onLoginFormClosed} />
+      )}
+      {isRegistrationFormVisible && (
+        <RegistrationForm
+          visible={isRegistrationFormVisible}
+          onClose={onRegistrationFormClosed}
+        />
+      )}
 
-        <Box>
-          <NavBar
-            position="relative"
-            onLoginClicked={onLoginClicked}
-            onSignUpClicked={onSignUpClicked}
-            executeScroll={executeScroll}
-          />
-        </Box>
-
-        <Stack
-          direction="row"
-          sx={{
-            alignSelf: 'center', width: '60%', marginTop: '2%', justifyContent: 'space-between',
-          }}
-        >
-          <Breadcrumb elems={elems} fontSize={1} actions={{ explore: () => setValue(0) }} />
-          <Box sx={{ alignSelf: 'center', width: '40%', marginBlock: '2%' }}>
-            <Search
-              filterComponent={(
-                <Filter
-                  searchParams={searchParams}
-                  updateQueryParams={updateQueryParams}
-                  path={path}
-                />
-              )}
-              handleSearch={searchedKeywordChangeHandler}
-              value={searchedKeyword}
-              padding="0px"
-            />
-          </Box>
-        </Stack>
-
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignSelf: 'center',
-            width: { xs: '90%', md: '60%' },
-          }}
-        >
-          {/* /explore/atlases */}
-          <ExploreRoutes atlases={atlases && tabMenu()} models={models && tabMenu()} path="/explore" />
-        </Box>
-
-        <Mapper
-          mapperAtlas={selectedAtlas ? selectedAtlas.name : null}
-          mapperModel={selectedModel ? selectedModel.name : null}
-          handleAtlasSelection={handleAtlasSelection}
-          handleModelSelection={handleModelSelection}
-          open={mapperVisible}
-          fabOnClick={() => setMapperVisible(!mapperVisible)}
+      <Box>
+        <NavBar
+          position="relative"
+          onLoginClicked={onLoginClicked}
+          onSignUpClicked={onSignUpClicked}
+          executeScroll={executeScroll}
         />
       </Box>
-      <Footer />
-    </>
+
+      <Stack
+        direction={{ xs: "column", sm: "row", md: "row", lg: "row", xl: "row" }}
+        sx={{
+          alignSelf: 'center', width: '60%', marginTop: '2%', justifyContent: 'space-between',
+        }}
+      >
+        <Breadcrumb elems={elems} fontSize={1} actions={{ explore: () => setValue(0) }} />
+        <Box sx={{ width: { xs: "60%", sm: "40%", md: "40%", lg: "40%", xl: "40%" }, marginBlock: '2%' }}>
+          <Search
+            filterComponent={(
+              <Filter
+                searchParams={searchParams}
+                updateQueryParams={updateQueryParams}
+                path={path}
+              />
+            )}
+            handleSearch={searchedKeywordChangeHandler}
+            value={searchedKeyword}
+            padding="0px"
+          />
+        </Box>
+      </Stack>
+    </Box>
   );
 };
 

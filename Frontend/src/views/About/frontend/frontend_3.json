@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Lennart Keller",
+    "role": "Frontend Developer & Team Lead",
+    "img": "",
+    "dscp": "",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Nick Alexander Hübner",
+    "role": "Frontend Developer",
+    "img": "",
+    "dscp": "",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Xufan Lu",
+    "role": "Frontend Developer",
+    "img": "",
+    "dscp": "",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Evan Christopher",
+    "role": "Frontend Developer",
+    "img": "memberphotos/frontend_3/Frontend_Evan_Christopher.jpg",
+    "dscp": "",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  }
+]

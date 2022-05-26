@@ -30,7 +30,7 @@ function Navlink(props) {
         fontSize: { xs: "0.6em", sm: "0.8em", md: "0.8em", lg: "1.2em", xl: "1.2em" },
         color: "black",
         ":hover": {
-          color: colors.secondary1[500]
+          color: colors.primary[400]
         }
       }}
       ></Typography>
@@ -55,7 +55,7 @@ export default function Footer() {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        padding: "10px"
+        padding: "10px",
       }}
     >
       <Footbar>

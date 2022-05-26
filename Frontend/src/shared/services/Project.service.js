@@ -27,6 +27,19 @@ const ProjectService = MOCK_PROJECTS ? MockProjectService : {
     return data;
   },
 
+  deleteProject: async (id) => {
+    await axiosInstance.delete(`/project/${id}`);
+  },
+
+  getDeletedProjects: async () => {
+    const { data } = await axiosInstance.get('/deletedprojects');
+    return data;
+  },
+
+  restoreProject: async (id) => {
+    await axiosInstance.post(`/deletedprojects/${id}/restore`);
+  },
+
   getTeamProjects: async (teamId) => {
     const { data } = await axiosInstance.get(`/teams/${teamId}/projects`);
     return data;

@@ -1,10 +1,6 @@
 export function applyModelFilters(models, searchedKeyword, searchParams, selectedAtlas) {
   const searchedModels = models.filter(
-    (item) => item.name.toLowerCase().includes(searchedKeyword.toLowerCase()) && (!selectedAtlas
-      || selectedAtlas.compatibleModels.some(
-        (element) => element.toLowerCase() === item.name.toLowerCase(),
-      )),
-  );
+    (item) => item.name.toLowerCase().includes(searchedKeyword.toLowerCase()) );
   if (searchParams.get('sortBy') === 'name' || searchParams.get('sortBy') === null) {
     searchedModels.sort((a, b) => {
       const nameA = a.name.toUpperCase();
