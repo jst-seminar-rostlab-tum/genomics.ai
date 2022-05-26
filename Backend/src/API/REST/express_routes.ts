@@ -65,6 +65,7 @@ import {
   remove_member_from_team,
   remove_admin_role_for_team_member,
   get_projects_of_team,
+  remove_project_from_team,
 } from "./routes/team/teamRouter";
 
 import {
@@ -138,6 +139,7 @@ export function express_routes(): Router {
   router.use(remove_member_from_team());
   router.use(remove_admin_role_for_team_member());
   router.use(get_projects_of_team());
+  router.use(remove_project_from_team());
 
   // user routes
   router.use(get_teams_of_user());

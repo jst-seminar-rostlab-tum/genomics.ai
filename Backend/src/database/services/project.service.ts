@@ -23,13 +23,13 @@ export default class ProjectService {
 
   /**
    * Deletes a project with the given project id and return the deleted document.
-   * 
+   *
    * @param project_id - the project id
    * @returns project - project or null if not found
    */
   static async deleteProjectById(
     project_id: ObjectId | string
-  ): Promise<(IProject & { _id: ObjectId}) | null> {
+  ): Promise<(IProject & { _id: ObjectId }) | null> {
     return await projectModel.findByIdAndRemove(project_id).exec();
   }
 
@@ -87,9 +87,7 @@ export default class ProjectService {
    *  @param   userIds as ObjectId array
    *  @returns projects or null
    */
-  static async getProjectsOfUsers(
-    userIds: ObjectId[]
-  ): Promise<(IProject & { _id: ObjectId })[]> {
+  static async getProjectsOfUsers(userIds: ObjectId[]): Promise<(IProject & { _id: ObjectId })[]> {
     return await projectModel.find({ owner: { $in: userIds } }).exec();
   }
 
@@ -184,11 +182,21 @@ export default class ProjectService {
     return await projectModel.updateOne({ _id: projectId }, { $set: { teamId: teamId } });
   }
 
+  /**
+   * Clear the teamId of a project
+   *
+   * @param projectId
+   * @returns updated document
+   */
+  static async unsetTeamOfProject(projectId: ObjectId | string): Promise<any> {
+    return await projectModel.updateOne({ _id: projectId }, { $unset: { teamId: 0 } });
+  }
+
   static async getProjects(queryParams: any): Promise<IProject[] | null> {
     var keyword: object, sortBy: any;
 
     queryParams.hasOwnProperty("keyword")
-      ? (keyword = { name : { $regex : "^" +  queryParams.keyword, $options : 'i'}})
+      ? (keyword = { name: { $regex: "^" + queryParams.keyword, $options: "i" } })
       : (keyword = {});
 
     if (queryParams.hasOwnProperty("sortBy")) {

@@ -23,14 +23,14 @@ export function express_middleware(this: REST_Host): Router {
   router.use(
     ["/user-avatar", "/institutions/:id/profilepicture"],
     bodyParser.raw({
-      limit: "1MB",
+      limit: "5MB",
       type: ["image/png", "image/jpeg"],
     })
   );
   router.use(
     "/institutions/:id/backgroundpicture",
     bodyParser.raw({
-      limit: "4MB",
+      limit: "8MB",
       type: ["image/png", "image/jpeg"],
     })
   );

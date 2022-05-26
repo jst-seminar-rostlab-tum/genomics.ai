@@ -72,7 +72,7 @@ const update_institution = (): Router => {
         const institutionToUpdate: UpdateInstitutionDTO = {
           // name,
           // country,
-          description
+          description,
         };
         await InstitutionService.updateInstitution(
           institution_to_be_updated_id,
@@ -255,13 +255,40 @@ const join_as_member_of_institution = (): Router => {
         return res
           .status(200)
           .send(
-            `<h2>ou have joined the institution. Click <a href='javascript:window.close();'>here</a> to return</h2>`
+            `<h2>You have joined the institution. Click <a href='javascript:window.close();'>here</a> to return</h2>`
           );
       } else {
         return res.status(409).send("Could not join as member of the institution!");
       }
     } catch (error) {
       return res.status(500).send("Something went wrong: " + error);
+    }
+  });
+
+  router.put("/institutions/:id/join", check_auth(), async (req: any, res) => {
+    const institutionId_to_modify = req.params.id;
+    const current_user = req.user_id;
+    try {
+      const institutionToBeUpdated = await InstitutionService.getInstitutionById(
+        institutionId_to_modify
+      );
+
+      if (!institutionToBeUpdated?.invitedMemberIds.includes(current_user))
+        return res.status(409).send("Could not join as you are not an invited member!");
+
+      const updatedInstitution = await InstitutionService.makeUserMemberOfInstitution(
+        institutionId_to_modify,
+        current_user
+      );
+
+      if (updatedInstitution) {
+        res.json(updatedInstitution);
+      } else {
+        return res.status(500).send("Could not join as member of the institution!");
+      }
+    } catch (error) {
+      console.log("Something went wrong: " + error);
+      return res.status(500).send("Internal server error");
     }
   });
 
@@ -335,10 +362,13 @@ const remove_member_from_institution = (): Router => {
         if (!(await InstitutionService.isAdmin(req.user_id!, institution))) {
           return res.status(403).send("Forbidden. Not an admin");
         }
-        if (await InstitutionService.isAdmin(deletedUserId, institution)) {
-          return res.status(403).send("Forbidden. Trying to delete an admin");
-        }
-        if (!(await InstitutionService.isMember(deletedUserId, institution))) {
+        // if (await InstitutionService.isAdmin(deletedUserId, institution)) {
+        //   return res.status(403).send("Forbidden. Trying to delete an admin");
+        // }
+        if (
+          !(await InstitutionService.isMember(deletedUserId, institution)) &&
+          !(await InstitutionService.isAdmin(deletedUserId, institution))
+        ) {
           return res.status(409).send("User is not part of this institution");
         }
         await InstitutionService.removeMemberFromInstitution(institutionId, deletedUserId);
