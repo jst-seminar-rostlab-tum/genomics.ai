@@ -11,7 +11,9 @@ import AtlasService from 'shared/services/Atlas.service';
 import ModelService from 'shared/services/Model.service';
 import TeamService from 'shared/services/Team.service';
 
-function TeamProjectList({ team, isAdmin, updateTeam }) {
+function TeamProjectList({
+  team, institution, user, isAdmin, updateTeam,
+}) {
   const [projects, setProjects] = useState([]);
   const [atlases, setAtlases] = useState([]);
   const [models, setModels] = useState([]);
@@ -22,6 +24,13 @@ function TeamProjectList({ team, isAdmin, updateTeam }) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [removedProject, setRemovedProject] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
+
+  if ((!team.memberIds?.includes(user._id) && team.visibility === 'PRIVATE')
+    || (team.visibility === 'BY_INSTITUTION' && !institution.memberIds?.includes(user._id))) {
+    return (
+      <span>{`The projects of this team are hidden as it's visibility is set to ${team.visibility.toLowerCase().replace('_', ' ')} and you're not a member of this team${team.visibility === 'BY_INSTITUTION' ? " or this team's institution" : ''}.`}</span>
+    );
+  }
 
   const handleCloseDialog = () => setDialogOpen(false);
 
