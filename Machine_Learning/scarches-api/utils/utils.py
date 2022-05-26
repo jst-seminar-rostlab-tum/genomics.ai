@@ -74,31 +74,31 @@ def write_adata_to_csv(model, adata=None, key=None, filename=tempfile.mktemp(), 
     return write_latent_csv(latent, key, filename)
 
 
-def write_combined_csv(latent_ref, latent_query, key=None, filename=tempfile.mktemp(), drop_columns=None):
-    """
-    stores a given latent in a file, and if a key is given also in an s3 bucket
-    :param latent_ref: reference_data to be saved
-    :param latent_query: query data to be saved
-    :param key: s3 key
-    :param filename: local filename
-    :param drop_columns: not needed columns
-    :return:
-    """
-    if drop_columns is None:
-        drop_columns = []
-    query = latent_query.obs.drop(columns=drop_columns)
-    query["x"] = list(map(lambda p: float(p[0]), latent_query.obsm["X_umap"]))
-    query["y"] = list(map(lambda p: float(p[1]), latent_query.obsm["X_umap"]))
-    query["is_reference"] = ['No'] * len(latent_query.obsm["X_umap"])
-    query.to_csv(filename)
-    reference = latent_ref.obs.drop(columns=drop_columns)
-    reference["x"] = list(map(lambda p: float(p[0]), latent_ref.obsm["X_umap"]))
-    reference["y"] = list(map(lambda p: float(p[1]), latent_ref.obsm["X_umap"]))
-    reference["is_reference"] = ['Yes'] * len(latent_ref.obsm["X_umap"])
-    reference.to_csv(filename, header=False, mode='a')
+# def write_combined_csv(latent_ref, latent_query, key=None, filename=tempfile.mktemp(), drop_columns=None):
+#     """
+#     stores a given latent in a file, and if a key is given also in an s3 bucket
+#     :param latent_ref: reference_data to be saved
+#     :param latent_query: query data to be saved
+#     :param key: s3 key
+#     :param filename: local filename
+#     :param drop_columns: not needed columns
+#     :return:
+#     """
+#     if drop_columns is None:
+#         drop_columns = []
+#     query = latent_query.obs.drop(columns=drop_columns)
+#     query["x"] = list(map(lambda p: float(p[0]), latent_query.obsm["X_umap"]))
+#     query["y"] = list(map(lambda p: float(p[1]), latent_query.obsm["X_umap"]))
+#     query["is_reference"] = ['No'] * len(latent_query.obsm["X_umap"])
+#     query.to_csv(filename)
+#     reference = latent_ref.obs.drop(columns=drop_columns)
+#     reference["x"] = list(map(lambda p: float(p[0]), latent_ref.obsm["X_umap"]))
+#     reference["y"] = list(map(lambda p: float(p[1]), latent_ref.obsm["X_umap"]))
+#     reference["is_reference"] = ['Yes'] * len(latent_ref.obsm["X_umap"])
+#     reference.to_csv(filename, header=False, mode='a')
 
-    if key is not None:
-        store_file_in_s3(filename, key)
+#     if key is not None:
+#         store_file_in_s3(filename, key)
 
 
 def print_csv(filename):
@@ -192,11 +192,11 @@ def read_h5ad_file_from_s3(key):
 def check_model_atlas_compatibility(model, atlas):
     compatible_atlases = []
     if model == 'scVI':
-        compatible_atlases = ['pancreas', 'heart', 'human-lung', 'retina', 'fetal-immune']
+        compatible_atlases = ['pancreas', 'heart', 'human_lung', 'retina', 'fetal_immune']
     if model == 'scANVI':
-        compatible_atlases = ['pancreas', 'heart', 'human-lung', 'retina', 'fetal-immune']
+        compatible_atlases = ['pancreas', 'heart', 'human_lung', 'retina', 'fetal_immune']
     if model == 'totalVI':
-        compatible_atlases = ['pmbc', 'bone-marrow']
+        compatible_atlases = ['pmbc', 'bone_marrow']
     return atlas in compatible_atlases
 
 
@@ -206,8 +206,6 @@ def pre_process_data(configuration):
     source_adata.obs["type"] = "reference"
     target_adata.obs["type"] = "query"
     source_adata.raw = source_adata
-    #TODO: See why remove sparsity removes all of X, is it all 0?
-    #TODO: See why the other obs apart from cell_type and batch are removed
     try:
         source_adata = remove_sparsity(source_adata)
     except Exception as e:
@@ -269,7 +267,7 @@ def set_keys(configuration):
         return configuration
     elif atlas == 'Retina atlas':
         configuration[parameters.CELL_TYPE_KEY] = 'CellType'
-        configuration[parameters.CONDITION_KEY] = '‘batch’'
+        configuration[parameters.CONDITION_KEY] = 'batch'
         return configuration
     elif atlas == 'Fetal immune atlas':
         configuration[parameters.CELL_TYPE_KEY] = 'cell_name'
