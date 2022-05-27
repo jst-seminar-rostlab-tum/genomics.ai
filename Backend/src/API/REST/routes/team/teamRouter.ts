@@ -277,7 +277,7 @@ const join_member = (): Router => {
     try {
       //const { userId }: { userId: ObjectId } = req.body;
       const token = await JoinTokenService.getTokenData(req.params.token);
-      if(token) {
+      if (token) {
         await JoinTokenService.removeToken(token.token);
       }
       if (!token || token.target != JoinTarget.TEAM) {
@@ -286,18 +286,21 @@ const join_member = (): Router => {
       const teamId = token.teamId;
       const userId = token.userId;
 
-      if (!(userId && teamId)) return res.status(400).send("Missing parameters.");
+      if (!(userId && teamId)) return res.status(400).send("<h2>Invalid link.</h2>");
+
+      const team = await TeamService.getTeamById(teamId);
+      if (!team) return res.status(404).send("Team does not exist.");
 
       const user = await UserService.getUserById(userId);
       if (!user) return res.status(404).send("User does not exist.");
+
+
       if (!user.isEmailVerified) return res.status(409).send("User has not been verified.");
       /*
       if (userId != user_id_jwt)
         return res.status(409).send("Information of the user does not match.");
       */
 
-      const team = await TeamService.getTeamById(teamId);
-      if (!team) return res.status(404).send("Team does not exist.");
 
       var tempUserId = String(userId);
       var tempListAdmins = team.adminIds.map(String);
