@@ -27,7 +27,8 @@ function GeneMapperResultView() {
   return (
     <Box
       sx={{
-        height: '100%',
+        // 100vh - HeaderView header height - HeaderView content padding - Footer height
+        height: 'calc(100vh - 75px - 24px - 40px)',
         display: 'flex',
         flexDirection: 'column',
       }}
