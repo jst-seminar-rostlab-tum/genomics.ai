@@ -12,11 +12,13 @@ import ProjectService from "../../../../database/services/project.service";
 import { UpdateProjectDTO } from "../../../../database/dtos/project.dto";
 import s3 from "../../../../util/s3";
 import { GoogleAuth } from "google-auth-library";
+import { request as gaxiosRequest } from "gaxios";
 import { ProjectStatus } from "../../../../database/models/project";
 import AtlasService from "../../../../database/services/atlas.service";
 import ModelService from "../../../../database/services/model.service";
 
 import { validationMdw } from "../../middleware/validation";
+import ProjectUpdateTokenService from "../../../../database/services/project_update_token.service";
 import { query_path, result_model_path, result_path } from "./bucket_filepaths";
 
 export default function upload_complete_upload_route() {
@@ -38,7 +40,7 @@ export default function upload_complete_upload_route() {
         //Complete multipart upload
         let params: CompleteMultipartUploadRequest = {
           Bucket: process.env.S3_BUCKET_NAME,
-          Key: `projects/${project._id}/query.h5ad`,
+          Key: query_path(project._id),
           MultipartUpload: { Parts: parts },
           UploadId: String(uploadId),
         };
@@ -72,6 +74,11 @@ export default function upload_complete_upload_route() {
               });
               return res.status(500).send(`Could not find ${!model ? "model" : "atlas"}`);
             }
+
+            //Create a token, which can be used later to update the projects status
+            let { token: updateToken } = await ProjectUpdateTokenService.addToken({
+              _projectId: project._id,
+            });
             let queryInfo = {
               model: model.name,
               query_data: query_path(project.id),
@@ -80,6 +87,7 @@ export default function upload_complete_upload_route() {
               reference_data: `atlas/${project.atlasId}/data.h5ad`,
               //ref_path: `models/${project.modelId}/model.pt`,
               async: false,
+              webhook: `${process.env.API_URL}/projects/updateresults/${updateToken}`,
             };
             console.log("sending: ");
             console.log(queryInfo);
@@ -131,10 +139,18 @@ export default function upload_complete_upload_route() {
                 Body: content,
               };
               await s3.upload(params2).promise();
+              let { token: updateToken } = await ProjectUpdateTokenService.addToken({
+                _projectId: project._id,
+              });
               await new Promise((resolve, reject) => {
                 setTimeout(resolve, 10000);
               });
+              await gaxiosRequest({
+                method: "POST",
+                url: `http://127.0.0.1:${process.env.PORT}/projects/updateresults/${updateToken}`,
+              });
             } catch (e) {
+              console.error(e);
               await ProjectService.updateProjectByUploadId(params.UploadId, {
                 status: ProjectStatus.PROCESSING_FAILED,
               });
@@ -145,19 +161,6 @@ export default function upload_complete_upload_route() {
             await ProjectService.updateProjectByUploadId(params.UploadId, updateStatus);
             return res.status(500).send("Processing failed!");
           }
-
-          //Processing finished, http response has already be sent before processing, update database entry now
-          let params2: any = {
-            Bucket: process.env.S3_BUCKET_NAME!,
-            Key: result_path(project.id),
-            Expires: 60 * 60 * 24 * 7 - 1, // one week minus one second
-          };
-          let presignedUrl = await s3.getSignedUrlPromise("getObject", params2);
-          const updateLocationAndStatus: UpdateProjectDTO = {
-            location: presignedUrl,
-            status: ProjectStatus.DONE,
-          };
-          await ProjectService.updateProjectByUploadId(params.UploadId, updateLocationAndStatus);
         } catch (err) {
           console.log(err);
           try {
