@@ -9,7 +9,7 @@
     "gcp-build": "npm run build",
     "dev:start": "npm-run-all build start",
     "dev": "tsc-watch --onSuccess \"npm run start\"",
-    "build": "npm-run-all build:ts build:email",
+    "build": "npm-run-all build:ts build:emails",
     "build:ts": "tsc -p .",
     "build:emails:createtailwind": "cd scripts && npx tailwindcss -c ./tailwind.config.js -i ./base.css -o build/tailwind.css",
     "build:emails:compile": "node scripts/compileEmails.js",
