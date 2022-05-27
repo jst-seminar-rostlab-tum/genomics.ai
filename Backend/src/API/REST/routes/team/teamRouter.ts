@@ -618,7 +618,9 @@ const get_teams = (): Router => {
       const teams = (await TeamService.getTeams(query));
 
       for(const team of teams) {
-        InstitutionService.mergeAdminsMembers(team.institutionId as any);
+        if(team.institutionId) {
+          InstitutionService.mergeAdminsMembers(team.institutionId as any);
+        }
       }
 
       if (teams != null) return res.status(200).json(TeamService.mergeAdminsMembers(teams));
