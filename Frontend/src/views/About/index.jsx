@@ -14,16 +14,14 @@ import LoginForm from 'components/LoginForm'
 import RegistrationForm from 'components/RegistrationForm'
 import { colors } from 'shared/theme/colors';
 
-import organizationData from './origanization/organization.json'
-import frontendDataOld from './frontend/frontend_old.json';
-import backendDataOld from './backend/backend_old.json';
-import visualizationDataOld from './visualization/visualization_old.json';
+import organizationData from './data/organization.json'
+// import frontendDataOld from './frontend/frontend_old.json';
+// import backendDataOld from './backend/backend_old.json';
+// import visualizationDataOld from './visualization/visualization_old.json';
 
-import frontend1Data from './frontend/frontend_1.json'
-import frontend2Data from './frontend/frontend_2.json'
-import frontend3Data from './frontend/frontend_3.json'
-import backendData from './backend/backend.json'
-import visualizationData from './visualization/visualization.json'
+import frontendData from './data/frontend.json'
+import backendData from './data/backend.json'
+import visualizationData from './data/visualization.json'
 import { LoginContext } from 'shared/context/loginContext';
 import PasswordForgetForm from 'components/PasswordForgetForm';
 
@@ -69,13 +67,16 @@ function MemberCard(props){
 
   const fontColor = colors.primary[800]
 
-  const { width="100%", name, role, img, dscp, socialFB, socialGithub, socialLinkedIn, socialTwitter } = props
+  const { width="100%", name, roles, img, dscp, socialFB, socialGithub, socialLinkedIn, socialTwitter } = props
 
   return (
     <Box sx={{width, display: "flex", flexDirection: "column", gap: "0.3em", alignItems: "center"}}>
       <CustomImg src={img} />
       <Typography sx={{color: fontColor, textAlign: "center"}} fontWeight="bold" fontSize="1.2em" >{name}</Typography>
-      <Typography sx={{color: fontColor, textAlign: "center"}} fontSize="0.9em">{role}</Typography>
+      {
+        roles.map((role) => <Typography sx={{color: fontColor, textAlign: "center"}} fontSize="0.9em">{role}</Typography>)
+      }
+      {/* <Typography sx={{color: fontColor, textAlign: "center"}} fontSize="0.9em">{role}</Typography> */}
       <Typography sx={{color: fontColor, textAlign: "center"}} fontSize="0.9em">{dscp}</Typography>
       <Box sx={{display: "flex", flexDirection: "row", gap: "5px"}}>
         {socialFB ? <FbItem link={socialFB} /> : <></>}
@@ -149,7 +150,7 @@ export default function About(props){
         <Typography fontWeight="bold" fontSize="1em">Genomics.ai was developed by a team of 12 students from the Technical University of Munich (TUM) under the guidance of Dr. Guy Yachdav.</Typography>
       </Box>
 
-      <Box sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+      {/* <Box sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
         <MemberSection name="Organisation" data={organizationData} />
         <MemberSection name="Frontend 1" data={frontend1Data} />
         <MemberSection name="Frontend 2" data={frontend2Data} />
@@ -160,12 +161,13 @@ export default function About(props){
 
       <Box sx={{margin: "3em auto", display: "flex", flexDirection: "column", alignItems: "center", width: { xs: "90%", sm: "90%", md: "70%", lg: "70%", xl: "70%" }, textAlign: "center"}}>
         <Typography fontWeight="bold" fontSize="1em">Contributors from previous years</Typography>
-      </Box>
+      </Box> */}
 
       <Box sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
-        <MemberSection name="Frontend" data={frontendDataOld} />
-        <MemberSection name="Backend" data={backendDataOld} />
-        <MemberSection name="Visualisation" data={visualizationDataOld} />
+        <MemberSection name="Organisation" data={organizationData} />
+        <MemberSection name="Frontend" data={frontendData} />
+        <MemberSection name="Backend" data={backendData} />
+        <MemberSection name="Visualisation" data={visualizationData} />
       </Box>
 
       <Footer />
