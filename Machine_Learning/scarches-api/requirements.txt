@@ -8,6 +8,7 @@ torch~=1.11.0
 jaxlib==0.3.7
 leidenalg==0.8.9
 scikit-misc==0.1.4
+protobuf==3.19.4
 
 # for the api
 Flask==2.1.1
