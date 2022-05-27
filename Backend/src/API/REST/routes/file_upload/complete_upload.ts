@@ -81,6 +81,7 @@ export default function upload_complete_upload_route() {
             });
             let queryInfo = {
               model: model.name,
+              atlas: atlas.name,
               query_data: query_path(project.id),
               output_path: result_path(project.id),
               model_path: result_model_path(project.id),
