@@ -4,7 +4,6 @@ import nodemailer from "nodemailer";
 import mailgunTransport from "nodemailer-mailgun-transport";
 import fs from "fs/promises";
 import handlebars from "handlebars";
-import { userInfo } from "os";
 import { v4 as uuid } from "uuid";
 
 class Mailer {
@@ -54,12 +53,9 @@ class Mailer {
         let fullpath = path.join(__dirname, "./../views/mails", template_name, "front", filepath);
         let content = await fs.readFile(fullpath);
 
-        //nodemailer-mailgun-transport doesnt correctly support path attribute,
-        //and also priotizes cid before filename for passing a filename to mailgun-js
-        //not optimal, but cant do anything about it.
+        //mailgun uses cid as filename
         attachmentsWithCid.push({
           cid: cid,
-          filename: filename,
           content: content,
         });
       }
@@ -67,6 +63,8 @@ class Mailer {
 
     let rendered_txt = handlebars.compile(texttemplate)(data);
     let rendered_html = handlebars.compile(htmltemplate)(data);
+
+    console.log(attachmentsWithCid);
 
     let mail = {
       from: `GeneCruncher <noreply@${process.env.MAIL_DOMAIN}>`,
@@ -152,6 +150,9 @@ class Mailer {
         country,
         firstname,
         link,
+      },
+      {
+        genecruncher_logo: "logo.svg"
       }
     );
   }
@@ -161,11 +162,19 @@ class Mailer {
     teamname: string,
     link: string
   ) {
-    return this.send(recipient, "[GeneCruncher] Invitation to a team", "invitation_to_team", {
-      firstname,
-      teamname,
-      link,
-    });
+    return this.send(
+      recipient,
+      "[GeneCruncher] Invitation to a team",
+      "invitation_to_team",
+      {
+        firstname,
+        teamname,
+        link,
+      },
+      {
+        genecruncher_logo: "logo.svg",
+      }
+    );
   }
 }
 

@@ -10,48 +10,48 @@
   <script src="../../tailwind.config.js"></script> -->
 </head>
 
-<body>
+  <body> 
   <table class="bg-emailBg m-auto table-fixed">
     <tr>
-      <td style="padding-left: 10px;">
-        <a href="https://www.genecruncher.com" class="flex flex-row gap-4 items-center">
-          <img src="{{genecruncher_logo}}">
+      <td style="padding-left: 10px;" colspan="2">
+        <a href="https://www.genecruncher.com" class="genomics-link">
+          <img width="56" height="56" src="{{genecruncher_logo}}">
           <div class="font-semibold text-xl text-content">genomics.ai</div>
         </a>
       </td>
     </tr>
     <tr>
-      <td style="padding: 10px;">
+      <td style="padding: 10px;" colspan="2">
         <div class="title text-3xl font-bold text-head mt-10">Welcome {{firstname}}!</div>
       </td>
     </tr>
     <tr>
-      <td style="padding: 10px;">
+      <td style="padding: 10px;" colspan="2">
         <p class="my-10">Thanks for taking interest in our service! One last step before you can use our platform:
           Please confirm your email address by clicking the button below.</p>
       </td>
     </tr>
     <tr>
-      <td style="padding: 10px;">
+      <td style="padding: 10px;" colspan="2">
         <a href="{{link}}" style="padding: 10px;"
-          class="bg-primary text-white font-bold rounded-full hover:bg-primaryHover hover:drop-shadow-md focus:outline-none focus:bg-primaryFocus m-auto">Confirm
+          class="action-button">Confirm
           Email</a>
       </td>
     </tr>
     <tr>
-      <td style="padding: 10px;">
-        <div>
-          <p class="mt-10">Best regards,</p>
+      <td style="padding: 10px;" colspan="2">
+        <div class="genomics-signature">
+          <p>Best regards,</p>
           <p>The GeneCruncher Team.</p>
         </div>
       </td>
     </tr>
-    <tr class="bg-footer text-white font-semibold">
-      <td style="padding: 10px;">
-        <div class="">© Copyright TUM 2022</div>
+    <tr class="footer-tr">
+      <td>
+        <p class="p-4">© Copyright TUM 2022</p>
       </td>
-      <td style="padding: 10px;">
-        <div class=""><a href="https://www.genecruncher.com">genecruncher.com</a></div>
+      <td>
+        <a href="https://www.genecruncher.com">genecruncher.com</a>
       </td>
     </tr>
   </table>

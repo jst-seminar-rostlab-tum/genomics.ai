@@ -24,9 +24,8 @@
 // }
 
 module.exports = {
-  mode: 'jit',
   content: [
-    "../src/views/mails/**/front/index.html",
+    "../src/views/mails/**/front/**.html",
   ],
   theme: {
     screens: {
