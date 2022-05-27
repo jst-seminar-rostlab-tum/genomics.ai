@@ -1,4 +1,4 @@
-export function applyModelFilters(models, searchedKeyword, searchParams, selectedAtlas) {
+export function applyModelFilters(models, searchedKeyword, searchParams) {
   const searchedModels = models.filter(
     (item) => item.name.toLowerCase().includes(searchedKeyword.toLowerCase()) );
   if (searchParams.get('sortBy') === 'name' || searchParams.get('sortBy') === null) {
@@ -17,13 +17,9 @@ export function applyModelFilters(models, searchedKeyword, searchParams, selecte
   return searchedModels;
 }
 
-export function applyAtlasFilters(atlases, searchedKeyword, searchParams, selectedModel) {
+export function applyAtlasFilters(atlases, searchedKeyword, searchParams) {
   const searchedAtlases = atlases.filter(
-    (item) => item.name.toLowerCase().includes(searchedKeyword.toLowerCase())
-    && (!selectedModel
-      || item.compatibleModels.some(
-        (element) => element.toLowerCase() === selectedModel.name.toLowerCase(),
-      )),
+    (item) => item.name.toLowerCase().includes(searchedKeyword.toLowerCase()),
   );
   if (searchParams.get('sortBy') === 'name' || searchParams.get('sortBy') === null) {
     searchedAtlases.sort((a, b) => {

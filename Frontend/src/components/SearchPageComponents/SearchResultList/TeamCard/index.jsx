@@ -34,7 +34,7 @@ const TeamCard = ({ item: team, user, onAction }) => {
       visibilityTooltip = 'Only institution members can join the team!';
       // check if user is not member but part of institution
       canJoin = !isTeamMember
-      && team.institutionId.memberIds.includes(user._id);
+      && team.institutionId && team.institutionId.memberIds.includes(user._id);
       break;
     default:
       visibilityTooltip = 'unknown';

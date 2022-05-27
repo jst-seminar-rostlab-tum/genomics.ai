@@ -56,14 +56,15 @@ export default function Sidebar(props) {
       <Box className={styles.sidebarNav}>
         <Box className={styles.sidebarWrap}>
           <Box sx={{
-            display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '98vh', marginTop: '2vh',
+            display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '97vh', marginTop: '2vh',
           }}
           >
             <Box className={styles.iconList}>
               {routes.map((route, index) => (
                 <NavLink
                   className={styles.navlink}
-                  to={`${url}/${route}`}
+                  to={route!=='documentation' ? `${url}/${route}` : path}
+                  onClick={route==='documentation' ? ()=>window.open("https://genecruncher.readthedocs.io/") : ()=>{}}
                   key={route.toString()}
                 >
                   <Tooltip
@@ -90,7 +91,7 @@ export default function Sidebar(props) {
               ))}
             </Box>
             <Box>
-              <NavLink
+              {/* <NavLink
                 to="/imprint"
                 className={styles.navlinkIcon}
                 style={{ display: "block", marginBottom: "1em" }}
@@ -118,7 +119,7 @@ export default function Sidebar(props) {
                     </ListItemIcon>
                   </Box>
                 </Tooltip>
-              </NavLink>
+              </NavLink> */}
 
               <NavLink
                 to="/"
@@ -147,6 +148,7 @@ export default function Sidebar(props) {
                       display: 'flex',
                       justifyContent: 'center',
                       alignItems: 'center',
+                      marginBottom: "1em"
                     }}
                   >
                     <ListItemIcon sx={{ justifyContent: 'center' }}>

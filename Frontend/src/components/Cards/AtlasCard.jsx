@@ -1,9 +1,8 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { useState, useRef, useEffect } from 'react';
-
 import { Box, Typography } from '@mui/material';
-
 import { OutlinedButton } from './ModelCard';
+import { colors } from 'shared/theme/colors';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 /**
@@ -20,7 +19,8 @@ import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
  */
 export default function AtlasCard({
   width = '100%', height = '100%', title, atlasId, imgLink, modalities,
-  cellsInReference, species, learnMoreLink, onSelect, atlas, selected = false,
+  cellsInReference, species, learnMoreLink, onSelect, selected = false, disabled = false,
+  isSearchPage = false
 }) {
   // check if the mouse is hovering above the card
   const [isHover, setHover] = useState(false);
@@ -30,10 +30,8 @@ export default function AtlasCard({
 
   // ref to get the out most Box
   const boxRef = useRef();
-
   const history = useHistory();
   const path = history.location.pathname;
-
   {/*useEffect(() => {
     // each time the card is rerendered, check if the card is flat or not
     if (boxRef.current.clientWidth > boxRef.current.clientHeight) setFlat(true);
@@ -70,7 +68,6 @@ export default function AtlasCard({
       sx={{
         width, height,
       }}
-      
     >
       <Box
         ref={boxRef}
@@ -80,10 +77,11 @@ export default function AtlasCard({
           width: '100%',
           height: '100%',
           position: 'relative',
+          cursor: disabled ? 'default' : 'pointer',
         }}
       >
         {
-          isHover
+          !disabled && isHover
           && (
             <Box
               style={{
@@ -105,74 +103,161 @@ export default function AtlasCard({
               <Box
                 sx={{
                   margin: 'auto',
-                  width:  '70%',
+                  width: '70%',
                   height: 'auto',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'space-evenly',
-                  gap: '5px'
+                  gap: '5px',
                 }}
               >
-                <OutlinedButton
-                  content="Select"
-                  onClick={onSelect}
-                />
+                {
+                  !isSearchPage &&
+                  <OutlinedButton
+                    content="Select"
+                    onClick={onSelect}
+                  />
+                }
                 <OutlinedButton
                   content="Learn More"
                   link={learnMoreLink}
-                  onClick={(e) => {
+                  onClick={() => {
                     localStorage.setItem('atlasId', atlasId);
-                    e.stopPropagation();
                   }}
                 />
+                {
+                disabled
+                && (
+                <Typography sx={{
+                  color: colors.primary[900], fontSize: '12px', textDecoration: 'underline', textAlign: 'center',
+                }}
+                >
+                  Atlas unavailable for mapping with selected model
+                </Typography>
+                )
+              }
               </Box>
             </Box>
           )
         }
 
-        <Box
-          sx={{
+        {/* DISABLED OVERLAY BOX */}
+        {
+          disabled &&
+          <Box
+            style={{ background: "linear-gradient(#e7e7e7, #d0d0d0)" }}
+            sx={{
+              position: "absolute",
+              width: "100%",
+              height: "100%",
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              borderRadius: "1.2rem",
+              cursor: "pointer",
+              opacity: 0.95,
+            }}>
+            { 
+              !isHover && 
+              <Typography sx={{ position: "absolute", fontSize: "12px", fontWeight: "bold", color: colors.neutral[900], textAlign: "center", left: "28%" }}>
+                Not Compatible
+              </Typography>
+            }
+            <Box
+              sx={{
+                margin: 'auto',
+                width: '70%',
+                height: 'auto',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-evenly',
+                gap: '5px',
+              }}
+            >
+
+              { isHover && <OutlinedButton content="Learn More" link={learnMoreLink} bg={colors.neutral[800]} color={colors.neutral[800]} onClick={(e) => e.stopPropagation()} bgHover={colors.neutral[100]} colorHover={colors.neutral[600]}/> }
+              {/* <CustomButton type="outlined" href={learnMoreLink ? `#${learnMoreLink}` : null} onClick={(e) => e.stopPropagation()}>Learn More</CustomButton> */}
+            </Box>
+          </Box>
+        }
+        { !disabled
+          && (
+          <Box
+            sx={{
+              width: '100%',
+              height: '100%',
+              padding: '1rem',
+              display: 'flex',
+              flexDirection: 'column',
+              boxShadow: isHover ? 'none' : '0px 4px 6px 0px rgba(33, 37, 41, .2), 0px 0px 1px 0px rgba(33, 37, 41, .32)',
+              borderRadius: '1.2rem',
+              justifyContent: 'center',
+              borderStyle: 'solid',
+              borderColor: selected ? '#008BF5' : 'transparent',
+              borderWidth: '4px',
+            }}
+          >
+            <Typography
+              sx={{
+                fontSize: '1.4rem',
+                fontWeight: 'bold',
+              }}
+            >
+              {title}
+            </Typography>
+
+            <Box
+              component="img"
+              src={imgLink}
+              alt="Atlas preview img"
+              sx={{
+                width: '90%',
+                objectFit: 'cover',
+                alignSelf: 'center',
+              }}
+            />
+            <Box sx={{
+              display: 'flex', flexDirection: 'column', m: '5px ', justifyContent: 'space-evenly', height: '100%',
+            }}
+            >
+              {AtlasInfo('Modalities', showModalities())}
+              {AtlasInfo('Species', species)}
+            </Box>
+          </Box>
+          )}
+        {
+          disabled
+          && (
+          <Box sx={{
             width: '100%',
             height: '100%',
-            padding: '1rem',
             display: 'flex',
             flexDirection: 'column',
-            boxShadow: isHover ? 'none' : '0px 4px 6px 0px rgba(33, 37, 41, .2), 0px 0px 1px 0px rgba(33, 37, 41, .32)',
+            p: '1.2rem',
             borderRadius: '1.2rem',
-            justifyContent: 'center',
-            borderStyle: 'solid',
-            borderColor: selected ? '#008BF5' : 'transparent',
-            borderWidth: '4px',
-          }}
-        >
-          <Typography
-            sx={{
-              fontSize: '1.4rem',
-              fontWeight: 'bold',
-            }}
-          >
-            {title}
-          </Typography>
-
-          <Box
-            component="img"
-            src={imgLink}
-            alt="Atlas preview img"
-            sx={{
-              width: '90%',
-              objectFit: 'cover',
-              alignSelf: 'center',
-            }}
-          />
-          <Box sx={{
-            display: 'flex', flexDirection: 'column', m: '5px ', justifyContent: 'space-evenly', height: '100%',
           }}
           >
-            {AtlasInfo('Modalities', showModalities())}
-            {AtlasInfo('Species', species)}
+            <Typography sx={{ fontSize: '1.4rem', fontWeight: 'bold' }}>{title}</Typography>
+            <Box
+              component="img"
+              src={imgLink}
+              alt="Atlas preview img"
+              sx={{
+                width: '90%',
+                objectFit: 'cover',
+                alignSelf: 'center',
+              }}
+            />
+            <Box sx={{
+              display: 'flex', flexDirection: 'column', m: '5px ', justifyContent: 'space-evenly', height: '100%',
+            }}
+            >
+              {AtlasInfo('Modalities', showModalities())}
+              {AtlasInfo('Species', species)}
+            </Box>
           </Box>
-
-        </Box>
+          )
+        }
       </Box>
     </Box>
   );

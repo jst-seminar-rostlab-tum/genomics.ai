@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import {
   useHistory, useLocation,
   useRouteMatch,
@@ -20,6 +20,9 @@ import ModelsGrid from 'components/Grids/ModelsGrid';
 import Mapper from 'components/Mapper';
 import { applyModelFilters, applyAtlasFilters } from 'shared/utils/filter';
 import ExploreRoutes from 'components/ExplorePageComponents/ExploreRoutes';
+import { useAuth } from 'shared/context/authContext';
+import { LoginContext } from 'shared/context/loginContext';
+import PasswordForgetForm from 'components/PasswordForgetForm';
 
 const tmpObj = [
   {
@@ -37,15 +40,15 @@ const Explore = () => {
   const [selectedAtlas, setSelectedAtlas] = useState(null);
   const [selectedModel, setSelectedModel] = useState(null);
   const [mapperVisible, setMapperVisible] = useState(false);
-  const [isLoginFormVisible, setLoginFormVisible] = useState(false);
-  const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
-  const { search } = useLocation();
+  const { search, pathname } = useLocation();
   const searchParams = new URLSearchParams(search);
   const searchedKeyword = searchParams.get('keyword') || '';
   const { path } = useRouteMatch();
-  const history = useHistory();
   const [atlases, setAtlases] = useState([]);
   const [models, setModels] = useState([]);
+  const [user, setUser] = useAuth()
+
+  const history = useHistory();
 
   // function to update the state in the URL
   const updateQueryParams = (param, value) => {
@@ -62,6 +65,7 @@ const Explore = () => {
   };
 
   const handleAtlasSelection = (newAtlas) => {
+    console.log(newAtlas)
     setSelectedAtlas(newAtlas);
     if (!selectedModel) {
       history.push(`${path}/models`);
@@ -95,6 +99,11 @@ const Explore = () => {
     searchedKeywordChangeHandler('');
   };
 
+  const handleMap = () => {
+    history.push(`${path}/atlases/${selectedAtlas._id}/visualization`);
+    setMapperVisible(false);
+  };
+
   useEffect(() => {
     if (selectedAtlas || selectedModel) setMapperVisible(true);
     if (!selectedAtlas && !selectedModel) setMapperVisible(false);
@@ -110,6 +119,7 @@ const Explore = () => {
           path={path}
           handleAtlasSelection={handleAtlasSelection}
           selectedAtlas={selectedAtlas}
+          selectedModel={selectedModel}
         />
       ) : null}
       {value === 1 ? (
@@ -125,27 +135,19 @@ const Explore = () => {
 
   );
 
-  const onLoginClicked = useCallback(() => {
-    console.log('login');
-    setRegistrationFormVisible(false);
-    setLoginFormVisible(true);
-  }, [setLoginFormVisible]);
+  const context = useContext(LoginContext)
 
-  const onSignUpClicked = useCallback(() => {
-    console.log('register');
-    setLoginFormVisible(false);
-    setRegistrationFormVisible(true);
-  }, [setRegistrationFormVisible]);
+  const onLoginClicked = () => {
+    context.switchRegister(false)
+    context.switchLogin(true)
+  }
 
-  const onLoginFormClosed = useCallback(() => {
-    setLoginFormVisible(false);
-  }, [setLoginFormVisible]);
+  const onSignUpClicked = () => {
+    context.switchLogin(false);
+    context.switchRegister(true);
+  }
 
-  const onRegistrationFormClosed = useCallback(() => {
-    setRegistrationFormVisible(false);
-  }, [setRegistrationFormVisible]);
-
-  const tmp_elems = useLocation().pathname.split('/');
+  const tmp_elems = pathname.split('/');
   const elems = tmp_elems.map((elem, index) => {
     if (index === 3) {
       if (tmp_elems[2] === 'atlases') return atlases.filter((x) => x._id === elem)[0] ? atlases.filter((x) => x._id === elem)[0].name : elem;
@@ -154,62 +156,82 @@ const Explore = () => {
     return elem;
   });
 
-  const executeScroll = () => history.push({ pathname: '/', state: { contact_us: true } });
+  const executeScroll = () => user ? history.push({ pathname: '/sequencer/help'}) : history.push({ pathname: '/', state: { contact_us: true } });
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        '::-webkit-scrollbar': {
-          display: 'none',
-        },
-        height: '100vh',
-        overflow: 'hidden',
-      }}
-    >
-      {isLoginFormVisible && (
-        <LoginForm visible={isLoginFormVisible} onClose={onLoginFormClosed} />
-      )}
-      {isRegistrationFormVisible && (
-        <RegistrationForm
-          visible={isRegistrationFormVisible}
-          onClose={onRegistrationFormClosed}
-        />
-      )}
-
-      <Box>
-        <NavBar
-          position="relative"
-          onLoginClicked={onLoginClicked}
-          onSignUpClicked={onSignUpClicked}
-          executeScroll={executeScroll}
-        />
-      </Box>
-
-      <Stack
-        direction={{ xs: "column", sm: "row", md: "row", lg: "row", xl: "row" }}
+    <>
+      <Box
         sx={{
-          alignSelf: 'center', width: '60%', marginTop: '2%', justifyContent: 'space-between',
+          display: 'flex',
+          flexDirection: 'column',
+          '::-webkit-scrollbar': {
+            display: 'none',
+          },
+          height: '100vh',
+          overflow: 'auto',
         }}
       >
-        <Breadcrumb elems={elems} fontSize={1} actions={{ explore: () => setValue(0) }} />
-        <Box sx={{ width: { xs: "60%", sm: "40%", md: "40%", lg: "40%", xl: "40%" }, marginBlock: '2%' }}>
-          <Search
-            filterComponent={(
-              <Filter
-                searchParams={searchParams}
-                updateQueryParams={updateQueryParams}
-                path={path}
-              />
-            )}
-            handleSearch={searchedKeywordChangeHandler}
-            value={searchedKeyword}
-            padding="0px"
+        {context.loginVisible && <LoginForm />}
+        {context.registerVisible && <RegistrationForm  />}
+        {context.forgetVisible && <PasswordForgetForm />}
+
+        <Box>
+          <NavBar
+            position="relative"
+            onLoginClicked={onLoginClicked}
+            onSignUpClicked={onSignUpClicked}
+            executeScroll={executeScroll}
           />
         </Box>
-      </Stack>
-    </Box>
+
+        <Stack
+          direction={{xs: "column", sm: "column", md: "row"}}
+          sx={{
+            alignSelf: 'center', width: '60%', marginTop: '2%', justifyContent: 'space-between',
+          }}
+        >
+          <Breadcrumb elems={elems} fontSize={1} actions={{ explore: () => setValue(0) }} />
+          <Box sx={{ alignSelf: 'center', width: { xs: "100%", sm: "100%", md: "40%"}, marginBlock: '2%' }}>
+            <Search
+              filterComponent={(
+                <Filter
+                  searchParams={searchParams}
+                  updateQueryParams={updateQueryParams}
+                  path={path}
+                />
+              )}
+              handleSearch={searchedKeywordChangeHandler}
+              value={searchedKeyword}
+              padding="0px"
+              visible={pathname.split('/').slice(-1).includes('atlases') || pathname.split('/').slice(-1).includes('models')}
+            />
+          </Box>
+        </Stack>
+
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignSelf: 'center',
+            width: { xs: '90%', md: '60%' },
+          }}
+        >
+          {/* /explore/atlases */}
+          <ExploreRoutes atlases={atlases && tabMenu()} models={models && tabMenu()} path="/explore" handleSelectAtlases={handleAtlasSelection} handleSelectModels={handleModelSelection} />
+        </Box>
+
+        <Mapper
+          mapperAtlas={selectedAtlas ? selectedAtlas.name : null}
+          mapperModel={selectedModel ? selectedModel.name : null}
+          handleAtlasSelection={handleAtlasSelection}
+          handleModelSelection={handleModelSelection}
+          open={mapperVisible}
+          fabOnClick={() => setMapperVisible(!mapperVisible)}
+          handleMap={handleMap}
+        />
+      </Box>
+      <Footer />
+    </>
   );
 };
 
