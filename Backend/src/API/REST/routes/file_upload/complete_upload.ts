@@ -105,9 +105,9 @@ export default function upload_complete_upload_route() {
                 method: "POST",
                 body: JSON.stringify(queryInfo),
               });
-            } catch (e: any) {
+            } catch (e) {
               console.log("Processing failed:");
-              console.log(e.message || e);
+              console.log(e);
               result = null;
             }
             if (!result || result.status != 200) {
@@ -128,7 +128,7 @@ export default function upload_complete_upload_route() {
               let content: Buffer = await new Promise((resolve, reject) => {
                 fs.readFile(
                   path.join(__dirname, "../../../../../dev/test_file1.csv"),
-                  function (err, data) {
+                  function(err, data) {
                     if (err) reject(err);
                     else resolve(data);
                   }
@@ -166,7 +166,7 @@ export default function upload_complete_upload_route() {
           console.log(err);
           try {
             res.status(500).send(`Error persisting Multipart-Upload object data: ${err}`);
-          } catch {}
+          } catch { }
         }
       } catch (err) {
         console.log(err);
