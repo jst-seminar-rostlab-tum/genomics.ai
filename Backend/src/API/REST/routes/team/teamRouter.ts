@@ -126,16 +126,7 @@ const invite_person_to_a_team = (): Router => {
           const link = `${process.env.API_URL}/teams/${teamId}&${user._id}/join`;
           console.log("link <<" + link + ">>");
 
-          await mailer.send(
-            user.email,
-            "[GeneCruncher] Invitation to a team",
-            "invitation_to_team",
-            {
-              firstname: user.firstName,
-              teamname: team.title,
-              link: link,
-            }
-          );
+          await mailer.send_invitation_to_team_mail(user.firstName, user.email, team.title, link);
         } catch (e) {
           console.error("Error when sending invitation of user to a team.");
           console.error(JSON.stringify(e));

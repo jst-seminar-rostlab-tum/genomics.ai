@@ -6,11 +6,16 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./build/server.js",
-    "gcp-build": "tsc -p .",
-    "dev:start": "npm-run-all gcp-build start",
+    "gcp-build": "npm run build",
+    "dev:start": "npm-run-all build start",
     "dev": "tsc-watch --onSuccess \"npm run start\"",
+    "build": "npm-run-all build:ts build:email",
+    "build:ts": "tsc -p .",
+    "build:emails:createtailwind": "cd scripts && npx tailwindcss -c ./tailwind.config.js -i ./base.css -o build/tailwind.css",
+    "build:emails:compile": "node scripts/compileEmails.js",
+    "build:emails": "npm-run-all build:emails:*",
     "full-backend-local:docker": "docker-compose -f dev/docker-compose.yml up -d",
-    "full-backend-local": "npm-run-all full-backend-local:docker dev"
+    "full-backend-local": "npm-run-all full-backend-local:docker build:emails dev"
   },
   "repository": {
     "type": "git",
@@ -45,6 +50,7 @@
     "redis": "^3.1.2",
     "swagger-ui-express": "^4.3.0",
     "typescript": "^4.4.3",
+    "uuid": "^8.3.2",
     "validate": "^5.1.0",
     "ws": "^8.2.3"
   },
@@ -59,8 +65,11 @@
     "@types/node": "^16.10.2",
     "@types/nodemailer-mailgun-transport": "^1.4.3",
     "@types/sharp": "^0.30.2",
+    "@types/uuid": "^8.3.4",
     "@types/ws": "^8.2.0",
+    "juice": "^8.0.0",
     "source-map-support": "^0.5.20",
+    "tailwindcss": "^3.0.24",
     "tsc-watch": "^5.0.3"
   }
 }

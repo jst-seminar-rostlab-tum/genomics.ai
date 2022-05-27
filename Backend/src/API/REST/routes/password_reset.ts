@@ -24,17 +24,7 @@ export default function password_reset_route(): Router {
       _userId: user._id,
     };
     const token = await PasswordResetTokenService.addToken(tokenToAdd);
-    await mailer.send(
-      user.email,
-      "[GeneCruncher] Please reset your password",
-      "password_reset_request_email",
-      {
-        firstname: user.firstName,
-        // link: `https://www.genecruncher.com/#/password_reset?token=${token.token}`
-        link: `${process.env.FRONTEND_URL}/password_reset?token=${token.token}`,
-        new_reset_link: `${process.env.FRONTEND_URL}/password_reset`,
-      }
-    );
+    await mailer.send_password_reset_request_mail(user.firstName,user.email,token.token);
 
     return res
       .status(200)
@@ -65,16 +55,7 @@ export default function password_reset_route(): Router {
     user.save();
 
     // send pw-update email
-    await mailer.send(
-      user.email,
-      "[GeneCruncher] Your password was successfully reset",
-      "password_reset_confirmation_email",
-      {
-        firstname: user.firstName,
-        email: user.email,
-        link: `${process.env.FRONTEND_URL}/password_reset`,
-      }
-    );
+    mailer.send_password_reset_confirmation_mail(user.firstName, user.email);
 
     return res.status(200).send("Password has been changed");
   });

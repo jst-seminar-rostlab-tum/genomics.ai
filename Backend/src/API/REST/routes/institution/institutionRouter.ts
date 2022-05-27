@@ -101,7 +101,6 @@ const invite_to_institution = (): Router => {
   router.put("/institutions/:id/invite", check_auth(), async (req: any, res: any) => {
     var { userId, email }: { userId: Schema.Types.ObjectId; email: string } = req.body;
     const institutionId_to_modify = req.params.id;
-
     console.log("userId " + userId);
     console.log("email " + email);
     console.log("institutionId_to_modify " + institutionId_to_modify);
@@ -145,16 +144,12 @@ const invite_to_institution = (): Router => {
 
       if (updatedInstitution) {
         try {
-          await mailer.send(
+          await mailer.send_invitation_to_institution_mail(
+            user.firstName,
             user.email,
-            "[GeneCruncher] Invitation to an institution",
-            "invitation_to_institution",
-            {
-              institution: updatedInstitution.name,
-              country: updatedInstitution.country,
-              firstname: user.firstName,
-              link: link,
-            }
+            updatedInstitution.name,
+            updatedInstitution.country,
+            link
           );
         } catch (e) {
           console.error("Error when sending invitation of user to an institution.");

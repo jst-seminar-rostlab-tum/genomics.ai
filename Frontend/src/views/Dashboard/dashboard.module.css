@@ -1,0 +1,18 @@
+.fileUpload {
+    background-color: red;
+    flex-basis: 100%;
+    position: relative;
+    height: 100%;
+}
+
+.fileQueue {
+    flex-basis: 100%;
+    position: relative;
+    height: 100%;
+}
+
+.title h1 {
+    font-size: 30px;
+    color: #003560;
+    padding-left: 30px;
+}
