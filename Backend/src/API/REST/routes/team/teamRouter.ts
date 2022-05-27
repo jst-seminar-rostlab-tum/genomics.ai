@@ -167,20 +167,20 @@ const add_project_to_team = (): Router => {
       if (!(projectId && teamId)) return res.status(400).send("Missing parameters.");
 
       const project = await ProjectService.getProjectById(projectId);
-      if (!project) return res.status(400).send("Project to be added does not exist.");
+      if (!project) return res.status(404).send("Project to be added does not exist.");
 
       const team = await TeamService.getTeamById(teamId);
-      if (!team) return res.status(400).send("Team does not exist.");
+      if (!team) return res.status(404).send("Team does not exist.");
 
       /* the user should be either an admin or a member of the team */
       const isAdmin: boolean = await TeamService.isAdmin(req.user_id!, team);
       const isMember: boolean = await TeamService.isMember(req.user_id!, team);
       if (!(isAdmin || isMember))
-        return res.status(401).send("Unauthenticated User! The user is not part of the team.");
+        return res.status(403).send("Unauthenticated User! The user is not part of the team.");
 
       if (project.owner!.toString() !== req.user_id!.toString())
         // cannot be null since the project must exist at this point
-        return res.status(401).send("User is not the project owner!");
+        return res.status(403).send("User is not the project owner!");
 
       try {
         const project_updated = await ProjectService.setTeamOfProject(projectId, teamId);
@@ -606,7 +606,13 @@ const get_teams = (): Router => {
   router.get("/teams", check_auth(), async (req: any, res) => {
     const query = { ...req.query };
     try {
-      const teams = await TeamService.getTeams(query);
+      const teams = (await TeamService.getTeams(query));
+
+      for(const team of teams) {
+        if(team.institutionId) {
+          InstitutionService.mergeAdminsMembers(team.institutionId as any);
+        }
+      }
 
       if (teams != null) return res.status(200).json(TeamService.mergeAdminsMembers(teams));
       return res.status(404).send(`No teams found`);

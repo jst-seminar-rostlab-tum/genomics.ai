@@ -70,7 +70,7 @@ const get_project_by_id = (): Router => {
       if (!projectId) return res.status(400).send("Missing parameters.");
 
       const project = await ProjectService.getProjectById(projectId);
-      if (!project) return res.status(400).send("Project does not exist.");
+      if (!project) return res.status(404).send("Project does not exist.");
 
       let allowAccess = false;
 
