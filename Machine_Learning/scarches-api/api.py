@@ -27,6 +27,7 @@ def query():
             actual_configuration = scarches.query(config)
             return actual_configuration, 200
     except Exception as e:
+        print("got error: " + str(e))
         return {'error': str(e)}, 500
 
 
