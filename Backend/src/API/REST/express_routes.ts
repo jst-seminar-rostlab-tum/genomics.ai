@@ -73,6 +73,7 @@ import {
   get_userProjects,
   get_project_by_id,
   get_users_projects,
+  update_project_results,
   delete_project,
   get_deleted_projects,
   restore_deleted_project,
@@ -151,6 +152,7 @@ export function express_routes(this: REST_Host): Router {
   this.expressApp.use(get_userProjects());
   this.expressApp.use(get_project_by_id());
   this.expressApp.use(get_users_projects());
+  this.expressApp.use(update_project_results());
   this.expressApp.use(delete_project());
   this.expressApp.use(get_deleted_projects());
   this.expressApp.use(restore_deleted_project());
