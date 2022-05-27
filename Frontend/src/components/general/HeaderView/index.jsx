@@ -22,7 +22,7 @@ function HeaderView({
       overflowY: "auto"}}>
     {/* <div className={styles.headerView}> */}
       <Box sx={{
-        minHeight: "92vh",
+        minHeight: "calc(100vh - 40px)",
         padding: "12px 60px 0 60px", 
         boxSizing: "border-box"}}>
         <Stack

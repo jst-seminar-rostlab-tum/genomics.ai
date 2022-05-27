@@ -233,8 +233,8 @@ export default function Navbar({
             <Navlink fontWeight="bold" main={true} >genomics.ai</Navlink>
           </LinkBox>
           <LinkBox to="/explore"><Navlink>Explore</Navlink></LinkBox>
-          <LinkBox to="/about"><Navlink>About us</Navlink></LinkBox>
-          <Box sx={{ cursor: "pointer" }} onClick={executeScroll}><Navlink>Contact us</Navlink></Box>
+          <LinkBox to="/about"><Navlink>About</Navlink></LinkBox>
+          <Box sx={{ cursor: "pointer" }} onClick={executeScroll}><Navlink>Contact</Navlink></Box>
           <Box sx={{cursor: "pointer"}} onClick={()=>window.open("https://genecruncher.readthedocs.io/")}><Navlink>Docs</Navlink></Box>
         </Leftbar>
         <Rightbar>
