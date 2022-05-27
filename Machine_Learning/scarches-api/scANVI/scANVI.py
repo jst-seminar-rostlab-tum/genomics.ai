@@ -53,8 +53,8 @@ def get_latent(model, adata, configuration):
 
 
 def predict(model, latent):
-    latent.obs['predictions'] = model.predict()
-    print("Acc: {}".format(np.mean(latent.obs.predictions == latent.obs.cell_type)))
+    latent.obs['predicted'] = model.predict()
+    print("Acc: {}".format(np.mean(latent.obs.predicted == latent.obs.cell_type)))
     return latent
 
 
@@ -86,9 +86,9 @@ def surgery(reference_latent, source_adata, anndata, configuration):
 
     # utils.write_combined_csv(reference_latent, surgery_latent, key=utils.get_from_config(configuration, parameters.OUTPUT_PATH))
     utils.write_full_adata_to_csv(model, source_adata, anndata,
-                                  key=get_from_config(configuration, parameters.OUTPUT_PATH),
-                                  cell_type_key=get_from_config(configuration, parameters.CELL_TYPE_KEY),
-                                  condition_key=get_from_config(configuration, parameters.CONDITION_KEY), predictScanvi=True)
+                                  key=utils.get_from_config(configuration, parameters.OUTPUT_PATH),
+                                  cell_type_key=utils.get_from_config(configuration, parameters.CELL_TYPE_KEY),
+                                  condition_key=utils.get_from_config(configuration, parameters.CONDITION_KEY), predictScanvi=True)
 
     model.save('scvi_model', overwrite=True)  # TODO check path
     utils.delete_file('scvi_model/model.pt')
@@ -134,27 +134,27 @@ def query(pretrained_model, reference_latent, anndata, source_adata, configurati
 
     # added obs to query_latent
     query_latent = get_latent(model, anndata, configuration)
-    query_latent.obs['cell_type'] = anndata.obs[get_from_config(configuration, parameters.CELL_TYPE_KEY)].tolist()
-    query_latent.obs['batch'] = anndata.obs[get_from_config(configuration, parameters.CONDITION_KEY)].tolist()
-    scanpy.pp.neighbors(query_latent, n_neighbors=get_from_config(configuration, parameters.NUMBER_OF_NEIGHBORS))
+    query_latent.obs['cell_type'] = anndata.obs[utils.get_from_config(configuration, parameters.CELL_TYPE_KEY)].tolist()
+    query_latent.obs['batch'] = anndata.obs[utils.get_from_config(configuration, parameters.CONDITION_KEY)].tolist()
+    scanpy.pp.neighbors(query_latent, n_neighbors=utils.get_from_config(configuration, parameters.NUMBER_OF_NEIGHBORS))
     scanpy.tl.leiden(query_latent)
     scanpy.tl.umap(query_latent)
 
     if utils.get_from_config(configuration, parameters.DEBUG):
         utils.save_umap_as_pdf(query_latent, 'figures/query.pdf', color=['batch', 'cell_type'])
     utils.write_full_adata_to_csv(model, source_adata, anndata,
-                                  key=get_from_config(configuration, parameters.OUTPUT_PATH),
-                                  cell_type_key=get_from_config(configuration, parameters.CELL_TYPE_KEY),
-                                  condition_key=get_from_config(configuration,
+                                  key=utils.get_from_config(configuration, parameters.OUTPUT_PATH),
+                                  cell_type_key=utils.get_from_config(configuration, parameters.CELL_TYPE_KEY),
+                                  condition_key=utils.get_from_config(configuration,
                                                                 parameters.CONDITION_KEY), predictScanvi=True)
     return model, query_latent
 
 
 def predict_latent(model, latent):
-    latent.obs['predictions'] = model.predict()
-    print("Acc: {}".format(np.mean(latent.obs.predictions == latent.obs.cell_type)))
+    latent.obs['predicted'] = model.predict()
+    print("Acc: {}".format(np.mean(latent.obs.predicted == latent.obs.cell_type)))
 
-    df = latent.obs.groupby(["cell_type", "predictions"]).size().unstack(fill_value=0)
+    df = latent.obs.groupby(["cell_type", "predicted"]).size().unstack(fill_value=0)
     norm_df = df / df.sum(axis=0)
 
     figure = plt.figure(figsize=(8, 8), frameon=False)
@@ -179,7 +179,7 @@ def both_adata(source_adata, target_adata, configuration):
     scanpy.tl.leiden(full_latent)
     scanpy.tl.umap(full_latent)
 
-    full_latent.obs['predictions'] = 'predicted'
+    full_latent.obs['predicted'] = 'predicted'
 
     if utils.get_from_config(configuration, parameters.DEBUG):
         utils.save_umap_as_pdf(full_latent, 'figures/both.pdf', color=['batch', 'cell_type'])
@@ -200,17 +200,17 @@ def both_adata(source_adata, target_adata, configuration):
 #     scanpy.tl.leiden(full_latent)
 #     scanpy.tl.umap(full_latent)
 #
-#     full_latent.obs['predictions'] = 'predicted'
+#     full_latent.obs['predicted'] = 'predicted'
 #
 #
-#     latent.obs['predictions'] = model.predict(adata=adata_full)
-#     print("Acc_compare: {}".format(np.mean(latent.obs.predictions == latent.obs.cell_type)))
+#     latent.obs['predicted'] = model.predict(adata=adata_full)
+#     print("Acc_compare: {}".format(np.mean(latent.obs.predicted == latent.obs.cell_type)))
 #     scanpy.pp.neighbors(latent)
 #     scanpy.tl.leiden(latent)
 #     scanpy.tl.umap(latent)
 #
 #     if get_from_config(configuration, parameters.DEBUG):
-#         utils.save_umap_as_pdf(latent, 'figures/compare.pdf', color=["predictions", "cell_type"])
+#         utils.save_umap_as_pdf(latent, 'figures/compare.pdf', color=["predicted", "cell_type"])
 #
 #     utils.write_latent_csv(latent, key=get_from_config(configuration, parameters.OUTPUT_PATH))
 
@@ -218,23 +218,23 @@ def both_adata(source_adata, target_adata, configuration):
 def compare_adata(model, source_adata, target_adata, configuration):
     adata_full = source_adata.concatenate(target_adata)
     full_latent = scanpy.AnnData(scarches.models.SCANVI.get_latent_representation(adata=adata_full))
-    full_latent.obs['cell_type'] = adata_full.obs[get_from_config(configuration, parameters.CELL_TYPE_KEY)].tolist()
-    full_latent.obs['batch'] = adata_full.obs[get_from_config(configuration, parameters.CONDITION_KEY)].tolist()
+    full_latent.obs['cell_type'] = adata_full.obs[utils.get_from_config(configuration, parameters.CELL_TYPE_KEY)].tolist()
+    full_latent.obs['batch'] = adata_full.obs[utils.get_from_config(configuration, parameters.CONDITION_KEY)].tolist()
 
     scanpy.pp.neighbors(full_latent)
     scanpy.tl.leiden(full_latent)
     scanpy.tl.umap(full_latent)
 
-    full_latent.obs['predictions'] = model.predict(adata=adata_full)
-    print("Acc_compare: {}".format(np.mean(full_latent.obs.predictions == full_latent.obs.cell_type)))
+    full_latent.obs['predicted'] = model.predict(adata=adata_full)
+    print("Acc_compare: {}".format(np.mean(full_latent.obs.predicted == full_latent.obs.cell_type)))
     scanpy.pp.neighbors(full_latent)
     scanpy.tl.leiden(full_latent)
     scanpy.tl.umap(full_latent)
 
     if utils.get_from_config(configuration, parameters.DEBUG):
-        utils.save_umap_as_pdf(latent, 'figures/compare.pdf', color=["predictions", "cell_type"])
+        utils.save_umap_as_pdf(full_latent, 'figures/compare.pdf', color=["predicted", "cell_type"])
 
-    utils.write_latent_csv(latent, key=utils.get_from_config(configuration, parameters.OUTPUT_PATH))
+    utils.write_latent_csv(full_latent, key=utils.get_from_config(configuration, parameters.OUTPUT_PATH))
 
 
 def create_model(source_adata, target_adata, configuration):
@@ -297,8 +297,8 @@ def compute_scANVI(configuration):
     model = model_query
 
 
-    if utils.get_from_config(configuration, parameters.SCANVI_PREDICT_CELLTYPES):
-        predict_latent(predict(model_query, query_latent))
+    # if utils.get_from_config(configuration, parameters.SCANVI_PREDICT_CELLTYPES):
+    #     predict_latent(predict(model_query, query_latent))
     # if utils.get_from_config(configuration, parameters.SCANVI_DO_SURGERY):
     #    model_surgery, surgery_latent = surgery(reference_latent, target_adata, configuration)
     #

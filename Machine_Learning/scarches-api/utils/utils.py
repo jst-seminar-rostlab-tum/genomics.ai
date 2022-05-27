@@ -28,7 +28,7 @@ def to_drop(adata_obs):
     return drop_list
 
 
-def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=None):
+def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=None, predictScanvi = False):
     """
     stores a given latent in a file, and if a key is given also in an s3 bucket
     :param latent: data to be saved
@@ -45,7 +45,9 @@ def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=
     final["x"] = list(map(lambda p: p[0], latent.obsm["X_umap"]))
     final["y"] = list(map(lambda p: p[1], latent.obsm["X_umap"]))
 
-    final['predictions'] = final['predictions'].apply(lambda cell_type: prediction_value(cell_type))
+    if predictScanvi:
+        final['predicted'] = final['predicted'].apply(lambda cell_type: prediction_value(cell_type))
+        
     final.to_csv(filename)
 
     if key is not None:
@@ -84,13 +86,13 @@ def write_adata_to_csv(model, adata=None, key=None, filename=tempfile.mktemp(), 
     latent.obs['cell_type'] = adata.obs[cell_type_key].tolist()
     latent.obs['batch'] = adata.obs[condition_key].tolist()
     latent.obs['type'] = adata.obs['type'].tolist()
-    scanpy.pp.neighbors(latent, n_neighbors=neighbors)
+    scanpy.pp.neighbors(latent)
     scanpy.tl.leiden(latent)
     scanpy.tl.umap(latent)
     if predictScanvi:
-        latent.obs['predictions'] = model.predict(adata=adata)
+        latent.obs['predicted'] = model.predict(adata=adata)
 
-    return write_latent_csv(latent, key, filename)
+    return write_latent_csv(latent, key, filename, predictScanvi = predictScanvi)
 
 
 # def write_combined_csv(latent_ref, latent_query, key=None, filename=tempfile.mktemp(), drop_columns=None):
