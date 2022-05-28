@@ -532,18 +532,15 @@ const remove_team_from_institution = (): Router => {
 const disjoin_member = (): Router => {
   let router = express.Router();
 
-  router.delete("/teams/:id/join", check_auth(), async (req: any, res) => {
+  router.delete("/teams/:id/join", check_auth(), async (req: ExtRequest, res) => {
     try {
-      const { userId }: { userId: ObjectId } = req.body;
       const teamId: string = req.params.id;
-      const user_id_jwt = req.user_id;
+      const userId = req.user_id!;
 
-      if (!(userId && teamId)) return res.status(400).send("Missing parameters.");
+      if (!(teamId)) return res.status(400).send("Missing parameters.");
 
       const user = await UserService.getUserById(userId);
       if (!user) return res.status(400).send("User does not exist.");
-      if (userId != user_id_jwt)
-        return res.status(409).send("Information of the user does not match.");
 
       const team = await TeamService.getTeamById(teamId);
       if (!team) return res.status(400).send("Team does not exist.");

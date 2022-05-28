@@ -478,18 +478,15 @@ const get_users_institutions = (): Router => {
 const disjoin_member_of_institution = (): Router => {
   let router = express.Router();
 
-  router.delete("/institutions/:id/join", validationMdw, check_auth(), async (req: any, res) => {
+  router.delete("/institutions/:id/join", validationMdw, check_auth(), async (req: ExtRequest, res) => {
     try {
-      const { userId }: { userId: ObjectId } = req.body;
       const institutionId: string = req.params.id;
-      const user_id_jwt = req.user_id;
+      const userId = req.user_id!;
 
-      if (!(userId && institutionId)) return res.status(400).send("Missing parameters.");
+      if (!(institutionId)) return res.status(400).send("Missing parameters.");
 
       const user = await UserService.getUserById(userId);
       if (!user) return res.status(404).send("User does not exist.");
-      if (userId != user_id_jwt)
-        return res.status(404).send("Information of the user does not match.");
 
       const institution = await InstitutionService.getInstitutionById(institutionId);
       if (!institution) return res.status(404).send("Institution does not exist.");

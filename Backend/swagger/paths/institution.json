@@ -257,22 +257,6 @@
           }
         }
       ],
-      "requestBody": {
-        "required": true,
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                "institutionId": {
-                  "type": "string"
-                }
-              },
-              "additionalProperties": false
-            }
-          }
-        }
-      },
       "responses": {
         "200": {
           "description": "",
