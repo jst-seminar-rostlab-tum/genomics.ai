@@ -573,25 +573,6 @@
       "tags": [
         "Teams"
       ],
-      "requestBody": {
-        "required": true,
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                "userId": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "userId"
-              ],
-              "additionalProperties": false
-            }
-          }
-        }
-      },
       "responses": {
         "200": {
           "description": "Updated team",
