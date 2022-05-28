@@ -40,6 +40,7 @@ function InstitutionLeaveButton({ institution, onLeft }) {
           <Button
             type="critical"
             onClick={handleOpenDialog}
+            disabled={onlyAdmin}
           >
             Leave
           </Button>
