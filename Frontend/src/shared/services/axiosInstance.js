@@ -15,4 +15,14 @@ axiosInstance.interceptors.request.use((config) => {
   return config;
 });
 
+axiosInstance.interceptors.response.use((response) => response, (error) => {
+  if (error?.response?.status === 440) {
+    localStorage.removeItem('user');
+    localStorage.removeItem('jwt');
+    window.location.assign(window.location);
+  }
+
+  return Promise.reject(error);
+});
+
 export default axiosInstance;
