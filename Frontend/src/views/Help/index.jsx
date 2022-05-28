@@ -39,15 +39,15 @@ export default function Help({ sidebarShown }) {
       title="Contact Us"
     >
 
-      <Box sx={{margin: "2em auto", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center"}}>
-        <Typography fontWeight="bold" fontSize="1.5em">Please describe to us the problem you are experiencing in the contact form below.</Typography>
+      <Box sx={{margin: "1em auto", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center"}}>
+        <Typography fontWeight={400} fontSize="1.2em">Please describe to us the problem you are experiencing in the contact form below.</Typography>
       </Box>
 
-      <Box sx={{margin: "2em auto", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center"}}>
-        <Typography fontWeight="bold" fontSize="1.5em">We will get back to you as soon as possible.</Typography>
+      <Box sx={{margin: "1em auto", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center"}}>
+        <Typography fontSize="1em">We will get back to you as soon as possible.</Typography>
       </Box>
 
-      <Box sx={{ position: "relative", width: "60vw", margin: "3em auto" }} >
+      <Box sx={{ position: "relative", width: "60vw", margin: "1em auto" }} >
         {/* <Box sx={{
           width: "100%",
           margin: "2em 0 0em 0",
