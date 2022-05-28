@@ -2,12 +2,14 @@
 import React, { useState } from 'react';
 import Button from 'components/CustomButton';
 import TextField from '@mui/material/TextField';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import CircularProgress from '@mui/material/CircularProgress';
 import { Modal, ModalTitle } from 'components/Modal';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import TeamService from 'shared/services/Team.service';
 import InstitutionChoice from 'components/institutions/InstitutionChoice';
-import { CircularProgress } from '@mui/material';
 import { useInstitutions } from 'shared/context/institutionContext';
 
 export default function TeamCreationDialog({ open, handleClose, onCreated }) {
@@ -40,42 +42,47 @@ export default function TeamCreationDialog({ open, handleClose, onCreated }) {
       setOpen={(o) => !o && handleClose()}>
       <ModalTitle>Create a Team</ModalTitle>
       <DialogContent>
-        <TextField
-          autoFocus
-          margin="dense"
-          id="name"
-          label="Name"
-          type="text"
-          variant="standard"
-          required
-          error={!!nameError}
-          helperText={nameError}
-          onChange={(evt) => { setName(evt.target.value); setNameError(''); }}
-        />
-        <TextField
-          margin="dense"
-          id="description"
-          label="Description"
-          type="text"
-          fullWidth
-          multiline
-          maxRows={3}
-          variant="standard"
-          required
-          error={!!descriptionError}
-          helperText={descriptionError}
-          onChange={(evt) => { setDescription(evt.target.value); setDescriptionError(''); }}
-        />
-        <br />
-        <br />
-        { institutions.length === 0 ? (
+        {institutions.length > 0 && (
           <>
-            <b>You are not an admin of any institution.</b>
-            <p>
-              To create a team, you need to be the admin of an institution.
-              That is because you can only create teams within institutions directly.
-            </p>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Name"
+              type="text"
+              variant="standard"
+              required
+              error={!!nameError}
+              helperText={nameError}
+              onChange={(evt) => { setName(evt.target.value); setNameError(''); }}
+            />
+            <TextField
+              margin="dense"
+              id="description"
+              label="Description"
+              type="text"
+              fullWidth
+              multiline
+              maxRows={3}
+              variant="standard"
+              required
+              error={!!descriptionError}
+              helperText={descriptionError}
+              onChange={(evt) => { setDescription(evt.target.value); setDescriptionError(''); }}
+            />
+            <br />
+            <br />
           </>
+        )}
+        {institutions.length === 0 ? (
+          <Alert
+            severity="warning"
+            sx={{ width: '100%' }}
+          >
+            <AlertTitle>You are not an admin of any institution.</AlertTitle>
+            To create a team, you need to be the admin of an institution.
+            That is because you can only create teams within institutions directly.
+          </Alert>
         ) : <InstitutionChoice onChoiceChange={setInstitutionId} />}
       </DialogContent>
       <DialogActions>
