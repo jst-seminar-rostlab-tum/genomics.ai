@@ -34,18 +34,6 @@ export default function TeamCreationDialog({ open, handleClose, onCreated }) {
     handleClose();
   }
 
-  if (institutions.length === 0) {
-    return (
-      <>
-        <b>You are not an admin of any institution.</b>
-        <p>
-          To create a team, you need to be the admin of an institution.
-          That is because you can only create teams within institutions directly.
-        </p>
-      </>
-    );
-  }
-
   return (
     <Modal
       isOpen={open}
@@ -80,7 +68,15 @@ export default function TeamCreationDialog({ open, handleClose, onCreated }) {
         />
         <br />
         <br />
-        <InstitutionChoice onChoiceChange={setInstitutionId} />
+        { institutions.length === 0 ? (
+          <>
+            <b>You are not an admin of any institution.</b>
+            <p>
+              To create a team, you need to be the admin of an institution.
+              That is because you can only create teams within institutions directly.
+            </p>
+          </>
+        ) : <InstitutionChoice onChoiceChange={setInstitutionId} />}
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} type="tertiary">
