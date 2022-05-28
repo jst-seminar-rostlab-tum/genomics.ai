@@ -19,6 +19,7 @@ export default function TeamCreationDialog({ open, handleClose, onCreated }) {
   const [nameError, setNameError] = useState('');
   const [descriptionError, setDescriptionError] = useState('');
   const [institutionId, setInstitutionId] = useState(null);
+  const [creationError, setCreationError] = useState('');
   const { institutions } = useInstitutions();
 
   async function create() {
@@ -30,10 +31,17 @@ export default function TeamCreationDialog({ open, handleClose, onCreated }) {
     }
     if (!name || !description) return;
     setLoading(true);
-    const newTeam = await TeamService.createTeam(name, description, institutionId);
-    onCreated(newTeam);
-    setLoading(false);
-    handleClose();
+    try {
+      const newTeam = await TeamService.createTeam(name, description, institutionId);
+      onCreated(newTeam);
+      handleClose();
+      setName('');
+      setDescription('');
+    } catch (e) {
+      setCreationError(e.response.data);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -84,6 +92,11 @@ export default function TeamCreationDialog({ open, handleClose, onCreated }) {
             That is because you can only create teams within institutions directly.
           </Alert>
         ) : <InstitutionChoice onChoiceChange={setInstitutionId} />}
+        {creationError && (
+          <Alert severity="error" sx={{ marginTop: '12px' }}>
+            {creationError}
+          </Alert>
+        )}
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} type="tertiary">
