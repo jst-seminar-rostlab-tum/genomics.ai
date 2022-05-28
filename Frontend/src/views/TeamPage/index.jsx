@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import HeaderView from 'components/general/HeaderView';
 import TeamProjectList from 'components/teams/detail/TeamProjectList';
@@ -23,6 +23,8 @@ export default function TeamPage() {
   const [newDescription, setNewDescription] = useState('');
   const [editMode, setEditMode] = useState(false);
   const [open, setOpen] = useState(false);
+
+  const descriptionRef = useRef();
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -51,6 +53,7 @@ export default function TeamPage() {
   async function updateDescription() {
     if (!editMode) {
       setEditMode(true);
+      descriptionRef.current.focus();
       return;
     }
     await TeamService.changeTeamDescription(id, newDescription);
@@ -118,6 +121,7 @@ export default function TeamPage() {
         <div>
           <TextField
             id="description"
+            inputRef={descriptionRef}
             multiline
             minRows={3}
             maxRows={5}
