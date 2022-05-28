@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import styles from './teamPage.module.css';
 import HeaderView from 'components/general/HeaderView';
 import TeamProjectList from 'components/teams/detail/TeamProjectList';
 import TeamMemberList from 'components/teams/detail/TeamMemberList';
@@ -10,11 +9,11 @@ import TeamHeaderOptions from 'components/teams/detail/TeamHeaderOptions';
 import TeamService from 'shared/services/Team.service';
 import InstitutionService from 'shared/services/Institution.service';
 import TeamInviteButton from 'components/teams/detail/TeamInviteButton';
-import TextField from '@mui/material/TextField';
+import { TextField, Snackbar, Alert } from '@mui/material';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { useAuth } from 'shared/context/authContext';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
+import Button from 'components/CustomButton';
 
 export default function TeamPage() {
   const { id } = useParams();
@@ -22,7 +21,7 @@ export default function TeamPage() {
   const [user] = useAuth();
   const [institution, setInstitution] = useState({});
   const [newDescription, setNewDescription] = useState('');
-  const [descriptionChanged, setDescriptionChanged] = useState(false);
+  const [editMode, setEditMode] = useState(false);
   const [open, setOpen] = useState(false);
 
   const handleClose = (event, reason) => {
@@ -34,7 +33,6 @@ export default function TeamPage() {
 
   const handleDescriptionChange = (event) => {
     event.preventDefault();
-    setDescriptionChanged(true);
     setNewDescription(event.target.value);
   };
 
@@ -51,9 +49,13 @@ export default function TeamPage() {
   }
 
   async function updateDescription() {
+    if (!editMode) {
+      setEditMode(true);
+      return;
+    }
     await TeamService.changeTeamDescription(id, newDescription);
     updateTeam(true);
-    setDescriptionChanged(false);
+    setEditMode(false);
     setOpen(true);
   }
 
@@ -66,7 +68,6 @@ export default function TeamPage() {
     setNewDescription(team.description);
   }, [team]);
 
-  // Institution may be undefined
   useEffect(() => {
     if (Object.keys(team).length !== 0) {
       InstitutionService.getInstitution(team.institutionId)
@@ -97,15 +98,20 @@ export default function TeamPage() {
       <br />
       <section>
         {isAdmin && (
-          <button
-            className={styles.editDetailsButton}
-            type="button"
+          <Button
+            sx={{
+              position: "static",
+              alignItems: "center",
+              float: "right",
+            }}
+            type={editMode ? "secondary" : "primary"}
             onClick={() => updateDescription()}
-            disabled={descriptionChanged ? '' : 'disabled'}
           >
-            <span>Save Edits</span>
-            <SaveOutlinedIcon fontSize="small" />
-          </button>
+            {editMode && (<div><span>Save Edits</span>
+              <SaveOutlinedIcon sx={{ fontSize: 15, marginLeft: "5px" }} /></div>)}
+            {!editMode && (<div><span>Edit Description</span>
+              <EditOutlinedIcon sx={{ fontSize: 15, marginLeft: "5px" }} /></div>)}
+          </Button>
         )}
         <h2>Description</h2>
         <hr />
@@ -117,7 +123,7 @@ export default function TeamPage() {
             maxRows={5}
             value={newDescription}
             InputProps={{
-              readOnly: !isAdmin,
+              readOnly: !editMode,
             }}
             fullWidth
             onChange={handleDescriptionChange}
