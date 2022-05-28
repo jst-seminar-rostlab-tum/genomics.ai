@@ -208,32 +208,42 @@
       }
     }
   },
-  "/institutions/{idInstitution}&{idUser}/join": {
+  "/joininstitution/{token}": {
     "get": {
-      "summary": "Join as member of institution",
-      "tags": ["Institution"],
       "parameters": [
         {
           "in": "path",
-          "name": "id",
+          "name": "token",
           "required": true,
           "schema": {
             "type": "string"
           }
         }
       ],
+      "summary": "Join an institution via a join token (sent via email)",
+      "tags": [
+        "Institution"
+      ],
       "responses": {
         "200": {
-          "description": "OK"
+          "description": "Success message for user"
         },
         "400": {
-          "description": "Failed. Bad post data."
+          "description": "Token invalid message for user"
         },
-        "401": {
-          "description": "Invalid autherization permission!"
+        "404": {
+          "description": [
+            "User or institution of token not found",
+            "User is already part of institution"
+          ]
+        },
+        "500": {
+          "description": "Internal server error"
         }
       }
-    },
+    }
+  },
+  "/institutions/{id}/join": {
     "delete": {
       "summary": "A member leaves the institution. (i.e. removes the reference that linked it with the institution)",
       "tags": ["Institution"],
