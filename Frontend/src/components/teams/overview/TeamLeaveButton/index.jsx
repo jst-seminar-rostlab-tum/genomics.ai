@@ -17,6 +17,11 @@ function TeamLeaveButton({ team, onLeft }) {
   const handleOpenDialog = () => setDialogOpen(true);
   const handleCloseDialog = () => setDialogOpen(false);
 
+  const [onlyAdmin, setOnlyAdmin] = useState();
+  useEffect(() => {
+    setOnlyAdmin(team.adminIds.length === 1 && team.adminIds[0] === user._id);
+  }, [team, user]);
+
   async function leave() {
     setErrorMessage('');
     try {
@@ -28,14 +33,9 @@ function TeamLeaveButton({ team, onLeft }) {
     }
   }
 
-  const [onlyAdmin, setOnlyAdmin] = useState();
-  useEffect(() => {
-    setOnlyAdmin(team.adminIds.length === 1 && team.adminIds[0] === user._id);
-  }, [team, user]);
-
   return (
     <>
-      <Tooltip title={onlyAdmin ? 'You are the only admin of this institution.' : ''}>
+      <Tooltip title={onlyAdmin ? 'You are the only admin of this team.' : ''}>
         <div>
           <Button
             type="critical"
