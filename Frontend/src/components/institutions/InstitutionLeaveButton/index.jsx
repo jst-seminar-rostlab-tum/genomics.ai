@@ -17,10 +17,7 @@ function InstitutionLeaveButton({ institution, onLeft }) {
   const handleOpenDialog = () => setDialogOpen(true);
   const handleCloseDialog = () => setDialogOpen(false);
 
-  const [onlyAdmin, setOnlyAdmin] = useState();
-  useEffect(() => {
-    setOnlyAdmin(institution.adminIds.length === 1 && institution.adminIds[0] === user._id);
-  }, [institution, user]);
+  const onlyAdmin = institution.adminIds.length === 1 && institution.adminIds[0] === user._id;
 
   async function leave() {
     setErrorMessage('');

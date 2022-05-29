@@ -17,10 +17,7 @@ function TeamLeaveButton({ team, onLeft }) {
   const handleOpenDialog = () => setDialogOpen(true);
   const handleCloseDialog = () => setDialogOpen(false);
 
-  const [onlyAdmin, setOnlyAdmin] = useState();
-  useEffect(() => {
-    setOnlyAdmin(team.adminIds.length === 1 && team.adminIds[0] === user._id);
-  }, [team, user]);
+  const onlyAdmin = team.adminIds.length === 1 && team.adminIds[0] === user._id;
 
   async function leave() {
     setErrorMessage('');
