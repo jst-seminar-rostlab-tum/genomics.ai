@@ -141,35 +141,27 @@ def write_adata_to_csv(model, adata=None, source_adata=None, target_adata=None, 
             print(f"{l}: {sum(mask) / len(mask)} unknown")
             query_emb.obs[l + "_pred"].loc[mask] = "Unknown"
         query_emb.obs["dataset"] = "test_dataset_delorey_regev"
-        print("echo 1")
         adata = source_adata.concatenate(query_emb)
-        print("echo 2")
         #adata.obsm["X_mde"] = mde(adata.X, init="random")
-        print("echo 3")
         anndata = adata
-        print("echo 4")
 
-    print("echo 5")
     latent = anndata
-    print("echo 6")
     latent.obs['cell_type'] = adata.obs[cell_type_key].tolist()
-    print("echo 7")
     latent.obs['batch'] = adata.obs[condition_key].tolist()
-    print("echo 8")
     latent.obs['type'] = adata.obs['type'].tolist()
-    print("echo 9")
+    print("calculate neighbors")
     scanpy.pp.neighbors(latent)
-    print("echo 10")
-    scanpy.tl.leiden(latent)
-    print("echo 11")
-    scanpy.tl.umap(latent)
-    print("echo 12")
-    if predictScanvi:
-        print("echo 13")
-        latent.obs['predicted'] = model.predict(adata=adata)
-        print("echo 14")
 
-    print("echo 15")
+    if get_from_config(configuration, parameters.ATLAS) != 'human_lung':
+        print("calculate leiden")
+        scanpy.tl.leiden(latent)
+    print("create umap")
+    scanpy.tl.umap(latent)
+    if predictScanvi:
+        print("predicting")
+        latent.obs['predicted'] = model.predict(adata=adata)
+
+    print("writing csv")
     return write_latent_csv(latent, key, filename, predictScanvi=predictScanvi)
 
 
