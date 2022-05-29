@@ -4,29 +4,51 @@ import {
 import React, { useState, useEffect } from 'react';
 import AtlasModelChoice from '../AtlasModelChoice/AtlasModelChoice';
 import UploadFilePage from '../UploadFilePage';
-import { useParams, useHistory } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import ModelService from 'shared/services/Model.service';
 import AtlasService from 'shared/services/Atlas.service';
 
 function GeneMapperState({ path }) {
-  const { atlasId, modelId } = useParams();
+  const { search } = useLocation();
+  const history = useHistory();
+  const searchParams = new URLSearchParams(search);
+  const urlParams = new URLSearchParams(searchParams);
+  const filterParams = Object.fromEntries(urlParams);
+
+  const atlasId = filterParams.atlas;
+  const modelId = filterParams.model;
   const [selectedAtlas, setSelectedAtlas] = useState('');
   const [selectedModel, setSelectedModel] = useState('');
   const [activeStep, setActiveStep] = useState(0);
   const steps = ['Pick Atlas and Model', 'Choose File and Project details'];
   const [atlases, setAtlases] = useState(null);
   const [models, setModels] = useState(null);
-  const history = useHistory();
 
   const handleAtlasSelection = (newAtlas) => {
     setSelectedAtlas(newAtlas);
     setSelectedModel('');
   };
 
+  // function to update the state in the URL
+  const updateQueryParams = (param, value) => {
+    const params = new URLSearchParams(history.location.search);
+    if (value) {
+      params.set(param, value);
+    } else {
+      params.delete(param);
+    }
+
+    history.replace({
+      pathname: history.location.pathname,
+      search: params.toString(),
+    });
+  };
+
   const handleStep = (step) => {
     setActiveStep(step);
     if (step === 1 && selectedAtlas && selectedModel) {
-      history.replace(`${path}/create/${selectedAtlas._id}/${selectedModel._id}`);
+      updateQueryParams('atlas', selectedAtlas._id);
+      updateQueryParams('model', selectedModel._id);
     }
   };
 
@@ -88,7 +110,12 @@ function GeneMapperState({ path }) {
     if (atlasId && selectedAtlas && modelId && selectedModel) {
       handleStep(1);
     } else if (atlases && models) {
-      history.replace(`${path}/create`);
+      history.push({
+        pathname: history.location.pathname,
+        search: '',
+      });
+      setSelectedAtlas('');
+      setSelectedModel('');
     }
   }, [atlases, models]);
 

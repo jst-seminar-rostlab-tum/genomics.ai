@@ -101,7 +101,7 @@ const Explore = () => {
 
   const handleMap = () => {
     if (user) {
-      history.push({ pathname: `/sequencer/genemapper/create/${selectedAtlas._id}/${selectedModel._id}` });
+      history.push(`/sequencer/genemapper/create?atlas=${selectedAtlas._id}&model=${selectedModel._id}`);
       setMapperVisible(false);
     }
   };
