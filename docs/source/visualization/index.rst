@@ -18,7 +18,7 @@ By hovering over the individual cells in the visualization, a tooltip pops up, d
 
 The visualization can be set to show the query, reference data or both, using the leftmost buttons on the top, as seen in the figure below.
 
-.. image:: _static/Hide_Query.png
+.. image:: ../_static/Hide_Query.png
 
 To the right of the visualization, two graphs are displayed, one for the amount of cells per batch and the other for the amount of cells per type.
 The exact value is displayed by hovering over the columns, and by clicking the arrows button the graph is centered and enlarged.
