@@ -18,11 +18,10 @@ function TeamInviteButton({ team }) {
 
   const handleCloseDialog = () => setDialogOpen(false);
 
-  function validateEmail(email) 
-    {
-        let re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-        return re.test(email);
-    }
+  function validateEmail(email) {
+    let re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    return re.test(email);
+  }
 
   async function handleTeamInvite() {
     if (!invitedMailAdress || !validateEmail(invitedMailAdress)) {
@@ -56,15 +55,17 @@ function TeamInviteButton({ team }) {
           setInvitedMailAdress('');
           setMailError('');
         }}
-        color="primary"
         aria-label="add"
         sx={{
           position: 'fixed',
           bottom: '3%',
           right: '2%',
         }}
+        style={{
+          backgroundColor: '#5676E4'
+        }}
       >
-        <PersonAddOutlinedIcon />
+        <PersonAddOutlinedIcon style={{ color: 'white' }} />
       </Fab>
       <Modal
         isOpen={dialogOpen}

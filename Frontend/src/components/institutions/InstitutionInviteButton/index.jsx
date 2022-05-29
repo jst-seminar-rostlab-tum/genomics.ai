@@ -52,15 +52,17 @@ function InstitutionInviteButton({ institution }) {
           setInvitedMailAdress('');
           setMailError('');
         }}
-        color="primary"
         aria-label="add"
         sx={{
           position: 'fixed',
           bottom: '3%',
           right: '2%',
         }}
+        style={{
+          backgroundColor: '#5676E4'
+        }}
       >
-        <PersonAddOutlinedIcon />
+        <PersonAddOutlinedIcon style={{ color: 'white' }} />
       </Fab>
       <Modal
         isOpen={dialogOpen}
