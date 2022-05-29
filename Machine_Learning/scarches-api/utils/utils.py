@@ -61,14 +61,20 @@ def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=
                         'entropy_original_ann_level_1_leiden_3', 'entropy_original_ann_level_2_clean_leiden_3',
                         'entropy_original_ann_level_3_clean_leiden_3', 'entropy_original_ann_level_4_clean_leiden_3',
                         'entropy_original_ann_level_5_clean_leiden_3', 'leiden_4', 'reannotation_type', 'leiden_5',
-                        'ann_finest_level', 'ann_level_1', 'ann_level_2', 'ann_level_3', 'ann_level_4', 'ann_level_5',
-                        'ann_coarse_for_GWAS_and_modeling']
+                        'ann_finest_level', 'ann_level_1', 'ann_level_2', 'ann_level_3', 'ann_level_4', 'ann_level_5','cell_type']
+                        # 'ann_coarse_for_GWAS_and_modeling']
     final = latent.obs.drop(columns=drop_columns)
+    if get_from_config(configuration, parameters.ATLAS) == 'human_lung':
+        list_ref = (latent.obs['ann_coarse_for_GWAS_and_modeling']).tolist()
+        list_query = (latent.obs['ann_level_1_pred']).tolist()
+        final['cell_type'] = [*list_ref, *list_query]
+        final.drop(['ann_coarse_for_GWAS_and_modeling','ann_level_1_pred'])
+        final['predicted'] = list(map(lambda p: 'yes' if p == 'query' else 'no', final['batch']))
     final["x"] = list(map(lambda p: p[0], latent.obsm["X_umap"]))
     final["y"] = list(map(lambda p: p[1], latent.obsm["X_umap"]))
 
     try:
-        if predictScanvi:
+        if predictScanvi and get_from_config(configuration, parameters.ATLAS) != 'human_lung':
             final['predicted'] = final['predicted'].apply(lambda cell_type: prediction_value(cell_type))
     except Exception:
         print("no prediction column found")

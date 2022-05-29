@@ -183,48 +183,48 @@ def predict_latent(model, latent):
     figure.savefig('predict.png')
 
 
-def both_adata(source_adata, target_adata, configuration):
-    adata_full = source_adata.concatenate(target_adata)
-    full_latent = scanpy.AnnData(scarches.models.SCANVI.get_latent_representation(adata=adata_full))
-    full_latent.obs['cell_type'] = adata_full.obs[
-        utils.get_from_config(configuration, parameters.CELL_TYPE_KEY)].tolist()
-    full_latent.obs['batch'] = adata_full.obs[utils.get_from_config(configuration, parameters.CONDITION_KEY)].tolist()
+# def both_adata(source_adata, target_adata, configuration):
+#     adata_full = source_adata.concatenate(target_adata)
+#     full_latent = scanpy.AnnData(scarches.models.SCANVI.get_latent_representation(adata=adata_full))
+#     full_latent.obs['cell_type'] = adata_full.obs[
+#         utils.get_from_config(configuration, parameters.CELL_TYPE_KEY)].tolist()
+#     full_latent.obs['batch'] = adata_full.obs[utils.get_from_config(configuration, parameters.CONDITION_KEY)].tolist()
 
-    scanpy.pp.neighbors(full_latent)
-    scanpy.tl.leiden(full_latent)
-    scanpy.tl.umap(full_latent)
+#     scanpy.pp.neighbors(full_latent)
+#     scanpy.tl.leiden(full_latent)
+#     scanpy.tl.umap(full_latent)
 
-    full_latent.obs['predicted'] = 'predicted'
+#     full_latent.obs['predicted'] = 'predicted'
 
-    if utils.get_from_config(configuration, parameters.DEBUG):
-        utils.save_umap_as_pdf(full_latent, 'figures/both.pdf', color=['batch', 'cell_type'])
+#     if utils.get_from_config(configuration, parameters.DEBUG):
+#         utils.save_umap_as_pdf(full_latent, 'figures/both.pdf', color=['batch', 'cell_type'])
 
-    utils.write_latent_csv(full_latent, key=utils.get_from_config(configuration, parameters.OUTPUT_PATH))
+#     utils.write_latent_csv(full_latent, key=utils.get_from_config(configuration, parameters.OUTPUT_PATH))
 
-    return full_latent
+#     return full_latent
 
 
-def compare_adata(model, source_adata, target_adata, configuration):
-    adata_full = source_adata.concatenate(target_adata)
-    full_latent = scanpy.AnnData(scarches.models.SCANVI.get_latent_representation(adata=adata_full))
-    full_latent.obs['cell_type'] = adata_full.obs[
-        utils.get_from_config(configuration, parameters.CELL_TYPE_KEY)].tolist()
-    full_latent.obs['batch'] = adata_full.obs[utils.get_from_config(configuration, parameters.CONDITION_KEY)].tolist()
+# def compare_adata(model, source_adata, target_adata, configuration):
+#     adata_full = source_adata.concatenate(target_adata)
+#     full_latent = scanpy.AnnData(scarches.models.SCANVI.get_latent_representation(adata=adata_full))
+#     full_latent.obs['cell_type'] = adata_full.obs[
+#         utils.get_from_config(configuration, parameters.CELL_TYPE_KEY)].tolist()
+#     full_latent.obs['batch'] = adata_full.obs[utils.get_from_config(configuration, parameters.CONDITION_KEY)].tolist()
 
-    scanpy.pp.neighbors(full_latent)
-    scanpy.tl.leiden(full_latent)
-    scanpy.tl.umap(full_latent)
+#     scanpy.pp.neighbors(full_latent)
+#     scanpy.tl.leiden(full_latent)
+#     scanpy.tl.umap(full_latent)
 
-    full_latent.obs['predicted'] = model.predict(adata=adata_full)
-    print("Acc_compare: {}".format(np.mean(full_latent.obs.predicted == full_latent.obs.cell_type)))
-    scanpy.pp.neighbors(full_latent)
-    scanpy.tl.leiden(full_latent)
-    scanpy.tl.umap(full_latent)
+#     full_latent.obs['predicted'] = model.predict(adata=adata_full)
+#     print("Acc_compare: {}".format(np.mean(full_latent.obs.predicted == full_latent.obs.cell_type)))
+#     scanpy.pp.neighbors(full_latent)
+#     scanpy.tl.leiden(full_latent)
+#     scanpy.tl.umap(full_latent)
 
-    if utils.get_from_config(configuration, parameters.DEBUG):
-        utils.save_umap_as_pdf(full_latent, 'figures/compare.pdf', color=["predicted", "cell_type"])
+#     if utils.get_from_config(configuration, parameters.DEBUG):
+#         utils.save_umap_as_pdf(full_latent, 'figures/compare.pdf', color=["predicted", "cell_type"])
 
-    utils.write_latent_csv(full_latent, key=utils.get_from_config(configuration, parameters.OUTPUT_PATH))
+#     utils.write_latent_csv(full_latent, key=utils.get_from_config(configuration, parameters.OUTPUT_PATH))
 
 
 def create_model(source_adata, target_adata, configuration):
