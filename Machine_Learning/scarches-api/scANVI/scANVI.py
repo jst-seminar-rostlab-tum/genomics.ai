@@ -27,10 +27,9 @@ def setup_modules():
 
 def setup_anndata_for_scanvi(anndata, configuration):
     scarches.models.SCANVI.setup_anndata(anndata,
-                                         unlabeled_category=utils.get_from_config(configuration,
-                                                                                  parameters.UNLABELED_KEY),
-                                         batch_key=utils.get_from_config(configuration, parameters.CONDITION_KEY),
-                                         labels_key=utils.get_from_config(configuration, parameters.CELL_TYPE_KEY))
+                                         batch_key='dataset',
+                                         labels_key='scanvi_label',
+                                         unlabeled_category='unlabeled')
 
 
 def get_scanvi_from_scvi_model(scvi_model, configuration):
@@ -88,7 +87,8 @@ def surgery(reference_latent, source_adata, anndata, configuration):
     utils.write_full_adata_to_csv(model, source_adata, anndata,
                                   key=utils.get_from_config(configuration, parameters.OUTPUT_PATH),
                                   cell_type_key=utils.get_from_config(configuration, parameters.CELL_TYPE_KEY),
-                                  condition_key=utils.get_from_config(configuration, parameters.CONDITION_KEY), predictScanvi=True)
+                                  condition_key=utils.get_from_config(configuration, parameters.CONDITION_KEY),
+                                  predictScanvi=True, configuration=configuration)
 
     model.save('scvi_model', overwrite=True)  # TODO check path
     utils.delete_file('scvi_model/model.pt')
@@ -146,7 +146,8 @@ def query(pretrained_model, reference_latent, anndata, source_adata, configurati
                                   key=utils.get_from_config(configuration, parameters.OUTPUT_PATH),
                                   cell_type_key=utils.get_from_config(configuration, parameters.CELL_TYPE_KEY),
                                   condition_key=utils.get_from_config(configuration,
-                                                                parameters.CONDITION_KEY), predictScanvi=True)
+                                                                      parameters.CONDITION_KEY), predictScanvi=True,
+                                  configuration=configuration)
     return model, query_latent
 
 
@@ -174,7 +175,6 @@ def both_adata(source_adata, target_adata, configuration):
         utils.get_from_config(configuration, parameters.CELL_TYPE_KEY)].tolist()
     full_latent.obs['batch'] = adata_full.obs[utils.get_from_config(configuration, parameters.CONDITION_KEY)].tolist()
 
-
     scanpy.pp.neighbors(full_latent)
     scanpy.tl.leiden(full_latent)
     scanpy.tl.umap(full_latent)
@@ -189,36 +189,11 @@ def both_adata(source_adata, target_adata, configuration):
     return full_latent
 
 
-# def compare_adata(model, source_adata, target_adata, latent, configuration):
-#
-#     adata_full = source_adata.concatenate(target_adata)
-#     full_latent = scanpy.AnnData(scarches.models.SCANVI.get_latent_representation(adata=adata_full))
-#     full_latent.obs['cell_type'] = adata_full.obs[get_from_config(configuration, parameters.CELL_TYPE_KEY)].tolist()
-#     full_latent.obs['batch'] = adata_full.obs[get_from_config(configuration, parameters.CONDITION_KEY)].tolist()
-#
-#     scanpy.pp.neighbors(full_latent)
-#     scanpy.tl.leiden(full_latent)
-#     scanpy.tl.umap(full_latent)
-#
-#     full_latent.obs['predicted'] = 'predicted'
-#
-#
-#     latent.obs['predicted'] = model.predict(adata=adata_full)
-#     print("Acc_compare: {}".format(np.mean(latent.obs.predicted == latent.obs.cell_type)))
-#     scanpy.pp.neighbors(latent)
-#     scanpy.tl.leiden(latent)
-#     scanpy.tl.umap(latent)
-#
-#     if get_from_config(configuration, parameters.DEBUG):
-#         utils.save_umap_as_pdf(latent, 'figures/compare.pdf', color=["predicted", "cell_type"])
-#
-#     utils.write_latent_csv(latent, key=get_from_config(configuration, parameters.OUTPUT_PATH))
-
-
 def compare_adata(model, source_adata, target_adata, configuration):
     adata_full = source_adata.concatenate(target_adata)
     full_latent = scanpy.AnnData(scarches.models.SCANVI.get_latent_representation(adata=adata_full))
-    full_latent.obs['cell_type'] = adata_full.obs[utils.get_from_config(configuration, parameters.CELL_TYPE_KEY)].tolist()
+    full_latent.obs['cell_type'] = adata_full.obs[
+        utils.get_from_config(configuration, parameters.CELL_TYPE_KEY)].tolist()
     full_latent.obs['batch'] = adata_full.obs[utils.get_from_config(configuration, parameters.CONDITION_KEY)].tolist()
 
     scanpy.pp.neighbors(full_latent)
@@ -277,7 +252,6 @@ def create_model(source_adata, target_adata, configuration):
     if utils.get_from_config(configuration, parameters.DEBUG):
         utils.save_umap_as_pdf(reference_latent, 'figures/reference.pdf', color=['batch', 'cell_type'])
 
-
     reference_latent = predict(scanvi, reference_latent)
     return scanvi, reference_latent
 
@@ -294,28 +268,3 @@ def compute_scANVI(configuration):
     scanvi, reference_latent = create_model(source_adata, target_adata, configuration)
 
     model_query, query_latent = query(scanvi, reference_latent, target_adata, source_adata, configuration)
-    model = model_query
-
-
-    # if utils.get_from_config(configuration, parameters.SCANVI_PREDICT_CELLTYPES):
-    #     predict_latent(predict(model_query, query_latent))
-    # if utils.get_from_config(configuration, parameters.SCANVI_DO_SURGERY):
-    #    model_surgery, surgery_latent = surgery(reference_latent, target_adata, configuration)
-    #
-    #    if utils.get_from_config(configuration, parameters.SCANVI_PREDICT_CELLTYPES):
-    #        predict_latent(predict(model_surgery, surgery_latent))
-
-    #full_latent = None
-
-    # TODO check if needed at all
-
-    # if utils.get_from_config(configuration, parameters.SCANVI_COMPARE_REFERENCE_AND_QUERY):
-    #    full_latent = both_adata(source_adata, target_adata, configuration)
-
-    # if utils.get_from_config(configuration, parameters.SCANVI_COMPARE_OBSERVED_AND_PREDICTED_CELLTYPES):
-    #    if full_latent is None:
-    #        full_latent = both_adata(source_adata, target_adata, configuration)
-    #    if model is None:
-    #        model_query, query_latent = query(None, reference_latent, target_adata, configuration)
-    #        model = model_query
-    #    compare_adata(model, source_adata, target_adata, full_latent, configuration)

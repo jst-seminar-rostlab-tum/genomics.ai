@@ -15,16 +15,16 @@ def default_config():
     :return: dict containing all the default values
     """
     return {
-        parameters.MODEL: 'scVI',
-        parameters.ATLAS: 'Pancreas',
+        parameters.MODEL: 'scANVI',
+        parameters.ATLAS: 'Human lung cell atlas',
 
-        parameters.REFERENCE_DATA_PATH: 'pancreas_source.h5ad',
-        parameters.QUERY_DATA_PATH: 'pancreas_query.h5ad',
+        parameters.REFERENCE_DATA_PATH: 'hcla.h5ad',
+        parameters.QUERY_DATA_PATH: 'last_attempt.h5ad',
         parameters.RESULTING_MODEL_PATH: 'model.pt',
         parameters.OUTPUT_PATH: 'query.csv',
 
-        parameters.USE_PRETRAINED_SCVI_MODEL: True,
-        parameters.USE_PRETRAINED_TOTALVI_MODEL: True,
+        parameters.USE_PRETRAINED_SCVI_MODEL: False,
+        parameters.USE_PRETRAINED_TOTALVI_MODEL: False,
         parameters.USE_PRETRAINED_SCANVI_MODEL: True,
         parameters.USE_GPU: False,
 

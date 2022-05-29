@@ -1,5 +1,11 @@
 import os
 import tempfile
+
+import pynndescent
+import numpy
+from scvi.model.utils import mde
+import numba
+
 from utils import parameters
 import requests
 import boto3
@@ -28,7 +34,7 @@ def to_drop(adata_obs):
     return drop_list
 
 
-def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=None, predictScanvi = False):
+def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=None, predictScanvi=False):
     """
     stores a given latent in a file, and if a key is given also in an s3 bucket
     :param latent: data to be saved
@@ -47,7 +53,7 @@ def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=
 
     if predictScanvi:
         final['predicted'] = final['predicted'].apply(lambda cell_type: prediction_value(cell_type))
-        
+
     final.to_csv(filename)
 
     if key is not None:
@@ -64,15 +70,19 @@ def prediction_value(cell_type):
 
 def write_full_adata_to_csv(model, source_adata, target_adata, key=None, filename=tempfile.mktemp(), drop_columns=None,
                             unlabeled_category='', cell_type_key='', condition_key='', neighbors=8,
-                            predictScanvi=False):
+                            predictScanvi=False, configuration=None):
     adata_full = source_adata.concatenate(target_adata)
-    return write_adata_to_csv(model, adata_full, key, filename, drop_columns, unlabeled_category, cell_type_key,
-                              condition_key, neighbors, predictScanvi)
+    return write_adata_to_csv(model, adata=adata_full, source_adata=source_adata, target_adata=target_adata, key=key,
+                              filename=filename, drop_columns=drop_columns,
+                              unlabeled_category=unlabeled_category, cell_type_key=cell_type_key,
+                              condition_key=condition_key, neighbors=neighbors, predictScanvi=predictScanvi,
+                              configuration=configuration)
 
 
-def write_adata_to_csv(model, adata=None, key=None, filename=tempfile.mktemp(), drop_columns=None,
+def write_adata_to_csv(model, adata=None, source_adata=None, target_adata=None, key=None, filename=tempfile.mktemp(),
+                       drop_columns=None,
                        unlabeled_category='Unknown', cell_type_key='cell_type',
-                       condition_key='study', neighbors=8, predictScanvi=False):
+                       condition_key='study', neighbors=8, predictScanvi=False, configuration=None):
     anndata = None
     if adata is None:
         anndata = scanpy.AnnData(model.get_latent_representation())
@@ -82,17 +92,85 @@ def write_adata_to_csv(model, adata=None, key=None, filename=tempfile.mktemp(), 
         except Exception as e:
             anndata = adata
 
-    latent = anndata
-    latent.obs['cell_type'] = adata.obs[cell_type_key].tolist()
-    latent.obs['batch'] = adata.obs[condition_key].tolist()
-    latent.obs['type'] = adata.obs['type'].tolist()
-    scanpy.pp.neighbors(latent)
-    scanpy.tl.leiden(latent)
-    scanpy.tl.umap(latent)
-    if predictScanvi:
-        latent.obs['predicted'] = model.predict(adata=adata)
+    if get_from_config(configuration, parameters.ATLAS) == 'human_lung':
+        X_train = source_adata.X
+        ref_nn_index = pynndescent.NNDescent(X_train)
+        ref_nn_index.prepare()
+        query_emb = scanpy.AnnData(model.get_latent_representation())
+        query_emb.obs_names = target_adata.obs_names
+        ref_neighbors, ref_distances = ref_nn_index.query(query_emb.X)
 
-    return write_latent_csv(latent, key, filename, predictScanvi = predictScanvi)
+        # convert distances to affinities
+        stds = numpy.std(ref_distances, axis=1)
+        stds = (2.0 / stds) ** 2
+        stds = stds.reshape(-1, 1)
+        ref_distances_tilda = numpy.exp(-numpy.true_divide(ref_distances, stds))
+        weights = ref_distances_tilda / numpy.sum(
+            ref_distances_tilda, axis=1, keepdims=True
+        )
+
+        @numba.njit
+        def weighted_prediction(weights, ref_cats):
+            """Get highest weight category."""
+            N = len(weights)
+            predictions = numpy.zeros((N,), dtype=ref_cats.dtype)
+            uncertainty = numpy.zeros((N,))
+            for i in range(N):
+                obs_weights = weights[i]
+                obs_cats = ref_cats[i]
+                best_prob = 0
+                for c in numpy.unique(obs_cats):
+                    cand_prob = numpy.sum(obs_weights[obs_cats == c])
+                    if cand_prob > best_prob:
+                        best_prob = cand_prob
+                        predictions[i] = c
+                        uncertainty[i] = max(1 - best_prob, 0)
+
+            return predictions, uncertainty
+
+        # for each annotation level, get prediction and uncertainty
+        label_keys = [f"ann_level_{i}" for i in range(1, 6)] + ["ann_finest_level"]
+        for l in label_keys:
+            ref_cats = adata.obs[l].cat.codes.to_numpy()[ref_neighbors]
+            p, u = weighted_prediction(weights, ref_cats)
+            p = numpy.asarray(adata.obs[l].cat.categories)[p]
+            query_emb.obs[l + "_pred"], query_emb.obs[l + "_uncertainty"] = p, u
+        uncertainty_threshold = 0.2
+        for l in label_keys:
+            mask = query_emb.obs[l + "_uncertainty"] > 0.2
+            print(f"{l}: {sum(mask) / len(mask)} unknown")
+            query_emb.obs[l + "_pred"].loc[mask] = "Unknown"
+        query_emb.obs["dataset"] = "test_dataset_delorey_regev"
+        print("echo 1")
+        adata = source_adata.concatenate(query_emb)
+        print("echo 2")
+        #adata.obsm["X_mde"] = mde(adata.X, init="random")
+        print("echo 3")
+        anndata = adata
+        print("echo 4")
+
+    print("echo 5")
+    latent = anndata
+    print("echo 6")
+    latent.obs['cell_type'] = adata.obs[cell_type_key].tolist()
+    print("echo 7")
+    latent.obs['batch'] = adata.obs[condition_key].tolist()
+    print("echo 8")
+    latent.obs['type'] = adata.obs['type'].tolist()
+    print("echo 9")
+    scanpy.pp.neighbors(latent)
+    print("echo 10")
+    scanpy.tl.leiden(latent)
+    print("echo 11")
+    scanpy.tl.umap(latent)
+    print("echo 12")
+    if predictScanvi:
+        print("echo 13")
+        latent.obs['predicted'] = model.predict(adata=adata)
+        print("echo 14")
+
+    print("echo 15")
+    return write_latent_csv(latent, key, filename, predictScanvi=predictScanvi)
 
 
 # def write_combined_csv(latent_ref, latent_query, key=None, filename=tempfile.mktemp(), drop_columns=None):
@@ -225,7 +303,11 @@ def pre_process_data(configuration):
     target_adata = read_h5ad_file_from_s3(get_from_config(configuration, parameters.QUERY_DATA_PATH))
     source_adata.obs["type"] = "reference"
     target_adata.obs["type"] = "query"
-    source_adata.raw = source_adata
+    if get_from_config(configuration, parameters.ATLAS) == 'human_lung':
+        X_train = source_adata.X
+        ref_nn_index = pynndescent.NNDescent(X_train)
+        ref_nn_index.prepare()
+    # source_adata.raw = source_adata
     try:
         source_adata = remove_sparsity(source_adata)
     except Exception as e:
@@ -278,8 +360,9 @@ def set_keys(configuration):
         configuration[parameters.CONDITION_KEY] = 'source'
         return configuration
     elif atlas == 'Human lung cell atlas':
-        configuration[parameters.CELL_TYPE_KEY] = 'ann_coarse_for_GWAS_and_modeling'
+        configuration[parameters.CELL_TYPE_KEY] = 'scanvi_label'
         configuration[parameters.CONDITION_KEY] = 'dataset'
+        configuration[parameters.UNLABELED_KEY] = 'unlabeled'
         return configuration
     elif atlas == 'Bone marrow':
         # configuration[parameters.CELL_TYPE_KEY] = 'cell_type'
