@@ -68,9 +68,9 @@ def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=
         # list_ref = (latent.obs['ann_coarse_for_GWAS_and_modeling']).tolist()
         # list_query = (latent.obs['ann_level_1_pred']).tolist()
         final['cell_type'] = final['ann_coarse_for_GWAS_and_modeling'].astype(str) + final['ann_level_1_pred'].astype(str)
-        final.drop(['ann_coarse_for_GWAS_and_modeling','ann_level_1_pred'])
+        # final.drop(['ann_coarse_for_GWAS_and_modeling','ann_level_1_pred'])
         final['predicted'] = list(map(lambda p: 'yes' if p == 'query' else 'no', final['batch']))
-        
+
     final["x"] = list(map(lambda p: p[0], latent.obsm["X_umap"]))
     final["y"] = list(map(lambda p: p[1], latent.obsm["X_umap"]))
 
