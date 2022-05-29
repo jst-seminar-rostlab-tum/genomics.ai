@@ -48,7 +48,7 @@ function GeneMapper({ sidebarShown }) {
             <GeneMapperHome basePath={path} />
           </Route>
 
-          <Route path={`${path}/create`}>
+          <Route path={`${path}/create/:atlasId?/:modelId?`}>
             <GeneMapperState path={`${path}`} />
           </Route>
 
