@@ -25,7 +25,12 @@ export const Modal = ({
     }}
     maxWidth={maxWidth}
   >
-    <CloseIcon onClick={() => setOpen(false)} sx={{position:'absolute', right:'10px', top:'10px', cursor:'pointer'}}/>
+    <CloseIcon 
+    onClick={(e) => {
+      setOpen(false);
+      e.stopPropagation();
+    }} 
+    sx={{position:'absolute', right:'10px', top:'10px', cursor:'pointer'}}/>
     {children}
   </Dialog>
 );
