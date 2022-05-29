@@ -41,5 +41,7 @@ Visualization:
 .. toctree::
    :maxdepth: 1
    :caption: Main
+   :hidden:
 
+   index.rst
    visualization/index.rst
