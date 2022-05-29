@@ -31,6 +31,7 @@ function UploadFilePage({
   const [submissionProgress, setSubmissionProgress] = useSubmissionProgress();
   const [showWarning, setShowWarning] = useState(false);
   const [showFileWarning, setShowFileWarning] = useState(false);
+  const [showAcceptedFile, setShowAcceptedFile] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
@@ -197,7 +198,7 @@ function UploadFilePage({
             <Stack>
               <Typography variant="h5" fontWeight="bold" pb="1em">Consequent Requirements</Typography>
               <Card>
-                <Box sx={{ flexDirection: 'column', minHeight: '5em' }}>
+                <Box sx={{ flexDirection: 'column', minHeight: '6em' }}>
                   {requirements
                     ? requirements.map((text, index) => (
                       <Box key={text} sx={{ display: 'flex' }}>
@@ -270,9 +271,15 @@ function UploadFilePage({
                 File must be in h5ad format.
               </Alert>
             }
+            { 
+              uploadedFile && uploadedFile[0] && 
+              <Alert severity="success" sx={{marginTop: '1em'}}>
+                Selected file: {uploadedFile[0].name}
+              </Alert> 
+            }
           </Stack>
-          <Stack mt="1em" maxHeight="50%">
-            <Typography variant="h5" fontWeight="bold" pb="1em">Select Existing Datasets</Typography>
+          <Stack maxHeight="50%">
+            <Typography variant="h5" fontWeight="bold" mb="0.5em">Select Existing Datasets</Typography>
             { 
               existingDatasets ? 
                 existingDatasets.map((data) => 
@@ -296,7 +303,7 @@ function UploadFilePage({
         </CustomButton>
         <Stack direction="row" spacing={3} alignItems="center">
           <Typography variant="h6" fontWeight="bold">
-            { uploadedFile && uploadedFile[0] && `Selected file: ${uploadedFile[0].name}` }
+            
           </Typography>
           <Tooltip title={(!uploadedFile && !selectedDataset) ? "You haven't selected or uploaded a dataset!" : ''} placement="top">
             <Box onClick={!uploadedFile && !selectedDataset ? () => setShowWarning(true) : ()=>{}}>
