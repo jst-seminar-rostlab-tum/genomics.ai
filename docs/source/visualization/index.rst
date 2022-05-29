@@ -8,7 +8,7 @@ General
 On the left side, a category panel is displayed. By toggling the arrow button the panel retracts, recentering the model in the center as well.
 The categories are generated from the reference and query data and the model visualization is colored depending on the categories. By clicking the waterdrop icons the 
 coloring selection is set to the category in question. Each category contains subcategories which can be individually hidden and shown.
-[//]: # (Picture of multiple subcategories, some shown, some hidden, different color themes)
+.. image:: ../_static/Hide_multipleAttributes.png
 
 The model's name can be found above its visualization, along with a info button for further information.
 
@@ -17,6 +17,7 @@ by using the rightmost button on the top, as seen in figure xyz.
 By hovering over the individual cells in the visualization, a tooltip pops up, displaying its subcategory, dependent on the current category selection. 
 
 The visualization can be set to show the query, reference data or both, using the leftmost buttons on the top, as seen in figure xyz.
+.. image:: ../_static/Hide_Query.png
 
 To the right of the visualization, two graphs are displayed, one for the amount of cells per batch and the other for the amount of cells per type.
 The exact value is displayed by hovering over the columns, and by clicking the arrows button the graph is centered and enlarged.
