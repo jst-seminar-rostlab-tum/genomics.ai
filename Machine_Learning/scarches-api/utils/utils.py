@@ -67,8 +67,11 @@ def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=
     final["x"] = list(map(lambda p: p[0], latent.obsm["X_umap"]))
     final["y"] = list(map(lambda p: p[1], latent.obsm["X_umap"]))
 
-    # if predictScanvi:
-    #    final['predicted'] = final['predicted'].apply(lambda cell_type: prediction_value(cell_type))
+    try:
+        if predictScanvi:
+            final['predicted'] = final['predicted'].apply(lambda cell_type: prediction_value(cell_type))
+    except Exception:
+        print("no prediction column found")
 
     final.to_csv(filename)
 
@@ -172,28 +175,31 @@ def write_adata_to_csv(model, adata=None, source_adata=None, target_adata=None, 
         scanpy.tl.leiden(latent)
     print("create umap")
     scanpy.tl.umap(latent)
-    try:
+    if get_from_config(configuration, parameters.ATLAS) == 'human_lung':
+        try:
+            if predictScanvi:
+                print("predicting")
+                latent.obs['predicted'] = model.predict(adata=anndata)
+                print("predicting with anndata worked")
+        except Exception:
+            print("predicting with anndata did not work")
+        try:
+            if predictScanvi:
+                print("predicting")
+                latent.obs['predicted'] = model.predict(adata=adata)
+                print("predicting with adata worked")
+        except Exception:
+            print("predicting with adata did not work")
+        try:
+            if predictScanvi:
+                print("predicting")
+                latent.obs['predicted'] = model.predict()
+                print("predicting with nothing worked")
+        except Exception:
+            print("predicting with nothing did not work")
+    else:
         if predictScanvi:
-            print("predicting")
-            latent.obs['predicted'] = model.predict(adata=anndata)
-            print("predicting with anndata worked")
-    except Exception:
-        print("predicting with anndata did not work")
-    try:
-        if predictScanvi:
-            print("predicting")
             latent.obs['predicted'] = model.predict(adata=adata)
-            print("predicting with adata worked")
-    except Exception:
-        print("predicting with adata did not work")
-    try:
-        if predictScanvi:
-            print("predicting")
-            latent.obs['predicted'] = model.predict()
-            print("predicting with nothing worked")
-    except Exception:
-        print("predicting with nothing did not work")
-
     print("writing csv")
     return write_latent_csv(latent, key, filename, predictScanvi=predictScanvi, configuration=configuration)
 
