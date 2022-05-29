@@ -93,113 +93,113 @@ import reset_user_avatar_route from "./routes/reset_user_avatar";
 import { contact_us } from "./routes/contact/contactRoute";
 
 // setup the websocket-server on top of the http_server
-export function express_routes(this: REST_Host): Router {
+export function express_routes(): Router {
   let router = express.Router();
 
-  this.expressApp.use("/api-docs", swaggerUi.serve, swaggerUi.setup(loadSwaggerDocument()));
+  router.use("/api-docs", swaggerUi.serve, swaggerUi.setup(loadSwaggerDocument()));
 
   // unauthenticated routes
-  this.expressApp.use(auth_route());
-  this.expressApp.use(register_route());
-  this.expressApp.use(resend_verification_link());
-  this.expressApp.use(verify_email_route());
-  this.expressApp.use(password_reset_route());
+  router.use(auth_route());
+  router.use(register_route());
+  router.use(resend_verification_link());
+  router.use(verify_email_route());
+  router.use(password_reset_route());
 
   // authenticated routes
-  this.expressApp.use(update_profile_route());
-  this.expressApp.use(get_profile_route());
-  //this.expressApp.use(get_project_route());  -- depreciated, we use get_project_by_id
-  //this.expressApp.use(get_projects_route()); -- depreciated, we use get_userProjects
-  this.expressApp.use(upload_user_avatar_route());
-  this.expressApp.use(reset_user_avatar_route());
+  router.use(update_profile_route());
+  router.use(get_profile_route());
+  //router.use(get_project_route());  -- depreciated, we use get_project_by_id
+  //router.use(get_projects_route()); -- depreciated, we use get_userProjects
+  router.use(upload_user_avatar_route());
+  router.use(reset_user_avatar_route());
 
   // administrator routes
-  this.expressApp.use(get_unauthorized_users_route());
-  this.expressApp.use(authorize_user_route());
+  router.use(get_unauthorized_users_route());
+  router.use(authorize_user_route());
 
   // debugging / testing routes
-  this.expressApp.use(hello_route());
-  this.expressApp.use(hello_auth_route());
-  //this.expressApp.use(initiate_processing_route());
-  //this.expressApp.use(abort_processing_route());
+  router.use(hello_route());
+  router.use(hello_auth_route());
+  //router.use(initiate_processing_route());
+  //router.use(abort_processing_route());
 
   // team routes
-  this.expressApp.use(create_team());
-  this.expressApp.use(invite_person_to_a_team());
-  this.expressApp.use(add_project_to_team());
-  this.expressApp.use(add_user_to_admin());
-  this.expressApp.use(join_member());
-  this.expressApp.use(add_team_to_institution());
-  this.expressApp.use(remove_team_from_institution());
-  this.expressApp.use(get_teams());
-  this.expressApp.use(get_users_teams());
-  this.expressApp.use(disjoin_member());
-  this.expressApp.use(get_team());
-  this.expressApp.use(update_team());
-  this.expressApp.use(get_members_of_team());
-  this.expressApp.use(remove_member_from_team());
-  this.expressApp.use(remove_admin_role_for_team_member());
-  this.expressApp.use(get_projects_of_team());
-  this.expressApp.use(remove_project_from_team());
+  router.use(create_team());
+  router.use(invite_person_to_a_team());
+  router.use(add_project_to_team());
+  router.use(add_user_to_admin());
+  router.use(join_member());
+  router.use(add_team_to_institution());
+  router.use(remove_team_from_institution());
+  router.use(get_teams());
+  router.use(get_users_teams());
+  router.use(disjoin_member());
+  router.use(get_team());
+  router.use(update_team());
+  router.use(get_members_of_team());
+  router.use(remove_member_from_team());
+  router.use(remove_admin_role_for_team_member());
+  router.use(get_projects_of_team());
+  router.use(remove_project_from_team());
 
   // user routes
-  this.expressApp.use(get_teams_of_user());
-  this.expressApp.use(get_users());
-  this.expressApp.use(get_user_by_id());
+  router.use(get_teams_of_user());
+  router.use(get_users());
+  router.use(get_user_by_id());
 
   // project routes
-  this.expressApp.use(get_projects());
-  this.expressApp.use(get_userProjects());
-  this.expressApp.use(get_project_by_id());
-  this.expressApp.use(get_users_projects());
-  this.expressApp.use(update_project_results());
-  this.expressApp.use(delete_project());
-  this.expressApp.use(get_deleted_projects());
-  this.expressApp.use(restore_deleted_project());
-  this.expressApp.use(cleanup_old_projects());
+  router.use(get_projects());
+  router.use(get_userProjects());
+  router.use(get_project_by_id());
+  router.use(get_users_projects());
+  router.use(delete_project());
+  router.use(get_deleted_projects());
+  router.use(restore_deleted_project());
+  router.use(cleanup_old_projects());
+  router.use(update_project_results());
 
   // model routes
-  this.expressApp.use(get_model());
-  this.expressApp.use(get_allModels());
+  router.use(get_model());
+  router.use(get_allModels());
 
   // atlas routes
-  this.expressApp.use(get_atlas());
-  this.expressApp.use(get_atlas_visualization());
-  this.expressApp.use(get_allAtlases());
+  router.use(get_atlas());
+  router.use(get_atlas_visualization());
+  router.use(get_allAtlases());
 
   // upload routes
-  this.expressApp.use(upload_get_upload_url_route());
-  this.expressApp.use(upload_start_upload_route());
-  this.expressApp.use(upload_complete_upload_route());
+  router.use(upload_get_upload_url_route());
+  router.use(upload_start_upload_route());
+  router.use(upload_complete_upload_route());
 
   // download routes
-  this.expressApp.use(download_results_route());
+  router.use(download_results_route());
 
   //contact routes
-  this.expressApp.use(contact_us());
+  router.use(contact_us());
 
   // institution routes
-  this.expressApp.use(create_institution());
-  this.expressApp.use(update_institution());
-  this.expressApp.use(invite_to_institution());
-  this.expressApp.use(get_institution());
-  this.expressApp.use(get_institutions());
-  this.expressApp.use(upload_institution_profilepicture_route());
-  this.expressApp.use(upload_institution_backgroundpicture_route());
-  this.expressApp.use(reset_institution_profilepicture_route());
-  this.expressApp.use(reset_institution_backgroundpicture_route());
-  this.expressApp.use(make_user_admin_of_institution());
-  this.expressApp.use(join_as_member_of_institution());
-  this.expressApp.use(get_members_of_institution());
-  this.expressApp.use(get_teams_of_institution());
-  this.expressApp.use(get_projects_of_institution());
-  this.expressApp.use(get_users_institutions());
-  this.expressApp.use(remove_member_from_institution());
-  this.expressApp.use(remove_admin_role_for_institution_member());
-  this.expressApp.use(disjoin_member_of_institution());
+  router.use(create_institution());
+  router.use(update_institution());
+  router.use(invite_to_institution());
+  router.use(get_institution());
+  router.use(get_institutions());
+  router.use(upload_institution_profilepicture_route());
+  router.use(upload_institution_backgroundpicture_route());
+  router.use(reset_institution_profilepicture_route());
+  router.use(reset_institution_backgroundpicture_route());
+  router.use(make_user_admin_of_institution());
+  router.use(join_as_member_of_institution());
+  router.use(get_members_of_institution());
+  router.use(get_teams_of_institution());
+  router.use(get_projects_of_institution());
+  router.use(get_users_institutions());
+  router.use(remove_member_from_institution());
+  router.use(remove_admin_role_for_institution_member());
+  router.use(disjoin_member_of_institution());
 
-  this.expressApp.use(/^.*_ah.*$/, (req, res) => res.status(200).send()); // always tell google everything is fine
-  this.expressApp.use((req, res) => res.status(404).send("Not found."));
+  router.use(/^.*_ah.*$/, (req, res) => res.status(200).send()); // always tell google everything is fine
+  router.use((req, res) => res.status(404).send("Not found."));
 
   return router;
 }
