@@ -1,7 +1,7 @@
 [
   {
     "name": "Dr. Guy Yachdav", 
-    "role": "Supervisor & Initiator", 
+    "roles": ["Supervisor & Initiator"], 
     "img": "https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=UoUkGhUAAAAJ&citpid=2", 
     "dscp": "Technology executive with over 15 years experience in R&D and specialization in big data and machine learning", 
     "socialFB": "", 
@@ -11,7 +11,7 @@
   },
   {
     "name": "Amin Ben Saad",
-    "role": "Teaching Assistant",
+    "roles": ["Teaching Assistant", "Frontend + ML Lead & Developer (2021)"],
     "img": "memberphotos/old/frontend/Frontend_Amin Ben Saad.png",
     "dscp": "B.Sc. Informatics at TUM ",
     "socialFB": "",
@@ -21,7 +21,7 @@
   },
   {
     "name": "Ronald Skorobogat",
-    "role": "Teaching Assistant",
+    "roles": ["Teaching Assistant", "Frontend Developer (2021)"],
     "img": "memberphotos/old/frontend/Frontend-RonaldSkorobogat.jpg",
     "dscp": "B.Sc. Informatics at TUM ",
     "socialFB": "",

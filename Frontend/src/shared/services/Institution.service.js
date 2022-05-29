@@ -39,9 +39,8 @@ const InstitutionService = MOCK_INSTUTITIONS ? MockInstitutionService : {
   },
 
   async leaveInstitution(institutionId) {
-    const user = await ProfileService.getProfile();
     try {
-      await axiosInstance.delete(`/institutions/${institutionId}/join`, { data: { userId: user.id } });
+      await axiosInstance.delete(`/institutions/${institutionId}/join`);
     } catch (e) {
       throw Error(e.response.data);
     }
@@ -82,7 +81,7 @@ const InstitutionService = MOCK_INSTUTITIONS ? MockInstitutionService : {
 
   async removeMemberFromInstitution(institutionId, memberId) {
     try {
-    await axiosInstance.delete(`/institutions/${institutionId}/members/${memberId}`);
+      await axiosInstance.delete(`/institutions/${institutionId}/members/${memberId}`);
     } catch (e) {
       throw Error(e.response.data);
     }
@@ -94,7 +93,7 @@ const InstitutionService = MOCK_INSTUTITIONS ? MockInstitutionService : {
 
   async removeInstitutionAdmin(institutionId, memberId) {
     await axiosInstance.delete(`/institutions/${institutionId}/admins/${memberId}`);
-  }
+  },
 };
 
 export default InstitutionService;
