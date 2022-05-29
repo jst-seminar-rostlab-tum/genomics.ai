@@ -111,12 +111,27 @@ def query(pretrained_model, reference_latent, anndata, source_adata, configurati
         print("Labelled Indices: ", len(model._labeled_indices))
         print("Unlabelled Indices: ", len(model._unlabeled_indices))
 
-    model.train(
-        max_epochs=utils.get_from_config(configuration, parameters.SCANVI_MAX_EPOCHS_QUERY),
-        plan_kwargs=dict(weight_decay=0.0),
-        check_val_every_n_epoch=10,
-        use_gpu=utils.get_from_config(configuration, parameters.USE_GPU)
-    )
+    if utils.get_from_config(configuration, parameters.ATLAS) == 'human_lung':
+        surgery_epochs = 500
+        train_kwargs_surgery = {
+            "early_stopping": True,
+            "early_stopping_monitor": "elbo_train",
+            "early_stopping_patience": 10,
+            "early_stopping_min_delta": 0.001,
+            "plan_kwargs": {"weight_decay": 0.0},
+        }
+        model.train(
+            max_epochs=surgery_epochs,
+            **train_kwargs_surgery,
+            use_gpu=utils.get_from_config(configuration, parameters.USE_GPU)
+        )
+    else:
+        model.train(
+            max_epochs=utils.get_from_config(configuration, parameters.SCANVI_MAX_EPOCHS_QUERY),
+            plan_kwargs=dict(weight_decay=0.0),
+            check_val_every_n_epoch=10,
+            use_gpu=utils.get_from_config(configuration, parameters.USE_GPU)
+        )
     tempdir = tempfile.mkdtemp()
     model.save(tempdir, overwrite=True)
     if utils.get_from_config(configuration, parameters.DEV_DEBUG):
