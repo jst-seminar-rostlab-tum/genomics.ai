@@ -182,31 +182,10 @@ def write_adata_to_csv(model, adata=None, source_adata=None, target_adata=None, 
         scanpy.tl.leiden(latent)
     print("create umap")
     scanpy.tl.umap(latent)
-    if get_from_config(configuration, parameters.ATLAS) == 'human_lung':
-        try:
-            if predictScanvi:
-                print("predicting")
-                latent.obs['predicted'] = model.predict(adata=anndata)
-                print("predicting with anndata worked")
-        except Exception:
-            print("predicting with anndata did not work")
-        try:
-            if predictScanvi:
-                print("predicting")
-                latent.obs['predicted'] = model.predict(adata=adata)
-                print("predicting with adata worked")
-        except Exception:
-            print("predicting with adata did not work")
-        try:
-            if predictScanvi:
-                print("predicting")
-                latent.obs['predicted'] = model.predict()
-                print("predicting with nothing worked")
-        except Exception:
-            print("predicting with nothing did not work")
-    else:
-        if predictScanvi:
-            latent.obs['predicted'] = model.predict(adata=adata)
+    print("predicting")
+    if predictScanvi and get_from_config(configuration, parameters.ATLAS) != 'human_lung':
+        latent.obs['predicted'] = model.predict(adata=adata)
+
     print("writing csv")
     return write_latent_csv(latent, key, filename, predictScanvi=predictScanvi, configuration=configuration)
 
