@@ -141,9 +141,8 @@ def write_adata_to_csv(model, adata=None, source_adata=None, target_adata=None, 
             print(f"{l}: {sum(mask) / len(mask)} unknown")
             query_emb.obs[l + "_pred"].loc[mask] = "Unknown"
         query_emb.obs["dataset"] = "test_dataset_delorey_regev"
-        adata = source_adata.concatenate(query_emb)
         #adata.obsm["X_mde"] = mde(adata.X, init="random")
-        anndata = adata
+        anndata = source_adata.concatenate(query_emb)
 
     latent = anndata
     latent.obs['cell_type'] = adata.obs[cell_type_key].tolist()
