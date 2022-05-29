@@ -18,7 +18,7 @@ function TeamCard({ team, onLeft }) {
   };
 
   const {
-    name, description, adminIds,
+    name, description, adminIds, memberIds,
   } = team;
   return (
     <ListCard
@@ -41,9 +41,11 @@ function TeamCard({ team, onLeft }) {
             Settings
           </Button>
         ) : <div key="nothing" />,
+        memberIds?.includes(user._id) && (
         <div key="leave" onClick={preventBubble} onKeyPress={preventBubble} role="button" tabIndex={0}>
           <TeamLeaveButton team={team} onLeft={onLeft} />
-        </div>,
+        </div>
+        ),
       ]}
       onClick={navigateToTeam}
     />
