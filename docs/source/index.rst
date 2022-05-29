@@ -37,7 +37,6 @@ Links To The Detailed Information Pages
 
 .. toctree::
    :maxdepth: 1
-   :caption: Main
 
    index.rst
    visualization/index.rst
