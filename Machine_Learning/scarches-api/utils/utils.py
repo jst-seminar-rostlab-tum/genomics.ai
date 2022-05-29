@@ -34,7 +34,8 @@ def to_drop(adata_obs):
     return drop_list
 
 
-def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=None, predictScanvi=False):
+def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=None, predictScanvi=False,
+                     configuration={}):
     """
     stores a given latent in a file, and if a key is given also in an s3 bucket
     :param latent: data to be saved
@@ -47,11 +48,26 @@ def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=
     drop_columns = to_drop(latent.obs_keys())
     # if drop_columns is None:
     #     drop_columns = []
+    if get_from_config(configuration, parameters.ATLAS) == 'human_lung':
+        drop_columns = ['sample', 'study_long', 'study', 'last_author_PI', 'subject_ID', 'sex', 'ethnicity',
+                        'mixed_ethnicity', 'smoking_status', 'BMI', 'condition', 'subject_type', 'sample_type',
+                        'single_cell_platform', "3'_or_5'", 'sequencing_platform', 'cell_ranger_version',
+                        'fresh_or_frozen', 'dataset', 'anatomical_region_level_1', 'anatomical_region_level_2',
+                        'anatomical_region_level_3', 'anatomical_region_highest_res', 'age', 'ann_highest_res',
+                        'n_genes', 'log10_total_counts', 'mito_frac', 'ribo_frac', 'original_ann_level_1',
+                        'original_ann_level_2', 'original_ann_level_3', 'original_ann_level_4', 'original_ann_level_5',
+                        'scanvi_label', 'leiden_1', 'leiden_2', 'leiden_3', 'anatomical_region_ccf_score',
+                        'entropy_study_leiden_3', 'entropy_dataset_leiden_3', 'entropy_subject_ID_leiden_3',
+                        'entropy_original_ann_level_1_leiden_3', 'entropy_original_ann_level_2_clean_leiden_3',
+                        'entropy_original_ann_level_3_clean_leiden_3', 'entropy_original_ann_level_4_clean_leiden_3',
+                        'entropy_original_ann_level_5_clean_leiden_3', 'leiden_4', 'reannotation_type', 'leiden_5',
+                        'ann_finest_level', 'ann_level_1', 'ann_level_2', 'ann_level_3', 'ann_level_4', 'ann_level_5',
+                        'ann_coarse_for_GWAS_and_modeling']
     final = latent.obs.drop(columns=drop_columns)
     final["x"] = list(map(lambda p: p[0], latent.obsm["X_umap"]))
     final["y"] = list(map(lambda p: p[1], latent.obsm["X_umap"]))
 
-    #if predictScanvi:
+    # if predictScanvi:
     #    final['predicted'] = final['predicted'].apply(lambda cell_type: prediction_value(cell_type))
 
     final.to_csv(filename)
@@ -141,7 +157,7 @@ def write_adata_to_csv(model, adata=None, source_adata=None, target_adata=None, 
             print(f"{l}: {sum(mask) / len(mask)} unknown")
             query_emb.obs[l + "_pred"].loc[mask] = "Unknown"
         query_emb.obs["dataset"] = "test_dataset_delorey_regev"
-        #adata.obsm["X_mde"] = mde(adata.X, init="random")
+        # adata.obsm["X_mde"] = mde(adata.X, init="random")
         anndata = source_adata.concatenate(query_emb)
 
     latent = anndata
@@ -159,18 +175,9 @@ def write_adata_to_csv(model, adata=None, source_adata=None, target_adata=None, 
     if predictScanvi:
         print("predicting")
         latent.obs['predicted'] = model.predict(adata=adata)
-    except Exception:
-        print("predicting with anndata did not work")
-
-    try:
-        if predictScanvi:
-            print("predicting")
-            latent.obs['predicted'] = model.predict()
-    except Exception:
-        print("predicting with nothing did not work")
 
     print("writing csv")
-    return write_latent_csv(latent, key, filename, predictScanvi=predictScanvi)
+    return write_latent_csv(latent, key, filename, predictScanvi=predictScanvi, configuration=configuration)
 
 
 # def write_combined_csv(latent_ref, latent_query, key=None, filename=tempfile.mktemp(), drop_columns=None):
