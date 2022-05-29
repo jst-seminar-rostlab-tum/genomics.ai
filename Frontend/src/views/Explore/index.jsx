@@ -230,6 +230,7 @@ const Explore = () => {
           open={mapperVisible}
           fabOnClick={() => setMapperVisible(!mapperVisible)}
           handleMap={handleMap}
+          user={user}
         />
       </Box>
       <Footer />
