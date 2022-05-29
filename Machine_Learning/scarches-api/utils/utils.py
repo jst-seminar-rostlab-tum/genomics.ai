@@ -51,8 +51,8 @@ def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=
     final["x"] = list(map(lambda p: p[0], latent.obsm["X_umap"]))
     final["y"] = list(map(lambda p: p[1], latent.obsm["X_umap"]))
 
-    if predictScanvi:
-        final['predicted'] = final['predicted'].apply(lambda cell_type: prediction_value(cell_type))
+    #if predictScanvi:
+    #    final['predicted'] = final['predicted'].apply(lambda cell_type: prediction_value(cell_type))
 
     final.to_csv(filename)
 
@@ -159,6 +159,15 @@ def write_adata_to_csv(model, adata=None, source_adata=None, target_adata=None, 
     if predictScanvi:
         print("predicting")
         latent.obs['predicted'] = model.predict(adata=adata)
+    except Exception:
+        print("predicting with anndata did not work")
+
+    try:
+        if predictScanvi:
+            print("predicting")
+            latent.obs['predicted'] = model.predict()
+    except Exception:
+        print("predicting with nothing did not work")
 
     print("writing csv")
     return write_latent_csv(latent, key, filename, predictScanvi=predictScanvi)
