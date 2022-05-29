@@ -3,7 +3,7 @@ import Card from '@mui/material/Card';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import {
-  Box, IconButton, LinearProgress, Stack, CardActionArea, FormControl, InputLabel, MenuItem, Select, Collapse, List, ListItemButton, ListItemIcon, ListItemText, Divider, Grid,
+  Box, IconButton, LinearProgress, Stack, CardActionArea, FormControl, InputLabel, MenuItem, Select, Collapse, List, ListItemButton, ListItemIcon, ListItemText, Divider, Grid, Alert,
 } from '@mui/material';
 import CircleIcon from '@mui/icons-material/Circle';
 import DownloadIcon from '@mui/icons-material/Download';
@@ -319,18 +319,24 @@ export default function ProjectBarCard({
           </Box>
 
         </Modal>
+        { userTeams?.length === 0
+        && (
+        <Alert severity="info">
+          You have no existing teams. Please add your teams in community.
+        </Alert>
+        )}
         <Box>
           {userTeams.map(
-            (team) => (
-              <TabCard
-                key={team._id}
-                data={{ name: team.title, visibility: team.visibility.toLowerCase() }}
-                selected={team?._id === selectedTeam || team?.id === selectedTeam}
-                handleOnClick={() => setSelectedTeam(team?._id || team?.id)}
-              />
+             (team) => (
+               <TabCard
+                 key={team._id}
+                 data={{ name: team.title, visibility: team.visibility.toLowerCase() }}
+                 selected={team?._id === selectedTeam || team?.id === selectedTeam}
+                 handleOnClick={() => setSelectedTeam(team?._id || team?.id)}
+               />
 
-            ),
-          )}
+             ),
+           )}
 
           <Box sx={{ display: 'flex', justifyContent: 'space-between', pt: 4 }}>
             <CustomButton
