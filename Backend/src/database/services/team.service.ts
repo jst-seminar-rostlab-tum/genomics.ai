@@ -217,8 +217,6 @@ export default class TeamService {
       else sortBy["updatedAt"] = -1;
     } else sortBy = {};
 
-    teamModel.find(filter);
-
     return await teamModel.find(filter).populate("institutionId").sort(sortBy);
   }
 

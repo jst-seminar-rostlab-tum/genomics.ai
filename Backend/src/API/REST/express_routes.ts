@@ -73,6 +73,7 @@ import {
   get_userProjects,
   get_project_by_id,
   get_users_projects,
+  update_project_results,
   delete_project,
   get_deleted_projects,
   restore_deleted_project,
@@ -155,6 +156,7 @@ export function express_routes(): Router {
   router.use(get_deleted_projects());
   router.use(restore_deleted_project());
   router.use(cleanup_old_projects());
+  router.use(update_project_results());
 
   // model routes
   router.use(get_model());

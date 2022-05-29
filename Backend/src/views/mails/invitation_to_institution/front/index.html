@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+    <!-- <link rel="stylesheet" href="../../tailwind.css">
+    <script src="../../tailwind.config.js"></script> -->
+</head>
+
+<body>
+  <table class="bg-emailBg m-auto table-fixed">
+    <tr>
+      <td style="padding-left: 10px;" colspan="2">
+        <a href="https://www.genecruncher.com" class="genomics-link">
+          <img width="56" height="56" src="{{genecruncher_logo}}">
+          <div class="font-semibold text-xl text-content">genomics.ai</div>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding: 10px;" colspan="2">
+        <div class="title text-3xl font-bold text-head mt-10">Hey {{firstname}},</div>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding: 10px;" colspan="2">
+        <p>We wanted to inform you that you were invited to the institution "{{institution}}". Please join by clicking the link below.</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding: 10px;" colspan="2">
+        <a href="{{link}}" style="padding: 10px;"
+          class="action-button">Join institution
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding: 10px;" colspan="2">
+        <div class="genomics-signature">
+          <p>Best regards,</p>
+          <p>The GeneCruncher Team.</p>
+        </div>
+      </td>
+    </tr>
+    <tr class="footer-tr">
+      <td>
+        <p class="p-4">© Copyright TUM 2022</p>
+      </td>
+      <td>
+        <a href="https://www.genecruncher.com">genecruncher.com</a>
+      </td>
+    </tr>
+  </table>
+</body>
+
+</html>

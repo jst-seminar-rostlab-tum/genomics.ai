@@ -12,6 +12,8 @@ import { ExtRequest } from "../../../../definitions/ext_request";
 import { validationMdw } from "../../middleware/validation";
 import { institution_admin_auth } from "../../middleware/check_institution_auth";
 import { mailer } from "../../../../util/mailer";
+import JoinTokenService from "../../../../database/services/joinToken.service";
+import { JoinTarget } from "../../../../database/models/join_token";
 
 const create_institution = (): Router => {
   let router = express.Router();
@@ -101,7 +103,6 @@ const invite_to_institution = (): Router => {
   router.put("/institutions/:id/invite", check_auth(), async (req: any, res: any) => {
     var { userId, email }: { userId: Schema.Types.ObjectId; email: string } = req.body;
     const institutionId_to_modify = req.params.id;
-
     console.log("userId " + userId);
     console.log("email " + email);
     console.log("institutionId_to_modify " + institutionId_to_modify);
@@ -123,6 +124,9 @@ const invite_to_institution = (): Router => {
 
       if (!user) return res.status(404).send("User to be invited does not exist.");
 
+      const institution = await InstitutionService.getInstitutionById(institutionId_to_modify);
+      if (!institution) return res.status(404).send("Institution does not exist.");
+
       if (await InstitutionService.findMemeberOrInvitedById(userId, institutionId_to_modify))
         return res
           .status(404)
@@ -134,38 +138,33 @@ const invite_to_institution = (): Router => {
         institutionId_to_modify,
         userId
       );
+      if (!updatedInstitution)
+        return res.status(500).send("Error when adding the user to members of the institution.");
 
-      /*
-      const tokenToCreate: TokenDTO = { _idToken: updatedInstitution._id };
-      const token = await TokenService.createToken(tokenToCreate);
-      */
+      const token = await JoinTokenService.addInstitutionJoinToken({
+        institutionId: institution._id,
+        userId: user._id,
+      });
 
-      const link = `${process.env.API_URL}/institutions/${updatedInstitution._id}&${userId}/join`;
+      const link = `${process.env.API_URL}/joininstitution/${token.token}`;
       console.log("link <<" + link + ">>");
 
-      if (updatedInstitution) {
-        try {
-          await mailer.send(
-            user.email,
-            "[GeneCruncher] Invitation to an institution",
-            "invitation_to_institution",
-            {
-              institution: updatedInstitution.name,
-              country: updatedInstitution.country,
-              firstname: user.firstName,
-              link: link,
-            }
-          );
-        } catch (e) {
-          console.error("Error when sending invitation of user to an institution.");
-          console.error(JSON.stringify(e));
-          console.error(e);
-          return res.status(500).send("Error when sending email. Invitation has been stored.");
-        }
-        return res.json(updatedInstitution);
-      } else {
-        return res.status(409).send("Could not invite person to institution!");
+      try {
+        await mailer.send_invitation_to_institution_mail(
+          user.firstName,
+          user.email,
+          updatedInstitution.name,
+          updatedInstitution.country,
+          link
+        );
+        return res.status(200).send("Invitation has been sent successfully.");
+      } catch (e) {
+        console.error("Error when sending invitation of user to an institution.");
+        console.error(JSON.stringify(e));
+        console.error(e);
+        return res.status(500).send("Error when sending email. Invitation has been stored.");
       }
+      return res.json(updatedInstitution);
     } catch (e) {
       return res.status(500).send("Error: Something went wrong internal error!");
     }
@@ -225,24 +224,39 @@ const make_user_admin_of_institution = (): Router => {
 const join_as_member_of_institution = (): Router => {
   let router = express.Router();
 
-  router.get("/institutions/:idInstitution&:idUser/join", async (req: any, res) => {
+  router.get("/joininstitution/:token", async (req: any, res) => {
     //check_auth(),
-    const institutionId_to_modify = req.params.idInstitution;
-    var current_user = req.user_id;
-    const userId = req.params.idUser;
-
-    console.log("institutionId_to_modify " + institutionId_to_modify);
-    console.log("current_user " + current_user);
-    console.log("userId " + userId);
 
     try {
-      if (!current_user) current_user = userId;
+      const token = await JoinTokenService.getTokenData(req.params.token);
+      if (token) {
+        await JoinTokenService.removeToken(token.token);
+      }
+      if (!token || token.target != JoinTarget.INSTITUTION) {
+        return res.status(400).send(`<h2>Invalid link. Maybe it has alredy been used.</h2>`);
+      }
+      const institutionId_to_modify = token.institutionId;
+      const userId = token.userId;
+      const current_user = userId;
 
-      const institutionToBeUpdated = await InstitutionService.getInstitutionById(
-        institutionId_to_modify
-      );
+      const user = await UserService.getUserById(userId);
+      if (!user) return res.status(404).send("User does not exist.");
 
-      if (!institutionToBeUpdated?.invitedMemberIds.includes(current_user))
+      const institution = await InstitutionService.getInstitutionById(institutionId_to_modify);
+      if (!institution) return res.status(404).send("Institution does not exist.");
+
+      var tempUserId = String(userId);
+      var tempListAdmins = institution.adminIds.map(String);
+      var tempListMembers = institution.memberIds.map(String);
+      var tempListInvitedMembers = institution.invitedMemberIds.map(String);
+
+      if (tempListAdmins.includes(tempUserId))
+        return res.status(404).send("You are already an admin of the team.");
+
+      if (tempListMembers.includes(tempUserId))
+        return res.status(404).send("You are already a member of the team.");
+
+      if (!tempListInvitedMembers.includes(tempUserId))
         return res.status(409).send("Could not join as you are not an invited member!");
 
       const updatedInstitution = await InstitutionService.makeUserMemberOfInstitution(
@@ -464,18 +478,15 @@ const get_users_institutions = (): Router => {
 const disjoin_member_of_institution = (): Router => {
   let router = express.Router();
 
-  router.delete("/institutions/:id/join", validationMdw, check_auth(), async (req: any, res) => {
+  router.delete("/institutions/:id/join", validationMdw, check_auth(), async (req: ExtRequest, res) => {
     try {
-      const { userId }: { userId: ObjectId } = req.body;
       const institutionId: string = req.params.id;
-      const user_id_jwt = req.user_id;
+      const userId = req.user_id!;
 
-      if (!(userId && institutionId)) return res.status(400).send("Missing parameters.");
+      if (!(institutionId)) return res.status(400).send("Missing parameters.");
 
       const user = await UserService.getUserById(userId);
       if (!user) return res.status(404).send("User does not exist.");
-      if (userId != user_id_jwt)
-        return res.status(404).send("Information of the user does not match.");
 
       const institution = await InstitutionService.getInstitutionById(institutionId);
       if (!institution) return res.status(404).send("Institution does not exist.");

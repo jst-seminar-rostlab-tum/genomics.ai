@@ -22,7 +22,21 @@
     "no-console": "off",
     "no-alert": "off",
     "linebreak-style": "off",
-    "no-underscore-dangle": "off"
+    "no-underscore-dangle": "off",
+    "import/no-unresolved": "off",
+    "import/order":"off",
+    "jsx-a11y/label-has-associated-control": [ "error", {
+      "required": {
+        "some": [ "nesting", "id"  ]
+      }
+    }],
+    "jsx-a11y/label-has-for": [ "error", {
+      "required": {
+        "some": [ "nesting", "id"  ]
+      }
+    }]
   },
-  "ignorePatterns": ["src/components/Dashboard/Visualization"]
+  "ignorePatterns": [
+    "src/components/Visualization"
+  ]
 }

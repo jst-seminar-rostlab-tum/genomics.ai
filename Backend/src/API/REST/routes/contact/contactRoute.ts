@@ -9,6 +9,9 @@ const contact_us = ():Router =>{
         try {
             const { email, firstName, lastName, message, subject } = req.body;
 
+            if(!process.env.CONTACT_US) {
+                throw new Error("CONTACT_US not specified");
+            }
             await mailer.send(
                 process.env.CONTACT_US,
                 subject,
@@ -21,7 +24,6 @@ const contact_us = ():Router =>{
             );
             return res.status(200).send("Contact info sent successfully");
         } catch (e) {
-            console.error(JSON.stringify(e));
             console.error(e);
             return res.status(500).send("Contact info could not be sent");
         }

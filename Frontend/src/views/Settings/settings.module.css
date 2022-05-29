@@ -1,0 +1,43 @@
+.profilePicture {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 50px;
+}
+
+.title h1 {
+    font-size: 30px;
+    color: #003560;
+}
+
+.background {
+    text-align: center;
+    padding-block: 60px;
+    top: 140px;
+    /* position in middle */
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -0%);
+}
+
+.inputComponent {
+    text-align: left;
+}
+
+.inputText {
+    font-weight: bold;
+    font-size: 17px;
+    margin-bottom: 20px;
+}
+
+.divider {
+    height: 1px;
+    background: lightgrey;
+}
+
+.headline {
+    text-align: left;
+    color: #0075FF;
+    font-size: 25px;
+    font-weight: bold;
+}
