@@ -34,14 +34,10 @@ Here the mapping in the center can be moved and resized via mouse move and scrol
 
 Links To The Detailed Information Pages
 ---------
-:doc:`Visualization <visualization/index.rst>`
-Visualization:
-:ref:`vis-index`.
 
 .. toctree::
    :maxdepth: 1
    :caption: Main
-   :hidden:
 
    index.rst
    visualization/index.rst

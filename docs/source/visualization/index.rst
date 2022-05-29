@@ -1,4 +1,3 @@
-.. _vis-index:
 Visualization
 =================
 
