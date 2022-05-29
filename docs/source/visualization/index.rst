@@ -13,10 +13,10 @@ coloring selection is set to the category in question. Each category contains su
 The model's name can be found above its visualization, along with a info button for further information.
 
 The visualization is interactable, using click and drag as well as zooming (with either the mouse wheel or the buttons found right below the model's name). The zoom can be reset
-by using the rightmost button on the top, as seen in figure xyz.
+by using the rightmost button on the top, as seen in the figure below.
 By hovering over the individual cells in the visualization, a tooltip pops up, displaying its subcategory, dependent on the current category selection. 
 
-The visualization can be set to show the query, reference data or both, using the leftmost buttons on the top, as seen in figure xyz.
+The visualization can be set to show the query, reference data or both, using the leftmost buttons on the top, as seen in the figure below.
 .. image:: ../_static/Hide_Query.png
 
 To the right of the visualization, two graphs are displayed, one for the amount of cells per batch and the other for the amount of cells per type.
