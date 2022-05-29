@@ -1,3 +1,4 @@
+.. _vis-index:
 Visualization
 =================
 
@@ -39,3 +40,10 @@ totalVI
 
 totalVI is a multi-modal CITE-seq RNA and protein data model. totalVI takes the most amount of time amongst the models and imputes the proteins that were observed 
 (you can color the visualization based on the proteins using the leiden category).
+
+
+.. toctree::
+    :glob:
+    :maxdepth: 2
+
+    *
