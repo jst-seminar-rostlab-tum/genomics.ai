@@ -11,9 +11,8 @@ function enhanceTeam(team) {
 
 const TeamService = MOCK_TEAMS ? MockTeamService : {
   async leaveTeam(teamId) {
-    const user = await ProfileService.getProfile();
     try {
-      await axiosInstance.delete(`/teams/${teamId}/join`, { data: { userId: user.id } });
+      await axiosInstance.delete(`/teams/${teamId}/join`);
     } catch (e) {
       throw Error(e.response.data);
     }
@@ -89,7 +88,6 @@ const TeamService = MOCK_TEAMS ? MockTeamService : {
     const { data } = await axiosInstance.put(`/teams/${teamId}`, { visibility });
     return data;
   },
-
 
   async getInstitutionTeams(institutionId) {
     const { data } = await axiosInstance.get(`/institutions/${institutionId}/teams`);

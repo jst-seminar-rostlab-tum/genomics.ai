@@ -108,17 +108,20 @@ const SearchPage = () => {
   return (
     <HeaderView title="Search">
       <Box sx={{ margin: 'auto', maxWidth: 1200 }}>
-        <Search
-          filterComponent={(
-            <Filter
-              searchParams={searchParams}
-              updateQueryParams={updateQueryParams}
-              path={path}
-            />
+        <Box sx={{ width: { xs: '100%', sm: '100%', md: '40%' }, marginBlock: '2%' }}>
+          <Search
+            filterComponent={(
+              <Filter
+                searchParams={searchParams}
+                updateQueryParams={updateQueryParams}
+                path={path}
+              />
             )}
-          handleSearch={searchedKeywordChangeHandler}
-          value={searchedKeyword}
-        />
+            handleSearch={searchedKeywordChangeHandler}
+            value={searchedKeyword}
+            padding="0px"
+          />
+        </Box>
         <SearchTabs
           value={searchCategory}
           searchParams={searchParams}
