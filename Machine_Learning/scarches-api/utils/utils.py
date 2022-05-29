@@ -62,7 +62,7 @@ def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=
                         'entropy_original_ann_level_3_clean_leiden_3', 'entropy_original_ann_level_4_clean_leiden_3',
                         'entropy_original_ann_level_5_clean_leiden_3', 'leiden_4', 'reannotation_type', 'leiden_5',
                         'ann_finest_level', 'ann_level_1', 'ann_level_2', 'ann_level_3', 'ann_level_4', 'ann_level_5','cell_type']
-                        # 'ann_coarse_for_GWAS_and_modeling']
+                        
     final = latent.obs.drop(columns=drop_columns)
     if get_from_config(configuration, parameters.ATLAS) == 'human_lung':
         final['cell_type'] = final['ann_coarse_for_GWAS_and_modeling'].combine_first(final['ann_level_1_pred'])
@@ -73,7 +73,7 @@ def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=
                             'ann_level_2_pred', 'ann_level_2_uncertainty', 'ann_level_3_pred', 'ann_level_3_uncertainty',
                             'ann_level_4_pred', 'ann_level_4_uncertainty', 'ann_level_5_pred', 'ann_level_5_uncertainty',
                             'ann_finest_level_pred', 'ann_finest_level_uncertainty'])
-        final['predicted'] = list(map(lambda p: 'yes' if p == 'query' else 'no', final['batch']))
+        final['predicted'] = list(map(lambda p: 'yes' if p == 'query' else 'no', final['type']))
 
     final["x"] = list(map(lambda p: p[0], latent.obsm["X_umap"]))
     final["y"] = list(map(lambda p: p[1], latent.obsm["X_umap"]))
