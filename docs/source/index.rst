@@ -30,3 +30,8 @@ A color-coded build status will appear with a progress bar. As soon as it's read
 Here the mapping in the center can be moved and resized via mouse move and scroll, the color-coding modes and selections are toggleable via the Categories tab on the left and on the right the displayed data is visualized in a barchart to display differences between the different batch types and other accumulative values. On the top there are a few buttons to toggle the visability of reference and query data and more.
 
 .. image:: _static/visualizer.png
+
+
+Links To The Detailed Information Pages
+---------
+:doc:`Visualization <visualization/index.rst>` 
