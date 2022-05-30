@@ -74,7 +74,7 @@ function GeneMapper({ sidebarShown }) {
             }}
             >
               <Typography sx={{ fontSize: '36px', fontWeigth: 700 }}>What is ScArches?</Typography>
-              <Typography sx={{ fontSize: '16px', fontWeight: 300 }}>
+              <Typography sx={{ fontSize: '16px', fontWeight: 300, paddingBottom: '16px' }}>
                 <p>
                   ScArches is a novel deep learning model that enables mapping query to reference datasets. The model allows the user to construct single or multi-modal (CITE-seq) references as well as classifying unlabelled query cells.
                   On GeneCruncher, currently only mapping of query to reference datasets is offered.</p>
