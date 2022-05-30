@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   Typography, Box, IconButton, Divider, Stack, Fab,
 } from '@mui/material';
@@ -6,12 +6,20 @@ import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
 import CancelIcon from '@mui/icons-material/Cancel';
 import styles from './mapper.module.css';
 import CustomButton from 'components/CustomButton';
+import { LoginContext } from 'shared/context/loginContext';
 
 function Mapper({
-  mapperAtlas, mapperModel, handleAtlasSelection, handleModelSelection, open, fabOnClick, handleMap,
+  mapperAtlas, mapperModel, handleAtlasSelection,
+  handleModelSelection, open, fabOnClick, handleMap, user,
 }) {
   const [atlas, setAtlas] = useState(mapperAtlas);
   const [model, setModel] = useState(mapperModel);
+  const context = useContext(LoginContext);
+
+  const onSignUpClicked = () => {
+    context.switchLogin(false);
+    context.switchRegister(true);
+  };
 
   const deleteAtlas = () => {
     handleAtlasSelection(null);
@@ -53,9 +61,11 @@ function Mapper({
           </IconButton>
         </Stack>
         <Divider className={styles.divider} />
+        <Typography fontSize="small" sx={{ visibility: model && !user ? 'visible' : 'hidden' }}>🔺 You need to sign up to use this feature in the beta</Typography>
         <Box className={styles.buttonBox}>
           {/* Button will be disabled if selected models and atlases are incompatible with eachother, in this case it will be gray. Lets keep it enabled all the time for now. */}
-          <CustomButton disabled={!atlas || !model} type="primary" onClick={handleMap}>Go</CustomButton>
+          <CustomButton sx={{ display: model && !user ? 'none' : 'block' }} disabled={!atlas || !model} type="primary" onClick={handleMap}>Go</CustomButton>
+          <CustomButton sx={{ display: model && !user ? 'block' : 'none' }} type="primary" onClick={onSignUpClicked}>Sign Up</CustomButton>
         </Box>
       </Box>
       <Box className={styles.mapperBox}>

@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
+import React, {
+  useState, useEffect, useCallback, useContext,
+} from 'react';
 import {
   useHistory, useLocation,
   useRouteMatch,
@@ -46,8 +48,7 @@ const Explore = () => {
   const { path } = useRouteMatch();
   const [atlases, setAtlases] = useState([]);
   const [models, setModels] = useState([]);
-  const [user, setUser] = useAuth()
-
+  const [user, setUser] = useAuth();
   const history = useHistory();
 
   // function to update the state in the URL
@@ -65,7 +66,6 @@ const Explore = () => {
   };
 
   const handleAtlasSelection = (newAtlas) => {
-    console.log(newAtlas)
     setSelectedAtlas(newAtlas);
     if (!selectedModel) {
       history.push(`${path}/models`);
@@ -100,8 +100,10 @@ const Explore = () => {
   };
 
   const handleMap = () => {
-    history.push(`${path}/atlases/${selectedAtlas._id}/visualization`);
-    setMapperVisible(false);
+    if (user) {
+      history.push(`/sequencer/genemapper/create?atlas=${selectedAtlas._id}&model=${selectedModel._id}`);
+      setMapperVisible(false);
+    }
   };
 
   useEffect(() => {
@@ -135,17 +137,17 @@ const Explore = () => {
 
   );
 
-  const context = useContext(LoginContext)
+  const context = useContext(LoginContext);
 
   const onLoginClicked = () => {
-    context.switchRegister(false)
-    context.switchLogin(true)
-  }
+    context.switchRegister(false);
+    context.switchLogin(true);
+  };
 
   const onSignUpClicked = () => {
     context.switchLogin(false);
     context.switchRegister(true);
-  }
+  };
 
   const tmp_elems = pathname.split('/');
   const elems = tmp_elems.map((elem, index) => {
@@ -156,7 +158,7 @@ const Explore = () => {
     return elem;
   });
 
-  const executeScroll = () => user ? history.push({ pathname: '/sequencer/help'}) : history.push({ pathname: '/', state: { contact_us: true } });
+  const executeScroll = () => (user ? history.push({ pathname: '/sequencer/help' }) : history.push({ pathname: '/', state: { contact_us: true } }));
 
   return (
     <>
@@ -172,7 +174,7 @@ const Explore = () => {
         }}
       >
         {context.loginVisible && <LoginForm />}
-        {context.registerVisible && <RegistrationForm  />}
+        {context.registerVisible && <RegistrationForm />}
         {context.forgetVisible && <PasswordForgetForm />}
 
         <Box>
@@ -185,13 +187,13 @@ const Explore = () => {
         </Box>
 
         <Stack
-          direction={{xs: "column", sm: "column", md: "row"}}
+          direction={{ xs: 'column', sm: 'column', md: 'row' }}
           sx={{
-            alignSelf: 'center', width: { sx: "90%", md: '60%' }, marginTop: '2%', justifyContent: 'space-between',
+            alignSelf: 'center', width: { sx: '90%', md: '60%' }, marginTop: '2%', justifyContent: 'space-between',
           }}
         >
           <Breadcrumb elems={elems} fontSize={1} actions={{ explore: () => setValue(0) }} />
-          <Box sx={{ alignSelf: 'center', width: { xs: "100%", md: "60%"}, marginBlock: '2%' }}>
+          <Box sx={{ alignSelf: 'center', width: { xs: '100%', md: '60%' }, marginBlock: '2%' }}>
             <Search
               filterComponent={(
                 <Filter
@@ -228,6 +230,7 @@ const Explore = () => {
           open={mapperVisible}
           fabOnClick={() => setMapperVisible(!mapperVisible)}
           handleMap={handleMap}
+          user={user}
         />
       </Box>
       <Footer />
