@@ -100,6 +100,10 @@ const Explore = () => {
   };
 
   const handleMap = () => {
+    if(selectedAtlas && selectedModel === null) {
+      history.push(`/explore/atlases/${selectedAtlas._id}/visualization`)
+      setMapperVisible(false)
+    }
     if (user) {
       history.push(`/sequencer/genemapper/create?atlas=${selectedAtlas._id}&model=${selectedModel._id}`);
       setMapperVisible(false);
