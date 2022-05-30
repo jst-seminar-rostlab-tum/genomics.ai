@@ -66,15 +66,11 @@ def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=
     final = latent.obs.drop(columns=drop_columns)
     if get_from_config(configuration, parameters.ATLAS) == 'human_lung':
 
-        # final['cell_type'] = final['ann_coarse_for_GWAS_and_modeling'].combine_first(final['ann_level_1_pred'])
-        #TO ANDREAS:
-        #TODO if there is an error on the line above, try these:
-        #final['cell_type'] = final['ann_coarse_for_GWAS_and_modeling'].fillna(final['ann_level_1_pred'])
         final['ann_coarse_for_GWAS_and_modeling'] = final['ann_coarse_for_GWAS_and_modeling'].astype(str).apply(lambda cell: '' if cell == 'nan' else cell)
         final['ann_level_1_pred'] = final['ann_level_1_pred'].astype(str).apply(lambda cell: '' if cell == 'nan' else cell)
         final['cell_type'] = final['ann_coarse_for_GWAS_and_modeling'] + (final['ann_level_1_pred'])
         
-        final.drop(columns=['ann_coarse_for_GWAS_and_modeling','ann_level_1_pred','ann_level_1_uncertainty',
+        final = final.drop(columns=['ann_coarse_for_GWAS_and_modeling','ann_level_1_pred','ann_level_1_uncertainty',
                             'ann_level_2_pred', 'ann_level_2_uncertainty', 'ann_level_3_pred', 'ann_level_3_uncertainty',
                             'ann_level_4_pred', 'ann_level_4_uncertainty', 'ann_level_5_pred', 'ann_level_5_uncertainty',
                             'ann_finest_level_pred', 'ann_finest_level_uncertainty'])
