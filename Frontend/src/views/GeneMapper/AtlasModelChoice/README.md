@@ -9,6 +9,7 @@ This view shows the first page of a two step guide for creating a new mapping.
 * Next the user selects the model to be used for the mapping
 * By clicking the Cancel-Button on the bottom left the user gets redirected to the GeneMapper-Homeview
 * By clicking the Confirm-Button on the bottom right the user gets forwarded to page 2 of the 2-step guide
+* When clicking the Learn More button on an atlas or a model a popup with further information shows up
 
 
 ## Additional information:
