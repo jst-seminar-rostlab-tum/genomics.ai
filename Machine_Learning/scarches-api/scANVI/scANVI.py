@@ -214,6 +214,20 @@ def predict_latent(model, latent):
 #     scanpy.pp.neighbors(full_latent)
 #     scanpy.tl.leiden(full_latent)
 #     scanpy.tl.umap(full_latent)
+#
+#     full_latent.obs['predictions'] = 'predicted'
+#
+#
+#     latent.obs['predictions'] = model.predict(adata=adata_full)
+#     print("Acc_compare: {}".format(np.mean(latent.obs.predictions == latent.obs.cell_type)))
+#     scanpy.pp.neighbors(latent)
+#     scanpy.tl.leiden(latent)
+#     scanpy.tl.umap(latent)
+#
+#     if get_from_config(configuration, parameters.DEBUG):
+#         utils.save_umap_as_pdf(latent, 'figures/compare.pdf', color=["predictions", "cell_type"])
+#
+#     utils.write_latent_csv(latent, key=get_from_config(configuration, parameters.OUTPUT_PATH))
 
 #     full_latent.obs['predicted'] = model.predict(adata=adata_full)
 #     print("Acc_compare: {}".format(np.mean(full_latent.obs.predicted == full_latent.obs.cell_type)))
