@@ -20,7 +20,7 @@ function InstitutionCard({
   };
 
   const {
-    name, profilePictureURL, adminIds,
+    name, profilePictureURL, adminIds, memberIds,
   } = institution;
   return (
     <ListCard
@@ -44,7 +44,7 @@ function InstitutionCard({
             Settings
           </Button>
         ) : <div key="nothing" />,
-        <InstitutionLeaveButton key="leave" institution={institution} onLeft={onLeft} />,
+        memberIds?.includes(user._id) && <InstitutionLeaveButton key="leave" institution={institution} onLeft={onLeft} />,
       ]}
       onClick={navigateToInstitution}
       sx={{ pointer: 'cursor' }}

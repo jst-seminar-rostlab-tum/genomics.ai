@@ -24,13 +24,16 @@ function HeaderView({
       <Box sx={{
         minHeight: "calc(100vh - 40px)",
         padding: "12px 60px 0 60px", 
-        boxSizing: "border-box"}}>
+        boxSizing: "border-box",
+        display: "flex",
+        }}>
         <Stack
           direction="column"
           sx={{
             // height: "98vh",
             width: '100%',
             paddingLeft: '80px',
+            flexGrow: 1
           }}
         >
           <div style={{ paddingLeft: '60px', paddingRight: '60px' }}>
@@ -40,7 +43,7 @@ function HeaderView({
           <Stack ref={ref}
             className="flexContainer"
             direction="row"
-            sx={{ height: 'calc(92vh - var(--header-height))' }}
+            sx={{ flexGrow: 1 }}
           >
             <div className={styles.content}>
               {children}
