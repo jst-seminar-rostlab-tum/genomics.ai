@@ -2,20 +2,20 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 import {
-  Alert, Button, Box, Container, Divider, Stack, Tooltip, Typography, TextField,
+  Alert, Box, Button, Container, Divider, Stack, TextField, Tooltip, Typography
 } from '@mui/material';
 import { GeneralCard as Card } from 'components/Cards/GeneralCard';
 import CustomButton from 'components/CustomButton';
 import FileUpload from 'components/FileUpload';
 import { Modal, ModalTitle } from 'components/Modal';
-import React, { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import styles from './uploadfilepage.module.css';
-import ProjectService from 'shared/services/Project.service';
 import { initSubmissionProgress, useSubmissionProgress } from 'shared/context/submissionProgressContext';
+import ProjectService from 'shared/services/Project.service';
+import { uploadMultipartFile } from 'shared/services/UploadLogic';
 import { LearnMoreAtlasComponent } from 'views/Explore/LearnMoreAtlas';
 import { LearnMoreModelComponent } from 'views/Explore/LearnMoreModel';
-import { uploadMultipartFile } from 'shared/services/UploadLogic';
+import styles from './uploadfilepage.module.css';
 
 function UploadFilePage({
   path, selectedAtlas, selectedModel, setActiveStep,
@@ -30,6 +30,8 @@ function UploadFilePage({
   const [modelInfoOpen, setModelInfoOpen] = useState(false);
   const [submissionProgress, setSubmissionProgress] = useSubmissionProgress();
   const [showWarning, setShowWarning] = useState(false);
+  const [showFileWarning, setShowFileWarning] = useState(false);
+  const [showAcceptedFile, setShowAcceptedFile] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
@@ -39,6 +41,21 @@ function UploadFilePage({
   const handleOnDropChange = (file) => {
     setUploadedFile(file);
   };
+
+  // custom file extension validator
+  const validateUploadFile = (file) => {
+    if (file.name.split('.').pop() !== 'h5ad') {
+      setShowFileWarning(true);
+      // error object returned in case of rejection
+      return {
+        code: "Wrong file format",
+        message: "File must be in h5ad format"
+      };
+    } else {
+      setShowFileWarning(false);
+    }
+    return null;  // file accepted
+  }
 
   const createProject = useCallback((projectName, atlasId, modelId, file) => {
     ProjectService.createProject(
@@ -181,7 +198,7 @@ function UploadFilePage({
             <Stack>
               <Typography variant="h5" fontWeight="bold" pb="1em">Consequent Requirements</Typography>
               <Card>
-                <Box sx={{ flexDirection: 'column', minHeight: '18em' }}>
+                <Box sx={{ flexDirection: 'column', minHeight: '6em' }}>
                   {requirements
                     ? requirements.map((text, index) => (
                       <Box key={text} sx={{ display: 'flex' }}>
@@ -245,14 +262,28 @@ function UploadFilePage({
             <FileUpload
               height="250px"
               handleFileUpload={handleOnDropChange}
+              validator={validateUploadFile}
+              rejectionHandler={() => setUploadedFile()}
             />
+            { 
+              showFileWarning &&
+              <Alert severity="error" sx={{marginTop: '1em'}}>
+                File must be in h5ad format.
+              </Alert>
+            }
+            { 
+              uploadedFile && uploadedFile[0] && 
+              <Alert severity="success" sx={{marginTop: '1em'}}>
+                Selected file: {uploadedFile[0].name}
+              </Alert> 
+            }
           </Stack>
-          <Stack mt="1em" maxHeight="50%">
-            <Typography variant="h5" fontWeight="bold" pb="1em">Select Existing Datasets</Typography>
+          <Stack maxHeight="50%">
+            <Typography variant="h5" fontWeight="bold" mb="0.5em">Select Existing Datasets</Typography>
             { 
               existingDatasets ? 
                 existingDatasets.map((data) => 
-                  <TabCard 
+                  <TabCard
                     data={data}
                     width="95%" 
                     height="3em"
@@ -265,14 +296,14 @@ function UploadFilePage({
           </Stack>
         </Box>
       </Stack>
-      <Stack direction="row" justifyContent="space-between" sx={{ marginTop: '75px', marginBottom: '3em' }}>
+      <Stack direction="row" justifyContent="space-between" sx={{ marginTop: '2em', marginBottom: '3em' }}>
         <CustomButton type="tertiary" onClick={() => setActiveStep(0)}>
           <ArrowBackIcon sx={{ marginRight: '2px' }} />
           Back
         </CustomButton>
         <Stack direction="row" spacing={3} alignItems="center">
           <Typography variant="h6" fontWeight="bold">
-            { uploadedFile && `Selected file: ${uploadedFile[0].name}` }
+            
           </Typography>
           <Tooltip title={(!uploadedFile && !selectedDataset) ? "You haven't selected or uploaded a dataset!" : ''} placement="top">
             <Box onClick={!uploadedFile && !selectedDataset ? () => setShowWarning(true) : ()=>{}}>
@@ -283,7 +314,7 @@ function UploadFilePage({
                   onClick={() => {
                     setOpen(true);
                   }}
-                  >
+                >
                   Create Mapping
                   <CheckCircleOutlineIcon sx={{ marginLeft: '4px' }} />
                 </CustomButton>

@@ -48,14 +48,19 @@ const DuringDrag = () => {
  * @param width default value is 100% -> set it like "100px" or "8em"
  * @param height default value is 100% -> set it like "100px" or "8em"
  * @param handleFileUpload function that will handle all accepted files
+ * @param rejectionHandler
  */
-const FileUpload = ({ width = "100%", height = "100%", handleFileUpload }) => {
+const FileUpload = ({ width = "100%", height = "100%", handleFileUpload, validator, rejectionHandler }) => {
 
-  const onDrop = useCallback( acceptedFiles => {
+  const onDropAccepted = useCallback( acceptedFiles => {
     handleFileUpload(acceptedFiles)
   }, [])
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
+  const onDropRejected = useCallback(() => {
+    rejectionHandler();
+  }, [])
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDropAccepted, onDropRejected, validator: validator })
 
   return (
     <Box
