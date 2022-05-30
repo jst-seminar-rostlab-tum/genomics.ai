@@ -23,6 +23,15 @@ const groupBy = (data, cat) => {
   return groupedBy;
 }
 
+const shuffleArray = (array) => {
+  for (var i = array.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
+  }
+}
+
 // Constructs the graph
 const addBarPlot = (barContainer, data, groupedBy, title, cWidth, cHeight) => {
   const svg = d3.select(barContainer).append("svg");
@@ -47,13 +56,26 @@ const addBarPlot = (barContainer, data, groupedBy, title, cWidth, cHeight) => {
     fontSizeOther = cons.fontSizeOSmall;
     marginBottom = cons.marginBottomSmall;
   }
+  
+  const numberOfGraphValues = 15; // Has to be one more than specified
+
+  const sortedData = Array.from(groupedBy).sort((a, b) => {if (a[1] === b[1]) {
+        return 0;
+    }
+    else {
+        return (a[1] > b[1]) ? -1 : 1;
+    }});
+  const splicedData = sortedData.slice(0, sortedData.length >= numberOfGraphValues ? numberOfGraphValues : sortedData.length);
+  shuffleArray(splicedData);
 
   // Defines the scales
-  const info = Array.from(groupedBy).filter(d => d[0] !== undefined).map(d => [d[0], d[1].length]);
-  const labels = Array.from(groupedBy.keys()).filter(d => d !== undefined);
-  const xScale = d3.scaleBand().domain(labels).range([marginBottom, w]).padding(0.4);
-  const yScale = d3.scaleLinear().domain([0, data.length]).range([h, marginBottom + cons.plotTitleOffset]);
+  const info = splicedData.filter(d => d[0] !== undefined).map(d => [d[0], d[1].length]);
 
+  const max = d3.max(info.map(d => d[1])) * 1.1;
+
+  const labels = splicedData.map(([k, v]) => k).filter(d => d !== undefined);
+  const xScale = d3.scaleBand().domain(labels).range([marginBottom, w]).padding(0.4);
+  const yScale = d3.scaleLinear().domain([0, max]).range([h, marginBottom + cons.plotTitleOffset]);
 
   const g = svg.append("g")
 
@@ -129,38 +151,6 @@ const addBarPlot = (barContainer, data, groupedBy, title, cWidth, cHeight) => {
       .attr("fill", "black")
       .attr("font-size", fontSizeOther)
   }
-
-  /*bars
-      .on("mouseover", function (m, d) { //getter bigger on hover
-        d3.select(this)
-          .transition()
-          .duration(100)
-          .attr('r', r * 1.5)
-          .style("stroke", "black")
-          .style("opacity", 1)
-        if (!_this.mode) return;
-        const att = d[_this.mode];
-        const xPos = parseFloat(m.x) + 5;
-        const yPos = parseFloat(m.y) - 35;
-
-        tooltip
-          .style("visibility", "visible")
-
-        tooltip
-          .html(att)
-          .style("top", `${yPos}px`)
-          .style("left", `${xPos}px`)
-
-      })
-      .on("mouseout", function () {
-        tooltip.style("visibility", "hidden");
-        d3.select(this)
-          .transition()
-          .duration(100)
-          .attr('r', r)
-          .style("stroke", "none")
-          .style("opacity", 0.8)
-      })*/
 
 }
 
