@@ -170,8 +170,8 @@ function LoginForm(props) {
     <div>
       <Modal setOpen={(o) => !o && onClose()} isOpen={visible}>
         <ModalTitle>Log in</ModalTitle>
-        <Box sx={{ width:340}}>
-          <Grid sx={{width:320}}>
+        <Box>
+          <Grid sx={{ pr: "1em" }}>
             <Input
               id="email"
               type="email"

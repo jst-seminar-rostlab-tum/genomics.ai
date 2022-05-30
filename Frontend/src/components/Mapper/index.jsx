@@ -7,6 +7,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import styles from './mapper.module.css';
 import CustomButton from 'components/CustomButton';
 import { LoginContext } from 'shared/context/loginContext';
+import { FaExclamationTriangle } from "react-icons/fa";
 
 function Mapper({
   mapperAtlas, mapperModel, handleAtlasSelection,
@@ -61,10 +62,13 @@ function Mapper({
           </IconButton>
         </Stack>
         <Divider className={styles.divider} />
-        <Typography fontSize="small" sx={{ visibility: model && !user ? 'visible' : 'hidden' }}>🔺 You need to sign up to use this feature in the beta</Typography>
+        <Box sx={{ visibility: model && !user ? 'visible' : 'hidden', color: "#eda618", display: "flex", flexDirection: "row", gap: "5px", alignItems: "center"}} >
+          <FaExclamationTriangle fontSize="14px"/> 
+          <Typography fontSize="small">You need to sign up to use this feature in the beta</Typography>
+        </Box>
         <Box className={styles.buttonBox}>
           {/* Button will be disabled if selected models and atlases are incompatible with eachother, in this case it will be gray. Lets keep it enabled all the time for now. */}
-          <CustomButton sx={{ display: model && !user ? 'none' : 'block' }} disabled={!atlas || !model} type="primary" onClick={handleMap}>Go</CustomButton>
+          <CustomButton sx={{ display: model && !user ? 'none' : 'block' }} disabled={!atlas} type="primary" onClick={handleMap}>Go</CustomButton>
           <CustomButton sx={{ display: model && !user ? 'block' : 'none' }} type="primary" onClick={onSignUpClicked}>Sign Up</CustomButton>
         </Box>
       </Box>
