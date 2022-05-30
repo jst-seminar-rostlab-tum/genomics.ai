@@ -381,6 +381,7 @@ def set_keys(configuration):
     elif atlas == 'Heart cell atlas':
         configuration[parameters.CELL_TYPE_KEY] = 'cell_type'
         configuration[parameters.CONDITION_KEY] = 'source'
+        configuration[parameters.USE_PRETRAINED_SCANVI_MODEL] = False
         return configuration
     elif atlas == 'Human lung cell atlas':
         configuration[parameters.CELL_TYPE_KEY] = 'scanvi_label'
@@ -398,4 +399,5 @@ def set_keys(configuration):
     elif atlas == 'Fetal immune atlas':
         configuration[parameters.CELL_TYPE_KEY] = 'cell_name'
         configuration[parameters.CONDITION_KEY] = 'bbk'
+        configuration[parameters.USE_PRETRAINED_SCANVI_MODEL] = False
         return configuration
