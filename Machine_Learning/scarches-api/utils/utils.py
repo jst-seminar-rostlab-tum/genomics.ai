@@ -73,11 +73,13 @@ def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=
         final['ann_coarse_for_GWAS_and_modeling'] = final['ann_coarse_for_GWAS_and_modeling'].astype(str).apply(lambda cell: '' if cell == 'nan' else cell)
         final['ann_level_1_pred'] = final['ann_level_1_pred'].astype(str).apply(lambda cell: '' if cell == 'nan' else cell)
         final['cell_type'] = final['ann_coarse_for_GWAS_and_modeling'] + (final['ann_level_1_pred'])
-        
-        final.drop(columns=['ann_coarse_for_GWAS_and_modeling','ann_level_1_pred','ann_level_1_uncertainty',
+
+        for column in ['ann_coarse_for_GWAS_and_modeling','ann_level_1_pred','ann_level_1_uncertainty',
                             'ann_level_2_pred', 'ann_level_2_uncertainty', 'ann_level_3_pred', 'ann_level_3_uncertainty',
                             'ann_level_4_pred', 'ann_level_4_uncertainty', 'ann_level_5_pred', 'ann_level_5_uncertainty',
-                            'ann_finest_level_pred', 'ann_finest_level_uncertainty'])
+                            'ann_finest_level_pred', 'ann_finest_level_uncertainty']:
+            del final[column]
+
         final['predicted'] = list(map(lambda p: 'yes' if p == 'query' else 'no', final['type']))
 
     final["x"] = list(map(lambda p: p[0], latent.obsm["X_umap"]))
