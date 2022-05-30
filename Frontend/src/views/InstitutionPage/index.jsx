@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import EditIcon from '@mui/icons-material/ModeEditOutline';
@@ -15,6 +15,10 @@ import { useAuth } from 'shared/context/authContext';
 import InstitutionService from 'shared/services/Institution.service';
 import defaultBackgroundPicture from 'assets/institution-default-background.jpg';
 import InstitutionInviteButton from 'components/institutions/InstitutionInviteButton';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import Button from 'components/CustomButton';
+import Footer from 'components/Footer';
+import { Box } from '@mui/material';
 
 function InstitutionPage() {
   const { id } = useParams();
@@ -23,6 +27,8 @@ function InstitutionPage() {
   const [institutionLoaded, setInstitutionLoaded] = useState(false);
   const [backgroundUploadOpen, setBackgroundUploadOpen] = useState(false);
   const [open, setOpen] = useState(false);
+  const [editedDescription, setEditedDescription] = useState('');
+  const [editMode, setEditMode] = useState(false);
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -41,16 +47,19 @@ function InstitutionPage() {
       .catch((ignored) => { console.error(ignored); });
   }
 
-  function editDetails() {
-    InstitutionService.updateDetails(id, institution.description);
+  async function editDetails() {
+    if (!editMode) {
+      setEditMode(true);
+      descriptionRef.current.focus();
+      return;
+    }
+    await InstitutionService.updateDetails(id, editedDescription);
+    setEditMode(false);
     setOpen(true);
   }
 
   const handleDescriptionChange = (event) => {
-    setInstitution({
-      ...institution,
-      description: event.target.value,
-    });
+    setEditedDescription(event.target.value);
   };
 
   useEffect(() => {
@@ -60,6 +69,10 @@ function InstitutionPage() {
         setInstitutionLoaded(true);
       });
   }, []);
+
+  useEffect(() => {
+    setEditedDescription(institution.description);
+  }, [institution]);
 
   function onLeft(/* team */) {
     // setTeams(teams.filter((i) => i.id !== team.id));
@@ -143,10 +156,17 @@ function InstitutionPage() {
           />
         </div>
         <p className={styles.imageText}>
+          {institution.memberIds?.length == 1 ? 
+          <span>
+            {institution.memberIds?.length}
+            {' Member'}
+          </span>
+          :
           <span>
             {institution.memberIds?.length}
             {' Members'}
           </span>
+          }
         </p>
         {isAdmin() && (
           <button
@@ -161,25 +181,32 @@ function InstitutionPage() {
       </div>
       <div className={styles.test}>
         <section>
-          {isAdmin() && (
-            <button
-              className={styles.editDetailsButton}
-              type="button"
-              onClick={() => editDetails()}
-            >
-              <span>Save Edits</span>
-              <SaveOutlinedIcon fontSize="small" />
-            </button>
-          )}
+        {isAdmin && (
+          <Button
+            sx={{
+              position: "static",
+              alignItems: "center",
+              float: "right",
+            }}
+            type={editMode ? "secondary" : "primary"}
+            onClick={() => editDetails()}
+          >
+            {editMode && (<div><span>Save Edits</span>
+              <SaveOutlinedIcon sx={{ fontSize: 15, marginLeft: "5px" }} /></div>)}
+            {!editMode && (<div><span>Edit Description</span>
+              <EditOutlinedIcon sx={{ fontSize: 15, marginLeft: "5px" }} /></div>)}
+          </Button>
+        )}
           <h2>Description</h2>
           <hr />
           <TextField
             multiline
             minRows={3}
             maxRows={5}
-            value={institution.description}
+            // value={institution.description}
+            value={editedDescription}
             InputProps={{
-              readOnly: !isAdmin(),
+              readOnly: !editMode,
             }}
             style={{ width: '100%' }}
             onChange={handleDescriptionChange}
@@ -232,6 +259,7 @@ function InstitutionPage() {
           {'Description saved successfully!'}
         </Alert>
       </Snackbar>
+      <Footer />
     </>
   );
 }
