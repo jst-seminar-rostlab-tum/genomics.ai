@@ -3,7 +3,7 @@ import {
 } from '@mui/icons-material';
 import OpacityIcon from '@mui/icons-material/Opacity';
 import {
-  Box, Collapse, IconButton, ListItem, ListItemButton, Typography,
+  Box, Collapse, IconButton, ListItem, ListItemButton, Tooltip, Typography,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { colors } from 'shared/theme/colors';
@@ -12,7 +12,7 @@ const activatedColor = colors.primary['400'];
 const deactivatedColor = colors.primary['200'];
 
 function Category({
-  title, values, colored, toggleColored, hide, show, // hiddenValue,
+  title, values, colored, toggleColored, hide, show,
 }) {
   const [open, setOpen] = useState(false);
 
@@ -30,7 +30,7 @@ function Category({
           {open
             ? <ExpandLess sx={{ transform: 'rotate(180deg)' }} />
             : <ExpandMore sx={{ transform: 'rotate(-90deg)' }} />}
-          <Typography sx={{ pr: 1 }}>{title}</Typography>
+          <Typography sx={{ pr: 1 }} noWrap>{title}</Typography>
 
         </ListItem>
       </ListItemButton>
@@ -41,11 +41,6 @@ function Category({
               title={value}
               color={color}
               key={value}
-              // visible={hiddenValue !== value}
-              // setVisible={(visible) => {
-              //   if (visible) show(value);
-              //   else hide(value);
-              // }}
               hide={() => hide(value)}
               show={() => show(value)}
             />
@@ -57,7 +52,7 @@ function Category({
 }
 
 function Value({
-  title, color, hide, show, // visible, setVisible
+  title, color, hide, show,
 }) {
   const [visible, setVisible] = useState(true);
 
@@ -79,7 +74,9 @@ function Value({
           ? <Visibility sx={{ color }} />
           : <VisibilityOff sx={{ color: deactivatedColor }} />}
       </IconButton>
-      <Typography sx={{ flexGrow: 1 }} noWrap>{title}</Typography>
+      <Tooltip title={title} placement="right">
+        <Typography sx={{ flexGrow: 1 }} noWrap>{title}</Typography>
+      </Tooltip>
     </Box>
   );
 }
@@ -95,7 +92,6 @@ function GeneMapperCategories({
   categories, setColorMode, hide, show,
 }) {
   const [coloredCategoryTitle, setColoredCategoryTitle] = useState(null);
-  // const [hiddenValue, setHiddenValue] = useState(null);
 
   const handleSetColorMode = (colorMode) => {
     setColoredCategoryTitle(colorMode);
@@ -117,10 +113,10 @@ function GeneMapperCategories({
   }, [categories]);
 
   return (
-    <>
+    <Box sx={{ maxWidth: '270px' }}>
       { categories
         ? Object.entries(categories).map(([title, values]) => (
-          title !== 'type' && title !== 'predictions'
+          title !== 'predictions'
             ? (
               <Category
                 key={title}
@@ -130,18 +126,15 @@ function GeneMapperCategories({
                 toggleColored={() => handleSetColorMode(title)}
                 hide={(value) => {
                   hide(title, value);
-                  // setHiddenValue(value);
                 }}
                 show={(value) => {
                   show(title, value);
-                  // setHiddenValue(null);
                 }}
-                // hiddenValue={hiddenValue}
               />
             ) : null
         ))
         : null}
-    </>
+    </Box>
 
   );
 }

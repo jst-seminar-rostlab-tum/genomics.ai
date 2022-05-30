@@ -1,4 +1,5 @@
 import { Dialog, DialogTitle } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
 /**
  * Modal
@@ -24,6 +25,12 @@ export const Modal = ({
     }}
     maxWidth={maxWidth}
   >
+    <CloseIcon 
+    onClick={(e) => {
+      setOpen(false);
+      e.stopPropagation();
+    }} 
+    sx={{position:'absolute', right:'10px', top:'10px', cursor:'pointer'}}/>
     {children}
   </Dialog>
 );
