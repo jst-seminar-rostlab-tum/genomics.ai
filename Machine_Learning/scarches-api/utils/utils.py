@@ -61,14 +61,19 @@ def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=
                         'entropy_original_ann_level_1_leiden_3', 'entropy_original_ann_level_2_clean_leiden_3',
                         'entropy_original_ann_level_3_clean_leiden_3', 'entropy_original_ann_level_4_clean_leiden_3',
                         'entropy_original_ann_level_5_clean_leiden_3', 'leiden_4', 'reannotation_type', 'leiden_5',
-                        'ann_finest_level', 'ann_level_1', 'ann_level_2', 'ann_level_3', 'ann_level_4', 'ann_level_5','cell_type']
-                        
+                        'ann_finest_level', 'ann_level_1', 'ann_level_2', 'ann_level_3', 'ann_level_4', 'ann_level_5']
+
     final = latent.obs.drop(columns=drop_columns)
     if get_from_config(configuration, parameters.ATLAS) == 'human_lung':
-        final['cell_type'] = final['ann_coarse_for_GWAS_and_modeling'].combine_first(final['ann_level_1_pred'])
-        #TO ANDREAS:
-        #TODO if there is an error on the line above, try these:
-        #final['cell_type'] = final['ann_coarse_for_GWAS_and_modeling'].fillna(final['ann_level_1_pred'])
+        types = final['ann_coarse_for_GWAS_and_modeling']
+        predicted = final['ann_level_1_pred']
+        cell_type = []
+        for i in range(len(types)):
+            if types[i] is None:
+                cell_type.append(predicted[i])
+            else:
+                cell_type.append(types[i])
+        final['cell_type'] = cell_type
         final.drop(columns=['ann_coarse_for_GWAS_and_modeling','ann_level_1_pred','ann_level_1_uncertainty',
                             'ann_level_2_pred', 'ann_level_2_uncertainty', 'ann_level_3_pred', 'ann_level_3_uncertainty',
                             'ann_level_4_pred', 'ann_level_4_uncertainty', 'ann_level_5_pred', 'ann_level_5_uncertainty',
