@@ -137,12 +137,6 @@ def compute_latent(model, adata, configuration):
     sc.pp.neighbors(reference_latent, n_neighbors=utils.get_from_config(configuration, parameters.NUMBER_OF_NEIGHBORS))
     sc.tl.leiden(reference_latent)
     sc.tl.umap(reference_latent)
-    # no need to show scatterplot during computation
-    # sc.pl.umap(reference_latent,
-    #           color=['batch', 'cell_type'],
-    #           frameon=False,
-    #           wspace=0.6,
-    #           )
 
     return reference_latent
 
@@ -158,12 +152,27 @@ def compute_query(pretrained_model, anndata, reference_latent, source_adata, con
         'assets/scVI/' + str(utils.get_from_config(configuration, parameters.ATLAS)) + '/',
         freeze_dropout=True,
     )
-    model.train(
-        max_epochs=utils.get_from_config(configuration, parameters.SCVI_QUERY_MAX_EPOCHS),
-        plan_kwargs=dict(weight_decay=0.0),
-        check_val_every_n_epoch=10,
-        use_gpu=utils.get_from_config(configuration, parameters.USE_GPU)
-    )
+    if utils.get_from_config(configuration, parameters.ATLAS) == 'human_lung':
+        surgery_epochs = 500
+        train_kwargs_surgery = {
+            "early_stopping": True,
+            "early_stopping_monitor": "elbo_train",
+            "early_stopping_patience": 10,
+            "early_stopping_min_delta": 0.001,
+            "plan_kwargs": {"weight_decay": 0.0},
+        }
+        model.train(
+            max_epochs=surgery_epochs,
+            **train_kwargs_surgery,
+            use_gpu=utils.get_from_config(configuration, parameters.USE_GPU)
+        )
+    else:
+        model.train(
+            max_epochs=utils.get_from_config(configuration, parameters.SCVI_QUERY_MAX_EPOCHS),
+            plan_kwargs=dict(weight_decay=0.0),
+            check_val_every_n_epoch=10,
+            use_gpu=utils.get_from_config(configuration, parameters.USE_GPU)
+        )
     tempdir = tempfile.mkdtemp()
     model.save(tempdir, overwrite=True)
     if utils.get_from_config(configuration, parameters.DEV_DEBUG):
@@ -198,38 +207,12 @@ def compute_query(pretrained_model, anndata, reference_latent, source_adata, con
     if utils.get_from_config(configuration, parameters.DEBUG):
         utils.save_umap_as_pdf(query_latent, 'data/figures/query.pdf', color=['batch', 'cell_type'])
 
-    # utils.write_latent_csv(query_latent, key=utils.get_from_config(configuration, parameters.OUTPUT_PATH))
-    # utils.write_combined_csv(reference_latent, query_latent, key=utils.get_from_config(configuration, parameters.OUTPUT_PATH))
-    # utils.write_adata_to_csv(model, source_adata, key=utils.get_from_config(configuration, parameters.OUTPUT_PATH),
-    #                              cell_type_key=utils.get_from_config(configuration, parameters.CELL_TYPE_KEY),
-    #                              condition_key=utils.get_from_config(configuration, parameters.CONDITION_KEY))
     utils.write_full_adata_to_csv(model, source_adata, anndata,
                                   key=utils.get_from_config(configuration, parameters.OUTPUT_PATH),
                                   cell_type_key=utils.get_from_config(configuration, parameters.CELL_TYPE_KEY),
-                                  condition_key=utils.get_from_config(configuration, parameters.CONDITION_KEY))
+                                  condition_key=utils.get_from_config(configuration, parameters.CONDITION_KEY), configuration=configuration)
 
     return model
-
-
-# def compute_full_latent(source_adata, target_adata, model, configuration):
-#     """
-#     basically just takes to datasets, concatenates them and then computes the latent and saves the result
-#     :param source_adata:
-#     :param target_adata:
-#     :param model:
-#     :return:
-#     """
-#     full_latent = compute_latent(model, source_adata.concatenate(target_adata), configuration)
-
-#     if utils.get_from_config(configuration, parameters.DEBUG):
-#         utils.save_umap_as_pdf(full_latent, 'data/figures/both.pdf', color=['batch', 'cell_type'])
-
-#     both_path = 'both.csv'
-
-#     utils.write_latent_csv(full_latent, key='both.csv', filename=both_path, drop_colums=dropped_columns)
-
-#     return full_latent
-
 
 
 def compute_scVI(configuration):
