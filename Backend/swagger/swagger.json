@@ -9,6 +9,12 @@
       "url": "https://opensource.org/licenses/MIT"
     }
   },
+  "servers": [
+    {
+      "url": "/v1",
+      "description": "Version 1"
+    }
+  ],
   "components": {
     "securitySchemes": {
       "bearerAuth": {
@@ -142,12 +148,8 @@
       "bearerAuth": []
     }
   ],
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
-  ],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
   "tags": [
     {
       "name": "User",

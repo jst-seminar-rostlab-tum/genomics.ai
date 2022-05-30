@@ -10,7 +10,7 @@ import ProjectUpdateTokenService from "../../../../database/services/project_upd
 import DeletedProjectService from "../../../../database/services/deletedProject.service";
 import { IDeletedProject } from "../../../../database/models/deleted_projects";
 import { UpdateProjectDTO } from "../../../../database/dtos/project.dto";
-import s3 from "../../../../util/s3";
+import s3, { try_delete_object_from_s3 } from "../../../../util/s3";
 import { DeleteObjectRequest } from "aws-sdk/clients/s3";
 import { ProjectStatus } from "../../../../database/models/project";
 import { query_path, result_model_path, result_path } from "../file_upload/bucket_filepaths";
@@ -168,6 +168,7 @@ const update_project_results = (): Router => {
       } else {
         console.log(`Trying to update project with token, but status is already ${project.status}`)
       }
+      try_delete_object_from_s3(query_path(project.id));
       return res.status(200).send("OK");
     } catch (e) {
       console.error(e);
@@ -267,18 +268,6 @@ const cleanup_old_projects = (): Router => {
   });
   return router;
 };
-function try_delete_object_from_s3(key: string) {
-  let params: DeleteObjectRequest = {
-    Bucket: process.env.S3_BUCKET_NAME,
-    Key: key,
-  };
-  s3.deleteObject(params)
-    .promise()
-    .catch((e) => {
-      console.error(`Error while deleting ${key}`);
-      console.error(e);
-    });
-}
 
 export {
   get_projects,

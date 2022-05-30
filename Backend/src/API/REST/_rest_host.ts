@@ -21,7 +21,7 @@ export default class REST_Host {
   // performs all necessary setup
   public async init() {
     this.expressApp.use(express_middleware.call(this));
-    this.expressApp.use(express_routes.call(this));
+    this.expressApp.use("/v1", express_routes());
 
     // forward http-requests to express.js server
     this.http_server.server?.on("request", this.expressApp);

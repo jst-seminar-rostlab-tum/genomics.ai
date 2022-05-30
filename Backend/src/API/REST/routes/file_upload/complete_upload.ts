@@ -10,7 +10,7 @@ import check_auth from "../../middleware/check_auth";
 import { ExtRequest } from "../../../../definitions/ext_request";
 import ProjectService from "../../../../database/services/project.service";
 import { UpdateProjectDTO } from "../../../../database/dtos/project.dto";
-import s3 from "../../../../util/s3";
+import s3, { try_delete_object_from_s3 } from "../../../../util/s3";
 import { GoogleAuth } from "google-auth-library";
 import { request as gaxiosRequest } from "gaxios";
 import { ProjectStatus } from "../../../../database/models/project";
@@ -51,8 +51,10 @@ export default function upload_complete_upload_route() {
           console.error(err, err.stack || "Error when completing multipart upload");
           return res.status(500).send(err);
         }
-        if (!data || !data.Key || !data.Bucket || !data.Location)
+        if (!data || !data.Key || !data.Bucket || !data.Location) {
+          try_delete_object_from_s3(query_path(project._id));
           return res.status(500).send("Error getting Multipart-Upload object data");
+        }
 
         //Query file size and save in project
         try {
@@ -72,6 +74,7 @@ export default function upload_complete_upload_route() {
               await ProjectService.updateProjectById(params.UploadId, {
                 status: ProjectStatus.PROCESSING_FAILED,
               });
+              try_delete_object_from_s3(query_path(project._id))
               return res.status(500).send(`Could not find ${!model ? "model" : "atlas"}`);
             }
 
@@ -114,6 +117,7 @@ export default function upload_complete_upload_route() {
               await ProjectService.updateProjectByUploadId(params.UploadId, {
                 status: ProjectStatus.PROCESSING_FAILED,
               });
+              try_delete_object_from_s3(query_path(project.id));
               return;
             }
           } else if (process.env.NODE_ENV != "production") {
@@ -155,11 +159,13 @@ export default function upload_complete_upload_route() {
               await ProjectService.updateProjectByUploadId(params.UploadId, {
                 status: ProjectStatus.PROCESSING_FAILED,
               });
+              try_delete_object_from_s3(query_path(project._id));
               return;
             }
           } else {
             const updateStatus: UpdateProjectDTO = { status: ProjectStatus.PROCESSING_FAILED };
             await ProjectService.updateProjectByUploadId(params.UploadId, updateStatus);
+            try_delete_object_from_s3(query_path(project._id));
             return res.status(500).send("Processing failed!");
           }
         } catch (err) {
