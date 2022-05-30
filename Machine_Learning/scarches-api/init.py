@@ -29,9 +29,9 @@ def default_config():
         parameters.USE_GPU: False,
 
         # scANVI stuff
-        parameters.SCANVI_COMPARE_REFERENCE_AND_QUERY: False,
-        parameters.SCANVI_COMPARE_OBSERVED_AND_PREDICTED_CELLTYPES: False,
-        parameters.SCANVI_PREDICT_CELLTYPES: True,
+        # parameters.SCANVI_COMPARE_REFERENCE_AND_QUERY: False,
+        # parameters.SCANVI_COMPARE_OBSERVED_AND_PREDICTED_CELLTYPES: False,
+        # parameters.SCANVI_PREDICT_CELLTYPES: True,
 
         parameters.CONDITION_KEY: 'study',
         parameters.CELL_TYPE_KEY: 'cell_type',
@@ -57,7 +57,6 @@ def default_config():
         parameters.TOTALVI_MAX_EPOCHS_1: 400,
         parameters.TOTALVI_MAX_EPOCHS_2: 200,
 
-        parameters.SCANVI_DO_SURGERY: False,
         parameters.DEV_DEBUG: False,
     }
 
@@ -104,13 +103,11 @@ def query(user_config):
     return configuration
 
 
-# query('data/ref/source_data.h5ad', 'data/query/target_data.h5ad', 'data/model', 'data/surgery/', 'scVI')
-
 if __name__ == "__main__":
     os.environ["AWS_BUCKET"] = 'minio-bucket'
     os.environ['AWS_ENDPOINT'] = 'http://127.0.0.1:9000'
     os.environ['AWS_ACCESS_KEY'] = 'minioadmin'
     os.environ['AWS_SECRET_KEY'] = 'minioadmin'
 
-    query({parameters.DEV_DEBUG: True})
+    query({})
 

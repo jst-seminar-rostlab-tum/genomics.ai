@@ -3,6 +3,7 @@ import os
 import init as scarches
 from threading import Thread
 from utils import utils, parameters
+import traceback
 
 app = Flask(__name__)
 
@@ -27,7 +28,7 @@ def query():
             actual_configuration = scarches.query(config)
             return actual_configuration, 200
     except Exception as e:
-        print("got error: " + str(e))
+        traceback.print_exc()
         return {'error': str(e)}, 500
 
 
