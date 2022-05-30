@@ -217,18 +217,16 @@ export default function ProjectBarCard({
                     : (
                       <Button
                         variant="outlined"
-                        size="small"
                         sx={{
                           borderRadius: 100,
                           mr: 1,
-                          pt: 0.2,
-                          pb: 0.2,
-                          fontWeight: 400,
                         }}
                         style={{ textTransform: 'none' }}
                         onClick={handleOpen}
                       >
-                        Add To Team
+                        <Typography>
+                          Add To Team
+                        </Typography>
                       </Button>
                     )}
 
@@ -237,7 +235,9 @@ export default function ProjectBarCard({
                     onClick={() => history.push(`/sequencer/genemapper/result/${project._id}`)}
                     disabled={project.status !== 'DONE'}
                   >
-                    See Results
+                    <Typography>
+                      See Results
+                    </Typography>
                   </CustomButton>
                   <IconButton
                     href={project.location}
