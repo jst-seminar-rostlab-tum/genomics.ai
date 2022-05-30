@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Card from '@mui/material/Card';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import {
-  Box, IconButton, LinearProgress, Stack, CardActionArea, FormControl, InputLabel, MenuItem, Select, Collapse, List, ListItemButton, ListItemIcon, ListItemText, Divider, Grid, Alert,
+  Box, IconButton, LinearProgress, Stack, CardActionArea, FormControl, InputLabel, MenuItem, Select, Collapse, List, ListItemButton, ListItemIcon, ListItemText, Divider, Grid, Alert, Button,
 } from '@mui/material';
 import CircleIcon from '@mui/icons-material/Circle';
 import DownloadIcon from '@mui/icons-material/Download';
@@ -218,9 +217,13 @@ export default function ProjectBarCard({
                     : (
                       <Button
                         variant="outlined"
+                        size="small"
                         sx={{
                           borderRadius: 100,
                           mr: 1,
+                          pt: 0.2,
+                          pb: 0.2,
+                          fontWeight: 400,
                         }}
                         style={{ textTransform: 'none' }}
                         onClick={handleOpen}
@@ -229,19 +232,13 @@ export default function ProjectBarCard({
                       </Button>
                     )}
 
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    sx={{
-                      borderRadius: 100,
-                      mr: 1,
-                    }}
-                    style={{ textTransform: 'none' }}
+                  <CustomButton
+                    type="primary"
                     onClick={() => history.push(`/sequencer/genemapper/result/${project._id}`)}
                     disabled={project.status !== 'DONE'}
                   >
                     See Results
-                  </Button>
+                  </CustomButton>
                   <IconButton
                     href={project.location}
                     download={`${project.name}.tsv`}
@@ -327,16 +324,16 @@ export default function ProjectBarCard({
         )}
         <Box>
           {userTeams.map(
-             (team) => (
-               <TabCard
-                 key={team._id}
-                 data={{ name: team.title, visibility: team.visibility.toLowerCase() }}
-                 selected={team?._id === selectedTeam || team?.id === selectedTeam}
-                 handleOnClick={() => setSelectedTeam(team?._id || team?.id)}
-               />
+            (team) => (
+              <TabCard
+                key={team._id}
+                data={{ name: team.title, visibility: team.visibility.toLowerCase() }}
+                selected={team?._id === selectedTeam || team?.id === selectedTeam}
+                handleOnClick={() => setSelectedTeam(team?._id || team?.id)}
+              />
 
-             ),
-           )}
+            ),
+          )}
 
           <Box sx={{ display: 'flex', justifyContent: 'space-between', pt: 4 }}>
             <CustomButton
