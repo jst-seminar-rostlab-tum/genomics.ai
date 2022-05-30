@@ -61,8 +61,8 @@ def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=
                         'entropy_original_ann_level_1_leiden_3', 'entropy_original_ann_level_2_clean_leiden_3',
                         'entropy_original_ann_level_3_clean_leiden_3', 'entropy_original_ann_level_4_clean_leiden_3',
                         'entropy_original_ann_level_5_clean_leiden_3', 'leiden_4', 'reannotation_type', 'leiden_5',
-                        'ann_finest_level', 'ann_level_1', 'ann_level_2', 'ann_level_3', 'ann_level_4', 'ann_level_5','cell_type']
-                        
+                        'ann_finest_level', 'ann_level_1', 'ann_level_2', 'ann_level_3', 'ann_level_4', 'ann_level_5']
+
     final = latent.obs.drop(columns=drop_columns)
     if get_from_config(configuration, parameters.ATLAS) == 'human_lung':
 
