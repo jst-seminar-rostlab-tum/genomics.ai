@@ -122,7 +122,6 @@ function RegistrationForm(props) {
         }));
         break;
       default:
-        console.log(response);
         setErrors((prevState) => ({
           ...prevState,
           response: 'Unknown error, please try again later!',

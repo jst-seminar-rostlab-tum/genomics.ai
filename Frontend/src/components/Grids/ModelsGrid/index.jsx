@@ -7,8 +7,6 @@ import styles from './modelsGrid.module.css';
 
 const ModelsGrid = ({ models, path, compatibleModels = null, selectedModel = null, handleModelSelection = null, isSearchPage = false }) => {
 
-  console.log(compatibleModels)
-
   return (
     <Box className={styles.cardsContainer} mb="2em" pb="1.5em">
       <Grid container spacing={3}>
