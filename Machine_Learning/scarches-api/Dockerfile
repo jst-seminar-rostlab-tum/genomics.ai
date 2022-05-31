@@ -9,11 +9,11 @@ WORKDIR $APP_HOME
 
 ADD requirements.txt .
 
-RUN pip install -r requirements.txt
+RUN pip install -r requirements.txt --no-cache
 
 COPY . .
-ENV WORKERS 3
-ENV THREADS 8
+ENV WORKERS 1
+ENV THREADS 1
 ENV PORT 8080
 
-CMD gunicorn --bind :$PORT --workers $WORKERS --threads $THREADS --timeout 0 api:app
+CMD exec gunicorn --bind :$PORT --workers $WORKERS --threads $THREADS --timeout 0 api:app
