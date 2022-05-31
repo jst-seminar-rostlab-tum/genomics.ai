@@ -17,7 +17,7 @@
         @apply border-footer bg-footer text-white font-semibold
     }
     .action-button {
-        @apply bg-primary text-white font-bold rounded-full hover:bg-primaryHover hover:drop-shadow-md focus:outline-none focus:bg-primaryFocus m-auto container mx-auto my-10;
+        @apply bg-primary text-white font-bold rounded-full m-auto container mx-auto my-10;
         mso-border-radius-alt: 20px;
     }
     .footer-tr {

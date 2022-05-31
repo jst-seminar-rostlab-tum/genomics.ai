@@ -1,31 +1,37 @@
 const options = require("./emails.config.js");
-const juice = require("juice");
+const mjml = require("mjml");
 const fs = require("fs/promises");
 const path = require("path");
 
-const tailwindcssfile = path.resolve(__dirname, "build/tailwind.css");
-const tailwindcss = fs.readFile(tailwindcssfile);
+//const { registerComponent } = require("mjml-core");
+//const MjMsoButton = require("mjml-msobutton").default;
+
 
 (async function main() {
   console.log(options.input);
   const basePath = path.resolve(__dirname, options.input);
   const outputBase = path.resolve(__dirname, options.output);
+  const mjmlpath = path.resolve(__dirname, options.input, "base.html");
 
-  let dirs = await fs.readdir(basePath);
+  const basemjml = (await fs.readFile(mjmlpath)).toString("utf8");
+
+  let dirs = await fs.readdir(basePath, { withFileTypes: true });
+
   console.log(dirs);
   for (const dir of dirs) {
-    await processFolder(path.resolve(basePath, dir), path.resolve(outputBase, dir));
+    if(dir.isDirectory()) {
+      await processFolder(basemjml, path.resolve(basePath, dir.name), path.resolve(outputBase, dir.name));
+    }
   }
 })();
 
-async function processFolder(basePath, outputBase) {
+async function processFolder(basemjml, basePath, outputBase) {
   let files = await listFiles(path.resolve(basePath));
-  let htmls = files.filter((f) => f.endsWith(".html"));
-  let others = files.filter((f) => !f.endsWith(".html"));
-  for (const html of htmls) {
-    await compileEmail(basePath, html, outputBase);
-  }
+  let others = files.filter((f) => !f.endsWith(".mjml.html"));
   console.log("Processing "+basePath);
+  if(files.find((f)=>f=="content.mjml.html")) {
+    await compileEmail(basemjml, basePath, outputBase);
+  }
   for (const other of others) {
     console.log("Copy "+other);
     let parentdirs = path.dirname(other);
@@ -34,27 +40,19 @@ async function processFolder(basePath, outputBase) {
   }
 }
 
-async function compileEmail(base, relativePath, outputBase) {
-  let htmlpath = path.join(base, relativePath);
-  console.log("Compiling "+htmlpath);
-  let html;
-  try {
-    html = await fs.readFile(htmlpath);
-  } catch (err) {
-    if (err.code == "ENOENT") {
-      console.error("File not found, skipping " + err.path);
-      return;
-    } else {
-      throw err;
-    }
+async function compileEmail(basemjml, emailpath, outputBase) {
+  console.log("Compiling "+ emailpath);
+  let mjmloptions = {
+    filePath: emailpath,
+    // mjmlConfigPath: path.join(__dirname)
   }
-  let htmlstring = html.toString("utf8");
-  let compiled = juice(htmlstring, {
-    extraCss: await tailwindcss,
-  });
-  let parentdirs = path.dirname(relativePath);
-  await fs.mkdir(path.resolve(outputBase, parentdirs), { recursive: true });
-  await fs.writeFile(path.join(outputBase, relativePath), compiled);
+  let compiled = mjml(basemjml,mjmloptions)
+  if(compiled.errors.length!=0) {
+    console.error("Errors while processing: "+emailpath);
+    compiled.errors.forEach(e=>console.error(e.formattedMessage));
+  }
+  await fs.mkdir(path.resolve(outputBase), { recursive: true });
+  await fs.writeFile(path.join(outputBase, "index.html"), compiled.html);
 }
 
 async function listFiles(basePath) {

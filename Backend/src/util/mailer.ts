@@ -38,7 +38,7 @@ class Mailer {
       "utf-8"
     );
     let htmltemplate = await fs.readFile(
-      path.join(__dirname, "./../views/mails", template_name, "front", "index.html"),
+      path.join(__dirname, "./../views/mails", template_name, "index.html"),
       "utf-8"
     );
 
@@ -95,11 +95,8 @@ class Mailer {
       {
         link: `${process.env.API_URL}/verify/${token}`,
         firstname: firstname,
-        genecruncher_static: `${process.env.STATIC_FILES_URL}`,
+        genecruncher_logo: `${process.env.STATIC_FILES_URL}/genecruncher_logo_email.svg`,
       },
-      {
-        genecruncher_logo: "logo.svg",
-      }
     );
   }
 
@@ -112,11 +109,8 @@ class Mailer {
         firstname: firstname,
         link: `${process.env.FRONTEND_URL}/password_reset?token=${token}`,
         new_reset_link: `${process.env.FRONTEND_URL}/password_reset`,
-        genecruncher_static: `${process.env.STATIC_FILES_URL}`,
+        genecruncher_logo: `${process.env.STATIC_FILES_URL}/genecruncher_logo_email.svg`,
       },
-      {
-        genecruncher_logo: "logo.svg",
-      }
     );
   }
   async send_password_reset_confirmation_mail(firstname: string, recipient: string) {
@@ -128,10 +122,8 @@ class Mailer {
         firstname: firstname,
         email: recipient,
         link: `${process.env.FRONTEND_URL}/password_reset`,
+        genecruncher_logo: `${process.env.STATIC_FILES_URL}/genecruncher_logo_email.svg`,
       },
-      {
-        genecruncher_logo: "logo.svg",
-      }
     );
   }
   async send_invitation_to_institution_mail(
@@ -150,10 +142,8 @@ class Mailer {
         country,
         firstname,
         link,
+        genecruncher_logo: `${process.env.STATIC_FILES_URL}/genecruncher_logo_email.svg`,
       },
-      {
-        genecruncher_logo: "logo.svg"
-      }
     );
   }
   async send_invitation_to_team_mail(
@@ -170,9 +160,7 @@ class Mailer {
         firstname,
         teamname,
         link,
-      },
-      {
-        genecruncher_logo: "logo.svg",
+        genecruncher_logo: `${process.env.STATIC_FILES_URL}/genecruncher_logo_email.svg`,
       }
     );
   }
