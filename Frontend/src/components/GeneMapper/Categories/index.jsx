@@ -116,7 +116,7 @@ function GeneMapperCategories({
     <Box sx={{ maxWidth: '270px' }}>
       { categories
         ? Object.entries(categories).map(([title, values]) => (
-          title !== 'type' && title !== 'predicted'
+          title !== 'predicted'
             ? (
               <Category
                 key={title}
