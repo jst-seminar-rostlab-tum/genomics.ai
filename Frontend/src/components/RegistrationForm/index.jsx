@@ -205,7 +205,7 @@ function RegistrationForm(props) {
         ) : (
           <>
             <ModalTitle>Register new user</ModalTitle>
-            <Box sx={{ width: 500 }}>
+            <Box sx={{ width: { md: "400px", xs: "100%" }, pr: "1em" }}>
               <Grid sx={{ width: '90%', margin: 'auto' }}>
                 <Input
                   id="email"
