@@ -52,8 +52,10 @@ function GeneMapperResultHeader({ project }) {
       </Box>
       <Divider sx={{ mt: 1, mb: 1 }} />
       <Modal isOpen={showInfo} setOpen={setShowInfo}>
-        <ModalTitle>{project.name}</ModalTitle>
-        <ProjectInfo project={project} atlas={atlas} model={model} />
+        <Box sx={{ p: 1 }}>
+          <Typography variant="h4" sx={{ pb: 1 }}>{project.name}</Typography>
+          <ProjectInfo project={project} atlas={atlas} model={model} />
+        </Box>
       </Modal>
     </>
   );

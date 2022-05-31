@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Card from '@mui/material/Card';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import {
-  Box, IconButton, LinearProgress, Stack, CardActionArea, FormControl, InputLabel, MenuItem, Select, Collapse, List, ListItemButton, ListItemIcon, ListItemText, Divider, Grid,
+  Box, IconButton, LinearProgress, Stack, CardActionArea, FormControl, InputLabel, MenuItem, Select, Collapse, List, ListItemButton, ListItemIcon, ListItemText, Divider, Grid, Alert, Button,
 } from '@mui/material';
 import CircleIcon from '@mui/icons-material/Circle';
 import DownloadIcon from '@mui/icons-material/Download';
@@ -172,7 +171,12 @@ export default function ProjectBarCard({
                   && <CanceldOrFailedStatus />}
                     {submissionProgress.status === MULTIPART_UPLOAD_STATUS.COMPLETE
                    && project.status !== PROJECT_STATUS.DONE
+                   && project.status !== PROJECT_STATUS.ABORTED
+                   && project.status !== PROJECT_STATUS.PROCESSING_FAILED
                    && <ProcessingStatus />}
+                    {(project.status === PROJECT_STATUS.ABORTED
+                  || project.status === PROJECT_STATUS.PROCESSING_FAILED)
+                   && <Typography variant="caption">Processing failed</Typography>}
                   </Box>
                 ) : null}
                 {!submissionProgress
@@ -220,23 +224,21 @@ export default function ProjectBarCard({
                         style={{ textTransform: 'none' }}
                         onClick={handleOpen}
                       >
-                        Add To Team
+                        <Typography>
+                          Add To Team
+                        </Typography>
                       </Button>
                     )}
 
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    sx={{
-                      borderRadius: 100,
-                      mr: 1,
-                    }}
-                    style={{ textTransform: 'none' }}
+                  <CustomButton
+                    type="primary"
                     onClick={() => history.push(`/sequencer/genemapper/result/${project._id}`)}
                     disabled={project.status !== 'DONE'}
                   >
-                    See Results
-                  </Button>
+                    <Typography>
+                      See Results
+                    </Typography>
+                  </CustomButton>
                   <IconButton
                     href={project.location}
                     download={`${project.name}.tsv`}
@@ -314,6 +316,12 @@ export default function ProjectBarCard({
           </Box>
 
         </Modal>
+        { userTeams?.length === 0
+        && (
+        <Alert severity="info">
+          You have no existing teams. Please add your teams in community.
+        </Alert>
+        )}
         <Box>
           {userTeams.map(
             (team) => (
