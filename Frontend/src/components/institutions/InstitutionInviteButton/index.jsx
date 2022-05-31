@@ -23,8 +23,8 @@ function InstitutionInviteButton({ institution }) {
   const handleCloseDialog = () => setDialogOpen(false);
 
   function validateEmail(email) {
-    let re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-    return re.test(email)
+    const re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    return re.test(email);
   }
 
   const handleTeamInvite = () => {
@@ -59,7 +59,7 @@ function InstitutionInviteButton({ institution }) {
           right: '2%',
         }}
         style={{
-          backgroundColor: '#5676E4'
+          backgroundColor: '#5676E4',
         }}
       >
         <PersonAddOutlinedIcon style={{ color: 'white' }} />
