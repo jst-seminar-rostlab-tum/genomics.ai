@@ -201,9 +201,7 @@ export default function Navbar({
   const history = useHistory()
 
   function handleClickContactUsInDrawer() {
-    console.log("clicked", drawerOpen)
     setDrawerOpen(false)
-    console.log("after set", drawerOpen)
     if(position==="fixed") executeScroll()
   }
 

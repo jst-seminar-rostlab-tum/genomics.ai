@@ -39,7 +39,6 @@ const Contact = () => {
       email: contactDetails.email,
       message: contactDetails.message,
     };
-    console.log(data);
 
     try {
       // send POST to the server

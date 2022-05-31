@@ -14,7 +14,6 @@ export default function () {
       .get(`/atlas/${id}/visualization`)
       .then((data) => setData(data));
   }, []);
-  console.log(data);
   return (
     <Box sx={{ height: 500 }}>
       {!data && <CircularProgress />}
