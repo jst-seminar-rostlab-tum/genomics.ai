@@ -15,7 +15,7 @@ const ModelsGrid = ({ models, path, compatibleModels = null, selectedModel = nul
         {models && models.map((model) => (
           <Grid key={model._id} item xs={12} sm={6} md={4} lg={3}>
             <ModelCard
-              title={`Model ${model.name}`}
+              title={model.name}
               description={model.description}
               learnMoreLink={`${path}/models/${model._id}`}
               disabled={compatibleModels && (!compatibleModels.map((m) => m.toLowerCase()).includes(model.name.toLowerCase()) || compatibleModels.length == 0)}
