@@ -7,12 +7,14 @@ import NavBar from 'components/NavBar';
 import Footer from 'components/Footer';
 import LoginForm from 'components/LoginForm';
 import RegistrationForm from 'components/RegistrationForm';
+import { useAuth } from 'shared/context/authContext';
 
 export default function Privacy() {
   const [isLoginFormVisible, setLoginFormVisible] = useState(false);
   const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
 
   const history = useHistory();
+  const [user, setUser] = useAuth()
 
   const onLoginClicked = useCallback(() => {
     console.log('login');
@@ -34,7 +36,7 @@ export default function Privacy() {
     setRegistrationFormVisible(false);
   }, [setRegistrationFormVisible]);
 
-  const executeScroll = () => history.push({ pathname: '/', state: { contact_us: true } });
+  const executeScroll = () => user ? history.push({ pathname: '/sequencer/help' }) : history.push({ pathname: '/', state: { contact_us: true } });
 
   const regForm = isRegistrationFormVisible
     && <RegistrationForm visible={isRegistrationFormVisible} onClose={onRegistrationFormClosed} />;
@@ -151,7 +153,7 @@ export default function Privacy() {
               <p>Helmholtz Zentrum München</p>
               <p>Ingolstädter Landstraße 1</p>
               <p>85764 Neuherberg</p>
-              <p>Detuschland</p>
+              <p>Deutschland</p>
               <p>Phone: [placeholder]</p>
               <p>Email: [placeholder]</p>
               <p>Website: genecruncher.com</p>

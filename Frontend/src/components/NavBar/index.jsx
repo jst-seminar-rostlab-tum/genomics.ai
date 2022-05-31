@@ -7,9 +7,7 @@ import { colors } from "shared/theme/colors";
 import { useEffect, useRef, useState } from "react";
 
 import { useAuth } from 'shared/context/authContext';
-
-// REMOVE THIS LATER
-import UserProfileImage from "assets/user.png";
+import ProfileImage from "components/ProfileImage";
 
 //In styled(), we cannot use different width to fix different resolution
 //we have to use sx
@@ -75,10 +73,10 @@ function DrawerBar({ open, setOpen, executeScroll }) {
 
         <Drawer open={open} anchor="bottom" onClose={() => setOpen(false)}>
           <Box sx={{ width: "100vw", height: "25vh", bgcolor: "white", display: "flex", flexDirection: "column", justifyContent: "space-evenly", alignItems: "center" }}>
-            <LinkBox to="/about"><DrawerNavlink>About us</DrawerNavlink></LinkBox>
-            <LinkBox to="/docs"><DrawerNavlink>Docs</DrawerNavlink></LinkBox>
-            <Box onClick={executeScroll} sx={{ cursor: "pointer" }}><DrawerNavlink>Contact us</DrawerNavlink></Box>
             <LinkBox to="/explore"><DrawerNavlink>Explore</DrawerNavlink></LinkBox>
+            <DrawerNavlink onClick={()=>window.open("https://genecruncher.readthedocs.io/")}>Docs</DrawerNavlink>
+            <LinkBox to="/about"><DrawerNavlink>About</DrawerNavlink></LinkBox>
+            <Box onClick={executeScroll} sx={{ cursor: "pointer" }}><DrawerNavlink>Contact</DrawerNavlink></Box>
           </Box>
         </Drawer>
       </Box>
@@ -227,7 +225,7 @@ export default function Navbar({
               disableRipple
               sx={{
                 bgcolor: "white",
-                ":hover": { bgcolor: "primary.dark" }
+                ":hover": { bgcolor: "white" }
               }}
             >
               <img width={28} alt="logo" src={logo} />
@@ -235,17 +233,18 @@ export default function Navbar({
             <Navlink fontWeight="bold" main={true} >genomics.ai</Navlink>
           </LinkBox>
           <LinkBox to="/explore"><Navlink>Explore</Navlink></LinkBox>
-          <LinkBox to="/about"><Navlink>About us</Navlink></LinkBox>
-          <Box sx={{ cursor: "pointer" }} onClick={executeScroll}><Navlink>Contact us</Navlink></Box>
-          <LinkBox to="/docs"><Navlink>Docs </Navlink></LinkBox>
+          <Box sx={{cursor: "pointer"}} onClick={()=>window.open("https://genecruncher.readthedocs.io/")}><Navlink>Docs</Navlink></Box>
+          <LinkBox to="/about"><Navlink>About</Navlink></LinkBox>
+          <Box sx={{ cursor: "pointer" }} onClick={executeScroll}><Navlink>Contact</Navlink></Box>
         </Leftbar>
         <Rightbar>
             {!user && <Login onClick={onLoginClicked}>Log In</Login>}
             {!user && <Signup onClick={onSignUpClicked}>Sign Up</Signup>}
             {
               user && 
-              <IconButton sx={{ border: "4px solid white", p: "0" }} onClick={() => history.push("/")}>
-                <Avatar alt={user.firstName} src={UserProfileImage} />
+              <IconButton onClick={() => history.push("/")}>
+                {/* <Avatar alt={user.firstName} src={UserProfileImage} /> */}
+                <ProfileImage sizePixels={40} />
               </IconButton>
             }
         </Rightbar>

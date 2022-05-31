@@ -1,0 +1,102 @@
+[
+  {
+    "name": "Fabian Nowak",
+    "roles": ["Backend Developer & Team Lead"],
+    "img": "",
+    "dscp": "",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Pellumb Baboci",
+    "roles": ["Backend Developer"],
+    "img": "memberphotos/backend/Backend_Pellumb_Baboci.jpeg",
+    "dscp": "",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Valon Haliti",
+    "roles": ["Backend Developer"],
+    "img": "",
+    "dscp": "",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Erona Vrapcani",
+    "roles": ["Backend Developer"],
+    "img": "",
+    "dscp": "",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Isaac Misael Olguín Nolasco",
+    "roles": ["Backend Developer"],
+    "img": "",
+    "dscp": "",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Atamert Rahma",
+    "roles": ["Backend Developer"],
+    "img": "memberphotos/backend/Backend_Atamert_Rahma.jpg",
+    "dscp": "",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Lars Frölich",
+    "roles": ["Backend Lead & Developer (2021)"],
+    "img": "memberphotos/old/backend/Backend_Lars_Froelich.jpg",
+    "dscp": "B.Sc. Informatics at TUM ",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Matthias Michailow",
+    "roles": ["Backend Developer (2021)"],
+    "img": "memberphotos/old/backend/Backend_Matthias Michailow.jpg",
+    "dscp": "Master's student in Informatics at TUM ",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Yi Rui Cui",
+    "roles": ["Backend + ML Developer (2021)"],
+    "img": "memberphotos/old/backend/Backend_Yi Rui Cui.jpg",
+    "dscp": "B.Sc. Informatics: Games Engineering at TUM",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Manuel Brandstetter",
+    "roles": ["Backend Developer (2021)"],
+    "img": "memberphotos/old/backend/Backend_Manuel_Brandstetter.jpg",
+    "dscp": " Full-stack web developer and Master's student in Informatics at TUM",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  }
+]

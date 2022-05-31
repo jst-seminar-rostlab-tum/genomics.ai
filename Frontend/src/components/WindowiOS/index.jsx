@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import { Circle } from "@mui/icons-material"
-import { Box, Typography } from "@mui/material"
+import { Box, Typography, Link } from "@mui/material"
 import { colors } from "shared/theme/colors"
 import tum from 'assets/landing-illustrations/tum-logo.png';
 import rostlab from 'assets/landing-illustrations/rostlab.png';
@@ -55,11 +55,10 @@ const WindowiOS = ({ onSignUpClicked }) => {
           Transfer learning with Architecture Surgery on Single-cell data.
         </Typography>
         <Box sx={{ margin: "2em 0 0 0px", display: "flex", flexDirection: "row", gap: "10px", alignItems: "center" }}>
-          <CustomButton onClick={onSignUpClicked} sx={{ width: "150px" }}>Sign up</CustomButton>
+          <CustomButton onClick={onSignUpClicked} sx={{ width: "100px" }}>Sign up</CustomButton>
         </Box>
         <Box sx={{ marginBlock: "10px", display: "flex", flexDirection: "row", gap: "10px", alignItems: "center" }}>
-          <Typography sx={{ color: colors.neutral[200] }}>Test out our GeneMapper. No need to sign up.</Typography>
-          <CustomButton type="secondary" onClick={() => history.push("/explore")} sx={{ color: colors.secondary1[700] }}>Explore</CustomButton>
+          <Box sx={{ color: colors.neutral[200] }}><Link href="#/explore" color={colors.secondary1[300]} fontWeight="bold" sx={{ textDecoration: "none" }}>Try out</Link> our GeneMapper. No need to sign up.</Box>
         </Box>
         
         {/* DIVIDER */}

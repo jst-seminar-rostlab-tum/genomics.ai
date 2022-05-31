@@ -3,27 +3,16 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { LoadingButton } from '@mui/lab';
 import { Alert, Snackbar } from '@mui/material';
 import validator from 'validator';
 
+import Button from 'components/CustomButton';
 import ProfileImage from 'components/ProfileImage';
 
 import styles from './settings.module.css';
-import updateProfile from 'shared/services/SettingsLogic';
 import { useAuth } from 'shared/context/authContext';
+import ProfileService from 'shared/services/Profile.service';
 
-const myTheme = createTheme({
-  palette: {
-    primary: {
-      main: '#0075FF',
-    },
-    secondary: {
-      main: '#6B7379',
-    },
-  },
-});
 
 function PasswordSection({ onPasswordInfoChange, errors, changePassword }) {
   if (changePassword) {
@@ -65,10 +54,8 @@ function PasswordSection({ onPasswordInfoChange, errors, changePassword }) {
   return null;
 }
 
-function Settings({ sidebarShown }) {
-  const [user, setUser] = useAuth();
-  /* Booleans */
-  const paddingL = useCallback(() => (sidebarShown ? '130px' : '380px'), [sidebarShown]);
+function Settings() {
+  const [user] = useAuth();
 
   // Password Change
   const [changePassword, setChangePassword] = React.useState(false);
@@ -131,7 +118,7 @@ function Settings({ sidebarShown }) {
   const saveUserData = () => {
     if (isValidInput() && isValidPasswordInfo()) {
       setSaveInProgress(true);
-      updateProfile(userInfo, changePassword ? passwordInfo.newPassword : null, setUser)
+      ProfileService.updateProfile(userInfo, changePassword ? passwordInfo.newPassword : null)
         .catch((err) => {
           setErrors((prevState) => ({ ...prevState, response: "Couldn't save changes :/" }));
           console.log(err);
@@ -232,16 +219,8 @@ function Settings({ sidebarShown }) {
             />
           </div>
 
-          <div
-            className={styles.divider}
-            style={{ marginTop: '40px' }}
-          />
-
-          <Stack
-            spacing={5}
-            direction="row"
-          >
-            <div className={styles.headline}> Password </div>
+          <div className={styles.inputComponent}>
+            <div className={styles.inputText}>Password</div>
             <FormControlLabel
               label="Change Password"
               sx={{ m: 1 }}
@@ -252,7 +231,7 @@ function Settings({ sidebarShown }) {
                 />
               )}
             />
-          </Stack>
+          </div>
 
           <PasswordSection
             errors={errors}
@@ -261,28 +240,15 @@ function Settings({ sidebarShown }) {
             onPasswordInfoChange={onPasswordInfoChange}
           />
 
-          <div
-            className={styles.divider}
-            style={{ marginTop: '40px' }}
-          />
-
-          <ThemeProvider theme={myTheme}>
-            <Stack
-              spacing={2}
-              direction="row"
-              style={{ height: '55px', width: '400px' }}
-            >
-              <LoadingButton
-                variant="contained"
-                color="primary"
-                loading={saveInProgress}
-                style={{ width: '185px', borderRadius: '10px', fontWeight: 'bold' }}
-                onClick={saveUserData}
-              >
-                Save
-              </LoadingButton>
-            </Stack>
-          </ThemeProvider>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'flex-start',
+          }}
+          >
+            <Button disabled={saveInProgress} onClick={saveUserData}>
+              {saveInProgress ? 'Saving...' : 'Save'}
+            </Button>
+          </div>
         </Stack>
 
       </Stack>

@@ -1,0 +1,162 @@
+[
+  {
+    "name": "Vigan Lladrovci",
+    "roles": ["Frontend Developer & Team Lead"],
+    "img": "",
+    "dscp": "",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Nikita Charushnikov",
+    "roles": ["Frontend Developer"],
+    "img": "memberphotos/frontend_1/Frontend_Nikita_Charushnikov.jpg",
+    "dscp": "",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Cem Naşit Sarıca",
+    "roles": ["Frontend Developer"],
+    "img": "memberphotos/frontend_1/Frontend_Cem_Nasit_Sarica.jpg",
+    "dscp": "",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Paul Schwind",
+    "roles": ["Frontend Developer"],
+    "img": "memberphotos/frontend_1/Frontend_Paul_Schwind.jpg",
+    "dscp": "",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Julian Giebisch",
+    "roles": ["Frontend Developer"],
+    "img": "memberphotos/frontend_1/Frontend_Julian_Giebisch.jpg",
+    "dscp": "",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Rei Balla",
+    "roles": ["Frontend Developer & Team Lead"],
+    "img": "",
+    "dscp": "",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Elif Çalışkan",
+    "roles": ["Frontend Developer"],
+    "img": "memberphotos/frontend_2/Frontend_Elif_Caliskan.jpg",
+    "dscp": "",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Gökhan Şişman",
+    "roles": ["Frontend Developer"],
+    "img": "memberphotos/frontend_2/Frontend_Gökhan_Sisman.jpeg",
+    "dscp": "",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Carlos Garzon",
+    "roles": ["Frontend Developer"],
+    "img": "",
+    "dscp": "",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Jiong Liu",
+    "roles": ["Frontend Developer"],
+    "img": "memberphotos/frontend_2/Frontend_Jiong_Liu.JPG",
+    "dscp": "",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Lennart Keller",
+    "roles": ["Frontend Developer & Team Lead"],
+    "img": "",
+    "dscp": "",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Nick Alexander Hübner",
+    "roles": ["Frontend Developer"],
+    "img": "",
+    "dscp": "",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Xufan Lu",
+    "roles": ["Frontend Developer"],
+    "img": "",
+    "dscp": "",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Evan Christopher",
+    "roles": ["Frontend Developer"],
+    "img": "memberphotos/frontend_3/Frontend_Evan_Christopher.jpg",
+    "dscp": "",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Dominik Jámbor",
+    "roles": ["Frontend Developer (2021)"],
+    "img": "memberphotos/old/frontend/Dominik.jpg",
+    "dscp": "Full-stack web developer and M.Sc. student at ELTE Budapest. ",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Liudongnan Yang",
+    "roles": ["Frontend Developer (2021)"],
+    "img": "memberphotos/old/frontend/Yang.jpg",
+    "dscp": "Master's student in Informatics at TUM",
+    "socialFB": "",
+    "socialGithub": "https://github.com/yldn",
+    "socialTwitter": "",
+    "socialLinkedIn": "https://www.linkedin.com/in/liudongnan-yang-683a3b163/"
+  }
+]

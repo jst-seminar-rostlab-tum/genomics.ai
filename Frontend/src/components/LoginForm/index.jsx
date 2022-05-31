@@ -9,7 +9,7 @@ import {
   Typography,
   Link,
 } from "@mui/material";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect, useContext } from "react";
 import validator from "validator";
 import CloseIcon from "@mui/icons-material/Close";
 import { useHistory } from "react-router-dom";
@@ -22,23 +22,32 @@ import { Modal, ModalTitle } from "components/Modal";
 import Input from "components/Input/Input";
 import CustomButton from "components/CustomButton";
 import { colors } from 'shared/theme/colors';
+import { LoginContext } from "shared/context/loginContext";
 
 function LoginForm(props) {
   const [, setUser] = useAuth();
+
   const [loginDetails, setLoginDetails] = useState({
     email: "",
     password: "",
     remember: false,
   });
 
-  const [forgotPassword, setForgotPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [isSnackbarVisible, setSnackbarVisible] = useState(false);
 
+  const { loginClose: onClose, loginVisible: visible, switchRegister: switchForm, switchForget: onForgetPassword } = useContext(LoginContext);
+
   const history = useHistory();
 
-  const onClose = useCallback(() => {
+  useEffect(() => {
+    if(localStorage.getItem("email")&&localStorage.getItem("email").length !==0) {
+      setLoginDetails({email:localStorage.getItem("email")})
+    }
+  },[])
+  
+  const clearForm = () => {
     setLoginDetails({
       email: "",
       password: "",
@@ -46,8 +55,8 @@ function LoginForm(props) {
     });
     setErrors({});
     setLoading(false);
-    props.onClose();
-  }, [setLoginDetails, setErrors, setLoading, props]);
+    onClose();
+  }
 
   const handleTextChange = useCallback(
     (e) => {
@@ -69,11 +78,6 @@ function LoginForm(props) {
     [setLoginDetails]
   );
 
-  const handlepasswordForget = useCallback(() => {
-    onClose();
-    setForgotPassword(true);
-  }, [setForgotPassword]);
-
   function validateInput() {
     let currentErrors = {};
     if (!validator.isEmail(loginDetails.email)) {
@@ -92,9 +96,12 @@ function LoginForm(props) {
   async function onSuccessfulLogin(data) {
     localStorage.setItem("jwt", data.jwt);
     localStorage.setItem("user", JSON.stringify(data.user));
+    if(loginDetails.remember) {
+      localStorage.setItem("email",loginDetails.email);
+    }
     onClose();
+    history.go(0);
     await setUser(data.user);
-    history.push("/sequencer/genemapper");
   }
 
   function onFailedLogin(code) {
@@ -137,7 +144,7 @@ function LoginForm(props) {
         password: loginDetails.password,
       }),
     };
-    console.log(BACKEND_ADDRESS);
+
     fetch(`${BACKEND_ADDRESS}/auth`, loginRequest)
       .then((response) => {
         setLoading(false);
@@ -153,12 +160,12 @@ function LoginForm(props) {
           await onSuccessfulLogin(data);
         }
       });
+
+    history.push("/");
   }, [setLoading, loginDetails, setErrors]);
 
-  const { close, visible } = props;
-  const [isOpen, setIsOpen] = useState(false);
 
-  console.log(loginDetails);
+  
   return (
     <div>
       <Modal setOpen={(o) => !o && onClose()} isOpen={visible}>
@@ -168,6 +175,8 @@ function LoginForm(props) {
             <Input
               id="email"
               type="email"
+              defaultValue={localStorage.getItem("email")}
+              
               error={!!errors.email}
               helperText={errors.email}
               label="E-mail"
@@ -201,14 +210,23 @@ function LoginForm(props) {
               <CustomButton type="primary" onClick={doLogin}>
                 <Typography>Sign in</Typography>
               </CustomButton>
-              <Typography mt={1}>
+              <Typography mt={1} textAlign="center">
                 <Link
                   href="#"
-                  onClick={handlepasswordForget}
-                  className={styles.pwReminderLink}
+                  onClick={() => { onForgetPassword(true); clearForm(); }}
                 >
                   Forgot password?
                 </Link>
+              </Typography>
+              <Typography mt={1} textAlign="center">
+                Don't have an account yet? Sign up {" "}
+                <Link
+                  href="#"
+                  onClick={() => { switchForm(true); clearForm(); }} 
+                > 
+                  here
+                </Link>
+                {"."}
               </Typography>
             </Box>
           </Grid>
@@ -228,10 +246,6 @@ function LoginForm(props) {
           {errors.response ? errors.response : "Login successful!"}
         </Alert>
       </Snackbar>
-      <PasswordForgetForm
-        visible={forgotPassword}
-        onClose={() => setForgotPassword(false)}
-      />
     </div>
   );
 }

@@ -10,7 +10,7 @@ import WindowiOS from "components/WindowiOS";
 import Footer from "components/Footer";
 import LoginForm from 'components/LoginForm'
 import RegistrationForm from 'components/RegistrationForm'
-import { useCallback, useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { colors } from "shared/theme/colors";
 import graphic1 from 'assets/landing-illustrations/science.png';
 import graphic2 from 'assets/landing-illustrations/upload.png';
@@ -19,34 +19,26 @@ import graphic4 from 'assets/landing-illustrations/results.png';
 import CustomButton from "components/CustomButton";
 import Input from 'components/Input/Input'
 import { useHistory, useLocation } from "react-router-dom";
+import PasswordForgetForm from "components/PasswordForgetForm";
+import ContactForm from 'components/ContactForm';
+import { LoginContext } from "shared/context/loginContext";
 
 const Home = () => {
-
-  const [isLoginFormVisible, setLoginFormVisible] = useState(false);
-  const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
 
   const history = useHistory();
   const location = useLocation();
 
-  const onLoginClicked = useCallback(() => {
-    console.log("login")
-    setRegistrationFormVisible(false)
-    setLoginFormVisible(true)
-  }, [setLoginFormVisible])
+  const context = useContext(LoginContext)
 
-  const onSignUpClicked = useCallback(() => {
-    console.log("register")
-    setLoginFormVisible(false);
-    setRegistrationFormVisible(true);
-  }, [setRegistrationFormVisible])
+  const onLoginClicked = () => {
+    context.switchRegister(false)
+    context.switchLogin(true)
+  }
 
-  const onLoginFormClosed = useCallback(() => {
-    setLoginFormVisible(false);
-  }, [setLoginFormVisible]);
-
-  const onRegistrationFormClosed = useCallback(() => {
-    setRegistrationFormVisible(false);
-  }, [setRegistrationFormVisible]);
+  const onSignUpClicked = () => {
+    context.switchLogin(false);
+    context.switchRegister(true);
+  }
 
   //here we get the ref of the contact us, in order to be able to scroll to it
   const contactUsBoxRef = useRef()
@@ -63,10 +55,9 @@ const Home = () => {
 
   return (
     <Box style={{ overflow: "hidden" }} sx={{ position: "relative" }}>
-
-      {isLoginFormVisible && <LoginForm visible={isLoginFormVisible} onClose={onLoginFormClosed} />}
-      {isRegistrationFormVisible && <RegistrationForm visible={isRegistrationFormVisible} onClose={setRegistrationFormVisible} />}
-
+      {context.loginVisible && <LoginForm />}
+      {context.registerVisible && <RegistrationForm  />}
+      {context.forgetVisible && <PasswordForgetForm />}
       {/* STARTING PAGE */}
       <Box sx={{ width: window.width, bgcolor: colors.primary[800], position: "relative", paddingBottom: "4em" }}>
         {/* NAVBAR HERE */}
@@ -180,7 +171,7 @@ const Home = () => {
         <Box ref={contactUsBoxRef} sx={{ position: "relative", margin: "4em auto", position: "relative", width: "100%" }} >
           <Typography sx={{ textAlign: "center" }} fontSize="2em" fontWeight="bold">Contact Us</Typography>
           <Typography marginTop="1em" sx={{ textAlign: "center" }} fontSize="1em">Please message us in case you have any questions, feedback or collaboration-related inquiries concerning Genomics.ai.</Typography>
-          <Box sx={{
+          {/* <Box sx={{
             width: "100%",
             margin: "2em auto 0em auto",
             padding: "2em 0em",
@@ -199,7 +190,8 @@ const Home = () => {
                 <CustomButton>Send</CustomButton>
               </Box>
             </Stack>
-          </Box>
+          </Box> */}
+          <ContactForm />
         </Box>
       </Box>
 

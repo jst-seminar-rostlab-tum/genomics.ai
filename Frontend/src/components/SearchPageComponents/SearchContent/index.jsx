@@ -28,8 +28,8 @@ function SearchContent({
     />
   );
 
-  const atlases = <AtlasesGrid atlases={searchResult} searchedKeyword={searchedKeyword} path="/sequencer/search" />;
-  const models = <ModelsGrid models={searchResult} searchedKeyword={searchedKeyword} path="/sequencer/search" />;
+  const atlases = <AtlasesGrid atlases={searchResult} searchedKeyword={searchedKeyword} path="/sequencer/search" isSearchPage/>;
+  const models = <ModelsGrid models={searchResult} searchedKeyword={searchedKeyword} path="/sequencer/search" isSearchPage/>;
   return (
     <>
       <ResultStatus

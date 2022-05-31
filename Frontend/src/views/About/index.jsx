@@ -3,7 +3,7 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import { Box, Typography, Grid, IconButton, Divider, Avatar } from '@mui/material';
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, useContext } from 'react';
 import {
   Switch, Route, Redirect, useHistory, useLocation, useParams,
   useRouteMatch, Link
@@ -14,16 +14,16 @@ import LoginForm from 'components/LoginForm'
 import RegistrationForm from 'components/RegistrationForm'
 import { colors } from 'shared/theme/colors';
 
-import organizationData from './origanization/organization.json'
-import frontendDataOld from './frontend/frontend_old.json';
-import backendDataOld from './backend/backend_old.json';
-import visualizationDataOld from './visualization/visualization_old.json';
+import organizationData from './data/organization.json'
+// import frontendDataOld from './frontend/frontend_old.json';
+// import backendDataOld from './backend/backend_old.json';
+// import visualizationDataOld from './visualization/visualization_old.json';
 
-import frontend1Data from './frontend/frontend_1.json'
-import frontend2Data from './frontend/frontend_2.json'
-import frontend3Data from './frontend/frontend_3.json'
-import backendData from './backend/backend.json'
-import visualizationData from './visualization/visualization.json'
+import frontendData from './data/frontend.json'
+import backendData from './data/backend.json'
+import visualizationData from './data/visualization.json'
+import { LoginContext } from 'shared/context/loginContext';
+import PasswordForgetForm from 'components/PasswordForgetForm';
 
 function FbItem({link}) {
   return (
@@ -67,13 +67,16 @@ function MemberCard(props){
 
   const fontColor = colors.primary[800]
 
-  const { width="100%", name, role, img, dscp, socialFB, socialGithub, socialLinkedIn, socialTwitter } = props
+  const { width="100%", name, roles, img, dscp, socialFB, socialGithub, socialLinkedIn, socialTwitter } = props
 
   return (
     <Box sx={{width, display: "flex", flexDirection: "column", gap: "0.3em", alignItems: "center"}}>
       <CustomImg src={img} />
       <Typography sx={{color: fontColor, textAlign: "center"}} fontWeight="bold" fontSize="1.2em" >{name}</Typography>
-      <Typography sx={{color: fontColor, textAlign: "center"}} fontSize="0.9em">{role}</Typography>
+      {
+        roles.map((role) => <Typography sx={{color: fontColor, textAlign: "center"}} fontSize="0.9em">{role}</Typography>)
+      }
+      {/* <Typography sx={{color: fontColor, textAlign: "center"}} fontSize="0.9em">{role}</Typography> */}
       <Typography sx={{color: fontColor, textAlign: "center"}} fontSize="0.9em">{dscp}</Typography>
       <Box sx={{display: "flex", flexDirection: "row", gap: "5px"}}>
         {socialFB ? <FbItem link={socialFB} /> : <></>}
@@ -108,37 +111,27 @@ function MemberSection({name, data}){
 
 export default function About(props){
 
-  const [isLoginFormVisible, setLoginFormVisible] = useState(false);
-  const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
-
   const history = useHistory();
-    
-  const onLoginClicked = useCallback(() => {
-    console.log('login');
-    setRegistrationFormVisible(false);
-    setLoginFormVisible(true);
-  }, [setLoginFormVisible]);
+  
+  const context = useContext(LoginContext)
 
-  const onSignUpClicked = useCallback(() => {
-    console.log('register');
-    setLoginFormVisible(false);
-    setRegistrationFormVisible(true);
-  }, [setRegistrationFormVisible]);
+  const onLoginClicked = () => {
+    context.switchRegister(false)
+    context.switchLogin(true)
+  }
 
-  const onLoginFormClosed = useCallback(() => {
-    setLoginFormVisible(false);
-  }, [setLoginFormVisible]);
-
-  const onRegistrationFormClosed = useCallback(() => {
-    setRegistrationFormVisible(false);
-  }, [setRegistrationFormVisible]);
+  const onSignUpClicked = () => {
+    context.switchLogin(false);
+    context.switchRegister(true);
+  } 
 
   const executeScroll = () => history.push({pathname: '/', state: {contact_us: true}})
 
   return (
     <Box sx={{overflowX: "hidden"}}>
-      {isLoginFormVisible && <LoginForm visible={isLoginFormVisible} onClose={onLoginFormClosed} />}
-      {isRegistrationFormVisible && <RegistrationForm visible={isRegistrationFormVisible} onClose={onRegistrationFormClosed} />}
+      {context.loginVisible && <LoginForm />}
+      {context.registerVisible && <RegistrationForm  />}
+      {context.forgetVisible && <PasswordForgetForm />}
 
       <Box>
         <NavBar
@@ -157,7 +150,7 @@ export default function About(props){
         <Typography fontWeight="bold" fontSize="1em">Genomics.ai was developed by a team of 12 students from the Technical University of Munich (TUM) under the guidance of Dr. Guy Yachdav.</Typography>
       </Box>
 
-      <Box sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+      {/* <Box sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
         <MemberSection name="Organisation" data={organizationData} />
         <MemberSection name="Frontend 1" data={frontend1Data} />
         <MemberSection name="Frontend 2" data={frontend2Data} />
@@ -168,12 +161,13 @@ export default function About(props){
 
       <Box sx={{margin: "3em auto", display: "flex", flexDirection: "column", alignItems: "center", width: { xs: "90%", sm: "90%", md: "70%", lg: "70%", xl: "70%" }, textAlign: "center"}}>
         <Typography fontWeight="bold" fontSize="1em">Contributors from previous years</Typography>
-      </Box>
+      </Box> */}
 
       <Box sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
-        <MemberSection name="Frontend" data={frontendDataOld} />
-        <MemberSection name="Backend" data={backendDataOld} />
-        <MemberSection name="Visualisation" data={visualizationDataOld} />
+        <MemberSection name="Organisation" data={organizationData} />
+        <MemberSection name="Frontend" data={frontendData} />
+        <MemberSection name="Backend" data={backendData} />
+        <MemberSection name="Visualisation" data={visualizationData} />
       </Box>
 
       <Footer />

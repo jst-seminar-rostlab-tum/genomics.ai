@@ -31,7 +31,7 @@ import { colors } from 'shared/theme/colors';
  */
 const Input = (props) => { 
 
-  const {id,helperText, placeholder, errorHandler, disabledHandler, isRequired=false, defaultValue, multiline=false, onChangeEvent=null, label='Required', maxLength=40, type='text'} = props
+  const {id,helperText, placeholder, errorHandler, disabledHandler, isRequired=false, defaultValue, value, multiline=false, onChangeEvent=null, onBlurEvent=null, onFocusEvent=null, label='Required', maxLength=40, type='text'} = props
   return (
   <Box
     component="form"
@@ -40,7 +40,6 @@ const Input = (props) => {
       '& .MuiFormLabel-asterisk': { color: colors.error.main },
     }}
     noValidate
-    autoComplete="off"
   >
     <TextField
       error={errorHandler}
@@ -51,12 +50,15 @@ const Input = (props) => {
       inputProps={{ maxLength }}
       multiline={multiline}
       type={type}
+      value={value}
       id={id}
       rows={4}
       label={label}
       helperText={helperText}
       variant="standard"
       onChange={(e) => (onChangeEvent !== null ? onChangeEvent(e) : null)}
+      onBlur={(e) => (onBlurEvent !== null ? onBlurEvent(e) : null)}
+      onFocus={(e) => (onFocusEvent !== null ? onFocusEvent(e) : null)}
     />
   </Box>
 )};

@@ -15,6 +15,7 @@ import { useAuth } from 'shared/context/authContext';
 import Explore from 'views/Explore';
 import InstitutionPage from 'views/InstitutionPage';
 import TeamPage from 'views/TeamPage';
+import { InstitutionProvider } from 'shared/context/institutionContext';
 
 const DashboardContent = () => {
   const [sidebarShown] = useState(true);
@@ -35,7 +36,9 @@ const DashboardContent = () => {
         </Route>
 
         <Route path={`${path}/community`}>
-          <CommunityOverview />
+          <InstitutionProvider>
+            <CommunityOverview />
+          </InstitutionProvider>
         </Route>
         <Route path={`${path}/institutions/:id`}>
           <InstitutionPage />
@@ -63,11 +66,10 @@ const DashboardContent = () => {
         <Route path={`${path}/explore`} render={() => <Explore />} />
 
         <Route path={`${path}/settings`}>
-          <Settings
-            className={styles.subpage}
-          />
+          <Settings className={styles.subpage} />
         </Route>
       </Switch>
+      {/* <Footer /> */}
     </div>
   );
 };
