@@ -13,7 +13,7 @@
     "build:ts": "tsc -p .",
     "build:emails:createtailwind": "cd scripts && npx tailwindcss -c ./tailwind.config.js -i ./base.css -o build/tailwind.css",
     "build:emails:compile": "node scripts/compileEmails.js",
-    "build:emails": "npm-run-all build:emails:*",
+    "build:emails": "npm-run-all build:emails:compile",
     "full-backend-local:docker": "docker-compose -f dev/docker-compose.yml up -d",
     "full-backend-local": "npm-run-all full-backend-local:docker build:emails dev"
   },
@@ -68,6 +68,7 @@
     "@types/uuid": "^8.3.4",
     "@types/ws": "^8.2.0",
     "juice": "^8.0.0",
+    "mjml": "^4.12.0",
     "source-map-support": "^0.5.20",
     "tailwindcss": "^3.0.24",
     "tsc-watch": "^5.0.3"

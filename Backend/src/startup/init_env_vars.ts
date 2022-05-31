@@ -19,7 +19,8 @@ export function init_env_vars() {
     "FRONTEND_URL",
     "JWT_SECRET",
     "CONTACT_US",
-    "PROJECT_RECYCLE_BIN_LIFETIME_DAYS"
+    "PROJECT_RECYCLE_BIN_LIFETIME_DAYS",
+    "STATIC_FILES_URL"
   ];
   required_env_vars.forEach((required_env_var) => {
     if (!(required_env_var in process.env))
@@ -33,7 +34,7 @@ export function init_env_vars() {
 
   setStdEnvValue("PORT", "8050");
   setStdEnvValue("DATABASE_URI", "mongodb://localhost:27017/dev");
-  setStdEnvValue("API_URL", "http://localhost:8050");
+  setStdEnvValue("API_URL", "http://localhost:8050/v1");
   setStdEnvValue("FRONTEND_URL", "http://localhost:3000");
 
   setStdEnvValue("JWT_SECRET", String(Math.random()));
@@ -44,4 +45,5 @@ export function init_env_vars() {
   setStdEnvValue("S3_ACCESS_KEY_ID", "minioadmin");
   setStdEnvValue("S3_SECRET_ACCESS_KEY", "minioadmin");
   setStdEnvValue("PROJECT_RECYCLE_BIN_LIFETIME_DAYS", "3");
+  setStdEnvValue("STATIC_FILES_URL", "");
 }
