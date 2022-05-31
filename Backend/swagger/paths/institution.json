@@ -133,8 +133,11 @@
         "200": {
           "description": "OK"
         },
-        "400": {
-          "description": "Failed. Bad post data."
+        "404": {
+          "description": "Institution ${institutionId} not found`"
+        },
+        "500": {
+          "description": "INTERNAL_SERVER_ERROR"
         }
       }
     }
@@ -221,9 +224,7 @@
         }
       ],
       "summary": "Join an institution via a join token (sent via email)",
-      "tags": [
-        "Institution"
-      ],
+      "tags": ["Institution"],
       "responses": {
         "200": {
           "description": "Success message for user"
@@ -401,8 +402,8 @@
         "200": {
           "description": "OK"
         },
-        "400": {
-          "description": "Failed. Bad post data."
+        "500": {
+          "description": "Internal server error"
         }
       }
     }
@@ -425,8 +426,8 @@
         "200": {
           "description": "OK"
         },
-        "400": {
-          "description": "Failed. Bad post data."
+        "404": {
+          "description": "Institution with id provided not found."
         }
       }
     },
@@ -483,7 +484,7 @@
           "schema": {
             "type": "string"
           }
-        }, 
+        },
         {
           "in": "path",
           "name": "userid",
@@ -518,7 +519,7 @@
           "schema": {
             "type": "string"
           }
-        }, 
+        },
         {
           "in": "path",
           "name": "userid",
