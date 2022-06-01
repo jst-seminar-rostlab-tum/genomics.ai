@@ -61,7 +61,7 @@ function TeamProjectList({
     TeamService.getMyTeams().then((teams) => setUserTeams(teams));
     ProjectService.getTeamProjects(team._id).then((data) => setProjects(data));
     setIsLoading(false);
-  }, []);
+  }, [team]);
 
   if (!team.memberIds?.includes(user._id) && ((team.visibility === 'PRIVATE')
     || (team.visibility === 'BY_INSTITUTION' && !institution.memberIds?.includes(user._id)))) {

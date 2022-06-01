@@ -47,7 +47,7 @@ function ResultVisualization({ dataUrl, onlyUmap }) {
 
   useEffect(() => {
     if (umap && umapSize.width > 0 && umapSize.height > 0) {
-      umap.render(umapSize.width, umapSize.height);
+      umap.resize(umapSize.width, umapSize.height);
     }
   }, [umap, umapSize]);
 
@@ -101,7 +101,7 @@ function ResultVisualization({ dataUrl, onlyUmap }) {
       >
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           {umap
-          && Object.keys(umap.coloringModes).includes('predictions')
+          && Object.keys(umap.coloringModes).includes('predicted')
           && (
             <>
               <Box>
