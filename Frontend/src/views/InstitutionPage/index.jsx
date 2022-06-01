@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import EditIcon from '@mui/icons-material/ModeEditOutline';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
-import InstitutionMemberList from 'components/institutions/InstitutionMemberList';
 import InstitutionMemberListPopup from 'components/institutions/InstitutionMemberListPopup';
 import styles from './institutionPage.module.css';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -34,10 +33,10 @@ function InstitutionPage() {
   const [open, setOpen] = useState(false);
   const [editedDescription, setEditedDescription] = useState('');
   const [editMode, setEditMode] = useState(false);
-  const [open2, setOpen2] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
 
   const handleClickOpen = () => {
-    setOpen2(true);
+    setOpenDialog(true);
   };
 
   const handleClose = (event, reason) => {
@@ -48,7 +47,7 @@ function InstitutionPage() {
   };
 
   const onClose = () => {
-    setOpen2(false);
+    setOpenDialog(false);
   };
 
   function isAdmin() {
@@ -185,6 +184,21 @@ function InstitutionPage() {
                   </span>
                 )}
             </Button>
+            <Dialog open={openDialog} fullWidth>
+              <DialogTitle>
+                Member List
+                <IconButton onClick={onClose} sx={{ position: 'absolute', left: '90%' }}>
+                  <CloseIcon />
+                </IconButton>
+              </DialogTitle>
+              <DialogContent style={{ maxHeight: '500px' }}>
+                <InstitutionMemberListPopup
+                  institution={institution}
+            // eslint-disable-next-line react/jsx-no-bind
+                  updateInstitution={updateInstitution}
+                />
+              </DialogContent>
+            </Dialog>
           </div>
           {/* <p className={styles.imageText}>
             {institution.memberIds?.length == 1
@@ -212,7 +226,7 @@ function InstitutionPage() {
           </button>
           )}
         </div>
-        <div className={styles.test}>
+        <div className={styles.innerContent}>
           <section>
             {isAdmin && (
             <Button
@@ -269,15 +283,6 @@ function InstitutionPage() {
               <div className={styles.cardSpacing} />
             </div>
           </section>
-          <section>
-            <h2>Members</h2>
-            <hr />
-            <InstitutionMemberList
-              institution={institution}
-            // eslint-disable-next-line react/jsx-no-bind
-              updateInstitution={updateInstitution}
-            />
-          </section>
         </div>
         {isAdmin() && <InstitutionInviteButton institution={institution} />}
         <InstitutionBackgroundImageUploadDialog
@@ -307,21 +312,6 @@ function InstitutionPage() {
         <div className={styles.footer}>
           <Footer />
         </div>
-        <Dialog open={open2} fullWidth>
-          <DialogTitle>
-            Member List
-            <IconButton onClick={onClose} sx={{ position: 'absolute', left: '90%' }}>
-              <CloseIcon />
-            </IconButton>
-          </DialogTitle>
-          <DialogContent style={{ maxHeight: '500px' }}>
-            <InstitutionMemberListPopup
-              institution={institution}
-            // eslint-disable-next-line react/jsx-no-bind
-              updateInstitution={updateInstitution}
-            />
-          </DialogContent>
-        </Dialog>
       </div>
     </>
   );
