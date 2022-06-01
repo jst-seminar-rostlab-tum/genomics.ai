@@ -20,10 +20,10 @@ const activatedColor = colors.primary['400'];
 const deactivatedColor = colors.primary['200'];
 
 /**
- *
- * @param dataUrl download link for the csv data
- * @param onlyUmap set to true if only the UMAP should be shown
- * @dataUrl url to download the data from
+ * Displays scArches result data (csv) in a UMAP. By default, additional side panels are shown
+ * with details about the result data.
+ * @param dataUrl Download link for the csv data
+ * @param onlyUmap Set to true if only the UMAP should be shown
  */
 function ResultVisualization({ dataUrl, onlyUmap }) {
   const umapContainer = useRef(null);

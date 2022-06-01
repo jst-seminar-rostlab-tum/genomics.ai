@@ -4,7 +4,7 @@ import {
   Box, Divider, IconButton, Typography,
 } from '@mui/material';
 import CustomButton from 'components/CustomButton';
-import { Modal, ModalTitle } from 'components/Modal';
+import { Modal } from 'components/Modal';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import AtlasService from 'shared/services/Atlas.service';
@@ -13,8 +13,9 @@ import ProjectInfo from '../ProjectInfo';
 import ShareMenu from '../ShareMenu';
 
 /**
- *
- * @param projectName name of the visualized project
+ * Header shown on the result page, including navigation buttons, project info,
+ * and sharing and download options
+ * @param project Object containing project data
  */
 function GeneMapperResultHeader({ project }) {
   const history = useHistory();

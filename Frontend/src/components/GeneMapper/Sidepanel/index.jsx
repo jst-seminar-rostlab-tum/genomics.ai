@@ -7,9 +7,9 @@ import React, { useState } from 'react';
 /**
  * A sidepanel for the GeneMapper to show additional information
  * that can be collaped to either the right or left side.
- * @param title heading to show at the top of the sidepanel
- * @param collapseToRight set to true if panel should be collapsing to the right
- * @param children child nodes inside the panel
+ * @param title Heading to show at the top of the sidepanel
+ * @param collapseToRight Set to true if panel should be collapsing to the right
+ * @param children Child nodes inside the panel
  */
 function Sidepanel({ title, collapseToRight, children }) {
   const [open, setOpen] = useState(true);
