@@ -26,7 +26,8 @@ Since there can a large amount of different cell batches, we only show the 14 mo
 
 .. image:: ../_static/popup_graphs.png
 
-ScArches API
+
+Models and workflow
 =================
 
 ScArches is a novel deep learning model that enables mapping query to reference datasets. The model allows the user to construct single or multi-modal (CITE-seq) references as well as classifying unlabelled query cells.
@@ -36,10 +37,10 @@ We use a REST-API that allows us to
 provide a unified endpoint for the different scarches models to backend
 and compute the query file and parse for the visualization.
 
-## Models and workflow
 We support the following models: scVI, scANVI and totalVI.
 
-### scVI
+scVI
+---------
 The scVI is an unsupervised model and does not require cell type labels for the mapping. Generally, it also takes the least amount of time to train in comparison 
 to the other models. scVI maps query to reference atlases.
 
@@ -47,7 +48,8 @@ Workflow:
 To compute the query we first get the already pretrained reference. The pretrained reference is then used to train the user query. By using an already pretrained model
 the runtime is greatly shortened. We then compute the latent representation and UMAP which is then displayed on the website.
 
-### scANVI
+scANVI
+---------
 scanVI supports labled and unlabled data and predicts the cell types. Due to that, there is an additional button on the top left (next to the query/reference button) 
 that toggles the predicted cells in the visualization.
 scANVI is a semi-supervised variant of scVI designed to leverage any available cell state annotations. Compared to unsupervised models, this model will perform better 
@@ -57,7 +59,8 @@ Workflow:
 Just like the scVI workflow we use a pretrained model and predict the unlabled cells' cell type. After that we compute the accuracy of the learned classifier.
 The model is finally saved, parsed and its latent representation and UMAP is displayed on the website.
 
-### totalVI
+totalVI
+---------
 totalVI is a multi-modal CITE-seq RNA and protein data model that can be used to map to multi-modal reference atlases.
 totalVI takes the most amount of time amongst the models and imputes the proteins that were observed 
 (you can color the visualization based on the proteins using the leiden category).
