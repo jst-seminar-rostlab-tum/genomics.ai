@@ -1,5 +1,7 @@
 import os
-import sys
+import time
+
+startTime = time.time()
 
 from scANVI.scANVI import compute_scANVI
 from scVI.scVI import compute_scVI
@@ -14,6 +16,7 @@ def default_config():
     """
     return {
         parameters.MODEL: 'scVI',
+        parameters.ATLAS: 'Pancreas',
 
         parameters.REFERENCE_DATA_PATH: 'pancreas_source.h5ad',
         parameters.QUERY_DATA_PATH: 'pancreas_query.h5ad',
@@ -26,13 +29,12 @@ def default_config():
         parameters.USE_GPU: False,
 
         # scANVI stuff
-        parameters.SCANVI_COMPARE_REFERENCE_AND_QUERY: False,
-        parameters.SCANVI_COMPARE_OBSERVED_AND_PREDICTED_CELLTYPES: False,
-        parameters.SCANVI_PREDICT_CELLTYPES: False,
+        # parameters.SCANVI_COMPARE_REFERENCE_AND_QUERY: False,
+        # parameters.SCANVI_COMPARE_OBSERVED_AND_PREDICTED_CELLTYPES: False,
+        # parameters.SCANVI_PREDICT_CELLTYPES: True,
 
         parameters.CONDITION_KEY: 'study',
         parameters.CELL_TYPE_KEY: 'cell_type',
-        parameters.TARGET_CONDITIONS: ['Pancreas CelSeq2', 'Pancreas SS2'],
         parameters.PRETRAINED_MODEL_PATH: '',
         parameters.NUMBER_OF_LAYERS: 2,
         parameters.ENCODE_COVARIATES: True,
@@ -55,7 +57,6 @@ def default_config():
         parameters.TOTALVI_MAX_EPOCHS_1: 400,
         parameters.TOTALVI_MAX_EPOCHS_2: 200,
 
-        parameters.SCANVI_DO_SURGERY: False,
         parameters.DEV_DEBUG: False,
     }
 
@@ -77,9 +78,13 @@ def merge_configs(user_config):
 
 # def query(reference_dataset, query_dataset, model_path, surgery_path,  model_type):
 def query(user_config):
+    start_time = time.time()
     configuration = merge_configs(user_config)
-    model = get_from_config(configuration, parameters.MODEL)
-    attributes = None
+    #Sets the correct condition and cell_type key
+    configuration = utils.set_keys(configuration)
+    
+    model = utils.get_from_config(configuration, parameters.MODEL)
+    configuration['atlas'] = utils.translate_atlas_to_directory(configuration)
     if model == 'scVI':
         attributes = compute_scVI(configuration)
     elif model == 'scANVI':
@@ -89,10 +94,14 @@ def query(user_config):
     else:
         raise ValueError(model + ' is not one of the supported models')
     configuration["attributes"] = attributes
-    if get_from_config(configuration, parameters.WEBHOOK) is not None and len(get_from_config(configuration, parameters.WEBHOOK)) > 0:
+    run_time = (time.time() - start_time)
+    print('completed query in ' + str(run_time) + 's and stored it in: ' + get_from_config(configuration,
+                                                                                           parameters.OUTPUT_PATH))
+    if get_from_config(configuration, parameters.WEBHOOK) is not None and len(
+            get_from_config(configuration, parameters.WEBHOOK)) > 0:
         utils.notify_backend(get_from_config(configuration, parameters.WEBHOOK), configuration)
     return configuration
-# query('data/ref/source_data.h5ad', 'data/query/target_data.h5ad', 'data/model', 'data/surgery/', 'scVI')
+
 
 if __name__ == "__main__":
     os.environ["AWS_BUCKET"] = 'minio-bucket'
@@ -100,4 +109,5 @@ if __name__ == "__main__":
     os.environ['AWS_ACCESS_KEY'] = 'minioadmin'
     os.environ['AWS_SECRET_KEY'] = 'minioadmin'
 
-    query({parameters.DEV_DEBUG: True})
+    query({})
+

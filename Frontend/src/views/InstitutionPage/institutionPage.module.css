@@ -11,12 +11,13 @@
     justify-content: center;
 }
 
-.test {
-    padding: 10px 60px 0px 140px;
+.innerContent {
+    padding: 10px 60px 50px 140px;
 }
 
 .imageText {
     text-align: center;
+    justify-content: center;
     padding-bottom: 20px;
 }
 
@@ -79,4 +80,22 @@
   align-items: center;
   cursor: pointer;
   float: right;
+}
+
+.all {
+    position: relative;
+    min-height: 100vh;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.memberButton {
+    justify-content: center;
+    display: flex;
+    margin-top: 10px;
+    padding-bottom: 20px;
 }
