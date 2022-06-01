@@ -1,0 +1,769 @@
+{
+  "/teams": {
+    "post": {
+      "summary": "Create a team",
+      "tags": [
+        "Team"
+      ],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "visibility": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "title",
+                "description",
+                "visibility"
+              ],
+              "additionalProperties": false
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "OK"
+        },
+        "400": {
+          "description": "Failed. Bad post data."
+        }
+      }
+    },
+    "get": {
+      "summary": "Get all teams that meet  query params",
+      "tags": [
+        "Team"
+      ],
+      "parameters": [
+        {
+          "in": "query",
+          "name": "keyword",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "in": "query",
+          "name": "sortBy",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "in": "query",
+          "name": "visibility",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK"
+        },
+        "400": {
+          "description": "Failed. Bad post data."
+        }
+      }
+    }
+  },
+  "/teams/{id}": {
+    "put": {
+      "summary": "Update a team",
+      "tags": [
+        "Team"
+      ],
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "visibility": {
+                  "type": "string",
+                  "enum": [
+                    "PRIVATE",
+                    "PUBLIC",
+                    "BY_INSTITUTION"
+                  ]
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "OK"
+        },
+        "400": {
+          "description": "Failed. Bad post data."
+        }
+      }
+    }
+  },
+  "/teams/{id}/invite": {
+    "post": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "summary": "Invite person to a team",
+      "tags": [
+        "Teams"
+      ],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userId": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "userId"
+              ],
+              "additionalProperties": false
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Invitation has been sent successfully."
+        },
+        "400": {
+          "description": [
+            "Missing parameters."
+          ]
+        },
+        "404": {
+          "description": [
+            "User to be invited does not exist.",
+            "Team does not exist."
+          ]
+        },
+        "409": {
+          "description": "User is already part of the team"
+        },
+        "500": {
+          "description": [
+            "Error when adding the user to members of the team.",
+            "Error when sending email. Invitation has been stored.",
+            "Unable to send invitation to the desired user.",
+            "Internal server error"
+          ]
+        }
+      }
+    }
+  },
+  "/teams/{id}/institution": {
+    "put": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "summary": "Associate team with an institution",
+      "tags": [
+        "Teams"
+      ],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userId": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "userId"
+              ],
+              "additionalProperties": false
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Updated team",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string"
+              },
+              "projects": {
+                "type": "array"
+              },
+              "title": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "adminIds": {
+                "type": "array"
+              },
+              "memberIds": {
+                "type": "array"
+              },
+              "invitedMemberIds": {
+                "type": "array"
+              },
+              "createdAt": {
+                "type": "string"
+              },
+              "updatedAt": {
+                "type": "string"
+              },
+              "__v": {
+                "type": "number"
+              },
+              "institutionId": {
+                "type": "string"
+              }
+            }
+          },
+          "400": {
+            "description": [
+              "Missing parameters."
+            ]
+          },
+          "403": {
+            "description": "You are not allowed to execute this operation."
+          },
+          "404": {
+            "description": [
+              "Institution does not exist.",
+              "Team does not exist."
+            ]
+          },
+          "409": {
+            "description": "Team has been already associated with an institution."
+          },
+          "500": {
+            "description": [
+              "Error when associating the team with the institution.",
+              "Unable to associate the team with the institution.",
+              "Internal server error"
+            ]
+          }
+        }
+      }
+    },
+    "delete": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "summary": "Disassociate a team from an institution.",
+      "tags": [
+        "Teams"
+      ],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userId": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "userId"
+              ],
+              "additionalProperties": false
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Updated team",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string"
+              },
+              "projects": {
+                "type": "array"
+              },
+              "title": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "adminIds": {
+                "type": "array"
+              },
+              "memberIds": {
+                "type": "array"
+              },
+              "invitedMemberIds": {
+                "type": "array"
+              },
+              "createdAt": {
+                "type": "string"
+              },
+              "updatedAt": {
+                "type": "string"
+              },
+              "__v": {
+                "type": "number"
+              }
+            }
+          },
+          "400": {
+            "description": [
+              "Missing parameters."
+            ]
+          },
+          "403": {
+            "description": "You are not allowed to execute this operation."
+          },
+          "404": {
+            "description": [
+              "Institution does not exist.",
+              "Team does not exist."
+            ]
+          },
+          "500": {
+            "description": [
+              "Error when removing the team from the institution.",
+              "Unable to register the team into the institution.",
+              "Internal server error",
+              "Team has not been associated with the institution."
+            ]
+          }
+        }
+      }
+    }
+  },
+  "/teams/{id}/admin": {
+    "post": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "summary": "Add a person to the adminIds list",
+      "tags": [
+        "Teams"
+      ],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userId": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "userId"
+              ],
+              "additionalProperties": false
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "User has been changed to admin."
+        },
+        "400": {
+          "description": [
+            "Missing parameters."
+          ]
+        },
+        "404": {
+          "description": [
+            "User does not exist.",
+            "Team does not exist."
+          ]
+        },
+        "409": {
+          "description": [
+            "User is not a member of the team. It should first become a member to become an admin.",
+            "User is already an admin."
+          ]
+        },
+        "500": {
+          "description": [
+            "Unable to register new admin.",
+            "Error when changing to user to admin profile.",
+            "Internal server error"
+          ]
+        }
+      }
+    }
+  },
+  "/teams/{id}/add_project": {
+    "put": {
+      "summary": "Adds the given project to the project list of the team",
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "tags": [
+        "Team",
+        "Project"
+      ],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "projectId": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "projectId"
+              ],
+              "additionalProperties": false
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "The project is successfully added.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Missing parameters or the project to be added does not exist or the team does not exist"
+        },
+        "401": {
+          "description": "Unauthenticated user"
+        },
+        "500": {
+          "description": "Internal error, unable to add the project to the team"
+        }
+      }
+    }
+  },
+  "/jointeam/{token}": {
+    "get": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "token",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "summary": "Join a team via a join token (sent via email)",
+      "tags": [
+        "Teams"
+      ],
+      "responses": {
+        "200": {
+          "description": "Success message for user"
+        },
+        "400": {
+          "description": "Token invalid message for user"
+        },
+        "404": {
+          "description": [
+            "User or team of token not found",
+            "User is already part of team"
+          ]
+        },
+        "409": {
+          "description": "User is not verified yet"
+        },
+        "500": {
+          "description": "Internal server error"
+        }
+      }
+    }
+  },
+  "/teams/{id}/join": {
+    "delete": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "summary": "Remove a person from the team",
+      "tags": [
+        "Teams"
+      ],
+      "responses": {
+        "200": {
+          "description": "Updated team",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string"
+              },
+              "projects": {
+                "type": "array"
+              },
+              "title": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "adminIds": {
+                "type": "array"
+              },
+              "memberIds": {
+                "type": "array"
+              },
+              "invitedMemberIds": {
+                "type": "array"
+              },
+              "createdAt": {
+                "type": "string"
+              },
+              "updatedAt": {
+                "type": "string"
+              },
+              "__v": {
+                "type": "number"
+              },
+              "institutionId": {
+                "type": "string"
+              },
+              "visibility": {
+                "type": "string"
+              }
+            }
+          },
+          "400": {
+            "description": [
+              "Missing parameters."
+            ]
+          },
+          "403": {
+            "description": [
+              "You are the only one admin of the team.",
+              "You are not member of the team."
+            ]
+          },
+          "404": {
+            "description": [
+              "User does not exist.",
+              "Team does not exist.",
+              "Information of the user does not match."
+            ]
+          },
+          "500": {
+            "description": [
+              "Error when removing a member from the team.",
+              "Unable to remove user from a team.",
+              "Internal server error"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "/teams/{id}/members/{userid}": {
+    "delete": {
+      "summary": "For admins: Remove (non-admin) user from the team",
+      "tags": [
+        "Team"
+      ],
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "in": "path",
+          "name": "userid",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK"
+        },
+        "403": {
+          "description": "Forbidden. Returned when not an admin or trying to delete an admin"
+        },
+        "409": {
+          "description": "User is not part of the team"
+        }
+      }
+    }
+  },
+  "/teams/{id}/admins/{userid}": {
+    "delete": {
+      "summary": "For admins: Demote another admin",
+      "tags": [
+        "Team"
+      ],
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "in": "path",
+          "name": "userid",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK"
+        },
+        "403": {
+          "description": "Forbidden. Returned when not an admin"
+        },
+        "409": {
+          "description": "User is not an admin of the team"
+        }
+      }
+    }
+  },
+  "/teams/{id}/projects/{projectid}": {
+    "delete": {
+      "summary": "For admins: Remove project from team",
+      "tags": [
+        "Team"
+      ],
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "in": "path",
+          "name": "projectid",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK"
+        },
+        "403": {
+          "description": "Forbidden. Not an admin"
+        },
+        "404": {
+          "description": [
+            "Team not found",
+            "Project not found"
+          ]
+        },
+        "409": {
+          "description": "Project does not belong to the team"
+        },
+        "500": {
+          "description": "Internal server error"
+        }
+      }
+    }
+  }
+}

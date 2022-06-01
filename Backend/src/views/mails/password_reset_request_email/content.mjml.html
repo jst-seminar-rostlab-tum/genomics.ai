@@ -1,0 +1,40 @@
+<mjml>
+  <mj-body>
+    <mj-section>
+      <mj-column>
+        <mj-text mj-class="greeting">
+          Hey {{firstname}},
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-text>We heard that you have lost your GeneCruncher password. Sorry about that! But
+          don't worry, you can use the following button to reset your password:
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+    	<mj-column>
+        <mj-button href="{{link}}" align="left" mj-class="action-button">
+          Reset Password
+        </mj-button>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-text>
+          If you don't use this link within 3 hours, it will expire. To get a new password reset link, click <a
+            href="{{new_reset_link}}" style="text-decoration: underline">here</a>.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+      	<mj-text mj-class="">
+          Best regards, <br/>The Genecruncher team
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

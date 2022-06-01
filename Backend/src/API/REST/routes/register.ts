@@ -1,54 +1,53 @@
-import express, {Router} from "express";
+import express, { Router } from "express";
 import bcrypt from "bcrypt";
-import {IUser, userModel} from "../../../database/models/user";
-import {Verifier} from "academic-email-verifier";
-import {mailer} from "../../../util/mailer";
-import {tokenModel} from "../../../database/models/token";
+import { IUser } from "../../../database/models/user";
+import { AddUserDTO } from "../../../database/dtos/user.dto";
+import { AddTokenDTO } from "../../../database/dtos/token.dto";
+import UserService from "../../../database/services/user.service";
+import TokenService from "../../../database/services/token.service";
+import { mailer } from "../../../util/mailer";
+import { validationMdw } from "../middleware/validation";
 
-export default function register_route() : Router {
-    let router = express.Router();
+export default function register_route(): Router {
+  let router = express.Router();
 
-    router
-        .post("/register", async (req: any, res) => {
-            // TODO input-validation
-            const {first_name, last_name, email, password, note} = req.body;
+  router.post("/register", validationMdw, async (req: any, res) => {
+    const { first_name, last_name, email, password, note } = req.body;
 
-            if (!(first_name && email && password))
-                return res.status(400).send("Missing parameters");
+    if (!(first_name && email && password)) return res.status(400).send("Missing parameters");
 
-            if (await userModel.findOne({email}))
-                return res.status(409).send("User with the given email already exists");
+    if (await UserService.getUserByEmail(email))
+      return res.status(409).send("User with the given email already exists");
 
-            const institutionName = await Verifier.getInstitutionName(email);
-            const isAcademic = institutionName !== "";
-            const saltHashedPassword = await bcrypt.hash(password, 15);
+    const saltHashedPassword = await bcrypt.hash(password, 12);
 
-            let user : (IUser | undefined) = undefined;
-            try{
-                user = await userModel.create({
-                    firstName: first_name,
-                    lastName: last_name,
-                    email,
-                    password: saltHashedPassword,
-                    note,
-                    isAuthorized: isAcademic
-                });
+    let userToAdd: AddUserDTO = {
+      firstName: first_name,
+      lastName: last_name,
+      email,
+      password: saltHashedPassword,
+      note,
+    };
 
-                if (isAcademic) {
-                    const token = await tokenModel.create({ _userId: user._id });
-                    await mailer.send_verification_mail(first_name, email, token.token);
-                    return res.status(201).json(user);
-                }else{
-                    // TODO: maybe have users verify their email even if account isn't auto-approved?
-                    return res.status(200).send("The e-mail address does not seem to belong to an academic institution. Wait for an administrator to manually approve you.");
-                }
-            }catch(err){
-                console.error("Error registering user!");
-                console.error(JSON.stringify(err));
-                console.error(err);
-                return res.status(500).send("Unable to create user. (DB-error)");
-            }
-        })
+    let userAdded: IUser | undefined = undefined;
 
-    return router;
+    try {
+      userAdded = await UserService.addUser(userToAdd);
+
+      /* user without the password field */
+      const { password, ...userSecure } = userAdded.toObject();
+
+      const tokenToAdd: AddTokenDTO = { _userId: userAdded._id };
+      const token = await TokenService.addToken(tokenToAdd);
+      mailer.send_verification_mail(first_name, email, token.token);
+      return res.status(201).json(userSecure);
+    } catch (err) {
+      console.error("Error registering user!");
+      console.error(JSON.stringify(err));
+      console.error(err);
+      return res.status(500).send("Unable to create user. (DB-error)");
+    }
+  });
+
+  return router;
 }

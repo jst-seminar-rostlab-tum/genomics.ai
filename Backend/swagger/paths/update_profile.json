@@ -1,0 +1,44 @@
+{
+  "/update_profile": {
+    "post": {
+      "summary": "Update profile data",
+      "tags": ["User"],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "first_name": {
+                  "type": "string"
+                },
+                "last_name": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                },
+                "note": {
+                  "type": "string"
+                }
+              },
+              "minProperties": 1
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "User updated successfully"
+        },
+        "404": {
+          "description": "Could not find user with this e-mail. Please register."
+        }
+      }
+    }
+  }
+}
