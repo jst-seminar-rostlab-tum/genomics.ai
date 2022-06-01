@@ -15,6 +15,10 @@ import scvi
 
 
 def setup_modules():
+    """
+    Set up the warnings filter and the figure parameters
+    :return:
+    """
     warnings.simplefilter(action='ignore', category=FutureWarning)
     warnings.simplefilter(action='ignore', category=UserWarning)
 
@@ -26,6 +30,12 @@ def setup_modules():
 
 
 def setup_anndata_for_scanvi(anndata, configuration):
+    """
+    Set up the warnings filter and the figure parameters
+    :param anndata:
+    :param configuration:
+    :return:
+    """
     scarches.models.SCANVI.setup_anndata(anndata,
                                          batch_key='dataset',
                                          labels_key='scanvi_label',

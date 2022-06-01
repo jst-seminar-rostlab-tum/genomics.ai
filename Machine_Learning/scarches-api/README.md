@@ -4,11 +4,12 @@ ScArches is a novel deep learning model that enables mapping query to reference 
 Currently, mapping of query to reference datasets is offered on GeneCruncher.
 
 This directory [scarches-api](../scarches-api) contains the code for our scarches REST-API that allows us to
-provide a unified endpoint for the different scarches models to backend, which are scVI, scANVI and totalVI, 
-and compute a `query.csv` file for the visualization that can be downloaded from the backend s3 bucket.
+provide a unified endpoint for the different scarches models to backend
+and compute a `query.csv` file that can be downloaded from the backend s3 bucket and parse for the visualization.
+
 ***
 ## Models and workflow
-Our code support the following models: 
+Our code support the following models: scVI, scANVI and totalVI.
 
 ### scVI
 [scVI](./scVI/scVI.py) is an unsupervised model that maps query to reference atlases. It does not require cell type labels for the mapping.
@@ -18,8 +19,8 @@ The workflow is:
 * [download](./utils/utils.py) reference and query dataset from s3
 * preprocess reference and query dataset
 * create scVI model (or use pretrained model) and train it on reference dataset
-* Create anndata file of latent representation and compute UMAP
-* train the model on a query and save the result
+* create anndata file of latent representation and compute UMAP
+* train the model on query dataset and save the result
 * [write](./utils/utils.py) the result into `query.csv` file and [upload](./utils/utils.py) to s3
 
 ### scANVI
@@ -31,8 +32,8 @@ The workflow is:
 * preprocess reference and query dataset
 * create scANVI model (or use pretrained model) and train it on reference dataset
 * create anndata file of latent representation and compute UMAP 
-* train the model on a query and save the result
-* predict unlabeled cell type of latent and compute the accuracy of the learned classifier.
+* predict unlabeled cell type of latent and compute the accuracy of the learned classifier
+* train the model on query dataset and save the result
 * [write](./utils/utils.py) the result into `query.csv` file and [upload](./utils/utils.py) to s3
 
 ### totalVI
@@ -42,7 +43,7 @@ The workflow is:
 * set up modules and figure parameters
 * [download](./utils/utils.py) reference and query dataset from s3
 * preprocess reference and query dataset
-* create totalVI model or use pretrained model 
+* set up anndata and create totalVI model or use pretrained model 
 * train model on reference dataset
 * save latent representation and visualize RNA data
 * perform surgery on reference model and train on query dataset without protein data
@@ -52,7 +53,7 @@ The workflow is:
 ***
 
 ## Atlas
-Our code supports the following Atlases and their compatible models are: 
+Our code supports the following Atlases. Their compatible models are: 
 - Pancreas (scVI, scANVI)
 - PBMC (totalVI)
 - Heart cell atlas (scVI, scANVI)
@@ -260,6 +261,7 @@ response
     "webhook": ""
 }
 ```
+
 
 
 ### Deployment
