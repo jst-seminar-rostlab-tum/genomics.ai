@@ -78,6 +78,7 @@ def merge_configs(user_config):
 
 # def query(reference_dataset, query_dataset, model_path, surgery_path,  model_type):
 def query(user_config):
+    print("got config " + str(user_config))
     start_time = time.time()
     configuration = merge_configs(user_config)
     #Sets the correct condition and cell_type key
