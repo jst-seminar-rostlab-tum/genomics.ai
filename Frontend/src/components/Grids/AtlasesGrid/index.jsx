@@ -7,7 +7,11 @@ import styles from './atlasesGrid.module.css';
 const AtlasesGrid = ({
   atlases, path, selectedAtlas = null, handleAtlasSelection = null, selectedModel = null, isSearchPage = false
 }) => (
-  <Box className={styles.atlasContainer} mb="2em" pb="1.5em">
+  <Box className={styles.atlasContainer} mb="2em" pb="1.5em"
+    sx={{
+      
+    }}
+  >
     <Grid container spacing={3}>
       {atlases && atlases.map((atlas) => (
         <Grid key={atlas._id} item xs={12} sm={6} md={4} lg={3}>

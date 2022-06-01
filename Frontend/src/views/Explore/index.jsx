@@ -50,7 +50,6 @@ const Explore = () => {
   const [models, setModels] = useState([]);
   const [user, setUser] = useAuth();
   const history = useHistory();
-
   // function to update the state in the URL
   const updateQueryParams = (param, value) => {
     const params = new URLSearchParams(history.location.search);
@@ -100,7 +99,7 @@ const Explore = () => {
   };
 
   const handleMap = () => {
-    if(selectedAtlas && selectedModel === null) {
+    if (selectedAtlas && selectedModel === null) {
       history.push(`/explore/atlases/${selectedAtlas._id}/visualization`)
       setMapperVisible(false)
     }
@@ -116,7 +115,7 @@ const Explore = () => {
   }, [selectedAtlas, selectedModel]);
 
   const tabMenu = () => (
-    <Box height="50px">
+    <Box>
 
       <TabGroup value={value} onValueChange={onValueChange} tabsInfo={tmpObj} />
       {value === 0 ? (
@@ -165,16 +164,16 @@ const Explore = () => {
   const executeScroll = () => (user ? history.push({ pathname: '/sequencer/help' }) : history.push({ pathname: '/', state: { contact_us: true } }));
 
   return (
-    <>
+    <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
       <Box
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          '::-webkit-scrollbar': {
-            display: 'none',
-          },
-          height: '100vh',
-          overflow: 'auto',
+          // '::-webkit-scrollbar': {
+          //   display: 'none',
+          // },
+          // height: '100vh',
+          // overflow: 'auto',
         }}
       >
         {context.loginVisible && <LoginForm />}
@@ -196,8 +195,8 @@ const Explore = () => {
             alignSelf: 'center', width: { sx: '90%', md: '60%' }, marginTop: '2%', justifyContent: 'space-between',
           }}
         >
-          <Breadcrumb elems={elems} fontSize={1} actions={{ explore: () => setValue(0) }} />
-          <Box sx={{ alignSelf: 'center', width: { xs: '100%', md: '60%' }, marginBlock: '2%' }}>
+          <Breadcrumb p={4} elems={elems} fontSize={1} actions={{ explore: () => setValue(0) }} />
+          <Box sx={{ alignSelf: 'center', width: { xs: '95%', md: '60%' }, marginBlock: '2%' }}>
             <Search
               filterComponent={(
                 <Filter
@@ -225,20 +224,20 @@ const Explore = () => {
           {/* /explore/atlases */}
           <ExploreRoutes atlases={atlases && tabMenu()} models={models && tabMenu()} path="/explore" handleSelectAtlases={handleAtlasSelection} handleSelectModels={handleModelSelection} />
         </Box>
-
-        <Mapper
-          mapperAtlas={selectedAtlas ? selectedAtlas.name : null}
-          mapperModel={selectedModel ? selectedModel.name : null}
-          handleAtlasSelection={handleAtlasSelection}
-          handleModelSelection={handleModelSelection}
-          open={mapperVisible}
-          fabOnClick={() => setMapperVisible(!mapperVisible)}
-          handleMap={handleMap}
-          user={user}
-        />
       </Box>
-      <Footer />
-    </>
+      <Footer sx={{ marginTop: "auto", transform: "translate(0px, 100px)" }} />
+
+      <Mapper
+        mapperAtlas={selectedAtlas ? selectedAtlas.name : null}
+        mapperModel={selectedModel ? selectedModel.name : null}
+        handleAtlasSelection={handleAtlasSelection}
+        handleModelSelection={handleModelSelection}
+        open={mapperVisible}
+        fabOnClick={() => setMapperVisible(!mapperVisible)}
+        handleMap={handleMap}
+        user={user}
+      />
+    </Box>
   );
 };
 

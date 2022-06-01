@@ -57,6 +57,7 @@ export default function LearnMore({handleSelect}) {
       <Box sx={{
         marginTop: '12px',
         width: '80%',
+        height: '80vh'
       }}
       >
         <LearnMoreModelComponent id={id} isMap={true} onClick={handleSelect} isSearchPage={path.pathname.includes("search")}/>

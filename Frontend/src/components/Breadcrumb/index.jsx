@@ -24,7 +24,7 @@ import { colors } from 'shared/theme/colors';
  * }
  * 
  */
-export default function Breadcrumb({ fontSize, actions, path, elems }) {
+export default function Breadcrumb({ fontSize, actions, path, elems, p = 0 }) {
 
   // let position = useLocation()
 
@@ -54,7 +54,7 @@ export default function Breadcrumb({ fontSize, actions, path, elems }) {
   )
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+    <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", paddingLeft: p, width: "100%" }}>
       {
         elements.map((element, index) => generate(element, index))
       }
