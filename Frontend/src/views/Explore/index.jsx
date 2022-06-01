@@ -50,7 +50,7 @@ const Explore = () => {
   const [models, setModels] = useState([]);
   const [user, setUser] = useAuth();
   const history = useHistory();
-
+  console.log(history.location)
   // function to update the state in the URL
   const updateQueryParams = (param, value) => {
     const params = new URLSearchParams(history.location.search);
@@ -116,7 +116,7 @@ const Explore = () => {
   }, [selectedAtlas, selectedModel]);
 
   const tabMenu = () => (
-    <Box height="50px">
+    <Box height="">
 
       <TabGroup value={value} onValueChange={onValueChange} tabsInfo={tmpObj} />
       {value === 0 ? (
@@ -170,11 +170,11 @@ const Explore = () => {
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          '::-webkit-scrollbar': {
-            display: 'none',
-          },
-          height: '100vh',
-          overflow: 'auto',
+          // '::-webkit-scrollbar': {
+          //   display: 'none',
+          // },
+          // height: '100vh',
+          // overflow: 'auto',
         }}
       >
         {context.loginVisible && <LoginForm />}
@@ -237,7 +237,7 @@ const Explore = () => {
           user={user}
         />
       </Box>
-      <Footer />
+      <Footer sx={{ position: "absolute", bottom: history.location.pathname === "/explore/models" ? "0px": ""}} />
     </>
   );
 };
