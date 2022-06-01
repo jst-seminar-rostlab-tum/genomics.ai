@@ -62,6 +62,12 @@ def default_config():
 
 
 def get_from_config(configuration, key):
+    """
+    returns the config with key value if the key is in the config, otherwise return
+    :param configuration:
+    :param key
+    :return: dict with the parsed key values or none
+    """
     if key in configuration:
         return configuration[key]
     return None
@@ -78,6 +84,11 @@ def merge_configs(user_config):
 
 # def query(reference_dataset, query_dataset, model_path, surgery_path,  model_type):
 def query(user_config):
+    """
+    returns config parsed from user's query
+    :param user_config: keys of config given by the user
+    :return: config
+    """
     print("got config " + str(user_config))
     start_time = time.time()
     configuration = merge_configs(user_config)

@@ -48,8 +48,8 @@ def get_pretrained_scVI_model(anndata, configuration):
 def create_scVI_model(source_adata, target_adata, configuration):
     """
     if there is already a pretrained model, nothing happens otherwise a new one will be trained
-    :param source_adata:
-    :param target_adata:
+    :param source_adata: reference data
+    :param target_adata: query data
     :return:
     """
     if utils.get_from_config(configuration, parameters.DEV_DEBUG):
