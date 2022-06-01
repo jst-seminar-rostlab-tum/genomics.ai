@@ -4,26 +4,45 @@ import { Modal, ModalTitle } from 'components/Modal';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
+import Tooltip from '@mui/material/Tooltip';
 
+import { useAuth } from 'shared/context/authContext';
 import InstitutionService from 'shared/services/Institution.service';
 
 function InstitutionLeaveButton({ institution, onLeft }) {
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [user] = useAuth();
 
   const handleOpenDialog = () => setDialogOpen(true);
   const handleCloseDialog = () => setDialogOpen(false);
 
+  const onlyAdmin = institution.adminIds.length === 1 && institution.adminIds[0] === user._id;
+
   async function leave() {
-    await InstitutionService.leaveInstitution(institution);
-    handleCloseDialog();
-    onLeft(institution);
+    setErrorMessage('');
+    try {
+      await InstitutionService.leaveInstitution(institution.id);
+      handleCloseDialog();
+      onLeft(institution);
+    } catch (e) {
+      setErrorMessage(e.message);
+    }
   }
 
   return (
     <>
-      <Button type="critical" onClick={handleOpenDialog}>
-        Leave
-      </Button>
+      <Tooltip title={onlyAdmin ? 'You are the only admin of this institution.' : ''}>
+        <div>
+          <Button
+            type="critical"
+            onClick={handleOpenDialog}
+            disabled={onlyAdmin}
+          >
+            Leave
+          </Button>
+        </div>
+      </Tooltip>
       <Modal
         isOpen={dialogOpen}
         setOpen={(o) => !o && handleCloseDialog()}
@@ -37,6 +56,13 @@ function InstitutionLeaveButton({ institution, onLeft }) {
             {institution.name}
             &quot;?
           </DialogContentText>
+          {
+            errorMessage && (
+              <DialogContentText id="alert-dialog-description" color="error">
+                {errorMessage}
+              </DialogContentText>
+            )
+          }
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog}>Cancel</Button>

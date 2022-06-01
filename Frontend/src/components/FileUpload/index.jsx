@@ -1,7 +1,7 @@
+import { CloudDone, CloudUpload } from "@mui/icons-material"
 import { Box, Typography } from "@mui/material"
 import { useCallback } from "react"
 import { useDropzone } from "react-dropzone"
-import { CloudUpload, CloudDone } from "@mui/icons-material"
 import { colors } from "shared/theme/colors"
 
 const BeforeDrag = () => {
@@ -15,9 +15,10 @@ const BeforeDrag = () => {
       position: "absolute",
       left: "50%",
       top: "50%",
-      transform: "translate(-50%, -50%)"
+      transform: "translate(-50%, -50%)",
+      color: 'inherit'
     }}>
-      <CloudUpload style={{ fontSize: 80 }}/>
+      <CloudUpload sx={{ fontSize: 80 }} />
       <Typography fontWeight="bold" fontSize="1.2em" sx={{ textAlign: "center" }}>Drag and drop or browse files</Typography>
     </Box>
   )
@@ -47,14 +48,19 @@ const DuringDrag = () => {
  * @param width default value is 100% -> set it like "100px" or "8em"
  * @param height default value is 100% -> set it like "100px" or "8em"
  * @param handleFileUpload function that will handle all accepted files
+ * @param rejectionHandler
  */
-const FileUpload = ({ width = "100%", height = "100%", handleFileUpload }) => {
+const FileUpload = ({ width = "100%", height = "100%", handleFileUpload, validator, rejectionHandler }) => {
 
-  const onDrop = useCallback( acceptedFiles => {
+  const onDropAccepted = useCallback( acceptedFiles => {
     handleFileUpload(acceptedFiles)
   }, [])
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
+  const onDropRejected = useCallback(() => {
+    rejectionHandler();
+  }, [])
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDropAccepted, onDropRejected, validator: validator })
 
   return (
     <Box
@@ -66,7 +72,14 @@ const FileUpload = ({ width = "100%", height = "100%", handleFileUpload }) => {
         p: "3em",
         borderRadius: "20px",
         cursor: "pointer",
-        position: "relative"
+        position: "relative",
+        backgroundColor: colors.primary[100],
+        '&:hover': {
+          boxShadow: "inset 0px 8px 12px rgba(0, 0, 0, 0.25), 0px 0px 2px rgba(0, 0, 0, 0.32)",
+          transition: '0.4s',
+          backgroundColor: colors.primary[300],
+          color: 'white'
+        }
       }}
     >
      <input {...getInputProps()}/>

@@ -1,7 +1,6 @@
 export function applyModelFilters(models, searchedKeyword, searchParams) {
   const searchedModels = models.filter(
-    (item) => item.name.toLowerCase().includes(searchedKeyword.toLowerCase()),
-  );
+    (item) => item.name.toLowerCase().includes(searchedKeyword.toLowerCase()) );
   if (searchParams.get('sortBy') === 'name' || searchParams.get('sortBy') === null) {
     searchedModels.sort((a, b) => {
       const nameA = a.name.toUpperCase();

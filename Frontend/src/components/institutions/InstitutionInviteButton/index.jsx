@@ -11,6 +11,7 @@ import {
 import { Modal, ModalTitle } from 'components/Modal';
 import PersonAddOutlinedIcon from '@mui/icons-material/PersonAddOutlined';
 import Button from 'components/CustomButton';
+import InstitutionService from 'shared/services/Institution.service';
 
 function InstitutionInviteButton({ institution }) {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -21,12 +22,18 @@ function InstitutionInviteButton({ institution }) {
 
   const handleCloseDialog = () => setDialogOpen(false);
 
+  function validateEmail(email) {
+    const re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    return re.test(email);
+  }
+
   const handleTeamInvite = () => {
-    if (!invitedMailAdress) {
+    if (!invitedMailAdress || !validateEmail(invitedMailAdress)) {
       setMailError('Please enter an e-mail address.');
       return;
     }
     setOpen(true);
+    InstitutionService.inviteMember(institution.id, invitedMailAdress);
     handleCloseDialog();
   };
 
@@ -45,15 +52,17 @@ function InstitutionInviteButton({ institution }) {
           setInvitedMailAdress('');
           setMailError('');
         }}
-        color="primary"
         aria-label="add"
         sx={{
           position: 'fixed',
           bottom: '3%',
           right: '2%',
         }}
+        style={{
+          backgroundColor: '#5676E4',
+        }}
       >
-        <PersonAddOutlinedIcon />
+        <PersonAddOutlinedIcon style={{ color: 'white' }} />
       </Fab>
       <Modal
         isOpen={dialogOpen}

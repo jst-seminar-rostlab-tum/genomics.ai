@@ -7,6 +7,8 @@ import { Modal, ModalTitle } from 'components/Modal';
 import Button from 'components/CustomButton';
 import PersonAddOutlinedIcon from '@mui/icons-material/PersonAddOutlined';
 
+import TeamService from 'shared/services/Team.service';
+
 function TeamInviteButton({ team }) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [open, setOpen] = useState(false);
@@ -16,14 +18,26 @@ function TeamInviteButton({ team }) {
 
   const handleCloseDialog = () => setDialogOpen(false);
 
-  const handleTeamInvite = () => {
-    if (!invitedMailAdress) {
-      setMailError('Please enter an e-mail address.');
+  function validateEmail(email) {
+    let re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    return re.test(email);
+  }
+
+  async function handleTeamInvite() {
+    if (!invitedMailAdress || !validateEmail(invitedMailAdress)) {
+      setMailError('Please enter a valid e-mail address.');
       return;
     }
-    setOpen(true);
-    handleCloseDialog();
-  };
+    setMailError('');
+    try {
+      await TeamService.inviteMemberByEmail(team.id, invitedMailAdress);
+      handleCloseDialog();
+      setOpen(true);
+      handleCloseDialog();
+    } catch (e) {
+      setMailError(e.message);
+    }
+  }
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -41,15 +55,17 @@ function TeamInviteButton({ team }) {
           setInvitedMailAdress('');
           setMailError('');
         }}
-        color="primary"
         aria-label="add"
         sx={{
           position: 'fixed',
           bottom: '3%',
           right: '2%',
         }}
+        style={{
+          backgroundColor: '#5676E4'
+        }}
       >
-        <PersonAddOutlinedIcon />
+        <PersonAddOutlinedIcon style={{ color: 'white' }} />
       </Fab>
       <Modal
         isOpen={dialogOpen}

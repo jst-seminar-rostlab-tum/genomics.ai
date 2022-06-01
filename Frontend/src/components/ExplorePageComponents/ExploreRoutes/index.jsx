@@ -7,7 +7,9 @@ import AtlasResult from 'views/Explore/AtlasResult';
 import LearnMoreAtlas from 'views/Explore/LearnMoreAtlas';
 import LearnMoreModel from 'views/Explore/LearnMoreModel';
 
-const ExploreRoutes = ({ path, atlases, models }) => (
+const ExploreRoutes = ({
+  path, atlases, models, handleSelectAtlases, handleSelectModels,
+}) => (
   <Switch>
     <Route
       exact
@@ -19,9 +21,9 @@ const ExploreRoutes = ({ path, atlases, models }) => (
       path={`${path}/models`}
       render={() => models}
     />
-    <Route exact path={`${path}/models/:id`} render={() => <LearnMoreModel />} />
+    <Route exact path={`${path}/models/:id`} render={() => <LearnMoreModel handleSelect={handleSelectModels} />} />
     <Route exact path={`${path}/atlases/:id/visualization`} render={() => <AtlasResult />} />
-    <Route exact path={`${path}/atlases/:id`} render={() => <LearnMoreAtlas />} />
+    <Route exact path={`${path}/atlases/:id`} render={() => <LearnMoreAtlas handleSelect={handleSelectAtlases} />} />
     <Redirect to={`${path}/atlases`} />
   </Switch>
 );

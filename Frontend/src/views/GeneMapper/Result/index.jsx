@@ -20,14 +20,15 @@ function GeneMapperResultView() {
     ProjectService.getProject(projectId)
       .then((data) => setProject(data))
       .catch(() => {
-        ProjectMock.getProject(1).then((data) => setProject(data));
+        ProjectMock.getProject(projectId).then((data) => setProject(data));
       });
   }, [projectId]);
 
   return (
     <Box
       sx={{
-        height: '100%',
+        // 100vh - HeaderView header height - HeaderView content padding - Footer height
+        height: 'calc(100vh - 75px - 24px - 40px)',
         display: 'flex',
         flexDirection: 'column',
       }}

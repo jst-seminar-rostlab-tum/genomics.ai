@@ -8,6 +8,7 @@ import { borders } from "@mui/system"
 import { Modal } from "components/Modal"
 import { LearnMoreAtlasComponent } from "views/Explore/LearnMoreAtlas"
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min"
+import AtlasInfo from "components/GeneMapper/AtlasInfo"
 
 /**
  * Atlas Card 
@@ -23,7 +24,8 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom.min"
  */
 export default function AtlasCardSelect({
   width = "100%", height = "100%", title, imgLink, modalities,
-  cellsInReference, species, mapLink, learnMoreLink, selected=false, onSelect, atlasObject={}
+  cellsInReference, species, mapLink, learnMoreLink, selected=false, 
+  onSelect, atlasObject={}
 }) {
 
   //check if the mouse is hovering above the card
@@ -94,28 +96,18 @@ export default function AtlasCardSelect({
         }
 
         <Box
-          sx={selected ? {
-            width: "100%",
-            height: "100%",
-            padding: "1rem",
-            display: "flex",
-            flexDirection: "column",
-            boxShadow: "0px 4px 6px 0px rgba(33, 37, 41, .2), 0px 0px 1px 0px rgba(33, 37, 41, .32)",
-            borderRadius: "1.2rem",
-            justifyContent: "center",
-            borderStyle:"solid",
-            borderColor:"#008BF5",
-            borderWidth:"4px"
-          }
-          : {
-            width: "100%",
-            height: "100%",
-            padding: "1rem",
-            display: "flex",
-            flexDirection: "column",
-            boxShadow: "0px 4px 6px 0px rgba(33, 37, 41, .2), 0px 0px 1px 0px rgba(33, 37, 41, .32)",
-            borderRadius: "1.2rem",
-            justifyContent: "center"
+          sx={{
+            width: '100%',
+            height: '100%',
+            padding: '1rem',
+            display: 'flex',
+            flexDirection: 'column',
+            boxShadow: isHover ? 'none' : '0px 4px 6px 0px rgba(33, 37, 41, .2), 0px 0px 1px 0px rgba(33, 37, 41, .32)',
+            borderRadius: '1.2rem',
+            justifyContent: 'center',
+            borderStyle: 'solid',
+            borderColor: selected ? '#008BF5' : 'transparent',
+            borderWidth: '4px',
           }}
         >
           <Typography
@@ -190,16 +182,7 @@ export default function AtlasCardSelect({
           </Box>
         </Box>
       </Box>
-      <Modal
-        isOpen={atlasInfoOpen}
-        setOpen={setAtlasInfoOpen}
-        children={(
-          <Container>
-            <LearnMoreAtlasComponent id={atlasObject._id} onClick={() => history.push(`/explore/atlases/${atlasObject._id}/visualization`)} />
-
-          </Container>
-        )}
-      />
+      <AtlasInfo id={atlasObject._id} open={atlasInfoOpen} setOpen={setAtlasInfoOpen} />
     </Box>
 
   )

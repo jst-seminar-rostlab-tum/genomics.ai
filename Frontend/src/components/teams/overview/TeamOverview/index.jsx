@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Alert } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import PlusIcon from 'components/general/PlusIcon';
@@ -9,11 +10,14 @@ import TeamCreationDialog from 'components/teams/overview/TeamCreationDialog';
 
 function TeamOverview() {
   const [teams, setTeams] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
+    setIsLoading(true);
     TeamService.getMyTeams()
       .then(setTeams)
-      .catch(console.log);
-  }, [setTeams]);
+      .finally(() => setIsLoading(false));
+  }, []);
 
   function onLeft(team) {
     setTeams(teams.filter((i) => i.id !== team.id));
@@ -28,7 +32,11 @@ function TeamOverview() {
         <PlusIcon onClick={() => setCreateOpen(true)} />
       </Stack>
       <br />
-      {teams.length === 0 ? 'No teams.' : ''}
+      {!isLoading && teams.length === 0 ? (
+        <Alert severity="info">
+          You have not created any teams yet. Create one by clicking the Plus-Icon.
+        </Alert>
+      ) : ''}
       {teams.map((team) => (
         <div key={team.id}>
           <TeamCard
@@ -38,11 +46,11 @@ function TeamOverview() {
           <div className={styles.cardSpacing} />
         </div>
       ))}
-      <TeamCreationDialog
+      {createOpen && <TeamCreationDialog
         open={createOpen}
         handleClose={() => setCreateOpen(false)}
         onCreated={(newTeam) => setTeams([...teams, newTeam])}
-      />
+      /> }
     </>
   );
 }

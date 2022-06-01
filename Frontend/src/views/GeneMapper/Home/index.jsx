@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import {
-  Typography, createTheme, ThemeProvider, Stack, TextField,
+  Typography, createTheme, ThemeProvider, Stack, TextField, Alert, CircularProgress,
 } from '@mui/material';
 import PlusIcon from 'components/general/PlusIcon';
 import ProjectBarCard from 'components/GeneMapper/projectBarCard';
 import SearchIcon from '@mui/icons-material/Search';
 import ProjectService from 'shared/services/Project.service';
-import { useSubmissionProgress } from 'shared/context/submissionProgressContext';
+import { initSubmissionProgress, useSubmissionProgress } from 'shared/context/submissionProgressContext';
 import { MULTIPART_UPLOAD_STATUS, PROJECTS_UPDATE_INTERVAL, statusIsError } from 'shared/utils/common/constants';
 import ProjectMock from 'shared/services/mock/projects';
 import AtlasService from 'shared/services/Atlas.service';
@@ -26,71 +26,52 @@ const theme = createTheme({
   },
 });
 
-
 function GeneMapperHome() {
-  const [projects, setProjects] = useState([]);
+  const [projects, setProjects] = useState(null);
+  const [deletedProjects, setDeletedProjects] = useState([]);
   const [atlases, setAtlases] = useState([]);
   const [models, setModels] = useState([]);
   const [userTeams, setUserTeams] = useState([]);
 
   const [findString, setFindString] = useState('');
-  const [submissionProgress, setSubmissionProgress] = useSubmissionProgress();
 
   const history = useHistory();
 
-  const handleDeleteItem = (id) => {
-    setProjects(projects.filter((object) => object._id != id));
-    const deleted = window.localStorage.getItem('DeletedProjects') ?? '';
-    console.log(deleted);
-
-    window.localStorage.setItem('DeletedProjects', `${deleted},${id}`);
-    // ProjectMock.deleteProject(id);
+  const handleDeleteProject = (id) => {
+    ProjectService.deleteProject(id).then(() => {
+      ProjectService.getOwnProjects().then((data) => setProjects(data));
+      ProjectService.getDeletedProjects().then((data) => setDeletedProjects(data));
+    });
   };
 
-  const addProjectToTeam = async (teamId, projectId) => {
-    const projectTeams = JSON.parse(window.localStorage.getItem('projectTeams')) || {};
-    window.localStorage.setItem('projectTeams', JSON.stringify({ ...projectTeams, [projectId]: teamId }));
-  };
-
-  const teamOfProject = (projectId) => {
-    const projectTeams = JSON.parse(window.localStorage.getItem('projectTeams')) || {};
-    return projectTeams[projectId];
+  const handleRestoreProject = (id) => {
+    ProjectService.restoreProject(id).then(() => {
+      ProjectService.getOwnProjects().then((data) => setProjects(data));
+      ProjectService.getDeletedProjects().then((data) => setDeletedProjects(data));
+    });
   };
 
   useEffect(() => {
     ProjectService.getOwnProjects().then((data) => setProjects(data));
     const timer = setInterval(() => {
       ProjectService.getOwnProjects().then((data) => setProjects(data));
-      if (submissionProgress.status === MULTIPART_UPLOAD_STATUS.COMPLETE
-        || submissionProgress.status === MULTIPART_UPLOAD_STATUS.CANCELING
-        || statusIsError(submissionProgress.status)) {
-        setSubmissionProgress({
-          status: MULTIPART_UPLOAD_STATUS.IDLE,
-          uploadId: '',
-          chunks: 0,
-          uploaded: 0,
-          remaining: [],
-          uploadedParts: [],
-        });
-      }
     }, PROJECTS_UPDATE_INTERVAL);
 
     return () => {
       clearInterval(timer);
     };
-  }, [submissionProgress.status]);
+  }, []);
 
   useEffect(() => {
     AtlasService.getAtlases().then((data) => setAtlases(data));
     ModelService.getModels().then((data) => setModels(data));
     TeamService.getMyTeams().then((teams) => setUserTeams(teams));
+    ProjectService.getDeletedProjects().then((data) => setDeletedProjects(data));
   }, []);
 
   return (
     <div>
       <ThemeProvider theme={theme}>
-        {/* {Object.entries(submissionProgress)
-          .map(([key, value]) => <Typography>{`${key}: ${value}` }</Typography>)} */}
         <Box
           sx={{
             display: 'flex',
@@ -107,6 +88,7 @@ function GeneMapperHome() {
           </Stack>
           <TextField
             id="outlined-basic"
+            sx={{ width: '32.7ch' }}
             label={(
               <Stack direction="row">
                 <SearchIcon />
@@ -119,32 +101,52 @@ function GeneMapperHome() {
             onChange={(e) => setFindString(e.target.value)}
           />
         </Box>
+        {projects === null
+        && (
+        <Box sx={{ textAlign: 'center' }}>
+          <CircularProgress />
+        </Box>
+        )}
+        { projects?.length === 0
+        && (
+        <Alert severity="info">
+          You have not created any mappings yet. Create one by clicking the Plus-Icon or learn more about ScArches by clicking the Help-Icon next to the title.
+        </Alert>
+        )}
+        {projects
+        && (
         <div>
-          {projects
-            .filter((project) => (
-              (findString === '' || project.name.toLowerCase().includes(findString.toLowerCase())))
-              && !(window.localStorage.getItem('DeletedProjects') ?? []).includes(project._id))
-            .map((project) => {
-              const projectTeamId = teamOfProject(project._id);
-              return (
-                <ProjectBarCard
-                  key={project._id}
-                  project={projectTeamId ? { ...project, teamId: projectTeamId } : project}
-                  atlas={atlases.find((atlas) => String(atlas._id) === String(project.atlasId))}
-                  model={models.find((model) => String(model._id) === String(project.modelId))}
-                  userTeams={userTeams}
-                  addProjectToTeam={(teamId) => addProjectToTeam(teamId, project._id)}
-                  handleDelete={() => handleDeleteItem(project._id)}
-                  submissionProgress={submissionProgress.uploadId === project.uploadId
-                    ? submissionProgress : null}
-                  setSubmissionProgress={submissionProgress.uploadId === project.uploadId
-                    ? setSubmissionProgress : () => { }}
-                />
+          {projects.filter((project) => (
+            (findString === '' || project.name.toLowerCase().includes(findString.toLowerCase())))).map((project) => (
+              <ProjectBarCard
+                key={project._id}
+                project={project}
+                atlas={atlases.find((atlas) => String(atlas._id) === String(project.atlasId))}
+                model={models.find((model) => String(model._id) === String(project.modelId))}
+                userTeams={userTeams}
+                handleDelete={() => handleDeleteProject(project._id)}
+              />
 
-              );
-            })}
+          ))}
         </div>
-
+        )}
+        {deletedProjects.length > 0
+        && (
+        <Box>
+          <Typography variant="h6" sx={{ mt: 4, mb: 2 }}>Deleted Projects</Typography>
+          {deletedProjects.map((project) => (
+            <ProjectBarCard
+              key={project._id}
+              project={project}
+              atlas={atlases.find((atlas) => String(atlas._id) === String(project.atlasId))}
+              model={models.find((model) => String(model._id) === String(project.modelId))}
+              userTeams={userTeams}
+              handleDelete={() => handleRestoreProject(project._id)}
+              deleted
+            />
+          ))}
+        </Box>
+        )}
       </ThemeProvider>
     </div>
   );

@@ -10,7 +10,7 @@ import WindowiOS from "components/WindowiOS";
 import Footer from "components/Footer";
 import LoginForm from 'components/LoginForm'
 import RegistrationForm from 'components/RegistrationForm'
-import { useCallback, useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { colors } from "shared/theme/colors";
 import graphic1 from 'assets/landing-illustrations/science.png';
 import graphic2 from 'assets/landing-illustrations/upload.png';
@@ -18,38 +18,35 @@ import graphic3 from 'assets/landing-illustrations/processing.png';
 import graphic4 from 'assets/landing-illustrations/results.png';
 import CustomButton from "components/CustomButton";
 import Input from 'components/Input/Input'
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
+import PasswordForgetForm from "components/PasswordForgetForm";
+import ContactForm from 'components/ContactForm';
+import { LoginContext } from "shared/context/loginContext";
 
 const Home = () => {
-  
-  const [isLoginFormVisible, setLoginFormVisible] = useState(false);
-  const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
 
   const history = useHistory();
+  const location = useLocation();
 
-  const onLoginClicked = useCallback(() => {
-    console.log("login")
-    setRegistrationFormVisible(false)
-    setLoginFormVisible(true)
-  }, [setLoginFormVisible])
+  const context = useContext(LoginContext)
 
-  const onSignUpClicked = useCallback(() => {
-    console.log("register")
-    setLoginFormVisible(false);
-    setRegistrationFormVisible(true);
-  }, [setRegistrationFormVisible])
+  const onLoginClicked = () => {
+    context.switchRegister(false)
+    context.switchLogin(true)
+  }
 
-  const onLoginFormClosed = useCallback(() => {
-    setLoginFormVisible(false);
-  }, [setLoginFormVisible]);
-
-  const onRegistrationFormClosed = useCallback(() => {
-    setRegistrationFormVisible(false);
-  }, [setRegistrationFormVisible]);
+  const onSignUpClicked = () => {
+    context.switchLogin(false);
+    context.switchRegister(true);
+  }
 
   //here we get the ref of the contact us, in order to be able to scroll to it
   const contactUsBoxRef = useRef()
   const executeScroll = () => contactUsBoxRef.current.scrollIntoView()
+
+  useEffect(() => {
+    if (location.state && location.state.contact_us) contactUsBoxRef.current.scrollIntoView()
+  }, [])
 
   //we store the actual height of the Navbar, since we set the Navbar's position to fixed
   //it jumps out from the document flow => the height collapse
@@ -58,15 +55,14 @@ const Home = () => {
 
   return (
     <Box style={{ overflow: "hidden" }} sx={{ position: "relative" }}>
-
-      {isLoginFormVisible && <LoginForm visible={isLoginFormVisible} onClose={onLoginFormClosed} />}
-      {isRegistrationFormVisible && <RegistrationForm visible={isRegistrationFormVisible} onClose={setRegistrationFormVisible} />}
-
+      {context.loginVisible && <LoginForm />}
+      {context.registerVisible && <RegistrationForm  />}
+      {context.forgetVisible && <PasswordForgetForm />}
       {/* STARTING PAGE */}
       <Box sx={{ width: window.width, bgcolor: colors.primary[800], position: "relative", paddingBottom: "4em" }}>
         {/* NAVBAR HERE */}
         {/* the Box that contains the Navbar will collapse, so we reset the height */}
-        <Box sx={{height: navbarHeight, position: "relative"}}>
+        <Box sx={{ height: navbarHeight, position: "relative" }}>
           <Navbar position="fixed" setNavbarHeight={setNavbarHeight} onLoginClicked={onLoginClicked} onSignUpClicked={onSignUpClicked} executeScroll={executeScroll} />
         </Box>
         {/* IOS WINDOW */}
@@ -103,9 +99,9 @@ const Home = () => {
               <img style={{ width: "100%" }} src={graphic1} alt="Science" />
             </Box>
             <Box sx={{ width: { xs: "100%", sm: "50%", md: "50%", lg: "50%", xl: "50%" } }}>
-              <Typography fontSize="1.2em" fontWeight="bold">genomics.ai</Typography>
-              <Typography margin="2em 0 2em 0">We help you visualize all of your single-cell sequencing data in a fast and easy way with the help of neural networks.</Typography>
-              <CustomButton onClick={()=>history.push('/explore')}>Explore</CustomButton>
+              <Typography fontSize="1.2em" fontWeight="bold">Query to reference dataset mapping using Transfer Learning</Typography>
+              <Typography margin="2em 0 2em 0">Genecruncher enables mapping by using a novel deep learning strategy called single-cell architectural surgery (ScArches).</Typography>
+              <CustomButton onClick={() => history.push('/explore')}>Explore</CustomButton>
             </Box>
           </Box>
         </Box>
@@ -130,8 +126,8 @@ const Home = () => {
               <UploadIcon sx={{ width: "20px", height: "20px", position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }} />
             </Box>
             <Box sx={{ width: { xs: "100%", sm: "50%", md: "50%", lg: "50%", xl: "50%" } }}>
-              <Typography fontSize="1.2em" fontWeight="bold">Upload</Typography>
-              <Typography color={colors.neutral[500]}>Upload your files containing the single-cell sequencing data.</Typography>
+              <Typography fontSize="1.2em" fontWeight="bold">Select & Upload</Typography>
+              <Typography color={colors.neutral[500]}>Create a mapping project by choosing a reference atlas together with a pre-trained neural network (model) and upload your single-cell data.</Typography>
             </Box>
             <Box sx={{ width: { xs: "100%", sm: "50%", md: "50%", lg: "50%", xl: "50%" }, backgroundColor: "white", borderRadius: "20px" }}>
               <img style={{ width: "100%" }} src={graphic2} alt="Upload" />
@@ -146,7 +142,7 @@ const Home = () => {
             </Box>
             <Box sx={{ width: { xs: "100%", sm: "50%", md: "50%", lg: "50%", xl: "50%" } }}>
               <Typography fontSize="1.2em" fontWeight="bold">Processing</Typography>
-              <Typography color={colors.neutral[500]}>Your input data is processed by our machine learning model which performs the cell-type classification according to your specification.</Typography>
+              <Typography color={colors.neutral[500]}>ScArches will map your input data to the specified atlas using the selected machine learning model, while performing the cell-type classification.</Typography>
             </Box>
             <Box sx={{ width: { xs: "100%", sm: "50%", md: "50%", lg: "50%", xl: "50%" }, backgroundColor: "white", borderRadius: "20px" }}>
               <img style={{ width: "100%" }} src={graphic3} alt="Processing" />
@@ -164,7 +160,7 @@ const Home = () => {
             </Box>
             <Box sx={{ width: { xs: "100%", sm: "50%", md: "50%", lg: "50%", xl: "50%" } }}>
               <Typography fontSize="1.2em" fontWeight="bold">Check Results</Typography>
-              <Typography color={colors.neutral[500]}>Your input data is processed by our machine learning model which performs the cell-type classification according to your specification.After the algorithm has processed the data you can specify the project you want your cell-type data to be associated with and view the results.</Typography>
+              <Typography color={colors.neutral[500]}>Your new mapping will be automaticly displayed for further analysis. </Typography>
             </Box>
             <Box sx={{ width: { xs: "100%", sm: "50%", md: "50%", lg: "50%", xl: "50%" }, backgroundColor: "white", borderRadius: "20px" }}>
               <img style={{ width: "100%" }} src={graphic4} alt="Check Results" />
@@ -175,7 +171,7 @@ const Home = () => {
         <Box ref={contactUsBoxRef} sx={{ position: "relative", margin: "4em auto", position: "relative", width: "100%" }} >
           <Typography sx={{ textAlign: "center" }} fontSize="2em" fontWeight="bold">Contact Us</Typography>
           <Typography marginTop="1em" sx={{ textAlign: "center" }} fontSize="1em">Please message us in case you have any questions, feedback or collaboration-related inquiries concerning Genomics.ai.</Typography>
-          <Box sx={{
+          {/* <Box sx={{
             width: "100%",
             margin: "2em auto 0em auto",
             padding: "2em 0em",
@@ -188,12 +184,14 @@ const Home = () => {
                 <Input isRequired label="First Name" />
                 <Input isRequired label="Last Name" />
               </Stack>
+              <Input isRequired label="Subject" maxLength={50}/>
               <Input isRequired label="Message" multiline maxLength={1000} />
-              <Box sx={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
+              <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "center" }}>
                 <CustomButton>Send</CustomButton>
               </Box>
             </Stack>
-          </Box>
+          </Box> */}
+          <ContactForm />
         </Box>
       </Box>
 

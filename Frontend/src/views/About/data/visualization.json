@@ -1,0 +1,92 @@
+[
+  {
+    "name": "Aleksandra Topalova",
+    "roles": ["Visuals & ML & Team Lead"],
+    "img": "",
+    "dscp": "",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Andreas Resch",
+    "roles": ["Visuals & ML"],
+    "img": "memberphotos/visualization/Visuals_and_ML_Andreas_Resch.jpg",
+    "dscp": "",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Gustav Lund",
+    "roles": ["Visuals & ML"],
+    "img": "memberphotos/visualization/Visuals_and_ML_Gustav_Lund.jp",
+    "dscp": "",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Julian Kraus",
+    "roles": ["Visuals & ML"],
+    "img": "memberphotos/frontend_3/Frontend_Evan_Christopher.jpg",
+    "dscp": "",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Xin Guan",
+    "roles": ["Visuals & ML"],
+    "img": "",
+    "dscp": "",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Vivian Haller",
+    "roles": ["Visualisation Lead & d3.js + ML Developer (2021)"],
+    "img": "memberphotos/old/visualization/Visualization_Vivian_Haller.jpg",
+    "dscp": "M.Sc. Math/CS at TUM",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Yashica Saun",
+    "roles": ["Visualisation/d3.js Developer (2021)"],
+    "img": "memberphotos/old/visualization/Visualization_Yashica_Saun.png",
+    "dscp": "Master's student in Informatics at TUM",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Carl Neumann",
+    "roles": ["Visualisation/d3.js + ML Developer (2021)"],
+    "img": "memberphotos/old/visualization/Visualization_Carl_Neumann.jpg",
+    "dscp": "B.Sc. Information Systems at TUM ",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": ""
+  },
+  {
+    "name": "Mohan Prabhakaran",
+    "roles": ["Visualisation/d3.js Developer (2021)"],
+    "img": "memberphotos/old/visualization/Visualization_MohanPrabhakaran.jpg",
+    "dscp": "Master's student in Informatics at TUM",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "", 
+    "socialLinkedIn": ""
+  }
+]

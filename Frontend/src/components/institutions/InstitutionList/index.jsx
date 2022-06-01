@@ -3,7 +3,7 @@ import LoadingList from 'components/general/LoadingList';
 import InstitutionCard from 'components/institutions/InstitutionCard';
 
 function InstitutionList({
-  isLoading, institutions, disableLinks, replaceTrailing,
+  isLoading, institutions, disableLinks, replaceTrailing, onLeft,
 }) {
   return (
     <LoadingList
@@ -14,6 +14,7 @@ function InstitutionList({
           institution={institution}
           replaceTrailing={replaceTrailing}
           disableLink={disableLinks}
+          onLeft={onLeft}
         />
       )}
       noElementsMessage="No institutions."

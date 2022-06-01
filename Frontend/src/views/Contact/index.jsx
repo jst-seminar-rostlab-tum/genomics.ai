@@ -5,7 +5,7 @@ import {
 import Stack from '@mui/material/Stack';
 import NavBar from 'components/NavBar/old';
 import styles from './contact.module.css';
-import Footer from 'components/Footer/old';
+import Footer from 'components/Footer';
 
 const theme = createTheme({
   palette: {
@@ -39,7 +39,6 @@ const Contact = () => {
       email: contactDetails.email,
       message: contactDetails.message,
     };
-    console.log(data);
 
     try {
       // send POST to the server

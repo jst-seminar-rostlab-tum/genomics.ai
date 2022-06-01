@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Dr. Guy Yachdav", 
+    "roles": ["Supervisor & Initiator"], 
+    "img": "https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=UoUkGhUAAAAJ&citpid=2", 
+    "dscp": "Technology executive with over 15 years experience in R&D and specialization in big data and machine learning", 
+    "socialFB": "", 
+    "socialLinkedIn": "https://www.linkedin.com/in/gyachdav/?originalSubdomain=il", 
+    "socialGithub": "", 
+    "socialTwitter": ""
+  },
+  {
+    "name": "Amin Ben Saad",
+    "roles": ["Teaching Assistant", "Frontend + ML Lead & Developer (2021)"],
+    "img": "memberphotos/old/frontend/Frontend_Amin Ben Saad.png",
+    "dscp": "B.Sc. Informatics at TUM ",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": "https://www.linkedin.com/in/amin-ben-saad369/?originalSubdomain=de"
+  },
+  {
+    "name": "Ronald Skorobogat",
+    "roles": ["Teaching Assistant", "Frontend Developer (2021)"],
+    "img": "memberphotos/old/frontend/Frontend-RonaldSkorobogat.jpg",
+    "dscp": "B.Sc. Informatics at TUM ",
+    "socialFB": "",
+    "socialGithub": "https://github.com/ronskoro",
+    "socialTwitter": "",
+    "socialLinkedIn": "https://www.linkedin.com/in/ronald-skorobogat-a1348b1a3"
+  },
+  {
+    "name": "Phd. Mohammad Lotfollahi",
+    "roles": ["Researcher at Helmholtz", "Chief contributor of ScArches"],
+    "img": "memberphotos/old/Helmholtz_Mohammad_Lotfollahi.png",
+    "dscp": "",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": "https://www.linkedin.com/in/mlotfollahi"
+  },
+  {
+    "name": "Christoph Weinhuber",
+    "roles": [""],
+    "img": "memberphotos/old/Management_Christoph_Weinhuber.png",
+    "dscp": "M.Sc. Computer Science",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": "https://www.linkedin.com/in/weinhuber/"
+  }
+]

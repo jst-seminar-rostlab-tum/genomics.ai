@@ -47,6 +47,7 @@ export default function InstitutionProfileImageUploadDialog({
       additionalButtons={[
         { text: 'Reset', func: reset },
       ]}
+      disableCropping
       onUpload={(blob) => upload(blob)}
     />
   );

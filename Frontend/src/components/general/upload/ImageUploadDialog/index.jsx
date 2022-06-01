@@ -4,17 +4,18 @@ import Button from 'components/CustomButton';
 import { Modal, ModalTitle } from 'components/Modal';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
 import { DropzoneArea } from 'mui-file-dropzone';
 import CropImage from '../CropImage';
 
 export default function ImageUploadDialog({
-  open, onClose, title, description, maxFileSizeMB, croppable,
+  open, onClose, title, description, maxFileSizeMB,
   onUpload, additionalButtons,
+  disableCropping,
   preview = (imgURL) => <img style={{ width: '100%' }} src={imgURL} alt="Preview" />,
 }) {
   const [loading, setLoading] = useState(false);
   const [imgURL, setImgURL] = useState('');
-  const [croppedImgURL, setCroppedImgURL] = useState('');
   const [croppedImgBlob, setCroppedImgBlob] = useState();
 
   const [isMounted, setIsMounted] = useState(false);
@@ -38,9 +39,11 @@ export default function ImageUploadDialog({
     reader.addEventListener('load', () => {
       const url = reader.result.toString() || '';
       setImgURL(url);
-      setCroppedImgURL(url);
     });
     reader.readAsDataURL(files[0]);
+    if (disableCropping) {
+      setCroppedImgBlob(files[0]);
+    }
     console.log('files', files);
   }
 
@@ -49,31 +52,25 @@ export default function ImageUploadDialog({
       <ModalTitle>{title}</ModalTitle>
       <DialogContent>
         {description && (<p>{description}</p>)}
-        {!imgURL && (
+        {(!imgURL || disableCropping) && (
           <DropzoneArea
             onChange={(files) => handleSave(files)}
             acceptedFiles={['image/jpeg', 'image/png']}
             maxFileSize={maxFileSizeMB * 1024 * 1024}
             filesLimit={1}
-            showPreviews={!croppable}
+            showPreviews={disableCropping}
             showPreviewsInDropzone={!preview}
             alertSnackbarProps={{ autoHideDuration: 3000 }}
           />
         )}
-        {imgURL && croppable && (
+        {!disableCropping && imgURL && (
           <>
             <h3>Crop</h3>
             <CropImage
               imgSrc={imgURL}
-              onUpdate={(url) => setCroppedImgURL(url)}
+              onUpdate={() => null}
               onUpdateBlob={(blob) => setCroppedImgBlob(blob)}
             />
-          </>
-        )}
-        {imgURL && (
-          <>
-            <h3>Preview</h3>
-            {preview(croppedImgURL)}
           </>
         )}
       </DialogContent>

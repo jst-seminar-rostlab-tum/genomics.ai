@@ -1,16 +1,19 @@
 .container {
   max-width: 400px;
   /* margin: 12px; */
-  position: absolute;
+  /* position: -webkit-sticky; */
+  position: sticky;
   z-index: 100;
-  right: 1em;
-  bottom: 1em;
+  left: 70%;
+  bottom: 20px;
 }
 
 .borderContainer {
   border-radius: 20px;
   padding: 16px 32px;
-  position: relative;
+  position: absolute;
+  left: 0px;
+  bottom: 75px;
   background-color: white;
 }
 

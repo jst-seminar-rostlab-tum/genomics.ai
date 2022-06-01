@@ -1,20 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import PlusIcon from 'components/general/PlusIcon';
 import InstitutionCreationDialog from 'components/institutions/InstitutionCreationDialog';
 import InstitutionList from 'components/institutions/InstitutionList';
-import InstitutionService from 'shared/services/Institution.service';
+import { useInstitutions } from 'shared/context/institutionContext';
 
 function InstitutionOverview() {
-  const [institutions, setInstitutions] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  useEffect(async () => {
-    setIsLoading(true);
-    const newInstitutions = await InstitutionService.getMyInstitutions();
-    setInstitutions(newInstitutions);
-    setIsLoading(false);
-  }, [setInstitutions, setIsLoading]);
+  const { institutions, isLoading, setInstitutions } = useInstitutions();
 
   function onLeft(institution) {
     setInstitutions(institutions.filter((i) => i.id !== institution.id));

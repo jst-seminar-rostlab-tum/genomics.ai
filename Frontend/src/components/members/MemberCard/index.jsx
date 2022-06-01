@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import ListCard from 'components/general/ListCard';
 
 /**
@@ -11,6 +12,9 @@ import ListCard from 'components/general/ListCard';
 function MemberCard({
   member, nextToNameBuilder, trailingBuilder, overrideProfilePicture = null,
 }) {
+  const history = useHistory();
+  const navigateToMember = () => history.push(`/sequencer/users/${member._id}`);
+
   return (
     <ListCard
       imageURL={overrideProfilePicture || member.avatarUrl}
@@ -19,6 +23,7 @@ function MemberCard({
       description={member.email}
       nextToTitle={nextToNameBuilder ? nextToNameBuilder(member) : null}
       trailing={(trailingBuilder || (() => null))(member)}
+      onClick={navigateToMember}
     />
   );
 }

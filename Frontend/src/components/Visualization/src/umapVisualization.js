@@ -2,15 +2,9 @@ import * as d3 from "d3";
 import * as cons from "./constants";
 import { zoomM } from "./newZoom";
 import "./tooltip.css";
-import { addBarPlotCell, addBarPlotBatch } from "./barChart"
-import {getColoringModes, setColoring} from "./coloring"
+import { addBarPlotCell, addBarPlotBatch, addBarPlotPredict } from "./barChart"
+import { getColoringModes, setColoring } from "./coloring"
 
-// //Reference before and after
-// const refAfter = (cells) =>{
-//   after(cells, "is_reference", "No");
-// }
-
-//Create a color scale based on the chosen mode and its values
 
 const getMin = (w, h) => {
   return d3.min([h, w]);
@@ -22,37 +16,145 @@ const addGroup = (svg, id) => {
 
 export class UmapVisualization2 {
 
-  constructor(container, data, containerBar) {
+  constructor(container, data) {
     d3.select(container).selectAll("*").remove();
-    this.svg = d3.select(container).append('svg');
+    this.svg = d3.select(container).append('svg')
+      .attr('id', 'vis_svg');
     this.gCells = addGroup(this.svg, 'cells');
-    this.gLabels = addGroup(this.svg, 'labels');
     this.coloringModes = getColoringModes(data);
     this.tooltip = d3.select(container).append("div");
     this.mode = undefined;
-    //TODO: add if for when the atlas doesn't contain cell_type
-    this.barChartBatch = addBarPlotBatch(containerBar, data);
-    if(Object.keys(this.coloringModes).includes("cell_type")){
-      d3.select(containerBar).append("div");
-      this.barChartCell = addBarPlotCell(containerBar, data);
-    }
     this.data = data;
+    this.graphs = ["batch", "cell"];
+    this.hiddenCells = [];
   };
 
-  //Hide
-  after(category, value) {
-    this.cells
-      .style("visibility", (d) => { return d[category] === value ? "hidden" : "visible" });
-
+  // Returns all available graphs
+  getAvailableGraphs() {
+    return this.graphs;
   }
 
-  //Show
-  before() {
+
+  // Draws a graph, which is in the this.graphs list 
+  drawGraph(container, graph, width, height) {
+    switch (graph) {
+      case this.graphs[0]: // Draws the batch graph
+        if (Object.keys(this.coloringModes).includes("batch")) {
+          d3.select(container).append("div");
+          addBarPlotBatch(container, this.data, width, height);
+        }
+        break;
+      case this.graphs[1]: // Draws the cell type graph
+        if (Object.keys(this.coloringModes).includes("cell_type")) {
+          d3.select(container).append("div");
+          this.barChartCell = addBarPlotCell(container, this.data, width, height);
+        }
+        break;
+      default:
+        break;
+    }
+  };
+
+  // Checks if a cell fullfills one of the [category, value] of the this.hiddenCells list
+  // If yes -> true
+  // If not -> false
+  isHidden(cell) {
+    for (let i = 0; i < this.hiddenCells.length; i++) {
+      if (cell[this.hiddenCells[i][0]] === this.hiddenCells[i][1]) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // Hide the cells that have the given value in the given category
+  after(category, value) {
+    this.addHiddenCell(category, value);
+    this.hideShowCells();
+  }
+
+  // Show the cells that have the given value in the given category
+  before(category, value) {
+    this.deleteHiddenCell(category, value);
+    this.hideShowCells();
+  }
+
+  // Resets the visibility for all cells
+  beforeAll() {
+    this.hiddenCells = [];
     this.cells
       .style("visibility", "visible");
   }
 
-  //Set a color mode
+  // Changes the visibility of the cells based on the content of this.hiddenCells
+  hideShowCells() {
+    this.cells
+      .style("visibility", (d) => { return this.isHidden(d) ? "hidden" : "visible" });
+  }
+
+  // Add a [category, value] to the hidden cells
+  addHiddenCell(category, value) {
+    this.hiddenCells.push([category, value]);
+  }
+
+  filterCells(cell) {
+    cell[0] == this[0] && cell[1] == this[1];
+  }
+
+  // Removes a [category, value] from the hidden cells
+  deleteHiddenCell(category, value) {
+    this.hiddenCells = this.hiddenCells.filter(function (cell) {
+      return !(cell[0] == category && cell[1] == value)
+    });
+  }
+
+  // Unhides the reference cells
+  showReference() {
+    this.before("type", "reference");
+  }
+
+  // Unhides the query cells
+  showQuery() {
+    this.before("type", "query");
+  }
+
+  // Hides the query cells
+  hideQuery() {
+    this.after("type", "query");
+  }
+
+  // Hides the reference cells
+  hideReference() {
+    this.after("type", "reference");
+  }
+
+  /* The following methods are their own methods to allow for 
+  the option to add the possibility of changing the opacity based 
+  on multiple attributes */
+
+  // Sets the opacity of all predicted cells to a reduced value
+  predictedCellsTransparent() {
+    this.reduceOpacity("predicted", "yes");
+  }
+
+  // Sets the opacity of all predicted cells to the original value
+  predictedCellsVisible() {
+    this.resetOpacity();
+  }
+
+  // Reduces the opacity of the cells that have the given value in the given category
+  reduceOpacity(category, value) {
+    this.cells
+      .style("opacity", (d) => { return d[category] === value ? cons.reducedOpacity : cons.originalOpacity });
+  }
+
+  // Resets the opacity of all cells (back to the original opacity)
+  resetOpacity() {
+    this.cells
+      .style("opacity", cons.originalOpacity);
+  }
+
+  // Colors the cells based on the specified mode
   setColorMode(mode) {
     const colorScale = setColoring(mode, this.data);
     if (this.cells != null) {
@@ -63,8 +165,11 @@ export class UmapVisualization2 {
     this.colorScale = colorScale;
   }
 
-  //Sizing and resizing the cells
+  // Sizing and resizing the cells
   resize(w, h) {
+    if (this.cells === undefined) {
+      return this.render(w, h);
+    }
 
     const min = getMin(w, h);
     const data = this.data;
@@ -76,7 +181,7 @@ export class UmapVisualization2 {
 
     const translate = (w - cons.margin - (xScaleHelper(d3.max(data.map(d => parseFloat(d.x)))))) / 2;
 
-    //Scales
+    // Scales
     const xScale = d3.scaleLinear()
       .domain([d3.min(data.map(d => parseFloat(d.x))), d3.max(data.map(d => parseFloat(d.x)))])
       .range([translate, min - cons.margin + translate]);
@@ -89,16 +194,15 @@ export class UmapVisualization2 {
       .attr("cx", d => xScale(parseFloat(d.x)))
       .attr("cy", d => yScale(parseFloat(d.y)))
 
-      this.cells
+    this.cells
       .attr("r", r);
 
 
     return [xScale, yScale];
   }
 
-  //Constructing the svg
+  // Constructing the svg
   async render(w, h) {
-
     const data = this.data;
 
     const min = getMin(w, h);
@@ -107,7 +211,6 @@ export class UmapVisualization2 {
 
     const _this = this;
 
-    //svg
     this.svg
       .attr("width", w)
       .attr("height", h)
@@ -170,7 +273,7 @@ export class UmapVisualization2 {
       })
 
 
-    //Pan and mouse zoom
+    // Pan and mouse zoom
     this.svg
       .attr('class', 'mouse-capture')
       .attr('x', -w)
@@ -179,7 +282,11 @@ export class UmapVisualization2 {
       .attr('height', h)
       .style('fill', 'white')
       .lower()
-      .call(zoomM);
+      .call(zoomM)
+
+    this.cells
+      .attr("cx", d => xScale(parseFloat(d.x)))
+      .attr("cy", d => yScale(parseFloat(d.y)))
 
   }
 

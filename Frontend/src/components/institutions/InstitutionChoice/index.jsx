@@ -1,27 +1,11 @@
 import Button from 'components/CustomButton';
-import React, { useEffect, useState } from 'react';
-import InstitutionService from 'shared/services/Institution.service';
+import React, { useState } from 'react';
 import InstitutionList from '../InstitutionList';
+import { useInstitutions } from 'shared/context/institutionContext';
 
 function InstitutionChoice({ onChoiceChange }) {
-  const [institutions, setInstitutions] = useState([]);
+  const { institutions } = useInstitutions();
   const [chosen, setChosen] = useState(institutions[0]);
-
-  useEffect(() => {
-    InstitutionService.getMyAdminInstitutions()
-      .then((newInstitutions) => {
-        setInstitutions(newInstitutions);
-        if (newInstitutions.length > 0) {
-          setChosen(newInstitutions[0].id);
-          onChoiceChange(newInstitutions[0].id);
-        }
-      })
-      .catch(console.error);
-  }, []);
-
-  if (institutions.length === 0) {
-    return <b>You are not an admin of any institution.</b>;
-  }
 
   return (
     <InstitutionList

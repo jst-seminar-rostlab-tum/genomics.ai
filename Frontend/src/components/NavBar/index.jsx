@@ -7,9 +7,7 @@ import { colors } from "shared/theme/colors";
 import { useEffect, useRef, useState } from "react";
 
 import { useAuth } from 'shared/context/authContext';
-
-// REMOVE THIS LATER
-import UserProfileImage from "assets/user.png";
+import ProfileImage from "components/ProfileImage";
 
 //In styled(), we cannot use different width to fix different resolution
 //we have to use sx
@@ -75,10 +73,10 @@ function DrawerBar({ open, setOpen, executeScroll }) {
 
         <Drawer open={open} anchor="bottom" onClose={() => setOpen(false)}>
           <Box sx={{ width: "100vw", height: "25vh", bgcolor: "white", display: "flex", flexDirection: "column", justifyContent: "space-evenly", alignItems: "center" }}>
-            <LinkBox to="/about"><DrawerNavlink>About us</DrawerNavlink></LinkBox>
-            <LinkBox to="/docs"><DrawerNavlink>Docs</DrawerNavlink></LinkBox>
-            <Box onClick={executeScroll} sx={{ cursor: "pointer" }}><DrawerNavlink>Contact us</DrawerNavlink></Box>
             <LinkBox to="/explore"><DrawerNavlink>Explore</DrawerNavlink></LinkBox>
+            <DrawerNavlink onClick={()=>window.open("https://genecruncher.readthedocs.io/")}>Docs</DrawerNavlink>
+            <LinkBox to="/about"><DrawerNavlink>About</DrawerNavlink></LinkBox>
+            <Box onClick={executeScroll} sx={{ cursor: "pointer" }}><DrawerNavlink>Contact</DrawerNavlink></Box>
           </Box>
         </Drawer>
       </Box>
@@ -101,14 +99,17 @@ function Rightbar(props) {
 }
 
 function Navlink(props) {
+
+  const { fontWeight="425", main } = props
+
   return (
     <Box {...props}>
       <Typography {...props} sx={{
-        fontWeight: "bold",
-        fontSize: { xs: "0.6em", sm: "0.8em", md: "0.8em", lg: "1.2em", xl: "1.2em" },
+        fontWeight,
+        fontSize: main ? { xs: "0.6em", sm: "0.8em", md: "0.8em", lg: "1.2em", xl: "1.2em" } : { xs: "0.4em", sm: "0.6em", md: "0.6em", lg: "1em", xl: "1em" },
         color: "white",
         ":hover": {
-          color: colors.secondary1[200]
+          color: colors.primary[400],
         }
       }}
       ></Typography>
@@ -124,7 +125,7 @@ function DrawerNavlink(props) {
         fontSize: "1em",
         color: "black",
         ":hover": {
-          color: colors.secondary1[200]
+          color: colors.primary[400],
         }
       }}
       ></Typography>
@@ -145,6 +146,7 @@ function Login(props) {
         fontSize: { xs: "0.6em", sm: "0.8em", md: "0.8em", lg: "1.2em", xl: "1.2em" },
         color: "white",
         ":hover": {
+          color: colors.primary[400],
           textDecoration: "underline"
         }
       }}
@@ -199,9 +201,7 @@ export default function Navbar({
   const history = useHistory()
 
   function handleClickContactUsInDrawer() {
-    console.log("clicked", drawerOpen)
     setDrawerOpen(false)
-    console.log("after set", drawerOpen)
     if(position==="fixed") executeScroll()
   }
 
@@ -214,7 +214,7 @@ export default function Navbar({
   })
 
   return (
-    <Box ref={boxRef} sx={{width: "100%", bgcolor: colors.primary[800], position: position, zIndex: "3"}}>
+    <Box ref={boxRef} sx={{width: "100%", bgcolor: colors.primary[800], position: position, zIndex: "10"}}>
       <Appbar>
         <DrawerBar open={drawerOpen} setOpen={setDrawerOpen} executeScroll={handleClickContactUsInDrawer} />
         <Leftbar>
@@ -223,26 +223,26 @@ export default function Navbar({
               disableRipple
               sx={{
                 bgcolor: "white",
-                ":hover": { bgcolor: "primary.dark" }
+                ":hover": { bgcolor: "white" }
               }}
             >
               <img width={28} alt="logo" src={logo} />
             </IconButton>
-            <Navlink>genomics.ai</Navlink>
+            <Navlink fontWeight="bold" main={true} >genomics.ai</Navlink>
           </LinkBox>
-          <LinkBox to="/about"><Navlink>About us</Navlink></LinkBox>
-          <LinkBox to="/docs"><Navlink>Docs </Navlink></LinkBox>
-          <Box sx={{ cursor: "pointer" }} onClick={executeScroll}><Navlink>Contact us</Navlink></Box>
           <LinkBox to="/explore"><Navlink>Explore</Navlink></LinkBox>
+          <Box sx={{cursor: "pointer"}} onClick={()=>window.open("https://genecruncher.readthedocs.io/")}><Navlink>Docs</Navlink></Box>
+          <LinkBox to="/about"><Navlink>About</Navlink></LinkBox>
+          <Box sx={{ cursor: "pointer" }} onClick={executeScroll}><Navlink>Contact</Navlink></Box>
         </Leftbar>
         <Rightbar>
             {!user && <Login onClick={onLoginClicked}>Log In</Login>}
             {!user && <Signup onClick={onSignUpClicked}>Sign Up</Signup>}
-            {/* TODO: Display user avatar */}
             {
               user && 
-              <IconButton sx={{ border: "4px solid white", p: "0" }} onClick={() => history.push("/")}>
-                <Avatar alt={user.firstName} src={UserProfileImage} />
+              <IconButton onClick={() => history.push("/")}>
+                {/* <Avatar alt={user.firstName} src={UserProfileImage} /> */}
+                <ProfileImage sizePixels={40} />
               </IconButton>
             }
         </Rightbar>

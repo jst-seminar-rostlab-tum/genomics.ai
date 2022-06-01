@@ -20,12 +20,12 @@ function InstitutionCard({
   };
 
   const {
-    name, avatarUrl, adminIds,
+    name, profilePictureURL, adminIds, memberIds,
   } = institution;
   return (
     <ListCard
       title={name}
-      imageURL={avatarUrl}
+      imageURL={profilePictureURL}
       enforceImage
       nextToTitle={(
         <span className={styles.accessRightIndicator}>
@@ -44,7 +44,7 @@ function InstitutionCard({
             Settings
           </Button>
         ) : <div key="nothing" />,
-        <InstitutionLeaveButton key="leave" institution={institution} onLeft={onLeft} />,
+        memberIds?.includes(user._id) && <InstitutionLeaveButton key="leave" institution={institution} onLeft={onLeft} />,
       ]}
       onClick={navigateToInstitution}
       sx={{ pointer: 'cursor' }}
