@@ -31,7 +31,7 @@ export class UmapVisualization2 {
 
   // Returns all available graphs
   getAvailableGraphs() {
-    return this.graphs;
+    return (Object.keys(this.coloringModes).includes("cell_type"))? this.graphs: ["batch"];
   }
 
 
