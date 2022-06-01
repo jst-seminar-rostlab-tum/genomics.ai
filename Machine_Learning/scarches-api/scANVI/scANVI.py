@@ -351,9 +351,7 @@ def create_model(source_adata, target_adata, configuration):
 
 def compute_scANVI(configuration):
     """
-    invoke the functions above and realize the functionality:
-     --> set up config, preprocess reference and query dataset, create scANVI model,
-        train on reference dataset, train on query dataset
+    process reference and query dataset with scANVI model
     :param configuration: config
     :return:
     """
