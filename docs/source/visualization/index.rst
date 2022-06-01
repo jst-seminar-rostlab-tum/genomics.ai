@@ -45,8 +45,7 @@ The scVI is an unsupervised model and does not require cell type labels for the 
 to the other models. scVI maps query to reference atlases.
 
 | Workflow:
-| To compute the query we first get the already pretrained reference. The pretrained reference is then used to train the user query. By using an already pretrained model
-the runtime is greatly shortened. We then compute the latent representation and UMAP which is then displayed on the website.
+| To compute the query we first get the already pretrained reference. The pretrained reference is then used to train the user query. By using an already pretrained model the runtime is greatly shortened. We then compute the latent representation and UMAP which is then displayed on the website.
 
 scANVI
 ---------
@@ -56,8 +55,7 @@ scANVI is a semi-supervised variant of scVI designed to leverage any available c
 integration if cell type labels are partially available in the query.
 
 | Workflow:
-| Just like the scVI workflow we use a pretrained model and predict the unlabled cells' cell type. After that we compute the accuracy of the learned classifier.
-The model is finally saved, parsed and its latent representation and UMAP is displayed on the website.
+| Just like the scVI workflow we use a pretrained model and predict the unlabled cells' cell type. After that we compute the accuracy of the learned classifier. The model is finally saved, parsed and its latent representation and UMAP is displayed on the website.
 
 totalVI
 ---------
@@ -66,7 +64,5 @@ totalVI takes the most amount of time amongst the models and imputes the protein
 (you can color the visualization based on the proteins using the leiden category).
 
 | Workflow:
-| For complex totalVI models a pretrained model is used to save time, which is trained on the reference dataset. The latent representation is saved from the trained data.
-We continue using the reference model to perform surgery on it and train the query dataset without protein data. Afterwards we impute protein data into the query
-dataset. Finally we get the latent representation of the reference + query dataset and compute the UMAP, which is then displayed on the website.
+| For complex totalVI models a pretrained model is used to save time, which is trained on the reference dataset. The latent representation is saved from the trained data. We continue using the reference model to perform surgery on it and train the query dataset without protein data. Afterwards we impute protein data into the query dataset. Finally we get the latent representation of the reference + query dataset and compute the UMAP, which is then displayed on the website.
 
