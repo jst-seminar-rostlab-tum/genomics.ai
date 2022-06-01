@@ -19,7 +19,10 @@ export function express_middleware(this: REST_Host): Router {
 
   router.use(bodyParser.json());
   router.use(bodyParser.urlencoded({ extended: true }));
-
+  return router;
+}
+export function express_routes_middleware(this: REST_Host): Router {
+  let router = express.Router();
   router.use(
     ["/user-avatar", "/institutions/:id/profilepicture"],
     bodyParser.raw({
