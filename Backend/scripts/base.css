@@ -1,0 +1,48 @@
+@tailwind base; 
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    *{
+        @apply border-emailBg;
+        @apply border-0;
+    }
+}
+
+@layer components {
+    .genomics-link {
+        @apply flex flex-row gap-4 items-center mt-10 container mx-auto
+    }
+    .footer-link {
+        @apply border-footer bg-footer text-white font-semibold
+    }
+    .action-button {
+        @apply bg-primary text-white font-bold rounded-full m-auto container mx-auto my-10;
+        mso-border-radius-alt: 20px;
+    }
+    .footer-tr {
+        @apply bg-footer;
+    }
+    .footer-tr, .footer-tr * {
+        @apply border-footer text-white font-semibold;
+    }
+    .footer-tr>td {
+        padding: 10px;
+    }
+    .footer-tr > *:last-child {
+        @apply text-right;
+    }
+    .footer-tr > *:last-child > a {
+        @apply bg-footer text-white font-semibold;
+    }
+    .genomics-signature {
+        margin-bottom: 10px;
+        padding-left: 10px;
+    }
+    .genomics-signature > *:first-child {
+        @apply mt-10 container mx-auto;
+    }
+    .genomics-signature > *:last-child {
+        @apply container mx-auto mb-10;
+    }
+}

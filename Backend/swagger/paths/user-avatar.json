@@ -1,0 +1,38 @@
+{
+  "/user-avatar": {
+    "post": {
+      "summary": "Upload new profile picture for user",
+      "tags": ["User"],
+      "requestBody": {
+        "$ref": "#/components/requestBodies/pictureUpload"
+      },
+      "responses": {
+        "200": {
+          "description": "URL pointing to the S3 bucket location of the uploaded image",
+          "content": {
+            "text/plain": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Unauthorized"
+        }
+      }
+    },
+    "delete": {
+      "summary": "Delete profile picture of user",
+      "tags": ["User"],
+      "responses": {
+        "200": {
+          "description": "OK"
+        },
+        "401": {
+          "description": "Unauthorized"
+        }
+      }
+    }
+  }
+}

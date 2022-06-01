@@ -1,0 +1,53 @@
+{
+  "/initiate_processing": {
+    "post": {
+      "summary": "Initiate processing",
+      "tags": ["Project"],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "uploadId": {
+                  "type": "string"
+                }
+              },
+              "required": ["uploadId"],
+              "additionalProperties": false
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "OK",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "msg": {
+                "type": "string"
+              },
+              "user": {
+                "type": "string"
+              },
+              "jwt": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Processing cannot be initiated. The upload has to be finished uploading and can only be initiated once."
+        },
+        "403": {
+          "description": "A user may only initiate their own projects!"
+        },
+        "404": {
+          "description": "No team found with upload ID."
+        }
+      }
+    }
+  }
+}

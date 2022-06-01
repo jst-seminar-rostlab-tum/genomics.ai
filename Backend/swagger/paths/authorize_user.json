@@ -1,0 +1,19 @@
+{
+  "/authorize_user/{id}": {
+    "get": {
+      "summary": "Authorize a user",
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "description": "Used by an admin to authorize a specific user",
+      "tags": ["User"]
+    }
+  }
+}
