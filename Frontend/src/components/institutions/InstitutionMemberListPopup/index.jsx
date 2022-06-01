@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { CircularProgress, Stack } from '@mui/material';
-import MemberList from 'components/members/MemberList';
+import InstitutionMemberList from 'components/members/InstitutionMemberList';
 import InstitutionMemberRemoveButton from 'components/institutions/InstitutionMemberRemoveButton';
 import InstitutionService from 'shared/services/Institution.service';
-import styles from './institutionMemberList.module.css';
+import styles from './institutionMemberListPopup.module.css';
 import { useAuth } from 'shared/context/authContext';
 import InstitutionMemberMakeAdminButton from '../InstitutionMemberMakeAdminButton';
 
-function InstitutionMemberList({ institution, updateInstitution }) {
+function InstitutionMemberListPopup({ institution, updateInstitution }) {
   const [user] = useAuth();
   const [members, setMembers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -24,7 +24,7 @@ function InstitutionMemberList({ institution, updateInstitution }) {
   }
 
   return (
-    <MemberList
+    <InstitutionMemberList
       members={members}
       nextToNameBuilder={(member) => (
         <span className={styles.accessRightIndicator}>
@@ -51,4 +51,4 @@ function InstitutionMemberList({ institution, updateInstitution }) {
   );
 }
 
-export default InstitutionMemberList;
+export default InstitutionMemberListPopup;

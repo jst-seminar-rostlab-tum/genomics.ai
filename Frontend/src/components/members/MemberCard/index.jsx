@@ -12,7 +12,6 @@ import ListCard from 'components/general/ListCard';
 function MemberCard({
   member, nextToNameBuilder, trailingBuilder, overrideProfilePicture = null,
 }) {
-
   const history = useHistory();
   const navigateToMember = () => history.push(`/sequencer/users/${member._id}`);
 
