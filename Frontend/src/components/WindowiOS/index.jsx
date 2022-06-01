@@ -58,7 +58,7 @@ const WindowiOS = ({ onSignUpClicked }) => {
           <CustomButton onClick={onSignUpClicked} sx={{ width: "100px" }}>Sign up</CustomButton>
         </Box>
         <Box sx={{ marginBlock: "10px", display: "flex", flexDirection: "row", gap: "10px", alignItems: "center" }}>
-          <Box sx={{ color: colors.neutral[200] }}><Link href="#/explore" color={colors.primary[200]} fontWeight="bold">Try out</Link> our GeneMapper. No need to sign up.</Box>
+          <Box sx={{ color: colors.neutral[200] }}><Link href="#/explore" color={colors.plus.main} fontWeight="bold">Try out</Link> our GeneMapper. No need to sign up.</Box>
         </Box>
         
         {/* DIVIDER */}
