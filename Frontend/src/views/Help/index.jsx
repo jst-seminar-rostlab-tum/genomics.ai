@@ -20,7 +20,6 @@ export default function Help({ sidebarShown }) {
     const data = {
       message: contactDetails.message,
     };
-    console.log(data);
 
     try {
       // send POST to the server

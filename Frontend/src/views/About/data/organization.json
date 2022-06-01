@@ -27,6 +27,26 @@
     "socialFB": "",
     "socialGithub": "https://github.com/ronskoro",
     "socialTwitter": "",
-    "socialLinkedIn": ""
+    "socialLinkedIn": "https://www.linkedin.com/in/ronald-skorobogat-a1348b1a3"
+  },
+  {
+    "name": "Phd. Mohammad Lotfollahi",
+    "roles": ["Researcher at Helmholtz", "Chief contributor of ScArches"],
+    "img": "memberphotos/old/Helmholtz_Mohammad_Lotfollahi.png",
+    "dscp": "",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": "https://www.linkedin.com/in/mlotfollahi"
+  },
+  {
+    "name": "Christoph Weinhuber",
+    "roles": [""],
+    "img": "memberphotos/old/Management_Christoph_Weinhuber.png",
+    "dscp": "M.Sc. Computer Science",
+    "socialFB": "",
+    "socialGithub": "",
+    "socialTwitter": "",
+    "socialLinkedIn": "https://www.linkedin.com/in/weinhuber/"
   }
 ]

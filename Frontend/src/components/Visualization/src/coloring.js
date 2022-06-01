@@ -31,8 +31,37 @@ export const setColoring = (mode, data) => {
 
 let keyExists = (key, obj) => key in obj;
 
+export const getColoringModes = (data) =>
+Object.assign({},
+  ...(Object.keys(data[0])
+    .map(d => d.trim())
+    .filter(d => (d !== "x" && d !== "y" && d !== ""))
+    .map(d => {
+      var a = {};
+      if (parseFloat(data[0][d])) {
+        const max = d3.max(data.map(val => parseFloat(val[d])));
+        const min = d3.min(data.map(val => parseFloat(val[d])));
+        a[d] = Object.assign({}, ...listColoringDomain(data, d).map(val => parseFloat(val)).filter(val => val == max || val == min).sort((a, b) => a - b)
+          .map((d, i) => {
+            const obj = new Object();
+            obj[d] = cons.gradientColors[i];
+            return obj;
+          }));
+        return a;
+      }
+      const colorDomain = listColoringDomain(data, d).sort()
+        .map((d, i) => {
+          const obj = new Object();
+          obj[d] = cons.colors[i];
+          return obj;
+        });
+      a[d] = Object.assign({},
+        ...colorDomain)
+      return a;
+    })));
+
 // get the possible color modes with their values
-export const getColoringModes = (data) => { // convert K-V -> key->{..}
+export const getColoringModes2 = (data) => { // convert K-V -> key->{..}
   var colorModes = new Object();
   for(const block of data) {
     for(const [key, value] of Object.entries(block)) {

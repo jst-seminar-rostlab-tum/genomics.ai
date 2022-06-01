@@ -14,6 +14,7 @@ import scanpy
 from pathlib import Path
 import pandas as pd
 from scarches.dataset.trvae.data_handling import remove_sparsity
+import traceback
 
 UNWANTED_LABELS = ['leiden', '', '_scvi_labels', '_scvi_batch']
 
@@ -46,8 +47,6 @@ def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=
     """
 
     drop_columns = to_drop(latent.obs_keys())
-    # if drop_columns is None:
-    #     drop_columns = []
     if get_from_config(configuration, parameters.ATLAS) == 'human_lung':
         drop_columns = ['sample', 'study_long', 'study', 'last_author_PI', 'subject_ID', 'sex', 'ethnicity',
                         'mixed_ethnicity', 'smoking_status', 'BMI', 'condition', 'subject_type', 'sample_type',
@@ -65,15 +64,18 @@ def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=
 
     final = latent.obs.drop(columns=drop_columns)
     if get_from_config(configuration, parameters.ATLAS) == 'human_lung':
-
-        final['ann_coarse_for_GWAS_and_modeling'] = final['ann_coarse_for_GWAS_and_modeling'].astype(str).apply(lambda cell: '' if cell == 'nan' else cell)
-        final['ann_level_1_pred'] = final['ann_level_1_pred'].astype(str).apply(lambda cell: '' if cell == 'nan' else cell)
+        final['ann_coarse_for_GWAS_and_modeling'] = final['ann_coarse_for_GWAS_and_modeling'].astype(str).apply(
+            lambda cell: '' if cell == 'nan' else cell)
+        final['ann_level_1_pred'] = final['ann_level_1_pred'].astype(str).apply(
+            lambda cell: '' if cell == 'nan' else cell)
         final['cell_type'] = final['ann_coarse_for_GWAS_and_modeling'] + (final['ann_level_1_pred'])
-        
-        final = final.drop(columns=['ann_coarse_for_GWAS_and_modeling','ann_level_1_pred','ann_level_1_uncertainty',
-                            'ann_level_2_pred', 'ann_level_2_uncertainty', 'ann_level_3_pred', 'ann_level_3_uncertainty',
-                            'ann_level_4_pred', 'ann_level_4_uncertainty', 'ann_level_5_pred', 'ann_level_5_uncertainty',
-                            'ann_finest_level_pred', 'ann_finest_level_uncertainty'])
+
+        final = final.drop(columns=['ann_coarse_for_GWAS_and_modeling', 'ann_level_1_pred', 'ann_level_1_uncertainty',
+                                    'ann_level_2_pred', 'ann_level_2_uncertainty', 'ann_level_3_pred',
+                                    'ann_level_3_uncertainty',
+                                    'ann_level_4_pred', 'ann_level_4_uncertainty', 'ann_level_5_pred',
+                                    'ann_level_5_uncertainty',
+                                    'ann_finest_level_pred', 'ann_finest_level_uncertainty'])
 
         final['predicted'] = list(map(lambda p: 'yes' if p == 'query' else 'no', final['type']))
 
@@ -82,8 +84,18 @@ def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=
 
     try:
         if predictScanvi and get_from_config(configuration, parameters.ATLAS) != 'human_lung':
-            final['predicted'] = final['predicted'].apply(lambda cell_type: prediction_value(cell_type))
-    except Exception:
+            cell_types = list(map(lambda p: p, latent.obs['cell_type']))
+            predictions = list(map(lambda p: p, latent.obs['predicted']))
+            for i in range(len(cell_types)):
+                if cell_types[i] == get_from_config(configuration, parameters.UNLABELED_KEY):
+                    cell_types[i] = predictions[i]
+                    predictions[i] = 'yes'
+                else:
+                    predictions[i] = 'no'
+            final['cell_type'] = cell_types
+            final['predicted'] = predictions
+    except Exception as e:
+        traceback.print_exc()
         print("no prediction column found")
 
     final.to_csv(filename)
@@ -188,10 +200,9 @@ def write_adata_to_csv(model, adata=None, source_adata=None, target_adata=None, 
         scanpy.tl.leiden(latent)
     print("create umap")
     scanpy.tl.umap(latent)
-    print("predicting")
     if predictScanvi and get_from_config(configuration, parameters.ATLAS) != 'human_lung':
+        print("predicting")
         latent.obs['predicted'] = model.predict(adata=adata)
-
     print("writing csv")
     return write_latent_csv(latent, key, filename, predictScanvi=predictScanvi, configuration=configuration)
 
