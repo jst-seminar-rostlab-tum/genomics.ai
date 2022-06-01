@@ -23,6 +23,7 @@ The visualization can be set to show the query, reference data or both, using th
 To the right of the visualization, two graphs are displayed, one for the amount of cells per batch and the other for the amount of cells per type.
 The exact value is displayed by hovering over the columns, and by clicking the arrows button the graph is centered and enlarged.
 
+.. image:: ../_static/popup_graphs.png
 
 scVI
 -------
