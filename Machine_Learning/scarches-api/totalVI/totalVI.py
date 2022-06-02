@@ -109,13 +109,7 @@ def visualize_RNA_data(model, adata_ref, configuration):
 
 
 def surgery(adata_query, configuration):
-    # utils.fetch_file_from_s3(utils.get_from_config(configuration, parameters.PRETRAINED_MODEL_PATH), 'assets/totalVI/model.pt')
-    dir_path = 'assets/totalVI/' + str(utils.get_from_config(configuration, parameters.ATLAS)) + '/',
-    # vae_q_file = exists(dir_path + args.fname)
-    # vae_q = None
-    # if vae_q_file:
-    #    vae_q = sca.models.TOTALVI.load(adata=adata_query, dir_path=dir_path) #, extend_categories=True
-    # else:
+    dir_path = 'assets/totalVI/' + utils.get_from_config(configuration, parameters.ATLAS) + '/'
     vae_q = sca.models.TOTALVI.load_query_data(
         adata_query,
         dir_path,

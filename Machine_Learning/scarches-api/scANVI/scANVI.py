@@ -160,9 +160,8 @@ def query(pretrained_model, reference_latent, anndata, source_adata, configurati
     utils.write_full_adata_to_csv(model, source_adata, anndata,
                                   key=utils.get_from_config(configuration, parameters.OUTPUT_PATH),
                                   cell_type_key=utils.get_from_config(configuration, parameters.CELL_TYPE_KEY),
-                                  condition_key=utils.get_from_config(configuration,
-                                                                      parameters.CONDITION_KEY), predictScanvi=True,
-                                  configuration=configuration)
+                                  condition_key=utils.get_from_config(configuration, parameters.CONDITION_KEY),
+                                  predictScanvi=True, configuration=configuration)
     return model, query_latent
 
 
