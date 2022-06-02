@@ -2,13 +2,13 @@ import { Box, Stack } from "@mui/material";
 import Typography from '@mui/material/Typography';
 import { colors } from 'shared/theme/colors';
 
-/** 
+/**
  * TabCard for TabGroup Component / List of cards with select feature used in FileUpload page
  * @param width
  * @param height
- * @data object containing information to be displayed on the card
- * @handleOnClick executed function on card click
- * @selected boolean parameter to indicate if a card element is selected
+ * @param data object containing information to be displayed on the card
+ * @param handleOnClick executed function on card click
+ * @param selected boolean parameter to indicate if a card element is selected
 */
 export const TabCard = ({ width, height, data, handleOnClick, selected}) => {
 
