@@ -3,7 +3,12 @@ import { IconButton, Typography } from '@mui/material';
 import AtlasInfo from '../AtlasInfo';
 import ModelInfo from '../ModelInfo';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-
+/**
+ * Displays information about the given project
+ * @param project Object containing project data
+ * @param atlas Object containing atlas data
+ * @param model Object containing model data
+ */
 function ProjectInfo({ project, atlas, model }) {
   const [atlasInfoOpen, setAtlasInfoOpen] = useState(false);
   const [modelInfoOpen, setModelInfoOpen] = useState(false);

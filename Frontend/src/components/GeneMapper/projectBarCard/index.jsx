@@ -46,6 +46,18 @@ function CanceldOrFailedStatus() {
   );
 }
 
+/**
+ * Displays information in a card about the given project
+ * @param project Object containing project data
+ * @param atlas Object containing atlas data
+ * @param model Object containing model data
+ * @param userTeams Array containg objects with data about each team the user is a member of
+ * @param handleDelete Function that is executed when the delete button is clicked.
+ * If the project is already deleted, this function is executed when the restore button is clicked
+ * Expects no parameter
+ * @param deleted True if the project is deleted
+ */
+
 export default function ProjectBarCard({
   project, atlas, model, userTeams, handleDelete, deleted,
 }) {
