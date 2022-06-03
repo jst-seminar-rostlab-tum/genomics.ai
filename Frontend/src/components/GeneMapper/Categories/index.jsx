@@ -11,6 +11,18 @@ import { colors } from 'shared/theme/colors';
 const activatedColor = colors.primary['400'];
 const deactivatedColor = colors.primary['200'];
 
+/**
+ * One category entry in the categories list
+ * @param title Name of the cateogiry
+ * @param values An object containing the values and colors of a category as key-value pairs
+ * @param colored True if the category is selected as the color mode
+ * @param toggleColored Function that should be executed when the color button is clicked.
+ * Expects no parameter
+ * @param hide A function that will hide a category value in the UMAP.
+ * Expects a value as parameter
+ * @param show A function that will set a category value in the UMAP visible if it was hidden
+ * Expects a value as parameter
+ */
 function Category({
   title, values, colored, toggleColored, hide, show,
 }) {
@@ -51,6 +63,15 @@ function Category({
   );
 }
 
+/**
+ * One value entry belonging to a category
+ * @param title Name of the value
+ * @param color Color of the value in the UMAP
+ * @param hide A function that will hide the category value in the UMAP.
+ * Expects no parameter
+ * @param show A function that will set the category value in the UMAP visible if it was hidden
+ * Expects no parameter
+ */
 function Value({
   title, color, hide, show,
 }) {
@@ -82,11 +103,13 @@ function Value({
 }
 
 /**
- *
+ * Displays the catogries of a result in a vertical layout
  * @param categories An object containing available categories and their values as key-value pairs
  * @param setColorMode A function accepting a category to be colored
- * @param hide A function that will hide a category value in the UMAP
+ * @param hide A function that will hide a category value in the UMAP.
+ * Expects category and value as parameter
  * @param show A function that will set a category value in the UMAP visible if it was hidden
+ * Expects category and value as parameter
  */
 function GeneMapperCategories({
   categories, setColorMode, hide, show,
