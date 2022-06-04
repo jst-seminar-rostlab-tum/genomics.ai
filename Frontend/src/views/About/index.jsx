@@ -99,7 +99,7 @@ function MemberSection({name, data}){
       <Grid container rowSpacing={7} columnSpacing={{ xs: 2, sm: 2, md: 3, lg: 4, xl: 4 }}>
         {
           data.map(member => (
-            <Grid item xs={12} sm={6} md={4} lg={3} xl={2} >
+            <Grid item xs={12} sm={6} md={4} lg={name==="Organisation" ? 2.4 : 3} xl={name==="Organisation" ? 2.4 : 2} >
               <MemberCard {...member} />
             </Grid>)
           )
