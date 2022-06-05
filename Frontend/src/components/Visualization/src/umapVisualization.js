@@ -5,11 +5,12 @@ import "./tooltip.css";
 import { addBarPlotCell, addBarPlotBatch, addBarPlotPredict } from "./barChart"
 import { getColoringModes, setColoring } from "./coloring"
 
-
+//Gets the minimum out of 2 values - used to determine the smaller side of the container, to make scatter plot square
 const getMin = (w, h) => {
   return d3.min([h, w]);
 }
 
+//Adds a group
 const addGroup = (svg, id) => {
   return svg.append('g').attr('id', `${id}`);
 };
@@ -23,17 +24,17 @@ export class UmapVisualization2 {
     this.gCells = addGroup(this.svg, 'cells');
     this.coloringModes = getColoringModes(data);
     this.tooltip = d3.select(container).append("div");
-    this.mode = undefined;
+    this.mode = undefined; //coloring mode
     this.data = data;
-    this.graphs = ["batch", "cell"];
+    this.graphs = ["batch", "cell"]; //constant attributes expected cells to have
     this.hiddenCells = [];
   };
 
   // Returns all available graphs
   getAvailableGraphs() {
+    //If the cells don't have a cell type, as with totalVI, we only have a batch graph
     return (Object.keys(this.coloringModes).includes("cell_type"))? this.graphs: ["batch"];
   }
-
 
   // Draws a graph, which is in the this.graphs list 
   drawGraph(container, graph, width, height) {
@@ -175,28 +176,32 @@ export class UmapVisualization2 {
     const data = this.data;
     const r = 0.003 * min;
 
+    //Makes an x-axis scale helper, using min and max value as domain, and the distance from margin to margin for range 
     const xScaleHelper = d3.scaleLinear()
       .domain([d3.min(data.map(d => parseFloat(d.x))), d3.max(data.map(d => parseFloat(d.x)))])
       .range([cons.margin, min - cons.margin]);
 
+    //As the previous scale makes the scatterplot off-center, we compute a translation distance
     const translate = (w - cons.margin - (xScaleHelper(d3.max(data.map(d => parseFloat(d.x)))))) / 2;
 
     // Scales
+    //Official x-axis scale, adding the transaltion distance
     const xScale = d3.scaleLinear()
       .domain([d3.min(data.map(d => parseFloat(d.x))), d3.max(data.map(d => parseFloat(d.x)))])
       .range([translate, min - cons.margin + translate]);
 
+    //y-axis scale
     const yScale = d3.scaleLinear()
       .domain([d3.min(data.map(d => parseFloat(d.y))), d3.max(data.map(d => parseFloat(d.y)))])
       .range([cons.margin, min - cons.margin]);
 
+    //Setting attributes
     this.cells
       .attr("cx", d => xScale(parseFloat(d.x)))
       .attr("cy", d => yScale(parseFloat(d.y)))
 
     this.cells
       .attr("r", r);
-
 
     return [xScale, yScale];
   }
@@ -215,9 +220,10 @@ export class UmapVisualization2 {
       .attr("width", w)
       .attr("height", h)
 
-    //Circle cell
+    //To avoid multiples of the same shape(cell) when re-rendering
     this.gCells.selectAll("*").remove();
 
+    //Adding the cells(circle shapes)
     this.cells =
       this.gCells
         .selectAll("cell")
@@ -239,15 +245,16 @@ export class UmapVisualization2 {
         .attr('opacity', 1)
         .style("visibility", "hidden")
 
-
+    //Tooltip functionality
     this.cells
-      .on("mouseover", function (m, d) { //getter bigger on hover
+      .on("mouseover", function (m, d) { 
         d3.select(this)
           .transition()
           .duration(100)
-          .attr('r', r * 1.5)
-          .style("stroke", "black")
+          .attr('r', r * 1.5) //getting bigger on hover
+          .style("stroke", "black") //getting a black outline
           .style("opacity", 1)
+        //Positioning tooltip
         if (!_this.mode) return;
         const att = d[_this.mode];
         const xPos = parseFloat(m.x) + 5;
@@ -262,6 +269,7 @@ export class UmapVisualization2 {
           .style("left", `${xPos}px`)
 
       })
+      //Remove all tooltip effects
       .on("mouseout", function () {
         tooltip.style("visibility", "hidden");
         d3.select(this)
@@ -281,7 +289,7 @@ export class UmapVisualization2 {
       .attr('width', w)
       .attr('height', h)
       .style('fill', 'white')
-      .lower()
+      .lower() //creates a layer underneath the diagram, so the mouse zoom and path work with React
       .call(zoomM)
 
     this.cells
