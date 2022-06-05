@@ -99,7 +99,7 @@ function MemberSection({name, data}){
       <Grid container rowSpacing={7} columnSpacing={{ xs: 2, sm: 2, md: 3, lg: 4, xl: 4 }}>
         {
           data.map(member => (
-            <Grid item xs={12} sm={6} md={4} lg={3} xl={2} >
+            <Grid item xs={12} sm={6} md={4} lg={name==="Organisation" ? 2.4 : 3} xl={name==="Organisation" ? 2.4 : 2} >
               <MemberCard {...member} />
             </Grid>)
           )
@@ -147,7 +147,7 @@ export default function About(props){
       </Box>
 
       <Box sx={{margin: "3em auto", display: "flex", flexDirection: "column", alignItems: "center", width: { xs: "90%", sm: "90%", md: "70%", lg: "70%", xl: "70%" }, textAlign: "center"}}>
-        <Typography fontWeight="bold" fontSize="1em">Genomics.ai was developed by a team of 12 students from the Technical University of Munich (TUM) under the guidance of Dr. Guy Yachdav.</Typography>
+        <Typography fontWeight="bold" fontSize="1em">Genomics.ai was developed by a team of students from the Technical University of Munich (TUM) under the guidance of Dr. Guy Yachdav.</Typography>
       </Box>
 
       {/* <Box sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>

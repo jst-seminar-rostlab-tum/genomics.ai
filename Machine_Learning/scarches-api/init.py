@@ -89,6 +89,7 @@ def query(user_config):
     :param user_config: keys of config parsed from the rest api
     :return: config
     """
+
     print("got config " + str(user_config))
     start_time = time.time()
     configuration = merge_configs(user_config)

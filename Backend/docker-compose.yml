@@ -3,7 +3,7 @@ services:
     image: mongo
     ports:
       - 27017:27017
-  
+
   redis:
     image: redis
 
@@ -14,5 +14,7 @@ services:
       - redis
     ports:
       - 8050:8050
+    env_file:
+      - .env
     environment:
-      DATABASE_URI: 'mongodb://database:27017/dev'
+      DATABASE_URI: "mongodb://database:27017/dev"

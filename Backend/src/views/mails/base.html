@@ -1,0 +1,39 @@
+<mjml>
+  <mj-head>
+    <mj-attributes>
+      <mj-all font-size="16px" font-family="sans-serif" line-height="1.3" />
+      <mj-class name="bg-footer" background-color="#212529" />
+      <mj-class name="fg-footer" color="#ffffff" />
+      <mj-class name="bg-email" background-color="#F8FBFF" />
+      <mj-class name="fg-header" color="#184060" />
+      <mj-class name="size-header" font-size="20px" />
+      <mj-clasS name="greeting" color="#002644" font-weight="bold" font-size="30px" />
+      <mj-class name="font-bold" font-weight="bold" />
+      <mj-class name="action-button"  background-color="#5676E4" color="#ffffff" border-radius="999px"/>
+      <mj-section full-width="full-width" background-color="#F8FBFF"></mj-section>
+    </mj-attributes>
+  </mj-head>
+  <mj-body width="800px">
+    <mj-section mj-class="bg-email">
+      <mj-column width="76px" padding-left="10px">
+        <mj-image width="56px" padding="0" href="https://www.genecruncher.com" src="{{genecruncher_logo}}" />
+      </mj-column>
+      <mj-column width="704px" vertical-align="bottom">
+        <mj-button background-color="transparent" mj-class="fg-header font-bold size-header" align="left" href="https://www.genecruncher.com" padding="0" text-decoration="underline">genomics.ai</mj-button>
+      </mj-column>
+    </mj-section>
+    <mj-include path="./content.mjml.html" />
+    <mj-section mj-class="bg-footer">
+    	<mj-column>
+      	<mj-text mj-class="fg-footer font-bold">
+          © Copyright TUM 2022
+        </mj-text>
+      </mj-column>
+    	<mj-column>
+      	<mj-button padding="0" background-color="transparent" mj-class="fg-footer font-bold" align="right" href="https://www.genecruncher.com">
+          genecruncher.com
+        </mj-button>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

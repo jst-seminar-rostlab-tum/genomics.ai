@@ -8,7 +8,10 @@ import { colors } from 'shared/theme/colors';
 const mailIconColor = colors.neutral['600'];
 const copyIconColor = colors.neutral['600'];
 const twitterIconColor = '#00aced';
-
+/**
+ * @param projectName Name of a project
+ * @param url Url that should be shared
+ */
 function ShareMenu({ projectName, url }) {
   return (
     <Box>

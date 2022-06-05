@@ -228,7 +228,7 @@ export default function Navbar({
             >
               <img width={28} alt="logo" src={logo} />
             </IconButton>
-            <Navlink fontWeight="bold" main={true} >genomics.ai</Navlink>
+            <Navlink fontWeight="bold" fontSize="20px">genomics.ai</Navlink>
           </LinkBox>
           <LinkBox to="/explore"><Navlink>Explore</Navlink></LinkBox>
           <Box sx={{cursor: "pointer"}} onClick={()=>window.open("https://genecruncher.readthedocs.io/")}><Navlink>Docs</Navlink></Box>

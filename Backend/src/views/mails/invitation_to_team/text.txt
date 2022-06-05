@@ -1,0 +1,10 @@
+Invitation to a team
+
+Hey,
+We want to inform you that you have invited {{firstname}} to the team {{teamname}}.
+
+Click here to confirm to join the team: {{link}}
+
+Thanks,
+The GeneCruncher Team
+
