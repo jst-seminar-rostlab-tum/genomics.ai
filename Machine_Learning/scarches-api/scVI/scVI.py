@@ -38,6 +38,12 @@ def setup():
 
 
 def get_pretrained_scVI_model(anndata, configuration):
+    """
+    returns pretrained and saved scvi model
+    :param anndata: query data to be used on the model
+    :param configuration: configuration containing the name of the atlas
+    :return: scarches SCVI model
+    """
     return sca.models.SCVI.load_query_data(
         anndata,
         'assets/scVI/' + str(utils.get_from_config(configuration, parameters.ATLAS)) + '/',
@@ -48,8 +54,8 @@ def get_pretrained_scVI_model(anndata, configuration):
 def create_scVI_model(source_adata, target_adata, configuration):
     """
     if there is already a pretrained model, nothing happens otherwise a new one will be trained
-    :param source_adata:
-    :param target_adata:
+    :param source_adata: reference data
+    :param target_adata: query data
     :return:
     """
     if utils.get_from_config(configuration, parameters.DEV_DEBUG):
@@ -98,9 +104,8 @@ def create_scVI_model(source_adata, target_adata, configuration):
 
 def setup_anndata(anndata, configuration):
     """
-    Just because it's prettier that way
+    wrapper around setup_anndata
     :param anndata:
-    :return:
     """
     sca.models.SCVI.setup_anndata(anndata, batch_key=utils.get_from_config(configuration, parameters.CONDITION_KEY),
                                   labels_key=utils.get_from_config(configuration, parameters.CELL_TYPE_KEY))
@@ -108,7 +113,7 @@ def setup_anndata(anndata, configuration):
 
 def get_model(anndata, configuration):
     """
-    Just because it's prettier that way
+    wrapper around creating a SCVI model using the given configuration
     :param anndata:
     :return:
     """

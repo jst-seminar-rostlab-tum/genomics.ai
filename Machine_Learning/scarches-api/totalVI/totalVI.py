@@ -13,6 +13,10 @@ from utils import utils, parameters
 
 
 def setup_modules():
+    """
+    Set up the warnings filter and the figure parameters
+    :return:
+    """
     warnings.simplefilter(action='ignore', category=FutureWarning)
     warnings.simplefilter(action='ignore', category=UserWarning)
     sc.settings.set_figure_params(dpi=200, frameon=False)
@@ -22,6 +26,11 @@ def setup_modules():
 
 
 def prepare_data(configuration):
+    """
+    preprocess reference and query dataset
+    :param configuration: config
+    :return: ref adata, query adata
+    """
     # scv.data.pbmcs_10x_cite_seq()
     adata_ref = utils.read_h5ad_file_from_s3(utils.get_from_config(configuration, parameters.REFERENCE_DATA_PATH))
     adata_ref.obs["type"] = "reference"
@@ -34,11 +43,15 @@ def prepare_data(configuration):
     data = np.zeros((adata_query.n_obs, pro_exp.shape[1]))
     adata_query.obsm["protein_expression"] = pd.DataFrame(columns=pro_exp.columns, index=adata_query.obs_names,
                                                           data=data)
+
+    #concatenate the objects, which intersects the genes properly
     adata_full = anndata.concat([adata_ref, adata_query])
 
+    #split them back up into reference and query
     adata_ref = adata_full[np.logical_or(adata_full.obs.batch == "PBMC5k", adata_full.obs.batch == "PBMC10k")].copy()
     adata_query = adata_full[adata_full.obs.batch == "PBMC 10k (RNA only)"].copy()
 
+    # run gene selection on the reference
     sc.pp.highly_variable_genes(
         adata_ref,
         n_top_genes=4000,
@@ -46,11 +59,18 @@ def prepare_data(configuration):
         batch_key="batch",
         subset=True,
     )
+    #use selected genes for the query dataset
     adata_query = adata_query[:, adata_ref.var_names].copy()
     return adata_ref, adata_query
 
 
 def train_model(adata_ref, configuration):
+    """
+    Create TOTALVI model and train it on reference dataset
+    :param adata_ref: reference dataset
+    :param configuration: config
+    :return: trained totalVI model
+    """
     sca.models.TOTALVI.setup_anndata(
         adata_ref,
         batch_key="batch",
@@ -85,12 +105,26 @@ def train_model(adata_ref, configuration):
 
 
 def visualize_and_store_as_pdf(filename, adata_ref, **config):
+    """
+    visualize reference dataset and save visualization with new file name
+    :param filename: our file name
+    :param adata_ref: reference data
+    :param config: config
+    :return:
+    """
     sc.pl.umap(adata_ref, **config)
     os.rename('figures/umap.pdf', 'figures/' + filename)
     # os.rename(args.pdfpath + 'umap.pdf', args.pdfpath + filename)
 
 
 def visualize_RNA_data(model, adata_ref, configuration):
+    """
+    Save Latent representation and visualize RNA data
+    :param model: totalVI model
+    :param adata_ref: reference dataset
+    :param configuration: config
+    :return:
+    """
     adata_ref.obsm["X_totalVI"] = model.get_latent_representation()
     sc.pp.neighbors(adata_ref, use_rep="X_totalVI")
     sc.tl.umap(adata_ref, min_dist=0.4)
@@ -109,6 +143,12 @@ def visualize_RNA_data(model, adata_ref, configuration):
 
 
 def surgery(adata_query, configuration):
+    """
+    Perform surgery on reference model and train on query dataset without protein data
+    :param adata_query: query dataset
+    :param configuration: config
+    :return: trained model on query dataset
+    """
     dir_path = 'assets/totalVI/' + utils.get_from_config(configuration, parameters.ATLAS) + '/'
     vae_q = sca.models.TOTALVI.load_query_data(
         adata_query,
@@ -138,6 +178,15 @@ def surgery(adata_query, configuration):
 
 
 def impute_proteins(vae_q, adata_query, configuration):
+    """
+    Impute protein data for the query dataset and visualize
+    :param vae_q: trained model
+    :param adata_query: query data
+    :param configuration: config
+    :return:
+    """
+    #Impute the proteins that were observed in the reference,
+    # using the transform_batch parameter
     _, imputed_proteins = vae_q.get_normalized_expression(
         adata_query,
         n_samples=25,
@@ -155,6 +204,14 @@ def impute_proteins(vae_q, adata_query, configuration):
 
 
 def latent_ref_representation(adata_query, adata_ref, vae_q):
+    """
+    Get latent representation of reference + query dataset
+    and compute UMAP
+    :param adata_query: query data
+    :param adata_ref: reference data
+    :param vae_q: trained model
+    :return: concatenated query data, imputed proteins
+    """
     adata_full_new = adata_query.concatenate(adata_ref, batch_key="none")
     adata_full_new.obsm["X_totalVI"] = vae_q.get_latent_representation(adata=adata_full_new)
     sc.pp.neighbors(adata_full_new, use_rep="X_totalVI")
@@ -171,6 +228,13 @@ def latent_ref_representation(adata_query, adata_ref, vae_q):
 
 
 def compute_final_umaps(adata_full_new, imputed_proteins_all, configuration):
+    """
+     save results and write latent into csv file
+    :param adata_full_new: concatenated query data
+    :param imputed_proteins_all:
+    :param configuration:
+    :return:
+    """
     perm_inds = np.random.permutation(np.arange(adata_full_new.n_obs))
     utils.write_latent_csv(adata_full_new[perm_inds], key=utils.get_from_config(configuration, parameters.OUTPUT_PATH))
     if utils.get_from_config(configuration, parameters.DEBUG):
@@ -216,7 +280,11 @@ def computeTotalVI(configuration):
     #                utils.get_from_config(configuration, parameters.QUERY_DATA_PATH))):  # TODO add s3
     #    logger.error("file path to 'ref' and 'query' can't be empty if the argument 'example' is set to false")
     #    exit()
-
+    """
+    process reference and query dataset with totalVI model
+    :param configuration: config
+    :return:
+    """
     setup_modules()
     adata_ref, adata_query = prepare_data(configuration)
     model_ref = train_model(adata_ref, configuration)
