@@ -128,7 +128,7 @@ def surgery(reference_latent, source_adata, anndata, configuration):
                                   condition_key=utils.get_from_config(configuration, parameters.CONDITION_KEY),
                                   predictScanvi=True, configuration=configuration)
 
-    model.save('scvi_model', overwrite=True)  # TODO check path
+    model.save('scvi_model', overwrite=True)
     utils.delete_file('scvi_model/model.pt')
     os.rmdir('scvi_model')
 
@@ -158,7 +158,7 @@ def query(pretrained_model, reference_latent, anndata, source_adata, configurati
         print("Labelled Indices: ", len(model._labeled_indices))
         print("Unlabelled Indices: ", len(model._unlabeled_indices))
 
-# hardcoding for human lung cell atlas
+#TODO: HARDCODING for human lung cell atlas -------------------------------------
     if utils.get_from_config(configuration, parameters.ATLAS) == 'human_lung':
         surgery_epochs = 500
         train_kwargs_surgery = {

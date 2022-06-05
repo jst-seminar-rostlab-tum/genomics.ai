@@ -246,7 +246,6 @@ def compute_final_umaps(adata_full_new, imputed_proteins_all, configuration):
                                    title="Reference and query",
                                    save=True
                                    )
-        # TODO Gustav, do we need this?
         """
         ax = visualize_and_store_as_pdf("forthumap.pdf",
                                         adata_full_new,
@@ -277,7 +276,7 @@ def computeTotalVI(configuration):
     # logger.setLevel(logging.DEBUG if args.debug else logging.INFO)
     # if not args.example and not (args.ref or args.query)(
     #        exists(utils.get_from_config(configuration, parameters.REFERENCE_DATA_PATH)) or exists(
-    #                utils.get_from_config(configuration, parameters.QUERY_DATA_PATH))):  # TODO add s3
+    #                utils.get_from_config(configuration, parameters.QUERY_DATA_PATH))):  
     #    logger.error("file path to 'ref' and 'query' can't be empty if the argument 'example' is set to false")
     #    exit()
     """

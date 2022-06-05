@@ -89,7 +89,7 @@ def create_scVI_model(source_adata, target_adata, configuration):
                 print(e, file=sys.stderr)
         tempdir = tempfile.mkdtemp()
         vae.save(tempdir, overwrite=True)
-        # TODO check if we need to to this
+        
         print(os.listdir(tempdir), file=sys.stderr)
         # utils.store_file_in_s3(tempdir + '/model.pt', utils.get_from_config(configuration, parameters.RESULTING_MODEL_PATH))
         if utils.get_from_config(configuration, parameters.DEV_DEBUG):
@@ -227,8 +227,8 @@ def compute_scVI(configuration):
     print(target_adata)
     model, reference_latent = create_scVI_model(source_adata, target_adata, configuration)
     model = compute_query(model, target_adata, reference_latent, source_adata, configuration)
-    # TODO figure out if we need to do this
+    # Saving of the pre-trained models on an organization level follows below
+
     # compute_full_latent(source_adata, target_adata, model)
     # model.save('resulting_model', overwrite=True)
-
     # utils.store_file_in_s3('resulting_model/model.pt', utils.get_from_config(configuration, parameters.RESULTING_MODEL_PATH) + '_new')
