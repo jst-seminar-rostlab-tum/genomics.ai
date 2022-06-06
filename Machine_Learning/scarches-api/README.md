@@ -72,9 +72,9 @@ responsive and
 ### `/query`
 
 The query endpoint allows `POST` requests and takes a **valid** json which contains
-all the information for us to compute the model and store its results. We, as the ML and
-Visualisations team don't want to worry about the storage infrastructure of the backend, thus we
-expect s3 keys that we can access to store the output. The used parameter keys that can be set in the
+all the information for us to compute the model and store its results. On the ML and
+Visualisation side we expect only s3 keys (from the backend) that we can access to store the output.
+The used parameter keys that can be set in the
 configuration are specified in [parameter.py](./utils/parameters.py) with a short explanation what
 the parameter does and what the key should look like. 
 
