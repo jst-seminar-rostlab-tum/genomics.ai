@@ -62,6 +62,12 @@ def default_config():
 
 
 def get_from_config(configuration, key):
+    """
+    returns the config with key value if the key is in the config, otherwise return none
+    :param configuration:
+    :param key: key values to be checked in the config
+    :return: dict with the parsed key values or none
+    """
     if key in configuration:
         return configuration[key]
     return None
@@ -70,7 +76,7 @@ def get_from_config(configuration, key):
 def merge_configs(user_config):
     """
     overwrites the default config with the input from the rest api
-    :param user_config:
+    :param user_config: input from the rest api
     :return: dict
     """
     return default_config() | user_config
@@ -78,6 +84,12 @@ def merge_configs(user_config):
 
 # def query(reference_dataset, query_dataset, model_path, surgery_path,  model_type):
 def query(user_config):
+    """
+    sets model, atlas, attributes with input from the rest api and returns config
+    :param user_config: keys of config parsed from the rest api
+    :return: config
+    """
+
     print("got config " + str(user_config))
     start_time = time.time()
     configuration = merge_configs(user_config)
@@ -105,6 +117,10 @@ def query(user_config):
 
 
 if __name__ == "__main__":
+    """
+    sets endpoint and fetches input from rest api
+    
+    """
     os.environ["AWS_BUCKET"] = 'minio-bucket'
     os.environ['AWS_ENDPOINT'] = 'http://127.0.0.1:9000'
     os.environ['AWS_ACCESS_KEY'] = 'minioadmin'
