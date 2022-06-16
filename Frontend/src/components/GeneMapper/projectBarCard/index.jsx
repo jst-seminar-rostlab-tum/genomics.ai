@@ -21,7 +21,7 @@ import {
 import { Modal, ModalTitle } from 'components/Modal';
 import TeamService from 'shared/services/Team.service';
 import CustomButton from 'components/CustomButton';
-import { TabCard } from '../TabCard';
+import { DemoDatasetCard } from '../TabCard';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { GeneralCard } from 'components/Cards/GeneralCard';
 import ProjectInfo from '../ProjectInfo';
@@ -84,10 +84,10 @@ export default function ProjectBarCard({
   const color = project.status === PROJECT_STATUS.DONE
     ? 'lightGreen'
     : project.status === PROJECT_STATUS.ABORTED
-    || (!submissionProgress && project.status === PROJECT_STATUS.UPLOAD_PENDING)
-    || project.status === PROJECT_STATUS.PROCESSING_FAILED
-    || submissionProgress?.status === MULTIPART_UPLOAD_STATUS.CANCELING
-    || (submissionProgress && statusIsError(submissionProgress.status))
+      || (!submissionProgress && project.status === PROJECT_STATUS.UPLOAD_PENDING)
+      || project.status === PROJECT_STATUS.PROCESSING_FAILED
+      || submissionProgress?.status === MULTIPART_UPLOAD_STATUS.CANCELING
+      || (submissionProgress && statusIsError(submissionProgress.status))
       ? 'red'
       : 'orange';
 
@@ -161,34 +161,34 @@ export default function ProjectBarCard({
                     }}
                   >
                     {statusIsUpload(submissionProgress.status)
-                  && (
-                  <>
-                    <Box sx={{ pr: 2, flexGrow: 1 }}>
-                      <LinearProgress variant="determinate" value={getSubmissionProgressPercentage(submissionProgress)} />
-                    </Box>
-                    <Typography variant="caption">Uploading...</Typography>
-                    <IconButton
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        cancelUpload();
-                      }}
-                    >
-                      <Clear color="error" />
-                    </IconButton>
-                  </>
-                  )}
+                      && (
+                        <>
+                          <Box sx={{ pr: 2, flexGrow: 1 }}>
+                            <LinearProgress variant="determinate" value={getSubmissionProgressPercentage(submissionProgress)} />
+                          </Box>
+                          <Typography variant="caption">Uploading...</Typography>
+                          <IconButton
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              cancelUpload();
+                            }}
+                          >
+                            <Clear color="error" />
+                          </IconButton>
+                        </>
+                      )}
                     {statusIsError(submissionProgress.status)
-                  && <CanceldOrFailedStatus />}
+                      && <CanceldOrFailedStatus />}
                     {submissionProgress.status === MULTIPART_UPLOAD_STATUS.CANCELING
-                  && <CanceldOrFailedStatus />}
+                      && <CanceldOrFailedStatus />}
                     {submissionProgress.status === MULTIPART_UPLOAD_STATUS.COMPLETE
-                   && project.status !== PROJECT_STATUS.DONE
-                   && project.status !== PROJECT_STATUS.ABORTED
-                   && project.status !== PROJECT_STATUS.PROCESSING_FAILED
-                   && <ProcessingStatus />}
+                      && project.status !== PROJECT_STATUS.DONE
+                      && project.status !== PROJECT_STATUS.ABORTED
+                      && project.status !== PROJECT_STATUS.PROCESSING_FAILED
+                      && <ProcessingStatus />}
                     {(project.status === PROJECT_STATUS.ABORTED
-                  || project.status === PROJECT_STATUS.PROCESSING_FAILED)
-                   && <Typography variant="caption">Processing failed</Typography>}
+                      || project.status === PROJECT_STATUS.PROCESSING_FAILED)
+                      && <Typography variant="caption">Processing failed</Typography>}
                   </Box>
                 ) : null}
                 {!submissionProgress
@@ -199,12 +199,12 @@ export default function ProjectBarCard({
                       }}
                     >
                       {project.status === PROJECT_STATUS.UPLOAD_PENDING
-                   && <CanceldOrFailedStatus />}
+                        && <CanceldOrFailedStatus />}
                       {project.status === PROJECT_STATUS.PROCESSING_PENDING
-                   && <ProcessingStatus />}
+                        && <ProcessingStatus />}
                       {(project.status === PROJECT_STATUS.ABORTED
-                  || project.status === PROJECT_STATUS.PROCESSING_FAILED)
-                   && <Typography variant="caption">Processing failed</Typography>}
+                        || project.status === PROJECT_STATUS.PROCESSING_FAILED)
+                        && <Typography variant="caption">Processing failed</Typography>}
                     </Box>
                   )
                   : null}
@@ -216,50 +216,50 @@ export default function ProjectBarCard({
               }}
               >
                 {!deleted
-                && (
-                <>
-                  {projectTeam?.title
-                    ? (
-                      <CustomButton type="tertiary" sx={{ mr: 1 }} onClick={() => history.push(`/sequencer/teams/${projectTeam._id || projectTeam.id}`)}>
-                        <Typography>
-                          {projectTeam.title}
-                        </Typography>
-                      </CustomButton>
-                    )
-                    : (
-                      <Button
-                        variant="outlined"
-                        sx={{
-                          borderRadius: 100,
-                          mr: 1,
-                        }}
-                        style={{ textTransform: 'none' }}
-                        onClick={handleOpen}
+                  && (
+                    <>
+                      {projectTeam?.title
+                        ? (
+                          <CustomButton type="tertiary" sx={{ mr: 1 }} onClick={() => history.push(`/sequencer/teams/${projectTeam._id || projectTeam.id}`)}>
+                            <Typography>
+                              {projectTeam.title}
+                            </Typography>
+                          </CustomButton>
+                        )
+                        : (
+                          <Button
+                            variant="outlined"
+                            sx={{
+                              borderRadius: 100,
+                              mr: 1,
+                            }}
+                            style={{ textTransform: 'none' }}
+                            onClick={handleOpen}
+                          >
+                            <Typography>
+                              Add To Team
+                            </Typography>
+                          </Button>
+                        )}
+
+                      <CustomButton
+                        type="primary"
+                        onClick={() => history.push(`/sequencer/genemapper/result/${project._id}`)}
+                        disabled={project.status !== 'DONE'}
                       >
                         <Typography>
-                          Add To Team
+                          See Results
                         </Typography>
-                      </Button>
-                    )}
-
-                  <CustomButton
-                    type="primary"
-                    onClick={() => history.push(`/sequencer/genemapper/result/${project._id}`)}
-                    disabled={project.status !== 'DONE'}
-                  >
-                    <Typography>
-                      See Results
-                    </Typography>
-                  </CustomButton>
-                  <IconButton
-                    href={project.location}
-                    download={`${project.name}.tsv`}
-                    disabled={project.status !== 'DONE'}
-                  >
-                    <DownloadIcon />
-                  </IconButton>
-                </>
-                )}
+                      </CustomButton>
+                      <IconButton
+                        href={project.location}
+                        download={`${project.name}.tsv`}
+                        disabled={project.status !== 'DONE'}
+                      >
+                        <DownloadIcon />
+                      </IconButton>
+                    </>
+                  )}
                 <IconButton onClick={() => handleDelete()}>
                   {deleted
                     ? <ReplayIcon />
@@ -328,16 +328,16 @@ export default function ProjectBarCard({
           </Box>
 
         </Modal>
-        { userTeams?.length === 0
-        && (
-        <Alert severity="info">
-          You have no existing teams. Please add your teams in community.
-        </Alert>
-        )}
+        {userTeams?.length === 0
+          && (
+            <Alert severity="info">
+              You have no existing teams. Please add your teams in community.
+            </Alert>
+          )}
         <Box>
           {userTeams.map(
             (team) => (
-              <TabCard
+              <DemoDatasetCard
                 key={team._id}
                 data={{ name: team.title, visibility: team.visibility.toLowerCase() }}
                 selected={team?._id === selectedTeam || team?.id === selectedTeam}
