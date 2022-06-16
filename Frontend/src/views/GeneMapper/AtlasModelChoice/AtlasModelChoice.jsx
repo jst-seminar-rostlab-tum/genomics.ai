@@ -37,7 +37,7 @@ function AtlasModelChoice({
         Pick an Atlas
       </Typography>
 
-      <Grid container spacing={2} width="100%" overflow="auto" wrap="nowrap">
+      <Grid container spacing={2} width="80%" overflow="auto" wrap="nowrap">
         {
                     atlases && atlases.map((a) => (
                       <Grid item height="320px">

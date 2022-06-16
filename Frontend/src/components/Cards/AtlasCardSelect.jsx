@@ -23,7 +23,7 @@ import AtlasInfo from "components/GeneMapper/AtlasInfo"
  * @param learnMoreLink onHover button Learn More url
  */
 export default function AtlasCardSelect({
-  width = "100%", height = "100%", title, imgLink, modalities,
+  width = "80", height = "80%", title, imgLink, modalities,
   cellsInReference, species, mapLink, learnMoreLink, selected=false, 
   onSelect, atlasObject={}
 }) {
@@ -37,14 +37,36 @@ export default function AtlasCardSelect({
 
   const [atlasInfoOpen, setAtlasInfoOpen] = useState(false);
 
-  //ref to get the out most Box
+  // ref to get the out most Box
   const boxRef = useRef()
   const history = useHistory();
 
   useEffect(() => {
-    //each time the card is rerendered, check if the card is flat or not
+    // each time the card is rerendered, check if the card is flat or not
     if (boxRef.current.clientWidth > boxRef.current.clientHeight) setFlat(true)
-  }, [])
+  }, []);
+
+  // capitalize every word in a string
+  const capitalize = (str) => {
+    const lower = str.toLowerCase();
+    const words = lower.split(' ');
+    // return the original string if it was max one word since it is already capitalized and correct
+    console.log(words);
+    if (words.length === 1) return str;
+    let cap = '';
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < words.length; i++) {
+      const word = words[i].toLowerCase();
+      // split the word into the first letter and the rest of the string
+      let firstLetter = word.charAt(0);
+      firstLetter = firstLetter.toUpperCase();
+      const restOfWord = word.slice(1);
+      cap += firstLetter + restOfWord;
+      // add a space after every word except the last one
+      if (i < words.length - 1) cap += ' ';
+    }
+    return cap;
+  };
 
   return (
     <Box
@@ -57,11 +79,12 @@ export default function AtlasCardSelect({
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
         sx={{
-          width: "100%",
-          height: "100%",
+          width: "80%",
+          height: "80%",
           position: "relative",
         }}
       >
+        {/*Hover effect over the card*/}
         {
           isHover &&
           <Box
@@ -95,6 +118,7 @@ export default function AtlasCardSelect({
           </Box>
         }
 
+
         <Box
           sx={{
             width: '100%',
@@ -112,11 +136,11 @@ export default function AtlasCardSelect({
         >
           <Typography
             sx={{
-              fontSize: "1.4rem",
+              fontSize: "1.2rem",
               fontWeight: "bold"
             }}
           >
-            {title}
+            {capitalize(title)}
           </Typography>
 
           <Box component="img" src={imgLink} alt="Atlas preview img"

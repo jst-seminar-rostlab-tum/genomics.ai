@@ -18,6 +18,7 @@ import PasswordResetPage from './views/PasswordResetPage';
 import { theme } from './shared/theme/theme';
 import Explore from './views/Explore/index';
 import { useAuth } from 'shared/context/authContext';
+import NotFound from './views/NotFoundPage/index';
 
 function App() {
   const [user] = useAuth();
@@ -39,7 +40,8 @@ function App() {
           <Route path="/imprint" render={() => <Imprint />} />
           <Route path="/terms" render={() => <Terms />} />
           <Route path="/privacy" render={() => <Privacy />} />
-
+          <Route path="*" render={()=> <NotFound />}/>
+          {/*<Route path=""></> Default route if the route does not exist*/}
         </Switch>
       </HashRouter>
     </ThemeProvider>
