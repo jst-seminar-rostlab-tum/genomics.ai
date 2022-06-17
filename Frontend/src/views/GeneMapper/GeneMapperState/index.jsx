@@ -14,12 +14,53 @@ function GeneMapperState({ path }) {
   const searchParams = new URLSearchParams(search);
   const urlParams = new URLSearchParams(searchParams);
   const filterParams = Object.fromEntries(urlParams);
+  // function to fetch the demo datasets, currently an object but
+  const demoDatasetArr = [
+    {
+      demoId: 12,
+      title: 'Pancreas + SCVI',
+      atlas: 'Pancreas',
+      model: 'SCVI',
+      url: 'link to the dataset to fetch',
+    },
+    {
+      demoId: 123,
+      title: 'pancreas + SCANVI',
+      atlas: 'Pancreas',
+      model: 'SCANVI',
+      url: 'link to the dataset to fetch',
+    },
+    {
+      demoId: 1231,
+      title: 'fetal + SCVI',
+      atlas: 'fetal immune atlas',
+      model: 'SCANVI',
+      url: 'link to the dataset to fetch',
+    },
+    {
+      demoId: 12312,
+      title: 'fetal + SCVI 2',
+      atlas: 'fetal immune atlas',
+      model: 'SCANVI',
+      url: 'link to the dataset to fetch',
+    },
+    {
+      demoId: 123131,
+      title: 'pbmc + totalvi',
+      atlas: 'pbmc',
+      model: 'totalvi',
+      url: 'link to the dataset to fetch',
+    },
+  ];
 
   const atlasId = filterParams.atlas;
   const modelId = filterParams.model;
   const [selectedAtlas, setSelectedAtlas] = useState('');
   const [selectedModel, setSelectedModel] = useState('');
   const [activeStep, setActiveStep] = useState(0);
+  const [selectedDemoDataset, setSelectedDemoDataset] = useState(null);
+  const [demoDatasetIsSelected, setDemoDatasetIsSelected] = useState(false);
+  const [demoDatasets, setDemoDatasets] = useState(demoDatasetArr);
   const steps = ['Pick Atlas and Model', 'Choose File and Project details'];
   const [atlases, setAtlases] = useState(null);
   const [models, setModels] = useState(null);
@@ -28,6 +69,8 @@ function GeneMapperState({ path }) {
     setSelectedAtlas(newAtlas);
     setSelectedModel('');
   };
+
+  // todo: function that fetches the demo datasets
 
   // function to update the state in the URL
   const updateQueryParams = (param, value) => {
@@ -88,6 +131,7 @@ function GeneMapperState({ path }) {
       });
       setAtlases(a);
     });
+
     ModelService.getModels().then((m) => {
       m.map((model) => {
                 model.requirements = [
@@ -149,6 +193,11 @@ function GeneMapperState({ path }) {
               compatibleModels={selectedAtlas ? selectedAtlas.compatibleModels : []}
               atlases={atlases}
               models={models}
+              demos={demoDatasets}
+              selectedDataset={selectedDemoDataset}
+              setSelectedDataset={setSelectedDemoDataset}
+              datasetIsSelected={demoDatasetIsSelected}
+              setDatasetIsSelected={setDemoDatasetIsSelected}
             />
           )
           : (
@@ -157,6 +206,11 @@ function GeneMapperState({ path }) {
               selectedAtlas={selectedAtlas}
               selectedModel={selectedModel}
               setActiveStep={handleStep}
+              demos={demoDatasets}
+              selectedDataset={selectedDemoDataset}
+              setSelectedDataset={setSelectedDemoDataset}
+              datasetIsSelected={demoDatasetIsSelected}
+              setDatasetIsSelected={setDemoDatasetIsSelected}
             />
           )
       }

@@ -19,50 +19,12 @@ import { LearnMoreModelComponent } from 'views/Explore/LearnMoreModel';
 import styles from './uploadfilepage.module.css';
 
 function UploadFilePage({
-  path, selectedAtlas, selectedModel, setActiveStep,
+  path, selectedAtlas, selectedModel, setActiveStep, demos,
+  selectedDataset, setSelectedDataset,
+  datasetIsSelected, setDatasetIsSelected,
 }) {
-  const demoDatasets = [
-    {
-      demoId: 12,
-      title: 'Pancreas + SCVI',
-      atlas: 'Pancreas',
-      model: 'SCVI',
-      url: 'link to the dataset to fetch',
-    },
-    {
-      demoId: 123,
-      title: 'pancreas + SCANVI',
-      atlas: 'Pancreas',
-      model: 'SCANVI',
-      url: 'link to the dataset to fetch',
-    },
-    {
-      demoId: 1231,
-      title: 'fetal + SCVI',
-      atlas: 'fetal immune atlas',
-      model: 'SCANVI',
-      url: 'link to the dataset to fetch',
-    },
-    {
-      demoId: 123131,
-      title: 'pbmc + totalvi',
-      atlas: 'pbmc',
-      model: 'totalvi',
-      url: 'link to the dataset to fetch',
-    },
-    { // Leave this object in since it is causing bugs. Find out why
-      demoId: 131131,
-      title: 'Fetal Immune + TotalVI',
-      atlas: 'Fetal Immune',
-      model: 'TOTALVI',
-      url: 'link to the dataset to fetch',
-    },
-  ];
-
   const [uploadedFile, setUploadedFile] = useState();
-  const [selectedDataset, setSelectedDataset] = useState();
   const [mappingName, setMappingName] = useState('');
-  const [existingDatasets, setExistingDatasets] = useState(demoDatasets);
   const [requirements, setRequirements] = useState([]);
   const [open, setOpen] = useState(false);
   const [atlasInfoOpen, setAtlasInfoOpen] = useState(false);
@@ -72,6 +34,7 @@ function UploadFilePage({
   const [showFileWarning, setShowFileWarning] = useState(false);
   const [showAcceptedFile, setShowAcceptedFile] = useState(false);
   const history = useHistory();
+  const [demoDatasets, setDemoDatasets] = useState(demos);
 
   useEffect(() => {
     setRequirements(selectedModel.requirements);
@@ -79,6 +42,17 @@ function UploadFilePage({
 
   const handleOnDropChange = (file) => {
     setUploadedFile(file);
+  };
+
+  // handle demo dataset selection
+  const handleDemoClick = (dataset) => {
+    if (!selectedDataset || selectedDataset.demoId !== dataset.demoId) {
+      setDatasetIsSelected(true);
+      setSelectedDataset(dataset);
+    } else {
+      setDatasetIsSelected(false);
+      setSelectedDataset(null);
+    }
   };
 
   // custom file extension validator
@@ -325,22 +299,27 @@ function UploadFilePage({
             }
           </Stack>
           <Stack maxHeight="50%">
-            <Typography variant="h5" fontWeight="bold" mb="0.5em">Select Existing Datasets</Typography>
+            <Typography variant="h5" fontWeight="bold" mb="0.5em">Or Select Demo Dataset</Typography>
             {
-              // demoDatasets.length !==0 
-              //   ? 
-                [1,2,3,4].map((data) => (
-                  <DemoDatasetCard
-                    data={data}
-                    width="95%"
-                    height="3em"
-                    handleOnClick={
-                      () => handleSelectDataset(data)
-}
-                    selected={selectedDataset && data._id === selectedDataset._id}
-                  />
-                ))
-                // : <Alert severity="info"> No existing datasets available. </Alert>
+              console.log(JSON.stringify(demoDatasets))
+            }
+            {
+              // filter all demo datasets that match the current choice of model and atlas
+              demoDatasets.length !== 0 ? (
+                demoDatasets
+                  .filter((d) => d.atlas.toLowerCase() === selectedAtlas.name.toLowerCase()
+                  && d.model.toLowerCase() === selectedModel.name.toLowerCase())
+                  .map((dataset) => (
+                    <DemoDatasetCard
+                      width="100%"
+                      height="50px"
+                      title={dataset.title}
+                      atlas={dataset.atlas}
+                      model={dataset.model}
+                      handleOnClick={() => handleDemoClick(dataset)}
+                      selected={!uploadedFile && datasetIsSelected && selectedDataset.demoId === dataset.demoId}
+                    />
+                  ))) : <Alert severity="info"> No existing datasets available. </Alert>
             }
           </Stack>
         </Box>

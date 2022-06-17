@@ -12,10 +12,10 @@ import { colors } from 'shared/theme/colors';
 */
 
 
-export const DemoDatasetCard = ({ title, atlas, model, handleOnClick, selected }) => {
+export const DemoDatasetCard = ({ width, height, title, atlas, model, handleOnClick, selected }) => {
 
     return (
-        <Box onClick={handleOnClick} sx={{ width: '100%', height: 50, backgroundColor: 'white', borderRadius: "0.625rem", marginTop: '1.5em', marginBottom: '0.75em', cursor: 'pointer', }}>
+        <Box onClick={handleOnClick} sx={{ width: {width}, height: {height}, backgroundColor: 'white', borderRadius: "0.625rem", marginTop: '1.5em', marginBottom: '0.75em', cursor: 'pointer', }}>
             <Box
                 sx={selected ? {
                     boxShadow: "0px 0px 2px rgba(0,0,0, 0.15)",
@@ -42,7 +42,7 @@ export const DemoDatasetCard = ({ title, atlas, model, handleOnClick, selected }
                         {title}
                     </Typography>
                     <Typography variant='caption'>
-                        {atlas + model}
+                        {"Demo dataset for " + atlas + " & " + model}
                     </Typography>
                 </Stack>
             </Box>

@@ -16,68 +16,21 @@ function AtlasModelChoice({
   selectedAtlas, setSelectedAtlas,
   selectedModel, setSelectedModel, path,
   compatibleModels, atlases, models,
+  selectedDataset, setSelectedDataset,
+  datasetIsSelected, setDatasetIsSelected,
+  demos,
 }) {
   const [showWarning, setShowWarning] = useState(false);
   const history = useHistory();
-  const demoDatasetArr = [
-    {
-      demoId: 12,
-      title: 'Pancreas + SCVI',
-      atlas: 'Pancreas',
-      model: 'SCVI',
-      url: 'link to the dataset to fetch',
-    },
-    {
-      demoId: 123,
-      title: 'pancreas + SCANVI',
-      atlas: 'Pancreas',
-      model: 'SCANVI',
-      url: 'link to the dataset to fetch',
-    },
-    {
-      demoId: 1231,
-      title: 'fetal + SCVI',
-      atlas: 'fetal immune atlas',
-      model: 'SCANVI',
-      url: 'link to the dataset to fetch',
-    },
-    {
-      demoId: 123131,
-      title: 'pbmc + totalvi',
-      atlas: 'pbmc',
-      model: 'totalvi',
-      url: 'link to the dataset to fetch',
-    },
-  ];
+  const [demoDatasets] = useState(demos);
 
-  const [datasetIsSelected, setDatasetIsSelected] = useState(false);
-  const [selectedDataset, setSelectedDataset] = useState(null);
-  const [demoDatasets, setDemoDatasets] = useState(demoDatasetArr);
-
-  // Make sure the choice here works
-
-  const PBMCObj = {
-    _id: '626ea3311d7d1a27de465b64',
-    name: 'PBMC',
-    previewPictureURL: 'https://storage.googleapis.com/jst-2021-bucket-static/pbmc.png',
-    modalities: 'CITE-seq: CD3_TotalSeqB, CD4_TotalSeqB, CD8a_TotalSeqB, CD14_TotalSeqB, CD15_TotalSeqB, CD16_TotalSeqB, CD56_TotalSeqB, CD19_TotalSeqB, CD25_TotalSeqB, CD45RA_TotalSeqB, CD45RO_TotalSeqB, PD-1_TotalSeqB, TIGIT_TotalSeqB, CD127_TotalSeqB',
-    numberOfCells: '11K',
-    species: ['Human'],
-    compatibleModels: ['totalVI'],
-  };
-
-  console.log(`The atlases are: ${JSON.stringify(atlases)}`);
   /* Handling the choice of the demo dataset */
   const handleDemoClick = (dataset) => {
     // only set selected dataset if not already selected or null
     if (!selectedDataset || selectedDataset.demoId !== dataset.demoId) {
       setSelectedDataset(dataset);
       setDatasetIsSelected(true);
-      console.log(`The first element[0] ${JSON.stringify(atlases[0].name)}`);
-      console.log(`The first element[1] ${JSON.stringify(atlases[1])}`);
-      console.log(`The first element[2] ${JSON.stringify(atlases[2])}`);
-      console.log(`The dataset atlas is: ${dataset.atlas}`);
-      // find the objects corresponding to the atlas and model
+      // find the objects corresponding to the atlas and model in the array
       const atlasObj = atlases.filter(
         (a) => a.name.toLowerCase() === dataset.atlas.toLowerCase(),
       )[0];
@@ -95,8 +48,6 @@ function AtlasModelChoice({
       setSelectedModel({});
     }
   };
-
-  /* fetch demo datasets */
 
   return (
     <div>
@@ -173,10 +124,12 @@ function AtlasModelChoice({
       {/* Loop over demo datasets */}
       { demoDatasets.length !== 0 && demoDatasets.map((dataset) => (
         <DemoDatasetCard
+          width="40%"
+          height="50px"
           title={dataset.title}
           atlas={dataset.atlas}
+          model={dataset.model}
           handleOnClick={() => handleDemoClick(dataset)}
-          // selected={datasetIsSelected && dataset.demoId === selectedDataset.demoiId}
           selected={datasetIsSelected && dataset.demoId === selectedDataset.demoId}
         />
       ))}
