@@ -21,41 +21,82 @@ function AtlasModelChoice({
   const history = useHistory();
   const demoDatasetArr = [
     {
-      demoId: 1232112,
-      title: 'demo dataset1',
+      demoId: 12,
+      title: 'Pancreas + SCVI',
       atlas: 'Pancreas',
       model: 'SCVI',
       url: 'link to the dataset to fetch',
     },
     {
-      demoId: 123131,
-      title: 'demo dataset2',
-      atlas: 'PBMC',
+      demoId: 123,
+      title: 'pancreas + SCANVI',
+      atlas: 'Pancreas',
       model: 'SCANVI',
       url: 'link to the dataset to fetch',
     },
     {
-      demoId: 131,
-      title: 'demo dataset1',
-      atlas: 'Fetal Immune',
-      model: 'TOTALVI',
+      demoId: 1231,
+      title: 'fetal + SCVI',
+      atlas: 'fetal immune atlas',
+      model: 'SCANVI',
+      url: 'link to the dataset to fetch',
+    },
+    {
+      demoId: 123131,
+      title: 'pbmc + totalvi',
+      atlas: 'pbmc',
+      model: 'totalvi',
       url: 'link to the dataset to fetch',
     },
   ];
 
   const [datasetIsSelected, setDatasetIsSelected] = useState(false);
-  const [selectedDataset, setSelectedDataset] = useState(false);
+  const [selectedDataset, setSelectedDataset] = useState(null);
   const [demoDatasets, setDemoDatasets] = useState(demoDatasetArr);
-  const data = { name: 'hello, this is a data object', visibility: 'true' };
-  { /* fetch the datasets */ }
 
-  { /* Handling the choice of the demo dataset */ }
-  const onClick = ({
-    demoId, title, atlas, mode, url,
-  }) => {
-    alert(demoId);
-    // set the dataset to the one with the matching id
+  // Make sure the choice here works
+
+  const PBMCObj = {
+    _id: '626ea3311d7d1a27de465b64',
+    name: 'PBMC',
+    previewPictureURL: 'https://storage.googleapis.com/jst-2021-bucket-static/pbmc.png',
+    modalities: 'CITE-seq: CD3_TotalSeqB, CD4_TotalSeqB, CD8a_TotalSeqB, CD14_TotalSeqB, CD15_TotalSeqB, CD16_TotalSeqB, CD56_TotalSeqB, CD19_TotalSeqB, CD25_TotalSeqB, CD45RA_TotalSeqB, CD45RO_TotalSeqB, PD-1_TotalSeqB, TIGIT_TotalSeqB, CD127_TotalSeqB',
+    numberOfCells: '11K',
+    species: ['Human'],
+    compatibleModels: ['totalVI'],
   };
+
+  console.log(`The atlases are: ${JSON.stringify(atlases)}`);
+  /* Handling the choice of the demo dataset */
+  const handleDemoClick = (dataset) => {
+    // only set selected dataset if not already selected or null
+    if (!selectedDataset || selectedDataset.demoId !== dataset.demoId) {
+      setSelectedDataset(dataset);
+      setDatasetIsSelected(true);
+      console.log(`The first element[0] ${JSON.stringify(atlases[0].name)}`);
+      console.log(`The first element[1] ${JSON.stringify(atlases[1])}`);
+      console.log(`The first element[2] ${JSON.stringify(atlases[2])}`);
+      console.log(`The dataset atlas is: ${dataset.atlas}`);
+      // find the objects corresponding to the atlas and model
+      const atlasObj = atlases.filter(
+        (a) => a.name.toLowerCase() === dataset.atlas.toLowerCase(),
+      )[0];
+      const modelObj = models.filter(
+        (m) => m.name.toLowerCase() === dataset.model.toLowerCase(),
+      )[0];
+
+      setSelectedAtlas(atlasObj);
+      setSelectedModel(modelObj);
+    } else {
+      setDatasetIsSelected(false);
+      setSelectedDataset(null);
+      // deselect the atlas and model
+      setSelectedAtlas({});
+      setSelectedModel({});
+    }
+  };
+
+  /* fetch demo datasets */
 
   return (
     <div>
@@ -104,7 +145,7 @@ function AtlasModelChoice({
       <Grid container spacing={2} width="100%" overflow="auto" wrap="nowrap">
         {
           models && models.map((m) => (
-            <Grid item height="150px">
+            <Grid item height="225px">
               <ModelCardSelect
                 width="225px"
                 height="97%"
@@ -124,35 +165,23 @@ function AtlasModelChoice({
       </Grid>
 
       {/* Demo datasets */}
-
       <Box sx={{ width: 400 }}>
         <Typography variant="h5" sx={{ fontSize: '18px', fontWeight: 'bold', pb: '1em' }} marginTop="32px">
           Or try out one of the available demo datasets
         </Typography>
       </Box>
       {/* Loop over demo datasets */}
-      { demoDatasetArr.length !== 0 && demoDatasetArr.map((dataset) => (
+      { demoDatasets.length !== 0 && demoDatasets.map((dataset) => (
         <DemoDatasetCard
           title={dataset.title}
           atlas={dataset.atlas}
-          handleOnClick={() => onClick(dataset)}
-          selected={selectedDataset && dataset.demoId === selectedDataset.demoiId}
+          handleOnClick={() => handleDemoClick(dataset)}
+          // selected={datasetIsSelected && dataset.demoId === selectedDataset.demoiId}
+          selected={datasetIsSelected && dataset.demoId === selectedDataset.demoId}
         />
       ))}
 
-      {/* what to render as the demo datasets */}
-      {/* ( demoDatasets.length !== 0 ?  */}
-
-      {/* ( demoDatasets.length !== 0 ? demoDatasets.map((dataset) => <DemoDatasetCard
-            title = {dataset}
-            atlas = {dataset}
-            handleOnClick = {() => onClick(dataset)}
-            selected = {selectedDataset && dataset.demoId === selectedDataset.demoiId}
-            />) : <Alert severity="info"> No existing datasets available. </Alert>;
-
-        ) */}
-
-      <Stack direction="row" justifyContent="space-between" sx={{ marginTop: '20px', marginBottom: '3em' }}>
+      <Stack direction="row" justifyContent="space-between" sx={{ marginTop: '50px', marginBottom: '3em' }}>
         <CustomButton type="tertiary" onClick={() => history.push(`${path}`)}>
           <Clear />
           &nbsp; Cancel

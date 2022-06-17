@@ -2,13 +2,14 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 import {
-  Alert, Box, Button, Container, Divider, Stack, TextField, Tooltip, Typography
+  Alert, Box, Button, Container, Divider, Stack, TextField, Tooltip, Typography,
 } from '@mui/material';
 import { GeneralCard as Card } from 'components/Cards/GeneralCard';
 import CustomButton from 'components/CustomButton';
 import FileUpload from 'components/FileUpload';
 import { Modal, ModalTitle } from 'components/Modal';
 import { useCallback, useEffect, useState } from 'react';
+import { DemoDatasetCard } from 'components/GeneMapper/TabCard';
 import { useHistory } from 'react-router-dom';
 import { initSubmissionProgress, useSubmissionProgress } from 'shared/context/submissionProgressContext';
 import ProjectService from 'shared/services/Project.service';
@@ -20,10 +21,48 @@ import styles from './uploadfilepage.module.css';
 function UploadFilePage({
   path, selectedAtlas, selectedModel, setActiveStep,
 }) {
+  const demoDatasets = [
+    {
+      demoId: 12,
+      title: 'Pancreas + SCVI',
+      atlas: 'Pancreas',
+      model: 'SCVI',
+      url: 'link to the dataset to fetch',
+    },
+    {
+      demoId: 123,
+      title: 'pancreas + SCANVI',
+      atlas: 'Pancreas',
+      model: 'SCANVI',
+      url: 'link to the dataset to fetch',
+    },
+    {
+      demoId: 1231,
+      title: 'fetal + SCVI',
+      atlas: 'fetal immune atlas',
+      model: 'SCANVI',
+      url: 'link to the dataset to fetch',
+    },
+    {
+      demoId: 123131,
+      title: 'pbmc + totalvi',
+      atlas: 'pbmc',
+      model: 'totalvi',
+      url: 'link to the dataset to fetch',
+    },
+    { // Leave this object in since it is causing bugs. Find out why
+      demoId: 131131,
+      title: 'Fetal Immune + TotalVI',
+      atlas: 'Fetal Immune',
+      model: 'TOTALVI',
+      url: 'link to the dataset to fetch',
+    },
+  ];
+
   const [uploadedFile, setUploadedFile] = useState();
   const [selectedDataset, setSelectedDataset] = useState();
   const [mappingName, setMappingName] = useState('');
-  const [existingDatasets, setExistingDatasets] = useState();
+  const [existingDatasets, setExistingDatasets] = useState(demoDatasets);
   const [requirements, setRequirements] = useState([]);
   const [open, setOpen] = useState(false);
   const [atlasInfoOpen, setAtlasInfoOpen] = useState(false);
@@ -48,14 +87,14 @@ function UploadFilePage({
       setShowFileWarning(true);
       // error object returned in case of rejection
       return {
-        code: "Wrong file format",
-        message: "File must be in h5ad format"
+        code: 'Wrong file format',
+        message: 'File must be in h5ad format',
       };
-    } else {
-      setShowFileWarning(false);
     }
-    return null;  // file accepted
-  }
+    setShowFileWarning(false);
+
+    return null; // file accepted
+  };
 
   const createProject = useCallback((projectName, atlasId, modelId, file) => {
     ProjectService.createProject(
@@ -98,15 +137,16 @@ function UploadFilePage({
 
   return (
     <Box sx={{ marginTop: '2.5em' }}>
-      {showWarning &&
-        <Alert severity="error" xs={{marginTop: '100px'}}>
-            Select or upload a dataset before continuing
+      {showWarning
+        && (
+        <Alert severity="error" xs={{ marginTop: '100px' }}>
+          Select or upload a dataset before continuing
         </Alert>
-      }
+        )}
       <Stack
         direction="row"
         divider={(<Divider className={styles.divider} orientation="vertical" flexItem />)}
-        sx={ showWarning ? {marginTop: '1em'} : {}}
+        sx={showWarning ? { marginTop: '1em' } : {}}
       >
         {/* Left side */}
         <Box width="50%" mr="3%">
@@ -265,33 +305,42 @@ function UploadFilePage({
               validator={validateUploadFile}
               rejectionHandler={() => setUploadedFile()}
             />
-            { 
-              showFileWarning &&
-              <Alert severity="error" sx={{marginTop: '1em'}}>
+            {
+              showFileWarning
+              && (
+              <Alert severity="error" sx={{ marginTop: '1em' }}>
                 File must be in h5ad format.
               </Alert>
+              )
             }
-            { 
-              uploadedFile && uploadedFile[0] && 
-              <Alert severity="success" sx={{marginTop: '1em'}}>
-                Selected file: {uploadedFile[0].name}
-              </Alert> 
+            {
+              uploadedFile && uploadedFile[0]
+              && (
+              <Alert severity="success" sx={{ marginTop: '1em' }}>
+                Selected file:
+                {' '}
+                {uploadedFile[0].name}
+              </Alert>
+              )
             }
           </Stack>
           <Stack maxHeight="50%">
             <Typography variant="h5" fontWeight="bold" mb="0.5em">Select Existing Datasets</Typography>
-            { 
-              existingDatasets ? 
-                existingDatasets.map((data) => 
-                  <TabCard
+            {
+              // demoDatasets.length !==0 
+              //   ? 
+                [1,2,3,4].map((data) => (
+                  <DemoDatasetCard
                     data={data}
-                    width="95%" 
+                    width="95%"
                     height="3em"
                     handleOnClick={
-                      () => handleSelectDataset(data)} selected={selectedDataset && data._id === selectedDataset._id
-                    }
-                  />)
-              : <Alert severity="info"> No existing datasets available. </Alert> 
+                      () => handleSelectDataset(data)
+}
+                    selected={selectedDataset && data._id === selectedDataset._id}
+                  />
+                ))
+                // : <Alert severity="info"> No existing datasets available. </Alert>
             }
           </Stack>
         </Box>
@@ -302,11 +351,9 @@ function UploadFilePage({
           Back
         </CustomButton>
         <Stack direction="row" spacing={3} alignItems="center">
-          <Typography variant="h6" fontWeight="bold">
-            
-          </Typography>
+          <Typography variant="h6" fontWeight="bold" />
           <Tooltip title={(!uploadedFile && !selectedDataset) ? "You haven't selected or uploaded a dataset!" : ''} placement="top">
-            <Box onClick={!uploadedFile && !selectedDataset ? () => setShowWarning(true) : ()=>{}}>
+            <Box onClick={!uploadedFile && !selectedDataset ? () => setShowWarning(true) : () => {}}>
               <span>
                 <CustomButton
                   type="primary"
