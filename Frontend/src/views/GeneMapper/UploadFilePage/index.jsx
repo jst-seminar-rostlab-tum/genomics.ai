@@ -8,7 +8,7 @@ import { GeneralCard as Card } from 'components/Cards/GeneralCard';
 import CustomButton from 'components/CustomButton';
 import FileUpload from 'components/FileUpload';
 import { Modal, ModalTitle } from 'components/Modal';
-import { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { DemoDatasetCard } from 'components/GeneMapper/TabCard';
 import { useHistory } from 'react-router-dom';
 import { initSubmissionProgress, useSubmissionProgress } from 'shared/context/submissionProgressContext';
@@ -97,6 +97,8 @@ function UploadFilePage({
     console.log(selectedDataset);
     // save mapping name
     setOpen(false); // opens modal to input mapping name
+    console.log("Printing out the object of the uploaded file: " + uploadedFile);
+    console.lof("Printing the the first value of the uploaded file: " + uploadedFile[0]);
     createProject(mappingName, selectedAtlas._id, selectedModel._id,
       uploadedFile ? uploadedFile[0] : selectedDataset);
   };
@@ -241,7 +243,7 @@ function UploadFilePage({
             children={(
               <Container>
                 <ModalTitle>Give your mapping a name </ModalTitle>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit}> {/*this handles the submission of the file and the project*/}
                   <TextField
                     variant="standard"
                     placeholder="Enter name here"
@@ -300,9 +302,6 @@ function UploadFilePage({
           </Stack>
           <Stack maxHeight="50%">
             <Typography variant="h5" fontWeight="bold" mb="0.5em">Or Select Demo Dataset</Typography>
-            {
-              console.log(JSON.stringify(demoDatasets))
-            }
             {
               // filter all demo datasets that match the current choice of model and atlas
               demoDatasets.length !== 0 ? (
