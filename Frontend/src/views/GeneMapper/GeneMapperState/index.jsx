@@ -134,10 +134,10 @@ function GeneMapperState({ path }) {
 
     ModelService.getModels().then((m) => {
       m.map((model) => {
-                model.requirements = [
-                    'Ensure your data is in h5ad format',
-                    'Batch/study information is mandatory and should be labeled as “batch”'
-                ];
+        model.requirements = [
+          'Ensure your data is in h5ad format',
+          'Batch/study information is mandatory and should be labeled as “batch”'
+        ];
         if (model.name === 'scVI') {
           model.requirements.push('Cell type information should be labeled as “cell_type”');
           model.requirements.push('For unlabeled cells, the value for “cell_type” should be “Unknown”');
