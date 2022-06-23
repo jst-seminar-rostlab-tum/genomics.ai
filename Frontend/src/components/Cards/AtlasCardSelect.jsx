@@ -1,49 +1,47 @@
-import { useState, useRef, useEffect } from "react"
+import React, { useState, useRef, useEffect } from 'react';
 
-import { Box, Container, Typography } from '@mui/material'
+import { Box, Container, Typography } from '@mui/material';
 
-import { OutlinedButtonSelect } from './ModelCardSelect'
+import { OutlinedButtonSelect } from './ModelCardSelect';
 
-import { borders } from "@mui/system"
-import { Modal } from "components/Modal"
-import { LearnMoreAtlasComponent } from "views/Explore/LearnMoreAtlas"
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min"
-import AtlasInfo from "components/GeneMapper/AtlasInfo"
+import { borders } from '@mui/system';
+import { Modal } from 'components/Modal';
+import { LearnMoreAtlasComponent } from 'views/Explore/LearnMoreAtlas';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import AtlasInfo from 'components/GeneMapper/AtlasInfo';
 
 /**
- * Atlas Card 
+ * Atlas Card
  * @param width default value is 100% of parent
  * @param height default value is 100% of parent
  * @param title title of AtlasCard
  * @param imgLink thumbnail photo url
- * @param modalities 
+ * @param modalities
  * @param cellsInReference
  * @param species
  * @param mapLink onHover button Map url
  * @param learnMoreLink onHover button Learn More url
  */
 export default function AtlasCardSelect({
-  width = "100", height = "100%", title, imgLink, modalities,
-  cellsInReference, species, mapLink, learnMoreLink, selected=false, 
-  onSelect, atlasObject={}
+  width = '100', height = '100%', title, imgLink, modalities,
+  cellsInReference, species, mapLink, learnMoreLink, selected = false,
+  onSelect, atlasObject = {},
 }) {
+  // check if the mouse is hovering above the card
+  const [isHover, setHover] = useState(false);
 
-  //check if the mouse is hovering above the card
-  const [isHover, setHover] = useState(false)
-
-  //check if the card is flat(width > height)
-  const [isFlat, setFlat] = useState(false)
-
+  // check if the card is flat(width > height)
+  const [isFlat, setFlat] = useState(false);
 
   const [atlasInfoOpen, setAtlasInfoOpen] = useState(false);
 
   // ref to get the out most Box
-  const boxRef = useRef()
+  const boxRef = useRef();
   const history = useHistory();
 
   useEffect(() => {
     // each time the card is rerendered, check if the card is flat or not
-    if (boxRef.current.clientWidth > boxRef.current.clientHeight) setFlat(true)
+    if (boxRef.current.clientWidth > boxRef.current.clientHeight) setFlat(true);
   }, []);
 
   // capitalize every word in a string
@@ -51,7 +49,6 @@ export default function AtlasCardSelect({
     const lower = str.toLowerCase();
     const words = lower.split(' ');
     // return the original string if it was max one word since it is already capitalized and correct
-    console.log(words);
     if (words.length === 1) return str;
     let cap = '';
     // eslint-disable-next-line no-plusplus
@@ -71,7 +68,7 @@ export default function AtlasCardSelect({
   return (
     <Box
       sx={{
-        width, height
+        width, height,
       }}
     >
       <Box
@@ -79,45 +76,46 @@ export default function AtlasCardSelect({
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
         sx={{
-          width: "100%",
-          height: "100%",
-          position: "relative",
+          width: '100%',
+          height: '100%',
+          position: 'relative',
         }}
       >
-        {/*Hover effect over the card*/}
+        {/* Hover effect over the card */}
         {
-          isHover &&
+          isHover
+          && (
           <Box
             style={{
-              background: "linear-gradient(#4F83CC, #01579B)"
+              background: 'linear-gradient(#4F83CC, #01579B)',
             }}
             sx={{
-              position: "absolute",
-              width: "100%",
-              height: "100%",
-              borderRadius: "1.2rem",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              opacity: 0.95
+              position: 'absolute',
+              width: '100%',
+              height: '100%',
+              borderRadius: '1.2rem',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              opacity: 0.95,
             }}
           >
             <Box
               sx={{
-                margin: "auto",
-                width: isFlat ? "70%" : "60%",
-                height: isFlat ? "auto" : "40%",
-                display: "flex",
-                flexDirection: isFlat ? "row" : "column",
-                justifyContent: "space-evenly",
+                margin: 'auto',
+                width: isFlat ? '70%' : '60%',
+                height: isFlat ? 'auto' : '40%',
+                display: 'flex',
+                flexDirection: isFlat ? 'row' : 'column',
+                justifyContent: 'space-evenly',
               }}
             >
               <OutlinedButtonSelect content="Select" onSelect={() => onSelect(atlasObject)} />
               <OutlinedButtonSelect content="Learn More" onSelect={() => setAtlasInfoOpen(true)} />
             </Box>
           </Box>
+          )
         }
-
 
         <Box
           sx={{
@@ -136,31 +134,34 @@ export default function AtlasCardSelect({
         >
           <Typography
             sx={{
-              fontSize: "1.2rem",
-              fontWeight: "bold"
+              fontSize: '1.2rem',
+              fontWeight: 'bold',
             }}
           >
             {capitalize(title)}
           </Typography>
 
-          <Box component="img" src={imgLink} alt="Atlas preview img"
+          <Box
+            component="img"
+            src={imgLink}
+            alt="Atlas preview img"
             sx={{
-              width: "90%",
-              height: "50%",
-              margin: "auto"
+              width: '90%',
+              height: '50%',
+              margin: 'auto',
             }}
           />
 
           <Box
             sx={{
-              display: "flex",
-              flexDirection: "row",
+              display: 'flex',
+              flexDirection: 'row',
             }}
           >
             <Typography
               sx={{
-                fontSize: "1rem",
-                fontWeight: "bold"
+                fontSize: '1rem',
+                fontWeight: 'bold',
               }}
             >
               Modalities:
@@ -171,14 +172,14 @@ export default function AtlasCardSelect({
 
           <Box
             sx={{
-              display: "flex",
-              flexDirection: "row",
+              display: 'flex',
+              flexDirection: 'row',
             }}
           >
             <Typography
               sx={{
-                fontSize: "1rem",
-                fontWeight: "bold"
+                fontSize: '1rem',
+                fontWeight: 'bold',
               }}
             >
               Cells in Reference:
@@ -189,14 +190,14 @@ export default function AtlasCardSelect({
 
           <Box
             sx={{
-              display: "flex",
-              flexDirection: "row",
+              display: 'flex',
+              flexDirection: 'row',
             }}
           >
             <Typography
               sx={{
-                fontSize: "1rem",
-                fontWeight: "bold"
+                fontSize: '1rem',
+                fontWeight: 'bold',
               }}
             >
               Species:
@@ -209,5 +210,5 @@ export default function AtlasCardSelect({
       <AtlasInfo id={atlasObject._id} open={atlasInfoOpen} setOpen={setAtlasInfoOpen} />
     </Box>
 
-  )
+  );
 }

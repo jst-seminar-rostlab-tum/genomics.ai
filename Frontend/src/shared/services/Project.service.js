@@ -24,6 +24,7 @@ const ProjectService = MOCK_PROJECTS ? MockProjectService : {
     const { data } = await axiosInstance.post('/file_upload/start_upload', {
       projectName, atlasId, modelId, fileName,
     });
+    console.log("The value that is passed is:" + JSON.stringify(data));
     return data;
   },
 

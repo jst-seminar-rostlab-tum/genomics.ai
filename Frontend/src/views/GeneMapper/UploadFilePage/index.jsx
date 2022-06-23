@@ -10,14 +10,21 @@ import FileUpload from 'components/FileUpload';
 import { Modal, ModalTitle } from 'components/Modal';
 import React, { useCallback, useEffect, useState } from 'react';
 import { DemoDatasetCard } from 'components/GeneMapper/TabCard';
+import { MULTIPART_UPLOAD_STATUS } from 'shared/utils/common/constants';
 import { useHistory } from 'react-router-dom';
 import { initSubmissionProgress, useSubmissionProgress } from 'shared/context/submissionProgressContext';
 import ProjectService from 'shared/services/Project.service';
 import { uploadMultipartFile } from 'shared/services/UploadLogic';
 import { LearnMoreAtlasComponent } from 'views/Explore/LearnMoreAtlas';
 import { LearnMoreModelComponent } from 'views/Explore/LearnMoreModel';
+
 import styles from './uploadfilepage.module.css';
 
+
+/*
+The parameter datasetIsSelected indicates whether a demo dataset has been selected.
+The parameter selectedDataset indicates the dataset that has been selected.
+ */
 function UploadFilePage({
   path, selectedAtlas, selectedModel, setActiveStep, demos,
   selectedDataset, setSelectedDataset,
@@ -76,11 +83,13 @@ function UploadFilePage({
       atlasId,
       modelId,
       file.name,
-    ).then((project) => {
+    ).then((project) => { /* The return value that is received is the project object. */
       uploadMultipartFile(
         project.uploadId,
         file,
+        // Sets the initial value of the submission progress
         initSubmissionProgress(project.uploadId),
+        // The "update" parameter is the arrow function inside the setSubmissionProgress() function
         (update) => {
           setSubmissionProgress((prev) => ({
             ...prev,
@@ -92,15 +101,62 @@ function UploadFilePage({
     });
   }, [submissionProgress]);
 
+  // the function to create a demo dataset project
+  const createDemoProject = (projectName, atlasId, modelId, demoDataset) => {
+    ProjectService.createProject(
+      projectName,
+      atlasId,
+      modelId,
+      selectedDataset.title,
+    ).then((project) => {
+      // bypass the upload for the demo project
+      //TODO: currently, the multipartFile upload is commented out to not get the null exceptions
+      
+      // uploadMultipartFile(
+      //   // id
+      //   project.uploadId,
+      //   // file, set to null since we are not uploading anything
+      //   null,
+      //   // the initial value to set the upload status to
+      //   {
+      //     status: MULTIPART_UPLOAD_STATUS.DONE,
+      //     uploadId: project.uploadId,
+      //     chunks: 0,
+      //     uploaded: 0,
+      //     remaining: [],
+      //     uploadedParts: [],
+      //   },
+      //   // the set function of the upload status. Set to null since we do not call it
+      //   null,
+      // );
+
+      console.log('Hurray, a demo project has been chosen');
+      // set the state of the project to the right value:
+      // How is the status of the file fetched?
+      uploadMultipartFile(); // instead of setting to
+    });
+    history.push(path); // go back to GeneMapper home
+    // Till here, right now the result is that a demo dataset is created, but the upload fails obviously
+  };
+
+  // no upload is necessary
+  // Set the upload to done and start the state from the processing of the dataset
+  // understand how the processing is done and what needs to be done here
+
   const handleSubmit = (e) => {
     e?.preventDefault();
     console.log(selectedDataset);
+    console.log(uploadedFile);
     // save mapping name
     setOpen(false); // opens modal to input mapping name
-    console.log("Printing out the object of the uploaded file: " + uploadedFile);
-    console.lof("Printing the the first value of the uploaded file: " + uploadedFile[0]);
-    createProject(mappingName, selectedAtlas._id, selectedModel._id,
-      uploadedFile ? uploadedFile[0] : selectedDataset);
+    // choose what type of project to create depending on whether a demo project is chosen
+    if (datasetIsSelected) {
+      createDemoProject(mappingName, selectedAtlas._id, selectedModel._id,
+        selectedDataset);
+    } else {
+      createProject(mappingName, selectedAtlas._id, selectedModel._id,
+        uploadedFile ? uploadedFile[0] : selectedDataset);
+    }
   };
 
   const handleSelectDataset = (data) => {
@@ -115,9 +171,9 @@ function UploadFilePage({
     <Box sx={{ marginTop: '2.5em' }}>
       {showWarning
         && (
-        <Alert severity="error" xs={{ marginTop: '100px' }}>
-          Select or upload a dataset before continuing
-        </Alert>
+          <Alert severity="error" xs={{ marginTop: '100px' }}>
+            Select or upload a dataset before continuing
+          </Alert>
         )}
       <Stack
         direction="row"
@@ -208,7 +264,7 @@ function UploadFilePage({
                       )}
                     />
                   </Stack>
-              )}
+                )}
               />
             </Stack>
             <Stack>
@@ -243,7 +299,9 @@ function UploadFilePage({
             children={(
               <Container>
                 <ModalTitle>Give your mapping a name </ModalTitle>
-                <form onSubmit={handleSubmit}> {/*this handles the submission of the file and the project*/}
+                <form onSubmit={handleSubmit}>
+                  {' '}
+                  {/* this handles the submission of the file and the project */}
                   <TextField
                     variant="standard"
                     placeholder="Enter name here"
@@ -284,19 +342,19 @@ function UploadFilePage({
             {
               showFileWarning
               && (
-              <Alert severity="error" sx={{ marginTop: '1em' }}>
-                File must be in h5ad format.
-              </Alert>
+                <Alert severity="error" sx={{ marginTop: '1em' }}>
+                  File must be in h5ad format.
+                </Alert>
               )
             }
             {
               uploadedFile && uploadedFile[0]
               && (
-              <Alert severity="success" sx={{ marginTop: '1em' }}>
-                Selected file:
-                {' '}
-                {uploadedFile[0].name}
-              </Alert>
+                <Alert severity="success" sx={{ marginTop: '1em' }}>
+                  Selected file:
+                  {' '}
+                  {uploadedFile[0].name}
+                </Alert>
               )
             }
           </Stack>
@@ -307,7 +365,7 @@ function UploadFilePage({
               demoDatasets.length !== 0 ? (
                 demoDatasets
                   .filter((d) => d.atlas.toLowerCase() === selectedAtlas.name.toLowerCase()
-                  && d.model.toLowerCase() === selectedModel.name.toLowerCase())
+                    && d.model.toLowerCase() === selectedModel.name.toLowerCase())
                   .map((dataset) => (
                     <DemoDatasetCard
                       width="100%"
@@ -331,7 +389,7 @@ function UploadFilePage({
         <Stack direction="row" spacing={3} alignItems="center">
           <Typography variant="h6" fontWeight="bold" />
           <Tooltip title={(!uploadedFile && !selectedDataset) ? "You haven't selected or uploaded a dataset!" : ''} placement="top">
-            <Box onClick={!uploadedFile && !selectedDataset ? () => setShowWarning(true) : () => {}}>
+            <Box onClick={!uploadedFile && !selectedDataset ? () => setShowWarning(true) : () => { }}>
               <span>
                 <CustomButton
                   type="primary"

@@ -245,7 +245,7 @@ export default function ProjectBarCard({
                       <CustomButton
                         type="primary"
                         onClick={() => history.push(`/sequencer/genemapper/result/${project._id}`)}
-                        disabled={project.status !== 'DONE'}
+                        // disabled={project.status !== 'DONE'}
                       >
                         <Typography>
                           See Results

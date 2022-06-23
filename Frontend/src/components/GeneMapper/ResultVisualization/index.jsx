@@ -16,6 +16,8 @@ import Sidepanel from '../Sidepanel';
 import { colors } from 'shared/theme/colors';
 import GeneMapperGraphs from '../Graphs';
 
+// the following import is just to get the absolute file path
+
 const activatedColor = colors.primary['400'];
 const deactivatedColor = colors.primary['200'];
 
@@ -40,6 +42,8 @@ function ResultVisualization({ dataUrl, onlyUmap }) {
   const [showPredictions, setShowPredictions] = useState(true);
 
   useEffect(() => {
+    // csv() sends an http request to the URL specified. Can't be used to read a local file
+    // The above thing might work if we start the server locally.
     csv(dataUrl).then((data) => {
       setUmap(new UmapVisualization2(umapContainer.current, data, graphContainer.current));
     });
@@ -63,7 +67,7 @@ function ResultVisualization({ dataUrl, onlyUmap }) {
       observer.observe(umapContainer.current);
       return () => observer.disconnect();
     }
-    return () => {};
+    return () => { };
   }, [umapContainer.current]);
 
   return (
@@ -101,29 +105,29 @@ function ResultVisualization({ dataUrl, onlyUmap }) {
       >
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           {umap
-          && Object.keys(umap.coloringModes).includes('predicted')
-          && (
-            <>
-              <Box>
-                <Tooltip title={`${showPredictions ? 'Hide' : 'Show'} predicted data`}>
-                  <IconButton onClick={() => {
-                    setShowPredictions(!showPredictions);
-                    if (showPredictions) {
-                      umap.predictedCellsTransparent();
-                    } else {
-                      umap.predictedCellsVisible();
-                    }
-                  }}
-                  >
-                    <BlurOnIcon
-                      sx={{ color: showPredictions ? activatedColor : deactivatedColor }}
-                    />
-                  </IconButton>
-                </Tooltip>
-              </Box>
-              <Divider orientation="vertical" flexItem variant="middle" />
-            </>
-          )}
+            && Object.keys(umap.coloringModes).includes('predicted')
+            && (
+              <>
+                <Box>
+                  <Tooltip title={`${showPredictions ? 'Hide' : 'Show'} predicted data`}>
+                    <IconButton onClick={() => {
+                      setShowPredictions(!showPredictions);
+                      if (showPredictions) {
+                        umap.predictedCellsTransparent();
+                      } else {
+                        umap.predictedCellsVisible();
+                      }
+                    }}
+                    >
+                      <BlurOnIcon
+                        sx={{ color: showPredictions ? activatedColor : deactivatedColor }}
+                      />
+                    </IconButton>
+                  </Tooltip>
+                </Box>
+                <Divider orientation="vertical" flexItem variant="middle" />
+              </>
+            )}
           {
             umap
             && Object.keys(umap.coloringModes).includes('type')
@@ -189,14 +193,14 @@ function ResultVisualization({ dataUrl, onlyUmap }) {
       <Box sx={{ display: onlyUmap ? 'none' : 'block' }}>
         <Sidepanel title="Graphs" collapseToRight>
           {umap
-          && (
-          <GeneMapperGraphs
-            graphs={umap.getAvailableGraphs()}
-            drawGraph={(container, graph, width, height) => {
-              umap.drawGraph(container, graph, width, height);
-            }}
-          />
-          )}
+            && (
+              <GeneMapperGraphs
+                graphs={umap.getAvailableGraphs()}
+                drawGraph={(container, graph, width, height) => {
+                  umap.drawGraph(container, graph, width, height);
+                }}
+              />
+            )}
         </Sidepanel>
       </Box>
     </Box>
