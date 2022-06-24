@@ -15,6 +15,7 @@ const get_allDemos = (): Router => {
             return res.status(200).json(models);
         } catch (err) {
             console.error("Error accesssing the demos");
+            console.error(err);
             return res.status(500).send("Unable to access the demos.");
         }
     });
@@ -34,3 +35,9 @@ export { get_allDemos };
 // model
 // url to fetch the csv from 
 // }
+
+// TODO: Create the model for mongoDB, i.e. the schema and teh service. 
+
+// TODO: Understand how the csv are stored and fetched. 
+
+// TODO: set up the server locally, or at least only the s3 bucket I believe. Necessary in order to test the csv's 

@@ -108,8 +108,8 @@ export function express_routes(): Router {
   // authenticated routes
   router.use(update_profile_route());
   router.use(get_profile_route());
-  //router.use(get_project_route());  -- depreciated, we use get_project_by_id
-  //router.use(get_projects_route()); -- depreciated, we use get_userProjects
+  //router.use(get_project_route());  -- deprecated, we use get_project_by_id
+  //router.use(get_projects_route()); -- deprecated, we use get_userProjects
   router.use(upload_user_avatar_route());
   router.use(reset_user_avatar_route());
 
