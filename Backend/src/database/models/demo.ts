@@ -15,8 +15,3 @@ const demoSchema = new Schema<IDemo>({
 })
 
 export const demoModel = model<IDemo>("Demo", demoSchema);
-
-
-// a schema defines the structure of the object stored in it
-// a model is the constructor for the schema
-// a document is an instance of the model

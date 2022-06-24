@@ -92,6 +92,8 @@ import {
 import reset_user_avatar_route from "./routes/reset_user_avatar";
 import { contact_us } from "./routes/contact/contactRoute";
 
+import { get_allDemos } from "./routes/demo/demoRouter";
+
 // setup the websocket-server on top of the http_server
 export function express_routes(): Router {
   let router = express.Router();
@@ -166,6 +168,9 @@ export function express_routes(): Router {
   router.use(get_atlas());
   router.use(get_atlas_visualization());
   router.use(get_allAtlases());
+
+  // demo routes
+  router.use(get_allDemos());
 
   // upload routes
   router.use(upload_get_upload_url_route());
