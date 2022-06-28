@@ -86,9 +86,9 @@ export default function Privacy() {
             dangerouslySetInnerHTML={{
               __html: `<h4>Privacy Policy</h4>
 
-              <p>We are very delighted that you have shown interest in our enterprise. Data protection is of a particularly high priority for the management of the Helmholtz Zentrum München. The use of the Internet pages of the Helmholtz Zentrum München is possible without any indication of personal data; however, if a data subject wants to use special enterprise services via our website, processing of personal data could become necessary. If the processing of personal data is necessary and there is no statutory basis for such processing, we generally obtain consent from the data subject.</p>
+              <p>We are very delighted that you have shown interest in our platform. Data protection is of a particularly high priority for the management of the Helmholtz Zentrum München. The use of the Internet pages of the Helmholtz Zentrum München is possible without any indication of personal data; however, if a data subject wants to use special platform services via our website, processing of personal data could become necessary. If the processing of personal data is necessary and there is no statutory basis for such processing, we generally obtain consent from the data subject.</p>
               
-              <p>The processing of personal data, such as the name, address, e-mail address, or telephone number of a data subject shall always be in line with the General Data Protection Regulation (GDPR), and in accordance with the country-specific data protection regulations applicable to the Helmholtz Zentrum München. By means of this data protection declaration, our enterprise would like to inform the general public of the nature, scope, and purpose of the personal data we collect, use and process. Furthermore, data subjects are informed, by means of this data protection declaration, of the rights to which they are entitled.</p>
+              <p>The processing of personal data, such as the name, address, e-mail address, or telephone number of a data subject shall always be in line with the General Data Protection Regulation (GDPR), and in accordance with the country-specific data protection regulations applicable to the Helmholtz Zentrum München. By means of this data protection declaration, our platform would like to inform the general public of the nature, scope, and purpose of the personal data we collect, use and process. Furthermore, data subjects are informed, by means of this data protection declaration, of the rights to which they are entitled.</p>
               
               <p>As the controller, the Helmholtz Zentrum München has implemented numerous technical and organizational measures to ensure the most complete protection of personal data processed through this website. However, Internet-based data transmissions may in principle have security gaps, so absolute protection may not be guaranteed. For this reason, every data subject is free to transfer personal data to us via alternative means, e.g. by telephone. </p>
               
@@ -138,32 +138,29 @@ export default function Privacy() {
               
               </p>
               
-              <p>Helmholtz Zentrum München</p>
+              <p>Helmholtz Zentrum München – Deutsches Forschungszentrum für Gesundheit und Umwelt GmbH</p>
               <p>Ingolstädter Landstraße 1</p>
               <p>85764 Neuherberg</p>
               <p>Deutschland</p>
               <p>Phone: +498931870</p>
-              <p>Email: presse@helmholtz-muenchen.de</p>
-              <p>Website: genecruncher.com</p>
+              <p>Email: info@helmholtz-muenchen.de</p>
+              <p>Website: www.helmholtz-muenchen.de</p>
               
               <h4>3. Name and Address of the Data Protection Officer</h4>
               <p>The Data Protection Officer of the controller is:</p>
-              
-              [placeholder]
+              Werner Bergheim
               <p>Helmholtz Zentrum München</p>
               <p>Ingolstädter Landstraße 1</p>
               <p>85764 Neuherberg</p>
               <p>Deutschland</p>
-              <p>Phone: [placeholder]</p>
-              <p>Email: [placeholder]</p>
-              <p>Website: genecruncher.com</p>
+              <p>Email: datenschutz@helmholtz-muenchen.de</p>
               
               <p>Any data subject may, at any time, contact our Data Protection Officer directly with all questions and suggestions concerning data protection.</p>
               
               <h4>4. Collection of general data and information</h4>
               <p>The website of the Helmholtz Zentrum München collects a series of general data and information when a data subject or automated system calls up the website. This general data and information are stored in the server log files. Collected may be (1) the browser types and versions used, (2) the operating system used by the accessing system, (3) the website from which an accessing system reaches our website (so-called referrers), (4) the sub-websites, (5) the date and time of access to the Internet site, (6) an Internet protocol address (IP address), (7) the Internet service provider of the accessing system, and (8) any other similar data and information that may be used in the event of attacks on our information technology systems.</p>
               
-              <p>When using these general data and information, the Helmholtz Zentrum München does not draw any conclusions about the data subject. Rather, this information is needed to (1) deliver the content of our website correctly, (2) optimize the content of our website as well as its advertisement, (3) ensure the long-term viability of our information technology systems and website technology, and (4) provide law enforcement authorities with the information necessary for criminal prosecution in case of a cyber-attack. Therefore, the Helmholtz Zentrum München analyzes anonymously collected data and information statistically, with the aim of increasing the data protection and data security of our enterprise, and to ensure an optimal level of protection for the personal data we process. The anonymous data of the server log files are stored separately from all personal data provided by a data subject.</p>
+              <p>When using these general data and information, the Helmholtz Zentrum München does not draw any conclusions about the data subject. Rather, this information is needed to (1) deliver the content of our website correctly, (2) optimize the content of our website as well as its advertisement, (3) ensure the long-term viability of our information technology systems and website technology, and (4) provide law enforcement authorities with the information necessary for criminal prosecution in case of a cyber-attack. Therefore, the Helmholtz Zentrum München analyzes anonymously collected data and information statistically, with the aim of increasing the data protection and data security of our platform, and to ensure an optimal level of protection for the personal data we process. The anonymous data of the server log files are stored separately from all personal data provided by a data subject.</p>
               
               <h4>5. Registration on our website</h4>
               <p>The data subject has the possibility to register on the website of the controller with the indication of personal data. Which personal data are transmitted to the controller is determined by the respective input mask used for the registration. The personal data entered by the data subject are collected and stored exclusively for internal use by the controller, and for his own purposes. The controller may request transfer to one or more processors (e.g. a parcel service) that also uses personal data for an internal purpose which is attributable to the controller.</p>
@@ -177,14 +174,37 @@ export default function Privacy() {
               <p>The data controller shall, at any time, provide information upon request to each data subject as to what personal data are stored about the data subject. In addition, the data controller shall correct or erase personal data at the request or indication of the data subject, insofar as there are no statutory storage obligations. The entirety of the controller’s employees are available to the data subject in this respect as contact persons.</p>
               
               <h4>6. Contact possibility via the website </h4>
-              <p>The website of the Helmholtz Zentrum München contains information that enables a quick electronic contact to our enterprise, as well as direct communication with us, which also includes a general address of the so-called electronic mail (e-mail address). If a data subject contacts the controller by e-mail or via a contact form, the personal data transmitted by the data subject are automatically stored. Such personal data transmitted on a voluntary basis by a data subject to the data controller are stored for the purpose of processing or contacting the data subject. There is no transfer of this personal data to third parties.</p>
+              <p>This platform contains information that enables a quick electronic contact to our platform, as well as direct communication with us, which also includes a general address of the so-called electronic mail (e-mail address). All contact forms are sent to the employees at Helmholtz Zentrum München responsible for the platform.
+              If a data subject contacts the controller by e-mail or via a contact form, the personal data transmitted by the data subject are automatically stored. Such personal data transmitted on a voluntary basis by a data subject to the data controller are stored for the purpose of processing or contacting the data subject. There is no transfer of this personal data to third parties.</p>
               
-              <h4>7. Routine erasure and blocking of personal data</h4>
+              <h4>7. Processing of user files with ScArches</h4>
+              <p>
+              1. Scope of the processing of uploaded files<br/><br/>
+              Our platform offers a user the ability to process their uploaded files using the package ScArches. As a rule, our users' personal data are processed only with the consent of the user. An exception applies in those cases in which it is not possible to obtain prior consent due to factual reasons and statutory provisions permit the processing of the data.</p>
+              
+              <p>
+              2. Legal basis of the data processing<br/><br/>
+              If the user has consented, the legal basis for the processing of the uploaded user data is Article 6(1)(f) GDPR.
+              </p>
+
+              <p>
+              3. Purpose of The data processing<br/><br/>
+              The purpose of the data processing is in order to output the ScArches result based on the user's inputted data.
+              </p>
+              4. Storage period<br/><br/>
+              The user's data is deleted as soon as it is no longer necessary to achieve the purpose for which they were collected.
+              This means that the data is stored throughout the processing step, however, once a result is generated, it is deleted. 
+              Only the outputted result is stored permanently. 
+              <p>5. Possibility of withdrawal, objection or disposal<br/><br/>
+              The users have the option at all times to delete the results of the processing.
+              This is offered on the platform as a feature. Users also have the option at all times to contact us by email or by the Contact us form. 
+              </p>
+              <h4>8. Routine erasure and blocking of personal data</h4>
               <p>The data controller shall process and store the personal data of the data subject only for the period necessary to achieve the purpose of storage, or as far as this is granted by the European legislator or other legislators in laws or regulations to which the controller is subject to.</p>
               
               <p>If the storage purpose is not applicable, or if a storage period prescribed by the European legislator or another competent legislator expires, the personal data are routinely blocked or erased in accordance with legal requirements.</p>
               
-              <h4>8. Rights of the data subject</h4>
+              <h4>9. Rights of the data subject</h4>
               <ul>
               <li><h4>a) Right of confirmation</h4>
               <p>Each data subject shall have the right granted by the European legislator to obtain from the controller the confirmation as to whether or not personal data concerning him or her are being processed. If a data subject wishes to avail himself of this right of confirmation, he or she may, at any time, contact any employee of the controller.</p>
@@ -280,19 +300,19 @@ export default function Privacy() {
               
               </li>
               </ul>
-              <h4>9. Legal basis for the processing </h4>
+              <h4>10. Legal basis for the processing </h4>
               <p>Art. 6(1) lit. a GDPR serves as the legal basis for processing operations for which we obtain consent for a specific processing purpose. If the processing of personal data is necessary for the performance of a contract to which the data subject is party, as is the case, for example, when processing operations are necessary for the supply of goods or to provide any other service, the processing is based on Article 6(1) lit. b GDPR. The same applies to such processing operations which are necessary for carrying out pre-contractual measures, for example in the case of inquiries concerning our products or services. Is our company subject to a legal obligation by which processing of personal data is required, such as for the fulfillment of tax obligations, the processing is based on Art. 6(1) lit. c GDPR.
               In rare cases, the processing of personal data may be necessary to protect the vital interests of the data subject or of another natural person. This would be the case, for example, if a visitor were injured in our company and his name, age, health insurance data or other vital information would have to be passed on to a doctor, hospital or other third party. Then the processing would be based on Art. 6(1) lit. d GDPR.
               Finally, processing operations could be based on Article 6(1) lit. f GDPR. This legal basis is used for processing operations which are not covered by any of the abovementioned legal grounds, if processing is necessary for the purposes of the legitimate interests pursued by our company or by a third party, except where such interests are overridden by the interests or fundamental rights and freedoms of the data subject which require protection of personal data. Such processing operations are particularly permissible because they have been specifically mentioned by the European legislator. He considered that a legitimate interest could be assumed if the data subject is a client of the controller (Recital 47 Sentence 2 GDPR).
               </p>
               
-              <h4>10. The legitimate interests pursued by the controller or by a third party</h4>
+              <h4>11. The legitimate interests pursued by the controller or by a third party</h4>
               <p>Where the processing of personal data is based on Article 6(1) lit. f GDPR our legitimate interest is to carry out our business in favor of the well-being of all our employees and the shareholders.</p>
               
-              <h4>11. Period for which the personal data will be stored</h4>
-              <p>The criteria used to determine the period of storage of personal data is the respective statutory retention period.</p>
+              <h4>12. Period for which the personal data will be stored</h4>
+              <p>The criteria used to determine the period of storage of personal data is the respective statutory retention period [PLACEHOLDER].</p>
               
-              <h4>12. Provision of personal data as statutory or contractual requirement; Requirement necessary to enter into a contract; Obligation of the data subject to provide the personal data; possible consequences of failure to provide such data </h4>
+              <h4>13. Provision of personal data as statutory or contractual requirement; Requirement necessary to enter into a contract; Obligation of the data subject to provide the personal data; possible consequences of failure to provide such data </h4>
               <p>We clarify that the provision of personal data is partly required by law (e.g. tax regulations) or can also result from contractual provisions (e.g. information on the contractual partner).
               
               Sometimes it may be necessary to conclude a contract that the data subject provides us with personal data, which must subsequently be processed by us. The data subject is, for example, obliged to provide us with personal data when our company signs a contract with him or her. The non-provision of the personal data would have the consequence that the contract with the data subject could not be concluded.
@@ -300,7 +320,7 @@ export default function Privacy() {
               Before personal data is provided by the data subject, the data subject must contact any employee. The employee clarifies to the data subject whether the provision of the personal data is required by law or contract or is necessary for the conclusion of the contract, whether there is an obligation to provide the personal data and the consequences of non-provision of the personal data.
               </p>
               
-              <h4>13. Existence of automated decision-making</h4>
+              <h4>14. Existence of automated decision-making</h4>
               <p>As a responsible company, we do not use automatic decision-making or profiling.</p>
               
               <p>Developed by the specialists for <a href="https://willing-able.com/" target="_blank" rel="noopener noreferrer">LegalTech</a> at Willing & Able that also developed the system for <a href="https://abletotrain.com/" target="_blank" rel="noopener noreferrer">data protection officer training</a>. The legal texts contained in our privacy policy generator have been provided and published by <a href="https://dg-datenschutz.de/" target="_blank" rel="noopener noreferrer">Prof. Dr. h.c. Heiko Jonny Maniero</a> from the German Association for Data Protection and <a href="https://www.wbs-law.de/"  target="_blank" rel="noopener noreferrer nofollow">Christian Solmecke</a> from WBS law.</p>
