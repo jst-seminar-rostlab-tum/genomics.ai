@@ -92,12 +92,12 @@ export default function Sidebar(props) {
             </Box>
             <Box>
               {/* <NavLink
-                to="/imprint"
+                to="/legalnotice"
                 className={styles.navlinkIcon}
                 style={{ display: "block", marginBottom: "1em" }}
               >
                 <Tooltip
-                  title="Imprint"
+                  title="legalnotice"
                   placement="right"
                   componentsProps={{
                     tooltip: {
