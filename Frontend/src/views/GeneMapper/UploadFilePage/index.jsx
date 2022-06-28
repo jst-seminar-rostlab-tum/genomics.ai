@@ -133,7 +133,7 @@ function UploadFilePage({
       console.log('Hurray, a demo project has been chosen');
       // set the state of the project to the right value:
       // How is the status of the file fetched?
-      uploadMultipartFile(); // instead of setting to
+      // uploadMultipartFile(); // instead of setting to
     });
     history.push(path); // go back to GeneMapper home
     // Till here, right now the result is that a demo dataset is created, but the upload fails obviously

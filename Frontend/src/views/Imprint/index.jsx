@@ -98,14 +98,15 @@ export default function Imprint() {
           email: presse(at)helmholtz-muenchen.de
           <br />
           <br />
-          Representation-entitled board of directors: [placeholder]
+          Representatives
           <br />
-          Authorized representatives: [placeholder]
+          Board of directors: Prof. Dr. Matthias H. Tschöp, Kerstin Günther, Daniela Sommer (acting)
           <br />
           Register of Societies: Amtsgericht München HRB 6466
           <br />
+          VAT ID number in accordance with § 27 a Umsatzsteuergesetz (German Turnover-Tax Law): DE 129521671
           <br />
-          VAT ID number in accordance with § 27 a Umsatzsteuergesetz (German Turnover-Tax Law): [placeholder]
+          Chairwoman of Supervisory Board: MinDir’in Prof. Dr. Veronika von Messling
           <br />
           <br />
           <br />

@@ -8,7 +8,7 @@ import DemoService from "../../../../database/services/demo.service";
 const get_allDemos = (): Router => {
     let router = express.Router();
 
-    router.get("/demos", check_auth, async (req: any, res) => {
+    router.get("/demos", check_auth(), async (req: any, res) => {
         try {
             const models = await DemoService.getAllDemos();
             return res.status(200).json(models);
@@ -26,3 +26,5 @@ export { get_allDemos };
 // TODO: Understand how the csv's are stored and fetched. 
 
 // TODO: set up the server locally, or at least only the s3 bucket I believe. Necessary in order to test the csv's 
+
+// try out the demo projects locally, create th
