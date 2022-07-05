@@ -306,9 +306,24 @@ export default function Privacy() {
               Finally, processing operations could be based on Article 6(1) lit. f GDPR. This legal basis is used for processing operations which are not covered by any of the abovementioned legal grounds, if processing is necessary for the purposes of the legitimate interests pursued by our company or by a third party, except where such interests are overridden by the interests or fundamental rights and freedoms of the data subject which require protection of personal data. Such processing operations are particularly permissible because they have been specifically mentioned by the European legislator. He considered that a legitimate interest could be assumed if the data subject is a client of the controller (Recital 47 Sentence 2 GDPR).
               </p>
               
-              <h4>11. The legitimate interests pursued by the controller or by a third party</h4>
-              <p>Where the processing of personal data is based on Article 6(1) lit. f GDPR our legitimate interest is to carry out our business in favor of the well-being of all our employees and the shareholders.</p>
-              
+              <h4>11. Disclosure of information for certain purposes to to third-parties</h4>
+              <p>The website uses third-party services such as Google Cloud. The information that we potentially disclose to third parties is as described below:
+              <br/>
+              <br/>
+              • Information on the browser type and the version in use
+              <br/>
+              • The user's operating system
+              <br/>
+              • The user's internet service provider
+              <br/>
+              • The user's pseudonymized IP address
+              <br/>
+              • Date and time of day of the access
+              <br/>
+              • Websites from which the user's system reaches our website
+              <br/>
+              • Websites that the user's system accesses through our website     
+              <br/> 
               <h4>12. Period for which the personal data will be stored</h4>
               <p>The criteria used to determine the period of storage of personal data is the respective statutory retention period [PLACEHOLDER].</p>
               
