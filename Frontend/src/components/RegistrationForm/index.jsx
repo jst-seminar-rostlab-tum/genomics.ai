@@ -36,7 +36,7 @@ function RegistrationForm(props) {
   const [loading, setLoading] = useState(false);
   const [isSnackbarVisible, setSnackbarVisible] = useState(false);
   const [checkYourEmail, setCheckYourEmail] = useState(false);
-  const [imprint, setImprint] = useState(false);
+  const [LegalNotice, setLegalNotice] = useState(false);
   const [isAcceptedTermsSnackbar, setIsAcceptedTermsSnackbar] = useState(false);
   
   const { registerClose: onClose, registerVisible: visible, switchLogin:  switchForm } = useContext(LoginContext);
@@ -134,7 +134,7 @@ function RegistrationForm(props) {
     if (!validateInput()) {
       return;
     }
-    if (imprint === false) {
+    if (LegalNotice === false) {
       setIsAcceptedTermsSnackbar(true);
       return;
     }
@@ -169,7 +169,7 @@ function RegistrationForm(props) {
     props,
     setSnackbarVisible,
     setUser,
-    imprint,
+    LegalNotice,
   ]);
 
 
@@ -270,7 +270,7 @@ function RegistrationForm(props) {
                     control={(
                       <Checkbox
                         id="remember"
-                        onChange={() => setImprint(!imprint)}
+                        onChange={() => setLegalNotice(!LegalNotice)}
                         disableRipple
                         disableFocusRipple
                       />
@@ -280,7 +280,7 @@ function RegistrationForm(props) {
                   <Box>
                     <ChromeReaderModeIcon
                       sx={{ marginTop: 0.5, '&:hover': { cursor: 'pointer' } }}
-                      onClick={() => history.push('/imprint')}
+                      onClick={() => history.push('/legalnotice')}
                       color="primary"
                     />
                   </Box>
@@ -290,7 +290,7 @@ function RegistrationForm(props) {
                     type="primary"
                     sx={{ mr: 'auto', width: '100%' }}
                     onClick={doRegistration}
-                    disabled={!imprint}
+                    disabled={!LegalNotice}
                   >
                     <Typography>Sign up</Typography>
                   </CustomButton>
