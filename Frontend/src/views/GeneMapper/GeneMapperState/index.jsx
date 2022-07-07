@@ -7,7 +7,7 @@ import UploadFilePage from '../UploadFilePage';
 import { useLocation, useHistory } from 'react-router-dom';
 import ModelService from 'shared/services/Model.service';
 import AtlasService from 'shared/services/Atlas.service';
-import DemoService from 'shared/services/Demo.service';
+//import DemoService from 'shared/services/Demo.service';
 
 function GeneMapperState({ path }) {
   const { search } = useLocation();
@@ -57,12 +57,12 @@ function GeneMapperState({ path }) {
   };
 
   // get demo projects
-  useEffect(() => {
-    DemoService.getDemos().then((a) => {
-      setDemoDatasets(a);
-      console.log(a);
-    });
-  }, []);
+  // useEffect(() => {
+  //   DemoService.getDemos().then((a) => {
+  //     setDemoDatasets(a);
+  //     console.log(a);
+  //   });
+  // }, []);
 
   console.log(atlases);
 

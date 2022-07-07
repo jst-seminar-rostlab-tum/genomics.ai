@@ -2,7 +2,7 @@ import {
   Grid, Typography, Stack, Alert, Box, Tooltip,
 } from '@mui/material';
 import AtlasCardSelect from 'components/Cards/AtlasCardSelect';
-import { DemoDatasetCard } from 'components/GeneMapper/TabCard';
+import { TabCard } from 'components/GeneMapper/TabCard';
 import { ModelCardSelect } from 'components/Cards/ModelCardSelect';
 import CustomButton from 'components/CustomButton';
 import { colors } from 'shared/theme/colors';
@@ -123,7 +123,7 @@ function AtlasModelChoice({
       </Box>
       {/* Loop over demo datasets */}
       { demos && demos.map((dataset) => (
-        <DemoDatasetCard
+        <TabCard
           width="40%"
           height="50px"
           title={dataset.name}

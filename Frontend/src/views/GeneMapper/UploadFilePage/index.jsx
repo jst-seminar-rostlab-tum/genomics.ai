@@ -9,7 +9,7 @@ import CustomButton from 'components/CustomButton';
 import FileUpload from 'components/FileUpload';
 import { Modal, ModalTitle } from 'components/Modal';
 import React, { useCallback, useEffect, useState } from 'react';
-import { DemoDatasetCard } from 'components/GeneMapper/TabCard';
+import { TabCard } from 'components/GeneMapper/TabCard';
 import { MULTIPART_UPLOAD_STATUS } from 'shared/utils/common/constants';
 import { useHistory } from 'react-router-dom';
 import { initSubmissionProgress, useSubmissionProgress } from 'shared/context/submissionProgressContext';
@@ -19,7 +19,6 @@ import { LearnMoreAtlasComponent } from 'views/Explore/LearnMoreAtlas';
 import { LearnMoreModelComponent } from 'views/Explore/LearnMoreModel';
 
 import styles from './uploadfilepage.module.css';
-
 
 /*
 The parameter datasetIsSelected indicates whether a demo dataset has been selected.
@@ -367,7 +366,7 @@ function UploadFilePage({
                   .filter((d) => d.atlas.toLowerCase() === selectedAtlas.name.toLowerCase()
                     && d.model.toLowerCase() === selectedModel.name.toLowerCase())
                   .map((dataset) => (
-                    <DemoDatasetCard
+                    <TabCard
                       width="100%"
                       height="50px"
                       title={dataset.title}
