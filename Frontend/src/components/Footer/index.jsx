@@ -84,8 +84,8 @@ export default function Footer({ sx }) {
       <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center" }} >
         <Typography fontSize="12px" fontWeight="bold" >© Copyright 2022</Typography>
         <Typography fontSize="12px" sx={{ margin: '0 4px' }}> - </Typography>
-        <LinkBox to="/imprint" style={{ textDecoration: "none" }}>
-          <Typography fontSize="12px" color="black">Imprint</Typography>
+        <LinkBox to="/legalnotice" style={{ textDecoration: "none" }}>
+          <Typography fontSize="12px" color="black">Legal Notice</Typography>
         </LinkBox>
         { /*
         <Typography fontSize="16px" sx={{ margin: '0 4px' }}> - </Typography>

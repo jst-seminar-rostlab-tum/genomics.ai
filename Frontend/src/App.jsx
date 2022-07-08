@@ -6,7 +6,7 @@ import {
 } from 'react-router-dom';
 import HomePage from './views/Home';
 import About from './views/About';
-import Imprint from './views/Imprint';
+import LegalNotice from './views/LegalNotice';
 import Terms from './views/Terms';
 import Privacy from './views/Privacy';
 import Docs from './views/Docs';
@@ -36,7 +36,7 @@ function App() {
           <Route path="/password_reset" render={() => <PasswordResetPage />} />
           <Route path="/result" render={() => <VisualizationPage />} />
           <Route path="/explore" render={() => <Explore />} />
-          <Route path="/imprint" render={() => <Imprint />} />
+          <Route path="/legalnotice" render={() => <LegalNotice />} />
           <Route path="/terms" render={() => <Terms />} />
           <Route path="/privacy" render={() => <Privacy />} />
 
