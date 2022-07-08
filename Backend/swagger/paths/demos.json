@@ -1,0 +1,43 @@
+{
+    "/demos": {
+      "get": {
+        "summary": "get all available demo datasets to try out",
+        "tags": ["Demo"],
+        "responses": {
+          "200": {
+            "description": "Getting all available demo datasets was successful",
+            "content": {
+                "application/json": {
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "_id": {
+                                "type": "string"
+                              },
+                            "name": {
+                                "type": "string"
+                            },
+                            "model": {
+                                "type": "string",
+                                "required": "true"
+                            },
+                            "atlas": {
+                                "type": "string",
+                                "required": "true"
+                            },
+                            "dataURL": {
+                                "type": "string",
+                                "required": "true"
+                            }  
+                        }
+                    }
+                }
+            }
+          },
+          "500": {
+            "description": "Error accessing the demos."
+          }
+        }
+      }
+    }
+  }
