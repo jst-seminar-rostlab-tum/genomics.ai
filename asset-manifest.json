@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/static/css/main.d7328533.chunk.css",
-    "main.js": "/static/js/main.6e6e646f.chunk.js",
-    "main.js.map": "/static/js/main.6e6e646f.chunk.js.map",
+    "main.css": "/static/css/main.f368d07a.chunk.css",
+    "main.js": "/static/js/main.8d200096.chunk.js",
+    "main.js.map": "/static/js/main.8d200096.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.a47980ea.js",
     "runtime-main.js.map": "/static/js/runtime-main.a47980ea.js.map",
     "static/css/2.325324c8.chunk.css": "/static/css/2.325324c8.chunk.css",
-    "static/js/2.dae0a1de.chunk.js": "/static/js/2.dae0a1de.chunk.js",
-    "static/js/2.dae0a1de.chunk.js.map": "/static/js/2.dae0a1de.chunk.js.map",
+    "static/js/2.3083fed1.chunk.js": "/static/js/2.3083fed1.chunk.js",
+    "static/js/2.3083fed1.chunk.js.map": "/static/js/2.3083fed1.chunk.js.map",
     "index.html": "/index.html",
     "static/css/2.325324c8.chunk.css.map": "/static/css/2.325324c8.chunk.css.map",
-    "static/css/main.d7328533.chunk.css.map": "/static/css/main.d7328533.chunk.css.map",
-    "static/js/2.dae0a1de.chunk.js.LICENSE.txt": "/static/js/2.dae0a1de.chunk.js.LICENSE.txt",
+    "static/css/main.f368d07a.chunk.css.map": "/static/css/main.f368d07a.chunk.css.map",
+    "static/js/2.3083fed1.chunk.js.LICENSE.txt": "/static/js/2.3083fed1.chunk.js.LICENSE.txt",
     "static/media/allClusterLabels.06044daf.png": "/static/media/allClusterLabels.06044daf.png",
     "static/media/clusterDetails.3b8b8559.png": "/static/media/clusterDetails.3b8b8559.png",
     "static/media/clusterLabel.30c9dce8.png": "/static/media/clusterLabel.30c9dce8.png",
@@ -19,12 +19,13 @@
     "static/media/helmholtz-logo.afeb6aa4.jpg": "/static/media/helmholtz-logo.afeb6aa4.jpg",
     "static/media/helmholtz.a1f90967.png": "/static/media/helmholtz.a1f90967.png",
     "static/media/institution-default-background.f2294d54.jpg": "/static/media/institution-default-background.f2294d54.jpg",
-    "static/media/logo.a8b3a51b.svg": "/static/media/logo.a8b3a51b.svg",
+    "static/media/logo.a9297f54.svg": "/static/media/logo.a9297f54.svg",
+    "static/media/index.css": "/static/media/roboto-v30-latin-ext_latin-regular.eb22083c.woff2",
     "static/media/processing.ed520e72.png": "/static/media/processing.ed520e72.png",
     "static/media/results.24ccf56c.png": "/static/media/results.24ccf56c.png",
     "static/media/rostlab.328da955.png": "/static/media/rostlab.328da955.png",
     "static/media/science.ae60a04b.png": "/static/media/science.ae60a04b.png",
-    "static/media/umap_data.2c9710d5.bin": "/static/media/umap_data.2c9710d5.bin",
+    "static/media/umap_data.7938a413.bin": "/static/media/umap_data.7938a413.bin",
     "static/media/upload.c25c0640.png": "/static/media/upload.c25c0640.png",
     "static/media/visualisation.af229bc1.png": "/static/media/visualisation.af229bc1.png",
     "static/media/zoomVisualisation.982e0091.png": "/static/media/zoomVisualisation.982e0091.png"
@@ -32,8 +33,8 @@
   "entrypoints": [
     "static/js/runtime-main.a47980ea.js",
     "static/css/2.325324c8.chunk.css",
-    "static/js/2.dae0a1de.chunk.js",
-    "static/css/main.d7328533.chunk.css",
-    "static/js/main.6e6e646f.chunk.js"
+    "static/js/2.3083fed1.chunk.js",
+    "static/css/main.f368d07a.chunk.css",
+    "static/js/main.8d200096.chunk.js"
   ]
 }
