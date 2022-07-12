@@ -1,5 +1,5 @@
 # General Info
-ScArches is a novel deep learning model that enables mapping query to reference datasets. The model allows the user to construct single or multi-modal (CITE-seq) references as well as classifying unlabelled query cells. On GeneCruncher, currently only mapping of query to reference datasets is offered.
+ScArches is a novel deep learning model that enables mapping query to reference datasets. The model allows the user to construct single or multi-modal (CITE-seq) references as well as classifying unlabelled query cells. On Archmap, currently only mapping of query to reference datasets is offered.
 
 # Process of GeneMapper
 1. Choose atlas and model
