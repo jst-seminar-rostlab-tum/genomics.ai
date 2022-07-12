@@ -147,7 +147,7 @@ export default function About(props){
       </Box>
 
       <Box sx={{margin: "3em auto", display: "flex", flexDirection: "column", alignItems: "center", width: { xs: "90%", sm: "90%", md: "70%", lg: "70%", xl: "70%" }, textAlign: "center"}}>
-        <Typography fontWeight="bold" fontSize="1em">Genomics.ai was developed by a team of students from the Technical University of Munich (TUM) under the guidance of Dr. Guy Yachdav.</Typography>
+        <Typography fontWeight="bold" fontSize="1em">ArchMap was developed by a team of students from the Technical University of Munich (TUM) under the guidance of Dr. Guy Yachdav.</Typography>
       </Box>
 
       {/* <Box sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>

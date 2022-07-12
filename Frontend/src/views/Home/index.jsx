@@ -100,7 +100,7 @@ const Home = () => {
             </Box>
             <Box sx={{ width: { xs: "100%", sm: "50%", md: "50%", lg: "50%", xl: "50%" } }}>
               <Typography fontSize="1.2em" fontWeight="bold">Query to reference dataset mapping using Transfer Learning</Typography>
-              <Typography margin="2em 0 2em 0">Archmap enables mapping by using a novel deep learning strategy called single-cell architectural surgery (ScArches).</Typography>
+              <Typography margin="2em 0 2em 0">ArchMap enables mapping by using a novel deep learning strategy called single-cell architectural surgery (ScArches).</Typography>
               <CustomButton onClick={() => history.push('/explore')}>Explore</CustomButton>
             </Box>
           </Box>
@@ -170,7 +170,7 @@ const Home = () => {
         {/* CONTACT US */}
         <Box ref={contactUsBoxRef} sx={{ position: "relative", margin: "4em auto", position: "relative", width: "100%" }} >
           <Typography sx={{ textAlign: "center" }} fontSize="2em" fontWeight="bold">Contact Us</Typography>
-          <Typography marginTop="1em" sx={{ textAlign: "center" }} fontSize="1em">Please message us in case you have any questions, feedback or collaboration-related inquiries concerning Genomics.ai.</Typography>
+          <Typography marginTop="1em" sx={{ textAlign: "center" }} fontSize="1em">Please message us in case you have any questions, feedback or collaboration-related inquiries concerning ArchMap.</Typography>
           {/* <Box sx={{
             width: "100%",
             margin: "2em auto 0em auto",
