@@ -15,6 +15,10 @@ import scvi
 
 
 def setup_modules():
+    """
+    Set up the warnings filter and the figure parameters
+    :return:
+    """
     warnings.simplefilter(action='ignore', category=FutureWarning)
     warnings.simplefilter(action='ignore', category=UserWarning)
 
@@ -26,6 +30,12 @@ def setup_modules():
 
 
 def setup_anndata_for_scanvi(anndata, configuration):
+    """
+    Preprocess reference dataset
+    :param anndata: reference dataset /source adata
+    :param configuration: config
+    :return:
+    """
     scarches.models.SCANVI.setup_anndata(anndata,
                                          batch_key='dataset',
                                          labels_key='scanvi_label',
@@ -33,11 +43,25 @@ def setup_anndata_for_scanvi(anndata, configuration):
 
 
 def get_scanvi_from_scvi_model(scvi_model, configuration):
+    """
+    Create the scANVI model instance
+    :param scvi_model: the scVI model
+    :param configuration: config
+    :return: scANVI model
+    """
     return scarches.models.SCANVI.from_scvi_model(scvi_model,
                                                   utils.get_from_config(configuration, parameters.UNLABELED_KEY))
 
 
 def get_latent(model, adata, configuration):
+    """
+    Create anndata file of latent representation and compute UMAP
+    :param model: the created scANVI model
+    :param adata: reference dataset / source adata
+    :param configuration: config
+    :return: latent representation
+    """
+    # add obs to reference_latent
     reference_latent = scanpy.AnnData(model.get_latent_representation())
     reference_latent.obs["cell_type"] = adata.obs[
         utils.get_from_config(configuration, parameters.CELL_TYPE_KEY)].tolist()
@@ -52,12 +76,26 @@ def get_latent(model, adata, configuration):
 
 
 def predict(model, latent):
+    """
+    predict on the latent and compute the accuracy of the predicted value
+    :param model: scANVI model
+    :param latent: reference latent
+    :return: latent with obs "predicted"
+    """
     latent.obs['predicted'] = model.predict()
     print("Acc: {}".format(np.mean(latent.obs.predicted == latent.obs.cell_type)))
     return latent
 
 
 def surgery(reference_latent, source_adata, anndata, configuration):
+    """
+    Perform surgery on reference model
+    :param reference_latent: reference latent
+    :param source_adata: reference dataset
+    :param anndata: query dataset
+    :param configuration: config
+    :return: trained model, surgery latent
+    """
     model = scarches.models.SCANVI.load_query_data(
         anndata,
         utils.get_from_config(configuration, parameters.PRETRAINED_MODEL_PATH),
@@ -90,7 +128,7 @@ def surgery(reference_latent, source_adata, anndata, configuration):
                                   condition_key=utils.get_from_config(configuration, parameters.CONDITION_KEY),
                                   predictScanvi=True, configuration=configuration)
 
-    model.save('scvi_model', overwrite=True)  # TODO check path
+    model.save('scvi_model', overwrite=True)
     utils.delete_file('scvi_model/model.pt')
     os.rmdir('scvi_model')
 
@@ -98,6 +136,15 @@ def surgery(reference_latent, source_adata, anndata, configuration):
 
 
 def query(pretrained_model, reference_latent, anndata, source_adata, configuration):
+    """
+    Perform surgery on reference model and train on query dataset
+    :param pretrained_model: pretrained model
+    :param reference_latent: reference latent
+    :param anndata: target adata / query dataset
+    :param source_adata: reference dataset
+    :param configuration: config
+    :return: trained model, query latent
+    """
     model = scarches.models.SCANVI.load_query_data(
         anndata,
         'assets/scANVI/' + str(utils.get_from_config(configuration, parameters.ATLAS)) + '/',
@@ -111,6 +158,7 @@ def query(pretrained_model, reference_latent, anndata, source_adata, configurati
         print("Labelled Indices: ", len(model._labeled_indices))
         print("Unlabelled Indices: ", len(model._unlabeled_indices))
 
+#TODO: HARDCODING for human lung cell atlas -------------------------------------
     if utils.get_from_config(configuration, parameters.ATLAS) == 'human_lung':
         surgery_epochs = 500
         train_kwargs_surgery = {
@@ -147,7 +195,7 @@ def query(pretrained_model, reference_latent, anndata, source_adata, configurati
     utils.delete_file(tempdir + '/model.pt')
     os.removedirs(tempdir)
 
-    # added obs to query_latent
+    # add obs to query_latent
     query_latent = get_latent(model, anndata, configuration)
     query_latent.obs['cell_type'] = anndata.obs[utils.get_from_config(configuration, parameters.CELL_TYPE_KEY)].tolist()
     query_latent.obs['batch'] = anndata.obs[utils.get_from_config(configuration, parameters.CONDITION_KEY)].tolist()
@@ -166,6 +214,13 @@ def query(pretrained_model, reference_latent, anndata, source_adata, configurati
 
 
 def predict_latent(model, latent):
+    """
+    Compute Accuracy of model for query dataset
+    compare predicted and observed cell types
+    :param model: scANVI model
+    :param latent: query latent
+    :return:
+    """
     latent.obs['predicted'] = model.predict()
     print("Acc: {}".format(np.mean(latent.obs.predicted == latent.obs.cell_type)))
 
@@ -241,6 +296,16 @@ def predict_latent(model, latent):
 
 
 def create_model(source_adata, target_adata, configuration):
+    """
+    - compute scANVI model and train it on reference dataset
+    - compute the accuracy of the learned classifier
+    - save the result and write into csv file to the s3
+
+    :param source_adata: reference dataset
+    :param target_adata: query dataset
+    :param configuration: config
+    :return: scANVI model, reference latent
+    """
     if utils.get_from_config(configuration, parameters.USE_PRETRAINED_SCANVI_MODEL):
         path = 'assets/scANVI/' + str(utils.get_from_config(configuration, parameters.ATLAS)) + '/'
         return scarches.models.SCANVI.load_query_data(
@@ -285,6 +350,11 @@ def create_model(source_adata, target_adata, configuration):
 
 
 def compute_scANVI(configuration):
+    """
+    process reference and query dataset with scANVI model
+    :param configuration: config
+    :return:
+    """
     if utils.get_from_config(configuration, parameters.DEBUG):
         logger = logging.getLogger(__name__)
         logger.setLevel(logging.DEBUG)

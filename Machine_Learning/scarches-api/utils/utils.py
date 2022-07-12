@@ -20,12 +20,19 @@ UNWANTED_LABELS = ['leiden', '', '_scvi_labels', '_scvi_batch']
 
 
 def get_from_config(configuration, key):
+    """
+    Gets a key value from the config file 
+    """
+
     if key in configuration:
         return configuration[key]
     return None
 
-
 def to_drop(adata_obs):
+    """
+    Checks the adata.obs and makes a list of the labels to be dropped as columns.
+    Only "helper" labels are removed, such as leiden, _scvi_batch etc.
+    """
     drop_list = []
     print(adata_obs)
     for attr in UNWANTED_LABELS:
@@ -47,6 +54,7 @@ def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=
     """
 
     drop_columns = to_drop(latent.obs_keys())
+    #TODO: This is HARDCODING for the lung atlas
     if get_from_config(configuration, parameters.ATLAS) == 'human_lung':
         drop_columns = ['sample', 'study_long', 'study', 'last_author_PI', 'subject_ID', 'sex', 'ethnicity',
                         'mixed_ethnicity', 'smoking_status', 'BMI', 'condition', 'subject_type', 'sample_type',
@@ -63,6 +71,7 @@ def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=
                         'ann_finest_level', 'ann_level_1', 'ann_level_2', 'ann_level_3', 'ann_level_4', 'ann_level_5']
 
     final = latent.obs.drop(columns=drop_columns)
+    #TODO: HARDCODING for the lung atlas
     if get_from_config(configuration, parameters.ATLAS) == 'human_lung':
         final['ann_coarse_for_GWAS_and_modeling'] = final['ann_coarse_for_GWAS_and_modeling'].astype(str).apply(
             lambda cell: '' if cell == 'nan' else cell)
@@ -79,9 +88,12 @@ def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=
 
         final['predicted'] = list(map(lambda p: 'yes' if p == 'query' else 'no', final['type']))
 
+    #Gets the umap coordinates
     final["x"] = list(map(lambda p: p[0], latent.obsm["X_umap"]))
     final["y"] = list(map(lambda p: p[1], latent.obsm["X_umap"]))
 
+    #Merging the columns cell_type and predicted to fill in 'Unknown'(which is our unlabelled key) cell types
+    #We make a separate column "predicted" with values yes/no. Wherever a merge is done, it's marked as a yes in the predicted column, else no
     try:
         if predictScanvi and get_from_config(configuration, parameters.ATLAS) != 'human_lung':
             cell_types = list(map(lambda p: p, latent.obs['cell_type']))
@@ -106,6 +118,9 @@ def write_latent_csv(latent, key=None, filename=tempfile.mktemp(), drop_columns=
 
 
 def prediction_value(cell_type):
+    """
+    Decides whether a cell is predicted or not
+    """
     if cell_type is None:
         return "yes"
     else:
@@ -115,6 +130,11 @@ def prediction_value(cell_type):
 def write_full_adata_to_csv(model, source_adata, target_adata, key=None, filename=tempfile.mktemp(), drop_columns=None,
                             unlabeled_category='', cell_type_key='', condition_key='', neighbors=8,
                             predictScanvi=False, configuration=None):
+    """
+    Concatenates reference and query adata.\n
+    (Note:) It's separate from write_adata_to_csv(), in order to be able to use write_adata_to_csv() independently:
+    to get only a reference csv or only query csv, mostly for debugging purposes
+    """    
     adata_full = source_adata.concatenate(target_adata)
     return write_adata_to_csv(model, adata=adata_full, source_adata=source_adata, target_adata=target_adata, key=key,
                               filename=filename, drop_columns=drop_columns,
@@ -127,6 +147,23 @@ def write_adata_to_csv(model, adata=None, source_adata=None, target_adata=None, 
                        drop_columns=None,
                        unlabeled_category='Unknown', cell_type_key='cell_type',
                        condition_key='study', neighbors=8, predictScanvi=False, configuration=None):
+    """
+    Prepares the adata for csv export:\n
+    This function computes the latent representation and
+    makes sure that the batch, cell_type(when existent), predicted(when existent) and type key are in place in the adata.obs.
+    After that neighbours, leiden and umap are computed.
+
+    Args:
+        adata (AnnData): full adata, query and reference concatenation. Defaults to None.
+        source_adata (AnnData): reference adata. Defaults to None.
+        target_adata (AnnData): query adata. Defaults to None.
+        drop_columns (str List): columns to be removed. Defaults to None.
+        unlabeled_category (str, optional): scANVI unlabeled category's name. Defaults to 'Unknown'.
+        cell_type_key (str, optional): name for the cell type key. Defaults to 'cell_type'.
+        condition_key (str, optional): name for the batch key. Defaults to 'study'.
+        predictScanvi (bool): tells if the model used is scANVI, it's checked for the "predicted column". Defaults to False.
+
+    """    
     anndata = None
     if adata is None:
         anndata = scanpy.AnnData(model.get_latent_representation())
@@ -136,6 +173,7 @@ def write_adata_to_csv(model, adata=None, source_adata=None, target_adata=None, 
         except Exception as e:
             anndata = adata
 
+    #TODO: HARDCODING for the lung atlas------------------------------------------------
     if get_from_config(configuration, parameters.ATLAS) == 'human_lung':
         X_train = source_adata.X
         ref_nn_index = pynndescent.NNDescent(X_train)
@@ -187,11 +225,13 @@ def write_adata_to_csv(model, adata=None, source_adata=None, target_adata=None, 
         query_emb.obs["dataset"] = "test_dataset_delorey_regev"
         # adata.obsm["X_mde"] = mde(adata.X, init="random")
         anndata = source_adata.concatenate(query_emb)
-
+    #HARDCODING ends here---------------------------------------------------------------------
     latent = anndata
     latent.obs['cell_type'] = adata.obs[cell_type_key].tolist()
     latent.obs['batch'] = adata.obs[condition_key].tolist()
     latent.obs['type'] = adata.obs['type'].tolist()
+
+    #TODO: If any gene-filtering or reduction of the umap size are to occur, it's most probably supposed to be done below
     print("calculate neighbors")
     scanpy.pp.neighbors(latent)
 
@@ -233,13 +273,20 @@ def write_adata_to_csv(model, adata=None, source_adata=None, target_adata=None, 
 #     if key is not None:
 #         store_file_in_s3(filename, key)
 
+
 def print_csv(filename):
+    """
+    Prints out the csv contents. Used for debugging.
+    """
     with open(filename, mode='r') as file:
         for row in file.readlines():
             print(row, end='')
 
 
 def save_umap_as_pdf(latent, filepath, color=None, wspace=0.6):
+    """
+    Saves the latent adata as a pdf
+    """
     if color is None:
         color = []
     Path(os.path.dirname(filepath)).mkdir(parents=True, exist_ok=True)
@@ -322,6 +369,9 @@ def read_h5ad_file_from_s3(key):
 
 
 def check_model_atlas_compatibility(model, atlas):
+    """
+    Checks for model-atlas compatibility
+    """
     compatible_atlases = []
     if model == 'scVI':
         compatible_atlases = ['pancreas', 'heart', 'human_lung', 'retina', 'fetal_immune']
@@ -333,15 +383,23 @@ def check_model_atlas_compatibility(model, atlas):
 
 
 def pre_process_data(configuration):
+    """
+    Used to pre-process the adata objects.\n
+    After reading the .h5ad files, it makes the distinction ref/query, removes sparsity
+    and reintroduces the counts layer if it has been deleted during sparsity removal.
+    """
     source_adata = read_h5ad_file_from_s3(get_from_config(configuration, parameters.REFERENCE_DATA_PATH))
     target_adata = read_h5ad_file_from_s3(get_from_config(configuration, parameters.QUERY_DATA_PATH))
     source_adata.obs["type"] = "reference"
     target_adata.obs["type"] = "query"
+    #TODO: HARDCODING---------------------------------------------------
     if get_from_config(configuration, parameters.ATLAS) == 'human_lung':
         X_train = source_adata.X
         ref_nn_index = pynndescent.NNDescent(X_train)
         ref_nn_index.prepare()
     # source_adata.raw = source_adata
+    #-------------------------------------------------------------------
+
     try:
         source_adata = remove_sparsity(source_adata)
     except Exception as e:
@@ -366,6 +424,10 @@ def pre_process_data(configuration):
 
 
 def translate_atlas_to_directory(configuration):
+    """
+    Translates the atlas names, received in the request as per the JSON atlas information file,
+    into the folder names for the pre-trained atlases. 
+    """
     atlas = get_from_config(configuration, 'atlas')
     if atlas == 'Pancreas':
         return 'pancreas'
@@ -384,6 +446,12 @@ def translate_atlas_to_directory(configuration):
 
 
 def set_keys(configuration):
+    """
+    Sets the batch(condition) and cell_type keys, according to the atlas chosen.
+    This is necessary as the reference files all have these keys under different names,
+    although they contain the same information.
+    """
+    #TODO: Medium hardcoding due to file differences
     atlas = get_from_config(configuration, 'atlas')
     if atlas == 'Pancreas':
         return configuration

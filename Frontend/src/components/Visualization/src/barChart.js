@@ -2,6 +2,9 @@ import * as d3 from "d3";
 import "./bar.css"
 import * as cons from "./constants";
 
+/*
+Most of the styling is in the bar.css file
+*/
 
 // Groups the data based on a category specified in cat
 const groupBy = (data, cat) => {
@@ -23,6 +26,7 @@ const groupBy = (data, cat) => {
   return groupedBy;
 }
 
+//Randomizes the row of the bars/values, to reduce label overlapping
 const shuffleArray = (array) => {
   for (var i = array.length - 1; i > 0; i--) {
       var j = Math.floor(Math.random() * (i + 1));
@@ -73,13 +77,15 @@ const addBarPlot = (barContainer, data, groupedBy, title, cWidth, cHeight) => {
 
   const max = d3.max(info.map(d => d[1])) * 1.1;
 
-  const labels = splicedData.map(([k, v]) => k).filter(d => d !== undefined);
+  const labels = splicedData.map(([k, v]) => k).filter(d => d !== undefined); //gets the names of the category values
+
+  //Scales
   const xScale = d3.scaleBand().domain(labels).range([marginBottom, w]).padding(0.4);
   const yScale = d3.scaleLinear().domain([0, max]).range([h, marginBottom + cons.plotTitleOffset]);
 
   const g = svg.append("g")
 
-  // Titel of grafic
+  //Title of the graph
   g.append("text")
     .attr("class", "title")
     .attr("x", marginBottom + cons.plotTitleCentered)
@@ -100,6 +106,7 @@ const addBarPlot = (barContainer, data, groupedBy, title, cWidth, cHeight) => {
     .attr("transform", "translate(0, " + (h - marginBottom) + ")")
     .call(xAxis)
     .selectAll("text")
+    //styling ticks
     .attr("transform", "translate(-10,0)rotate(-45)")
     .style("text-anchor", "end")
     .style("color", "black")
@@ -111,6 +118,7 @@ const addBarPlot = (barContainer, data, groupedBy, title, cWidth, cHeight) => {
     .attr("class", "y-axis")
     .attr("transform", "translate(" + marginBottom + "," + (-marginBottom) + ")")
     .call(yAxis)
+    //styling ticks
     .selectAll("text")
     .style("text-anchor", "end")
     .style("color", "black")
