@@ -5,15 +5,19 @@ import AtlasCard from 'components/Cards/AtlasCard';
 import styles from './atlasesGrid.module.css';
 
 const AtlasesGrid = ({
-  atlases, path, selectedAtlas = null, handleAtlasSelection = null, selectedModel = null, isSearchPage = false
+  atlases, path, selectedAtlas = null,
+  handleAtlasSelection = null, selectedModel = null, isSearchPage = false,
 }) => (
-  <Box className={styles.atlasContainer} mb="2em" pb="1.5em"
+  <Box
+    className={styles.atlasContainer}
+    mb="2em"
+    pb="1.5em"
     sx={{
-      
+      minHeight: '50vh',
     }}
   >
     <Grid container spacing={3}>
-      {atlases && atlases.map((atlas) => (
+      {atlases ? atlases.map((atlas) => (
         <Grid key={atlas._id} item xs={12} sm={6} md={4} lg={3}>
           <AtlasCard
             atlasId={atlas._id}
@@ -30,7 +34,7 @@ const AtlasesGrid = ({
             isSearchPage={isSearchPage}
           />
         </Grid>
-      ))}
+      )) : <div />}
     </Grid>
   </Box>
 );
