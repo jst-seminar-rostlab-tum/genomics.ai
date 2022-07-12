@@ -26,7 +26,7 @@ function AtlasModelChoice({
   /* Handling the choice of the demo dataset */
   const handleDemoClick = (dataset) => {
     // only set selected dataset if not already selected or null
-    if (!selectedDataset || selectedDataset.demoId !== dataset.demoId) {
+    if (!selectedDataset || selectedDataset._id !== dataset._id) {
       setSelectedDataset(dataset);
       setDatasetIsSelected(true);
       // find the objects corresponding to the atlas and model in the array
@@ -130,7 +130,7 @@ function AtlasModelChoice({
           atlas={dataset.atlas}
           model={dataset.model}
           handleOnClick={() => handleDemoClick(dataset)}
-          selected={datasetIsSelected && dataset.demoId === selectedDataset.demoId}
+          selected={datasetIsSelected && dataset._id === selectedDataset._id}
         />
       ))}
 

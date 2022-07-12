@@ -52,7 +52,7 @@ function UploadFilePage({
 
   // handle demo dataset selection
   const handleDemoClick = (dataset) => {
-    if (!selectedDataset || selectedDataset.demoId !== dataset.demoId) {
+    if (!selectedDataset || selectedDataset._id !== dataset._id) {
       setDatasetIsSelected(true);
       setSelectedDataset(dataset);
     } else {
@@ -373,7 +373,7 @@ function UploadFilePage({
                       atlas={dataset.atlas}
                       model={dataset.model}
                       handleOnClick={() => handleDemoClick(dataset)}
-                      selected={!uploadedFile && datasetIsSelected && selectedDataset.demoId === dataset.demoId}
+                      selected={!uploadedFile && datasetIsSelected && selectedDataset._id === dataset._id}
                     />
                   ))) : <Alert severity="info"> No existing datasets available. </Alert>
             }
