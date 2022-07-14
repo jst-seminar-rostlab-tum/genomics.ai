@@ -272,7 +272,11 @@ export default function Navbar({
       }}
     >
       <Appbar>
-        <DrawerBar open={drawerOpen} setOpen={setDrawerOpen} executeScroll={handleClickContactUsInDrawer} />
+        <DrawerBar
+          open={drawerOpen}
+          setOpen={setDrawerOpen}
+          executeScroll={handleClickContactUsInDrawer}
+        />
         <Leftbar>
           <LinkBox to="/" sx={{ display: 'flex', alignItems: 'center', gap: '0.7em' }}>
             <IconButton
@@ -286,6 +290,7 @@ export default function Navbar({
             </IconButton>
             <Navlink fontWeight="bold" fontSize="20px">ArchMap</Navlink>
           </LinkBox>
+          <LinkBox to="/genemapper"><Navlink>Map</Navlink></LinkBox>
           <LinkBox to="/explore"><Navlink>Explore</Navlink></LinkBox>
           <Box sx={{ cursor: 'pointer' }} onClick={() => window.open('https://genecruncher.readthedocs.io/')}><Navlink>Docs</Navlink></Box>
           <LinkBox to="/about"><Navlink>About</Navlink></LinkBox>
