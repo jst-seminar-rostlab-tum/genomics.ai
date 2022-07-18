@@ -106,46 +106,13 @@ function UploadFilePage({
       projectName,
       atlasId,
       modelId,
-      selectedDataset.title,
-    ).then((project) => {
-      // bypass the upload for the demo project
-      //TODO: currently, the multipartFile upload is commented out to not get the null exceptions
-      
-      // uploadMultipartFile(
-      //   // id
-      //   project.uploadId,
-      //   // file, set to null since we are not uploading anything
-      //   null,
-      //   // the initial value to set the upload status to
-      //   {
-      //     status: MULTIPART_UPLOAD_STATUS.DONE,
-      //     uploadId: project.uploadId,
-      //     chunks: 0,
-      //     uploaded: 0,
-      //     remaining: [],
-      //     uploadedParts: [],
-      //   },
-      //   // the set function of the upload status. Set to null since we do not call it
-      //   null,
-      // );
-
-      console.log('Hurray, a demo project has been chosen');
-      // set the state of the project to the right value:
-      // How is the status of the file fetched?
-      // uploadMultipartFile(); // instead of setting to
-    });
+      demoDataset.name,
+    );
     history.push(path); // go back to GeneMapper home
-    // Till here, right now the result is that a demo dataset is created, but the upload fails obviously
   };
-
-  // no upload is necessary
-  // Set the upload to done and start the state from the processing of the dataset
-  // understand how the processing is done and what needs to be done here
 
   const handleSubmit = (e) => {
     e?.preventDefault();
-    console.log(selectedDataset);
-    console.log(uploadedFile);
     // save mapping name
     setOpen(false); // opens modal to input mapping name
     // choose what type of project to create depending on whether a demo project is chosen
@@ -369,7 +336,8 @@ function UploadFilePage({
                     <TabCard
                       width="100%"
                       height="50px"
-                      title={dataset.title}
+                      id={dataset._id}
+                      title={dataset.name}
                       atlas={dataset.atlas}
                       model={dataset.model}
                       handleOnClick={() => handleDemoClick(dataset)}

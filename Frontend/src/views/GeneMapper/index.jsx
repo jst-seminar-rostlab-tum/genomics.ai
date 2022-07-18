@@ -11,9 +11,11 @@ import HelpIcon from '@mui/icons-material/Help';
 import { Modal } from 'components/Modal';
 import { colors } from 'shared/theme/colors';
 
-function GeneMapper({ sidebarShown }) {
-  const paddingL = useCallback(() => (sidebarShown ? '100px' : '350px'), [sidebarShown]);
-
+/* 
+params: sidebarShown, noLogin
+set noLogin to true if the genemapper is accessed without logging in
+*/
+function GeneMapper({ sidebarShown, noLogin }) {
   const { path, url } = useRouteMatch();
 
   const headerStyle = {
@@ -22,7 +24,6 @@ function GeneMapper({ sidebarShown }) {
     fontWeight: 'bold',
     paddingTop: '20px',
   };
-  const [createOpen, setCreateOpen] = useState(false);
   const [showScarchesInfo, setShowScarchesInfo] = useState(false);
 
   return (

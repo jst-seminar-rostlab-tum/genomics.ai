@@ -45,7 +45,7 @@ export const TabCard = ({
     >
       <Stack p="0.1em" pl="0.3em">
         <Typography variant="body1">
-          {title}
+          {`${title.split('_')[0]} + ${title.split('_')[1]}`}
         </Typography>
         <Typography variant="caption">
           {`Demo dataset for ${atlas} & ${model}`}

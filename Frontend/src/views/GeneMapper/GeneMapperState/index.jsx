@@ -60,7 +60,6 @@ function GeneMapperState({ path }) {
   useEffect(() => {
     DemoService.getDemos().then((a) => {
       setDemoDatasets(a);
-      console.log(a);
     });
   }, []);
 
