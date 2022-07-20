@@ -8,6 +8,7 @@ function Header({
   title,
   rightOfTitle,
   replaceRight,
+  loggedIn,
 }) {
   return (
     <header className={styles.header}>
@@ -15,12 +16,15 @@ function Header({
         <h1 className={styles.title}>{title}</h1>
         {rightOfTitle}
       </div>
+      {/* render avatar and settings page if logged in */}
+      {loggedIn && (
       <Stack direction="row" spacing={4} alignItems="flex-end">
         {replaceRight}
         <Link to="/sequencer/settings">
           <ProfileImage sizePixels={42} />
         </Link>
       </Stack>
+      )}
     </header>
   );
 }

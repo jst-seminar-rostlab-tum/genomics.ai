@@ -29,8 +29,8 @@ const theme = createTheme({
   },
 });
 
-// The loggedIn parameter is set to true when the user is logged in, true by default
-function GeneMapperHome(loggedIn = true) {
+// The loggedIn parameter is set to true when the user is logged in
+function GeneMapperHome({ loggedIn }) {
   const [projects, setProjects] = useState(null);
   const [deletedProjects, setDeletedProjects] = useState([]);
   const [atlases, setAtlases] = useState([]);
@@ -42,154 +42,119 @@ function GeneMapperHome(loggedIn = true) {
 
   const history = useHistory();
 
+  /**
+   * Function to find matching demos in the data variable.
+   * If demos are found, the information stored about them in the "data" variable is updated.
+   * @param data: The data variable containing the projects to search for demos in.
+   * @param demos: The array of available demos
+   */
+  const findDemos = (data, demos) => {
+    // loop over projects and search for demo datasets and set their attributes
+    for (let i = 0; i < data.length; i++) {
+      for (let j = 0; j < demos.length; j++) {
+        // If the project is a demo, the id is stored in the file name.
+        // file_name: <atlas>_<model>_<demo_id>
+        const id = data[i].fileName.split('_')[2];
+        // update the stored information about the demo datasets
+        if (id && id === demos[j]._id) {
+          // updating the demo dataset
+          data[i] = {
+            ...data[i],
+            status: PROJECT_STATUS.DONE,
+            location: demos[j].csvURL,
+          };
+        }
+      }
+    }
+  };
+
+  // function to handle deletion of project
   const handleDeleteProject = (id) => {
     DemoService.getDemos().then((demos) => {
-      ProjectService.deleteProject(id).then(() => {
-        ProjectService.getOwnProjects().then((data) => {
-          // loop over projects and search for demo datasets and set their attributes
-          for (let i = 0; i < data.length; i++) {
-            for (let j = 0; j < demos.length; j++) {
-              // If the project is a demo, the id is stored in the file name.
-              // file_name: <atlas>_<model>_<demo_id>
-              const id = data[i].fileName.split('_')[2];
-              // update the stored information about the demo datasets
-              if (id && id === demos[j]._id) {
-                // updating the demo dataset
-                data[i] = {
-                  ...data[i],
-                  status: PROJECT_STATUS.DONE,
-                  location: demos[j].csvURL,
-                };
-              }
-            }
-          }
-          setProjects(data);
+      if (loggedIn) {
+        ProjectService.deleteProject(id).then(() => {
+          ProjectService.getOwnProjects().then((data) => {
+            // search for demos and set the information stored about them
+            findDemos(data, demos);
+            setProjects(data);
+          });
+          ProjectService.getDeletedProjects().then((data) => {
+            // search for demos and set the information stored about them
+            findDemos(data, demos);
+            setDeletedProjects(data);
+          });
         });
-        ProjectService.getDeletedProjects().then((data) => {
-          // loop over projects and search for demo datasets and set their attributes
-          for (let i = 0; i < data.length; i++) {
-            for (let j = 0; j < demos.length; j++) {
-              // If the project is a demo, the id is stored in the file name.
-              // file_name: <atlas>_<model>_<demo_id>
-              const id = data[i].fileName.split('_')[2];
-              // update the stored information about the demo datasets
-              if (id && id === demos[j]._id) {
-                // updating the demo dataset
-                data[i] = {
-                  ...data[i],
-                  status: PROJECT_STATUS.DONE,
-                  location: demos[j].csvURL,
-                };
-              }
-            }
-          }
-          setDeletedProjects(data);
-        });
-      });
+      } else {
+        // todo: delete the project from the cache and from the local storage
+      }
     });
   };
 
+  // function to handle restoration of project
   const handleRestoreProject = (id) => {
     DemoService.getDemos().then((demos) => {
-      ProjectService.restoreProject(id).then(() => {
-        ProjectService.getOwnProjects().then((data) => {
-          // loop over projects and search for demo datasets and set their attributes
-          for (let i = 0; i < data.length; i++) {
-            for (let j = 0; j < demos.length; j++) {
-              // If the project is a demo, the id is stored in the file name.
-              // file_name: <atlas>_<model>_<demo_id>
-              const id = data[i].fileName.split('_')[2];
-              // update the stored information about the demo datasets
-              if (id && id === demos[j]._id) {
-                // updating the demo dataset
-                data[i] = {
-                  ...data[i],
-                  status: PROJECT_STATUS.DONE,
-                  location: demos[j].csvURL,
-                };
-              }
-            }
-          }
-          setProjects(data);
+      if (loggedIn) {
+        ProjectService.restoreProject(id).then(() => {
+          ProjectService.getOwnProjects().then((data) => {
+            // search for demos and set the information stored about them
+            findDemos(data, demos);
+            setProjects(data);
+          });
+          ProjectService.getDeletedProjects().then((data) => {
+            // search for demos and set the information stored about them
+            findDemos(data, demos);
+            setDeletedProjects(data);
+          });
         });
-        ProjectService.getDeletedProjects().then((data) => {
-          // loop over projects and search for demo datasets and set their attributes
-          for (let i = 0; i < data.length; i++) {
-            for (let j = 0; j < demos.length; j++) {
-              // If the project is a demo, the id is stored in the file name.
-              // file_name: <atlas>_<model>_<demo_id>
-              const id = data[i].fileName.split('_')[2];
-              // update the stored information about the demo datasets
-              if (id && id === demos[j]._id) {
-                // updating the demo dataset
-                data[i] = {
-                  ...data[i],
-                  status: PROJECT_STATUS.DONE,
-                  location: demos[j].csvURL,
-                };
-              }
-            }
-          }
-          setDeletedProjects(data);
-        });
-      });
+      } else {
+        //todo: fetch from the cache
+      }
     });
   };
-
-  // if logged in, call the necessary hooks and functions
-  if (loggedIn) {
-    // Function to get projects and update the necessary info about the demo datasets
-    const getProjects = () => {
-      // fetch demos
-      DemoService.getDemos().then((demos) => {
-        ProjectService.getOwnProjects().then((data) => {
-          // loop over projects and search for demo datasets and set their attributes
-          for (let i = 0; i < data.length; i++) {
-            for (let j = 0; j < demos.length; j++) {
-              // If the project is a demo, the id is stored in the file name.
-              // file_name: <atlas>_<model>_<demo_id>
-              const id = data[i].fileName.split('_')[2];
-              // update the stored information about the demo datasets
-              if (id && id === demos[j]._id) {
-                // updating the demo dataset
-                data[i] = {
-                  ...data[i],
-                  status: PROJECT_STATUS.DONE,
-                  location: demos[j].csvURL,
-                };
-              }
-            }
-          }
-          setDemoDatasets(demos);
-          setProjects(data);
-          console.log(`${JSON.stringify(data)}`);
-        });
-      });
-    };
-
-    useEffect(() => {
-      getProjects();
-      const timer = setInterval(() => getProjects(), PROJECTS_UPDATE_INTERVAL);
-
-      return () => {
-        clearInterval(timer);
-      };
-    }, []);
-
-    useEffect(() => {
-      AtlasService.getAtlases().then((data) => setAtlases(data));
-      ModelService.getModels().then((data) => setModels(data));
-      TeamService.getMyTeams().then((teams) => setUserTeams(teams));
-      ProjectService.getDeletedProjects().then((data) => setDeletedProjects(data));
-    }, []);
-  }
-
-  // todo: check the cache here for the saved projects,
-  // and set the projects to that object
 
   // in the cache, store an array of projects using the following object structure
   // {_id, owner, name, modelId, atlasId, fileName, fileSize, status, resultSize, _v, uploadId, location}
-  // the location is going to be the cache,
+  // the location is going to be the cache.
+  // TODO: add the above to the getProjects function
+  // link to get the cache:
+  // https://www.geeksforgeeks.org/how-to-get-complete-cache-data-in-reactjs/
+
+  // Function to get projects and update the necessary info about the demo datasets
+  const getProjects = () => {
+    // fetch demos
+    DemoService.getDemos().then((demos) => {
+      if (loggedIn) {
+        console.log("inside the getProjects method");
+        console.log("loggedin is " + JSON.stringify(loggedIn));
+        ProjectService.getOwnProjects().then((data) => {
+          // search for demos and set the information stored about them
+          findDemos(data, demos);
+          setDemoDatasets(demos);
+          setProjects(data);
+        });
+      } else { // if not logged in, check the local storage and cache for the projects
+        // todo: add the cache check for the projects
+      }
+    });
+  };
+
+  useEffect(() => {
+    getProjects();
+    const timer = setInterval(() => getProjects(), PROJECTS_UPDATE_INTERVAL);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
+
+  useEffect(() => {
+    AtlasService.getAtlases().then((data) => setAtlases(data));
+    ModelService.getModels().then((data) => setModels(data));
+    if (loggedIn) {
+      TeamService.getMyTeams().then((teams) => setUserTeams(teams));
+      ProjectService.getDeletedProjects().then((data) => setDeletedProjects(data));
+    }
+  }, []);
 
   return (
     <div>
@@ -230,7 +195,8 @@ function GeneMapperHome(loggedIn = true) {
             </Box>
           )}
         {/* todo: in the future, check the cache for the projects
-        instead of disabling if not logged in */}
+        instead of disabling if not logged in, right now,
+        it is disabled in order to not get null exceptions */}
         {loggedIn && projects?.length === 0
           && (
             <Alert severity="info">
@@ -240,7 +206,8 @@ function GeneMapperHome(loggedIn = true) {
             </Alert>
           )}
         {/* todo: in the future, check the cache for the projects
-        instead of disabling if not logged in */}
+        instead of disabling if not logged in, right now,
+        it is disabled in order to not get null exceptions */}
         {loggedIn && projects
           && (
             <div>
@@ -254,7 +221,6 @@ function GeneMapperHome(loggedIn = true) {
                     userTeams={userTeams}
                     handleDelete={() => handleDeleteProject(project._id)}
                   />
-
               ))}
             </div>
           )}
@@ -269,6 +235,7 @@ function GeneMapperHome(loggedIn = true) {
                   atlas={atlases.find((atlas) => String(atlas._id) === String(project.atlasId))}
                   model={models.find((model) => String(model._id) === String(project.modelId))}
                   userTeams={userTeams}
+                  loggedIn={loggedIn}
                   handleDelete={() => handleRestoreProject(project._id)}
                   deleted
                 />

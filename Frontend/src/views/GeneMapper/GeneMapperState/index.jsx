@@ -9,7 +9,13 @@ import ModelService from 'shared/services/Model.service';
 import AtlasService from 'shared/services/Atlas.service';
 import DemoService from 'shared/services/Demo.service';
 
-function GeneMapperState({ path }) {
+/**
+ * GeneMapperState
+ * Renders the necessary step during the creation of a new project
+ * @param path
+ * @param loggedIn set to true when the user is logged in
+ * */
+function GeneMapperState({ path, loggedIn }) {
   const { search } = useLocation();
   const history = useHistory();
   const searchParams = new URLSearchParams(search);
@@ -138,7 +144,7 @@ function GeneMapperState({ path }) {
 
   return (
     <Container>
-      <Box width="500px" margin="auto" sx={{ marginTop: '1%', marginBottom: '1%' }}>
+      <Box height="100%" width="500px" margin="auto" sx={{ marginTop: '1%', marginBottom: '1%' }}>
         <Stepper activeStep={activeStep}>
           {steps.map((labelText, index) => (
             <Step index={index}>

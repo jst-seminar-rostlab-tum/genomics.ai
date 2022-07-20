@@ -55,7 +55,3 @@ function StatusQueue() {
 }
 
 export default StatusQueue;
-
-/*
-map jobs to list items containing the status cards
-*/

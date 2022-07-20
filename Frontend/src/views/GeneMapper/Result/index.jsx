@@ -13,35 +13,41 @@ import { PROJECT_STATUS } from 'shared/utils/common/constants';
 /**
  * Shows the UMAP visualization for a given project.
  */
-function GeneMapperResultView() {
+function GeneMapperResultView({ loggedIn }) {
   const [project, setProject] = useState(null);
 
   const { projectId } = useParams();
 
   useEffect(() => {
-    ProjectService.getProject(projectId)
-      .then((data) => {
-        let updatedData = data;
-        console.log(JSON.stringify(data));
-        DemoService.getDemos().then((demos) => {
+    if (loggedIn) {
+      // fetch the projects if logged in
+      ProjectService.getProject(projectId)
+        .then((data) => {
+          let updatedData = data;
+          console.log(JSON.stringify(data));
+          DemoService.getDemos().then((demos) => {
           // loop over demo datasets and check whether the project is a demo
-          demos.forEach((demo) => {
-            const id = data.fileName.split('_')[2];
-            if (id && id === demo._id) {
+            demos.forEach((demo) => {
+              const id = data.fileName.split('_')[2];
+              if (id && id === demo._id) {
               // updating the demo dataset
-              updatedData = {
-                ...data,
-                status: PROJECT_STATUS.DONE,
-                location: demo.csvURL,
-              };
-            }
+                updatedData = {
+                  ...data,
+                  status: PROJECT_STATUS.DONE,
+                  location: demo.csvURL,
+                };
+              }
+            });
+            setProject(updatedData);
           });
-          setProject(updatedData);
+        })
+        .catch(() => {
+          ProjectMock.getProject(projectId).then((data) => setProject(data));
         });
-      })
-      .catch(() => {
-        ProjectMock.getProject(projectId).then((data) => setProject(data));
-      });
+    } else {
+      // check the cache to see if the projects are stored
+      // todo: check the cache for the projects
+    }
   }, [projectId]);
 
   return (
@@ -56,7 +62,7 @@ function GeneMapperResultView() {
       {project
         ? (
           <>
-            <GeneMapperResultHeader project={project} />
+            <GeneMapperResultHeader project={project} loggedIn={loggedIn} />
             <Box
               sx={{
                 flexGrow: 1,

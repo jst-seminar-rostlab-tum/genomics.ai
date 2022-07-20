@@ -4,6 +4,7 @@ import {
   Redirect, Route, Switch, useRouteMatch,
 } from 'react-router-dom';
 import GeneMapperState from './GeneMapperState';
+import NavBar from 'components/NavBar';
 import GeneMapperHome from './Home';
 import GeneMapperResultView from './Result';
 import HeaderView from 'components/general/HeaderView';
@@ -11,11 +12,11 @@ import HelpIcon from '@mui/icons-material/Help';
 import { Modal } from 'components/Modal';
 import { colors } from 'shared/theme/colors';
 
-/* 
-params: sidebarShown, noLogin
-set noLogin to true if the genemapper is accessed without logging in
+/*
+params: sidebarShown, loggedIn
+Logged-in version of the GeneMapper. loggedIn is set to true by default
 */
-function GeneMapper({ sidebarShown, noLogin }) {
+function GeneMapper({ sidebarShown, loggedIn = true }) {
   const { path, url } = useRouteMatch();
 
   const headerStyle = {
@@ -33,7 +34,7 @@ function GeneMapper({ sidebarShown, noLogin }) {
         title="ScArches Gene Mapper"
         rightOfTitle={(
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          &nbsp;
+            &nbsp;
             <HelpIcon
               onClick={() => setShowScarchesInfo(true)}
               color="primary"
@@ -42,19 +43,22 @@ function GeneMapper({ sidebarShown, noLogin }) {
               }}
             />
           </Box>
-      )}
+        )}
+        loggedIn={loggedIn}
       >
         <Switch>
           <Route exact path={`${path}`}>
-            <GeneMapperHome basePath={path} />
+            {/* should mostly be fine, todo: make sure the paths work properly */}
+            <GeneMapperHome basePath={path} loggedIn={loggedIn} />
           </Route>
 
           <Route path={`${path}/create`}>
-            <GeneMapperState path={`${path}`} />
+            {/* should mostly be fine, todo: make sure the paths work properly */}
+            <GeneMapperState path={`${path}`} loggedIn={loggedIn} />
           </Route>
 
           <Route path={`${path}/result/:projectId`}>
-            <GeneMapperResultView />
+            <GeneMapperResultView loggedIn={loggedIn} />
           </Route>
 
           <Route path={`${path}/*`}>
@@ -88,7 +92,7 @@ function GeneMapper({ sidebarShown, noLogin }) {
               </Typography>
             </Box>
           </Container>
-      )}
+        )}
       />
     </div>
   );
