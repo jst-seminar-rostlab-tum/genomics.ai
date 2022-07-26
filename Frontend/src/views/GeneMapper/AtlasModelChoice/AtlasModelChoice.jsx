@@ -126,9 +126,12 @@ function AtlasModelChoice({
         <TabCard
           width="40%"
           height="50px"
-          title={dataset.name}
-          atlas={dataset.atlas}
-          model={dataset.model}
+          data={{
+            name: `${dataset.name.split('_')[0]} + ${dataset.name.split('_')[1]}`,
+            atlas: dataset.atlas,
+            model: dataset.model,
+            isDemo: true,
+          }}
           handleOnClick={() => handleDemoClick(dataset)}
           selected={datasetIsSelected && dataset._id === selectedDataset._id}
         />

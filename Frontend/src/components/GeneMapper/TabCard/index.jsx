@@ -14,7 +14,7 @@ import { colors } from 'shared/theme/colors';
 */
 
 export const TabCard = ({
-  width, height, title, atlas, model, handleOnClick, selected,
+  width, height, data, handleOnClick, selected,
 }) => (
   <Box
     onClick={handleOnClick}
@@ -45,10 +45,10 @@ export const TabCard = ({
     >
       <Stack p="0.1em" pl="0.3em">
         <Typography variant="body1">
-          {`${title.split('_')[0]} + ${title.split('_')[1]}`}
+          {data.name}
         </Typography>
         <Typography variant="caption">
-          {`Demo dataset for ${atlas} & ${model}`}
+          {data.isDemo ? `Demo dataset for ${data.atlas} & ${data.model}` : data.visibility}
         </Typography>
       </Stack>
     </Box>
