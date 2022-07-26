@@ -220,6 +220,7 @@ function GeneMapperHome({ loggedIn }) {
                     model={models.find((model) => String(model._id) === String(project.modelId))}
                     userTeams={userTeams}
                     handleDelete={() => handleDeleteProject(project._id)}
+                    loggedIn={loggedIn}
                   />
               ))}
             </div>
