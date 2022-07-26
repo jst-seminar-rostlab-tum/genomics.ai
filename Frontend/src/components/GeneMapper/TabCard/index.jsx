@@ -8,11 +8,12 @@ import { colors } from 'shared/theme/colors';
  * TabCard for TabGroup Component / List of cards with select feature used in FileUpload page
  * @param width
  * @param height
- * @param data object containing information to be displayed on the card
+ * @param data object containing information to be displayed on the card,
+ * currently different for teams and demos.
+ * Add property isDemo to demo datasets "data" property to visualize properly
  * @param handleOnClick executed function on card click
  * @param selected boolean parameter to indicate if a card element is selected
 */
-
 export const TabCard = ({
   width, height, data, handleOnClick, selected,
 }) => (

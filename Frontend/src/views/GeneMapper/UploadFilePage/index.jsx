@@ -40,7 +40,7 @@ function UploadFilePage({
   const [showFileWarning, setShowFileWarning] = useState(false);
   const [showAcceptedFile, setShowAcceptedFile] = useState(false);
   const history = useHistory();
-  const [noAvailableDemos, setNoAvailableDemos] = useState(true);
+  const [availableDemos, setAvailableDemos] = useState([]);
   const [demoDatasets, setDemoDatasets] = useState(demos);
 
   useEffect(() => {
@@ -125,6 +125,19 @@ function UploadFilePage({
         uploadedFile ? uploadedFile[0] : selectedDataset);
     }
   };
+
+  // finding all matching demos for the current choice combination
+  useEffect(() => {
+    if (demoDatasets) {
+      const matchingDemos = demoDatasets
+        .filter((d) => d.atlas.toLowerCase() === selectedAtlas.name.toLowerCase()
+        && d.model.toLowerCase() === selectedModel.name.toLowerCase());
+
+      setAvailableDemos(matchingDemos);
+    } else {
+      setAvailableDemos([]);
+    }
+  }, []);
 
   return (
     <Box sx={{ marginTop: '2.5em' }}>
@@ -320,34 +333,27 @@ function UploadFilePage({
           <Stack maxHeight="50%">
             <Typography variant="h5" fontWeight="bold" mb="0.5em">Or Select Demo Dataset</Typography>
             {
-              // filter all demo datasets that match the current choice of model and atlas
-              demoDatasets ? (
-                demoDatasets
-                  .filter((d) => d.atlas.toLowerCase() === selectedAtlas.name.toLowerCase()
-                    && d.model.toLowerCase() === selectedModel.name.toLowerCase())
-                  // map all demo datasets
-                  .map((dataset) => {
-                    setNoAvailableDemos(false);
-                    return (
-                      <TabCard
-                        width="100%"
-                        height="50px"
-                        id={dataset._id}
-                        title={dataset.name}
-                        atlas={dataset.atlas}
-                        model={dataset.model}
-                        handleOnClick={() => handleDemoClick(dataset)}
-                        selected={
-                          !uploadedFile
-                          && datasetIsSelected
-                          && selectedDataset._id === dataset._id
-                        }
-                      />
-                    ); // When demoDatasets is undefined, set no available demos to true
-                  })) : setNoAvailableDemos(true)
+              availableDemos.length > 0 ? (
+                availableDemos.map((dataset) => (
+                  <TabCard
+                    width="100%"
+                    height="50px"
+                    data={{
+                      name: `${dataset.name.split('_')[0]} + ${dataset.name.split('_')[1]}`,
+                      atlas: dataset.atlas,
+                      model: dataset.model,
+                      isDemo: true,
+                    }}
+                    handleOnClick={() => handleDemoClick(dataset)}
+                    selected={
+                        !uploadedFile
+                        && datasetIsSelected
+                        && selectedDataset._id === dataset._id
+                      }
+                  />
+                ))
+              ) : <Alert severity="info"> No existing datasets available. </Alert>
             }
-            {/* Set alert when no datasets are available */}
-            {noAvailableDemos && <Alert severity="info"> No existing datasets available. </Alert>}
           </Stack>
         </Box>
       </Stack>
