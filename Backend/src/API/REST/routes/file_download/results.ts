@@ -9,7 +9,7 @@ import { result_path } from "../file_upload/bucket_filepaths";
 
 export default function download_results_route() {
   let router = express.Router();
-  router.post("/file_download/results", validationMdw, check_auth(), async (req: ExtRequest, res) => {
+  router.post("/file_download/results", validationMdw, async (req: ExtRequest, res) => { // removed check_auth() middleware in order to use in non-login version
     let { id } = req.body;
     try {
       if (!process.env.S3_BUCKET_NAME) {
