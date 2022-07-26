@@ -39,7 +39,7 @@ const get_projects = (): Router => {
 const get_userProjects = (): Router => {
   let router = express.Router();
 
-  router.get("/ownprojects", check_auth(), async (req: ExtRequest, res: any) => {
+  router.get("/ownprojects", async (req: ExtRequest, res: any) => { // check_auth() removed in order to use in non-login version
     try {
       const { sort, ...rest } = req.params;
       let sortParam: number;

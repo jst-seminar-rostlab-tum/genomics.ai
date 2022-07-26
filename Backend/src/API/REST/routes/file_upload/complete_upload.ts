@@ -26,7 +26,7 @@ export default function upload_complete_upload_route() {
   router.post(
     "/file_upload/complete_upload",
     validationMdw,
-    check_auth(),
+    //check_auth(), removed auth check in order to use in non-login version
     async (req: ExtRequest, res) => {
       let { parts, uploadId } = req.body;
       if (!process.env.S3_BUCKET_NAME)
