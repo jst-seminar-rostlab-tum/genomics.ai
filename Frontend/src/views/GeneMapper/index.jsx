@@ -14,7 +14,8 @@ import { colors } from 'shared/theme/colors';
 
 /*
 params: sidebarShown, loggedIn
-Logged-in version of the GeneMapper. loggedIn is set to true by default
+The GeneMapper. Offers both the logged-in and non-logged-in version. 
+loggedIn is set to true by default
 */
 function GeneMapper({ sidebarShown, loggedIn = true }) {
   const { path, url } = useRouteMatch();

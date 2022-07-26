@@ -101,7 +101,7 @@ function DrawerBar({ open, setOpen, executeScroll }) {
             width: '100vw', height: '25vh', bgcolor: 'white', display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'center',
           }}
           >
-            <LinkBox to="/explore"><DrawerNavlink>Explore</DrawerNavlink></LinkBox>
+            <LinkBox to="/references"><DrawerNavlink>References</DrawerNavlink></LinkBox>
             <DrawerNavlink onClick={() => window.open('https://genecruncher.readthedocs.io/')}>Docs</DrawerNavlink>
             <LinkBox to="/about"><DrawerNavlink>About</DrawerNavlink></LinkBox>
             <Box onClick={executeScroll} sx={{ cursor: 'pointer' }}><DrawerNavlink>Contact</DrawerNavlink></Box>
@@ -291,7 +291,7 @@ export default function Navbar({
             <Navlink fontWeight="bold" fontSize="20px">ArchMap</Navlink>
           </LinkBox>
           <LinkBox to="/genemapper"><Navlink>Map</Navlink></LinkBox>
-          <LinkBox to="/explore"><Navlink>Explore</Navlink></LinkBox>
+          <LinkBox to="/references"><Navlink>References</Navlink></LinkBox>
           <Box sx={{ cursor: 'pointer' }} onClick={() => window.open('https://genecruncher.readthedocs.io/')}><Navlink>Docs</Navlink></Box>
           <LinkBox to="/about"><Navlink>About</Navlink></LinkBox>
           <Box sx={{ cursor: 'pointer' }} onClick={executeScroll}><Navlink>Contact</Navlink></Box>

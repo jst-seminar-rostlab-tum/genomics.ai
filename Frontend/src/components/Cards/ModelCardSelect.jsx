@@ -3,7 +3,7 @@ import ModelInfo from "components/GeneMapper/ModelInfo"
 import { Modal } from "components/Modal"
 import { useEffect, useRef, useState } from "react"
 import { colors } from "shared/theme/colors"
-import { LearnMoreModelComponent } from "views/Explore/LearnMoreModel"
+import { LearnMoreModelComponent } from "views/References/LearnMoreModel"
 
 // Outlined Button specific to Models and Atlases
 /**

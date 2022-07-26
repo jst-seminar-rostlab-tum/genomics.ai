@@ -26,7 +26,7 @@ function NonLoginGeneMapper() {
         }}
       >
         {/* Non-login GeneMapper */}
-        <GeneMapper sidebarShown={false} loggedIn={false} /> {/* todo: understand what the sidebarshown does */}
+        <GeneMapper sidebarShown={false} loggedIn={false} /> {/* todo: understand what the sidebarshown does */} {/* Add the authentication processs here I believe */}
       </Box>
     </Box>
   );

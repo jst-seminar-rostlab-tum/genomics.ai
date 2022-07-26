@@ -15,8 +15,8 @@ import { useHistory } from 'react-router-dom';
 import { initSubmissionProgress, useSubmissionProgress } from 'shared/context/submissionProgressContext';
 import ProjectService from 'shared/services/Project.service';
 import { uploadMultipartFile } from 'shared/services/UploadLogic';
-import { LearnMoreAtlasComponent } from 'views/Explore/LearnMoreAtlas';
-import { LearnMoreModelComponent } from 'views/Explore/LearnMoreModel';
+import { LearnMoreAtlasComponent } from 'views/References/LearnMoreAtlas';
+import { LearnMoreModelComponent } from 'views/References/LearnMoreModel';
 
 import styles from './uploadfilepage.module.css';
 
@@ -40,6 +40,7 @@ function UploadFilePage({
   const [showFileWarning, setShowFileWarning] = useState(false);
   const [showAcceptedFile, setShowAcceptedFile] = useState(false);
   const history = useHistory();
+  const [noAvailableDemos, setNoAvailableDemos] = useState(true);
   const [demoDatasets, setDemoDatasets] = useState(demos);
 
   useEffect(() => {
@@ -82,7 +83,7 @@ function UploadFilePage({
       atlasId,
       modelId,
       file.name,
-    ).then((project) => { /* The return value that is received is the project object. */
+    ).then((project) => {
       uploadMultipartFile(
         project.uploadId,
         file,
@@ -122,14 +123,6 @@ function UploadFilePage({
     } else {
       createProject(mappingName, selectedAtlas._id, selectedModel._id,
         uploadedFile ? uploadedFile[0] : selectedDataset);
-    }
-  };
-
-  const handleSelectDataset = (data) => {
-    if (data.name === selectedDataset?.name) {
-      setSelectedDataset(null);
-    } else {
-      setSelectedDataset(data);
     }
   };
 
@@ -183,7 +176,7 @@ function UploadFilePage({
                       setOpen={setAtlasInfoOpen}
                       children={(
                         <Container>
-                          <LearnMoreAtlasComponent id={selectedAtlas._id} onClick={() => history.push(`/explore/atlases/${selectedAtlas._id}/visualization`)} />
+                          <LearnMoreAtlasComponent id={selectedAtlas._id} onClick={() => history.push(`/references/atlases/${selectedAtlas._id}/visualization`)} />
                         </Container>
                       )}
                     />
@@ -332,19 +325,29 @@ function UploadFilePage({
                 demoDatasets
                   .filter((d) => d.atlas.toLowerCase() === selectedAtlas.name.toLowerCase()
                     && d.model.toLowerCase() === selectedModel.name.toLowerCase())
-                  .map((dataset) => (
-                    <TabCard
-                      width="100%"
-                      height="50px"
-                      id={dataset._id}
-                      title={dataset.name}
-                      atlas={dataset.atlas}
-                      model={dataset.model}
-                      handleOnClick={() => handleDemoClick(dataset)}
-                      selected={!uploadedFile && datasetIsSelected && selectedDataset._id === dataset._id}
-                    />
-                  ))) : <Alert severity="info"> No existing datasets available. </Alert>
+                  // map all demo datasets
+                  .map((dataset) => {
+                    setNoAvailableDemos(false);
+                    return (
+                      <TabCard
+                        width="100%"
+                        height="50px"
+                        id={dataset._id}
+                        title={dataset.name}
+                        atlas={dataset.atlas}
+                        model={dataset.model}
+                        handleOnClick={() => handleDemoClick(dataset)}
+                        selected={
+                          !uploadedFile
+                          && datasetIsSelected
+                          && selectedDataset._id === dataset._id
+                        }
+                      />
+                    ); // When demoDatasets is undefined, set no available demos to true
+                  })) : setNoAvailableDemos(true)
             }
+            {/* Set alert when no datasets are available */}
+            {noAvailableDemos && <Alert severity="info"> No existing datasets available. </Alert>}
           </Stack>
         </Box>
       </Stack>
@@ -365,7 +368,7 @@ function UploadFilePage({
                     setOpen(true);
                   }}
                 >
-                  Create Mapping
+                  Create Project
                   <CheckCircleOutlineIcon sx={{ marginLeft: '4px' }} />
                 </CustomButton>
               </span>

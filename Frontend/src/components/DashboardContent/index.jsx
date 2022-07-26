@@ -12,7 +12,7 @@ import Help from 'views/Help';
 import styles from './dashboardContent.module.css';
 import SearchPage from 'views/SearchPage';
 import { useAuth } from 'shared/context/authContext';
-import Explore from 'views/Explore';
+import References from 'views/References';
 import InstitutionPage from 'views/InstitutionPage';
 import TeamPage from 'views/TeamPage';
 import { InstitutionProvider } from 'shared/context/institutionContext';
@@ -63,7 +63,7 @@ const DashboardContent = () => {
           <SearchPage sidebarShown={sidebarShown} />
         </Route>
 
-        <Route path={`${path}/explore`} render={() => <Explore />} />
+        <Route path={`${path}/references`} render={() => <References />} />
 
         <Route path={`${path}/settings`}>
           <Settings className={styles.subpage} />

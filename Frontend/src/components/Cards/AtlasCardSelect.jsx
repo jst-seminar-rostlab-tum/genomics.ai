@@ -6,7 +6,7 @@ import { OutlinedButtonSelect } from './ModelCardSelect'
 
 import { borders } from "@mui/system"
 import { Modal } from "components/Modal"
-import { LearnMoreAtlasComponent } from "views/Explore/LearnMoreAtlas"
+import { LearnMoreAtlasComponent } from "views/References/LearnMoreAtlas"
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min"
 import AtlasInfo from "components/GeneMapper/AtlasInfo"
 
