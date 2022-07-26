@@ -13,14 +13,14 @@ import { colors } from 'shared/theme/colors';
  *
  * for example:
  *
- * the path is /references/atlases
+ * the path is /explore/atlases
  *
  * if you want to do something additionally than just redirect
  *
  * you should give an object like this:
  *
  * {
- *      references: ()=>{something you want to do}
+ *      explore: ()=>{something you want to do}
  * }
  *
  */

@@ -8,7 +8,7 @@ import {
 import { Box, Stack } from '@mui/material';
 import { TabGroup } from 'components/Tab';
 import Search from 'components/Search';
-import Filter from 'components/ReferencePageComponents/Filter';
+import Filter from 'components/ExplorePageComponents/Filter';
 import NavBar from 'components/NavBar';
 import Breadcrumb from 'components/Breadcrumb';
 import LoginForm from 'components/LoginForm';
@@ -21,7 +21,7 @@ import AtlasesGrid from 'components/Grids/AtlasesGrid';
 import ModelsGrid from 'components/Grids/ModelsGrid';
 import Mapper from 'components/Mapper';
 import { applyModelFilters, applyAtlasFilters } from 'shared/utils/filter';
-import ReferenceRoutes from 'components/ReferencePageComponents/ReferenceRoutes';
+import ExploreRoutes from 'components/ExplorePageComponents/ExploreRoutes';
 import { useAuth } from 'shared/context/authContext';
 import { LoginContext } from 'shared/context/loginContext';
 import PasswordForgetForm from 'components/PasswordForgetForm';
@@ -29,15 +29,15 @@ import PasswordForgetForm from 'components/PasswordForgetForm';
 const tmpObj = [
   {
     label: 'ATLASES',
-    path: '/references/atlases',
+    path: '/explore/atlases',
   },
   {
     label: 'MODELS',
-    path: '/references/models',
+    path: '/explore/models',
   },
 ];
 
-const References = () => {
+const Explore = () => {
   const [value, setValue] = useState(0);
   const [selectedAtlas, setSelectedAtlas] = useState(null);
   const [selectedModel, setSelectedModel] = useState(null);
@@ -99,8 +99,14 @@ const References = () => {
   };
 
   const handleMap = () => {
-    history.push(`/genemapper/create?atlas=${selectedAtlas._id}&model=${selectedModel._id}`);
-    setMapperVisible(false);
+    if (selectedAtlas && selectedModel === null) {
+      history.push(`/explore/atlases/${selectedAtlas._id}/visualization`)
+      setMapperVisible(false)
+    }
+    if (user) {
+      history.push(`/sequencer/genemapper/create?atlas=${selectedAtlas._id}&model=${selectedModel._id}`);
+      setMapperVisible(false);
+    }
   };
 
   useEffect(() => {
@@ -158,7 +164,7 @@ const References = () => {
   const executeScroll = () => (user ? history.push({ pathname: '/sequencer/help' }) : history.push({ pathname: '/', state: { contact_us: true } }));
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+    <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
       <Box
         sx={{
           display: 'flex',
@@ -189,12 +195,7 @@ const References = () => {
             alignSelf: 'center', width: { sx: '90%', md: '60%' }, marginTop: '2%', justifyContent: 'space-between',
           }}
         >
-          <Breadcrumb
-            p={4}
-            elems={elems}
-            fontSize={1}
-            actions={{ references: () => setValue(0) }}
-          />
+          <Breadcrumb p={4} elems={elems} fontSize={1} actions={{ explore: () => setValue(0) }} />
           <Box sx={{ alignSelf: 'center', width: { xs: '95%', md: '60%' }, marginBlock: '2%' }}>
             <Search
               filterComponent={(
@@ -220,11 +221,11 @@ const References = () => {
             width: { xs: '90%', md: '60%' },
           }}
         >
-          {/* /references/atlases */}
-          <ReferenceRoutes atlases={atlases && tabMenu()} models={models && tabMenu()} path="/references" handleSelectAtlases={handleAtlasSelection} handleSelectModels={handleModelSelection} />
+          {/* /explore/atlases */}
+          <ExploreRoutes atlases={atlases && tabMenu()} models={models && tabMenu()} path="/explore" handleSelectAtlases={handleAtlasSelection} handleSelectModels={handleModelSelection} />
         </Box>
       </Box>
-      <Footer sx={{ marginTop: 'auto', transform: 'translate(0px, 100px)' }} />
+      <Footer sx={{ marginTop: "auto", transform: "translate(0px, 100px)" }} />
 
       <Mapper
         mapperAtlas={selectedAtlas ? selectedAtlas.name : null}
@@ -240,4 +241,4 @@ const References = () => {
   );
 };
 
-export default References;
+export default Explore;

@@ -12,13 +12,13 @@ const FilterItem = ({ children }) => <Box sx={{ margin: 0.5 }}>{children}</Box>;
 const Filter = ({ path, searchParams, updateQueryParams }) => (
   <GeneralCard>
     <FormGroup>
-      <Route path="/references/atlases">
+      <Route path="/explore/atlases">
         <AtlasFilter
           sortBy={searchParams.get('sortBy')}
           onChange={(param, value) => updateQueryParams(param, value)}
         />
       </Route>
-      <Route path="/references/models">
+      <Route path="/explore/models">
         <FilterItem>
           <GeneralFilter
             sortBy={searchParams.get('sortBy')}
@@ -26,7 +26,7 @@ const Filter = ({ path, searchParams, updateQueryParams }) => (
           />
         </FilterItem>
       </Route>
-      <Route path="/references/datasets">
+      <Route path="/explore/datasets">
         <FilterItem>
           <GeneralFilter
             sortBy={searchParams.get('sortBy')}

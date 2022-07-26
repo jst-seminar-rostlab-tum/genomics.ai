@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal } from 'components/Modal';
-import { LearnMoreAtlasComponent } from 'views/References/LearnMoreAtlas';
+import { LearnMoreAtlasComponent } from 'views/Explore/LearnMoreAtlas';
 import { Container } from '@mui/material';
 
 /**

@@ -101,7 +101,7 @@ const Home = () => {
             <Box sx={{ width: { xs: "100%", sm: "50%", md: "50%", lg: "50%", xl: "50%" } }}>
               <Typography fontSize="1.2em" fontWeight="bold">Query to reference dataset mapping using Transfer Learning</Typography>
               <Typography margin="2em 0 2em 0">ArchMap enables mapping by using a novel deep learning strategy called single-cell architectural surgery (ScArches).</Typography>
-              <CustomButton onClick={() => history.push('/references')}>References</CustomButton>
+              <CustomButton onClick={() => history.push('/explore')}>Explore</CustomButton>
             </Box>
           </Box>
         </Box>

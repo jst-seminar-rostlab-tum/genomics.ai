@@ -3,11 +3,11 @@ import {
   Switch, Route, Redirect,
 } from 'react-router-dom';
 
-import AtlasResult from 'views/References/AtlasResult';
-import LearnMoreAtlas from 'views/References/LearnMoreAtlas';
-import LearnMoreModel from 'views/References/LearnMoreModel';
+import AtlasResult from 'views/Explore/AtlasResult';
+import LearnMoreAtlas from 'views/Explore/LearnMoreAtlas';
+import LearnMoreModel from 'views/Explore/LearnMoreModel';
 
-const ReferenceRoutes = ({
+const ExploreRoutes = ({
   path, atlases, models, handleSelectAtlases, handleSelectModels,
 }) => (
   <Switch>
@@ -28,4 +28,4 @@ const ReferenceRoutes = ({
   </Switch>
 );
 
-export default ReferenceRoutes;
+export default ExploreRoutes;

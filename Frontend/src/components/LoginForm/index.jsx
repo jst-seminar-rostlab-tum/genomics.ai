@@ -127,7 +127,6 @@ function LoginForm(props) {
     }
   }
 
-  // Login process
   const doLogin = useCallback(() => {
     if (!validateInput()) {
       return;
