@@ -11,7 +11,7 @@ import ResultStatus from '../ResultStatus';
 import { setSeachCategoryInUrl } from 'shared/utils/common/utils';
 import AtlasesGrid from 'components/Grids/AtlasesGrid';
 import ModelsGrid from 'components/Grids/ModelsGrid';
-import ExploreRoutes from 'components/ExplorePageComponents/ExploreRoutes';
+import ReferenceRoutes from 'components/ReferencePageComponents/ReferenceRoutes';
 
 // wrapper component to display the searched items
 function SearchContent({
@@ -48,7 +48,7 @@ function SearchContent({
           {renderSearchResultsList(UserCard)}
         </Route>
         <Route>
-          <ExploreRoutes atlases={atlases} models={models} path="/sequencer/search" />
+          <ReferenceRoutes atlases={atlases} models={models} path="/sequencer/search" />
         </Route>
       </Switch>
     </>
