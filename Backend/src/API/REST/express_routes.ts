@@ -12,6 +12,7 @@ import get_profile_route from "./routes/get_profile";
 //import get_project_route from "./routes/get_project";
 //import get_projects_route from "./routes/get_projects";
 import get_unauthorized_users_route from "./routes/get_unauthorized_users";
+import get_temp_auth_route from "./routes/temp_auth";
 import authorize_user_route from "./routes/authorize_user";
 import verify_email_route from "./routes/verify_email";
 import password_reset_route from "./routes/password_reset";
@@ -22,6 +23,7 @@ import upload_start_upload_route from "./routes/file_upload/start_upload";
 import upload_get_upload_url_route from "./routes/file_upload/get_upload_url";
 import download_results_route from "./routes/file_download/results";
 import upload_user_avatar_route from "./routes/upload_user_avatar";
+
 
 import { get_teams_of_user, get_users, get_user_by_id } from "./routes/user/userRouter";
 import { get_model, get_allModels } from "./routes/model/modelRouter";
@@ -148,6 +150,9 @@ export function express_routes(): Router {
   router.use(get_teams_of_user());
   router.use(get_users());
   router.use(get_user_by_id());
+
+  // temporary user route
+  router.use(get_temp_auth_route());
 
   // project routes
   router.use(get_projects());
