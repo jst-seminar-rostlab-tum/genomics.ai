@@ -8,7 +8,7 @@ import express from "express";
 export default function upload_get_upload_url_route() {
   let router = express.Router();
 
-  router.get("/file_upload/get_upload_url", async (req: ExtRequest, res) => { // removed check_auth() in order to use in non-login version
+  router.get("/file_upload/get_upload_url", check_auth(), async (req: ExtRequest, res) => {
     let { partNumber, uploadId } = req.query;
     if (!process.env.S3_BUCKET_NAME) return res.status(500).send("S3-BucketName is not set");
 

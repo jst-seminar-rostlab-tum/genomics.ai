@@ -13,7 +13,7 @@ export default function upload_start_upload_route() {
   router.post(
     "/file_upload/start_upload",
     validationMdw,
-    // check_auth(), removed auth check for the file upload in order to use in non-login version
+    check_auth(),
     async (req: ExtRequest, res) => {
       let { projectName, atlasId, modelId, fileName } = req.body;
       if (!process.env.S3_BUCKET_NAME) {
