@@ -10,7 +10,6 @@ function enhanceTeam(team) {
   return { ...team, id: team._id, name: team.title };
 }
 
-
 const UserService = {
   getUsers: async (params) => {
     const preparedParams = { ...params };
@@ -32,7 +31,7 @@ const UserService = {
   },
   getUserInstitutions: async (id) => {
     const { data } = await axiosInstance.get(`${MODEL}/${id}/institutions`)
-    return data.map(enhanceInstitution);;
+    return data.map(enhanceInstitution);
   },
   getUserTeams: async (id) => {
     const { data } = await axiosInstance.get(`${MODEL}/${id}/teams`)

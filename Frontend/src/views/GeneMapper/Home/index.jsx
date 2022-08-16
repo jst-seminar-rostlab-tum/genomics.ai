@@ -124,8 +124,6 @@ function GeneMapperHome({ loggedIn }) {
     // fetch demos
     DemoService.getDemos().then((demos) => {
       if (loggedIn) {
-        console.log("inside the getProjects method");
-        console.log("loggedin is " + JSON.stringify(loggedIn));
         ProjectService.getOwnProjects().then((data) => {
           // search for demos and set the information stored about them
           findDemos(data, demos);
