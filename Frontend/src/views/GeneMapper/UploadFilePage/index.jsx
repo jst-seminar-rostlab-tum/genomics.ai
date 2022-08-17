@@ -20,9 +20,9 @@ import { LearnMoreModelComponent } from 'views/References/LearnMoreModel';
 
 import styles from './uploadfilepage.module.css';
 
-/*
-The parameter datasetIsSelected indicates whether a demo dataset has been selected.
-The parameter selectedDataset indicates the dataset that has been selected.
+/**
+ * @param datasetIsSelected indicates whether a demo dataset has been selected.
+ * @param selectedDataset indicates the dataset that has been selected.
  */
 function UploadFilePage({
   path, selectedAtlas, selectedModel, setActiveStep, demos,
