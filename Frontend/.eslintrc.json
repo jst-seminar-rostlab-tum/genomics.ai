@@ -37,6 +37,8 @@
     }]
   },
   "ignorePatterns": [
+    "**/*.js",
+    "**/*.jsx",
     "src/components/Visualization"
   ]
 }
