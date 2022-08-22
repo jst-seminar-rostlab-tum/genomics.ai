@@ -27,14 +27,14 @@ export default function get_temp_auth(): Router {
                 note: "temporary_user"
             };
             // add temporary user
-            tempUser = await UserService.addUser(userToAdd); //todo: check if this returns the object with the id
+            tempUser = await UserService.addUser(userToAdd);
 
             // update the email with the unique id value
             // in order to bypass the uniqueness requirement of the email
             UserService.updateUser(tempUser._id, { email: tempUser._id })
 
-            // create JWT token for temporary access
-            const token = jwt.sign({ id: tempUser._id }, JWT_SECRET, {
+            // create JWT token for temporary access, use the temporary id for both the email and id.
+            const token = jwt.sign({ id: tempUser._id, email: tempUser._id }, JWT_SECRET, {
             expiresIn: "20h",
             });
 
