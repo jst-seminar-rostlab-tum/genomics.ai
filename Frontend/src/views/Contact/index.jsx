@@ -71,7 +71,7 @@ const Contact = () => {
                 align="center"
               >
                 Please message us in case you have any questions,
-                feedback or collaboration-related inquiries concerning Genomics.ai.
+                feedback or collaboration-related inquiries concerning Archemap.org.
               </Typography>
             </div>
           </Stack>

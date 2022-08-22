@@ -16,6 +16,7 @@ import graphic1 from 'assets/landing-illustrations/science.png';
 import graphic2 from 'assets/landing-illustrations/upload.png';
 import graphic3 from 'assets/landing-illustrations/processing.png';
 import graphic4 from 'assets/landing-illustrations/results.png';
+import Helmholtz_TheisLab_Naturecover_2021 from 'assets/landing-illustrations/Helmholtz_TheisLab_Naturecover_2021_cropped.png';
 import CustomButton from "components/CustomButton";
 import Input from 'components/Input/Input'
 import { useHistory, useLocation } from "react-router-dom";
@@ -59,11 +60,18 @@ const Home = () => {
       {context.registerVisible && <RegistrationForm  />}
       {context.forgetVisible && <PasswordForgetForm />}
       {/* STARTING PAGE */}
-      <Box sx={{ width: window.width, bgcolor: colors.primary[800], position: "relative", paddingBottom: "4em" }}>
+      <Box sx={{ 
+        width: window.width, 
+        minHeight: '100vh',
+        // bgcolor: colors.primary[800], 
+        backgroundImage: `url(${Helmholtz_TheisLab_Naturecover_2021})`,
+        backgroundSize: 'cover', 
+        position: "relative", 
+        paddingBottom: "4em" }}>
         {/* NAVBAR HERE */}
         {/* the Box that contains the Navbar will collapse, so we reset the height */}
         <Box sx={{ height: navbarHeight, position: "relative" }}>
-          <Navbar position="fixed" setNavbarHeight={setNavbarHeight} onLoginClicked={onLoginClicked} onSignUpClicked={onSignUpClicked} executeScroll={executeScroll} />
+          <Navbar sx={{backgroundColor: "transparent"}} position="fixed" setNavbarHeight={setNavbarHeight} onLoginClicked={onLoginClicked} onSignUpClicked={onSignUpClicked} executeScroll={executeScroll} />
         </Box>
         {/* IOS WINDOW */}
         <WindowiOS onSignUpClicked={onSignUpClicked} />
@@ -76,7 +84,7 @@ const Home = () => {
           height: "5vw",
           left: "-20vw",
           top: "-2vw",
-          backgroundColor: "white",
+          backgroundColor: "transparent",
           borderRadius: "50%",
           zIndex: "0"
         }}
@@ -95,7 +103,7 @@ const Home = () => {
         <Box sx={{ width: "100%", position: "relative", margin: "auto" }}>
           <Typography sx={{ textAlign: "center" }} fontSize="2em" fontWeight="bold">What we do</Typography>
           <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row", md: "row", lg: "row", xl: "row" }, justifyContent: "space-between", alignItems: "center", width: "80%", gap: "1em", margin: "auto" }}>
-            <Box sx={{ width: { xs: "100%", sm: "50%", md: "50%", lg: "50%", xl: "50%" }, backgroundColor: "white", borderRadius: "20px" }}>
+            <Box sx={{ width: { xs: "100%", sm: "50%", md: "50%", lg: "50%", xl: "50%" }, backgroundColor: "transparent", borderRadius: "20px" }}>
               <img style={{ width: "100%" }} src={graphic1} alt="Science" />
             </Box>
             <Box sx={{ width: { xs: "100%", sm: "50%", md: "50%", lg: "50%", xl: "50%" } }}>
@@ -170,7 +178,7 @@ const Home = () => {
         {/* CONTACT US */}
         <Box ref={contactUsBoxRef} sx={{ position: "relative", margin: "4em auto", position: "relative", width: "100%" }} >
           <Typography sx={{ textAlign: "center" }} fontSize="2em" fontWeight="bold">Contact Us</Typography>
-          <Typography marginTop="1em" sx={{ textAlign: "center" }} fontSize="1em">Please message us in case you have any questions, feedback or collaboration-related inquiries concerning Genomics.ai.</Typography>
+          <Typography marginTop="1em" sx={{ textAlign: "center" }} fontSize="1em">Please message us in case you have any questions, feedback or collaboration-related inquiries concerning archemap.org.</Typography>
           {/* <Box sx={{
             width: "100%",
             margin: "2em auto 0em auto",

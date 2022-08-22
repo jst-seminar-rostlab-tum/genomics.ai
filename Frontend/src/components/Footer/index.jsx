@@ -72,7 +72,7 @@ export default function Footer({ sx }) {
           >
             <img width={28} alt="logo" src={logo} />
           </IconButton>
-          <Navlink>genomics.ai</Navlink> */}
+          <Navlink>archemap.org</Navlink> */}
         {/* </LinkBox> */}
         {/* <LinkBox to="/about"><Navlink>About us</Navlink></LinkBox>
         <LinkBox to="/docs"><Navlink>Docs </Navlink></LinkBox>

@@ -19,7 +19,6 @@ function Appbar(props) {
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
-      backgroundColor: colors.primary[800],
       padding: "0.8em",
       margin: "auto",
       position: "relative"
@@ -189,6 +188,7 @@ function LinkBox(props) {
 }
 
 export default function Navbar({ 
+  sx,
   onLoginClicked, 
   onSignUpClicked, 
   executeScroll, 
@@ -214,7 +214,7 @@ export default function Navbar({
   })
 
   return (
-    <Box ref={boxRef} sx={{width: "100%", bgcolor: colors.primary[800], position: position, zIndex: "10"}}>
+    <Box ref={boxRef} sx={{width: "100%", bgcolor: "#092330", position: position, zIndex: "10"}}>
       <Appbar>
         <DrawerBar open={drawerOpen} setOpen={setDrawerOpen} executeScroll={handleClickContactUsInDrawer} />
         <Leftbar>
@@ -228,7 +228,7 @@ export default function Navbar({
             >
               <img width={28} alt="logo" src={logo} />
             </IconButton>
-            <Navlink fontWeight="bold" fontSize="20px">genomics.ai</Navlink>
+            <Navlink fontWeight="bold" fontSize="20px">archemap.org</Navlink>
           </LinkBox>
           <LinkBox to="/explore"><Navlink>Explore</Navlink></LinkBox>
           <Box sx={{cursor: "pointer"}} onClick={()=>window.open("https://genecruncher.readthedocs.io/")}><Navlink>Docs</Navlink></Box>
