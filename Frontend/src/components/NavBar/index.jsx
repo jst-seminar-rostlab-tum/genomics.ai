@@ -232,7 +232,7 @@ export default function Navbar({
           </LinkBox>
           <LinkBox to="/explore"><Navlink>Explore</Navlink></LinkBox>
           <Box sx={{cursor: "pointer"}} onClick={()=>window.open("https://genecruncher.readthedocs.io/")}><Navlink>Docs</Navlink></Box>
-          <LinkBox to="/about"><Navlink>About</Navlink></LinkBox>
+          {/* <LinkBox to="/about"><Navlink>About</Navlink></LinkBox> */}
           <Box sx={{ cursor: "pointer" }} onClick={executeScroll}><Navlink>Contact</Navlink></Box>
         </Leftbar>
         <Rightbar>
