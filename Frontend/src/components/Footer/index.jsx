@@ -60,27 +60,6 @@ export default function Footer({ sx }) {
       }}
     >
       <Box sx={{display: "flex", flexDirection: "row", alignItems: "center", gap: "15px", alignSelf: "center"}}>
-      {/* <Footbar> */}
-        {/* <LinkBox to="/" sx={{ display: "flex", alignItems: "center", gap: "0.7em" }}> */}
-          {/* <IconButton
-            disableRipple
-            sx={{
-              cursor: "default",
-              bgcolor: "white",
-              ":hover": { bgcolor: "white" }
-            }}
-          >
-            <img width={28} alt="logo" src={logo} />
-          </IconButton>
-          <Navlink>archemap.org</Navlink> */}
-        {/* </LinkBox> */}
-        {/* <LinkBox to="/about"><Navlink>About us</Navlink></LinkBox>
-        <LinkBox to="/docs"><Navlink>Docs </Navlink></LinkBox>
-        <LinkBox to="/explore"><Navlink>Explore</Navlink></LinkBox> */}
-      {/* </Footbar> */}
-
-      {/* <Box sx={{ width: { xs: "90%", sm: "90%", md: "50%", lg: "50%", xl: "50%" }, height: "2px", bgcolor: "black", margin: "auto" }} /> */}
-
       <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center" }} >
         <Typography fontSize="12px" fontWeight="bold" >© Copyright 2022</Typography>
         <Typography fontSize="12px" sx={{ margin: '0 4px' }}> - </Typography>

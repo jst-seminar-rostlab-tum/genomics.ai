@@ -11,7 +11,7 @@ const ModelsService = {
   getModelById: async (id) => {
     const { data } = await axiosInstance.get(`${MODEL}/${id}`);
     return data;
-  }
+  },
 };
 
 export default ModelsService;

@@ -14,7 +14,7 @@ export default function Terms() {
   const [isRegistrationFormVisible, setRegistrationFormVisible] = useState(false);
 
   const history = useHistory();
-  const [user, setUser] = useAuth()
+  const [user, setUser] = useAuth();
 
   const onLoginClicked = useCallback(() => {
     console.log('login');

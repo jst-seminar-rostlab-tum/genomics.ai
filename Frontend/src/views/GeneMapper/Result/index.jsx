@@ -7,18 +7,39 @@ import React, {
 import { useParams } from 'react-router-dom';
 import ProjectMock from 'shared/services/mock/projects';
 import ProjectService from 'shared/services/Project.service';
+import DemoService from 'shared/services/Demo.service';
+import { PROJECT_STATUS } from 'shared/utils/common/constants';
 
 /**
  * Shows the UMAP visualization for a given project.
  */
-function GeneMapperResultView() {
+function GeneMapperResultView({ loggedIn = true }) {
   const [project, setProject] = useState(null);
 
   const { projectId } = useParams();
 
   useEffect(() => {
+    // fetch the projects
     ProjectService.getProject(projectId)
-      .then((data) => setProject(data))
+      .then((data) => {
+        let updatedData = data;
+        console.log(JSON.stringify(data));
+        DemoService.getDemos().then((demos) => {
+          // loop over demo datasets and check whether the project is a demo
+          demos.forEach((demo) => {
+            const id = data.fileName.split('_')[2];
+            if (id && id === demo._id) {
+              // updating the demo dataset
+              updatedData = {
+                ...data,
+                status: PROJECT_STATUS.DONE,
+                location: demo.csvURL,
+              };
+            }
+          });
+          setProject(updatedData);
+        });
+      })
       .catch(() => {
         ProjectMock.getProject(projectId).then((data) => setProject(data));
       });
@@ -36,7 +57,7 @@ function GeneMapperResultView() {
       {project
         ? (
           <>
-            <GeneMapperResultHeader project={project} />
+            <GeneMapperResultHeader project={project} loggedIn={loggedIn} />
             <Box
               sx={{
                 flexGrow: 1,
@@ -46,7 +67,7 @@ function GeneMapperResultView() {
                 overflow: 'hidden',
               }}
             >
-              <ResultVisualization dataUrl={project.location} />
+              <ResultVisualization dataUrl={project.location} loggedIn={loggedIn} />
             </Box>
           </>
         )

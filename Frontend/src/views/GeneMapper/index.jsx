@@ -4,6 +4,7 @@ import {
   Redirect, Route, Switch, useRouteMatch,
 } from 'react-router-dom';
 import GeneMapperState from './GeneMapperState';
+import NavBar from 'components/NavBar';
 import GeneMapperHome from './Home';
 import GeneMapperResultView from './Result';
 import HeaderView from 'components/general/HeaderView';
@@ -11,9 +12,12 @@ import HelpIcon from '@mui/icons-material/Help';
 import { Modal } from 'components/Modal';
 import { colors } from 'shared/theme/colors';
 
-function GeneMapper({ sidebarShown }) {
-  const paddingL = useCallback(() => (sidebarShown ? '100px' : '350px'), [sidebarShown]);
-
+/*
+params: sidebarShown, loggedIn
+The GeneMapper. Offers both the logged-in and non-logged-in version. 
+loggedIn is set to true by default
+*/
+function GeneMapper({ sidebarShown, loggedIn = true }) {
   const { path, url } = useRouteMatch();
 
   const headerStyle = {
@@ -22,7 +26,6 @@ function GeneMapper({ sidebarShown }) {
     fontWeight: 'bold',
     paddingTop: '20px',
   };
-  const [createOpen, setCreateOpen] = useState(false);
   const [showScarchesInfo, setShowScarchesInfo] = useState(false);
 
   return (
@@ -32,7 +35,7 @@ function GeneMapper({ sidebarShown }) {
         title="ScArches Gene Mapper"
         rightOfTitle={(
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          &nbsp;
+            &nbsp;
             <HelpIcon
               onClick={() => setShowScarchesInfo(true)}
               color="primary"
@@ -41,19 +44,22 @@ function GeneMapper({ sidebarShown }) {
               }}
             />
           </Box>
-      )}
+        )}
+        loggedIn={loggedIn}
       >
         <Switch>
           <Route exact path={`${path}`}>
-            <GeneMapperHome basePath={path} />
+            {/* should mostly be fine, todo: make sure the paths work properly */}
+            <GeneMapperHome basePath={path} loggedIn={loggedIn} />
           </Route>
 
           <Route path={`${path}/create`}>
-            <GeneMapperState path={`${path}`} />
+            {/* should mostly be fine, todo: make sure the paths work properly */}
+            <GeneMapperState path={`${path}`} loggedIn={loggedIn} />
           </Route>
 
           <Route path={`${path}/result/:projectId`}>
-            <GeneMapperResultView />
+            <GeneMapperResultView loggedIn={loggedIn} />
           </Route>
 
           <Route path={`${path}/*`}>
@@ -77,15 +83,17 @@ function GeneMapper({ sidebarShown }) {
               <Typography sx={{ fontSize: '16px', fontWeight: 300, paddingBottom: '16px' }}>
                 <p>
                   ScArches is a novel deep learning model that enables mapping query to reference datasets. The model allows the user to construct single or multi-modal (CITE-seq) references as well as classifying unlabelled query cells.
-                  On GeneCruncher, currently only mapping of query to reference datasets is offered.</p>
+                  On ArchMap, currently only mapping of query to reference datasets is offered.
+
+                </p>
                 <p>
                   For further information, please check out the ScArches paper:
-                  <a href='https://www.nature.com/articles/s41587-021-01001-7' target='_blank'>https://www.nature.com/articles/s41587-021-01001-7</a>
+                  <a href="https://www.nature.com/articles/s41587-021-01001-7" target="_blank" rel="noreferrer">https://www.nature.com/articles/s41587-021-01001-7</a>
                 </p>
               </Typography>
             </Box>
           </Container>
-      )}
+        )}
       />
     </div>
   );

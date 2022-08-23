@@ -19,11 +19,13 @@ const WindowiOS = ({ onSignUpClicked }) => {
         position: "relative",
         width: { xs: "90%", sm: "90%", md: "61.8%", lg: "61.8%", xl: "61.8%" },
         margin: "auto",
+        backgroundColor: "rgba(20, 20, 20, 0.6)",
         color: "white",
         p: "0.7em",
         borderRadius: "20px",
+        boxShadow: "0px 0px 10px rgba(255,255,255, 0.15)",
         marginTop: "3%",
-        marginBottom: "2em",
+        marginBottom: "2em"
       }}
     >
       <Box sx={{ p: { xs: "1em 1em", sm: "1em 4em", md: "1em 4em", lg: "1em 4em", xl: "1em 4em" }, marginTop: "4em", backdropFilter: "blur(5px)", borderWidth: "1px", borderRadius:"20px" }}>
@@ -40,7 +42,7 @@ const WindowiOS = ({ onSignUpClicked }) => {
           <CustomButton onClick={onSignUpClicked} sx={{ width: "100px"}}>Sign up</CustomButton>
         </Box>
         <Box sx={{ marginBlock: "10px", display: "flex", flexDirection: "row", gap: "10px", alignItems: "center" }}>
-          <Box sx={{ color: colors.neutral[200] }}><Link href="#/explore" color="#5676E4" fontWeight="bold">Try out</Link> our GeneMapper. No need to sign up.</Box>
+          <Box sx={{ color: colors.neutral[200] }}><Link href="#/references" color="#5676E4" fontWeight="bold">Try out</Link> our GeneMapper. No need to sign up.</Box>
         </Box>
         
         {/* DIVIDER */}

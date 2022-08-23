@@ -95,6 +95,7 @@ function TeamProjectList({
             model={models.find((model) => String(model._id) === String(project.modelId))}
             userTeams={userTeams}
             handleDelete={() => handleDelete(project)}
+            loggedIn // logged in always true for team project lists
           />
         ))}
       <Modal

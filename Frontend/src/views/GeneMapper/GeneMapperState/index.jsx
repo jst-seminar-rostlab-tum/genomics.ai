@@ -7,7 +7,14 @@ import UploadFilePage from '../UploadFilePage';
 import { useLocation, useHistory } from 'react-router-dom';
 import ModelService from 'shared/services/Model.service';
 import AtlasService from 'shared/services/Atlas.service';
+import DemoService from 'shared/services/Demo.service';
 
+/**
+ * GeneMapperState
+ * Renders the necessary step during the creation of a new project
+ * @param path
+ * @param loggedIn set to true when the user is logged in
+ * */
 function GeneMapperState({ path }) {
   const { search } = useLocation();
   const history = useHistory();
@@ -20,6 +27,9 @@ function GeneMapperState({ path }) {
   const [selectedAtlas, setSelectedAtlas] = useState('');
   const [selectedModel, setSelectedModel] = useState('');
   const [activeStep, setActiveStep] = useState(0);
+  const [selectedDemoDataset, setSelectedDemoDataset] = useState(null);
+  const [demoDatasetIsSelected, setDemoDatasetIsSelected] = useState(false);
+  const [demoDatasets, setDemoDatasets] = useState(null);
   const steps = ['Pick Atlas and Model', 'Choose File and Project details'];
   const [atlases, setAtlases] = useState(null);
   const [models, setModels] = useState(null);
@@ -52,6 +62,12 @@ function GeneMapperState({ path }) {
     }
   };
 
+  // get demo projects
+  useEffect(() => {
+    DemoService.getDemos().then((a) => {
+      setDemoDatasets(a);
+    });
+  }, []);
   useEffect(() => {
     AtlasService.getAtlases().then((a) => {
       a.map((a) => {
@@ -88,12 +104,13 @@ function GeneMapperState({ path }) {
       });
       setAtlases(a);
     });
+
     ModelService.getModels().then((m) => {
       m.map((model) => {
-                model.requirements = [
-                    'Ensure your data is in h5ad format',
-                    'Batch/study information is mandatory and should be labeled as “batch”'
-                ];
+        model.requirements = [
+          'Ensure your data is in h5ad format',
+          'Batch/study information is mandatory and should be labeled as “batch”',
+        ];
         if (model.name === 'scVI') {
           model.requirements.push('Cell type information should be labeled as “cell_type”');
           model.requirements.push('For unlabeled cells, the value for “cell_type” should be “Unknown”');
@@ -124,7 +141,7 @@ function GeneMapperState({ path }) {
 
   return (
     <Container>
-      <Box width="500px" margin="auto" sx={{ marginTop: '1%', marginBottom: '1%' }}>
+      <Box height="100%" width="500px" margin="auto" sx={{ marginTop: '1%', marginBottom: '1%' }}>
         <Stepper activeStep={activeStep}>
           {steps.map((labelText, index) => (
             <Step index={index}>
@@ -149,6 +166,11 @@ function GeneMapperState({ path }) {
               compatibleModels={selectedAtlas ? selectedAtlas.compatibleModels : []}
               atlases={atlases}
               models={models}
+              demos={demoDatasets}
+              selectedDataset={selectedDemoDataset}
+              setSelectedDataset={setSelectedDemoDataset}
+              datasetIsSelected={demoDatasetIsSelected}
+              setDatasetIsSelected={setDemoDatasetIsSelected}
             />
           )
           : (
@@ -157,6 +179,11 @@ function GeneMapperState({ path }) {
               selectedAtlas={selectedAtlas}
               selectedModel={selectedModel}
               setActiveStep={handleStep}
+              demos={demoDatasets}
+              selectedDataset={selectedDemoDataset}
+              setSelectedDataset={setSelectedDemoDataset}
+              datasetIsSelected={demoDatasetIsSelected}
+              setDatasetIsSelected={setDemoDatasetIsSelected}
             />
           )
       }

@@ -2,28 +2,35 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 import {
-  Alert, Box, Button, Container, Divider, Stack, TextField, Tooltip, Typography
+  Alert, Box, Button, Container, Divider, Stack, TextField, Tooltip, Typography,
 } from '@mui/material';
 import { GeneralCard as Card } from 'components/Cards/GeneralCard';
 import CustomButton from 'components/CustomButton';
 import FileUpload from 'components/FileUpload';
 import { Modal, ModalTitle } from 'components/Modal';
-import { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { TabCard } from 'components/GeneMapper/TabCard';
+import { MULTIPART_UPLOAD_STATUS } from 'shared/utils/common/constants';
 import { useHistory } from 'react-router-dom';
 import { initSubmissionProgress, useSubmissionProgress } from 'shared/context/submissionProgressContext';
 import ProjectService from 'shared/services/Project.service';
 import { uploadMultipartFile } from 'shared/services/UploadLogic';
-import { LearnMoreAtlasComponent } from 'views/Explore/LearnMoreAtlas';
-import { LearnMoreModelComponent } from 'views/Explore/LearnMoreModel';
+import { LearnMoreAtlasComponent } from 'views/References/LearnMoreAtlas';
+import { LearnMoreModelComponent } from 'views/References/LearnMoreModel';
+
 import styles from './uploadfilepage.module.css';
 
+/**
+ * @param datasetIsSelected indicates whether a demo dataset has been selected.
+ * @param selectedDataset indicates the dataset that has been selected.
+ */
 function UploadFilePage({
-  path, selectedAtlas, selectedModel, setActiveStep,
+  path, selectedAtlas, selectedModel, setActiveStep, demos,
+  selectedDataset, setSelectedDataset,
+  datasetIsSelected, setDatasetIsSelected,
 }) {
   const [uploadedFile, setUploadedFile] = useState();
-  const [selectedDataset, setSelectedDataset] = useState();
   const [mappingName, setMappingName] = useState('');
-  const [existingDatasets, setExistingDatasets] = useState();
   const [requirements, setRequirements] = useState([]);
   const [open, setOpen] = useState(false);
   const [atlasInfoOpen, setAtlasInfoOpen] = useState(false);
@@ -33,6 +40,8 @@ function UploadFilePage({
   const [showFileWarning, setShowFileWarning] = useState(false);
   const [showAcceptedFile, setShowAcceptedFile] = useState(false);
   const history = useHistory();
+  const [availableDemos, setAvailableDemos] = useState([]);
+  const [demoDatasets, setDemoDatasets] = useState(demos);
 
   useEffect(() => {
     setRequirements(selectedModel.requirements);
@@ -42,20 +51,31 @@ function UploadFilePage({
     setUploadedFile(file);
   };
 
+  // handle demo dataset selection
+  const handleDemoClick = (dataset) => {
+    if (!selectedDataset || selectedDataset._id !== dataset._id) {
+      setDatasetIsSelected(true);
+      setSelectedDataset(dataset);
+    } else {
+      setDatasetIsSelected(false);
+      setSelectedDataset(null);
+    }
+  };
+
   // custom file extension validator
   const validateUploadFile = (file) => {
     if (file.name.split('.').pop() !== 'h5ad') {
       setShowFileWarning(true);
       // error object returned in case of rejection
       return {
-        code: "Wrong file format",
-        message: "File must be in h5ad format"
+        code: 'Wrong file format',
+        message: 'File must be in h5ad format',
       };
-    } else {
-      setShowFileWarning(false);
     }
-    return null;  // file accepted
-  }
+    setShowFileWarning(false);
+
+    return null; // file accepted
+  };
 
   const createProject = useCallback((projectName, atlasId, modelId, file) => {
     ProjectService.createProject(
@@ -67,7 +87,9 @@ function UploadFilePage({
       uploadMultipartFile(
         project.uploadId,
         file,
+        // Sets the initial value of the submission progress
         initSubmissionProgress(project.uploadId),
+        // The "update" parameter is the arrow function inside the setSubmissionProgress() function
         (update) => {
           setSubmissionProgress((prev) => ({
             ...prev,
@@ -79,34 +101,56 @@ function UploadFilePage({
     });
   }, [submissionProgress]);
 
-  const handleSubmit = (e) => {
-    e?.preventDefault();
-    console.log(selectedDataset);
-    // save mapping name
-    setOpen(false); // opens modal to input mapping name
-    createProject(mappingName, selectedAtlas._id, selectedModel._id,
-      uploadedFile ? uploadedFile[0] : selectedDataset);
+  // the function to create a demo dataset project
+  const createDemoProject = (projectName, atlasId, modelId, demoDataset) => {
+    ProjectService.createProject(
+      projectName,
+      atlasId,
+      modelId,
+      demoDataset.name,
+    );
+    history.push(path); // go back to GeneMapper home
   };
 
-  const handleSelectDataset = (data) => {
-    if (data.name === selectedDataset?.name) {
-      setSelectedDataset(null);
+  const handleSubmit = (e) => {
+    e?.preventDefault();
+    // save mapping name
+    setOpen(false); // opens modal to input mapping name
+    // choose what type of project to create depending on whether a demo project is chosen
+    if (datasetIsSelected) {
+      createDemoProject(mappingName, selectedAtlas._id, selectedModel._id,
+        selectedDataset);
     } else {
-      setSelectedDataset(data);
+      createProject(mappingName, selectedAtlas._id, selectedModel._id,
+        uploadedFile ? uploadedFile[0] : selectedDataset);
     }
   };
 
+  // finding all matching demos for the current choice combination
+  useEffect(() => {
+    if (demoDatasets) {
+      const matchingDemos = demoDatasets
+        .filter((d) => d.atlas.toLowerCase() === selectedAtlas.name.toLowerCase()
+        && d.model.toLowerCase() === selectedModel.name.toLowerCase());
+
+      setAvailableDemos(matchingDemos);
+    } else {
+      setAvailableDemos([]);
+    }
+  }, []);
+
   return (
     <Box sx={{ marginTop: '2.5em' }}>
-      {showWarning &&
-        <Alert severity="error" xs={{marginTop: '100px'}}>
+      {showWarning
+        && (
+          <Alert severity="error" xs={{ marginTop: '100px' }}>
             Select or upload a dataset before continuing
-        </Alert>
-      }
+          </Alert>
+        )}
       <Stack
         direction="row"
         divider={(<Divider className={styles.divider} orientation="vertical" flexItem />)}
-        sx={ showWarning ? {marginTop: '1em'} : {}}
+        sx={showWarning ? { marginTop: '1em' } : {}}
       >
         {/* Left side */}
         <Box width="50%" mr="3%">
@@ -145,7 +189,7 @@ function UploadFilePage({
                       setOpen={setAtlasInfoOpen}
                       children={(
                         <Container>
-                          <LearnMoreAtlasComponent id={selectedAtlas._id} onClick={() => history.push(`/explore/atlases/${selectedAtlas._id}/visualization`)} />
+                          <LearnMoreAtlasComponent id={selectedAtlas._id} onClick={() => history.push(`/references/atlases/${selectedAtlas._id}/visualization`)} />
                         </Container>
                       )}
                     />
@@ -192,7 +236,7 @@ function UploadFilePage({
                       )}
                     />
                   </Stack>
-              )}
+                )}
               />
             </Stack>
             <Stack>
@@ -228,6 +272,8 @@ function UploadFilePage({
               <Container>
                 <ModalTitle>Give your mapping a name </ModalTitle>
                 <form onSubmit={handleSubmit}>
+                  {' '}
+                  {/* this handles the submission of the file and the project */}
                   <TextField
                     variant="standard"
                     placeholder="Enter name here"
@@ -265,33 +311,48 @@ function UploadFilePage({
               validator={validateUploadFile}
               rejectionHandler={() => setUploadedFile()}
             />
-            { 
-              showFileWarning &&
-              <Alert severity="error" sx={{marginTop: '1em'}}>
-                File must be in h5ad format.
-              </Alert>
+            {
+              showFileWarning
+              && (
+                <Alert severity="error" sx={{ marginTop: '1em' }}>
+                  File must be in h5ad format.
+                </Alert>
+              )
             }
-            { 
-              uploadedFile && uploadedFile[0] && 
-              <Alert severity="success" sx={{marginTop: '1em'}}>
-                Selected file: {uploadedFile[0].name}
-              </Alert> 
+            {
+              uploadedFile && uploadedFile[0]
+              && (
+                <Alert severity="success" sx={{ marginTop: '1em' }}>
+                  Selected file:
+                  {' '}
+                  {uploadedFile[0].name}
+                </Alert>
+              )
             }
           </Stack>
           <Stack maxHeight="50%">
-            <Typography variant="h5" fontWeight="bold" mb="0.5em">Select Existing Datasets</Typography>
-            { 
-              existingDatasets ? 
-                existingDatasets.map((data) => 
+            <Typography variant="h5" fontWeight="bold" mb="0.5em">Or Select Demo Dataset</Typography>
+            {
+              availableDemos.length > 0 ? (
+                availableDemos.map((dataset) => (
                   <TabCard
-                    data={data}
-                    width="95%" 
-                    height="3em"
-                    handleOnClick={
-                      () => handleSelectDataset(data)} selected={selectedDataset && data._id === selectedDataset._id
-                    }
-                  />)
-              : <Alert severity="info"> No existing datasets available. </Alert> 
+                    width="100%"
+                    height="50px"
+                    data={{
+                      name: `${dataset.name.split('_')[0]} + ${dataset.name.split('_')[1]}`,
+                      atlas: dataset.atlas,
+                      model: dataset.model,
+                      isDemo: true,
+                    }}
+                    handleOnClick={() => handleDemoClick(dataset)}
+                    selected={
+                        !uploadedFile
+                        && datasetIsSelected
+                        && selectedDataset._id === dataset._id
+                      }
+                  />
+                ))
+              ) : <Alert severity="info"> No existing datasets available. </Alert>
             }
           </Stack>
         </Box>
@@ -302,11 +363,9 @@ function UploadFilePage({
           Back
         </CustomButton>
         <Stack direction="row" spacing={3} alignItems="center">
-          <Typography variant="h6" fontWeight="bold">
-            
-          </Typography>
+          <Typography variant="h6" fontWeight="bold" />
           <Tooltip title={(!uploadedFile && !selectedDataset) ? "You haven't selected or uploaded a dataset!" : ''} placement="top">
-            <Box onClick={!uploadedFile && !selectedDataset ? () => setShowWarning(true) : ()=>{}}>
+            <Box onClick={!uploadedFile && !selectedDataset ? () => setShowWarning(true) : () => { }}>
               <span>
                 <CustomButton
                   type="primary"
@@ -315,7 +374,7 @@ function UploadFilePage({
                     setOpen(true);
                   }}
                 >
-                  Create Mapping
+                  Create Project
                   <CheckCircleOutlineIcon sx={{ marginLeft: '4px' }} />
                 </CustomButton>
               </span>

@@ -16,8 +16,9 @@ import { guardedPage } from './shared/utils/common/utils';
 import VisualizationPage from './views/VisualizationPage';
 import PasswordResetPage from './views/PasswordResetPage';
 import { theme } from './shared/theme/theme';
-import Explore from './views/Explore/index';
+import References from './views/References/index';
 import { useAuth } from 'shared/context/authContext';
+import NonLoginGeneMapper from 'views/NonLoginGeneMapper';
 
 function App() {
   const [user] = useAuth();
@@ -35,11 +36,12 @@ function App() {
           <Route path="/contact" render={() => <Contact />} />
           <Route path="/password_reset" render={() => <PasswordResetPage />} />
           <Route path="/result" render={() => <VisualizationPage />} />
-          <Route path="/explore" render={() => <Explore />} />
-          <Route path="/legalnotice" render={() => <LegalNotice />} />
+          <Route path="/references" render={() => <References />} />
+          {/* Gene mapper page without login */}
+          <Route path="/genemapper" render={() => <NonLoginGeneMapper />} />
+          <Route path="/imprint" render={() => <Imprint />} />
           <Route path="/terms" render={() => <Terms />} />
           <Route path="/privacy" render={() => <Privacy />} />
-
         </Switch>
       </HashRouter>
     </ThemeProvider>

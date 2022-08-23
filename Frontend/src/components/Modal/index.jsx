@@ -1,3 +1,4 @@
+import React from 'react';
 import { Dialog, DialogTitle } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -8,7 +9,7 @@ import CloseIcon from '@mui/icons-material/Close';
  * @param children mui dialog title / dialog content / dialog actions children component
  */
 export const Modal = ({
-  isOpen, setOpen, children, sx, maxWidth='sm'
+  isOpen, setOpen, children, sx, maxWidth = 'sm',
 }) => (
   <Dialog
     open={isOpen}
@@ -25,12 +26,15 @@ export const Modal = ({
     }}
     maxWidth={maxWidth}
   >
-    <CloseIcon 
-    onClick={(e) => {
-      setOpen(false);
-      e.stopPropagation();
-    }} 
-    sx={{position:'absolute', right:'10px', top:'10px', cursor:'pointer'}}/>
+    <CloseIcon
+      onClick={(e) => {
+        setOpen(false);
+        e.stopPropagation();
+      }}
+      sx={{
+        position: 'absolute', right: '10px', top: '10px', cursor: 'pointer',
+      }}
+    />
     {children}
   </Dialog>
 );

@@ -56,10 +56,12 @@ function CanceldOrFailedStatus() {
  * If the project is already deleted, this function is executed when the restore button is clicked
  * Expects no parameter
  * @param deleted True if the project is deleted
+ * @param loggedIn True if the user is logged in when creating the project.
+ * When the user is not logged in, then some of the functionality of the project card is disabled.
  */
 
 export default function ProjectBarCard({
-  project, atlas, model, userTeams, handleDelete, deleted,
+  project, atlas, model, userTeams, handleDelete, deleted, loggedIn = true,
 }) {
   const history = useHistory();
   const [submissionProgresses, setSubmissionProgresses] = useSubmissionProgress();
@@ -218,33 +220,35 @@ export default function ProjectBarCard({
                 {!deleted
                 && (
                 <>
-                  {projectTeam?.title
-                    ? (
-                      <CustomButton type="tertiary" sx={{ mr: 1 }} onClick={() => history.push(`/sequencer/teams/${projectTeam._id || projectTeam.id}`)}>
-                        <Typography>
-                          {projectTeam.title}
-                        </Typography>
-                      </CustomButton>
-                    )
-                    : (
-                      <Button
-                        variant="outlined"
-                        sx={{
-                          borderRadius: 100,
-                          mr: 1,
-                        }}
-                        style={{ textTransform: 'none' }}
-                        onClick={handleOpen}
-                      >
-                        <Typography>
-                          Add To Team
-                        </Typography>
-                      </Button>
-                    )}
-
+                  {/* render team button if logged in */}
+                  {
+                    loggedIn && (projectTeam?.title
+                      ? (
+                        <CustomButton type="tertiary" sx={{ mr: 1 }} onClick={() => history.push(`/sequencer/teams/${projectTeam._id || projectTeam.id}`)}>
+                          <Typography>
+                            {projectTeam.title}
+                          </Typography>
+                        </CustomButton>
+                      )
+                      : (
+                        <Button
+                          variant="outlined"
+                          sx={{
+                            borderRadius: 100,
+                            mr: 1,
+                          }}
+                          style={{ textTransform: 'none' }}
+                          onClick={handleOpen}
+                        >
+                          <Typography>
+                            Add To Team
+                          </Typography>
+                        </Button>
+                      ))
+                      }
                   <CustomButton
                     type="primary"
-                    onClick={() => history.push(`/sequencer/genemapper/result/${project._id}`)}
+                    onClick={() => history.push((loggedIn ? '/sequencer/genemapper/result/' : 'genemapper/result/') + project._id)}
                     disabled={project.status !== 'DONE'}
                   >
                     <Typography>
@@ -260,11 +264,25 @@ export default function ProjectBarCard({
                   </IconButton>
                 </>
                 )}
-                <IconButton onClick={() => handleDelete()}>
-                  {deleted
-                    ? <ReplayIcon />
-                    : <DeleteOutlineIcon color="error" />}
-                </IconButton>
+                {/* delete and restore button */}
+                {
+                  loggedIn ? (
+                    <IconButton onClick={() => handleDelete()}>
+                      {deleted
+                        ? <ReplayIcon />
+                        : <DeleteOutlineIcon color="error" />}
+                    </IconButton>
+                  ) : (
+                    // delete button when not logged in.
+                    // In the non-logged in version,
+                    // restoring the project is not possible
+                    !deleted && (
+                    <IconButton onClick={() => handleDelete()}>
+                      <DeleteOutlineIcon color="error" />
+                    </IconButton>
+                    )
+                  )
+                }
               </Box>
             </Grid>
           </Grid>
@@ -373,7 +391,6 @@ export default function ProjectBarCard({
           </Box>
         </Box>
       </Modal>
-
     </Box>
   );
 }
