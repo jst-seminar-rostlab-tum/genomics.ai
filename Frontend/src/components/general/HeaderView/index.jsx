@@ -13,7 +13,7 @@ import styles from './headerView.module.css';
 // The GeneMapper HeaderView for both the logged-in and non-logged-in version.
 // For the non-logged in version the navigation bar is rendered.
 function HeaderView({
-  title, rightOfTitle, replaceHeaderRight, children, loggedIn,
+  title, rightOfTitle, replaceHeaderRight, children, loggedIn = true,
 }) {
   const ref = useRef();
 

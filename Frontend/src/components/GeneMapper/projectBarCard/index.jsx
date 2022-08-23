@@ -61,7 +61,7 @@ function CanceldOrFailedStatus() {
  */
 
 export default function ProjectBarCard({
-  project, atlas, model, userTeams, handleDelete, deleted, loggedIn,
+  project, atlas, model, userTeams, handleDelete, deleted, loggedIn = true,
 }) {
   const history = useHistory();
   const [submissionProgresses, setSubmissionProgresses] = useSubmissionProgress();

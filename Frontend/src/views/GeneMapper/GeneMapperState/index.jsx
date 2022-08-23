@@ -15,7 +15,7 @@ import DemoService from 'shared/services/Demo.service';
  * @param path
  * @param loggedIn set to true when the user is logged in
  * */
-function GeneMapperState({ path, loggedIn }) {
+function GeneMapperState({ path }) {
   const { search } = useLocation();
   const history = useHistory();
   const searchParams = new URLSearchParams(search);

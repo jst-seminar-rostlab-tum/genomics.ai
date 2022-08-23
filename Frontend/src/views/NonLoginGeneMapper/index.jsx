@@ -8,7 +8,7 @@ import PasswordForgetForm from 'components/PasswordForgetForm';
 import { LoginContext } from 'shared/context/loginContext';
 
 // The non-login version of the genemapper page.
-// The main genemapper is used with loggedIn set to false.
+// The main genemapper component is used with loggedIn set to false.
 function NonLoginGeneMapper() {
   return (
     <Box sx={{
@@ -26,7 +26,7 @@ function NonLoginGeneMapper() {
         }}
       >
         {/* Non-login GeneMapper */}
-        <GeneMapper sidebarShown={false} loggedIn={false} /> {/* todo: understand what the sidebarshown does */} {/* Add the authentication processs here I believe */}
+        <GeneMapper sidebarShown={false} loggedIn={false} />
       </Box>
     </Box>
   );

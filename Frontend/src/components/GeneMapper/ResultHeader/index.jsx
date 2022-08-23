@@ -16,9 +16,8 @@ import ShareMenu from '../ShareMenu';
  * Header shown on the result page, including navigation buttons, project info,
  * and sharing and download options
  * @param project Object containing project data
- * @param loggedIn set to to when the user is logged in
  */
-function GeneMapperResultHeader({ project, loggedIn }) {
+function GeneMapperResultHeader({ project }) {
   const history = useHistory();
   const [showInfo, setShowInfo] = useState(false);
   const [atlas, setAtlas] = useState(null);

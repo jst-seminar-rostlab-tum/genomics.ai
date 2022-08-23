@@ -8,7 +8,7 @@ function Header({
   title,
   rightOfTitle,
   replaceRight,
-  loggedIn,
+  loggedIn = true,
 }) {
   return (
     <header className={styles.header}>
