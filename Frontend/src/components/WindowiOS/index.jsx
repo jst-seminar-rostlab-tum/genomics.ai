@@ -19,30 +19,14 @@ const WindowiOS = ({ onSignUpClicked }) => {
         position: "relative",
         width: { xs: "90%", sm: "90%", md: "61.8%", lg: "61.8%", xl: "61.8%" },
         margin: "auto",
-        //backgroundColor: "rgba(20, 20, 20, 0.3)",
         color: "white",
         p: "0.7em",
         borderRadius: "20px",
-        //boxShadow: "0px 0px 10px rgba(255,255,255, 0.15)",
         marginTop: "3%",
         marginBottom: "2em",
       }}
     >
-      {/* <Box
-        sx={{
-          position: "absolute",
-          display: "flex",
-          flexDirection: "row",
-          gap: "10px",
-          left: "3%",
-        }}
-      >
-        <Circle sx={{ width: "15px", color: colors.error.main }} />
-        <Circle sx={{ width: "15px", color: colors.warning.main }} />
-        <Circle sx={{ width: "15px", color: colors.success.main }} />
-      </Box>
-      <Typography textAlign="center">archemap.or</Typography> */}
-      <Box sx={{ p: { xs: "1em 1em", sm: "1em 4em", md: "1em 4em", lg: "1em 4em", xl: "1em 4em" }, marginTop: "4em" }}>
+      <Box sx={{ p: { xs: "1em 1em", sm: "1em 4em", md: "1em 4em", lg: "1em 4em", xl: "1em 4em" }, marginTop: "4em", backdropFilter: "blur(5px)", borderWidth: "1px", borderRadius:"20px" }}>
         <Typography fontSize={{ xs: "1.7rem", sm: "2.3rem", md: "2.1rem", lg: "3.1rem", xl: "3.1rem" }} fontWeight="bold">
           Single-Cell Query to Reference Mapping
         </Typography>
