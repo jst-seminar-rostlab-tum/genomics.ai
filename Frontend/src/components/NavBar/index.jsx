@@ -188,7 +188,7 @@ function LinkBox(props) {
 }
 
 export default function Navbar({ 
-  sx,
+  backgroundColor,
   onLoginClicked, 
   onSignUpClicked, 
   executeScroll, 
@@ -214,7 +214,7 @@ export default function Navbar({
   })
 
   return (
-    <Box ref={boxRef} sx={{width: "100%", bgcolor: "#092330", position: position, zIndex: "10"}}>
+    <Box ref={boxRef} sx={{width: "100%", bgcolor: backgroundColor ? backgroundColor : colors.primary[800], position: position, zIndex: "10"}}>
       <Appbar>
         <DrawerBar open={drawerOpen} setOpen={setDrawerOpen} executeScroll={handleClickContactUsInDrawer} />
         <Leftbar>

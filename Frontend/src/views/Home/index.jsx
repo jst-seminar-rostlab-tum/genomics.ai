@@ -70,8 +70,8 @@ const Home = () => {
         paddingBottom: "4em" }}>
         {/* NAVBAR HERE */}
         {/* the Box that contains the Navbar will collapse, so we reset the height */}
-        <Box sx={{ height: navbarHeight, position: "relative" }}>
-          <Navbar sx={{backgroundColor: "transparent"}} position="fixed" setNavbarHeight={setNavbarHeight} onLoginClicked={onLoginClicked} onSignUpClicked={onSignUpClicked} executeScroll={executeScroll} />
+        <Box sx={{ height: navbarHeight, position: "relative" }}> 
+          <Navbar backgroundColor="transparent" setNavbarHeight={setNavbarHeight} onLoginClicked={onLoginClicked} onSignUpClicked={onSignUpClicked} executeScroll={executeScroll} />
         </Box>
         {/* IOS WINDOW */}
         <WindowiOS onSignUpClicked={onSignUpClicked} />
@@ -84,7 +84,6 @@ const Home = () => {
           height: "5vw",
           left: "-20vw",
           top: "-2vw",
-          backgroundColor: "transparent",
           borderRadius: "50%",
           zIndex: "0"
         }}
