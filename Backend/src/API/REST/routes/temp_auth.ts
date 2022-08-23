@@ -42,7 +42,7 @@ export default function get_temp_auth(): Router {
             let expirationDate;
             jwt.verify(token, JWT_SECRET, (err, decoded)=>{
                 console.log("decoded payload: " + JSON.stringify(decoded));
-                expirationDate = decoded.exp;
+                expirationDate = decoded.iat;
             })
 
             // return successful temp access response
@@ -50,7 +50,7 @@ export default function get_temp_auth(): Router {
                 msg: "Temporary access granted",
                 user: tempUser.toObject(),
                 jwt: token,
-                expiresAt: expirationDate, 
+                iat: expirationDate, 
             });
 
         } catch (err) {
