@@ -71,68 +71,52 @@ function GeneMapperHome({ loggedIn }) {
   // function to handle deletion of project
   const handleDeleteProject = (id) => {
     DemoService.getDemos().then((demos) => {
-      if (loggedIn) {
-        ProjectService.deleteProject(id).then(() => {
-          ProjectService.getOwnProjects().then((data) => {
-            // search for demos and set the information stored about them
-            findDemos(data, demos);
-            setProjects(data);
-          });
-          ProjectService.getDeletedProjects().then((data) => {
-            // search for demos and set the information stored about them
-            findDemos(data, demos);
-            setDeletedProjects(data);
-          });
+      ProjectService.deleteProject(id).then(() => {
+        ProjectService.getOwnProjects().then((data) => {
+          // search for demos and set the information stored about them
+          findDemos(data, demos);
+          setProjects(data);
         });
-      } else {
-        // todo: delete the project from the cache and from the local storage
-      }
+        ProjectService.getDeletedProjects().then((data) => {
+          // search for demos and set the information stored about them
+          findDemos(data, demos);
+          setDeletedProjects(data);
+        });
+      });
     });
   };
 
   // function to handle restoration of project
   const handleRestoreProject = (id) => {
     DemoService.getDemos().then((demos) => {
-      if (loggedIn) {
-        ProjectService.restoreProject(id).then(() => {
-          ProjectService.getOwnProjects().then((data) => {
-            // search for demos and set the information stored about them
-            findDemos(data, demos);
-            setProjects(data);
-          });
-          ProjectService.getDeletedProjects().then((data) => {
-            // search for demos and set the information stored about them
-            findDemos(data, demos);
-            setDeletedProjects(data);
-          });
+      ProjectService.restoreProject(id).then(() => {
+        ProjectService.getOwnProjects().then((data) => {
+          // search for demos and set the information stored about them
+          findDemos(data, demos);
+          setProjects(data);
         });
-      } else {
-        //todo: fetch from the cache
-      }
+        ProjectService.getDeletedProjects().then((data) => {
+          // search for demos and set the information stored about them
+          findDemos(data, demos);
+          setDeletedProjects(data);
+        });
+      });
     });
   };
 
+  // todo: store the projects in the cache as well
   // in the cache, store an array of projects using the following object structure
   // {_id, owner, name, modelId, atlasId, fileName, fileSize, status, resultSize, _v, uploadId, location}
-  // the location is going to be the cache.
-  // TODO: add the above to the getProjects function
-  // link to get the cache:
-  // https://www.geeksforgeeks.org/how-to-get-complete-cache-data-in-reactjs/
-
   // Function to get projects and update the necessary info about the demo datasets
   const getProjects = () => {
     // fetch demos
     DemoService.getDemos().then((demos) => {
-      if (loggedIn) {
-        ProjectService.getOwnProjects().then((data) => {
-          // search for demos and set the information stored about them
-          findDemos(data, demos);
-          setDemoDatasets(demos);
-          setProjects(data);
-        });
-      } else { // if not logged in, check the local storage and cache for the projects
-        // todo: add the cache check for the projects
-      }
+      ProjectService.getOwnProjects().then((data) => {
+        // search for demos and set the information stored about them
+        findDemos(data, demos);
+        setDemoDatasets(demos);
+        setProjects(data);
+      });
     });
   };
 
@@ -192,10 +176,7 @@ function GeneMapperHome({ loggedIn }) {
               <CircularProgress />
             </Box>
           )}
-        {/* todo: in the future, check the cache for the projects
-        instead of disabling if not logged in, right now,
-        it is disabled in order to not get null exceptions */}
-        {loggedIn && projects?.length === 0
+        {projects?.length === 0
           && (
             <Alert severity="info">
               You have not created any mappings yet.
@@ -206,7 +187,7 @@ function GeneMapperHome({ loggedIn }) {
         {/* todo: in the future, check the cache for the projects
         instead of disabling if not logged in, right now,
         it is disabled in order to not get null exceptions */}
-        {loggedIn && projects
+        {projects
           && (
             <div>
               {projects.filter((project) => (
@@ -223,7 +204,7 @@ function GeneMapperHome({ loggedIn }) {
               ))}
             </div>
           )}
-        {loggedIn && deletedProjects.length > 0
+        {deletedProjects.length > 0
           && (
             <Box>
               <Typography variant="h6" sx={{ mt: 4, mb: 2 }}>Deleted Projects</Typography>

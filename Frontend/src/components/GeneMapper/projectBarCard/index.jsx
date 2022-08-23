@@ -248,7 +248,7 @@ export default function ProjectBarCard({
                       }
                   <CustomButton
                     type="primary"
-                    onClick={() => history.push(`/sequencer/genemapper/result/${project._id}`)} // todo: check about the history.push(). check what you have to push when not logged in
+                    onClick={() => history.push((loggedIn ? '/sequencer/genemapper/result/' : 'genemapper/result/') + project._id)}
                     disabled={project.status !== 'DONE'}
                   >
                     <Typography>

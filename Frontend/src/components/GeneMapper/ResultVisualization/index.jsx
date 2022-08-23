@@ -15,6 +15,7 @@ import GeneMapperCategories from '../Categories';
 import Sidepanel from '../Sidepanel';
 import { colors } from 'shared/theme/colors';
 import GeneMapperGraphs from '../Graphs';
+import { INDEXED_DB_NAME, DB_VERSION } from 'shared/utils/common/constants';
 
 const activatedColor = colors.primary['400'];
 const deactivatedColor = colors.primary['200'];
@@ -25,7 +26,7 @@ const deactivatedColor = colors.primary['200'];
  * @param dataUrl Download link for the csv data
  * @param onlyUmap Set to true if only the UMAP should be shown
  */
-function ResultVisualization({ dataUrl, onlyUmap }) {
+function ResultVisualization({ dataUrl, onlyUmap, loggedIn = true }) {
   const umapContainer = useRef(null);
   const graphContainer = useRef(null);
 
@@ -39,10 +40,75 @@ function ResultVisualization({ dataUrl, onlyUmap }) {
   const [showReference, setShowReference] = useState(true);
   const [showPredictions, setShowPredictions] = useState(true);
 
+  /**
+   * Fetch the csv and set umap accordingly.
+   * First check the indexedDB cache to see if the file has already been cached there.
+   */
   useEffect(() => {
-    csv(dataUrl).then((data) => {
-      setUmap(new UmapVisualization2(umapContainer.current, data, graphContainer.current));
-    });
+    // check if indexed DB is available in the user's browser
+    if (!window.indexedDB) {
+      if (loggedIn) {
+        csv(dataUrl).then((data) => {
+          // set the UMAP for the visualization
+          setUmap(new UmapVisualization2(umapContainer.current, data, graphContainer.current));
+        });
+      } else {
+        window.alert("This browser doesn't support IndexedDB. Please update your browser.");
+        return;
+      }
+    }
+    // open indexDB and check cache for stored results
+    console.log('opening indexedDB...');
+    const req = window.indexedDB.open(INDEXED_DB_NAME, DB_VERSION);
+    let db;
+
+    req.onerror = () => console.log('Error opening indexedDB');
+
+    // fired when database is opened for the first time.
+    // Create object store
+    req.onupgradeneeded = () => {
+      console.log('onupgradeNeeded fired');
+      db = req.result;
+      db.createObjectStore('project');
+      // error
+      db.onerror = (event) => {
+        console.log(`indexedDB error occurred: ${event}`);
+      };
+    };
+
+    // db access successful
+    req.onsuccess = () => {
+      db = req.result;
+
+      // read data from db
+      let objectStore = db.transaction('project', 'readonly').objectStore('project');
+      const readRequest = objectStore.get(dataUrl);
+
+      // generic db error
+      db.onerror = (event) => {
+        console.log(`indexedDB error occurred: ${event}`);
+      };
+
+      // on succssful read of cache
+      readRequest.onsuccess = () => {
+        const data = readRequest.result;
+        // if data is stored in db, use it
+        if (data) {
+          console.log('reading from indexed db');
+          setUmap(new UmapVisualization2(umapContainer.current, data, graphContainer.current));
+        } else { // otherwise, fetch the data
+          csv(dataUrl).then((result) => {
+            // set the UMAP for the visualization
+            setUmap(new UmapVisualization2(umapContainer.current, result, graphContainer.current));
+            // save fetched result in db
+            objectStore = db.transaction(['project'], 'readwrite').objectStore('project');
+            const request = objectStore.add(result, dataUrl);
+            request.onsuccess = () => { console.log('new project result added to db.'); };
+          });
+        }
+      };
+      console.log('Finished operations on indexedDB.');
+    };
   }, [dataUrl]);
 
   useEffect(() => {

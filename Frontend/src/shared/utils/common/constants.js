@@ -8,7 +8,11 @@ import {
 
 const DEV_BACKEND_ADDRESS = 'https://devversion-dot-custom-helix-329116.ey.r.appspot.com/v1';
 const PRODUCTION_BACKEND_ADDRESS = 'https://custom-helix-329116.ey.r.appspot.com/v1';
-export const BACKEND_ADDRESS = DEV_BACKEND_ADDRESS;
+export const BACKEND_ADDRESS = PRODUCTION_BACKEND_ADDRESS;
+
+// const names for indexed DB variables
+export const INDEXED_DB_NAME = 'indexedDB-archemap-projects';
+export const DB_VERSION = 1;
 
 export const JOB_QUEUE_UPDATE_INTERVAL = 5000;
 export const PROJECTS_UPDATE_INTERVAL = 5000;
