@@ -15,9 +15,6 @@ import RegistrationForm from 'components/RegistrationForm'
 import { colors } from 'shared/theme/colors';
 
 import organizationData from './data/organization.json'
-// import frontendDataOld from './frontend/frontend_old.json';
-// import backendDataOld from './backend/backend_old.json';
-// import visualizationDataOld from './visualization/visualization_old.json';
 
 import frontendData from './data/frontend.json'
 import backendData from './data/backend.json'
@@ -149,19 +146,6 @@ export default function About(props){
       <Box sx={{margin: "3em auto", display: "flex", flexDirection: "column", alignItems: "center", width: { xs: "90%", sm: "90%", md: "70%", lg: "70%", xl: "70%" }, textAlign: "center"}}>
         <Typography fontWeight="bold" fontSize="1em">Archemap.org was developed by a team of students from the Technical University of Munich (TUM) under the guidance of Dr. Guy Yachdav.</Typography>
       </Box>
-
-      {/* <Box sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
-        <MemberSection name="Organisation" data={organizationData} />
-        <MemberSection name="Frontend 1" data={frontend1Data} />
-        <MemberSection name="Frontend 2" data={frontend2Data} />
-        <MemberSection name="Frontend 3" data={frontend3Data} />
-        <MemberSection name="Backend" data={backendData} />
-        <MemberSection name="Visualization" data={visualizationData} />
-      </Box>
-
-      <Box sx={{margin: "3em auto", display: "flex", flexDirection: "column", alignItems: "center", width: { xs: "90%", sm: "90%", md: "70%", lg: "70%", xl: "70%" }, textAlign: "center"}}>
-        <Typography fontWeight="bold" fontSize="1em">Contributors from previous years</Typography>
-      </Box> */}
 
       <Box sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
         <MemberSection name="Organisation" data={organizationData} />

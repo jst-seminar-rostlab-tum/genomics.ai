@@ -15,6 +15,7 @@ import DashboardContent from './components/DashboardContent';
 import { guardedPage } from './shared/utils/common/utils';
 import VisualizationPage from './views/VisualizationPage';
 import PasswordResetPage from './views/PasswordResetPage';
+import NotFound from './views/NotFound';
 import { theme } from './shared/theme/theme';
 import References from './views/References/index';
 import { useAuth } from 'shared/context/authContext';
@@ -39,9 +40,10 @@ function App() {
           <Route path="/references" render={() => <References />} />
           {/* Gene mapper page without login */}
           <Route path="/genemapper" render={() => <NonLoginGeneMapper />} />
-          <Route path="/imprint" render={() => <Imprint />} />
+          <Route path="/imprint" render={() => <LegalNotice />} />
           <Route path="/terms" render={() => <Terms />} />
           <Route path="/privacy" render={() => <Privacy />} />
+          <Route path="*" render={()=> <NotFound />}/>
         </Switch>
       </HashRouter>
     </ThemeProvider>

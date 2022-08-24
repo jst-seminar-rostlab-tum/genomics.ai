@@ -12,7 +12,6 @@ import {
 } from '@mui/material';
 import { useHistory, useLocation } from 'react-router-dom';
 import NavBar from 'components/NavBar';
-import Footer from 'components/Footer/old';
 import styles from './passwordresetpage.module.css';
 import logo from 'assets/logo.svg';
 import { BACKEND_ADDRESS } from 'shared/utils/common/constants';
