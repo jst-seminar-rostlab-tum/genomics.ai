@@ -32,7 +32,7 @@ function App() {
           <Route exact path="/" render={() => (user ? <Redirect to="/sequencer" /> : <HomePage />)} />
           <Route path="/sequencer" render={() => guardedPage(<DashboardContent />)} />
           <Route path="/dashboard" component={DashboardContent} />
-          <Route path="/about" render={() => <About />} />
+          {/* <Route path="/about" render={() => <About />} /> */}
           <Route path="/docs" render={() => <Docs />} />
           <Route path="/contact" render={() => <Contact />} />
           <Route path="/password_reset" render={() => <PasswordResetPage />} />

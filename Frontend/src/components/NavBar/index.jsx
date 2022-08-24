@@ -283,7 +283,8 @@ export default function Navbar({
           <LinkBox to="/genemapper"><Navlink>Map</Navlink></LinkBox>
           <LinkBox to="/references"><Navlink>References</Navlink></LinkBox>
           <Box sx={{ cursor: 'pointer' }} onClick={() => window.open('https://genecruncher.readthedocs.io/')}><Navlink>Docs</Navlink></Box>
-          <LinkBox to="/about"><Navlink>About</Navlink></LinkBox>
+          {/* The about page is removed for now because it isn't up-to-date */}
+          {/* <LinkBox to="/about"><Navlink>About</Navlink></LinkBox> */}
           <Box sx={{ cursor: 'pointer' }} onClick={executeScroll}><Navlink>Contact</Navlink></Box>
         </Leftbar>
         <Rightbar>
