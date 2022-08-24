@@ -40,7 +40,7 @@ function App() {
           <Route path="/references" render={() => <References />} />
           {/* Gene mapper page without login */}
           <Route path="/genemapper" render={() => <NonLoginGeneMapper />} />
-          <Route path="/imprint" render={() => <LegalNotice />} />
+          <Route path="/legalnotice" render={() => <LegalNotice />} />
           <Route path="/terms" render={() => <Terms />} />
           <Route path="/privacy" render={() => <Privacy />} />
           <Route path="*" render={()=> <NotFound />}/>
